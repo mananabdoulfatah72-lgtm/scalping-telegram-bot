@@ -2,27 +2,14 @@ name: Telegram Scalping Bot
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # ⏰ Exécution toutes les 5 minutes
-  workflow_dispatch:        # 🧪 Lancer manuellement
-  push:
-    paths:
-      - main.py             # Redémarre si tu modifies le script
+    - cron: "*/10 * * * *"   # toutes les 10 minutes
+  workflow_dispatch:       # exécution manuelle possible
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-
     steps:
-    - name: 🛎️ Checkout du dépôt
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      - name: Run scalping bot
+        run: python3 main.py
 
-    - name: 🐍 Installation de Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.10"
-
-    - name: 🚀 Exécution du bot scalping
-      run: python3 main.py
-      env:
-        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        CHAT_ID: ${{ secrets.CHAT_ID }}
