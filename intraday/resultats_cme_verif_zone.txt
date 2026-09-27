@@ -1,0 +1,24 @@
+
+=== NASDAQ100 : 3634 trades
+  2011-2014        brut  +2.7 pb | frais  5.3 pb | net  -2.6 pb (t -1.86) | achats  -1.3 pb (445) | ventes  -3.9 pb (459)
+  2015-2019        brut  +3.2 pb | frais  2.7 pb | net  +0.5 pb (t +0.35) | achats  +1.3 pb (567) | ventes  -0.2 pb (606)
+  2020-2026        brut  +5.2 pb | frais  1.0 pb | net  +4.2 pb (t +2.62) | achats  +5.3 pb (764) | ventes  +3.1 pb (793)
+  depuis mai 2024  brut  +2.9 pb | frais  0.7 pb | net  +2.2 pb (t +0.78) | achats  +2.9 pb (245) | ventes  +1.7 pb (299)
+  sans le 1 % des meilleurs jours : +0.13 pt par jour de trade (au lieu de +4.27)
+
+=== SP500 : 3782 trades
+  2011-2014        brut  +2.3 pb | frais  6.0 pb | net  -3.7 pb (t -2.93) | achats  -2.9 pb (471) | ventes  -4.5 pb (501)
+  2015-2019        brut  +1.5 pb | frais  3.8 pb | net  -2.3 pb (t -2.22) | achats  -1.5 pb (591) | ventes  -3.1 pb (641)
+  2020-2026        brut  +2.9 pb | frais  2.0 pb | net  +1.0 pb (t +0.79) | achats  +1.9 pb (778) | ventes  +0.0 pb (800)
+  depuis mai 2024  brut  -0.6 pb | frais  1.4 pb | net  -2.1 pb (t -1.30) | achats  -2.5 pb (265) | ventes  -1.7 pb (296)
+  sans le 1 % des meilleurs jours : -1.23 pt par jour de trade (au lieu de -0.37)
+
+  Challenges 2020-2026 seulement, zone de bruit MNQ :
+    Topstep 50K   2 MNQ : reussi  16% | perdu  41% | pas fini  43% | duree mediane  46 seances || sans avantage : reussi   2%
+    Topstep 50K   3 MNQ : reussi  19% | perdu  70% | pas fini  11% | duree mediane  29 seances || sans avantage : reussi  11%
+    Topstep 50K   5 MNQ : reussi  20% | perdu  80% | pas fini   0% | duree mediane  20 seances || sans avantage : reussi  11%
+    Topstep 50K  10 MNQ : reussi   8% | perdu  92% | pas fini   0% | duree mediane  12 seances || sans avantage : reussi   4%
+    Apex 50K      2 MNQ : reussi   5% | perdu   7% | pas fini  88% | duree mediane  13 seances || sans avantage : reussi   3%
+    Apex 50K      3 MNQ : reussi  14% | perdu  24% | pas fini  62% | duree mediane  12 seances || sans avantage : reussi   8%
+    Apex 50K      5 MNQ : reussi  28% | perdu  40% | pas fini  32% | duree mediane  11 seances || sans avantage : reussi  19%
+    Apex 50K     10 MNQ : reussi  36% | perdu  63% | pas fini   1% | duree mediane   5 seances || sans avantage : reussi  27%

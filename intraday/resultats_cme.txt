@@ -1,0 +1,78 @@
+
+=== SP500 (contrat MES, 5 $ par point) : 3917 seances du 2011-01-03 au 2026-09-25 ; frais aller-retour = 0.90 point
+
+  Fin de seance (Gao 2018)
+    Total              trades  3710 | gagnants  41% | brut  -0.04 pt | net  -0.94 pt |   -1,120 $/an par contrat | Sharpe -1.53 | t -6.04
+    2010-2014          trades   936 | gagnants  38% | brut  +0.21 pt | net  -0.69 pt |     -826 $/an par contrat | Sharpe -2.94 | t -5.83
+    2015-2019          trades  1176 | gagnants  38% | brut  -0.14 pt | net  -1.04 pt |   -1,241 $/an par contrat | Sharpe -2.98 | t -6.63
+    2020-2026          trades  1598 | gagnants  44% | brut  -0.10 pt | net  -1.00 pt |   -1,203 $/an par contrat | Sharpe -1.16 | t -3.00
+    Apres publication  trades  2809 | gagnants  42% | brut  -0.11 pt | net  -1.01 pt |   -1,210 $/an par contrat | Sharpe -1.47 | t -5.03
+    par annee ($ par contrat) : 2011:-846 2012:-857 2013:-612 2014:-931 2015:-1,030 2016:-1,362 2017:-1,348 2018:-1,334 2019:-1,069 2020:-488 2021:-2,619 2022:-2,117 2023:-302 2024:-754 2025:-1,110 2026:-630
+    test du hasard : 59.1% des sens tires au hasard font aussi bien (moyenne placebo -0.90 pt)
+
+  Fin de seance (Baltussen 2021)
+    Total              trades  3723 | gagnants  42% | brut  +0.17 pt | net  -0.73 pt |     -876 $/an par contrat | Sharpe -1.20 | t -4.73
+    2010-2014          trades   939 | gagnants  39% | brut  +0.34 pt | net  -0.56 pt |     -664 $/an par contrat | Sharpe -2.38 | t -4.72
+    2015-2019          trades  1182 | gagnants  38% | brut  +0.07 pt | net  -0.83 pt |     -987 $/an par contrat | Sharpe -2.37 | t -5.28
+    2020-2026          trades  1602 | gagnants  46% | brut  +0.14 pt | net  -0.76 pt |     -919 $/an par contrat | Sharpe -0.89 | t -2.29
+    Apres publication  trades  1362 | gagnants  45% | brut  -0.24 pt | net  -1.14 pt |   -1,367 $/an par contrat | Sharpe -1.44 | t -3.44
+    par annee ($ par contrat) : 2011:-472 2012:-1,144 2013:-330 2014:-662 2015:-654 2016:-1,375 2017:-1,385 2018:-718 2019:-754 2020:+1,622 2021:-1,304 2022:+997 2023:-548 2024:-2,676 2025:-2,470 2026:-1,748
+    test du hasard : 13.8% des sens tires au hasard font aussi bien (moyenne placebo -0.90 pt)
+
+  OPR 5 minutes
+    Total              trades  3788 | gagnants  20% | brut  +0.28 pt | net  -0.62 pt |     -759 $/an par contrat | Sharpe -0.66 | t -2.62 | R brut +0.089 net -0.249
+    2010-2014          trades   937 | gagnants  19% | brut  +0.32 pt | net  -0.58 pt |     -695 $/an par contrat | Sharpe -1.62 | t -3.22 | R brut +0.083 net -0.486
+    2015-2019          trades  1191 | gagnants  21% | brut  +0.45 pt | net  -0.45 pt |     -548 $/an par contrat | Sharpe -0.77 | t -1.70 | R brut +0.129 net -0.272
+    2020-2026          trades  1660 | gagnants  19% | brut  +0.13 pt | net  -0.77 pt |     -953 $/an par contrat | Sharpe -0.60 | t -1.54 | R brut +0.064 net -0.098
+    Apres publication  trades   857 | gagnants  19% | brut  -0.13 pt | net  -1.03 pt |   -1,279 $/an par contrat | Sharpe -0.84 | t -1.56 | R brut +0.023 net -0.131
+    par annee ($ par contrat) : 2011:-735 2012:-904 2013:-903 2014:-187 2015:-656 2016:-882 2017:-976 2018:-178 2019:-17 2020:-2,475 2021:+357 2022:+1,474 2023:-1,401 2024:-2,261 2025:-620 2026:-1,427
+    test du hasard : 16.0% des sens tires au hasard font aussi bien (moyenne placebo -0.79 pt)
+
+  Zone de bruit
+    Total              trades  2382 | gagnants  36% | brut  +1.06 pt | net  -0.37 pt |     -280 $/an par contrat | Sharpe -0.25 | t -0.99
+    2010-2014          trades   610 | gagnants  30% | brut  +0.53 pt | net  -0.91 pt |     -705 $/an par contrat | Sharpe -1.57 | t -3.13
+    2015-2019          trades   767 | gagnants  34% | brut  +0.69 pt | net  -0.76 pt |     -589 $/an par contrat | Sharpe -0.81 | t -1.81
+    2020-2026          trades  1005 | gagnants  42% | brut  +1.68 pt | net  +0.27 pt |     +200 $/an par contrat | Sharpe +0.13 | t +0.33
+    Apres publication  trades   347 | gagnants  37% | brut  -0.80 pt | net  -2.25 pt |   -1,650 $/an par contrat | Sharpe -0.95 | t -1.47
+    par annee ($ par contrat) : 2011:-498 2012:-651 2013:-998 2014:-620 2015:-789 2016:-1,786 2017:-1,556 2018:+1,681 2019:-463 2020:+1,073 2021:+1,350 2022:+2,432 2023:+233 2024:-1,197 2025:-294 2026:-2,264
+
+=== NASDAQ100 (contrat MNQ, 2 $ par point) : 3917 seances du 2011-01-03 au 2026-09-25 ; frais aller-retour = 1.50 point
+
+  Fin de seance (Gao 2018)
+    Total              trades  3740 | gagnants  44% | brut  -0.04 pt | net  -1.54 pt |     -740 $/an par contrat | Sharpe -0.67 | t -2.63
+    2010-2014          trades   945 | gagnants  39% | brut  +0.30 pt | net  -1.20 pt |     -577 $/an par contrat | Sharpe -2.65 | t -5.26
+    2015-2019          trades  1191 | gagnants  44% | brut  +0.27 pt | net  -1.23 pt |     -593 $/an par contrat | Sharpe -1.30 | t -2.90
+    2020-2026          trades  1604 | gagnants  47% | brut  -0.46 pt | net  -1.96 pt |     -945 $/an par contrat | Sharpe -0.58 | t -1.49
+    Apres publication  trades  2830 | gagnants  46% | brut  -0.15 pt | net  -1.65 pt |     -793 $/an par contrat | Sharpe -0.62 | t -2.14
+    par annee ($ par contrat) : 2011:-552 2012:-564 2013:-636 2014:-516 2015:-609 2016:-819 2017:-798 2018:+22 2019:-728 2020:+1,830 2021:-3,281 2022:-2,794 2023:-2,015 2024:-26 2025:-2,042 2026:+2,029
+    test du hasard : 51.1% des sens tires au hasard font aussi bien (moyenne placebo -1.51 pt)
+
+  Fin de seance (Baltussen 2021)
+    Total              trades  3747 | gagnants  43% | brut  +0.31 pt | net  -1.19 pt |     -571 $/an par contrat | Sharpe -0.51 | t -2.03
+    2010-2014          trades   948 | gagnants  36% | brut  +0.24 pt | net  -1.26 pt |     -606 $/an par contrat | Sharpe -2.78 | t -5.52
+    2015-2019          trades  1194 | gagnants  43% | brut  +0.51 pt | net  -0.99 pt |     -477 $/an par contrat | Sharpe -1.05 | t -2.34
+    2020-2026          trades  1605 | gagnants  48% | brut  +0.21 pt | net  -1.29 pt |     -621 $/an par contrat | Sharpe -0.38 | t -0.98
+    Apres publication  trades  1365 | gagnants  47% | brut  -0.73 pt | net  -2.23 pt |   -1,073 $/an par contrat | Sharpe -0.67 | t -1.61
+    par annee ($ par contrat) : 2011:-402 2012:-696 2013:-778 2014:-504 2015:-508 2016:-728 2017:-858 2018:+476 2019:-742 2020:+1,942 2021:-107 2022:+2,342 2023:-1,321 2024:-2,332 2025:-4,556 2026:-107
+    test du hasard : 30.3% des sens tires au hasard font aussi bien (moyenne placebo -1.49 pt)
+
+  OPR 5 minutes
+    Total              trades  3865 | gagnants  23% | brut  +2.14 pt | net  +0.64 pt |     +320 $/an par contrat | Sharpe +0.15 | t +0.57 | R brut +0.136 net -0.047
+    2010-2014          trades   968 | gagnants  22% | brut  +0.99 pt | net  -0.51 pt |     -253 $/an par contrat | Sharpe -0.60 | t -1.20 | R brut +0.145 net -0.245
+    2015-2019          trades  1223 | gagnants  22% | brut  +2.00 pt | net  +0.50 pt |     +249 $/an par contrat | Sharpe +0.25 | t +0.56 | R brut +0.154 net -0.051
+    2020-2026          trades  1674 | gagnants  24% | brut  +2.92 pt | net  +1.42 pt |     +711 $/an par contrat | Sharpe +0.22 | t +0.57 | R brut +0.119 net +0.071
+    Apres publication  trades   863 | gagnants  25% | brut  +2.55 pt | net  +1.05 pt |     +525 $/an par contrat | Sharpe +0.15 | t +0.28 | R brut +0.117 net +0.074
+    par annee ($ par contrat) : 2011:-566 2012:-458 2013:-72 2014:+104 2015:-1,456 2016:+732 2017:-447 2018:+2,001 2019:+404 2020:-1,002 2021:+1,750 2022:+3,911 2023:-351 2024:+2,675 2025:+738 2026:-2,983
+    test du hasard : 7.0% des sens tires au hasard font aussi bien (moyenne placebo -0.42 pt)
+
+  Zone de bruit
+    Total              trades  2326 | gagnants  41% | brut  +6.62 pt | net  +4.27 pt |   +1,279 $/an par contrat | Sharpe +0.65 | t +2.55
+    2010-2014          trades   597 | gagnants  36% | brut  +1.11 pt | net  -1.16 pt |     -354 $/an par contrat | Sharpe -0.94 | t -1.87
+    2015-2019          trades   731 | gagnants  38% | brut  +3.56 pt | net  +1.15 pt |     +340 $/an par contrat | Sharpe +0.38 | t +0.84
+    2020-2026          trades   998 | gagnants  46% | brut +12.15 pt | net  +9.81 pt |   +2,937 $/an par contrat | Sharpe +1.01 | t +2.61
+    Apres publication  trades   331 | gagnants  44% | brut  +9.93 pt | net  +7.46 pt |   +2,085 $/an par contrat | Sharpe +0.55 | t +0.85
+    par annee ($ par contrat) : 2011:-396 2012:-168 2013:-385 2014:-442 2015:-583 2016:-1,176 2017:-208 2018:+4,111 2019:-461 2020:+2,738 2021:+1,998 2022:+4,268 2023:+4,012 2024:+3,000 2025:+1,886 2026:+1,680
+
+real	1m18.749s
+user	1m15.181s
+sys	0m3.289s

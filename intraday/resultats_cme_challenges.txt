@@ -1,0 +1,88 @@
+
+=== SP500 (MES)
+
+  Fin de seance (Gao 2018)
+    Topstep 50K   2 MES : reussi   1% | perdu   9% | pas fini  90% | duree mediane   34 seances || sans avantage : reussi   1%
+    Topstep 50K   5 MES : reussi   4% | perdu  49% | pas fini  47% | duree mediane   28 seances || sans avantage : reussi   9%
+    Topstep 50K  10 MES : reussi   6% | perdu  87% | pas fini   6% | duree mediane   21 seances || sans avantage : reussi  13%
+    Topstep 50K  20 MES : reussi   5% | perdu  95% | pas fini   0% | duree mediane   10 seances || sans avantage : reussi  15%
+    Apex 50K      2 MES : reussi   0% | perdu   0% | pas fini 100% | duree mediane   14 seances || sans avantage : reussi   0%
+    Apex 50K      5 MES : reussi   2% | perdu   8% | pas fini  90% | duree mediane   12 seances || sans avantage : reussi   2%
+    Apex 50K     10 MES : reussi   6% | perdu  29% | pas fini  65% | duree mediane   11 seances || sans avantage : reussi   8%
+    Apex 50K     20 MES : reussi  11% | perdu  61% | pas fini  28% | duree mediane    7 seances || sans avantage : reussi  17%
+
+  Fin de seance (Baltussen 2021)
+    Topstep 50K   2 MES : reussi   2% | perdu   6% | pas fini  92% | duree mediane   33 seances || sans avantage : reussi   2%
+    Topstep 50K   5 MES : reussi   4% | perdu  48% | pas fini  47% | duree mediane   46 seances || sans avantage : reussi   8%
+    Topstep 50K  10 MES : reussi   7% | perdu  84% | pas fini   9% | duree mediane   19 seances || sans avantage : reussi  13%
+    Topstep 50K  20 MES : reussi   7% | perdu  93% | pas fini   1% | duree mediane   11 seances || sans avantage : reussi  18%
+    Apex 50K      2 MES : reussi   0% | perdu   0% | pas fini  99% | duree mediane   13 seances || sans avantage : reussi   0%
+    Apex 50K      5 MES : reussi   1% | perdu   6% | pas fini  93% | duree mediane   12 seances || sans avantage : reussi   2%
+    Apex 50K     10 MES : reussi   6% | perdu  29% | pas fini  65% | duree mediane   11 seances || sans avantage : reussi   9%
+    Apex 50K     20 MES : reussi  13% | perdu  58% | pas fini  29% | duree mediane    7 seances || sans avantage : reussi  19%
+
+  OPR 5 minutes
+    Topstep 50K   2 MES : reussi   2% | perdu  15% | pas fini  83% | duree mediane   41 seances || sans avantage : reussi   2%
+    Topstep 50K   5 MES : reussi   7% | perdu  61% | pas fini  32% | duree mediane   27 seances || sans avantage : reussi  10%
+    Topstep 50K  10 MES : reussi   9% | perdu  85% | pas fini   6% | duree mediane   18 seances || sans avantage : reussi  15%
+    Topstep 50K  20 MES : reussi   7% | perdu  93% | pas fini   0% | duree mediane   12 seances || sans avantage : reussi  12%
+    Apex 50K      2 MES : reussi   0% | perdu   0% | pas fini  99% | duree mediane   20 seances || sans avantage : reussi   0%
+    Apex 50K      5 MES : reussi   5% | perdu  14% | pas fini  81% | duree mediane   12 seances || sans avantage : reussi   6%
+    Apex 50K     10 MES : reussi  13% | perdu  39% | pas fini  48% | duree mediane    7 seances || sans avantage : reussi  16%
+    Apex 50K     20 MES : reussi  21% | perdu  66% | pas fini  13% | duree mediane    4 seances || sans avantage : reussi  27%
+
+  Zone de bruit
+    Topstep 50K   2 MES : reussi   2% | perdu   7% | pas fini  91% | duree mediane   46 seances || sans avantage : reussi   2%
+    Topstep 50K   5 MES : reussi   6% | perdu  55% | pas fini  39% | duree mediane   33 seances || sans avantage : reussi   8%
+    Topstep 50K  10 MES : reussi   7% | perdu  90% | pas fini   3% | duree mediane   23 seances || sans avantage : reussi   9%
+    Topstep 50K  20 MES : reussi   3% | perdu  97% | pas fini   0% | duree mediane   16 seances || sans avantage : reussi   4%
+    Apex 50K      2 MES : reussi   0% | perdu   0% | pas fini  99% | duree mediane   14 seances || sans avantage : reussi   0%
+    Apex 50K      5 MES : reussi   5% | perdu  12% | pas fini  83% | duree mediane   13 seances || sans avantage : reussi   6%
+    Apex 50K     10 MES : reussi  14% | perdu  32% | pas fini  54% | duree mediane    9 seances || sans avantage : reussi  14%
+    Apex 50K     20 MES : reussi  19% | perdu  64% | pas fini  17% | duree mediane    5 seances || sans avantage : reussi  21%
+
+=== NASDAQ100 (MNQ)
+
+  Fin de seance (Gao 2018)
+    Topstep 50K   2 MNQ : reussi   3% | perdu  18% | pas fini  78% | duree mediane   30 seances || sans avantage : reussi   4%
+    Topstep 50K   5 MNQ : reussi   5% | perdu  45% | pas fini  49% | duree mediane   26 seances || sans avantage : reussi   7%
+    Topstep 50K  10 MNQ : reussi   6% | perdu  73% | pas fini  20% | duree mediane   12 seances || sans avantage : reussi   8%
+    Topstep 50K  20 MNQ : reussi   4% | perdu  95% | pas fini   1% | duree mediane    8 seances || sans avantage : reussi  11%
+    Apex 50K      2 MNQ : reussi   1% | perdu   1% | pas fini  97% | duree mediane   15 seances || sans avantage : reussi   1%
+    Apex 50K      5 MNQ : reussi   4% | perdu  16% | pas fini  80% | duree mediane   11 seances || sans avantage : reussi   5%
+    Apex 50K     10 MNQ : reussi  10% | perdu  35% | pas fini  55% | duree mediane    9 seances || sans avantage : reussi  11%
+    Apex 50K     20 MNQ : reussi  13% | perdu  51% | pas fini  36% | duree mediane    4 seances || sans avantage : reussi  16%
+
+  Fin de seance (Baltussen 2021)
+    Topstep 50K   2 MNQ : reussi   4% | perdu  18% | pas fini  79% | duree mediane   40 seances || sans avantage : reussi   4%
+    Topstep 50K   5 MNQ : reussi   8% | perdu  43% | pas fini  49% | duree mediane   22 seances || sans avantage : reussi   9%
+    Topstep 50K  10 MNQ : reussi   8% | perdu  74% | pas fini  18% | duree mediane   12 seances || sans avantage : reussi  11%
+    Topstep 50K  20 MNQ : reussi   6% | perdu  93% | pas fini   1% | duree mediane    9 seances || sans avantage : reussi  13%
+    Apex 50K      2 MNQ : reussi   1% | perdu   1% | pas fini  98% | duree mediane   13 seances || sans avantage : reussi   1%
+    Apex 50K      5 MNQ : reussi   5% | perdu  16% | pas fini  79% | duree mediane   12 seances || sans avantage : reussi   6%
+    Apex 50K     10 MNQ : reussi  12% | perdu  32% | pas fini  56% | duree mediane    8 seances || sans avantage : reussi  13%
+    Apex 50K     20 MNQ : reussi  14% | perdu  50% | pas fini  35% | duree mediane    4 seances || sans avantage : reussi  18%
+
+  OPR 5 minutes
+    Topstep 50K   2 MNQ : reussi   8% | perdu  28% | pas fini  64% | duree mediane   37 seances || sans avantage : reussi   8%
+    Topstep 50K   5 MNQ : reussi  11% | perdu  55% | pas fini  34% | duree mediane   21 seances || sans avantage : reussi  10%
+    Topstep 50K  10 MNQ : reussi   9% | perdu  85% | pas fini   6% | duree mediane   20 seances || sans avantage : reussi   8%
+    Topstep 50K  20 MNQ : reussi   5% | perdu  95% | pas fini   0% | duree mediane   10 seances || sans avantage : reussi   3%
+    Apex 50K      2 MNQ : reussi   3% | perdu   6% | pas fini  91% | duree mediane   12 seances || sans avantage : reussi   3%
+    Apex 50K      5 MNQ : reussi  15% | perdu  26% | pas fini  59% | duree mediane    8 seances || sans avantage : reussi  14%
+    Apex 50K     10 MNQ : reussi  21% | perdu  39% | pas fini  40% | duree mediane    4 seances || sans avantage : reussi  21%
+    Apex 50K     20 MNQ : reussi  24% | perdu  63% | pas fini  13% | duree mediane    2 seances || sans avantage : reussi  22%
+
+  Zone de bruit
+    Topstep 50K   2 MNQ : reussi   9% | perdu  17% | pas fini  74% | duree mediane   47 seances || sans avantage : reussi   4%
+    Topstep 50K   5 MNQ : reussi  12% | perdu  49% | pas fini  39% | duree mediane   23 seances || sans avantage : reussi  10%
+    Topstep 50K  10 MNQ : reussi   6% | perdu  83% | pas fini  11% | duree mediane   15 seances || sans avantage : reussi   5%
+    Topstep 50K  20 MNQ : reussi   7% | perdu  93% | pas fini   0% | duree mediane   20 seances || sans avantage : reussi   1%
+    Apex 50K      2 MNQ : reussi   2% | perdu   3% | pas fini  95% | duree mediane   13 seances || sans avantage : reussi   2%
+    Apex 50K      5 MNQ : reussi  14% | perdu  17% | pas fini  69% | duree mediane   11 seances || sans avantage : reussi  12%
+    Apex 50K     10 MNQ : reussi  20% | perdu  35% | pas fini  46% | duree mediane    6 seances || sans avantage : reussi  17%
+    Apex 50K     20 MNQ : reussi  23% | perdu  61% | pas fini  16% | duree mediane    3 seances || sans avantage : reussi  19%
+
+real	0m19.226s
+user	0m17.041s
+sys	0m2.376s
