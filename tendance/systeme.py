@@ -148,9 +148,13 @@ def multiplicateur_diversification(r, w):
 
 
 def backtest(r, cible=0.20, vitesses=(16, 32, 64), marches=MARCHES, exclure=(), multi_couts=1.0,
-             frequence="W-FRI", marge=0.10):
-    """Renvoie (rendement quotidien du portefeuille, positions en fraction du capital, couts)."""
-    f = prevision(r, vitesses)
+             frequence="W-FRI", marge=0.10, toujours_acheteur=False):
+    """Renvoie (rendement quotidien du portefeuille, positions en fraction du capital, couts).
+    toujours_acheteur=True : portefeuille qui achete tout, tout le temps (prevision fixe +10)."""
+    if toujours_acheteur:
+        f = pd.DataFrame(10.0, index=r.index, columns=r.columns).where(r.notna())
+    else:
+        f = prevision(r, vitesses)
     vol = volatilite(r)
     w = poids(r, marches, exclure)
     idm = multiplicateur_diversification(r, w)
@@ -176,6 +180,19 @@ def backtest(r, cible=0.20, vitesses=(16, 32, 64), marches=MARCHES, exclure=(), 
     brut = (positions.shift(1) * r.fillna(0)).sum(axis=1)
     net = brut - pd.Series(couts, index=r.index).shift(1).fillna(0)
     return net, positions, pd.Series(couts, index=r.index)
+
+
+# Melange 50/50 : autant de risque dans la tendance et dans l'achat permanent. Les deux etant presque
+# independants (correlation 0,035 sur 2007-2026), le melange est moins risque que chacun : on le
+# remultiplie par 1 / racine((1 + 0,035) / 2) = 1,39 pour revenir au risque vise.
+MULT_MELANGE = 1.39
+
+
+def positions_melange(r, **kw):
+    """Positions (fraction du capital, pour 20 % de risque) du melange 50/50 tendance + achat permanent."""
+    _, tendance, _ = backtest(r, **kw)
+    _, achat, _ = backtest(r, toujours_acheteur=True, **kw)
+    return (tendance + achat) / 2 * MULT_MELANGE, tendance
 
 
 def stats(x, nom=""):

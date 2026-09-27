@@ -51,10 +51,7 @@ def main():
 
     print("\n4. Est-ce vraiment la tendance ? Comparaison et test du hasard (2007-2026)")
     reel = base[base.index >= "2007-01-01"]
-    origine = S.prevision
-    S.prevision = lambda r, vitesses=(16, 32, 64): pd.DataFrame(10.0, index=r.index, columns=r.columns).where(r.notna())
-    achat = S.backtest(r)[0]
-    S.prevision = origine
+    achat = S.backtest(r, toujours_acheteur=True)[0]
     achat = achat[achat.index >= "2007-01-01"]
     melange = (reel / reel.std() + achat / achat.std()) / 2
     melange *= 0.20 / (melange.std() * np.sqrt(S.JOURS_AN))     # ramene a 20 % de risque par an

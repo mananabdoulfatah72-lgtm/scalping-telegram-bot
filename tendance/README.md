@@ -13,7 +13,7 @@ d'un challenge Phidias Premium 50K.
 | `systeme.py` | Signaux, tailles, coûts, backtest, optimisation des contrats entiers |
 | `challenge_phidias.py` | Challenge Phidias Premium 50K démarré chaque semaine depuis 2008 |
 | `rapport.py` | Reproduit tous les résultats ci-dessous (`python3 rapport.py`) |
-| `robot.py` | Robot en argent virtuel : compte de 50 000 $, ordres chaque vendredi, résumé Telegram |
+| `robot.py` | Robot en argent virtuel : deux comptes de 50 000 $ (mélange 50/50 et tendance), ordres chaque vendredi, résumé Telegram |
 | `robot/` | État du compte virtuel (`etat.json`) et journal quotidien (`journal.csv`) |
 
 ## Réglages (fixés à l'avance, non optimisés)
@@ -52,10 +52,22 @@ de 2 500 $ est trop petit pour lui : les contrats micro de la CME sont trop gros
 
 ## Robot en argent virtuel
 
-Le workflow `robot-tendance.yml` lance `robot.py` chaque soir de semaine à 22 h 30 UTC :
-valorisation du compte virtuel, nouvelles positions le vendredi (contrats micro entiers
-optimisés pour la taille du compte), suivi d'un challenge Phidias 50K virtuel, et résumé
-envoyé sur Telegram (secrets `TELEGRAM_TOKEN` et `CHAT_ID`). Aucun ordre réel n'est passé.
+Le workflow `robot-tendance.yml` lance `robot.py` chaque soir de semaine à 22 h 30 UTC. Il suit
+deux comptes virtuels de 50 000 $, au même risque visé de 12 %/an (environ 6 000 $) :
+
+| Compte | Principe | Historique 2007–2026 à 12 % de risque |
+|---|---|---|
+| Mélange 50/50 (principal) | moitié tendance, moitié achat permanent, même risque dans chacun | Sharpe 0,78 ; +9,4 %/an en moyenne ; pire baisse −19 % |
+| Tendance seule | le système de tendance | Sharpe 0,56 ; +6,7 %/an en moyenne ; pire baisse −23 % |
+
+Chaque soir : valorisation des comptes ; le vendredi, nouvelles positions en contrats micro
+entiers optimisés pour la taille du compte ; suivi d'un challenge Phidias 50K virtuel ; résumé
+sur Telegram (secrets `TELEGRAM_TOKEN` et `CHAT_ID`) ; tableau de bord `robot/TABLEAU_DE_BORD.md`.
+Aucun ordre réel n'est passé.
+
+Le mélange remultiplie les positions par 1,39 (= 1 / racine((1 + 0,035) / 2), la corrélation
+entre les deux parties étant de 0,035) pour revenir au risque visé. Viser 12 %/an de rendement
+moyen demanderait environ 15 % de risque (pire baisse historique −24 %).
 
 Les contrats de taux micro (2YY, 10Y, 30Y) sont cotés en taux : les messages donnent le sens
 de l'ordre sur ces contrats, qui est l'inverse du sens sur les obligations.
