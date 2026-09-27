@@ -38,6 +38,11 @@ d'entre elles font aussi bien que le vrai système. Le « timing » ajoute envir
 solide. Le mélange 50/50 tendance + achat fait 0,78, positif dans chaque période (0,37 sur
 2023–2026), pire baisse −19 % à 12 % de risque.
 
+**Carry sur devises** (`carry.py`, taux à 3 mois OCDE via FRED) : acheter les 6 devises dont le
+taux dépasse celui des États-Unis, vendre les autres, 2007–2026 : Sharpe −0,16, pire baisse −70 %
+(−0,54 en 2007–2012, −0,53 en 2013–2019, +0,32 en 2020–2026). Seul le dollar australien se comporte
+comme le carry le prévoit. L'ajouter au mélange 50/50 fait baisser le Sharpe de 0,78 à 0,60.
+
 **Compte 50K :** un seul contrat micro S&P, Nasdaq, or, argent ou Bitcoin peut perdre plus que
 la marge de 2 500 $ en une journée de krach. Sans ces marchés, il reste 14 marchés dont le
 Sharpe tombe à 0,16.
