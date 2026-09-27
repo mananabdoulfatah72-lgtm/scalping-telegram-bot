@@ -70,7 +70,9 @@ def fin_de_seance(jours, O, H, L, C, P, signal_minute):
     signal = C[:, signal_minute] / veille - 1
     sens = np.sign(signal)
     gain = sens * (C[:, N - 1] - C[:, 359])
-    return pd.DataFrame({"sens": sens, "brut": gain, "risque": np.nan}, index=jours)[ok & (sens != 0)]
+    # pire moment du trade (points, <= 0) : utile pour les limites verifiees en temps reel
+    pire = np.minimum(0, np.where(sens > 0, L[:, 360:].min(axis=1) - C[:, 359], C[:, 359] - H[:, 360:].max(axis=1)))
+    return pd.DataFrame({"sens": sens, "brut": gain, "risque": np.nan, "pire": pire}, index=jours)[ok & (sens != 0)]
 
 
 def opr5(jours, O, H, L, C, P, objectif_r=10.0):
@@ -84,9 +86,11 @@ def opr5(jours, O, H, L, C, P, objectif_r=10.0):
     risque = np.abs(entree - stop)
     cible = entree + sens * objectif_r * risque
     gain = np.full(len(jours), np.nan)
+    pire = np.full(len(jours), np.nan)
     for d in np.where(ok & (sens != 0) & (risque > 0))[0]:
         s = sens[d]
         sortie = C[d, N - 1]
+        extreme = entree[d]
         for m in range(5, N):
             o = O[d, m]
             # le cours ouvre deja au-dela du stop (ou de l'objectif) : sortie a ce prix
@@ -104,9 +108,11 @@ def opr5(jours, O, H, L, C, P, objectif_r=10.0):
             if touche_cible:
                 sortie = cible[d]
                 break
+            extreme = min(extreme, L[d, m]) if s > 0 else max(extreme, H[d, m])
         gain[d] = s * (sortie - entree[d])
+        pire[d] = min(0.0, s * (extreme - entree[d]), gain[d])
     garde = ~np.isnan(gain)
-    return pd.DataFrame({"sens": sens, "brut": gain, "risque": risque}, index=jours)[garde]
+    return pd.DataFrame({"sens": sens, "brut": gain, "risque": risque, "pire": pire}, index=jours)[garde]
 
 
 def zone_de_bruit(jours, O, H, L, C, P, jours_moyenne=14, pas=30):
