@@ -1,0 +1,32 @@
+name: Donnees fonds (dates FOMC)
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - fonds/telecharger_fomc.sh
+      - .github/workflows/donnees-fomc.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - name: Telecharger le calendrier du FOMC
+        run: bash fonds/telecharger_fomc.sh
+      - name: Enregistrer sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fonds/donnees/fomc
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees : calendrier des reunions du FOMC"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
