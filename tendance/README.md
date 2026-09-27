@@ -30,6 +30,14 @@ un risque de 19,5 %/an, pire baisse −36 %, 65 % d'années positives.
 Robuste aux réglages (Sharpe 0,46 à 0,65), aux coûts ×3 (0,47) et au retrait d'une famille
 (0,44 à 0,62). Mais 2023–2026 est négatif (Sharpe −0,16).
 
+**Est-ce vraiment la tendance ?** Un portefeuille qui achète tout, tout le temps (même risque par
+marché) fait aussi un Sharpe de 0,56, mais les deux ne sont presque pas corrélés (0,03) : la
+tendance gagne en 2008 (+19 %) et 2022 (+18 %) quand l'achat perd. Test du hasard : des positions
+décalées au hasard dans le temps, avec le même biais acheteur, font en moyenne 0,35, et 16,5 %
+d'entre elles font aussi bien que le vrai système. Le « timing » ajoute environ +0,2, sans preuve
+solide. Le mélange 50/50 tendance + achat fait 0,78, positif dans chaque période (0,37 sur
+2023–2026), pire baisse −19 % à 12 % de risque.
+
 **Compte 50K :** un seul contrat micro S&P, Nasdaq, or, argent ou Bitcoin peut perdre plus que
 la marge de 2 500 $ en une journée de krach. Sans ces marchés, il reste 14 marchés dont le
 Sharpe tombe à 0,16.
