@@ -113,3 +113,28 @@ Barres journalières de 40 à 50 futures CME (céréales, bétail, softs, énerg
 indices) chez Databento depuis 2010, avec le contrat suivant de chaque marché. Deux ou trois fois plus
 de marchés pour retester tendance, momentum et valeur, et une nouvelle source : le carry (écart entre
 les deux premiers contrats, Koijen, Moskowitz, Pedersen, Vrugt 2018).
+
+## Règles version 2 (fixées le 27 septembre 2026, avant de télécharger les données de la phase 3)
+
+La phase 2 a montré que le test du hasard n'avait pas la même sévérité pour toutes les sources. La
+version 2 remplace seulement la règle 4 ; les règles 1, 2, 3 et 5 ne changent pas.
+
+4. **Pas un hasard (v2)** : le placebo retire *seulement* ce que la source prétend savoir faire,
+   et garde tout le reste (mêmes marchés, mêmes tailles de position, mêmes frais) :
+   - une source qui choisit un **sens** (acheteur ou vendeur) : sens tiré au hasard pour chaque
+     marché à chaque rééquilibrage ;
+   - une source qui choisit des **dates** : même position, à des dates tirées au hasard ;
+   - une source qui **dose** son exposition : mêmes doses, attribuées aux périodes au hasard.
+   Seuil : faire mieux que **95 %** des placebos (au lieu de 90 %), parce que tirer le sens au hasard
+   donne un placebo plus facile à battre que l'ancien décalage dans le temps.
+
+Application : la version 2 juge toutes les sources à partir de la phase 3, y compris celles de la
+phase 2. Pour la zone de bruit, les actions pilotées par la volatilité et le tournant du mois, le
+placebo était déjà du bon type ; seul le seuil passe à 95 %. Les sources multi-marchés (achat,
+tendance, momentum, valeur) sont rejugées sur les nouvelles données (40 futures CME depuis 2010),
+qui remplacent les ETF ; la veille de la Fed est rejugée avec les 14 annonces récupérées.
+
+Nouvelle source testée en phase 3, règles fixées ici : **carry croisé** (Koijen, Moskowitz, Pedersen,
+Vrugt, 2018). Carry d'un marché = (ln F proche − ln F suivant) / écart entre leurs échéances en
+années (positif quand le contrat proche vaut plus que le suivant). Chaque fin de mois, dans chaque
+famille, poids = rang du carry − rang moyen, même construction que le momentum croisé.
