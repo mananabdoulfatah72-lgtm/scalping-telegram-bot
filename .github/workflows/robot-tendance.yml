@@ -1,0 +1,41 @@
+name: Robot tendance (argent virtuel)
+
+on:
+  schedule:
+    - cron: "30 22 * * 1-5"   # chaque soir de semaine, apres la cloture americaine
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: robot-tendance
+
+jobs:
+  robot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer les dependances
+        run: pip install yfinance pandas numpy requests
+
+      - name: Lancer le robot
+        working-directory: tendance
+        run: python3 robot.py
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+
+      - name: Sauvegarder le compte virtuel
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tendance/robot/
+          git diff --cached --quiet && exit 0
+          git commit -m "Robot tendance : mise a jour du compte virtuel"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

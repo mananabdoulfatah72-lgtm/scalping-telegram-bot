@@ -13,6 +13,8 @@ d'un challenge Phidias Premium 50K.
 | `systeme.py` | Signaux, tailles, coûts, backtest, optimisation des contrats entiers |
 | `challenge_phidias.py` | Challenge Phidias Premium 50K démarré chaque semaine depuis 2008 |
 | `rapport.py` | Reproduit tous les résultats ci-dessous (`python3 rapport.py`) |
+| `robot.py` | Robot en argent virtuel : compte de 50 000 $, ordres chaque vendredi, résumé Telegram |
+| `robot/` | État du compte virtuel (`etat.json`) et journal quotidien (`journal.csv`) |
 
 ## Réglages (fixés à l'avance, non optimisés)
 
@@ -39,3 +41,13 @@ Borne haute avec des contrats infiniment petits : environ 31 % de réussite.
 
 **Conclusion :** le système est réel et robuste, mais un compte de 50 000 $ avec une marge
 de 2 500 $ est trop petit pour lui : les contrats micro de la CME sont trop gros.
+
+## Robot en argent virtuel
+
+Le workflow `robot-tendance.yml` lance `robot.py` chaque soir de semaine à 22 h 30 UTC :
+valorisation du compte virtuel, nouvelles positions le vendredi (contrats micro entiers
+optimisés pour la taille du compte), suivi d'un challenge Phidias 50K virtuel, et résumé
+envoyé sur Telegram (secrets `TELEGRAM_TOKEN` et `CHAT_ID`). Aucun ordre réel n'est passé.
+
+Les contrats de taux micro (2YY, 10Y, 30Y) sont cotés en taux : les messages donnent le sens
+de l'ordre sur ces contrats, qui est l'inverse du sens sur les obligations.
