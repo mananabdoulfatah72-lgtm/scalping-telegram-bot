@@ -54,8 +54,7 @@ def lire_etat():
     etat = json.loads(ETAT.read_text()) if ETAT.exists() else {}
     if "comptes" not in etat:                       # ancien format : un seul compte (tendance)
         etat = {"comptes": {"tendance": etat}} if etat else {"comptes": {}}
-    for cle in COMPTES:
-        etat["comptes"].setdefault(cle, nouveau_compte())
+    etat["comptes"] = {cle: etat["comptes"].get(cle) or nouveau_compte() for cle in COMPTES}
     return etat
 
 
@@ -183,14 +182,15 @@ def ecrire_tableau(etat):
         "| Compte | Solde | Gain | Etat |",
         "|---|---|---|---|",
     ]
-    for cle, c in etat["comptes"].items():
+    ordre_comptes = [(cle, etat["comptes"][cle]) for cle in COMPTES]
+    for cle, c in ordre_comptes:
         if c["derniere_date"]:
             md.append(f"| {COMPTES[cle]['nom']} | {c['solde']:,.0f} $ | {c['solde'] - CAPITAL_DEPART:+,.0f} $ | "
                       f"{verdict(c, COMPTES[cle]['sharpe'])[0].split(':')[0].strip()} |")
     md += ["", "La zone bleue de chaque graphique montre ou tombaient 8 resultats sur 10 dans l'historique "
            "2007-2026, au meme risque. Tant que la ligne reste dedans, le compte se comporte comme prevu. "
            "Des semaines negatives sont normales : il faut plusieurs mois pour juger.", ""]
-    for cle, c in etat["comptes"].items():
+    for cle, c in ordre_comptes:
         if c["derniere_date"]:
             md += section_tableau(cle, c)
     md += ["Contrats de taux (2YY, 10Y, 30Y) : le sens indique est celui de l'ordre sur le contrat, "
