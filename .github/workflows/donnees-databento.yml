@@ -1,0 +1,75 @@
+name: Donnees CME minute (Databento)
+
+# La cle API vient du secret DATABENTO_API_KEY s'il existe. Sinon, le robot cree une paire de cles
+# ephemere : il publie la cle publique, attend la cle API chiffree avec elle (illisible par tout
+# autre que lui), la dechiffre en memoire, puis la cle privee disparait avec la machine.
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - intraday/telecharger_databento.py
+      - .github/workflows/donnees-databento.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Installer
+        run: pip install databento pandas
+      - name: Publier une cle publique ephemere (si pas de secret)
+        env:
+          SECRET: ${{ secrets.DATABENTO_API_KEY }}
+        run: |
+          [ -n "$SECRET" ] && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out "$RUNNER_TEMP/privee.pem" 2>/dev/null
+          openssl pkey -in "$RUNNER_TEMP/privee.pem" -pubout -out intraday/cle_publique.pem
+          git add intraday/cle_publique.pem
+          git commit -m "Cle publique ephemere pour recevoir la cle Databento"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+      - name: Telecharger les barres minute ES et NQ
+        env:
+          SECRET: ${{ secrets.DATABENTO_API_KEY }}
+        run: |
+          if [ -n "$SECRET" ]; then
+            CLE="$SECRET"
+          else
+            for i in $(seq 1 90); do
+              git fetch -q origin "$GITHUB_REF_NAME"
+              git show "origin/$GITHUB_REF_NAME:intraday/cle_chiffree.b64" > "$RUNNER_TEMP/c.b64" 2>/dev/null && break
+              sleep 10
+            done
+            [ -s "$RUNNER_TEMP/c.b64" ] || { echo "Cle chiffree non recue"; exit 1; }
+            CLE=$(base64 -d "$RUNNER_TEMP/c.b64" | openssl pkeyutl -decrypt -inkey "$RUNNER_TEMP/privee.pem" \
+                  -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256)
+            shred -u "$RUNNER_TEMP/privee.pem"
+          fi
+          echo "::add-mask::$CLE"
+          DATABENTO_API_KEY="$CLE" python3 intraday/telecharger_databento.py
+      - name: Enregistrer les donnees sur la branche
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git stash -u -q || true
+          git pull -q --rebase origin "$GITHUB_REF_NAME"
+          git stash pop -q || true
+          git rm -q --ignore-unmatch intraday/cle_publique.pem intraday/cle_chiffree.b64
+          git add intraday/donnees/sp500_1min.csv.gz intraday/donnees/nasdaq100_1min.csv.gz 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees minute CME (Databento) : ES et NQ"
+          git push origin "HEAD:$GITHUB_REF_NAME"
