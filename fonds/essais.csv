@@ -1,0 +1,37 @@
+date,dossier,essai,resultat
+2026-09-24,tendance,systeme W de l'utilisateur (tendance BTC+ETH),Sharpe non prouve
+2026-09-24,tendance,tendance 19 marches (16/64 32/128 64/256),Sharpe 0.56 2007-2026
+2026-09-24,tendance,vitesse 16 seule,variante
+2026-09-24,tendance,vitesse 32 seule,variante
+2026-09-24,tendance,vitesse 64 seule,variante
+2026-09-24,tendance,vitesses 8/16/32,variante
+2026-09-24,tendance,vitesses 32/64,variante
+2026-09-24,tendance,re-equilibrage mensuel,variante
+2026-09-24,tendance,couts x3,variante
+2026-09-24,tendance,sans actions,variante
+2026-09-24,tendance,sans obligations,variante
+2026-09-24,tendance,sans devises,variante
+2026-09-24,tendance,sans metaux,variante
+2026-09-24,tendance,sans energie,variante
+2026-09-24,tendance,sans crypto,variante
+2026-09-24,tendance,BTC + ETH seuls,Sharpe environ 0
+2026-09-24,tendance,14 marches sans gros contrats,variante
+2026-09-25,tendance,acheter tout tout le temps,Sharpe 0.56
+2026-09-25,tendance,melange 50/50,Sharpe 0.78
+2026-09-25,tendance,challenge Phidias (echelles de risque),8-23 % reussis
+2026-09-26,tendance,carry devises (signe),Sharpe -0.16
+2026-09-26,tendance,carry devises (croise),negatif
+2026-09-27,paires,paires futures (ETF),Sharpe -0.45
+2026-09-27,paires,paires actions,Sharpe 0.22 puis 0
+2026-09-27,intraday,fin de seance Baltussen SPY (Yahoo),negatif
+2026-09-27,intraday,fin de seance Baltussen QQQ (Yahoo),negatif
+2026-09-27,intraday,fin de seance Gao SPY (Yahoo),negatif
+2026-09-27,intraday,fin de seance Gao QQQ (Yahoo),negatif
+2026-09-27,intraday,fin de seance Gao ES (CME),t -6.0
+2026-09-27,intraday,fin de seance Gao NQ (CME),t -2.6
+2026-09-27,intraday,fin de seance Baltussen ES (CME),t -4.7
+2026-09-27,intraday,fin de seance Baltussen NQ (CME),t -2.0
+2026-09-27,intraday,OPR 5 minutes ES (CME),t -2.6
+2026-09-27,intraday,OPR 5 minutes NQ (CME),t +0.6
+2026-09-27,intraday,zone de bruit ES (CME),t -1.0
+2026-09-27,intraday,zone de bruit NQ (CME),t +2.55
