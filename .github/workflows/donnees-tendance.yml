@@ -1,0 +1,40 @@
+name: Donnees systeme de tendance
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - tendance/telecharger_donnees.py
+      - .github/workflows/donnees-tendance.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer les dependances
+        run: pip install yfinance pandas requests
+
+      - name: Telecharger les prix
+        run: python3 tendance/telecharger_donnees.py
+
+      - name: Enregistrer les donnees sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tendance/donnees/prix.csv.gz
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees de prix pour le systeme de tendance"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
