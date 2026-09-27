@@ -6,6 +6,10 @@
 3. barres minute du deuxieme contrat ES autour des annonces de la Fed tombees un jour de
    changement d'echeance (14 jours exclus en phase 2).
 La cle est lue dans DATABENTO_API_KEY. Le cout est demande avant ; arret si > PLAFOND dollars.
+
+Les barres journalieres passent par une commande groupee ("batch") : Databento la prepare de son cote
+(les requetes directes prenaient jusqu'a 9 minutes par marche). Le numero de la commande est garde
+dans donnees/commande_databento.json ; si elle n'est pas prete, relancer plus tard reprend au meme point.
 """
 import json
 import sys
@@ -65,25 +69,35 @@ def main():
     if cout + cout_min > PLAFOND:
         sys.exit("Trop cher : rien n'a ete telecharge")
     D.mkdir(exist_ok=True)
-
-    # 1. barres journalieres, marche par marche (une seule grosse requete depasse le delai du serveur)
-    morceaux = []
-    for racine in RACINES:
-        x = essayer(lambda: client.timeseries.get_range(dataset=JEU, symbols=[f"{racine}.v.0", f"{racine}.v.1"],
-                                                        stype_in="continuous", schema="ohlcv-1d", start=DEBUT, end=fin))
-        x = en_df(x)
-        print(f"  {racine} : {len(x)} barres", flush=True)
-        morceaux.append(x)
-    df = pd.concat(morceaux)
+    # 1. barres journalieres : commande groupee chez Databento
+    etat_f = D / "commande_databento.json"
+    etat = json.loads(etat_f.read_text()) if etat_f.exists() else {}
+    if not etat.get("commande"):
+        job = client.batch.submit_job(dataset=JEU, symbols=symboles, schema="ohlcv-1d", start=DEBUT, end=fin,
+                                      stype_in="continuous", encoding="dbn", compression="zstd", split_duration="none")
+        etat = {"commande": job["id"], "fin": fin}
+        etat_f.write_text(json.dumps(etat))
+        print(f"Commande envoyee : {job['id']}", flush=True)
+    fin = etat.get("fin", fin)
+    pret = False
+    for k in range(50):                                   # jusqu'a 50 minutes d'attente
+        jobs = {j["id"]: j for j in client.batch.list_jobs()}
+        statut = jobs.get(etat["commande"], {}).get("state", "inconnu")
+        print(f"  commande {etat['commande']} : {statut}", flush=True)
+        if statut == "done":
+            pret = True
+            break
+        if statut in ("expired", "inconnu") and k > 2:
+            etat_f.unlink()
+            sys.exit("Commande introuvable ou expiree : relancer pour en envoyer une nouvelle")
+        time.sleep(60)
+    if not pret:
+        print("Commande pas encore prete : relancer le telechargement plus tard.", flush=True)
+        return
+    fichiers = client.batch.download(job_id=etat["commande"], output_dir=D / "tmp")
+    dbn = [f for f in fichiers if str(f).endswith((".dbn.zst", ".dbn"))]
+    df = pd.concat([en_df(db.DBNStore.from_file(f)) for f in dbn])
     df = df[df.index.dayofweek < 5]
-    out = pd.DataFrame({"date": df.index.strftime("%Y-%m-%d"), "symbole": df["symbol"].values,
-                        "contrat": df["instrument_id"].values, "o": df["open"].values, "h": df["high"].values,
-                        "l": df["low"].values, "c": df["close"].values, "v": df["volume"].values})
-    out.to_csv(D / "futures_1d.csv.gz", index=False)
-    print(f"Barres journalieres : {len(out)} lignes, {out['symbole'].nunique()} series, "
-          f"du {out['date'].min()} au {out['date'].max()}", flush=True)
-    print(out.groupby("symbole")["date"].min().sort_index().to_string(), flush=True)
-
     # 2. symbole de chaque contrat (echeance)
     ids = sorted(int(i) for i in out["contrat"].unique())
     noms = {}
@@ -111,6 +125,9 @@ def main():
                                       "contrat": m["instrument_id"].values[garde]}))
     pd.concat(morceaux).to_csv(D / "es_v1_fomc.csv.gz", index=False)
     print("Minutes ES v.1 : ok", flush=True)
+    import shutil
+    shutil.rmtree(D / "tmp", ignore_errors=True)
+    etat_f.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

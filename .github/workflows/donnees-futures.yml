@@ -15,7 +15,7 @@ permissions:
 jobs:
   telecharger:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,11 +31,13 @@ jobs:
           pip install -q databento pandas
           python3 fonds/telecharger_futures.py
       - name: Enregistrer sur la branche
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add fonds/donnees/futures_1d.csv.gz fonds/donnees/contrats.json fonds/donnees/es_v1_fomc.csv.gz
+          git add -A fonds/donnees
           git diff --cached --quiet && exit 0
-          git commit -m "Donnees : 40 futures CME journaliers (Databento)"
+          if [ -f fonds/donnees/futures_1d.csv.gz ]; then MSG="Donnees : 40 futures CME journaliers (Databento)"; else MSG="Donnees : commande Databento en preparation"; fi
+          git commit -m "$MSG"
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
