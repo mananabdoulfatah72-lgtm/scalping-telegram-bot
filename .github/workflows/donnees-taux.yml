@@ -1,0 +1,37 @@
+name: Donnees taux d'interet (FRED)
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - tendance/telecharger_taux.py
+      - .github/workflows/donnees-taux.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger les taux
+        run: |
+          pip install pandas requests
+          python3 tendance/telecharger_taux.py
+      - name: Enregistrer les donnees sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tendance/donnees/taux_3m.csv
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees taux a 3 mois (FRED)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
