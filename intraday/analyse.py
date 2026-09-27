@@ -21,14 +21,14 @@ PUBLICATION = {
 
 
 def calculer(nom):
-    J, O, H, L, C, P = st.charger(nom)
+    J, O, H, L, C, P, X = st.charger(nom)
     cout = st.cout_aller_retour(nom)
     pt = st.CONTRATS[nom]["pt"]
     res = {
-        "Fin de seance (Gao 2018)": st.fin_de_seance(J, O, H, L, C, P, 29),
-        "Fin de seance (Baltussen 2021)": st.fin_de_seance(J, O, H, L, C, P, 359),
+        "Fin de seance (Gao 2018)": st.fin_de_seance(J, O, H, L, C, P, 29, X),
+        "Fin de seance (Baltussen 2021)": st.fin_de_seance(J, O, H, L, C, P, 359, X),
         "OPR 5 minutes": st.opr5(J, O, H, L, C, P),
-        "Zone de bruit": st.zone_de_bruit(J, O, H, L, C, P),
+        "Zone de bruit": st.zone_de_bruit(J, O, H, L, C, P, X),
     }
     for df in res.values():
         allers = df["allers"] if "allers" in df else 1
@@ -36,6 +36,21 @@ def calculer(nom):
         df["dollars"] = df["net"] * pt                    # pour 1 contrat micro
     jours_ok = pd.DatetimeIndex(J[st.journees_completes(P)])
     return jours_ok, res, cout
+
+
+def hasard_opr(nom, df, n=100, graine=0):
+    """Test du hasard de l'OPR : memes jours, memes stops et objectifs, mais sens tire au hasard."""
+    J, O, H, L, C, P, X = st.charger(nom)
+    rng = np.random.default_rng(graine)
+    cout = st.cout_aller_retour(nom)
+    base = np.sign(C[:, 4] - O[:, 0])
+    moyennes = []
+    for _ in range(n):
+        sens = np.where(base != 0, rng.choice([-1.0, 1.0], size=len(base)), 0.0)
+        p = st.opr5(J, O, H, L, C, P, sens=sens)
+        moyennes.append((p["brut"] - cout).mean())
+    moyennes = np.array(moyennes)
+    return float(np.mean(moyennes >= df["net"].mean())), float(moyennes.mean())
 
 
 def mesures(df, jours, debut=None, fin=None):
@@ -85,8 +100,8 @@ def main():
         sortie[nom] = {}
         for strat, df in res.items():
             lignes = {}
-            for lab, a, b in [("Total", None, None), ("2014-2019", None, "2020-01-01"),
-                              ("2020-2026", "2020-01-01", None),
+            for lab, a, b in [("Total", None, None), ("2010-2014", None, "2015-01-01"),
+                              ("2015-2019", "2015-01-01", "2020-01-01"), ("2020-2026", "2020-01-01", None),
                               ("Apres publication", PUBLICATION[strat], None)]:
                 m = mesures(df, jours, a, b)
                 if m:
@@ -95,6 +110,8 @@ def main():
             ligne_h = None
             if "sens" in df and df["risque"].isna().all():      # un trade par jour, sans stop
                 ligne_h = hasard(df, cout)
+            elif strat == "OPR 5 minutes":
+                ligne_h = hasard_opr(nom, df)
             sortie[nom][strat] = {"periodes": lignes, "annees": annees, "hasard": ligne_h}
             print(f"\n  {strat}")
             for lab, m in lignes.items():
