@@ -1,0 +1,69 @@
+
+Acheter tout, tout le temps (1999-01-11 -> 2026-09-25, 27.7 ans) : VALIDEE
+  Sharpe +0.30 | gain/an +3.5% a 10 % de risque | pire baisse -38% | t +1.58 | Sharpe degonfle 27% (hasard avec 41 essais : 0.42)
+  tiers : 1999-2008 +0.10 | 2008-2017 +0.43 | 2017-2026 +0.45 | apres publication (14.7 ans) : +0.41
+  regles : 1 rentable oui | 2 reguliere oui | 3 apres publication oui | 5 nouvelle oui
+
+Suivi de tendance (1999-01-11 -> 2026-09-25, 27.7 ans) : rejetee
+  Sharpe +0.30 | gain/an +3.6% a 10 % de risque | pire baisse -30% | t +1.60 | Sharpe degonfle 28% (hasard avec 41 essais : 0.42)
+  tiers : 1999-2008 -0.09 | 2008-2017 +0.65 | 2017-2026 +0.53 | apres publication (14.4 ans) : +0.55
+  placebo : fait mieux que 74% des versions au hasard (placebo moyen +0.19)
+  correlations avec les sources validees : achat +0.27
+  regles : 1 rentable oui | 2 reguliere oui | 3 apres publication oui | 4 pas un hasard NON | 5 nouvelle oui
+
+Zone de bruit Nasdaq (2011-07-22 -> 2026-09-25, 15.1 ans) : VALIDEE
+  Sharpe +0.40 | gain/an +4.3% a 10 % de risque | pire baisse -52% | t +1.57 | Sharpe degonfle 26% (hasard avec 41 essais : 0.57)
+  tiers : 2011-2016 -0.98 | 2016-2021 +0.97 | 2021-2026 +1.14 | apres publication (2.4 ans) : +0.76
+  placebo : fait mieux que 100% des versions au hasard (placebo moyen -0.76)
+  correlations avec les sources validees : achat -0.03
+  regles : 1 rentable oui | 2 reguliere oui | 3 apres publication oui | 4 pas un hasard oui | 5 nouvelle oui
+
+Momentum croise (2000-09-29 -> 2026-09-25, 25.9 ans) : rejetee
+  Sharpe -0.05 | gain/an -0.5% a 10 % de risque | pire baisse -53% | t -0.27 | Sharpe degonfle 1% (hasard avec 41 essais : 0.43)
+  tiers : 2000-2009 -0.09 | 2009-2018 -0.10 | 2018-2026 +0.03 | apres publication (13.3 ans) : -0.02
+  placebo : fait mieux que 49% des versions au hasard (placebo moyen -0.04)
+  correlations avec les sources validees : achat +0.07, zone -0.03
+  regles : 1 rentable NON | 2 reguliere NON | 3 apres publication NON | 4 pas un hasard NON | 5 nouvelle oui
+
+Valeur (retour sur 5 ans) (2005-04-01 -> 2026-09-25, 21.5 ans) : rejetee
+  Sharpe -0.18 | gain/an -1.9% a 10 % de risque | pire baisse -53% | t -0.85 | Sharpe degonfle 0% (hasard avec 41 essais : 0.47)
+  tiers : 2005-2012 -0.15 | 2012-2019 +0.17 | 2019-2026 -0.56 | apres publication (13.3 ans) : -0.34
+  placebo : fait mieux que 52% des versions au hasard (placebo moyen -0.19)
+  correlations avec les sources validees : achat -0.00, zone +0.01
+  regles : 1 rentable NON | 2 reguliere NON | 3 apres publication NON | 4 pas un hasard NON | 5 nouvelle oui
+
+Actions pilotees par la volatilite (1999-07-06 -> 2026-09-25, 27.2 ans) : rejetee
+  Sharpe +0.50 | gain/an +5.2% a 10 % de risque | pire baisse -30% | t +2.63 | Sharpe degonfle 66% (hasard avec 41 essais : 0.42)
+  tiers : 1999-2008 +0.17 | 2008-2017 +0.80 | 2017-2026 +0.54 | apres publication (9.1 ans) : +0.51
+  placebo : fait mieux que 87% des versions au hasard (placebo moyen +0.40)
+  correlations avec les sources validees : achat +0.54, zone -0.10
+  regles : 1 rentable oui | 2 reguliere oui | 3 apres publication oui | 4 pas un hasard NON | 5 nouvelle oui
+
+Tournant du mois (1998-07-31 -> 2026-09-25, 28.1 ans) : rejetee
+  Sharpe +0.14 | gain/an +1.5% a 10 % de risque | pire baisse -28% | t +0.77 | Sharpe degonfle 8% (hasard avec 41 essais : 0.41)
+  tiers : 1998-2007 +0.25 | 2007-2017 -0.01 | 2017-2026 +0.20 | apres publication (18.7 ans) : +0.10
+  placebo : fait mieux que 48% des versions au hasard (placebo moyen +0.15)
+  correlations avec les sources validees : achat +0.21, zone -0.01
+  regles : 1 rentable NON | 2 reguliere oui | 3 apres publication oui | 4 pas un hasard NON | 5 nouvelle oui
+
+Veille de la Fed (2011-08-09 -> 2026-09-25, 15.1 ans) : rejetee
+  Sharpe +0.32 | gain/an +3.7% a 10 % de risque | pire baisse -31% | t +1.24 | Sharpe degonfle 15% (hasard avec 41 essais : 0.57)
+  tiers : 2011-2016 -0.01 | 2016-2021 +0.41 | 2021-2026 +0.52 | apres publication (11.6 ans) : +0.50
+  placebo : fait mieux que 86% des versions au hasard (placebo moyen +0.04)
+  correlations avec les sources validees : achat +0.07, zone -0.00
+  regles : 1 rentable oui | 2 reguliere oui | 3 apres publication oui | 4 pas un hasard NON | 5 nouvelle oui
+
+Sources validees : achat, zone
+Fonds (sources validees)             depuis 1999-07-13 : Sharpe 0.56 | gain/an +6.8% | risque 12.1% | pire baisse -42% | annees positives 61% | pire annee -14.3%
+Melange actuel (tendance + achat)    depuis 1999-07-13 : Sharpe 0.65 | gain/an +8.1% | risque 12.5% | pire baisse -20% | annees positives 68% | pire annee -10.9%
+
+Correlations entre toutes les sources :
+          achat  tendance  zone  momentum  valeur  volgeree   tom  fomc
+achat      1.00      0.27 -0.03      0.07   -0.00      0.54  0.21  0.07
+tendance   0.27      1.00 -0.07      0.17   -0.13      0.18  0.02  0.01
+zone      -0.03     -0.07  1.00     -0.03    0.01     -0.10 -0.01 -0.00
+momentum   0.07      0.17 -0.03      1.00   -0.31      0.06 -0.00  0.01
+valeur    -0.00     -0.13  0.01     -0.31    1.00      0.01  0.03  0.01
+volgeree   0.54      0.18 -0.10      0.06    0.01      1.00  0.37  0.05
+tom        0.21      0.02 -0.01     -0.00    0.03      0.37  1.00  0.04
+fomc       0.07      0.01 -0.00      0.01    0.01      0.05  0.04  1.00

@@ -35,3 +35,8 @@ date,dossier,essai,resultat
 2026-09-27,intraday,OPR 5 minutes NQ (CME),t +0.6
 2026-09-27,intraday,zone de bruit ES (CME),t -1.0
 2026-09-27,intraday,zone de bruit NQ (CME),t +2.55
+2026-09-27,fonds,momentum croise (AMP 2013),voir fonds/README.md
+2026-09-27,fonds,valeur retour 5 ans (AMP 2013),voir fonds/README.md
+2026-09-27,fonds,actions pilotees par la volatilite (Moreira-Muir 2017),voir fonds/README.md
+2026-09-27,fonds,tournant du mois (McConnell-Xu 2008),voir fonds/README.md
+2026-09-27,fonds,veille FOMC (Lucca-Moench 2015),voir fonds/README.md
