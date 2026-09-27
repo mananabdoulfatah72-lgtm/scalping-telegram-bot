@@ -15,10 +15,13 @@ def main():
     for inst, nom in NOMS.items():
         morceaux = []
         for f in sorted(glob.glob(f"brut/{inst}_*.csv")):
-            d = pd.read_csv(f)
-            if d.empty:
+            try:
+                d = pd.read_csv(f)
+            except pd.errors.EmptyDataError:
+                print(f"{f}: vide")
                 continue
-            morceaux.append(d)
+            if not d.empty:
+                morceaux.append(d)
         if not morceaux:
             print(f"{nom}: aucune donnee")
             continue
