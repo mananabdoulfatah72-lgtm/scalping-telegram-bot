@@ -1,0 +1,43 @@
+name: Donnees intraday (heure)
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - intraday/telecharger_heures.sh
+      - intraday/preparer_heures.py
+      - .github/workflows/donnees-heures.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger les prix heure par heure
+        run: bash intraday/telecharger_heures.sh
+      - name: Garder la seance americaine
+        run: |
+          pip install pandas
+          python3 intraday/preparer_heures.py
+      - name: Enregistrer les donnees sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add intraday/donnees/*_1h.csv.gz
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees heure S&P 500 et Nasdaq 100"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
