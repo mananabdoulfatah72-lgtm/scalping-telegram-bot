@@ -9,6 +9,7 @@ La cle est lue dans DATABENTO_API_KEY. Le cout est demande avant ; arret si > PL
 """
 import json
 import sys
+import time
 from pathlib import Path
 
 import databento as db
@@ -23,6 +24,18 @@ RACINES = ["ES", "NQ", "RTY", "YM", "NKD", "ZT", "ZF", "ZN", "TN", "ZB", "UB",
            "GC", "SI", "HG", "PL", "PA", "ZC", "ZW", "ZS", "ZM", "ZL", "KE", "LE", "HE", "GF", "BTC", "ETH"]
 FOMC_ECHEANCE = ["2012-03-13", "2018-06-13", "2022-06-15", "2022-12-14", "2023-06-14", "2023-12-13", "2024-09-18",
                  "2024-12-18", "2025-03-19", "2025-06-18", "2025-09-17", "2026-03-18", "2026-06-17", "2026-09-16"]
+
+
+def essayer(f, essais=4):
+    """Relance une requete en cas d'erreur passagere du serveur (ex. 504)."""
+    for k in range(essais):
+        try:
+            return f()
+        except Exception as e:
+            if k == essais - 1:
+                raise
+            print(f"  nouvelle tentative apres : {repr(e)[:120]}", flush=True)
+            time.sleep(10 * (k + 1))
 
 
 def en_df(store):
@@ -53,9 +66,15 @@ def main():
         sys.exit("Trop cher : rien n'a ete telecharge")
     D.mkdir(exist_ok=True)
 
-    # 1. barres journalieres
-    df = en_df(client.timeseries.get_range(dataset=JEU, symbols=symboles, stype_in="continuous", schema="ohlcv-1d",
-                                           start=DEBUT, end=fin))
+    # 1. barres journalieres, marche par marche (une seule grosse requete depasse le delai du serveur)
+    morceaux = []
+    for racine in RACINES:
+        x = essayer(lambda: client.timeseries.get_range(dataset=JEU, symbols=[f"{racine}.v.0", f"{racine}.v.1"],
+                                                        stype_in="continuous", schema="ohlcv-1d", start=DEBUT, end=fin))
+        x = en_df(x)
+        print(f"  {racine} : {len(x)} barres", flush=True)
+        morceaux.append(x)
+    df = pd.concat(morceaux)
     df = df[df.index.dayofweek < 5]
     out = pd.DataFrame({"date": df.index.strftime("%Y-%m-%d"), "symbole": df["symbol"].values,
                         "contrat": df["instrument_id"].values, "o": df["open"].values, "h": df["high"].values,
@@ -82,9 +101,9 @@ def main():
     # 3. deuxieme contrat ES autour des annonces de la Fed tombees un jour de changement d'echeance
     morceaux = []
     for d in FOMC_ECHEANCE:
-        m = en_df(client.timeseries.get_range(dataset=JEU, symbols=["ES.v.1"], stype_in="continuous", schema="ohlcv-1m",
-                                              start=str((pd.Timestamp(d) - pd.Timedelta(days=5)).date()),
-                                              end=str((pd.Timestamp(d) + pd.Timedelta(days=1)).date())))
+        m = en_df(essayer(lambda: client.timeseries.get_range(
+            dataset=JEU, symbols=["ES.v.1"], stype_in="continuous", schema="ohlcv-1m",
+            start=str((pd.Timestamp(d) - pd.Timedelta(days=5)).date()), end=str((pd.Timestamp(d) + pd.Timedelta(days=1)).date()))))
         t = m.index.tz_convert("America/New_York")
         minute = t.hour * 60 + t.minute
         garde = (minute >= 570) & (minute < 960)
