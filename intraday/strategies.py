@@ -51,7 +51,7 @@ def charger(nom):
     C = pd.DataFrame(tab["c"]).ffill(axis=1).values
     for col in "ohl":
         tab[col] = np.where(np.isnan(tab[col]), C, tab[col])
-    X = {"V": None, "echeance": np.zeros(len(jours), bool)}
+    X = {"V": None, "echeance": np.zeros(len(jours), bool), "contrat": None}
     if "v" in d:
         V = np.zeros((len(jours), N))
         V[ij, minute] = d["v"].values
@@ -59,6 +59,7 @@ def charger(nom):
     if "contrat" in d:
         contrat = d.groupby(ij)["contrat"].last().reindex(range(len(jours))).values
         X["echeance"] = np.r_[False, contrat[1:] != contrat[:-1]]
+        X["contrat"] = contrat
     return pd.DatetimeIndex(jours), tab["o"], tab["h"], tab["l"], C, presentes, X
 
 

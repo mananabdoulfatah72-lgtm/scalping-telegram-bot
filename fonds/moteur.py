@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Moteur du fonds : juge chaque source avec les 5 regles du README, puis combine les sources
-validees a risque egal, avec 12 % de risque vise pour le portefeuille.
+"""Moteur du fonds : juge chaque source avec les 5 regles du README (version 2 : placebo qui retire
+seulement ce que la source pretend savoir, seuil 95 %), puis combine les sources validees a risque
+egal, avec 12 % de risque vise pour le portefeuille. Les resultats de la phase 2 (regles v1, ETF)
+se reproduisent avec le commit 6426016.
 
 Lancer depuis ce dossier : python3 moteur.py   (ecrit resultats.json)
 """
@@ -16,7 +18,9 @@ import sources as SRC
 ICI = Path(__file__).parent
 JOURS_AN = 252
 RISQUE_SOURCE, RISQUE_FONDS = 0.10, 0.12
-PLACEBOS = {"tendance": 300, "zone": 1000, "momentum": 300, "valeur": 300, "volgeree": 500, "tom": 500, "fomc": 1000}
+PLACEBOS = {"tendance40": 500, "carry40": 300, "momentum40": 300, "valeur40": 300, "zone": 1000, "volgeree": 500,
+            "tom": 500, "fomc": 1000}
+SEUIL_PLACEBO = 0.95
 
 
 def au_risque(x, cible, n=252, mini=126, plafond=10.0):
@@ -73,7 +77,7 @@ def juger(src, valides, n_essais, rng):
         ps = np.array(ps)
         res["placebo_moyen"] = float(ps.mean())
         res["placebo_centile"] = float(np.mean(ps < res["sharpe"]))
-        regles["4 pas un hasard"] = res["placebo_centile"] >= 0.90
+        regles["4 pas un hasard"] = res["placebo_centile"] >= SEUIL_PLACEBO
     else:
         res["placebo_centile"] = None
     corr = {k: float(x.corr(v.reindex(x.index))) for k, v in valides.items()}
@@ -83,6 +87,11 @@ def juger(src, valides, n_essais, rng):
     res["validee"] = all(regles.values())
     res["annees_detail"] = {int(a): float((1 + g).prod() - 1) for a, g in x.groupby(x.index.year)}
     return res, x
+
+
+def SRC_au_risque(fabrique):
+    x = au_risque(fabrique()[0], RISQUE_SOURCE)
+    return x[x.index >= x.ne(0).idxmax()]
 
 
 def portefeuille(series):
@@ -123,13 +132,16 @@ def main():
             print("  correlations avec les sources validees : " + ", ".join(f"{k} {v:+.2f}" for k, v in res["correlations"].items()))
         print("  regles : " + " | ".join(f"{k} {'oui' if v else 'NON'}" for k, v in r.items()))
     fonds = portefeuille(valides)
-    ancien = portefeuille({k: tout[k] for k in ("achat", "tendance")})
+    etf = {k: SRC_au_risque(f) for k, f in (("achat", SRC.achat), ("tendance", SRC.tendance))}
+    ancien = portefeuille(etf)
+    debut = fonds.index[0]
+    ancien = ancien[ancien.index >= debut]
     sortie = {"essais": n_essais, "sources": jugements, "validees": list(valides),
               "fonds": resume(fonds), "melange_actuel": resume(ancien),
               "correlations": pd.DataFrame(tout).corr().round(2).to_dict(),
               "courbe_fonds": {str(k.date()): float(v) for k, v in (1 + fonds).cumprod().resample("W-FRI").last().items()}}
     print(f"\nSources validees : {', '.join(valides)}")
-    for nom, s in [("Fonds (sources validees)", sortie["fonds"]), ("Melange actuel (tendance + achat)", sortie["melange_actuel"])]:
+    for nom, s in [("Fonds (sources validees)", sortie["fonds"]), ("Melange actuel du robot (ETF)", sortie["melange_actuel"])]:
         print(f"{nom:36s} depuis {s['debut']} : Sharpe {s['sharpe']:.2f} | gain/an {s['rendement_an']:+.1%} | risque {s['risque']:.1%}"
               f" | pire baisse {s['baisse_max']:.0%} | annees positives {s['annees_positives']:.0%} | pire annee {s['pire_annee']:+.1%}")
     print("\nCorrelations entre toutes les sources :")

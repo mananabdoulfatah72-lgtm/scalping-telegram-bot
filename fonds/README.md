@@ -62,7 +62,7 @@ Non retenu : un frein qui coupe le risque après une baisse. Il n'est pas testé
 
 41 essais au total dans le projet. Chaque source est ramenée à 10 % de risque, frais compris,
 sur toute son histoire disponible. `python3 moteur.py` refait tout (2 minutes) ; détails dans
-`resultats.txt` et `resultats.json`.
+`resultats_phase2.txt` et `resultats_phase2.json`.
 
 | Source | Depuis | Sharpe | 3 tiers | Après publication | Placebo battu | Verdict |
 |---|---|---|---|---|---|---|
