@@ -1,10 +1,10 @@
-name: Robot multi-marches (argent virtuel)
+name: Robot zone de bruit + challenge 50K (argent virtuel)
 
 on:
   schedule:   # GitHub saute parfois un passage : horaires de secours (le robot ne refait jamais un jour deja joue)
-    - cron: "30 22 * * 1-5"
-    - cron: "30 0 * * 2-6"
-    - cron: "30 3 * * 2-6"
+    - cron: "0 23 * * 1-5"
+    - cron: "0 1 * * 2-6"
+    - cron: "0 4 * * 2-6"
   workflow_dispatch:
 
 permissions:
@@ -25,12 +25,13 @@ jobs:
           python-version: "3.11"
 
       - name: Installer les dependances
-        run: pip install yfinance pandas numpy requests
+        run: pip install databento pandas numpy requests
 
       - name: Lancer le robot
-        working-directory: tendance
-        run: python3 robot.py
+        run: python3 zone/robot.py
         env:
+          ROBOT_DEBUT: "2026-09-25"   # premiere seance jouee : 28 septembre 2026
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
 
@@ -41,7 +42,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tendance/robot/ README.md
+          git add zone/robot/ README.md
           git diff --cached --quiet && exit 0
           git commit -m "Robots : mise a jour des comptes virtuels"
           for essai in 1 2 3; do

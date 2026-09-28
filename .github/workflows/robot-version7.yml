@@ -1,8 +1,10 @@
 name: Robot version 7 (argent virtuel)
 
 on:
-  schedule:
-    - cron: "45 22 * * 1-5"   # chaque soir de semaine, apres la cloture americaine
+  schedule:   # GitHub saute parfois un passage : horaires de secours (le robot ne refait jamais un jour deja joue)
+    - cron: "45 22 * * 1-5"
+    - cron: "45 0 * * 2-6"
+    - cron: "45 3 * * 2-6"
   workflow_dispatch:
 
 permissions:
@@ -32,13 +34,16 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
 
+      - name: Mettre a jour la page generale
+        run: python3 tableau_general.py
+
       - name: Sauvegarder le compte virtuel
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add version7/robot/
+          git add version7/robot/ README.md
           git diff --cached --quiet && exit 0
-          git commit -m "Robot version 7 : mise a jour du compte virtuel"
+          git commit -m "Robots : mise a jour des comptes virtuels"
           for essai in 1 2 3; do
             git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
             sleep 10
