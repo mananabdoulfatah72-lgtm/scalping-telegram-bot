@@ -53,3 +53,28 @@ Même rejeu, mais on s'arrête après 2 comptes achetés (ou 12 mois) :
 
 Chez Phidias avec f = 0,15, un seul compte réussit 39 % du temps et ne saute que 4 % du temps ;
 le reste du temps il reste en vie sans atteindre l'objectif (paiement unique : attendre ne coûte rien).
+
+## Après la validation : ce que rapporte le compte financé (`finance.py`)
+
+Hypothèses Phidias à vérifier : limite bloquée à 50 100 $ une fois le solde à 52 600 $ ; retrait
+mensuel de ce qui dépasse 52 600 $ si la meilleure journée ≤ 30 % du gain ; 80 % du retrait pour toi.
+
+| Bot | Reçu en 12 mois (moyenne) | Médiane | Rien touché | Compte perdu |
+|---|---|---|---|---|
+| Zone de bruit seule, f = 0,15 | 679 $ | 0 $ | 86 % | 8 % |
+| Zone + mélange 50/50, f = 0,15 | 625 $ | 0 $ | 71 % | 4 % |
+| Multi (zone + panier), f = 0,15 | 811 $ | 0 $ | 62 % | 0 % |
+
+## Bot « multi » : zone de bruit + panier de sources de nuit
+
+Panier : tendance + achat, veille de la Fed, actions pilotées par la volatilité, carry (chacune au
+même risque). Trois de ces sources ont échoué de peu aux tests du fonds : résultat optimiste.
+
+| Réglage | 1 compte, sans limite de temps | Durée médiane jusqu'à la validation | En 12 mois, 2 comptes max | Sans avantage |
+|---|---|---|---|---|
+| f = 0,10 | réussi 83 %, sauté 0 % | 27 mois | 16 % | 0 % |
+| f = 0,15 | réussi 86 %, sauté 0 % | 20 mois | 26 % | 1 % |
+| f = 0,25 | réussi 54 %, sauté 20 % | 8 mois | 36 % | 10 % |
+
+Choix à faire : valider sans sauter prend environ 2 ans ; valider dans l'année donne environ
+1 chance sur 3, avec un risque de sauter. Détails : `resultats_finance.txt`, `resultats_multi.txt`.

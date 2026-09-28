@@ -1,0 +1,6 @@
+zone de bruit seule      f=0.15 | challenge : reussi  39%, saute   4% | compte finance, 12 mois : recu en moyenne    679 $ | median      0 $ | rien touche  86% | compte perdu   8%
+zone de bruit seule      f=0.25 | challenge : reussi  34%, saute  14% | compte finance, 12 mois : recu en moyenne  1,870 $ | median      0 $ | rien touche  94% | compte perdu  20%
+zone + melange 50/50     f=0.15 | challenge : reussi  67%, saute   0% | compte finance, 12 mois : recu en moyenne    625 $ | median      0 $ | rien touche  71% | compte perdu   4%
+zone + melange 50/50     f=0.25 | challenge : reussi  43%, saute  14% | compte finance, 12 mois : recu en moyenne  1,139 $ | median      0 $ | rien touche  82% | compte perdu  14%
+multi (zone + panier)    f=0.15 | challenge : reussi  86%, saute   0% | compte finance, 12 mois : recu en moyenne    811 $ | median      0 $ | rien touche  62% | compte perdu   0%
+multi (zone + panier)    f=0.25 | challenge : reussi  54%, saute  20% | compte finance, 12 mois : recu en moyenne    891 $ | median      0 $ | rien touche  81% | compte perdu  18%

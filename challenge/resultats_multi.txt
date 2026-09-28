@@ -1,0 +1,3 @@
+multi Phidias f=0.10 | 1 compte, sans limite de temps : reussi  83%, saute   0%, duree mediane jusqu'a la reussite 27.1 mois | en 12 mois avec 2 comptes max :  16% (sans avantage   0%),  8.4 mois en mediane
+multi Phidias f=0.15 | 1 compte, sans limite de temps : reussi  86%, saute   0%, duree mediane jusqu'a la reussite 20.0 mois | en 12 mois avec 2 comptes max :  26% (sans avantage   1%),  6.3 mois en mediane
+multi Phidias f=0.25 | 1 compte, sans limite de temps : reussi  54%, saute  20%, duree mediane jusqu'a la reussite  8.0 mois | en 12 mois avec 2 comptes max :  36% (sans avantage  10%),  3.7 mois en mediane
