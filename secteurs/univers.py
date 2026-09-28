@@ -38,7 +38,8 @@ ACTIONS = {
              "EQR", "IRM", "SBAC", "VTR", "WY", "ARE", "INVH"],
 }
 # Test T6 (fenetre 5 ans) : les 20 plus grosses actions de XLK a la fin septembre 2021, de memoire (poids
-# approximatifs). V, MA et PYPL sont passees en finance en mars 2023 ; INTC et PYPL ont beaucoup baisse depuis.
+# approximatifs). V, MA et PYPL sont passees en finance en mars 2023. De fin septembre 2021 au 25 septembre 2026 :
+# PYPL -79 % ; INTC -63 % au plus bas (2025) puis +151 % a la fin.
 XLK_2021 = ["AAPL", "MSFT", "NVDA", "V", "MA", "ADBE", "PYPL", "CRM", "ACN", "INTC", "CSCO", "AVGO", "ORCL",
             "QCOM", "TXN", "AMD", "INTU", "AMAT", "IBM", "NOW"]
 

@@ -5,6 +5,7 @@ jugees par les 8 criteres fixes avant les backtests. Ecrit le journal des rejets
 Lancer depuis ce dossier, apres recherche.py : python3 strategies.py        (histoire depuis 2006)
                                                python3 strategies.py 5ans   (fenetre 5 ans, README.md)
 """
+import functools
 import hashlib
 import json
 import sys
@@ -67,8 +68,9 @@ def fins_de_mois(index, debut):
 
 
 # ----------------------------------------------------------------------------- les 4 strategies
+@functools.cache
 def charger_2021():
-    """Donnees figees + actions de l'univers 2021 telechargees a part (test T6), aux memes dates."""
+    """Donnees figees + actions de l'univers 2021 telechargees a part (test T6), aux memes dates (lues une fois)."""
     adj, close = charger()
     d = pd.read_csv(ICI / "donnees" / "prix_2021.csv.gz", parse_dates=["date"])
     for tab, col in ((adj, "adjclose"), (close, "close")):
@@ -341,9 +343,10 @@ def tuer_5ans(et, k, v):
     out["T5 avant la fenetre (information)"] = {"de": str(d5.date()), "a": str(debut.date()), "strategie_par_an": m["cagr"],
                                                 "spy_par_an": s["cagr"], "pire_baisse": m["pire_baisse"],
                                                 "spy_pire_baisse": s["pire_baisse"], "reussi": None}
-    # T6 : univers de septembre 2021 (contre le biais de survie)
-    if k in SELECTIONS:
+    # T6 : univers de septembre 2021 (contre le biais de survie) ; fixe pour les versions 2, 6 et 7 de la technologie
+    if k in (2, 6, 7) and et.E == "XLK":
         et6 = Etude(et.E, debut_hist=et.debut_hist, actions=U.XLK_2021, donnees=charger_2021())
+        assert et6.L == U.XLK_2021, f"univers 2021 incomplet : {sorted(set(U.XLK_2021) - set(et6.L))}"
         x = dans(simuler(et6.r, et6.poids(k), et6.frais)[0])
         m, s = mesures(x, et.rf), mesures(et.r[U.MARCHE][x.index].fillna(0), et.rf)
         out["T6 univers de 2021"] = {"actions": et6.L, "strategie_par_an": m["cagr"], "spy_par_an": s["cagr"],
@@ -359,6 +362,9 @@ def main():
     print(f"Secteur classe premier a l'etape 1 : {premier} ({U.SECTEURS[premier]}) ; fenetre {fenetre}\n", flush=True)
     versions = (1, 2, 3, 4, 5, 6) if fenetre == "20ans" else (1, 2, 3, 4, 5, 6, 7)
     res, series, et = tout(premier, n_placebo=300, debut_hist=FENETRES[fenetre], versions=versions)
+    if fenetre != "20ans":      # tests pour tuer de toutes les versions (information si deja rejetee), dans l'empreinte
+        for k, v in res.items():
+            v["tests_pour_tuer"] = tuer_5ans(et, k, v)
     emp = empreinte(res)
     f_emp = ICI / f"empreinte{suffixe}.txt"
     avant = f_emp.read_text().strip() if f_emp.exists() else None
@@ -385,8 +391,7 @@ def main():
             v["tests_pour_tuer"] = tuer(et, k, series[k])
             for nom, t in v["tests_pour_tuer"].items():
                 print(f"   test pour tuer - {nom} : " + " | ".join(f"{a} {b:+.1%}" for a, b in t.items()), flush=True)
-        elif fenetre != "20ans":      # tests pour tuer ; pour information seulement si la version est deja rejetee
-            v["tests_pour_tuer"] = tuer_5ans(et, k, v)
+        elif fenetre != "20ans":      # verdict des tests pour tuer seulement si la version passe les 8 criteres
             for nom, t in v["tests_pour_tuer"].items():
                 vals = " | ".join(f"{a} {b:+.1%}" for a, b in t.items() if isinstance(b, float))
                 if "annees" in t:

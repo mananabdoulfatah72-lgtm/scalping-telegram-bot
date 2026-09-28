@@ -165,8 +165,9 @@ aurait passé sur 20 ans.
   que la fenêtre de 5 ans laisse de côté. On donne le rendement par an contre SPY et la pire baisse.
 - T6 (versions 2 et 6, éliminatoire) : **contre le biais de survie**, on remplace les 20 actions
   d'aujourd'hui par les 20 plus grosses de XLK à la fin septembre 2021 (`univers.XLK_2021`, liste de
-  mémoire, poids approximatifs). Cette liste contient V, MA et PYPL (passées en finance en 2023) et
-  INTC et PYPL (fortes baisses depuis). La version doit encore battre SPY sur 5 ans et garder une pire
+  mémoire, poids approximatifs). Cette liste contient V, MA et PYPL (passées en finance en 2023),
+  PYPL (−79 % depuis) et INTC (−63 % au plus bas en 2025, puis +151 % à la fin : pas seulement une perdante,
+  comme l'a relevé la revue). La version doit encore battre SPY sur 5 ans et garder une pire
   baisse inférieure à 30 %. Les deux actions manquantes (INTC, PYPL) sont téléchargées à part
   (`donnees/prix_2021.csv.gz`), sans toucher aux données figées.
 
@@ -183,3 +184,52 @@ parce que c'est la moitié, pas après optimisation, et il n'y aura pas d'autre 
   lit comme un candidat à suivre en argent virtuel, pas comme une preuve.
 - Les tests pour tuer sont aussi calculés, **pour information**, pour les versions déjà rejetées :
   le verdict ne change pas.
+
+### Journal des rejets, fenêtre de 5 ans (Technologie, `resultats_5ans.txt`)
+
+Du 30 septembre 2021 au 25 septembre 2026 : SPY +14,1 %/an, pire baisse −24 %.
+
+| Version | 12 mois (SPY +18,5 %) | Sharpe 12 mois | 5 ans | Pire baisse | Placebo battu | Critères ratés |
+|---|---|---|---|---|---|---|
+| 1 Rotation | +33,0 % | 1,15 | +17,2 %/an | −30 % | 43 % | 8 |
+| 2 Momentum des actions | +145,5 % | 1,88 | +42,8 %/an | −42 % | 95 % | 3 |
+| 3 Faible risque | +23,1 % | 0,94 | +16,9 %/an | −26 % | 35 % | 4, 5, 8 |
+| 4 Moteur macro | +19,1 % | 0,91 | +16,6 %/an | −26 % | 50 % | 4, 8 |
+| 5 = 4 + filtre 200 jours | +8,1 % | 0,33 | +8,9 %/an | −22 % | 17 % | 1, 2, 4, 7, 8 |
+| 6 = 2 + filtre 200 jours | +93,9 % | 1,46 | +24,9 %/an | −37 % | 88 % | 3, 8 |
+| 7 = moitié 2 + moitié liquidités | +66,1 % | 1,90 | +23,8 %/an | −23 % | **93 %** | **8 seulement** |
+
+Critère 6 : deux exécutions séparées, empreinte identique (`c321542facd781f6`, tests pour tuer
+compris). **Aucune version ne passe les 8 critères, même sur 5 ans.**
+
+Tests pour tuer (information, puisque toutes sont rejetées) :
+
+| Version | T1 lendemain | T2 frais ×3 | T3 sans MU (12 mois) | T4 années gagnées | T6 univers 2021 | T5 2006-2021 |
+|---|---|---|---|---|---|---|
+| 2 | +42,4 %/an | +41,6 %/an | +107,6 % | 4 sur 5 | +33,3 %/an, baisse **−44 %** ✗ | +25,3 %/an, baisse −56 % |
+| 6 | +23,8 %/an | +23,9 %/an | +58,7 % | 3 sur 5 | **+14,5 %/an (SPY +14,1 %)** ✗ | +23,9 %/an, baisse −38 % |
+| 7 | +23,6 %/an | +23,3 %/an | +51,7 % | 3 sur 5 | +19,7 %/an, baisse −24 % ✓ | +13,4 %/an, baisse −32 % |
+
+Ce qu'il faut en retenir :
+- **Version 7, la plus proche d'un gagnant.** Elle passe tout sauf le placebo : 93 % pour 95 %
+  exigés. Autrement dit, 5 actions tirées au hasard dans la même liste, à 50 %, font aussi bien qu'elle
+  dans 7 % des cas. La revue a montré que ce chiffre dépend des tirages : avec les tirages de la version
+  2, il vaut 95,0 %, et l'erreur due au hasard des tirages est d'environ ±1,3 point. **Le verdict fixé
+  reste « rejetée »** : refaire les tirages jusqu'à passer serait exactement ce que le protocole
+  interdit. Honnêtement, l'avantage de la règle sur la liste d'actions n'est pas prouvé ; il n'est pas
+  non plus exclu.
+- **Univers de 2021 (biais de survie)** : avec les grosses actions connues en 2021, la version 6 ne
+  bat plus SPY (+14,5 % contre +14,1 %/an). La version 2 garde +33 %/an mais baisse de 44 %. La
+  version 7 garde +19,7 %/an avec une baisse de 24 %.
+- **Avant la fenêtre (2006-2021)**, la même version 7 aurait perdu 32 % au pire (2008).
+- Essais inscrits dans `fonds/essais.csv` (6 versions rejugées + version 7 trouvée après coup).
+
+### Revue du code de la fenêtre de 5 ans (niveau maximal)
+
+Corrigé : les deux nouveaux essais n'étaient pas inscrits dans `fonds/essais.csv` ; T6 tournait aussi
+sur la version 3 (non prévu) et avec la liste technologie quel que soit le secteur ; il pouvait aussi
+perdre une action sans le dire (vérification ajoutée) ; `prix_2021.csv.gz` pouvait être retéléchargé
+(le workflow est maintenant manuel) ; l'empreinte ne couvrait pas les tests pour tuer ; la description
+d'INTC était fausse. Non changé : tirages du placebo partagés entre versions (le changer après coup
+modifierait les verdicts) ; lenteurs sans effet sur les résultats. Résultats sur 20 ans vérifiés
+inchangés (empreinte `57435f5cfcc7b7f6`).

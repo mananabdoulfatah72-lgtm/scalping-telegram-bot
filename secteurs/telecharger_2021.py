@@ -13,11 +13,11 @@ sys.path.insert(0, str(Path(__file__).parent))
 import univers as U  # noqa: E402
 
 SORTIE = Path(__file__).parent / "donnees" / "prix_2021.csv.gz"
-DEJA = {a for l in U.ACTIONS.values() for a in l}
 
 
 def main():
-    tickers = [t for t in U.XLK_2021 if t not in DEJA]
+    deja = set(pd.read_csv(Path(__file__).parent / "donnees" / "prix.csv.gz", usecols=["ticker"])["ticker"])
+    tickers = [t for t in U.XLK_2021 if t not in deja]
     morceaux = []
     for t in tickers:
         for essai in range(4):

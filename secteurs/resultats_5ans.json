@@ -1,0 +1,797 @@
+{
+ "secteur": "XLK",
+ "fenetre": "5ans",
+ "empreinte": "c321542facd781f6",
+ "strategies": {
+  "1": {
+   "nom": "Rotation (force relative du secteur)",
+   "debut": "2021-09-30",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.33001988901529744,
+    "cagr": 0.33153195726130824,
+    "sharpe": 1.1457256271975953,
+    "pire_baisse": -0.1586250840737734
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.32841466104359274,
+    "cagr": 0.3299185056231768,
+    "sharpe": 1.140614944906541,
+    "pire_baisse": -0.1586250840737724
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 1.1965476675678168,
+    "cagr": 0.17176315962992472,
+    "sharpe": 0.6646370324838206,
+    "pire_baisse": -0.2985052069641354
+   },
+   "spy_histoire": {
+    "rendement": 0.9217641313880243,
+    "cagr": 0.14063900417593267,
+    "sharpe": 0.6331329970029942,
+    "pire_baisse": -0.24496345676479236
+   },
+   "part_max_action": null,
+   "placebo_centile": 0.43333333333333335,
+   "placebo_moyen": 0.6675837052022483,
+   "part_du_temps_dans_le_secteur": 0.5333333333333333,
+   "part_du_temps_en_liquidites": 0.0,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": true,
+    "4 Sharpe 12 mois > 1": true,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": false,
+    "6 deterministe (2 executions identiques)": true
+   },
+   "tests_pour_tuer": {
+    "T1 execution le lendemain": {
+     "strategie_par_an": 0.16714693690505422,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T2 frais triples": {
+     "strategie_par_an": 0.16891966129911928,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T4 annees gagnees contre SPY": {
+     "annees": {
+      "2026-09-25": {
+       "strategie": 0.33001988901529744,
+       "spy": 0.18482211155929074
+      },
+      "2025-09-25": {
+       "strategie": 0.20185656797757368,
+       "spy": 0.16842611570366461
+      },
+      "2024-09-25": {
+       "strategie": 0.3020918770510195,
+       "spy": 0.3366679141357465
+      },
+      "2023-09-25": {
+       "strategie": 0.22996122755876414,
+       "spy": 0.19319196684146633
+      },
+      "2022-09-25": {
+       "strategie": -0.1419811976914762,
+       "spy": -0.12961412740173828
+      }
+     },
+     "gagnees": 3,
+     "reussi": true
+    },
+    "T5 avant la fenetre (information)": {
+     "de": "2006-01-31",
+     "a": "2021-09-30",
+     "strategie_par_an": 0.11869708214108621,
+     "spy_par_an": 0.10235602824319234,
+     "pire_baisse": -0.5877477910337754,
+     "spy_pire_baisse": -0.5518929769515261,
+     "reussi": null
+    }
+   },
+   "gagnant": false
+  },
+  "2": {
+   "nom": "Momentum des actions du secteur",
+   "debut": "2021-09-30",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 1.4551847468239902,
+    "cagr": 1.4639863497319765,
+    "sharpe": 1.8847827141105122,
+    "pire_baisse": -0.30480316197686375
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 1.4468051705018983,
+    "cagr": 1.4555432864498865,
+    "sharpe": 1.8783044263363555,
+    "pire_baisse": -0.30480316197686363
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 4.866290061864137,
+    "cagr": 0.4281646054951793,
+    "sharpe": 1.0226876329651788,
+    "pire_baisse": -0.4244503312326504
+   },
+   "spy_histoire": {
+    "rendement": 0.9217641313880243,
+    "cagr": 0.14063900417593267,
+    "sharpe": 0.6331329970029942,
+    "pire_baisse": -0.24496345676479236
+   },
+   "part_max_action": 0.38420898450332447,
+   "placebo_centile": 0.9533333333333334,
+   "placebo_moyen": 0.7178639473872662,
+   "part_du_temps_dans_le_secteur": null,
+   "part_du_temps_en_liquidites": 0.0,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": false,
+    "4 Sharpe 12 mois > 1": true,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": true,
+    "6 deterministe (2 executions identiques)": true
+   },
+   "tests_pour_tuer": {
+    "T1 execution le lendemain": {
+     "strategie_par_an": 0.4242792868235279,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T2 frais triples": {
+     "strategie_par_an": 0.416282467996983,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T3 sans la meilleure action (MU)": {
+     "strategie_12_mois": 1.0759217833137686,
+     "spy_12_mois": 0.18482211155929074,
+     "reussi": true
+    },
+    "T4 annees gagnees contre SPY": {
+     "annees": {
+      "2026-09-25": {
+       "strategie": 1.4551847468239902,
+       "spy": 0.18482211155929074
+      },
+      "2025-09-25": {
+       "strategie": 0.24870245753444387,
+       "spy": 0.16842611570366461
+      },
+      "2024-09-25": {
+       "strategie": 0.4862461794843451,
+       "spy": 0.3366679141357465
+      },
+      "2023-09-25": {
+       "strategie": 0.58965949365207,
+       "spy": 0.19319196684146633
+      },
+      "2022-09-25": {
+       "strategie": -0.19011094465583744,
+       "spy": -0.12961412740173828
+      }
+     },
+     "gagnees": 4,
+     "reussi": true
+    },
+    "T5 avant la fenetre (information)": {
+     "de": "2006-01-31",
+     "a": "2021-09-30",
+     "strategie_par_an": 0.2525785092239565,
+     "spy_par_an": 0.10235602824319234,
+     "pire_baisse": -0.5616040054545963,
+     "spy_pire_baisse": -0.5518929769515261,
+     "reussi": null
+    },
+    "T6 univers de 2021": {
+     "actions": [
+      "AAPL",
+      "MSFT",
+      "NVDA",
+      "V",
+      "MA",
+      "ADBE",
+      "PYPL",
+      "CRM",
+      "ACN",
+      "INTC",
+      "CSCO",
+      "AVGO",
+      "ORCL",
+      "QCOM",
+      "TXN",
+      "AMD",
+      "INTU",
+      "AMAT",
+      "IBM",
+      "NOW"
+     ],
+     "strategie_par_an": 0.33329516207431364,
+     "spy_par_an": 0.14063900417593267,
+     "pire_baisse": -0.4357172800761877,
+     "reussi": false
+    }
+   },
+   "gagnant": false
+  },
+  "3": {
+   "nom": "Faible risque (actions calmes du secteur)",
+   "debut": "2021-09-30",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.2310036864730789,
+    "cagr": 0.2320233886610552,
+    "sharpe": 0.9378516346777462,
+    "pire_baisse": -0.15408475866138382
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.22927303859280124,
+    "cagr": 0.2302844113476541,
+    "sharpe": 0.9310090659398759,
+    "pire_baisse": -0.15428873315977776
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 1.1667220901132218,
+    "cagr": 0.1685406164064598,
+    "sharpe": 0.6376953942365597,
+    "pire_baisse": -0.26013988101143415
+   },
+   "spy_histoire": {
+    "rendement": 0.9217641313880243,
+    "cagr": 0.14063900417593267,
+    "sharpe": 0.6331329970029942,
+    "pire_baisse": -0.24496345676479236
+   },
+   "part_max_action": 0.49088539598220887,
+   "placebo_centile": 0.35333333333333333,
+   "placebo_moyen": 0.7081374700867893,
+   "part_du_temps_dans_le_secteur": null,
+   "part_du_temps_en_liquidites": 0.0,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": true,
+    "4 Sharpe 12 mois > 1": false,
+    "5 aucune action > 40 % des gains": false,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": false,
+    "6 deterministe (2 executions identiques)": true
+   },
+   "tests_pour_tuer": {
+    "T1 execution le lendemain": {
+     "strategie_par_an": 0.16586456962720475,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T2 frais triples": {
+     "strategie_par_an": 0.16477064975516287,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T3 sans la meilleure action (CSCO)": {
+     "strategie_12_mois": 0.15263584258804053,
+     "spy_12_mois": 0.18482211155929074,
+     "reussi": false
+    },
+    "T4 annees gagnees contre SPY": {
+     "annees": {
+      "2026-09-25": {
+       "strategie": 0.2310036864730789,
+       "spy": 0.18482211155929074
+      },
+      "2025-09-25": {
+       "strategie": 0.14644528363418097,
+       "spy": 0.16842611570366461
+      },
+      "2024-09-25": {
+       "strategie": 0.2199975816528703,
+       "spy": 0.3366679141357465
+      },
+      "2023-09-25": {
+       "strategie": 0.3095093697785525,
+       "spy": 0.19319196684146633
+      },
+      "2022-09-25": {
+       "strategie": -0.03900097836460781,
+       "spy": -0.12961412740173828
+      }
+     },
+     "gagnees": 3,
+     "reussi": true
+    },
+    "T5 avant la fenetre (information)": {
+     "de": "2006-01-31",
+     "a": "2021-09-30",
+     "strategie_par_an": 0.1721164297953217,
+     "spy_par_an": 0.10235602824319234,
+     "pire_baisse": -0.5076925132812418,
+     "spy_pire_baisse": -0.5518929769515261,
+     "reussi": null
+    }
+   },
+   "gagnant": false
+  },
+  "4": {
+   "nom": "Moteur macro du secteur",
+   "debut": "2021-09-30",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.19077959988297422,
+    "cagr": 0.19160825423035255,
+    "sharpe": 0.9075938044072301,
+    "pire_baisse": -0.12350671903630617
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.18865463474313948,
+    "cagr": 0.18947334604938293,
+    "sharpe": 0.8972936401166286,
+    "pire_baisse": -0.12456662625798931
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 1.1401595265013849,
+    "cagr": 0.1656406688108243,
+    "sharpe": 0.6681074951711836,
+    "pire_baisse": -0.26263319775086236
+   },
+   "spy_histoire": {
+    "rendement": 0.9217641313880243,
+    "cagr": 0.14063900417593267,
+    "sharpe": 0.6331329970029942,
+    "pire_baisse": -0.24496345676479236
+   },
+   "part_max_action": null,
+   "placebo_centile": 0.5033333333333333,
+   "placebo_moyen": 0.660848207465288,
+   "part_du_temps_dans_le_secteur": 0.3333333333333333,
+   "part_du_temps_en_liquidites": 0.0,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": true,
+    "4 Sharpe 12 mois > 1": false,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": false,
+    "6 deterministe (2 executions identiques)": true
+   },
+   "tests_pour_tuer": {
+    "T1 execution le lendemain": {
+     "strategie_par_an": 0.1792003658641339,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T2 frais triples": {
+     "strategie_par_an": 0.1605888871735317,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T4 annees gagnees contre SPY": {
+     "annees": {
+      "2026-09-25": {
+       "strategie": 0.19077959988297422,
+       "spy": 0.18482211155929074
+      },
+      "2025-09-25": {
+       "strategie": 0.25374915237616835,
+       "spy": 0.16842611570366461
+      },
+      "2024-09-25": {
+       "strategie": 0.2956922330607985,
+       "spy": 0.3366679141357465
+      },
+      "2023-09-25": {
+       "strategie": 0.3015918198143457,
+       "spy": 0.19319196684146633
+      },
+      "2022-09-25": {
+       "strategie": -0.14998333080591675,
+       "spy": -0.12961412740173828
+      }
+     },
+     "gagnees": 3,
+     "reussi": true
+    },
+    "T5 avant la fenetre (information)": {
+     "de": "2006-01-31",
+     "a": "2021-09-30",
+     "strategie_par_an": 0.15320144409888403,
+     "spy_par_an": 0.10235602824319234,
+     "pire_baisse": -0.5419130658973639,
+     "spy_pire_baisse": -0.5518929769515261,
+     "reussi": null
+    }
+   },
+   "gagnant": false
+  },
+  "5": {
+   "nom": "Version 5 : moteur macro + filtre 200 jours vers liquidites",
+   "debut": "2021-09-30",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.08080101343672963,
+    "cagr": 0.0811356504170122,
+    "sharpe": 0.33372028010116406,
+    "pire_baisse": -0.12350671903630617
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.07885945950297457,
+    "cagr": 0.07918576465267124,
+    "sharpe": 0.32272302166733285,
+    "pire_baisse": -0.12456662625798931
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 0.5239292791701204,
+    "cagr": 0.08856964904063269,
+    "sharpe": 0.38599269738975034,
+    "pire_baisse": -0.21986504316640199
+   },
+   "spy_histoire": {
+    "rendement": 0.9217641313880243,
+    "cagr": 0.14063900417593267,
+    "sharpe": 0.6331329970029942,
+    "pire_baisse": -0.24496345676479236
+   },
+   "part_max_action": null,
+   "placebo_centile": 0.17,
+   "placebo_moyen": 0.545572815442168,
+   "part_du_temps_dans_le_secteur": 0.2833333333333333,
+   "part_du_temps_en_liquidites": 0.21666666666666667,
+   "criteres": {
+    "1 bat SPY sur 12 mois": false,
+    "2 idem avec frais doubles": false,
+    "3 pire baisse < 30 %": true,
+    "4 Sharpe 12 mois > 1": false,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": false,
+    "8 placebo battu a 95 %": false,
+    "6 deterministe (2 executions identiques)": true
+   },
+   "tests_pour_tuer": {
+    "T1 execution le lendemain": {
+     "strategie_par_an": 0.09917828839647469,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": false
+    },
+    "T2 frais triples": {
+     "strategie_par_an": 0.0835763193369723,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": false
+    },
+    "T4 annees gagnees contre SPY": {
+     "annees": {
+      "2026-09-25": {
+       "strategie": 0.08080101343672963,
+       "spy": 0.18482211155929074
+      },
+      "2025-09-25": {
+       "strategie": 0.12900766714718692,
+       "spy": 0.16842611570366461
+      },
+      "2024-09-25": {
+       "strategie": 0.1917436674748607,
+       "spy": 0.3366679141357465
+      },
+      "2023-09-25": {
+       "strategie": 0.11676044869653812,
+       "spy": 0.19319196684146633
+      },
+      "2022-09-25": {
+       "strategie": -0.06161879361105915,
+       "spy": -0.12961412740173828
+      }
+     },
+     "gagnees": 1,
+     "reussi": false
+    },
+    "T5 avant la fenetre (information)": {
+     "de": "2006-01-31",
+     "a": "2021-09-30",
+     "strategie_par_an": 0.14114576116351518,
+     "spy_par_an": 0.10235602824319234,
+     "pire_baisse": -0.2056908623487762,
+     "spy_pire_baisse": -0.5518929769515261,
+     "reussi": null
+    }
+   },
+   "gagnant": false
+  },
+  "6": {
+   "nom": "Version 6 : momentum des actions + filtre 200 jours vers liquidites",
+   "debut": "2021-09-30",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.9391530797325829,
+    "cagr": 0.9442761966170465,
+    "sharpe": 1.4636412926176245,
+    "pire_baisse": -0.3048031619768635
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.9311480984657783,
+    "cagr": 0.936218156449826,
+    "sharpe": 1.4556923499427956,
+    "pire_baisse": -0.30480316197686375
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 2.0100171733191896,
+    "cagr": 0.24853977734166954,
+    "sharpe": 0.7061289161220748,
+    "pire_baisse": -0.3726225978210538
+   },
+   "spy_histoire": {
+    "rendement": 0.9217641313880243,
+    "cagr": 0.14063900417593267,
+    "sharpe": 0.6331329970029942,
+    "pire_baisse": -0.24496345676479236
+   },
+   "part_max_action": 0.3835824709175684,
+   "placebo_centile": 0.8833333333333333,
+   "placebo_moyen": 0.4502108644592437,
+   "part_du_temps_dans_le_secteur": null,
+   "part_du_temps_en_liquidites": 0.21666666666666667,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": false,
+    "4 Sharpe 12 mois > 1": true,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": false,
+    "6 deterministe (2 executions identiques)": true
+   },
+   "tests_pour_tuer": {
+    "T1 execution le lendemain": {
+     "strategie_par_an": 0.23777969310124392,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T2 frais triples": {
+     "strategie_par_an": 0.23863811314731054,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T3 sans la meilleure action (MU)": {
+     "strategie_12_mois": 0.5866806118961931,
+     "spy_12_mois": 0.18482211155929074,
+     "reussi": true
+    },
+    "T4 annees gagnees contre SPY": {
+     "annees": {
+      "2026-09-25": {
+       "strategie": 0.9391530797325829,
+       "spy": 0.18482211155929074
+      },
+      "2025-09-25": {
+       "strategie": 0.09613365167819876,
+       "spy": 0.16842611570366461
+      },
+      "2024-09-25": {
+       "strategie": 0.3070735614449378,
+       "spy": 0.3366679141357465
+      },
+      "2023-09-25": {
+       "strategie": 0.2077833861100269,
+       "spy": 0.19319196684146633
+      },
+      "2022-09-25": {
+       "strategie": -0.10297553749448729,
+       "spy": -0.12961412740173828
+      }
+     },
+     "gagnees": 3,
+     "reussi": true
+    },
+    "T5 avant la fenetre (information)": {
+     "de": "2006-01-31",
+     "a": "2021-09-30",
+     "strategie_par_an": 0.23946977510595113,
+     "spy_par_an": 0.10235602824319234,
+     "pire_baisse": -0.3842255869775246,
+     "spy_pire_baisse": -0.5518929769515261,
+     "reussi": null
+    },
+    "T6 univers de 2021": {
+     "actions": [
+      "AAPL",
+      "MSFT",
+      "NVDA",
+      "V",
+      "MA",
+      "ADBE",
+      "PYPL",
+      "CRM",
+      "ACN",
+      "INTC",
+      "CSCO",
+      "AVGO",
+      "ORCL",
+      "QCOM",
+      "TXN",
+      "AMD",
+      "INTU",
+      "AMAT",
+      "IBM",
+      "NOW"
+     ],
+     "strategie_par_an": 0.14488990851758965,
+     "spy_par_an": 0.14063900417593267,
+     "pire_baisse": -0.38882909401338406,
+     "reussi": false
+    }
+   },
+   "gagnant": false
+  },
+  "7": {
+   "nom": "Version 7 : moitie version 2, moitie liquidites (fenetre 5 ans)",
+   "debut": "2021-09-30",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.6612808905939207,
+    "cagr": 0.664643842759062,
+    "sharpe": 1.898755519905218,
+    "pire_baisse": -0.15092325881862545
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.6583040641845832,
+    "cagr": 0.6616491171437402,
+    "sharpe": 1.8919497976640691,
+    "pire_baisse": -0.15092325881862534
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 1.8907269560125148,
+    "cagr": 0.23841080914654977,
+    "sharpe": 1.0168666680791214,
+    "pire_baisse": -0.22970052082133285
+   },
+   "spy_histoire": {
+    "rendement": 0.9217641313880243,
+    "cagr": 0.14063900417593267,
+    "sharpe": 0.6331329970029942,
+    "pire_baisse": -0.24496345676479236
+   },
+   "part_max_action": 0.37789803511722153,
+   "placebo_centile": 0.93,
+   "placebo_moyen": 0.7294780151919781,
+   "part_du_temps_dans_le_secteur": null,
+   "part_du_temps_en_liquidites": 1.0,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": true,
+    "4 Sharpe 12 mois > 1": true,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": false,
+    "6 deterministe (2 executions identiques)": true
+   },
+   "tests_pour_tuer": {
+    "T1 execution le lendemain": {
+     "strategie_par_an": 0.2356379225488665,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T2 frais triples": {
+     "strategie_par_an": 0.2331650846974398,
+     "spy_par_an": 0.14063900417593267,
+     "reussi": true
+    },
+    "T3 sans la meilleure action (MU)": {
+     "strategie_12_mois": 0.517343146160824,
+     "spy_12_mois": 0.18482211155929074,
+     "reussi": true
+    },
+    "T4 annees gagnees contre SPY": {
+     "annees": {
+      "2026-09-25": {
+       "strategie": 0.6612808905939207,
+       "spy": 0.18482211155929074
+      },
+      "2025-09-25": {
+       "strategie": 0.15110779714460554,
+       "spy": 0.16842611570366461
+      },
+      "2024-09-25": {
+       "strategie": 0.2607535071577236,
+       "spy": 0.3366679141357465
+      },
+      "2023-09-25": {
+       "strategie": 0.3078979084479463,
+       "spy": 0.19319196684146633
+      },
+      "2022-09-25": {
+       "strategie": -0.0832646531643696,
+       "spy": -0.12961412740173828
+      }
+     },
+     "gagnees": 3,
+     "reussi": true
+    },
+    "T5 avant la fenetre (information)": {
+     "de": "2006-01-31",
+     "a": "2021-09-30",
+     "strategie_par_an": 0.134278487045969,
+     "spy_par_an": 0.10235602824319234,
+     "pire_baisse": -0.3160571786545824,
+     "spy_pire_baisse": -0.5518929769515261,
+     "reussi": null
+    },
+    "T6 univers de 2021": {
+     "actions": [
+      "AAPL",
+      "MSFT",
+      "NVDA",
+      "V",
+      "MA",
+      "ADBE",
+      "PYPL",
+      "CRM",
+      "ACN",
+      "INTC",
+      "CSCO",
+      "AVGO",
+      "ORCL",
+      "QCOM",
+      "TXN",
+      "AMD",
+      "INTU",
+      "AMAT",
+      "IBM",
+      "NOW"
+     ],
+     "strategie_par_an": 0.19678170773441073,
+     "spy_par_an": 0.14063900417593267,
+     "pire_baisse": -0.23789957053568245,
+     "reussi": true
+    }
+   },
+   "gagnant": false
+  }
+ }
+}

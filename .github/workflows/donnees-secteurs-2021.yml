@@ -1,11 +1,7 @@
 name: Donnees secteurs, univers 2021 (Yahoo)
 
+# Lancement manuel seulement : prix_2021.csv.gz est fige (telecharge le 28 septembre 2026).
 on:
-  push:
-    branches: [claude/keen-babbage-r686cl]
-    paths:
-      - secteurs/telecharger_2021.py
-      - .github/workflows/donnees-secteurs-2021.yml
   workflow_dispatch:
 
 permissions:
