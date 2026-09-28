@@ -31,3 +31,27 @@ Heures testées : 2 h, 13 h et 23 h, heure de Paris (heure d'été comprise).
 Remarque : les prop firms futures (Apex, Topstep, Phidias) ne tradent que des contrats CME ; le DOGE
 n'y est pas coté à notre connaissance (à vérifier). Un avantage sur le DOGE ne servirait donc pas pour
 leurs challenges.
+
+## Résultats (28 septembre 2026) — DOGE/USDT de juillet 2019 à septembre 2026 (2 638 jours)
+
+**1. Mouvement dans les 15 minutes après l'heure** (moyenne en valeur absolue) :
+
+| Heure (Paris) | Mouvement moyen | Autres heures | Jours avec plus de 1 % en 15 min |
+|---|---|---|---|
+| 2 h | 0,44 % | 0,38 % (× 1,15) | 9 % (autres : 7 %) |
+| 13 h | 0,36 % | 0,38 % (× 0,96) | 6 % |
+| 23 h | 0,36 % | 0,38 % (× 0,95) | 6 % |
+
+13 h et 23 h ne bougent pas plus que les autres heures. 2 h bouge un peu plus : c'est minuit UTC
+(fermeture de la bougie journalière des plateformes et paiement du financement des contrats
+perpétuels). Les heures les plus agitées sont 16 h et 17 h (ouverture de Wall Street).
+
+**2. Règles de trading** : les 12 règles perdent après 0,10 % de frais. Le sens du mouvement n'est
+pas prévisible (suivre les 5 premières minutes ou l'heure d'avant perd même avant frais). Seule
+« acheteur de 23 h à minuit » gagne un peu avant frais (+0,09 % par trade, mieux que 100 % des
+placebos) mais −0,01 % après frais (t = −0,4), et le résultat change de signe d'une année à l'autre
+(+88 % en 2021, −60 % en 2022). Détails : `resultats.txt`.
+
+**Conclusion** : pas de mouvement brutal exploitable à 2 h, 13 h ou 23 h sur le prix du DOGE.
+Ce qu'on voit sur la courbe de capitalisation de TradingView vient probablement de la mise à jour
+à heure fixe du nombre de DOGE en circulation, pas d'un mouvement de prix qu'on pourrait trader.

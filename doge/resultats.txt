@@ -1,0 +1,45 @@
+DOGE/USDT, 2019-07-07 -> 2026-09-25 (2638 jours)
+
+1. Mouvement moyen (valeur absolue) des 15 minutes apres chaque heure (heure de Paris) :
+   0h:0.40% 1h:0.40% 2h:0.44% 3h:0.42% 4h:0.37% 5h:0.35% 6h:0.34% 7h:0.33% 8h:0.33% 9h:0.36% 10h:0.37% 11h:0.35% 12h:0.34% 13h:0.36% 14h:0.36% 15h:0.38% 16h:0.48% 17h:0.46% 18h:0.42% 19h:0.39% 20h:0.38% 21h:0.38% 22h:0.39% 23h:0.36%
+    2 h : 0.438% contre 0.381% en moyenne aux autres heures (x1.15) | jours avec un mouvement de plus de 1 % en 15 min : 9% (autres heures : 7%)
+   13 h : 0.364% contre 0.381% en moyenne aux autres heures (x0.96) | jours avec un mouvement de plus de 1 % en 15 min : 6% (autres heures : 7%)
+   23 h : 0.362% contre 0.381% en moyenne aux autres heures (x0.95) | jours avec un mouvement de plus de 1 % en 15 min : 6% (autres heures : 7%)
+
+2. Regles (position jusqu'a l'heure suivante), frais 0,10 % par aller-retour :
+    2 h toujours acheteur          : 2624 trades | brut -0.016% | net -0.116% par trade (t -4.42) | placebo battu 13% | non
+        par annee (somme des trades) : 2019:-23% 2020:-50% 2021:-33% 2022:-55% 2023:-34% 2024:-62% 2025:-43% 2026:-5%
+        avec 0,20 % de frais : net -0.216% par trade (t -8.23)
+    2 h toujours vendeur           : 2624 trades | brut +0.016% | net -0.084% par trade (t -3.20) | placebo battu 87% | non
+        par annee (somme des trades) : 2019:-13% 2020:-23% 2021:-39% 2022:-17% 2023:-39% 2024:-11% 2025:-29% 2026:-49%
+        avec 0,20 % de frais : net -0.184% par trade (t -7.01)
+    2 h suivre l'heure d'avant     : 2624 trades | brut -0.090% | net -0.190% par trade (t -7.26) | placebo battu 0% | non
+        par annee (somme des trades) : 2019:-30% 2020:-82% 2021:-109% 2022:-115% 2023:-30% 2024:-69% 2025:-34% 2026:-29%
+        avec 0,20 % de frais : net -0.290% par trade (t -11.08)
+    2 h suivre le depart (5 min)   : 2624 trades | brut -0.064% | net -0.164% par trade (t -6.28) | placebo battu 6% | non
+        par annee (somme des trades) : 2019:-34% 2020:-80% 2021:-111% 2022:-29% 2023:-30% 2024:-59% 2025:-72% 2026:-16%
+        avec 0,20 % de frais : net -0.264% par trade (t -10.10)
+   13 h toujours acheteur          : 2636 trades | brut -0.016% | net -0.116% par trade (t -4.93) | placebo battu 13% | non
+        par annee (somme des trades) : 2019:-11% 2020:-26% 2021:-39% 2022:-46% 2023:-36% 2024:-68% 2025:-65% 2026:-13%
+        avec 0,20 % de frais : net -0.216% par trade (t -9.20)
+   13 h toujours vendeur           : 2636 trades | brut +0.016% | net -0.084% par trade (t -3.60) | placebo battu 85% | non
+        par annee (somme des trades) : 2019:-25% 2020:-47% 2021:-34% 2022:-27% 2023:-37% 2024:-6% 2025:-8% 2026:-40%
+        avec 0,20 % de frais : net -0.184% par trade (t -7.87)
+   13 h suivre l'heure d'avant     : 2635 trades | brut -0.054% | net -0.154% par trade (t -6.58) | placebo battu 3% | non
+        par annee (somme des trades) : 2019:-32% 2020:-34% 2021:-112% 2022:-47% 2023:-51% 2024:-68% 2025:-29% 2026:-31%
+        avec 0,20 % de frais : net -0.254% par trade (t -10.86)
+   13 h suivre le depart (5 min)   : 2636 trades | brut -0.031% | net -0.131% par trade (t -6.32) | placebo battu 38% | non
+        par annee (somme des trades) : 2019:-14% 2020:-90% 2021:-39% 2022:-75% 2023:-32% 2024:-40% 2025:-44% 2026:-12%
+        avec 0,20 % de frais : net -0.231% par trade (t -11.12)
+   23 h toujours acheteur          : 2638 trades | brut +0.091% | net -0.009% par trade (t -0.38) | placebo battu 100% | non
+        par annee (somme des trades) : 2019:+27% 2020:-15% 2021:+88% 2022:-60% 2023:-36% 2024:-0% 2025:-12% 2026:-16%
+        avec 0,20 % de frais : net -0.109% par trade (t -4.63)
+   23 h toujours vendeur           : 2638 trades | brut -0.091% | net -0.191% par trade (t -8.10) | placebo battu 0% | non
+        par annee (somme des trades) : 2019:-63% 2020:-59% 2021:-161% 2022:-13% 2023:-37% 2024:-73% 2025:-61% 2026:-37%
+        avec 0,20 % de frais : net -0.291% par trade (t -12.35)
+   23 h suivre l'heure d'avant     : 2638 trades | brut -0.046% | net -0.146% par trade (t -6.17) | placebo battu 7% | non
+        par annee (somme des trades) : 2019:-23% 2020:-89% 2021:-38% 2022:-84% 2023:-37% 2024:-73% 2025:-19% 2026:-20%
+        avec 0,20 % de frais : net -0.246% par trade (t -10.41)
+   23 h suivre le depart (5 min)   : 2638 trades | brut -0.036% | net -0.136% par trade (t -6.21) | placebo battu 35% | non
+        par annee (somme des trades) : 2019:-25% 2020:-84% 2021:-62% 2022:-63% 2023:-26% 2024:-23% 2025:-59% 2026:-16%
+        avec 0,20 % de frais : net -0.236% par trade (t -10.78)
