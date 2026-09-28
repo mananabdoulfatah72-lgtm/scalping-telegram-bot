@@ -1,0 +1,46 @@
+name: Robot version 7 (argent virtuel)
+
+on:
+  schedule:
+    - cron: "45 22 * * 1-5"   # chaque soir de semaine, apres la cloture americaine
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: robot-tendance   # meme file d'attente que l'autre robot : jamais deux envois sur main en meme temps
+
+jobs:
+  robot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}   # dernier etat de la branche, meme si ce passage a attendu dans la file
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer les dependances
+        run: pip install yfinance pandas numpy requests
+
+      - name: Lancer le robot
+        run: python3 version7/robot.py
+        env:
+          ROBOT_DEBUT: "2026-09-29"   # le rattrapage fait le reequilibrage du 30 septembre, quel que soit le jour du premier passage
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+
+      - name: Sauvegarder le compte virtuel
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add version7/robot/
+          git diff --cached --quiet && exit 0
+          git commit -m "Robot version 7 : mise a jour du compte virtuel"
+          for essai in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 10
+          done
+          exit 1
