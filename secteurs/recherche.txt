@@ -1,0 +1,34 @@
+Etat des secteurs au 2026-09-25 (classes par force relative 3 et 6 mois contre SPY) :
+  XLK   Technologie            | 3 mois  +2.4% | 6 mois +28.3% | mom 12-1 +32.1% | vs moy 200j +20.2% | vol 26.4% | beta 1.74 | si taux 10 ans +0,10 pt : +0.40% | baisse 1 an  -0.7%
+  XLV   Sante                  | 3 mois  +0.8% | 6 mois  -2.1% | mom 12-1 +31.0% | vs moy 200j +10.1% | vol 16.2% | beta 0.29 | si taux 10 ans +0,10 pt : -0.35% | baisse 1 an  -2.5%
+  XLF   Finance                | 3 mois  -3.3% | 6 mois  -7.6% | mom 12-1 +10.3% | vs moy 200j  +2.8% | vol 14.7% | beta 0.61 | si taux 10 ans +0,10 pt : +0.10% | baisse 1 an  -6.0%
+  XLE   Energie                | 3 mois  +9.8% | 6 mois -18.0% | mom 12-1 +40.1% | vs moy 200j +11.9% | vol 21.9% | beta -0.30 | si taux 10 ans +0,10 pt : +0.74% | baisse 1 an  -5.3%
+  XLC   Communication          | 3 mois  +0.7% | 6 mois -15.8% | mom 12-1  -2.9% | vs moy 200j  -0.2% | vol 16.0% | beta 0.68 | si taux 10 ans +0,10 pt : +0.09% | baisse 1 an  -5.1%
+  XLI   Industrie              | 3 mois -11.8% | 6 mois -14.0% | mom 12-1 +20.3% | vs moy 200j  -0.4% | vol 17.2% | beta 0.94 | si taux 10 ans +0,10 pt : +0.07% | baisse 1 an  -8.4%
+  XLP   Consommation de base   | 3 mois  -8.6% | 6 mois -17.7% | mom 12-1 +13.2% | vs moy 200j  -0.6% | vol 14.4% | beta -0.05 | si taux 10 ans +0,10 pt : -0.31% | baisse 1 an  -7.1%
+  XLB   Materiaux              | 3 mois  -9.1% | 6 mois -17.9% | mom 12-1 +23.9% | vs moy 200j  -0.6% | vol 17.9% | beta 0.73 | si taux 10 ans +0,10 pt : -0.34% | baisse 1 an  -6.8%
+  XLRE  Immobilier             | 3 mois -13.4% | 6 mois -15.2% | mom 12-1 +11.6% | vs moy 200j  -2.2% | vol 14.1% | beta 0.29 | si taux 10 ans +0,10 pt : -0.68% | baisse 1 an  -8.9%
+  XLY   Consommation cyclique  | 3 mois  -9.2% | 6 mois -18.2% | mom 12-1  -0.2% | vs moy 200j  -4.8% | vol 19.5% | beta 1.17 | si taux 10 ans +0,10 pt : -0.15% | baisse 1 an -10.7%
+  XLU   Services publics       | 3 mois -19.9% | 6 mois -31.8% | mom 12-1  +4.0% | vs moy 200j  -9.9% | vol 15.3% | beta 0.15 | si taux 10 ans +0,10 pt : -0.47% | baisse 1 an -15.5%
+
+Industries (ETF), les 8 plus fortes et les 5 plus faibles :
+  IGV   | 3 mois +14.1% | 6 mois +12.8% | vs moy 200j +13.2% | vol 31.8%
+  GDX   | 3 mois +14.5% | 6 mois  -7.5% | vs moy 200j  +2.1% | vol 51.1%
+  IBB   | 3 mois  +5.9% | 6 mois  +6.8% | vs moy 200j +16.5% | vol 22.0%
+  COPX  | 3 mois  +8.2% | 6 mois  +2.6% | vs moy 200j  +5.5% | vol 47.6%
+  SMH   | 3 mois  -6.9% | 6 mois +39.1% | vs moy 200j +23.0% | vol 39.8%
+  SOXX  | 3 mois  -8.9% | 6 mois +54.2% | vs moy 200j +27.8% | vol 46.2%
+  XBI   | 3 mois  -6.3% | 6 mois  +5.1% | vs moy 200j +12.4% | vol 28.2%
+  XOP   | 3 mois +11.7% | 6 mois -21.4% | vs moy 200j +12.7% | vol 29.2%
+  ITB   | 3 mois -20.1% | 6 mois -20.2% | vs moy 200j  -7.6% | vol 29.3%
+  ITA   | 3 mois -15.7% | 6 mois -22.9% | vs moy 200j  -7.0% | vol 23.2%
+  ICLN  | 3 mois -17.7% | 6 mois -24.4% | vs moy 200j  -8.3% | vol 30.8%
+  NLR   | 3 mois -15.1% | 6 mois -39.1% | vs moy 200j -18.4% | vol 44.2%
+  TAN   | 3 mois -28.6% | 6 mois -40.4% | vs moy 200j -19.9% | vol 38.5%
+
+Taux de base 1999-2026 : acheter le(s) secteur(s) le(s) plus fort(s), ecart avec SPY le mois suivant
+  top 1 sur 3 mois : -0.14%/mois (t -0.57), 49% des mois gagnants | depuis 2010 : -0.19%/mois (t -0.58)
+  top 3 sur 3 mois : +0.04%/mois (t +0.32), 55% des mois gagnants | depuis 2010 : -0.04%/mois (t -0.25)
+  top 1 sur 6 mois : +0.13%/mois (t +0.54), 49% des mois gagnants | depuis 2010 : -0.13%/mois (t -0.46)
+  top 3 sur 6 mois : +0.02%/mois (t +0.12), 51% des mois gagnants | depuis 2010 : -0.22%/mois (t -1.35)
+  secteur a plus de 10 points au-dessus de SPY sur 3 mois (175 cas) : mois suivant -0.70% (t -1.68) ; 3 mois suivants -0.40%, gagnant 49% des cas

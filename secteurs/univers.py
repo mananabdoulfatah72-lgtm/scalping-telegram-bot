@@ -1,6 +1,8 @@
 """Univers fixe de l'etude des secteurs (liste arretee le 28 septembre 2026, avant les donnees).
 
-Les actions sont les plus grosses de chaque secteur AUJOURD'HUI : un backtest sur ces listes a un
+Les actions sont une liste arretee de memoire parmi les plus grosses de chaque secteur en 2025-2026,
+pas la composition exacte de l'indice : il en manque (par exemple PLTR dans la technologie), six n'ont
+pas de donnees (AVB, CTRA, EA, EQR, IPG, MMC) et IPG n'est plus cotee. Un backtest sur ces listes a un
 biais de survie (les entreprises disparues ou sorties de l'indice manquent). C'est pourquoi les
 strategies 1 et 4 utilisent l'ETF du secteur, et les resultats des strategies 2 et 3 sont lus avec
 prudence avant 2020.

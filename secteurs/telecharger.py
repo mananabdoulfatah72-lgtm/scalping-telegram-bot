@@ -39,6 +39,20 @@ def main():
             x["ticker"] = t
             morceaux.append(x.reset_index().rename(columns={"Date": "date"}))
         print(f"{min(k + 25, len(tickers))}/{len(tickers)}", flush=True)
+    # nouvelle tentative, un par un, pour les tickers vides (yfinance ne signale pas toujours l'erreur)
+    for t in list(manquants):
+        time.sleep(2)
+        x = yf.download(t, start="1998-01-01", auto_adjust=False, progress=False, threads=False)
+        if x is not None and len(x) >= 50:
+            if isinstance(x.columns, pd.MultiIndex):
+                x.columns = x.columns.get_level_values(0)
+            x = x[["Close", "Adj Close", "Volume"]].rename(columns={"Close": "close", "Adj Close": "adjclose", "Volume": "volume"})
+            x["ticker"] = t
+            morceaux.append(x.reset_index().rename(columns={"Date": "date"}))
+            manquants.remove(t)
+    essentiels = [U.MARCHE] + list(U.SECTEURS) + ["^TNX", "^IRX"]
+    if any(t in manquants for t in essentiels):
+        sys.exit(f"Donnees essentielles manquantes : {[t for t in essentiels if t in manquants]} ; rien n'est enregistre")
     d = pd.concat(morceaux)[["date", "ticker", "close", "adjclose", "volume"]]
     d.to_csv(SORTIE, index=False, float_format="%.6g")
     print(f"{d['ticker'].nunique()} tickers, {len(d)} lignes ; manquants : {manquants}", flush=True)

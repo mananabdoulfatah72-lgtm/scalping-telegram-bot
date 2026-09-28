@@ -55,3 +55,4 @@ date,dossier,essai,resultat
 2026-09-28,ordres,bandes de VWAP 2 ecarts-types (ES 2011-2026),net -1.29 pt t -7.5
 2026-09-28,challenge,bot coussin zone de bruit (+ melange) sur Topstep/Apex/Phidias 50K (3 valeurs de f),voir challenge/README.md
 2026-09-28,doge,DOGE 2h/13h/23h Paris : 3 heures x 4 regles (12 essais),voir doge/README.md
+2026-09-28,secteurs,4 strategies (rotation, momentum, faible risque, moteur macro) sur le secteur classe premier + taux de base de la selection de secteur,voir secteurs/README.md
