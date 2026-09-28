@@ -1,0 +1,7 @@
+Bandes de VWAP sur ES (MES), 2011-01-03 -> 2026-09-25 : 7208 trades, duree moyenne 106 minutes, frais 0.90 point par aller-retour
+  2011-2026 :  7208 trades | gagnants 62% | brut -0.39 pt | net -1.29 pt (t -7.48) | -2,957 $/an par MES
+  2011-2014 :  1770 trades | gagnants 58% | brut -0.00 pt | net -0.90 pt (t -7.58) | -1,999 $/an par MES
+  2015-2019 :  2312 trades | gagnants 62% | brut -0.03 pt | net -0.93 pt (t -5.62) | -2,158 $/an par MES
+  2020-2026 :  3126 trades | gagnants 63% | brut -0.88 pt | net -1.78 pt (t -4.77) | -4,123 $/an par MES
+  placebo (sens au hasard, memes trades) : 1% font moins bien
+  par annee ($ par MES) : 2011:-2,190 2012:-2,005 2013:-1,723 2014:-2,049 2015:-1,677 2016:-2,186 2017:-1,612 2018:-4,441 2019:-862 2020:-2,314 2021:-3,309 2022:-7,159 2023:-2,132 2024:-5,038 2025:-5,394 2026:-2,402

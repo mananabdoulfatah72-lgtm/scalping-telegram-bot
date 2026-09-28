@@ -46,3 +46,10 @@ date,dossier,essai,resultat
 2026-09-27,fonds,momentum croise 40 futures,voir fonds/README.md
 2026-09-27,fonds,valeur 40 futures,voir fonds/README.md
 2026-09-27,fonds,veille FOMC avec les 14 annonces recuperees,voir fonds/README.md
+2026-09-28,ordres,delta 1 minute (ES),voir ordres/README.md
+2026-09-28,ordres,CVD 15 minutes (ES),voir ordres/README.md
+2026-09-28,ordres,desequilibre du carnet 1er niveau (ES),voir ordres/README.md
+2026-09-28,ordres,OFI Cont-Kukanov-Stoikov (ES),voir ordres/README.md
+2026-09-28,ordres,footprint desequilibres empiles (ES),voir ordres/README.md
+2026-09-28,ordres,absorption divergence de delta (ES),voir ordres/README.md
+2026-09-28,ordres,bandes de VWAP 2 ecarts-types (ES 2011-2026),net -1.29 pt t -7.5
