@@ -1,0 +1,20 @@
+
+=== 5 ans (2021-2026, periode ou la version 7 a ete choisie) : 1251 seances, version 7 sans interets +21.6%/an, ecart-type d'une journee 603 $ pour m = 1
+  Phidias 50K (si la nuit et les actions etaient permises)
+    m = 0.25 ( 6,250 $ en actions) : reussi  18% | perdu   7% | pas fini en 12 mois  74% | sans avantage : reussi   8% | 189 seances en mediane si reussi
+    m = 0.50 (12,500 $ en actions) : reussi  54% | perdu  46% | pas fini en 12 mois   0% | sans avantage : reussi   6% | 110 seances en mediane si reussi
+    m = 1.00 (25,000 $ en actions) : reussi  46% | perdu  54% | pas fini en 12 mois   0% | sans avantage : reussi  24% | 42 seances en mediane si reussi
+  CFD actions swing 2 phases (+10 % puis +5 %)
+    m = 0.25 ( 6,250 $ en actions) : reussi   0% | perdu   0% | pas fini en 12 mois 100% | sans avantage : reussi   0% | 199 seances en mediane si reussi
+    m = 0.50 (12,500 $ en actions) : reussi  24% | perdu   4% | pas fini en 12 mois  72% | sans avantage : reussi   8% | 187 seances en mediane si reussi
+    m = 1.00 (25,000 $ en actions) : reussi  64% | perdu  33% | pas fini en 12 mois   4% | sans avantage : reussi  13% | 123 seances en mediane si reussi
+
+=== avant (2006-2021, hors fenetre) : 3944 seances, version 7 sans interets +12.8%/an, ecart-type d'une journee 478 $ pour m = 1
+  Phidias 50K (si la nuit et les actions etaient permises)
+    m = 0.25 ( 6,250 $ en actions) : reussi  13% | perdu  14% | pas fini en 12 mois  73% | sans avantage : reussi   2% | 200 seances en mediane si reussi
+    m = 0.50 (12,500 $ en actions) : reussi  47% | perdu  42% | pas fini en 12 mois  11% | sans avantage : reussi  16% | 138 seances en mediane si reussi
+    m = 1.00 (25,000 $ en actions) : reussi  47% | perdu  53% | pas fini en 12 mois   0% | sans avantage : reussi  26% | 52 seances en mediane si reussi
+  CFD actions swing 2 phases (+10 % puis +5 %)
+    m = 0.25 ( 6,250 $ en actions) : reussi   0% | perdu   0% | pas fini en 12 mois 100% | sans avantage : reussi   0%
+    m = 0.50 (12,500 $ en actions) : reussi  19% | perdu   7% | pas fini en 12 mois  75% | sans avantage : reussi   3% | 201 seances en mediane si reussi
+    m = 1.00 (25,000 $ en actions) : reussi  54% | perdu  28% | pas fini en 12 mois  19% | sans avantage : reussi  19% | 140 seances en mediane si reussi

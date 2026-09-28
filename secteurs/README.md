@@ -233,3 +233,26 @@ perdre une action sans le dire (vérification ajoutée) ; `prix_2021.csv.gz` pou
 d'INTC était fausse. Non changé : tirages du placebo partagés entre versions (le changer après coup
 modifierait les verdicts) ; lenteurs sans effet sur les résultats. Résultats sur 20 ans vérifiés
 inchangés (empreinte `57435f5cfcc7b7f6`).
+
+## Version 7 et challenge 50K (`challenge_v7.py`, `resultats_challenge_v7.txt`)
+
+Vrais rendements quotidiens de la version 7 (frais compris, sans intérêts sur les liquidités), une
+tentative par semaine, 12 mois au plus, pertes vérifiées en fin de journée (optimiste). Exposition
+m × version 7 (m = 1 : 25 000 $ en actions sur un compte de 50 000 $).
+
+| Règles | m | 2021-2026 : réussi / perdu | 2006-2021 : réussi / perdu | Sans avantage (réussi) |
+|---|---|---|---|---|
+| Phidias 50K (+4 000 $, perte max 2 500 $ suiveuse), **si** actions et nuit permises | 0,5 | 54 % / 46 % | 47 % / 42 % | 6 % / 16 % |
+| même | 1 | 46 % / 54 % | 47 % / 53 % | 24 % / 26 % |
+| CFD actions « swing », 2 phases (+10 % puis +5 %, perte max 10 %, 5 % par jour) | 1 | 64 % / 33 % | 54 % / 28 % | 13 % / 19 % |
+| même | 0,5 | 24 % / 4 % (72 % pas fini) | 19 % / 7 % | 8 % / 3 % |
+
+- **Futures (Topstep, Apex, Phidias) : impossible.** Ces comptes ne permettent pas d'acheter des actions.
+  Topstep et Apex interdisent en plus de garder une position la nuit. Les chiffres « Phidias » supposent
+  que ce serait permis. Ils montrent que la perte maximale de 2 500 $ est trop serrée : environ une
+  tentative sur deux est perdue.
+- **Compte d'actions en CFD, swing** : c'est le seul cadre où la version 7 peut tourner telle quelle.
+  Environ 1 chance sur 2 de réussir les deux phases en 12 mois, 1 sur 3 de perdre. Les frais de
+  financement des CFD (environ 5 à 8 %/an sur le montant investi) ne sont pas comptés : c'est optimiste.
+- Robot en argent virtuel : dossier `version7/` sur `main` (même règle, vérifiée sur les 60 mois du
+  backtest).
