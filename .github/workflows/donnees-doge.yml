@@ -1,0 +1,36 @@
+name: Donnees DOGE (Binance, minute)
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - doge/telecharger_doge.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger
+        run: |
+          pip install -q pandas requests
+          python3 doge/telecharger_doge.py
+      - name: Enregistrer sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add doge/donnees
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees : DOGE/USDT en bougies de 5 minutes (Binance)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
