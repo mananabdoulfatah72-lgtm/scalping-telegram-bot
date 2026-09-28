@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Etapes 2 et 3 : les 4 strategies du protocole (README.md) pour le secteur classe premier a l'etape 1,
+"""Etapes 2 et 3 : les 4 strategies du protocole (README.md), puis les versions 5 et 6, pour le secteur classe premier a l'etape 1,
 jugees par les 8 criteres fixes avant les backtests. Ecrit le journal des rejets.
 
 Lancer depuis ce dossier, apres recherche.py : python3 strategies.py
@@ -24,7 +24,12 @@ MOTEUR = {"XLE": ("hausse", "CL=F"), "XLB": ("hausse", "HG=F"), "XLI": ("hausse"
           "XLU": ("baisse", "^TNX"), "XLRE": ("baisse", "^TNX"), "XLK": ("baisse", "^TNX"), "XLC": ("baisse", "^TNX"),
           "XLY": ("baisse", "^TNX"), "XLV": ("refuge", None), "XLP": ("refuge", None)}
 NOMS = {1: "Rotation (force relative du secteur)", 2: "Momentum des actions du secteur",
-        3: "Faible risque (actions calmes du secteur)", 4: "Moteur macro du secteur"}
+        3: "Faible risque (actions calmes du secteur)", 4: "Moteur macro du secteur",
+        5: "Version 5 : moteur macro + filtre 200 jours vers liquidites",
+        6: "Version 6 : momentum des actions + filtre 200 jours vers liquidites"}
+CASH = "CASH"                                  # liquidites remunerees au taux court (sans frais)
+MOMENTS = (1, 4, 5)                            # strategies qui choisissent quand etre dans le secteur
+SELECTIONS = (2, 3, 6)                         # strategies qui choisissent des actions
 
 
 # ----------------------------------------------------------------------------- simulation
@@ -64,12 +69,15 @@ class Etude:
         adj, close = charger()
         self.adj, self.close, self.E = adj, close, secteur
         self.L = [a for a in U.ACTIONS[secteur] if a in adj.columns and a not in retirer]
-        self.titres = [U.MARCHE, secteur] + self.L
-        self.r = adj[self.titres].pct_change(fill_method=None)
-        self.frais = pd.Series({t: FRAIS_ETF if t in (U.MARCHE, secteur) else FRAIS_ACTION for t in self.titres})
+        actifs = [U.MARCHE, secteur] + self.L
+        self.titres = actifs + [CASH]
+        self.r = adj[actifs].pct_change(fill_method=None)
+        self.frais = pd.Series({t: 0.0 if t == CASH else FRAIS_ETF if t in (U.MARCHE, secteur) else FRAIS_ACTION
+                                for t in self.titres})
         fins = fins_de_mois(adj.index, DEBUT_HIST - pd.Timedelta(days=40))
         self.fins = fins[fins < adj.index[-1]]          # pas de trade le dernier jour : aucune periode ne suit
         self.rf = (close["^IRX"].ffill() / 100 / AN).reindex(adj.index).fillna(0)
+        self.r[CASH] = self.rf
         # l'histoire commence au plus tot en 2006, et au moins un an apres la creation de l'ETF du secteur
         self.debut = max(DEBUT_HIST, adj[secteur].first_valid_index() + pd.Timedelta(days=365))
         self._cache3 = None
@@ -163,8 +171,20 @@ class Etude:
             w.loc[d, choix] = (inv / inv.sum()).values
         return w
 
+    def filtre(self, w):
+        """Versions 5 et 6 : si SPY cloture le mois sous sa moyenne 200 jours, tout en liquidites."""
+        spy = self.adj[U.MARCHE]
+        w = w.copy()
+        for d in w.index:
+            i = spy.index.get_loc(d)
+            if spy.iloc[i] < spy.iloc[i - 199:i + 1].mean():
+                w.loc[d] = 0.0
+                w.loc[d, CASH] = 1.0
+        return w
+
     def poids(self, k, hasard=None):
-        return {1: self.s1, 2: lambda: self.s2(hasard), 3: lambda: self.s3(hasard), 4: self.s4}[k]()
+        return {1: self.s1, 2: lambda: self.s2(hasard), 3: lambda: self.s3(hasard), 4: self.s4,
+                5: lambda: self.filtre(self.s4()), 6: lambda: self.filtre(self.s2(hasard))}[k]()
 
 
 # ----------------------------------------------------------------------------- mesures et criteres
@@ -188,16 +208,13 @@ def juger(et, k, rng, n_placebo):
     m12, m12_2, s12 = mesures(net[an], et.rf), mesures(net2[an], et.rf), mesures(spy[an], et.rf)
     mh, sh = mesures(h, et.rf), mesures(spy, et.rf)
     c = contrib.loc[an].sum()
-    part = float(c.drop([U.MARCHE, et.E], errors="ignore").max() / c.sum()) if c.sum() > 0 and k in (2, 3) else None
+    part = float(c.drop([U.MARCHE, et.E, CASH], errors="ignore").max() / c.sum()) if c.sum() > 0 and k in SELECTIONS else None
     # placebo sur toute l'histoire
-    if k in (1, 4):
-        dans = (w[et.E] > 0).values
+    if k in MOMENTS:
         ps = []
-        for _ in range(n_placebo):   # meme suite de periodes dans / hors du secteur, decalee au hasard
-            tir = np.roll(dans, rng.integers(12, len(dans) - 12))
-            wp = pd.DataFrame(0.0, index=w.index, columns=w.columns)
-            wp.loc[tir, et.E] = 1.0
-            wp.loc[~tir, U.MARCHE] = 1.0
+        for _ in range(n_placebo):   # la meme suite de positions (secteur / SPY / liquidites), decalee au hasard
+            ordre = np.roll(np.arange(len(w)), rng.integers(12, len(w) - 12))
+            wp = pd.DataFrame(w.values[ordre], index=w.index, columns=w.columns)
             ps.append(mesures(simuler(et.r, wp, et.frais)[0][h.index], et.rf)["sharpe"])
     else:
         ps = [mesures(simuler(et.r, et.poids(k, rng), et.frais)[0][h.index], et.rf)["sharpe"] for _ in range(n_placebo)]
@@ -214,7 +231,8 @@ def juger(et, k, rng, n_placebo):
     return {"nom": NOMS[k], "debut": str(debut.date()), "fin": str(fin.date()),
             "12_mois": m12, "12_mois_frais_doubles": m12_2, "spy_12_mois": s12, "histoire": mh, "spy_histoire": sh,
             "part_max_action": part, "placebo_centile": centile, "placebo_moyen": float(np.mean(ps)),
-            "part_du_temps_dans_le_secteur": float((w[et.E] > 0).mean()) if k in (1, 4) else None,
+            "part_du_temps_dans_le_secteur": float((w.loc[w.index >= debut, et.E] > 0).mean()) if k in MOMENTS else None,
+            "part_du_temps_en_liquidites": float((w.loc[w.index >= debut, CASH] > 0).mean()),
             "criteres": criteres}, net
 
 
@@ -222,7 +240,7 @@ def tout(secteur, n_placebo, graine=0):
     et = Etude(secteur)
     rng = np.random.default_rng(graine)
     res, series = {}, {}
-    for k in (1, 2, 3, 4):
+    for k in (1, 2, 3, 4, 5, 6):
         res[k], series[k] = juger(et, k, rng, n_placebo)
     return res, series, et
 
@@ -240,11 +258,11 @@ def tuer(et, k, net):
         x = net[(net.index >= a) & (net.index <= z)]
         s = et.r[U.MARCHE][x.index].fillna(0)
         out[nom] = {"strategie": float((1 + x).prod() - 1), "spy": float((1 + s).prod() - 1)}
-    if k in (2, 3):
+    if k in SELECTIONS:
         w = et.poids(k)
         _, contrib = simuler(et.r, w, et.frais)
         an = et.r.index[et.r.index > et.r.index[-1] - pd.Timedelta(days=365)]
-        meilleur = contrib.loc[an].drop(columns=[U.MARCHE, et.E]).sum().idxmax()
+        meilleur = contrib.loc[an].drop(columns=[U.MARCHE, et.E, CASH]).sum().idxmax()
         et2 = Etude(et.E, retirer=(meilleur,))
         w2 = et2.poids(k)
         n2, _ = simuler(et2.r, w2, et2.frais)
