@@ -54,3 +54,49 @@ dans `fonds/essais.csv`.
 Borne haute : pour chaque signal continu (1 à 4), le mouvement moyen du décile le plus favorable.
 Si même ce meilleur décile ne dépasse pas les frais, aucun seuil ne peut rendre le signal rentable
 avec des ordres au marché.
+
+## Résultats (28 septembre 2026)
+
+**Transactions du ES** : 23 séances du 24 août au 25 septembre 2026 (2 séances écartées : Labor Day
+et le jour où le contrat suivi n'était plus le plus échangé), environ 1 million de contrats par
+jour, écart acheteur-vendeur de 1 tick 99 % du temps. `python3 analyse.py` refait tout
+(`resultats.txt`, `resultats.json`).
+
+Borne haute (décile le plus favorable, mouvement du prix milieu) :
+
+| Signal | 1 minute | 5 minutes | Frais d'un aller-retour |
+|---|---|---|---|
+| Déséquilibre du carnet (1er niveau) | +0,83 tick | +1,62 tick | 2,6 ticks |
+| OFI | +0,24 | +0,43 | 2,6 |
+| Delta 1 minute | +0,20 | aucun | 2,6 |
+| CVD 15 minutes | aucun | aucun | 2,6 |
+
+Stratégies aux règles fixées (trades sans chevauchement, 1 MES) :
+
+| Signal | Gain brut par trade | Net par trade | Placebo battu | Verdict |
+|---|---|---|---|---|
+| Déséquilibre du carnet, 1 min | +0,37 tick | −2,23 ticks (t = −18,9) | 100 % | non : vrai signal, trop petit |
+| OFI, 1 min | +0,62 | −1,98 (t = −6,2) | 97 % | non : vrai signal, trop petit |
+| Footprint empilé, 1 min | +0,69 | −1,91 (t = −3,8) | 91 % | non |
+| Footprint empilé, 5 min | −2,63 | −5,23 | 1 % | non (se retourne) |
+| Delta 1 minute, 5 min | +2,05 | −0,55 (t = −0,4, 47 trades) | 90 % | non |
+| Absorption, 5 min | +1,54 | −1,06 (t = −0,6, 96 trades) | 80 % | non |
+| CVD 15 minutes | — | — | — | trop peu de signaux |
+
+**Bandes de VWAP (ES 2011-2026, `vwap.py`)** : 7 208 trades, 62 % de gagnants, mais −1,29 point
+par trade après frais (t = −7,5), perdant chaque année ; le retour au VWAP fait moins bien que le
+hasard (le marché a tendance à continuer).
+
+### Ce qu'on en retient
+
+- **L'order flow contient une vraie information** : le déséquilibre du carnet et l'OFI prédisent le
+  mouvement de la minute suivante mieux que le hasard (placebo battu à 97-100 %), comme dans les
+  études (Cont, Kukanov, Stoikov 2014 ; Gould et Bonart 2016).
+- **Mais cette information vaut moins d'un tick**, alors qu'un aller-retour au marché coûte 2,6 ticks
+  sur MES (1 tick d'écart + 1,6 tick de commissions). Même sur le ES (commissions 0,4 tick), le
+  meilleur décile (0,83 tick) reste sous le coût (1,4 tick).
+- **Seuls les acteurs à très haute fréquence peuvent l'exploiter** : ordres passifs placés en tête de
+  file, remises de la bourse, serveurs à côté de la CME. Un robot en ordres limites sans cet
+  avantage est surtout servi quand le prix part contre lui ; le simuler sérieusement demanderait le
+  carnet complet ordre par ordre (MBO, environ 100 $ par jour).
+- **Delta, CVD, absorption et footprint empilé** : pas d'information exploitable sur ces 23 séances.

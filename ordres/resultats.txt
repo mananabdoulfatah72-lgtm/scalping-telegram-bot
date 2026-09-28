@@ -1,0 +1,26 @@
+Seances ecartees (volume anormal) : 2026-09-07 (36,948 contrats), 2026-09-15 (178,985 contrats)
+23 seances ES, du 2026-08-24 au 2026-09-25 ; frais 2.6 ticks par aller-retour
+
+Borne haute : mouvement moyen (ticks) du decile le plus favorable, et correlation de rang
+  delta1  1 min : decile haut -0.03 | decile bas -0.20 | meilleur 0.20 tick (frais 2.6) | correlation +0.005
+  delta1  5 min : decile haut -0.25 | decile bas +0.58 | meilleur -0.25 tick (frais 2.6) | correlation -0.030
+  cvd15   1 min : decile haut -0.05 | decile bas +0.21 | meilleur -0.05 tick (frais 2.6) | correlation -0.007
+  cvd15   5 min : decile haut -0.18 | decile bas +0.80 | meilleur -0.18 tick (frais 2.6) | correlation -0.003
+  carnet  1 min : decile haut +0.83 | decile bas -0.47 | meilleur 0.83 tick (frais 2.6) | correlation +0.046
+  carnet  5 min : decile haut +1.62 | decile bas -1.32 | meilleur 1.62 tick (frais 2.6) | correlation +0.031
+  ofi     1 min : decile haut +0.24 | decile bas -0.03 | meilleur 0.24 tick (frais 2.6) | correlation +0.004
+  ofi     5 min : decile haut +0.43 | decile bas +0.16 | meilleur 0.43 tick (frais 2.6) | correlation -0.013
+
+Strategies (regles fixees), trades sans chevauchement :
+  1 Delta 1 minute           1 min :    54 trades | brut -0.16 | net -2.76 ticks (t -4.91) | -8 $/jour par MES | placebo battu 38% | non
+  1 Delta 1 minute           5 min :    47 trades | brut +2.05 | net -0.55 ticks (t -0.36) | -1 $/jour par MES | placebo battu 90% | non
+  2 CVD 15 minutes           1 min : 23 trades, trop peu
+  2 CVD 15 minutes           5 min : 6 trades, trop peu
+  3 Desequilibre du carnet   1 min :  3915 trades | brut +0.37 | net -2.23 ticks (t -18.88) | -474 $/jour par MES | placebo battu 100% | non
+  3 Desequilibre du carnet   5 min :  1399 trades | brut +0.35 | net -2.25 ticks (t -5.12) | -171 $/jour par MES | placebo battu 78% | non
+  4 OFI (Cont et al.)        1 min :   506 trades | brut +0.62 | net -1.98 ticks (t -6.21) | -55 $/jour par MES | placebo battu 97% | non
+  4 OFI (Cont et al.)        5 min :   396 trades | brut -0.31 | net -2.91 ticks (t -3.54) | -63 $/jour par MES | placebo battu 35% | non
+  5 Footprint empile         1 min :   336 trades | brut +0.69 | net -1.91 ticks (t -3.77) | -35 $/jour par MES | placebo battu 91% | non
+  5 Footprint empile         5 min :   282 trades | brut -2.63 | net -5.23 ticks (t -4.19) | -80 $/jour par MES | placebo battu 1% | non
+  6 Absorption               1 min :   112 trades | brut +0.05 | net -2.55 ticks (t -4.26) | -16 $/jour par MES | placebo battu 52% | non
+  6 Absorption               5 min :    96 trades | brut +1.54 | net -1.06 ticks (t -0.59) | -6 $/jour par MES | placebo battu 80% | non

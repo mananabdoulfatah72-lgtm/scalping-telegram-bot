@@ -19,7 +19,12 @@ DEBUT_DEC, FIN_DEC = 1, 384    # decisions a la fin des minutes 9 h 30 ... 15 h 
 
 def charger():
     s = pd.read_csv(D / "es_secondes.csv.gz", parse_dates=["t"]).set_index("t")
-    jours = sorted(s.index.normalize().unique())
+    # seances anormales (jour ferie, jour ou le contrat suivi n'est plus le plus echange) : volume < 50 % de la mediane
+    vol = (s["achat"] + s["vente"]).groupby(s.index.normalize()).sum()
+    exclus = vol[vol < 0.5 * vol.median()]
+    if len(exclus):
+        print("Seances ecartees (volume anormal) : " + ", ".join(f"{d.date()} ({v:,.0f} contrats)" for d, v in exclus.items()))
+    jours = sorted(vol.index.difference(exclus.index))
     grilles = []
     for j in jours:
         idx = pd.date_range(j + pd.Timedelta(hours=9, minutes=30), periods=S_JOUR, freq="s")
