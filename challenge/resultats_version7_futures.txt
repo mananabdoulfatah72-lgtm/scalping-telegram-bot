@@ -32,3 +32,5 @@ Information : sur la periode, le Nasdaq a fait +394% la nuit (cloture -> ouvertu
   B Apex 50K     f=0.35 | 1 tentative : reussie  21%, perdue  0.3% | en 12 mois : valide  95% (avec 2 comptes max  38% ; sans avantage  85% ; depuis 2020  97%, sans avantage  92%) | tentatives 4.4 (max 12)
   B Phidias 50K  f=0.15 | 1 tentative : reussie   5%, perdue  0.0% | en 12 mois : valide   5% (avec 2 comptes max   5% ; sans avantage   2% ; depuis 2020   5%, sans avantage   3%) | tentatives 1.0 (max 1)
   B Phidias 50K  f=0.25 | 1 tentative : reussie  14%, perdue  0.0% | en 12 mois : valide  14% (avec 2 comptes max  14% ; sans avantage   8% ; depuis 2020  13%, sans avantage   7%) | tentatives 1.0 (max 1)
+  B Phidias 50K  f=0.35 | 1 tentative : reussie  19%, perdue  0.3% | en 12 mois : valide  19% (avec 2 comptes max  19% ; sans avantage  13% ; depuis 2020  19%, sans avantage  13%) | tentatives 1.0 (max 2)
+

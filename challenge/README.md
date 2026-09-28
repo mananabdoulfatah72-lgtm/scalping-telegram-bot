@@ -107,3 +107,41 @@ Règles (données NQ minute 2011-2026, 9 h 30 - 15 h 59, heure de New York) :
   Enfin, pour information, le partage du rendement du Nasdaq entre la nuit et la journée.
 - Deux essais (A et B) inscrits dans `fonds/essais.csv`. Aucune autre variante (stop, heure, taille)
   ne sera essayée après les résultats.
+
+### Résultats (`version7_futures.py`, `resultats_version7_futures.txt`)
+
+**Avantage : aucun de démontré.** Sur 2011-2026, le Nasdaq a fait **+394 % la nuit** et seulement
++127 % en séance. Fermer chaque soir retire l'essentiel de ce qui fait gagner la version 7.
+
+| Variante | Trades | Net par trade (1 MNQ) | t | En unités de risque (t) | 2011-2019 |
+|---|---|---|---|---|---|
+| A, avec filtre momentum | 3 063 | +1,43 $ | 0,43 | −0,000 (−0,01) | négatif |
+| B, sans filtre | 3 732 | +3,75 $ | 1,22 | +0,012 (0,55) | négatif |
+
+Le filtre momentum (la partie « version 7 ») bat seulement 5 % des tirages au hasard des mois achetés :
+il ne choisit pas de meilleurs mois.
+
+**Challenge 50K (validé en 12 mois / par le seul hasard)** :
+
+| Firme | A, f = 0,25 | B, f = 0,35 | Tentatives perdues |
+|---|---|---|---|
+| Topstep | 13 % / 9 % | 15 % / 9 % | 0 à 0,1 % |
+| Phidias | 18 % / 15 % | 19 % / 13 % | 0 à 0,3 % |
+| Apex (rachats toutes les 30 séances) | 74 % / 69 % | 95 % / 85 % | 0 à 0,3 % |
+| Apex, 2 comptes au plus | 22 % | 38 % | |
+
+- **Le bot ne saute presque jamais.** Les seules pertes viennent du 16 mars 2020 : la bourse a été
+  suspendue à l'ouverture et le stop a été sauté.
+- **Mais il valide rarement.** Avec le Nasdaq à 31 000 points, 1 MNQ au stop de 0,5 % risque environ
+  310 $, soit 15 % de la marge Topstep. Quand le coussin se réduit, le bot n'a plus droit à un seul
+  contrat : il arrête de trader, sans perdre ni gagner.
+- L'écart avec le hasard est de 3 à 10 points : c'est surtout la chance qui valide.
+- Revue du code (niveau maximal) :
+  - **Apex est surestimé.** Sa limite suit le plus haut atteint pendant la séance ; en le rejouant
+    minute par minute, B f = 0,35 passe de 95 % à 87 % (de 38 % à 30 % avec 2 comptes).
+  - Corrigé : statistiques en unités de risque (le dollar est dominé par 2020-2026), pertes affichées
+    au dixième, référence « sans avantage » calculée aussi depuis 2020, essais inscrits.
+  - Non changé, conforme aux règles fixées : glissement compté deux fois au stop (−0,25 $ par trade),
+    taille calculée sur la clôture de la veille.
+
+**Verdict : rejetée.** Ni avantage, ni validation fiable avec 2 comptes au plus.
