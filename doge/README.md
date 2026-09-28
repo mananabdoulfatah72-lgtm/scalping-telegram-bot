@@ -55,3 +55,10 @@ placebos) mais −0,01 % après frais (t = −0,4), et le résultat change de si
 **Conclusion** : pas de mouvement brutal exploitable à 2 h, 13 h ou 23 h sur le prix du DOGE.
 Ce qu'on voit sur la courbe de capitalisation de TradingView vient probablement de la mise à jour
 à heure fixe du nombre de DOGE en circulation, pas d'un mouvement de prix qu'on pourrait trader.
+
+**Capture TradingView du 28 septembre 2026 (CRYPTOCAP:DOGE, 30 min)** : sur la même période, le
+prix du DOGE est passé de 0,079 $ à 0,104 $ ; avec environ 157 milliards de DOGE en circulation, cela
+donne une capitalisation de 12,4 à 16,3 milliards de dollars, comme sur la capture. Les sauts sont
+donc de vrais mouvements de prix. Mais les 8 plus gros mouvements de 30 minutes du 13 au 25 septembre
+ont eu lieu à 4 h 30, 6 h, 6 h 30, 15 h 30, 16 h et 16 h 30, jamais à 2 h, 13 h ou 23 h
+(`doge_heures.png`).
