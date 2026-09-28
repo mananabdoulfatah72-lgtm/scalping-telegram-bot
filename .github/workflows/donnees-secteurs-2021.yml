@@ -1,0 +1,40 @@
+name: Donnees secteurs, univers 2021 (Yahoo)
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - secteurs/telecharger_2021.py
+      - .github/workflows/donnees-secteurs-2021.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer les dependances
+        run: pip install yfinance pandas
+
+      - name: Telecharger les prix
+        run: python3 secteurs/telecharger_2021.py
+
+      - name: Enregistrer les donnees sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add secteurs/donnees/prix_2021.csv.gz
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees : actions technologie de 2021 (Yahoo)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

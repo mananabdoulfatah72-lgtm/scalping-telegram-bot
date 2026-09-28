@@ -37,6 +37,11 @@ ACTIONS = {
     "XLRE": ["PLD", "AMT", "EQIX", "WELL", "SPG", "PSA", "O", "CCI", "DLR", "CBRE", "EXR", "AVB", "VICI",
              "EQR", "IRM", "SBAC", "VTR", "WY", "ARE", "INVH"],
 }
+# Test T6 (fenetre 5 ans) : les 20 plus grosses actions de XLK a la fin septembre 2021, de memoire (poids
+# approximatifs). V, MA et PYPL sont passees en finance en mars 2023 ; INTC et PYPL ont beaucoup baisse depuis.
+XLK_2021 = ["AAPL", "MSFT", "NVDA", "V", "MA", "ADBE", "PYPL", "CRM", "ACN", "INTC", "CSCO", "AVGO", "ORCL",
+            "QCOM", "TXN", "AMD", "INTU", "AMAT", "IBM", "NOW"]
+
 INDUSTRIES = ["XOP", "OIH", "XES", "AMLP", "URA", "NLR", "ICLN", "TAN", "SMH", "SOXX", "IGV", "KRE", "KBE",
               "XBI", "IBB", "ITA", "XHB", "ITB", "GDX", "XME", "COPX", "LIT", "VNQ", "XRT"]
 MACRO = ["^TNX", "^IRX", "^VIX", "CL=F", "NG=F", "HG=F", "GC=F", "DX-Y.NYB"]

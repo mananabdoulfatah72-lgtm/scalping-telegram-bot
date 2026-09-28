@@ -141,3 +141,31 @@ essais. Données figées (`donnees/prix.csv.gz` du 28 septembre, 02 h UTC).
 | Battent SPY sur toute l'histoire | 6 |
 | Pire baisse sous 30 % | 1 |
 | Passent tous les critères | **0** |
+
+## Fenêtre de 5 ans (demandée le 28 septembre 2026, après les résultats sur 20 ans)
+
+Règles écrites ici avant l'exécution. **Mise en garde** : la fenêtre est changée *après* avoir vu
+les résultats sur 20 ans (et les baisses depuis 2023). Ce sont donc 6 nouveaux essais
+(`fonds/essais.csv`) : une version qui passe sur 5 ans n'a pas la même valeur qu'une version qui
+aurait passé sur 20 ans.
+
+- Mêmes 6 versions, mêmes frais, même secteur (XLK), mêmes données figées.
+- « Toute l'histoire » devient **30 septembre 2021 - 25 septembre 2026** (premier rééquilibrage
+  mensuel après le 25 septembre 2021). La fenêtre contient la baisse de 2022 et celle d'avril 2025.
+- Critères 1 à 8 inchangés. Les critères 3, 7 et 8 portent sur ces 5 ans. Le placebo est tiré dans ces
+  5 ans. Critère 6 : deux exécutions séparées (`empreinte_5ans.txt`).
+- **Tests pour tuer** (fixés maintenant) : une version qui passe les 8 critères doit aussi réussir
+  T1 à T4, sinon elle est rejetée.
+  - T1 : bat encore SPY sur 5 ans si chaque ordre part **le lendemain** de la fin du mois.
+  - T2 : bat encore SPY sur 5 ans avec des **frais triples**.
+  - T3 : pour les versions sur actions, bat encore SPY sur 12 mois **sans la meilleure action**
+    des 12 mois.
+  - T4 : bat SPY dans **au moins 3 des 5 années** (périodes de 12 mois finissant le 25 septembre).
+- T5 (information, pas éliminatoire) : même règle de 2006 à septembre 2021, c'est-à-dire la période
+  que la fenêtre de 5 ans laisse de côté. On donne le rendement par an contre SPY et la pire baisse.
+- T6 (versions 2 et 6, éliminatoire) : **contre le biais de survie**, on remplace les 20 actions
+  d'aujourd'hui par les 20 plus grosses de XLK à la fin septembre 2021 (`univers.XLK_2021`, liste de
+  mémoire, poids approximatifs). Cette liste contient V, MA et PYPL (passées en finance en 2023) et
+  INTC et PYPL (fortes baisses depuis). La version doit encore battre SPY sur 5 ans et garder une pire
+  baisse inférieure à 30 %. Les deux actions manquantes (INTC, PYPL) sont téléchargées à part
+  (`donnees/prix_2021.csv.gz`), sans toucher aux données figées.
