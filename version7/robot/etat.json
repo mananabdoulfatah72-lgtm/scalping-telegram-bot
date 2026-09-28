@@ -1,0 +1,14 @@
+{
+ "debut": "2026-09-28",
+ "derniere_date": "2026-09-28",
+ "solde": 50000.0,
+ "plus_haut": 50000.0,
+ "montants": {},
+ "liquidites": 50000.0,
+ "dernier_reequilibrage": null,
+ "ordres": [],
+ "challenge": {
+  "etat": "en attente du premier achat",
+  "date": null
+ }
+}
