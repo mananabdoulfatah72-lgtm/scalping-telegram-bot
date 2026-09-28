@@ -98,6 +98,14 @@ def main():
     dbn = [f for f in fichiers if str(f).endswith((".dbn.zst", ".dbn"))]
     df = pd.concat([en_df(db.DBNStore.from_file(f)) for f in dbn])
     df = df[df.index.dayofweek < 5]
+    out = pd.DataFrame({"date": df.index.strftime("%Y-%m-%d"), "symbole": df["symbol"].values,
+                        "contrat": df["instrument_id"].values, "o": df["open"].values, "h": df["high"].values,
+                        "l": df["low"].values, "c": df["close"].values, "v": df["volume"].values})
+    out.to_csv(D / "futures_1d.csv.gz", index=False)
+    print(f"Barres journalieres : {len(out)} lignes, {out['symbole'].nunique()} series, "
+          f"du {out['date'].min()} au {out['date'].max()}", flush=True)
+    print(out.groupby("symbole")["date"].min().sort_index().to_string(), flush=True)
+
     # 2. symbole de chaque contrat (echeance)
     ids = sorted(int(i) for i in out["contrat"].unique())
     noms = {}
