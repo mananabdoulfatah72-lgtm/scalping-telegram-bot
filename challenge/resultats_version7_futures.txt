@@ -1,0 +1,34 @@
+NQ minute 2011-07-01 -> 2026-09-25 (3913 seances avec signal)
+
+Information : sur la periode, le Nasdaq a fait +394% la nuit (cloture -> ouverture) et +127% en seance (ouverture -> cloture).
+
+1. Avantage (1 MNQ, frais compris, stop 0,5 %) :
+  A avec filtre momentum : 3063 trades | +1.43 $ par trade et par MNQ (t +0.43) | en unites de risque -0.000 (t -0.01) | gagnants 42% | stop touche 48%
+     2011-2014 : -1.02 $ (t -0.73) | unites de risque -0.034 (t -0.83) | 711 trades
+     2015-2019 : -1.94 $ (t -0.87) | unites de risque -0.039 (t -1.13) | 1027 trades
+     2020-2026 : +5.37 $ (t +0.72) | unites de risque +0.048 (t +1.11) | 1325 trades
+  B sans filtre : 3732 trades | +3.75 $ par trade et par MNQ (t +1.22) | en unites de risque +0.012 (t +0.55) | gagnants 41% | stop touche 49%
+     2011-2014 : -1.23 $ (t -0.97) | unites de risque -0.043 (t -1.12) | 851 trades
+     2015-2019 : -1.16 $ (t -0.55) | unites de risque -0.023 (t -0.71) | 1227 trades
+     2020-2026 : +9.95 $ (t +1.48) | unites de risque +0.067 (t +1.68) | 1654 trades
+  filtre A : placebo battu 5% (mois achetes tires au hasard, en unites de risque)
+
+2. Challenge 50K (bot coussin, un depart par semaine, regles a verifier chez chaque firme) :
+  A Topstep 50K  f=0.15 | 1 tentative : reussie   8%, perdue  0.0% | en 12 mois : valide   4% (avec 2 comptes max   4% ; sans avantage   3% ; depuis 2020   4%, sans avantage   1%) | tentatives 1.0 (max 1)
+  A Topstep 50K  f=0.25 | 1 tentative : reussie  13%, perdue  0.0% | en 12 mois : valide  13% (avec 2 comptes max  13% ; sans avantage   9% ; depuis 2020  10%, sans avantage   6%) | tentatives 1.0 (max 1)
+  A Topstep 50K  f=0.35 | 1 tentative : reussie  14%, perdue  0.1% | en 12 mois : valide  14% (avec 2 comptes max  14% ; sans avantage   9% ; depuis 2020  10%, sans avantage   7%) | tentatives 1.0 (max 2)
+  A Apex 50K     f=0.15 | 1 tentative : reussie   3%, perdue  0.0% | en 12 mois : valide  29% (avec 2 comptes max   6% ; sans avantage  25% ; depuis 2020  38%, sans avantage  33%) | tentatives 10.3 (max 12)
+  A Apex 50K     f=0.25 | 1 tentative : reussie  11%, perdue  0.0% | en 12 mois : valide  74% (avec 2 comptes max  22% ; sans avantage  69% ; depuis 2020  81%, sans avantage  72%) | tentatives 6.9 (max 12)
+  A Apex 50K     f=0.35 | 1 tentative : reussie  17%, perdue  0.3% | en 12 mois : valide  89% (avec 2 comptes max  32% ; sans avantage  83% ; depuis 2020  89%, sans avantage  86%) | tentatives 5.3 (max 12)
+  A Phidias 50K  f=0.15 | 1 tentative : reussie  14%, perdue  0.0% | en 12 mois : valide   8% (avec 2 comptes max   8% ; sans avantage   8% ; depuis 2020  13%, sans avantage   2%) | tentatives 1.0 (max 1)
+  A Phidias 50K  f=0.25 | 1 tentative : reussie  18%, perdue  0.0% | en 12 mois : valide  18% (avec 2 comptes max  18% ; sans avantage  15% ; depuis 2020  24%, sans avantage   6%) | tentatives 1.0 (max 1)
+  A Phidias 50K  f=0.35 | 1 tentative : reussie  16%, perdue  0.3% | en 12 mois : valide  16% (avec 2 comptes max  16% ; sans avantage  12% ; depuis 2020  14%, sans avantage  11%) | tentatives 1.0 (max 2)
+
+  B Topstep 50K  f=0.15 | 1 tentative : reussie   7%, perdue  0.0% | en 12 mois : valide   7% (avec 2 comptes max   7% ; sans avantage   1% ; depuis 2020   7%, sans avantage   1%) | tentatives 1.0 (max 1)
+  B Topstep 50K  f=0.25 | 1 tentative : reussie  14%, perdue  0.0% | en 12 mois : valide  14% (avec 2 comptes max  14% ; sans avantage   6% ; depuis 2020  12%, sans avantage   5%) | tentatives 1.0 (max 1)
+  B Topstep 50K  f=0.35 | 1 tentative : reussie  15%, perdue  0.1% | en 12 mois : valide  15% (avec 2 comptes max  15% ; sans avantage   9% ; depuis 2020  12%, sans avantage   7%) | tentatives 1.0 (max 2)
+  B Apex 50K     f=0.15 | 1 tentative : reussie   4%, perdue  0.0% | en 12 mois : valide  38% (avec 2 comptes max   7% ; sans avantage  29% ; depuis 2020  52%, sans avantage  44%) | tentatives 9.8 (max 12)
+  B Apex 50K     f=0.25 | 1 tentative : reussie  14%, perdue  0.0% | en 12 mois : valide  83% (avec 2 comptes max  26% ; sans avantage  74% ; depuis 2020  91%, sans avantage  81%) | tentatives 6.0 (max 12)
+  B Apex 50K     f=0.35 | 1 tentative : reussie  21%, perdue  0.3% | en 12 mois : valide  95% (avec 2 comptes max  38% ; sans avantage  85% ; depuis 2020  97%, sans avantage  92%) | tentatives 4.4 (max 12)
+  B Phidias 50K  f=0.15 | 1 tentative : reussie   5%, perdue  0.0% | en 12 mois : valide   5% (avec 2 comptes max   5% ; sans avantage   2% ; depuis 2020   5%, sans avantage   3%) | tentatives 1.0 (max 1)
+  B Phidias 50K  f=0.25 | 1 tentative : reussie  14%, perdue  0.0% | en 12 mois : valide  14% (avec 2 comptes max  14% ; sans avantage   8% ; depuis 2020  13%, sans avantage   7%) | tentatives 1.0 (max 1)
