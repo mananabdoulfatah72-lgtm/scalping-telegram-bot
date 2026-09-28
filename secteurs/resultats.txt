@@ -1,6 +1,6 @@
 Secteur classe premier a l'etape 1 : XLK (Technologie)
 
-Empreinte des resultats : f26743ac92a6107a ; execution precedente : f26743ac92a6107a -> identiques
+Empreinte des resultats : 57435f5cfcc7b7f6 ; execution precedente : 57435f5cfcc7b7f6 -> identiques
 
 Strategie 1 - Rotation (force relative du secteur) : REJETEE
    12 derniers mois : +33.0% (SPY +18.5%) | frais doubles +32.8% | Sharpe 1.15 | part max d'une action sans objet
@@ -24,7 +24,7 @@ Strategie 4 - Moteur macro du secteur : REJETEE
 
 Strategie 5 - Version 5 : moteur macro + filtre 200 jours vers liquidites : REJETEE
    12 derniers mois : +8.1% (SPY +18.5%) | frais doubles +7.9% | Sharpe 0.33 | part max d'une action sans objet
-   depuis 2006-01-31 : +12.8%/an (SPY +11.1%/an) | Sharpe 0.81 (SPY 0.56) | pire baisse -22% (SPY -55%) | placebo battu 97% | dans le secteur 37% du temps
+   depuis 2006-01-31 : +12.8%/an (SPY +11.1%/an) | Sharpe 0.81 (SPY 0.56) | pire baisse -22% (SPY -55%) | placebo battu 97% | dans le secteur 38% du temps
    criteres rates : 1 bat SPY sur 12 mois, 2 idem avec frais doubles, 4 Sharpe 12 mois > 1
 
 Strategie 6 - Version 6 : momentum des actions + filtre 200 jours vers liquidites : REJETEE

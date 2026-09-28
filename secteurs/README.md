@@ -79,3 +79,65 @@ s'applique normalement.
 Mêmes 8 critères, mêmes frais. Placebo de la version 5 : la même suite de positions décalée au hasard
 dans le temps ; de la version 6 : 5 actions tirées au hasard, avec le même filtre. Ce sont les essais
 5 et 6 de cette étude : s'ils échouent, on s'arrête là.
+
+## Résultats (28 septembre 2026)
+
+### Étape 1 — ce que dit la recherche (au 25 septembre 2026, `recherche.txt`)
+
+| Secteur | Force relative 3 mois | 6 mois | Sensibilité à +0,10 pt de taux 10 ans |
+|---|---|---|---|
+| **Technologie (XLK)**, classé 1er | +2,4 pts | +28,3 pts | +0,40 % |
+| Santé (XLV) | +0,8 | −2,1 | −0,35 % |
+| Énergie (XLE) | **+9,8** | −18,0 | +0,74 % |
+| Immobilier (XLRE) | −13,4 | −15,2 | −0,68 % |
+| Services publics (XLU) | −19,9 | −31,8 | −0,47 % |
+
+- Le marché paie la technologie (semi-conducteurs SOXX +54 pts sur 6 mois ; logiciels IGV +14 pts sur
+  3 mois) et punit ce qui craint la hausse des taux (services publics, immobilier, construction ITB −20,
+  solaire TAN −40, nucléaire NLR −39 sur 6 mois). L'énergie est la plus forte sur 3 mois.
+- **Taux de base 1999-2026 : acheter le secteur le plus fort des 3 ou 6 derniers mois ne bat pas SPY**
+  (t entre −0,6 et +0,6 ; légèrement négatif depuis 2010). Après un secteur à plus de 10 points au-dessus
+  de SPY sur 3 mois : −0,70 % le mois suivant (t = −1,7), gagnant 49 % du temps sur 3 mois. La recherche
+  décrit le marché ; elle ne le prédit pas.
+
+### Journal des rejets (Technologie, `resultats.txt`)
+
+| Version | 12 mois (SPY +18,5 %) | Sharpe 12 mois | Depuis 2006 (SPY +11,1 %/an) | Pire baisse | Placebo battu | Critères ratés |
+|---|---|---|---|---|---|---|
+| 1 Rotation | +33,0 % | 1,15 | +13,1 %/an | −59 % | 16 % | 3, 8 |
+| 2 Momentum des actions | +145,5 % | 1,88 | +29,3 %/an | −56 % | 97 % | 3 |
+| 3 Faible risque | +23,1 % | 0,94 | +17,1 %/an | −51 % | 58 % | 3, 4, 5 (une action = 49 % des gains), 8 |
+| 4 Moteur macro (taux en baisse) | +19,1 % | 0,91 | +15,6 %/an | −54 % | 98 % | 3, 4 |
+| 5 = 4 + filtre 200 jours | +8,1 % | 0,33 | +12,8 %/an | −22 % | 97 % | 1, 2, 4 |
+| 6 = 2 + filtre 200 jours | +93,9 % | 1,46 | +24,2 %/an | −38 % | 93 % | 3, 8 |
+
+Critère 6 (déterminisme) : deux exécutions séparées du code final, empreinte identique
+(`57435f5cfcc7b7f6`). **Aucune version ne passe : pas de test « pour tuer » à faire.**
+
+À lire avec ces réserves :
+- **Versions 2 et 6 (+24 à +29 %/an depuis 2006)** : les 20 actions sont les géants d'aujourd'hui
+  (NVDA, AVGO...), choisis en connaissant la suite. Ce chiffre est gonflé par le biais de survie.
+- **Version 5** : son placebo (même suite de positions décalée) est trop facile, comme l'a montré la
+  revue : le filtre 200 jours seul, sans moteur macro, bat déjà 97 % de ces placebos.
+- **Information seulement, pas un critère** : depuis 2023, les pires baisses des versions 1, 3 et 4
+  sont de −19 à −23 %. Sur une fenêtre de 3 ans (celle du texte d'origine), elles auraient passé le
+  critère 3 ; sur 20 ans, 2008 les fait toutes échouer.
+
+### Revues du code (niveau maximal, deux passes)
+
+Corrigé avant les résultats finaux : placebo des stratégies de moments qui changeait 2,5 fois plus
+souvent de position que la stratégie ; trade inutile le dernier jour ; pire baisse qui ignorait le
+premier jour ; ETF du secteur acheté avant sa création (XLC, XLRE) ; comparaisons de dates décalées ;
+téléchargement qui échouait sans le dire ; déterminisme vérifié dans une seule exécution ; ligne
+partielle du 28 septembre ; bug pandas 3 dans le taux de base ; versions 5 et 6 non inscrites comme
+essais. Données figées (`donnees/prix.csv.gz` du 28 septembre, 02 h UTC).
+
+### Bilan
+
+| Étape | Nombre |
+|---|---|
+| Stratégies testées (4 + 2 versions) | 6 |
+| Battent SPY sur 12 mois après frais | 4 |
+| Battent SPY sur toute l'histoire | 6 |
+| Pire baisse sous 30 % | 1 |
+| Passent tous les critères | **0** |

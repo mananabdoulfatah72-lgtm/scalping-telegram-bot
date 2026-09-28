@@ -1,6 +1,6 @@
 {
  "secteur": "XLK",
- "empreinte": "f26743ac92a6107a",
+ "empreinte": "57435f5cfcc7b7f6",
  "strategies": {
   "1": {
    "nom": "Rotation (force relative du secteur)",
@@ -39,7 +39,7 @@
    "part_max_action": null,
    "placebo_centile": 0.16333333333333333,
    "placebo_moyen": 0.6428782856003904,
-   "part_du_temps_dans_le_secteur": 0.58,
+   "part_du_temps_dans_le_secteur": 0.5766129032258065,
    "part_du_temps_en_liquidites": 0.0,
    "criteres": {
     "1 bat SPY sur 12 mois": true,
@@ -189,7 +189,7 @@
    "part_max_action": null,
    "placebo_centile": 0.9766666666666667,
    "placebo_moyen": 0.6246086051086509,
-   "part_du_temps_dans_le_secteur": 0.5,
+   "part_du_temps_dans_le_secteur": 0.5040322580645161,
    "part_du_temps_en_liquidites": 0.0,
    "criteres": {
     "1 bat SPY sur 12 mois": true,
@@ -239,8 +239,8 @@
    "part_max_action": null,
    "placebo_centile": 0.9733333333333334,
    "placebo_moyen": 0.554309380337196,
-   "part_du_temps_dans_le_secteur": 0.372,
-   "part_du_temps_en_liquidites": 0.2,
+   "part_du_temps_dans_le_secteur": 0.375,
+   "part_du_temps_en_liquidites": 0.20161290322580644,
    "criteres": {
     "1 bat SPY sur 12 mois": false,
     "2 idem avec frais doubles": false,
@@ -290,7 +290,7 @@
    "placebo_centile": 0.9333333333333333,
    "placebo_moyen": 0.7157475550037498,
    "part_du_temps_dans_le_secteur": null,
-   "part_du_temps_en_liquidites": 0.2,
+   "part_du_temps_en_liquidites": 0.20161290322580644,
    "criteres": {
     "1 bat SPY sur 12 mois": true,
     "2 idem avec frais doubles": true,
