@@ -53,3 +53,4 @@ date,dossier,essai,resultat
 2026-09-28,ordres,footprint desequilibres empiles (ES),voir ordres/README.md
 2026-09-28,ordres,absorption divergence de delta (ES),voir ordres/README.md
 2026-09-28,ordres,bandes de VWAP 2 ecarts-types (ES 2011-2026),net -1.29 pt t -7.5
+2026-09-28,challenge,bot coussin zone de bruit (+ melange) sur Topstep/Apex/Phidias 50K (3 valeurs de f),voir challenge/README.md
