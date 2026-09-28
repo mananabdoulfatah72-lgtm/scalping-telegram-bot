@@ -169,3 +169,17 @@ aurait passé sur 20 ans.
   INTC et PYPL (fortes baisses depuis). La version doit encore battre SPY sur 5 ans et garder une pire
   baisse inférieure à 30 %. Les deux actions manquantes (INTC, PYPL) sont téléchargées à part
   (`donnees/prix_2021.csv.gz`), sans toucher aux données figées.
+
+### Version 7 (fixée le 28 septembre 2026, après le premier passage sur 5 ans, avant son test)
+
+Au premier passage sur 5 ans, aucune version ne passe. La version 2 échoue seulement au critère 3
+(pire baisse −42 %). **Version 7 = moitié version 2, moitié liquidités** (rééquilibrée chaque fin de
+mois). Pas de nouvelle règle de choix des actions : on met moins d'argent en jeu. 50 % est choisi
+parce que c'est la moitié, pas après optimisation, et il n'y aura pas d'autre fraction.
+
+- Fenêtre de 5 ans seulement, mêmes 8 critères, puis tests T1 à T6. Placebo : 5 actions au hasard,
+  aussi à 50 %.
+- **Essai trouvé après coup** : il est inscrit comme tel dans `fonds/essais.csv`. S'il passe, on le
+  lit comme un candidat à suivre en argent virtuel, pas comme une preuve.
+- Les tests pour tuer sont aussi calculés, **pour information**, pour les versions déjà rejetées :
+  le verdict ne change pas.

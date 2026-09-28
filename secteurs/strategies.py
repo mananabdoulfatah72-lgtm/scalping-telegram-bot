@@ -2,7 +2,8 @@
 """Etapes 2 et 3 : les 4 strategies du protocole (README.md), puis les versions 5 et 6, pour le secteur classe premier a l'etape 1,
 jugees par les 8 criteres fixes avant les backtests. Ecrit le journal des rejets.
 
-Lancer depuis ce dossier, apres recherche.py : python3 strategies.py
+Lancer depuis ce dossier, apres recherche.py : python3 strategies.py        (histoire depuis 2006)
+                                               python3 strategies.py 5ans   (fenetre 5 ans, README.md)
 """
 import hashlib
 import json
@@ -15,10 +16,11 @@ import pandas as pd
 ICI = Path(__file__).parent
 sys.path.insert(0, str(ICI))
 import univers as U  # noqa: E402
-from recherche import charger  # noqa: E402
+from recherche import FIN, charger  # noqa: E402
 
 FRAIS_ACTION, FRAIS_ETF = 5e-4, 3e-4          # par ordre, en fraction du montant echange
 DEBUT_HIST = pd.Timestamp("2006-01-01")
+FENETRES = {"20ans": DEBUT_HIST, "5ans": pd.Timestamp(FIN) - pd.DateOffset(years=5)}   # debut de l'histoire jugee
 AN, M3, M6 = 252, 63, 126
 MOTEUR = {"XLE": ("hausse", "CL=F"), "XLB": ("hausse", "HG=F"), "XLI": ("hausse", "HG=F"), "XLF": ("hausse", "ecart"),
           "XLU": ("baisse", "^TNX"), "XLRE": ("baisse", "^TNX"), "XLK": ("baisse", "^TNX"), "XLC": ("baisse", "^TNX"),
@@ -26,10 +28,11 @@ MOTEUR = {"XLE": ("hausse", "CL=F"), "XLB": ("hausse", "HG=F"), "XLI": ("hausse"
 NOMS = {1: "Rotation (force relative du secteur)", 2: "Momentum des actions du secteur",
         3: "Faible risque (actions calmes du secteur)", 4: "Moteur macro du secteur",
         5: "Version 5 : moteur macro + filtre 200 jours vers liquidites",
-        6: "Version 6 : momentum des actions + filtre 200 jours vers liquidites"}
+        6: "Version 6 : momentum des actions + filtre 200 jours vers liquidites",
+        7: "Version 7 : moitie version 2, moitie liquidites (fenetre 5 ans)"}
 CASH = "CASH"                                  # liquidites remunerees au taux court (sans frais)
 MOMENTS = (1, 4, 5)                            # strategies qui choisissent quand etre dans le secteur
-SELECTIONS = (2, 3, 6)                         # strategies qui choisissent des actions
+SELECTIONS = (2, 3, 6, 7)                      # strategies qui choisissent des actions
 
 
 # ----------------------------------------------------------------------------- simulation
@@ -64,22 +67,35 @@ def fins_de_mois(index, debut):
 
 
 # ----------------------------------------------------------------------------- les 4 strategies
+def charger_2021():
+    """Donnees figees + actions de l'univers 2021 telechargees a part (test T6), aux memes dates."""
+    adj, close = charger()
+    d = pd.read_csv(ICI / "donnees" / "prix_2021.csv.gz", parse_dates=["date"])
+    for tab, col in ((adj, "adjclose"), (close, "close")):
+        x = d.pivot(index="date", columns="ticker", values=col).reindex(adj.index)
+        for t in x.columns:
+            if t not in tab.columns:
+                tab[t] = x[t]
+    return adj, close
+
+
 class Etude:
-    def __init__(self, secteur, retirer=()):
-        adj, close = charger()
+    def __init__(self, secteur, retirer=(), debut_hist=DEBUT_HIST, actions=None, donnees=None):
+        adj, close = donnees if donnees is not None else charger()
         self.adj, self.close, self.E = adj, close, secteur
-        self.L = [a for a in U.ACTIONS[secteur] if a in adj.columns and a not in retirer]
+        self.L = [a for a in (actions or U.ACTIONS[secteur]) if a in adj.columns and a not in retirer]
         actifs = [U.MARCHE, secteur] + self.L
         self.titres = actifs + [CASH]
         self.r = adj[actifs].pct_change(fill_method=None)
         self.frais = pd.Series({t: 0.0 if t == CASH else FRAIS_ETF if t in (U.MARCHE, secteur) else FRAIS_ACTION
                                 for t in self.titres})
-        fins = fins_de_mois(adj.index, DEBUT_HIST - pd.Timedelta(days=40))
+        fins = fins_de_mois(adj.index, debut_hist - pd.Timedelta(days=40))
         self.fins = fins[fins < adj.index[-1]]          # pas de trade le dernier jour : aucune periode ne suit
         self.rf = (close["^IRX"].ffill() / 100 / AN).reindex(adj.index).fillna(0)
         self.r[CASH] = self.rf
-        # l'histoire commence au plus tot en 2006, et au moins un an apres la creation de l'ETF du secteur
-        self.debut = max(DEBUT_HIST, adj[secteur].first_valid_index() + pd.Timedelta(days=365))
+        # l'histoire commence au plus tot a debut_hist, et au moins un an apres la creation de l'ETF du secteur
+        self.debut_hist = debut_hist
+        self.debut = max(debut_hist, adj[secteur].first_valid_index() + pd.Timedelta(days=365))
         self._cache3 = None
         self._elig = {}
 
@@ -182,9 +198,16 @@ class Etude:
                 w.loc[d, CASH] = 1.0
         return w
 
+    def moitie(self, w):
+        """Version 7 : la moitie de chaque position, l'autre moitie en liquidites."""
+        w = w * 0.5
+        w[CASH] += 0.5
+        return w
+
     def poids(self, k, hasard=None):
         return {1: self.s1, 2: lambda: self.s2(hasard), 3: lambda: self.s3(hasard), 4: self.s4,
-                5: lambda: self.filtre(self.s4()), 6: lambda: self.filtre(self.s2(hasard))}[k]()
+                5: lambda: self.filtre(self.s4()), 6: lambda: self.filtre(self.s2(hasard)),
+                7: lambda: self.moitie(self.s2(hasard))}[k]()
 
 
 # ----------------------------------------------------------------------------- mesures et criteres
@@ -236,11 +259,11 @@ def juger(et, k, rng, n_placebo):
             "criteres": criteres}, net
 
 
-def tout(secteur, n_placebo, graine=0):
-    et = Etude(secteur)
+def tout(secteur, n_placebo, graine=0, debut_hist=DEBUT_HIST, versions=(1, 2, 3, 4, 5, 6)):
+    et = Etude(secteur, debut_hist=debut_hist)
     rng = np.random.default_rng(graine)
     res, series = {}, {}
-    for k in (1, 2, 3, 4, 5, 6):
+    for k in versions:
         res[k], series[k] = juger(et, k, rng, n_placebo)
     return res, series, et
 
@@ -271,12 +294,73 @@ def tuer(et, k, net):
     return out
 
 
+def _cagr_contre_spy(et, x):
+    return mesures(x, et.rf)["cagr"], mesures(et.r[U.MARCHE][x.index].fillna(0), et.rf)["cagr"]
+
+
+def tuer_5ans(et, k, v):
+    """Tests T1 a T6 fixes dans README.md (fenetre 5 ans) pour une version qui passe les 8 criteres.
+    T1-T4 et T6 sont eliminatoires ; T5 (avant la fenetre) est une information."""
+    debut, fin = pd.Timestamp(v["debut"]), et.r.index[-1]
+    w = et.poids(k)
+    dans = lambda n: n[n.index > debut]
+    out = {}
+    # T1 : chaque ordre part le lendemain de la fin du mois
+    w1 = w.set_axis(et.r.index[[et.r.index.get_loc(d) + 1 for d in w.index]])
+    a, b = _cagr_contre_spy(et, dans(simuler(et.r, w1, et.frais)[0]))
+    out["T1 execution le lendemain"] = {"strategie_par_an": a, "spy_par_an": b, "reussi": a > b}
+    # T2 : frais triples
+    a, b = _cagr_contre_spy(et, dans(simuler(et.r, w, et.frais * 3)[0]))
+    out["T2 frais triples"] = {"strategie_par_an": a, "spy_par_an": b, "reussi": a > b}
+    # T3 : sans la meilleure action des 12 derniers mois
+    an = et.r.index[et.r.index > fin - pd.Timedelta(days=365)]
+    if k in SELECTIONS:
+        contrib = simuler(et.r, w, et.frais)[1]
+        meilleur = contrib.loc[an].drop(columns=[U.MARCHE, et.E, CASH]).sum().idxmax()
+        et3 = Etude(et.E, retirer=(meilleur,), debut_hist=et.debut_hist, donnees=(et.adj, et.close))
+        n3 = simuler(et3.r, et3.poids(k), et3.frais)[0]
+        a, b = float((1 + n3[an]).prod() - 1), float((1 + et.r[U.MARCHE][an].fillna(0)).prod() - 1)
+        out[f"T3 sans la meilleure action ({meilleur})"] = {"strategie_12_mois": a, "spy_12_mois": b, "reussi": a > b}
+    # T4 : bat SPY dans au moins 3 des 5 periodes de 12 mois finissant le 25 septembre
+    net = dans(simuler(et.r, w, et.frais)[0])
+    annees = {}
+    for j in range(5):
+        z = fin - pd.DateOffset(years=j)
+        x = net[(net.index > z - pd.DateOffset(years=1)) & (net.index <= z)]
+        annees[str(z.date())] = {"strategie": float((1 + x).prod() - 1),
+                                 "spy": float((1 + et.r[U.MARCHE][x.index].fillna(0)).prod() - 1)}
+    gagnees = sum(y["strategie"] > y["spy"] for y in annees.values())
+    out["T4 annees gagnees contre SPY"] = {"annees": annees, "gagnees": gagnees, "reussi": gagnees >= 3}
+    # T5 (information) : la meme regle de 2006 au debut de la fenetre
+    et5 = Etude(et.E, donnees=(et.adj, et.close))
+    n5 = simuler(et5.r, et5.poids(k), et5.frais)[0]
+    d5 = et5.poids(k).index
+    d5 = d5[d5 >= et5.debut][0]
+    x = n5[(n5.index > d5) & (n5.index <= debut)]
+    m, s = mesures(x, et.rf), mesures(et.r[U.MARCHE][x.index].fillna(0), et.rf)
+    out["T5 avant la fenetre (information)"] = {"de": str(d5.date()), "a": str(debut.date()), "strategie_par_an": m["cagr"],
+                                                "spy_par_an": s["cagr"], "pire_baisse": m["pire_baisse"],
+                                                "spy_pire_baisse": s["pire_baisse"], "reussi": None}
+    # T6 : univers de septembre 2021 (contre le biais de survie)
+    if k in SELECTIONS:
+        et6 = Etude(et.E, debut_hist=et.debut_hist, actions=U.XLK_2021, donnees=charger_2021())
+        x = dans(simuler(et6.r, et6.poids(k), et6.frais)[0])
+        m, s = mesures(x, et.rf), mesures(et.r[U.MARCHE][x.index].fillna(0), et.rf)
+        out["T6 univers de 2021"] = {"actions": et6.L, "strategie_par_an": m["cagr"], "spy_par_an": s["cagr"],
+                                     "pire_baisse": m["pire_baisse"],
+                                     "reussi": m["cagr"] > s["cagr"] and m["pire_baisse"] > -0.30}
+    return out
+
+
 def main():
+    fenetre = sys.argv[1] if len(sys.argv) > 1 else "20ans"
+    suffixe = "" if fenetre == "20ans" else "_" + fenetre
     premier = json.loads((ICI / "recherche.json").read_text())["premier"]
-    print(f"Secteur classe premier a l'etape 1 : {premier} ({U.SECTEURS[premier]})\n", flush=True)
-    res, series, et = tout(premier, n_placebo=300)
+    print(f"Secteur classe premier a l'etape 1 : {premier} ({U.SECTEURS[premier]}) ; fenetre {fenetre}\n", flush=True)
+    versions = (1, 2, 3, 4, 5, 6) if fenetre == "20ans" else (1, 2, 3, 4, 5, 6, 7)
+    res, series, et = tout(premier, n_placebo=300, debut_hist=FENETRES[fenetre], versions=versions)
     emp = empreinte(res)
-    f_emp = ICI / "empreinte.txt"
+    f_emp = ICI / f"empreinte{suffixe}.txt"
     avant = f_emp.read_text().strip() if f_emp.exists() else None
     f_emp.write_text(emp + "\n")
     meme = (avant == emp) if avant else None
@@ -297,13 +381,28 @@ def main():
               + (f" | dans le secteur {v['part_du_temps_dans_le_secteur']:.0%} du temps" if v["part_du_temps_dans_le_secteur"] is not None else ""))
         rates = [c for c, b in v["criteres"].items() if not b]
         print("   criteres rates : " + (", ".join(rates) if rates else "aucun"), flush=True)
-        if ok:
+        if ok and fenetre == "20ans":
             v["tests_pour_tuer"] = tuer(et, k, series[k])
             for nom, t in v["tests_pour_tuer"].items():
                 print(f"   test pour tuer - {nom} : " + " | ".join(f"{a} {b:+.1%}" for a, b in t.items()), flush=True)
+        elif fenetre != "20ans":      # tests pour tuer ; pour information seulement si la version est deja rejetee
+            v["tests_pour_tuer"] = tuer_5ans(et, k, v)
+            for nom, t in v["tests_pour_tuer"].items():
+                vals = " | ".join(f"{a} {b:+.1%}" for a, b in t.items() if isinstance(b, float))
+                if "annees" in t:
+                    vals = " | ".join(f"{a} : {y['strategie']:+.1%} (SPY {y['spy']:+.1%})" for a, y in t["annees"].items())
+                if "de" in t:
+                    vals = f"{t['de']} -> {t['a']} : " + vals
+                verdict = "information" if t["reussi"] is None else ("reussi" if t["reussi"] else "ECHEC")
+                print(f"   test pour tuer - {nom} : {vals} -> {verdict}", flush=True)
+            v["gagnant"] = ok and all(t["reussi"] is not False for t in v["tests_pour_tuer"].values())
+            print("   " + ("GAGNANT SUR 5 ANS (tous les tests pour tuer passes)" if v["gagnant"]
+                          else "TUEE par un test pour tuer" if ok else "(tests pour information : version deja rejetee)"),
+                  flush=True)
         journal[k] = v
         print(flush=True)
-        (ICI / "resultats.json").write_text(json.dumps({"secteur": premier, "empreinte": emp, "strategies": journal},
+        (ICI / f"resultats{suffixe}.json").write_text(json.dumps({"secteur": premier, "fenetre": fenetre, "empreinte": emp,
+                                                                  "strategies": journal},
                                                         indent=1, ensure_ascii=False, default=str))
 
 
