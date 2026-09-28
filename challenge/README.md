@@ -78,3 +78,32 @@ même risque). Trois de ces sources ont échoué de peu aux tests du fonds : ré
 
 Choix à faire : valider sans sauter prend environ 2 ans ; valider dans l'année donne environ
 1 chance sur 3, avec un risque de sauter. Détails : `resultats_finance.txt`, `resultats_multi.txt`.
+
+## Version 7 adaptée aux futures intraday (fixée le 28 septembre 2026, avant son test)
+
+Demande : adapter la version 7 (étude `secteurs/`) à un challenge 50K futures, avec clôture le jour même,
+en réduisant le risque quitte à gagner moins.
+
+Ce qui ne peut pas passer : les actions (un compte futures n'en a pas) et la nuit (clôture obligatoire).
+Il reste la **technologie via le Nasdaq-100 (MNQ)**, entre l'ouverture et la clôture. Mise en garde
+fixée avant le test : les études (Lou, Polk et Skouras, 2019) trouvent que les gains du momentum se font
+surtout **la nuit**. Une version de jour peut donc perdre l'avantage.
+
+Règles (données NQ minute 2011-2026, 9 h 30 - 15 h 59, heure de New York) :
+- **Signal, comme la version 7, une fois par mois** : à la dernière séance du mois, rendement du
+  Nasdaq de t − 126 à t − 21 séances. Le rendement de la nuit n'est pas compté les jours de changement
+  d'échéance. S'il est positif, le robot achète chaque séance du mois suivant (**A, avec filtre**). La
+  **variante B** achète chaque séance (la version 7 est toujours investie).
+- **Chaque séance** : achat à l'ouverture de 9 h 30. **Stop à 0,5 % sous l'ouverture** : il limite
+  la perte du jour, et la sortie se fait au stop moins 1 tick. Sinon, vente à 15 h 59. Toujours à plat
+  le soir. Pas de trade le jour du changement d'échéance ni les jours de séance incomplète.
+- Frais : 1 $ par ordre et 1 tick de glissement (1,5 point de NQ par aller-retour, comme `intraday/`).
+- **Taille (coussin, moins de risque)** : nombre de MNQ tel que la perte au stop ne dépasse pas f × coussin
+  (coussin = solde − limite de perte). f vaut 0,15, 0,25 ou 0,35. Si le coussin ne permet pas 1 MNQ, le
+  robot ne trade pas.
+- Mêmes règles de firmes que plus haut (`bot_challenge.REGLES`, à vérifier). Mêmes mesures : réussite en
+  une tentative et en 12 mois, comparée au même bot sans avantage.
+- Avant le challenge, on vérifie aussi l'avantage : gain net moyen par trade, t, et les sous-périodes.
+  Enfin, pour information, le partage du rendement du Nasdaq entre la nuit et la journée.
+- Deux essais (A et B) inscrits dans `fonds/essais.csv`. Aucune autre variante (stop, heure, taille)
+  ne sera essayée après les résultats.
