@@ -39,3 +39,17 @@ Détail complet : `resultats.txt`.
 - **Limites** : la zone de bruit gagne surtout depuis 2018 (frais relatifs plus faibles) ; f a été
   choisi parmi 3 valeurs sur les mêmes données ; le mélange est supposé divisible ; **les règles des
   firmes sur les robots de trading sont à vérifier** (certaines interdisent ou encadrent les bots).
+
+## Avec 2 comptes au maximum
+
+Même rejeu, mais on s'arrête après 2 comptes achetés (ou 12 mois) :
+
+| Firme | Réglage | Validé en 12 mois avec 2 comptes max | Sans avantage |
+|---|---|---|---|
+| Phidias 50K (zone de bruit) | f = 0,15 | 33 % (1,0 compte utilisé en moyenne) | 16 % |
+| Phidias 50K (zone + mélange) | f = 0,35 | 33 % | 14 % |
+| Apex 50K | f = 0,35 | 33 % | 22 % |
+| Topstep 50K | f = 0,25 | 27 % | 13 % |
+
+Chez Phidias avec f = 0,15, un seul compte réussit 39 % du temps et ne saute que 4 % du temps ;
+le reste du temps il reste en vie sans atteindre l'objectif (paiement unique : attendre ne coûte rien).
