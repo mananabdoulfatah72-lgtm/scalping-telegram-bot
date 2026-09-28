@@ -233,17 +233,26 @@ def futures40():
     """Rendements journaliers continus du contrat le plus echange : le jour ou il change, rendement du
     nouveau contrat depuis la veille (il etait alors le 2e). Renvoie (rendements, liste de Marche)."""
     b = _barres()
-    c0, c1, i0, i1 = b["c0"], b["c1"], b["id0"], b["id1"]
-    meme = i0.eq(i0.shift(1)).values
-    roule = i0.eq(i1.shift(1)).values & ~meme
-    r = np.where(meme, c0 / c0.shift(1) - 1, np.where(roule, c0 / c1.shift(1) - 1, np.nan))
-    r = pd.DataFrame(r, index=c0.index, columns=c0.columns)
-    r = r.where((c0 > 0) & (c0.shift(1) > 0) & (c1.shift(1).where(roule, 1) > 0))
+    colonnes = {}
+    for n in b["c0"].columns:                        # chaque marche compare a SA seance precedente
+        ok = b["c0"][n].notna()
+        c0, c1, i0, i1 = (b[k][n][ok] for k in ("c0", "c1", "id0", "id1"))
+        meme = i0.eq(i0.shift(1)).values
+        roule = i0.eq(i1.shift(1)).values & ~meme
+        rr = np.where(meme, c0 / c0.shift(1) - 1, np.where(roule, c0 / c1.shift(1) - 1, np.nan))
+        positif = (c0 > 0) & (c0.shift(1) > 0) & (np.where(roule, c1.shift(1), 1) > 0)
+        colonnes[n] = pd.Series(np.where(positif, rr, np.nan), index=c0.index)
+    r = pd.DataFrame(colonnes).reindex(b["c0"].index)
     aberrant = r.abs() > 0.5
     if aberrant.values.any():
         print(f"  (donnees : {int(aberrant.values.sum())} rendements journaliers de plus de 50 % retires)")
     r = r.mask(aberrant)
-    prix = c0.median()
+    # jour sans cotation (jour ferie propre a ce marche, donnee manquante) : rendement nul, sinon le
+    # moteur de systeme.py retirerait le marche du portefeuille pendant un an (il exige 256 jours pleins)
+    for n in r.columns:
+        a, z = r[n].first_valid_index(), r[n].last_valid_index()
+        r.loc[a:z, n] = r.loc[a:z, n].fillna(0.0)
+    prix = b["c0"].median()
     marches = [S.Marche(n, SPEC[n][0], n, None, "", SPEC[n][2],
                         float((SPEC[n][1] + 2.5 / SPEC[n][2]) / prix[n] * 1e4)) for n in r.columns]
     return r, marches
@@ -261,18 +270,22 @@ def _maturites():
     b = _barres()
     premier = {}
     for k in (0, 1):
-        pile = b[f"id{k}"].stack()
+        pile = b[f"id{k}"].stack().dropna()
         for (date, racine), i in pile.items():
             premier.setdefault((int(i), racine), date)
     mat = {}
     for (i, racine), date in premier.items():
-        for brut in noms.get(str(i), []):
+        t = date.year + (date.month - 1) / 12
+        options = []
+        for brut in noms.get(str(i), []):            # un numero de contrat peut avoir servi plusieurs fois
             m = re.fullmatch(re.escape(racine) + r"([FGHJKMNQUVXZ])(\d{1,2})", brut)
             if m:
                 y = int(m.group(2))
                 annee = date.year + (y - date.year % 10) % 10 if len(m.group(2)) == 1 else 2000 + y
-                mat[i] = annee + (MOIS_CODE[m.group(1)] - 1) / 12
-                break
+                options.append(annee + (MOIS_CODE[m.group(1)] - 1) / 12)
+        options = [o for o in options if o >= t - 1 / 12]
+        if options:
+            mat[i] = min(options)                    # l'echeance la plus proche apres la date ou on le voit
     return mat
 
 

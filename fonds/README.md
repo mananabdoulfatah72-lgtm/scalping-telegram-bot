@@ -138,3 +138,52 @@ Nouvelle source testée en phase 3, règles fixées ici : **carry croisé** (Koi
 Vrugt, 2018). Carry d'un marché = (ln F proche − ln F suivant) / écart entre leurs échéances en
 années (positif quand le contrat proche vaut plus que le suivant). Chaque fin de mois, dans chaque
 famille, poids = rang du carry − rang moyen, même construction que le momentum croisé.
+
+## Résultats de la phase 3 (28 septembre 2026) — règles version 2, 40 futures CME
+
+Données : barres journalières Databento (GLBX.MDP3) de 40 futures CME depuis juin 2010, contrat le plus
+échangé et le suivant (`telecharger_futures.py`, 3,76 $). 47 essais au total dans le projet.
+`python3 moteur.py` refait tout (1 minute) ; détails dans `resultats.txt` et `resultats.json`.
+
+Correction faite pendant la phase 3 : un marché sans cotation un jour donné (jour férié propre à ce
+marché) était retiré du portefeuille pendant un an par `systeme.py`, qui exige 256 jours pleins.
+Céréales et bétail n'étaient donc presque jamais tradés. Ces jours ont maintenant un rendement nul.
+C'est une erreur de traitement des données, pas un changement de règle ; seuls les résultats
+après correction sont donnés.
+
+| Source | Sharpe | 3 tiers | Après publication | Placebo battu (95 % exigé) | Verdict |
+|---|---|---|---|---|---|
+| Acheter tout (40 futures) | 0,24 | −0,06 / +0,56 / +0,35 | +0,29 | sans objet | **validée** |
+| Suivi de tendance (40 futures) | −0,01 | −0,21 / +0,21 / +0,05 | +0,19 | 59 % | rejetée |
+| Carry croisé (40 futures) | 0,25 | +0,41 / −0,09 / +0,45 | +0,02 | 88 % | rejetée (règle 4) |
+| Momentum croisé (40 futures) | −0,04 | −0,13 / −0,37 / +0,40 | −0,06 | 49 % | rejetée |
+| Valeur (40 futures) | −0,75 | −0,14 / −0,68 / −1,40 | −0,75 | 1 % | rejetée |
+| Zone de bruit Nasdaq | 0,40 | −0,98 / +0,97 / +1,14 | +0,76 | 100 % | **validée** |
+| Actions pilotées par la volatilité | 0,50 | +0,17 / +0,80 / +0,54 | +0,51 | 86 % | rejetée (règle 4) |
+| Tournant du mois | 0,14 | +0,25 / −0,01 / +0,20 | +0,10 | 52 % | rejetée |
+| Veille de la Fed (125 annonces) | 0,34 | +0,05 / +0,41 / +0,50 | +0,50 | 87 % | rejetée (règle 4) |
+
+Portefeuilles à 12 % de risque, depuis novembre 2011 :
+
+| Portefeuille | Sharpe | Gain/an | Pire baisse | Pire année |
+|---|---|---|---|---|
+| Fonds des sources validées (achat 40 futures + zone de bruit) | 0,56 | +7,0 % | −49 % | −22 % |
+| Mélange actuel du robot (tendance + achat, ETF) | 0,67 | +8,4 % | −20 % | −11 % |
+
+### Ce qu'on en retient
+
+- **Le scénario pessimiste s'est réalisé** : aucune nouvelle source ne passe. Les règles strictes
+  donnent encore un fonds moins bon que le mélange du robot.
+- **La tendance sur 40 vrais futures est presque nulle depuis 2011** (Sharpe −0,01 dans le moteur,
+  +0,16 avant le ciblage de risque du moteur). C'est cohérent avec la « décennie perdue » des fonds de
+  tendance (2011-2019). La tendance du robot (ETF) fait 0,53 sur 2011-2026, mais 0,36 sans la crypto :
+  une bonne part de son historique vient du Bitcoin de 2017-2021.
+- **Trois sources échouent de peu, toujours au test du hasard** (86 à 88 % au lieu de 95 %) : carry,
+  actions pilotées par la volatilité, veille de la Fed. Elles sont presque indépendantes entre elles
+  (corrélations de −0,02 à 0,13).
+- **La valeur (retour sur 5 ans) a fortement perdu** depuis 2016 : les marchés baissés ont continué
+  de baisser. Pas de retournement de la règle après coup.
+- **Limite de fond** : une source à Sharpe 0,3 demande environ (2 / 0,3)² ≈ 44 ans de données pour
+  atteindre t = 2. Avec 15 ans, nos tests peuvent rejeter une idée franchement mauvaise, mais ne
+  peuvent pas prouver une idée modeste. Les études qui soutiennent la tendance et le carry s'appuient
+  sur 50 à 100 ans de données.
