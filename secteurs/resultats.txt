@@ -1,0 +1,34 @@
+Secteur classe premier a l'etape 1 : XLK (Technologie)
+
+Empreinte des resultats : f26743ac92a6107a ; execution precedente : f26743ac92a6107a -> identiques
+
+Strategie 1 - Rotation (force relative du secteur) : REJETEE
+   12 derniers mois : +33.0% (SPY +18.5%) | frais doubles +32.8% | Sharpe 1.15 | part max d'une action sans objet
+   depuis 2006-01-31 : +13.1%/an (SPY +11.1%/an) | Sharpe 0.60 (SPY 0.56) | pire baisse -59% (SPY -55%) | placebo battu 16% | dans le secteur 58% du temps
+   criteres rates : 3 pire baisse < 30 %, 8 placebo battu a 95 %
+
+Strategie 2 - Momentum des actions du secteur : REJETEE
+   12 derniers mois : +145.5% (SPY +18.5%) | frais doubles +144.7% | Sharpe 1.88 | part max d'une action 38%
+   depuis 2006-01-31 : +29.3%/an (SPY +11.1%/an) | Sharpe 0.90 (SPY 0.56) | pire baisse -56% (SPY -55%) | placebo battu 97%
+   criteres rates : 3 pire baisse < 30 %
+
+Strategie 3 - Faible risque (actions calmes du secteur) : REJETEE
+   12 derniers mois : +23.1% (SPY +18.5%) | frais doubles +22.9% | Sharpe 0.94 | part max d'une action 49%
+   depuis 2006-01-31 : +17.1%/an (SPY +11.1%/an) | Sharpe 0.74 (SPY 0.56) | pire baisse -51% (SPY -55%) | placebo battu 58%
+   criteres rates : 3 pire baisse < 30 %, 4 Sharpe 12 mois > 1, 5 aucune action > 40 % des gains, 8 placebo battu a 95 %
+
+Strategie 4 - Moteur macro du secteur : REJETEE
+   12 derniers mois : +19.1% (SPY +18.5%) | frais doubles +18.9% | Sharpe 0.91 | part max d'une action sans objet
+   depuis 2006-01-31 : +15.6%/an (SPY +11.1%/an) | Sharpe 0.72 (SPY 0.56) | pire baisse -54% (SPY -55%) | placebo battu 98% | dans le secteur 50% du temps
+   criteres rates : 3 pire baisse < 30 %, 4 Sharpe 12 mois > 1
+
+Strategie 5 - Version 5 : moteur macro + filtre 200 jours vers liquidites : REJETEE
+   12 derniers mois : +8.1% (SPY +18.5%) | frais doubles +7.9% | Sharpe 0.33 | part max d'une action sans objet
+   depuis 2006-01-31 : +12.8%/an (SPY +11.1%/an) | Sharpe 0.81 (SPY 0.56) | pire baisse -22% (SPY -55%) | placebo battu 97% | dans le secteur 37% du temps
+   criteres rates : 1 bat SPY sur 12 mois, 2 idem avec frais doubles, 4 Sharpe 12 mois > 1
+
+Strategie 6 - Version 6 : momentum des actions + filtre 200 jours vers liquidites : REJETEE
+   12 derniers mois : +93.9% (SPY +18.5%) | frais doubles +93.1% | Sharpe 1.46 | part max d'une action 38%
+   depuis 2006-01-31 : +24.2%/an (SPY +11.1%/an) | Sharpe 0.87 (SPY 0.56) | pire baisse -38% (SPY -55%) | placebo battu 93%
+   criteres rates : 3 pire baisse < 30 %, 8 placebo battu a 95 %
+

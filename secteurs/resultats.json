@@ -1,0 +1,306 @@
+{
+ "secteur": "XLK",
+ "empreinte": "f26743ac92a6107a",
+ "strategies": {
+  "1": {
+   "nom": "Rotation (force relative du secteur)",
+   "debut": "2006-01-31",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.33001988901529744,
+    "cagr": 0.33153195726130824,
+    "sharpe": 1.1457256271975953,
+    "pire_baisse": -0.1586250840737734
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.32841466104359274,
+    "cagr": 0.3299185056231768,
+    "sharpe": 1.140614944906541,
+    "pire_baisse": -0.1586250840737724
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 11.709544950988775,
+    "cagr": 0.1312519423564238,
+    "sharpe": 0.601654499103438,
+    "pire_baisse": -0.5877477910337754
+   },
+   "spy_histoire": {
+    "rendement": 7.832245166224995,
+    "cagr": 0.11145578046185034,
+    "sharpe": 0.5583258191997105,
+    "pire_baisse": -0.5518929769515261
+   },
+   "part_max_action": null,
+   "placebo_centile": 0.16333333333333333,
+   "placebo_moyen": 0.6428782856003904,
+   "part_du_temps_dans_le_secteur": 0.58,
+   "part_du_temps_en_liquidites": 0.0,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": false,
+    "4 Sharpe 12 mois > 1": true,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": false,
+    "6 deterministe (2 executions identiques)": true
+   }
+  },
+  "2": {
+   "nom": "Momentum des actions du secteur",
+   "debut": "2006-01-31",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 1.4551847468239902,
+    "cagr": 1.4639863497319765,
+    "sharpe": 1.8847827141105122,
+    "pire_baisse": -0.30480316197686375
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 1.4468051705018983,
+    "cagr": 1.4555432864498865,
+    "sharpe": 1.8783044263363555,
+    "pire_baisse": -0.30480316197686363
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 198.10800443795608,
+    "cagr": 0.2927799610166306,
+    "sharpe": 0.8976640268993008,
+    "pire_baisse": -0.5616040054545963
+   },
+   "spy_histoire": {
+    "rendement": 7.832245166224995,
+    "cagr": 0.11145578046185034,
+    "sharpe": 0.5583258191997105,
+    "pire_baisse": -0.5518929769515261
+   },
+   "part_max_action": 0.38420898450332447,
+   "placebo_centile": 0.97,
+   "placebo_moyen": 0.7254439821902657,
+   "part_du_temps_dans_le_secteur": null,
+   "part_du_temps_en_liquidites": 0.0,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": false,
+    "4 Sharpe 12 mois > 1": true,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": true,
+    "6 deterministe (2 executions identiques)": true
+   }
+  },
+  "3": {
+   "nom": "Faible risque (actions calmes du secteur)",
+   "debut": "2006-01-31",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.2310036864730789,
+    "cagr": 0.2320233886610552,
+    "sharpe": 0.9378516346777462,
+    "pire_baisse": -0.15408475866138382
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.22927303859280124,
+    "cagr": 0.2302844113476541,
+    "sharpe": 0.9310090659398759,
+    "pire_baisse": -0.15428873315977776
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 25.01658223720316,
+    "cagr": 0.17125434468108147,
+    "sharpe": 0.7375731847183589,
+    "pire_baisse": -0.5076925132812418
+   },
+   "spy_histoire": {
+    "rendement": 7.832245166224995,
+    "cagr": 0.11145578046185034,
+    "sharpe": 0.5583258191997105,
+    "pire_baisse": -0.5518929769515261
+   },
+   "part_max_action": 0.49088539598220887,
+   "placebo_centile": 0.5833333333333334,
+   "placebo_moyen": 0.7217337398247167,
+   "part_du_temps_dans_le_secteur": null,
+   "part_du_temps_en_liquidites": 0.0,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": false,
+    "4 Sharpe 12 mois > 1": false,
+    "5 aucune action > 40 % des gains": false,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": false,
+    "6 deterministe (2 executions identiques)": true
+   }
+  },
+  "4": {
+   "nom": "Moteur macro du secteur",
+   "debut": "2006-01-31",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.19077959988297422,
+    "cagr": 0.19160825423035255,
+    "sharpe": 0.9075938044072301,
+    "pire_baisse": -0.12350671903630617
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.18865463474313948,
+    "cagr": 0.18947334604938293,
+    "sharpe": 0.8972936401166286,
+    "pire_baisse": -0.12456662625798931
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 18.92100785026899,
+    "cagr": 0.15618472657599058,
+    "sharpe": 0.7204588725593878,
+    "pire_baisse": -0.5419130658973639
+   },
+   "spy_histoire": {
+    "rendement": 7.832245166224995,
+    "cagr": 0.11145578046185034,
+    "sharpe": 0.5583258191997105,
+    "pire_baisse": -0.5518929769515261
+   },
+   "part_max_action": null,
+   "placebo_centile": 0.9766666666666667,
+   "placebo_moyen": 0.6246086051086509,
+   "part_du_temps_dans_le_secteur": 0.5,
+   "part_du_temps_en_liquidites": 0.0,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": false,
+    "4 Sharpe 12 mois > 1": false,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": true,
+    "6 deterministe (2 executions identiques)": true
+   }
+  },
+  "5": {
+   "nom": "Version 5 : moteur macro + filtre 200 jours vers liquidites",
+   "debut": "2006-01-31",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.08080101343672963,
+    "cagr": 0.0811356504170122,
+    "sharpe": 0.33372028010116406,
+    "pire_baisse": -0.12350671903630617
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.07885945950297457,
+    "cagr": 0.07918576465267124,
+    "sharpe": 0.32272302166733285,
+    "pire_baisse": -0.12456662625798931
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 11.033691451124133,
+    "cagr": 0.1282573826404969,
+    "sharpe": 0.8102659422332958,
+    "pire_baisse": -0.21986504316640254
+   },
+   "spy_histoire": {
+    "rendement": 7.832245166224995,
+    "cagr": 0.11145578046185034,
+    "sharpe": 0.5583258191997105,
+    "pire_baisse": -0.5518929769515261
+   },
+   "part_max_action": null,
+   "placebo_centile": 0.9733333333333334,
+   "placebo_moyen": 0.554309380337196,
+   "part_du_temps_dans_le_secteur": 0.372,
+   "part_du_temps_en_liquidites": 0.2,
+   "criteres": {
+    "1 bat SPY sur 12 mois": false,
+    "2 idem avec frais doubles": false,
+    "3 pire baisse < 30 %": true,
+    "4 Sharpe 12 mois > 1": false,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": true,
+    "6 deterministe (2 executions identiques)": true
+   }
+  },
+  "6": {
+   "nom": "Version 6 : momentum des actions + filtre 200 jours vers liquidites",
+   "debut": "2006-01-31",
+   "fin": "2026-09-25",
+   "12_mois": {
+    "rendement": 0.9391530797325829,
+    "cagr": 0.9442761966170465,
+    "sharpe": 1.4636412926176245,
+    "pire_baisse": -0.3048031619768635
+   },
+   "12_mois_frais_doubles": {
+    "rendement": 0.9311480984657783,
+    "cagr": 0.936218156449826,
+    "sharpe": 1.4556923499427956,
+    "pire_baisse": -0.30480316197686375
+   },
+   "spy_12_mois": {
+    "rendement": 0.18482211155929074,
+    "cagr": 0.18562292835687333,
+    "sharpe": 1.093715302190813,
+    "pire_baisse": -0.08884944210983947
+   },
+   "histoire": {
+    "rendement": 85.65336732388151,
+    "cagr": 0.24164786739569544,
+    "sharpe": 0.8703772670076513,
+    "pire_baisse": -0.3842255869775246
+   },
+   "spy_histoire": {
+    "rendement": 7.832245166224995,
+    "cagr": 0.11145578046185034,
+    "sharpe": 0.5583258191997105,
+    "pire_baisse": -0.5518929769515261
+   },
+   "part_max_action": 0.3835824709175684,
+   "placebo_centile": 0.9333333333333333,
+   "placebo_moyen": 0.7157475550037498,
+   "part_du_temps_dans_le_secteur": null,
+   "part_du_temps_en_liquidites": 0.2,
+   "criteres": {
+    "1 bat SPY sur 12 mois": true,
+    "2 idem avec frais doubles": true,
+    "3 pire baisse < 30 %": false,
+    "4 Sharpe 12 mois > 1": true,
+    "5 aucune action > 40 % des gains": true,
+    "7 bat SPY sur toute l'histoire": true,
+    "8 placebo battu a 95 %": false,
+    "6 deterministe (2 executions identiques)": true
+   }
+  }
+ }
+}
