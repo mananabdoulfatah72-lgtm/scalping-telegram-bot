@@ -1,0 +1,21 @@
+{
+ "debut": "2026-09-25",
+ "derniere_date": "2026-09-25",
+ "tentatives": [
+  {
+   "numero": 1,
+   "debut": "2026-09-26",
+   "fin": null,
+   "issue": "en cours"
+  }
+ ],
+ "recu_total": 0.0,
+ "gain_1_mnq": 0.0,
+ "phase": "challenge",
+ "solde": 50000.0,
+ "haut": 50000.0,
+ "depart_periode": null,
+ "meilleur": 0.0,
+ "gain_periode": 0.0,
+ "jours_finance": 0
+}
