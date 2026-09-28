@@ -50,7 +50,7 @@ def telecharger():
     ancien = pd.read_csv(MINUTES) if MINUTES.exists() else None
     debut = ancien["t"].str[:10].max() if ancien is not None else str((pd.Timestamp.now() - pd.Timedelta(days=200)).date())
     client = db.Historical()
-    fin = str(pd.Timestamp(client.metadata.get_dataset_range(dataset="GLBX.MDP3")["end"]))
+    fin = pd.Timestamp(client.metadata.get_dataset_range(dataset="GLBX.MDP3")["end"]).isoformat()
     cout = client.metadata.get_cost(dataset="GLBX.MDP3", symbols=["NQ.v.0"], stype_in="continuous", schema="ohlcv-1m",
                                     start=debut, end=fin)
     if cout > PLAFOND_DATABENTO:
