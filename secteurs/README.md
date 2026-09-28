@@ -65,3 +65,17 @@ Une stratégie passe si elle remplit **tous** ces critères :
 Les critères 1 à 6 sont ceux du texte d'origine ; 7 et 8 sont ajoutés parce qu'un an de données ne
 permet pas de distinguer un avantage du hasard. Aucune stratégie n'est modifiée après les résultats :
 un échec est inscrit au journal des rejets.
+
+## Versions 5 et 6 (fixées le 28 septembre 2026, après le rejet des 4 premières, avant leur test)
+
+Les 4 stratégies échouent toutes au critère 3 (pire baisse de −51 % à −59 %, en 2008). Une seule
+correction est essayée, la plus classique contre les krachs (Faber, 2007) : **quand SPY clôture le mois
+sous sa moyenne 200 jours, tout passe en liquidités** (rémunérées au taux court), sinon la stratégie
+s'applique normalement.
+
+5. **Version 5** = stratégie 4 (moteur macro) + ce filtre.
+6. **Version 6** = stratégie 2 (momentum des actions) + ce filtre.
+
+Mêmes 8 critères, mêmes frais. Placebo de la version 5 : la même suite de positions décalée au hasard
+dans le temps ; de la version 6 : 5 actions tirées au hasard, avec le même filtre. Ce sont les essais
+5 et 6 de cette étude : s'ils échouent, on s'arrête là.
