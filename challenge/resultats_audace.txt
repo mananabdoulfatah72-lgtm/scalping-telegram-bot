@@ -1,0 +1,6 @@
+Phidias (+4000 / -2500 fin de journee)                  toujours acheteur  : reussi  32%, perdu  68% (theorie sans avantage 38%)
+Phidias (+4000 / -2500 fin de journee)                  sens au hasard     : reussi  31%, perdu  69% (theorie sans avantage 38%)
+Topstep sans regle de regularite (+3000 / -2000)        toujours acheteur  : reussi  33%, perdu  67% (theorie sans avantage 40%)
+Topstep sans regle de regularite (+3000 / -2000)        sens au hasard     : reussi  34%, perdu  66% (theorie sans avantage 40%)
+Apex (+3000 / -2500 suit le plus haut latent, 30 jours) toujours acheteur  : reussi  16%, perdu  84% (theorie sans avantage 30%)
+Apex (+3000 / -2500 suit le plus haut latent, 30 jours) sens au hasard     : reussi  18%, perdu  82% (theorie sans avantage 30%)

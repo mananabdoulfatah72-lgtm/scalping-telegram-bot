@@ -60,3 +60,5 @@ date,dossier,essai,resultat
 2026-09-28,secteurs,les 6 versions rejugees sur une fenetre de 5 ans (choisie apres les resultats sur 20 ans),voir secteurs/README.md
 2026-09-28,secteurs,version 7 (moitie version 2 + moitie liquidites) fixee apres le premier passage sur 5 ans,voir secteurs/README.md
 2026-09-28,challenge,version 7 adaptee aux futures intraday : MNQ ouverture-cloture stop 0.5 % avec filtre momentum mensuel (A) et sans (B) ; bot coussin 3 valeurs de f x 3 firmes,voir challenge/README.md
+2026-09-29,nuit,derive de nuit dans la journee de trading des prop firms (achat 18 h vente 9 h) ES et NQ,voir nuit/README.md
+2026-09-29,challenge,tout miser sur un trade par tentative (plafond sans avantage) Phidias Topstep Apex,voir challenge/resultats_audace.txt

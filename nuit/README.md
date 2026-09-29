@@ -30,3 +30,17 @@ journée de trading suivante**. Acheter à 18 h et revendre à 9 h 30 respecte d
   pire moment de la nuit tiré des barres horaires.
 - Un essai (N1 sur ES et NQ) inscrit dans `fonds/essais.csv`. Aucune autre fenêtre horaire ne sera essayée
   comme stratégie après les résultats.
+
+## Résultats (`analyse.py`, `resultats.txt`) : rejetée
+
+| Marché | Nuits | Net par nuit (1 micro) | t | 2010-2014 | 2015-2019 | 2020-2026 |
+|---|---|---|---|---|---|---|
+| ES (MES) | 4 123 | +0,50 $ | 0,31 | −1,78 $ | −0,19 $ | +2,53 $ |
+| NQ (MNQ) | 4 123 | +4,84 $ | 1,74 | −0,10 $ | +2,04 $ | +10,19 $ |
+
+Le critère n'est pas rempli : pas de challenge simulé.
+- Pour information, la hausse de nuit du Nasdaq se fait surtout **en dehors des heures qu'une prop firm
+  intraday autorise** : juste après 16 h (+1,1 point de base pour la barre de 16 h) et autour de
+  l'ouverture européenne (+1,2 pour 2 h). Le reste de la nuit rapporte à peine plus que les frais.
+- Après une séance en baisse, la nuit est un peu meilleure (+0,06 % contre +0,03 % sur NQ), comme le
+  trouvent Boyarchenko et al. Ce n'est pas testé comme stratégie, puisque ce n'était pas fixé à l'avance.

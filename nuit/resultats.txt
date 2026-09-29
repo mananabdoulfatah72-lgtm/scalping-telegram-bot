@@ -1,0 +1,19 @@
+sp500 : rendement moyen de chaque heure (heure de New York, debut de barre) :
+   0h:+0.4 1h:+0.3 2h:+1.0 3h:+0.2 4h:+0.3 5h:+0.3 6h:+0.5 7h:-0.1 8h:-0.0 9h:+0.5 10h:-0.2 11h:+0.9 12h:+0.5 13h:-0.0 14h:+0.5 15h:-0.1 16h:+0.5 17h:-0.3 18h:+0.1 19h:+0.3 20h:-0.0 21h:+0.2 22h:-0.2 23h:+0.1  (points de base)
+nasdaq100 : rendement moyen de chaque heure (heure de New York, debut de barre) :
+   0h:+0.5 1h:+0.4 2h:+1.2 3h:+0.2 4h:+0.2 5h:+0.3 6h:+0.3 7h:+0.1 8h:+0.1 9h:+0.6 10h:-0.6 11h:+1.4 12h:+0.1 13h:+0.1 14h:+0.7 15h:-0.3 16h:+1.1 17h:-0.1 18h:+0.0 19h:+0.6 20h:+0.3 21h:+0.2 22h:-0.1 23h:+0.1  (points de base)
+
+1. Achat a 18 h, vente a 9 h le lendemain (1 micro, frais compris) :
+  sp500 (MES) : 4123 nuits | +0.50 $ par nuit et par micro (t +0.31) | gagnantes 52% | pire nuit -1,067 $
+     2010-2014 : -1.78 $ (t -1.68, 1139 nuits)
+     2015-2019 : -0.19 $ (t -0.12, 1269 nuits)
+     2020-2026 : +2.53 $ (t +0.70, 1715 nuits)
+     information : nuit apres une seance en baisse +0.040% (1433) ; apres une seance en hausse +0.025% (1746)
+  nasdaq100 (MNQ) : 4123 nuits | +4.84 $ par nuit et par micro (t +1.74) | gagnantes 54% | pire nuit -2,081 $
+     2010-2014 : -0.10 $ (t -0.12, 1139 nuits)
+     2015-2019 : +2.04 $ (t +1.12, 1269 nuits)
+     2020-2026 : +10.19 $ (t +1.56, 1715 nuits)
+     information : nuit apres une seance en baisse +0.060% (1444) ; apres une seance en hausse +0.031% (1744)
+
+Critere (t >= 2 et positif dans les 3 periodes, sur ES et NQ) : NON REMPLI
+
