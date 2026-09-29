@@ -47,3 +47,11 @@ financé. f vaut 0,15, 0,25 ou 0,35.
 
 Essai inscrit dans `fonds/essais.csv` : 1 portefeuille et 6 nouveaux marchés. Aucun marché ne sera retiré
 ni ajouté après les résultats.
+
+**Précision avant le calcul (29 septembre, données reçues, résultats pas encore vus)**
+- Le plafond de coût a fait commencer les 5 nouveaux marchés en **janvier 2016**. Le Russell (RTY) ne
+  démarre qu'en **juillet 2017** : avant, il se traitait sur une autre bourse (ICE).
+- Le portefeuille et sa comparaison avec NQ seul portent donc sur **2016-2026**, avec deux sous-périodes :
+  2016-2019 et 2020-2026. Le Russell entre dans le portefeuille dès qu'il existe.
+- Les critères sont inchangés : t ≥ 3, positif dans chaque sous-période, Sharpe supérieur à NQ seul sur
+  la même période.

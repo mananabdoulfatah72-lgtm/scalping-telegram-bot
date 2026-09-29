@@ -24,7 +24,9 @@ MARCHES = {
     "CL": (ICI / "donnees/petrole_1min.csv.gz", 100.0, 0.01, 540, 870),
     "6E": (ICI / "donnees/euro_1min.csv.gz", 12500.0, 0.0001, 500, 900),
 }
-PERIODES = [("2011", "2015"), ("2015", "2020"), ("2020", "2027")]
+PERIODES_MARCHE = [("2011", "2016"), ("2016", "2020"), ("2020", "2027")]
+PERIODES = [("2016", "2020"), ("2020", "2027")]      # portefeuille : periode commune (README, precision du 29 septembre)
+DEBUT_COMMUN = "2016-01-01"
 
 
 def charger(fichier, m0, m1):
@@ -194,14 +196,15 @@ def main():
         u = s["gain"] / s["risque1"]
         print(f"  {nom:3s} : {len(dol)} jours avec trade | {dol.mean():+.2f} $ par jour de trade (t {t_stat(dol):+.2f})"
               f" | en unites de risque {u.mean():+.3f} (t {t_stat(u):+.2f}) | "
-              + " | ".join(f"{a}-{int(z) - 1} t {t_stat(u[(u.index >= a) & (u.index < z)]):+.2f}" for a, z in PERIODES), flush=True)
-    U = pd.DataFrame({k: s["gain"] / s["risque1"] for k, s in series.items()}).loc["2011-06-01":]
+              + " | ".join(f"{a}-{int(z) - 1} t {t_stat(u[(u.index >= a) & (u.index < z)]):+.2f}" for a, z in PERIODES_MARCHE
+                           if ((u.index >= a) & (u.index < z)).sum() > 50), flush=True)
+    U = pd.DataFrame({k: s["gain"] / s["risque1"] for k, s in series.items()}).loc[DEBUT_COMMUN:]
     corr = U.corr().values[np.triu_indices(len(U.columns), 1)]
     print(f"  correlation moyenne entre marches : {np.nanmean(corr):+.2f}")
     port = U.mean(axis=1).dropna()
     nq = U["NQ"].dropna()
     sh = lambda x: x.mean() / x.std() * np.sqrt(252)
-    print("\n2. Portefeuille a risque egal (7 marches) contre NQ seul, en unites de risque :")
+    print(f"\n2. Portefeuille a risque egal (7 marches) contre NQ seul, en unites de risque, {port.index[0].date()} -> {port.index[-1].date()} :")
     print(f"  portefeuille : Sharpe {sh(port):.2f}, t {t_stat(port):+.2f} | NQ seul : Sharpe {sh(nq):.2f}, t {t_stat(nq):+.2f}")
     ok = t_stat(port) >= 3 and sh(port) > sh(nq)
     for a, z in PERIODES:
