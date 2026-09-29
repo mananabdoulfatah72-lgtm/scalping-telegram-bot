@@ -211,7 +211,7 @@ def main():
         x = port[(port.index >= a) & (port.index < z)]
         print(f"     {a}-{int(z) - 1} : moyenne {x.mean():+.3f} (t {t_stat(x):+.2f}) | NQ seul {nq[(nq.index >= a) & (nq.index < z)].mean():+.3f}")
         ok &= x.mean() > 0
-    print(f"\nCriteres (t >= 3, positif dans les 3 periodes, Sharpe > NQ seul) : {'REMPLIS' if ok else 'NON REMPLIS'}\n")
+    print(f"\nCriteres (t >= 3, positif dans chaque sous-periode, Sharpe > NQ seul) : {'REMPLIS' if ok else 'NON REMPLIS'}\n")
     if not ok:
         return
     from bot_challenge import FRACTIONS, REGLES

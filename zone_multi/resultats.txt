@@ -1,0 +1,17 @@
+1. Zone de bruit par marche (1 micro, frais compris) :
+  NQ  : 2326 jours avec trade | +8.55 $ par jour de trade (t +2.55) | en unites de risque +0.021 (t +1.17) | 2011-2015 t -2.28 | 2016-2019 t +0.10 | 2020-2026 t +3.39
+  ES  : 2382 jours avec trade | -1.83 $ par jour de trade (t -0.99) | en unites de risque -0.046 (t -2.47) | 2011-2015 t -3.37 | 2016-2019 t -2.26 | 2020-2026 t +0.74
+  RTY : 1426 jours avec trade | -4.50 $ par jour de trade (t -2.59) | en unites de risque -0.058 (t -2.51) | 2016-2019 t -0.43 | 2020-2026 t -2.64
+  YM  : 1592 jours avec trade | -5.18 $ par jour de trade (t -2.64) | en unites de risque -0.065 (t -2.92) | 2016-2019 t -1.87 | 2020-2026 t -2.25
+  GC  : 1329 jours avec trade | -6.91 $ par jour de trade (t -2.19) | en unites de risque -0.055 (t -2.40) | 2016-2019 t -1.68 | 2020-2026 t -1.75
+  CL  : 1536 jours avec trade | -4.99 $ par jour de trade (t -2.58) | en unites de risque -0.049 (t -2.22) | 2016-2019 t +0.68 | 2020-2026 t -3.23
+  6E  : 1592 jours avec trade | -7.70 $ par jour de trade (t -9.48) | en unites de risque -0.201 (t -9.56) | 2016-2019 t -5.49 | 2020-2026 t -7.83
+  correlation moyenne entre marches : +0.16
+
+2. Portefeuille a risque egal (7 marches) contre NQ seul, en unites de risque, 2016-01-04 -> 2026-09-25 :
+  portefeuille : Sharpe -1.45, t -4.78 | NQ seul : Sharpe 0.86, t +2.80
+     2016-2019 : moyenne -0.062 (t -3.03) | NQ seul +0.004
+     2020-2026 : moyenne -0.053 (t -3.70) | NQ seul +0.098
+
+Criteres (t >= 3, positif dans les 3 periodes, Sharpe > NQ seul) : NON REMPLIS
+

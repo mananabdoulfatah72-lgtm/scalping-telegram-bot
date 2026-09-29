@@ -55,3 +55,26 @@ ni ajouté après les résultats.
   2016-2019 et 2020-2026. Le Russell entre dans le portefeuille dès qu'il existe.
 - Les critères sont inchangés : t ≥ 3, positif dans chaque sous-période, Sharpe supérieur à NQ seul sur
   la même période.
+
+## Résultats (`analyse.py`, `resultats.txt`, `resultats_brut.txt`) : rejeté
+
+| Marché | Jours de trade | Net par jour (1 micro) | t | Avant frais 2016-2026 (t) |
+|---|---|---|---|---|
+| NQ | 2 326 | +8,55 $ | +2,55 | +18,62 $ (+3,80) |
+| ES | 2 382 | −1,83 $ | −0,99 | +6,61 $ (+2,51) |
+| Russell (RTY) | 1 426 | −4,50 $ | −2,59 | +0,27 $ (+0,16) |
+| Dow (YM) | 1 592 | −5,18 $ | −2,64 | −0,33 $ (−0,17) |
+| Or (GC) | 1 329 | −6,91 $ | −2,19 | −0,66 $ (−0,21) |
+| Pétrole (CL) | 1 536 | −4,99 $ | −2,58 | +0,94 $ (+0,49) |
+| Euro (6E) | 1 592 | −7,70 $ | −9,48 | +0,12 $ (+0,16) |
+
+**Portefeuille à risque égal (2016-2026) : Sharpe −1,45, t −4,78**, contre Sharpe 0,86 pour NQ seul.
+Négatif dans les deux sous-périodes. Critères non remplis : pas de challenge simulé.
+
+- La cassure de la zone de bruit ne gagne, avant frais, que sur les deux grands indices américains
+  (NQ et ES). Sur les 5 autres marchés, elle est à zéro avant frais : les frais la rendent perdante.
+- Ajouter des marchés rend donc le bot **plus mauvais**, pas plus régulier : les marchés ajoutés n'ont
+  pas d'avantage. Le bot reste sur NQ seul.
+- Mise en garde sur NQ : sur 7 marchés, un seul tient, et surtout depuis 2020 (t +3,39 ; t −2,28 en
+  2011-2015). Cela ressemble davantage à un effet propre au Nasdaq de ces dernières années qu'à une
+  règle générale. Son avantage futur est donc incertain, et le robot en argent virtuel le dira.
