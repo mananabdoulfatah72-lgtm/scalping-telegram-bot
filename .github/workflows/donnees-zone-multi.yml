@@ -1,0 +1,41 @@
+name: Donnees zone multi-marches (Databento, minute)
+
+# La cle API est lue uniquement dans le secret du depot DATABENTO_API_KEY.
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - zone_multi/telecharger.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger les barres minute RTY YM GC CL 6E
+        env:
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY }}
+        run: |
+          [ -n "$DATABENTO_API_KEY" ] || { echo "::error::Secret DATABENTO_API_KEY absent"; exit 1; }
+          pip install -q databento pandas
+          python3 zone_multi/telecharger.py
+      - name: Enregistrer les donnees sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add zone_multi/donnees/
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees : minute RTY YM GC CL 6E (Databento)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
