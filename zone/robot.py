@@ -14,8 +14,9 @@ Regles, identiques au backtest (intraday/strategies.py zone_de_bruit et challeng
   21 jours de ce qui depasse 52 600 $ si la meilleure journee <= 30 % du gain ; 80 % du retrait pour toi.
   Un compte perdu est remplace par un nouveau challenge le lendemain.
 
-Chaque soir de semaine (GitHub Actions) : telecharge les barres minute NQ de la journee (Databento, secret
-DATABENTO_API_KEY), rejoue la journee, met a jour zone/robot/ et envoie un resume Telegram. Aucun ordre reel.
+Chaque matin de semaine (GitHub Actions ; les barres minute historiques de Databento arrivent environ 8 heures apres
+la seance) : telecharge les barres minute NQ (secret DATABENTO_API_KEY), rejoue la seance de la veille, met a jour
+zone/robot/ et envoie un resume Telegram. Aucun ordre reel.
 Ce suivi se fait apres la cloture : pour trader en vrai, il faudrait les signaux en direct toutes les 30 minutes.
 
 Rejeu hors ligne : ROBOT_MINUTES=chemin/nasdaq100_1min.csv.gz ROBOT_DEBUT=2025-01-02 ROBOT_JUSQU_AU=2025-12-31 \
@@ -73,7 +74,16 @@ def telecharger():
     if ancien is not None:                  # la derniere seance deja enregistree est reprise (elle etait peut-etre incomplete)
         ancien = ancien[ancien["t"].str[:10] < debut]
     tout = pd.concat([ancien, neuf], ignore_index=True) if ancien is not None else neuf
-    tout.drop_duplicates("t", keep="last").sort_values("t").to_csv(MINUTES, index=False, float_format="%.2f")
+    tout = tout.drop_duplicates("t", keep="last").sort_values("t").reset_index(drop=True)
+    tout["v"] = tout["v"].astype("int64")
+    tout["contrat"] = tout["contrat"].astype("int64")
+    avant = pd.read_csv(MINUTES) if MINUTES.exists() else None
+    if avant is not None and len(avant) == len(tout) and avant["t"].equals(tout["t"]) and \
+            np.allclose(avant[["o", "h", "l", "c"]].values, tout[["o", "h", "l", "c"]].values):
+        print("Databento : rien de nouveau")
+        return
+    # gzip sans date dans l'en-tete : un fichier identique ne cree pas de nouveau commit
+    tout.to_csv(MINUTES, index=False, float_format="%.2f", compression={"method": "gzip", "mtime": 0})
     print(f"Databento : {len(neuf)} minutes du {debut} au {fin[:16]} ({cout:.3f} $)")
 
 
@@ -161,8 +171,7 @@ def serie_du_bot(minutes):
 # ----------------------------------------------------------------------------- comptes virtuels
 def nouveau_challenge(etat, date):
     etat["tentatives"].append({"numero": len(etat["tentatives"]) + 1, "debut": date, "fin": None, "issue": "en cours"})
-    etat.update(phase="challenge", solde=CAPITAL, haut=CAPITAL, depart_periode=None, meilleur=0.0, gain_periode=0.0,
-                jours_finance=0)
+    etat.update(phase="challenge", solde=CAPITAL, haut=CAPITAL, meilleur=0.0, gain_periode=0.0, jours_finance=0)
 
 
 def lire_etat(d):
@@ -172,13 +181,15 @@ def lire_etat(d):
     derniere = d.index[d.index <= debut][-1] if (d.index <= debut).any() else d.index[0] - pd.Timedelta(days=1)
     etat = {"debut": str(derniere.date()), "derniere_date": str(derniere.date()), "tentatives": [], "recu_total": 0.0,
             "gain_1_mnq": 0.0}
-    nouveau_challenge(etat, str((derniere + pd.Timedelta(days=1)).date()))
+    nouveau_challenge(etat, None)          # la date de debut est celle de la premiere seance jouee
     return etat
 
 
 def une_journee(etat, x, date):
     """Joue une seance sur le compte virtuel (challenge ou finance). Renvoie la ligne du journal."""
     finance = etat["phase"] == "finance"
+    if etat["tentatives"][-1]["debut"] is None:
+        etat["tentatives"][-1]["debut"] = date
     haut = etat["haut"]
     plancher = (BLOCAGE if haut >= SEUIL_RETRAIT else haut - PERTE) if finance else haut - PERTE
     coussin = etat["solde"] - plancher
@@ -188,17 +199,16 @@ def une_journee(etat, x, date):
              "gain": round(jour, 2), "gain_1_mnq": round(x["gain"], 2), "retrait": 0.0}
     etat["gain_1_mnq"] += x["gain"]
     if etat["solde"] + creux <= plancher or etat["solde"] + jour <= plancher:
-        etat["solde"] = min(etat["solde"] + creux, etat["solde"] + jour)
-        ligne.update(solde=round(etat["solde"], 2), evenement="COMPTE PERDU (limite touchee)")
+        # le compte est coupe a sa limite : la perte du jour est la distance a la limite
+        ligne.update(gain=round(plancher - etat["solde"], 2), solde=round(plancher, 2), evenement="COMPTE PERDU (limite touchee)")
         etat["tentatives"][-1].update(fin=date, issue="perdu" if not finance else "perdu apres financement")
-        nouveau_challenge(etat, date)
-        etat["tentatives"][-1]["debut"] = "seance suivante"
+        nouveau_challenge(etat, None)
         return ligne
     etat["solde"] += jour
     etat["haut"] = max(etat["haut"], etat["solde"])
     ligne["evenement"] = ""
     if not finance and etat["solde"] - CAPITAL >= OBJECTIF:
-        ligne["evenement"] = "CHALLENGE REUSSI : passage au compte finance virtuel"
+        ligne.update(solde=round(etat["solde"], 2), evenement="CHALLENGE REUSSI : passage au compte finance virtuel")
         etat["tentatives"][-1].update(fin=date, issue="reussi")
         etat.update(phase="finance", solde=CAPITAL, haut=CAPITAL, meilleur=0.0, gain_periode=0.0, jours_finance=0)
     elif finance:
@@ -211,7 +221,7 @@ def une_journee(etat, x, date):
             etat["solde"] -= retrait
             etat["meilleur"], etat["gain_periode"] = 0.0, 0.0
             ligne.update(retrait=round(PART * retrait, 2), evenement=f"RETRAIT virtuel : {PART * retrait:,.0f} $ pour toi")
-    ligne["solde"] = round(etat["solde"], 2)
+    ligne.setdefault("solde", round(etat["solde"], 2))
     return ligne
 
 

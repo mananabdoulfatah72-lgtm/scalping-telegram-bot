@@ -1,0 +1,46 @@
+name: Page generale des robots
+
+# Apres chaque passage d'un robot, regenere README.md (page d'accueil du depot) a partir des comptes virtuels.
+on:
+  workflow_run:
+    workflows:
+      - "Robot multi-marches (argent virtuel)"
+      - "Robot version 7 (argent virtuel)"
+      - "Robot zone de bruit + challenge 50K (argent virtuel)"
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: page-generale
+
+jobs:
+  page:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Regenerer la page
+        run: |
+          pip install -q pandas
+          python3 tableau_general.py
+
+      - name: Enregistrer
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --cached --quiet && exit 0
+          git commit -m "Page generale : mise a jour"
+          for essai in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep 10
+          done
+          exit 1

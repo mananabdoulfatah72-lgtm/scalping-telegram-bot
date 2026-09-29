@@ -10,7 +10,7 @@ on:
 permissions:
   contents: write
 
-concurrency: robot-tendance   # meme file d'attente que l'autre robot : jamais deux envois sur main en meme temps
+concurrency: robot-version7   # chaque robot a sa file ; la page generale est mise a jour par page-generale.yml
 
 jobs:
   robot:
@@ -34,16 +34,13 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
 
-      - name: Mettre a jour la page generale
-        run: python3 tableau_general.py
-
       - name: Sauvegarder le compte virtuel
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add version7/robot/ README.md
+          git add version7/robot/
           git diff --cached --quiet && exit 0
-          git commit -m "Robots : mise a jour des comptes virtuels"
+          git commit -m "Robot version7 : mise a jour du compte virtuel"
           for essai in 1 2 3; do
             git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
             sleep 10
