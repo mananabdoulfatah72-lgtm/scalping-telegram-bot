@@ -58,7 +58,7 @@ ni ajouté après les résultats.
 
 ## Résultats (`analyse.py`, `resultats.txt`, `resultats_brut.txt`) : rejeté
 
-| Marché | Jours de trade | Net par jour (1 micro) | t | Avant frais 2016-2026 (t) |
+| Marché | Jours de trade | Net par jour (1 micro), toute la période disponible* | t | Avant frais 2016-2026 (t) |
 |---|---|---|---|---|
 | NQ | 2 326 | +8,55 $ | +2,55 | +18,62 $ (+3,80) |
 | ES | 2 382 | −1,83 $ | −0,99 | +6,61 $ (+2,51) |
@@ -67,6 +67,9 @@ ni ajouté après les résultats.
 | Or (GC) | 1 329 | −6,91 $ | −2,19 | −0,66 $ (−0,21) |
 | Pétrole (CL) | 1 536 | −4,99 $ | −2,58 | +0,94 $ (+0,49) |
 | Euro (6E) | 1 592 | −7,70 $ | −9,48 | +0,12 $ (+0,16) |
+
+\* NQ et ES : 2011-2026 ; sur 2016-2026, NQ fait +13,86 $ (t +2,82) et ES −0,49 $ (t −0,19). Les autres
+marchés : 2016 (Russell : 2017) - 2026.
 
 **Portefeuille à risque égal (2016-2026) : Sharpe −1,45, t −4,78**, contre Sharpe 0,86 pour NQ seul.
 Négatif dans les deux sous-périodes. Critères non remplis : pas de challenge simulé.
@@ -78,3 +81,22 @@ Négatif dans les deux sous-périodes. Critères non remplis : pas de challenge 
 - Mise en garde sur NQ : sur 7 marchés, un seul tient, et surtout depuis 2020 (t +3,39 ; t −2,28 en
   2011-2015). Cela ressemble davantage à un effet propre au Nasdaq de ces dernières années qu'à une
   règle générale. Son avantage futur est donc incertain, et le robot en argent virtuel le dira.
+
+### Revue du code (niveau maximal)
+
+Vérifié correct :
+- heures de séance, changement d'heure et horodatage Databento ;
+- valeur du point et tick de chaque micro, formule des frais ;
+- changements d'échéance (le pétrole change 12 fois par an, sans aller-retour) ;
+- précision des prix de l'euro ;
+- aucune journée extrême ne tire le résultat.
+
+Défauts relevés, venant du code copié de `intraday/` ou propres aux marchés plus calmes :
+- des allers-retours comptés quand une position est coupée puis reprise dans le même sens au même prix ;
+- un dernier contrôle 10 minutes avant la fin sur l'or et l'euro ;
+- 14 séances perdues après un jour sans première minute ;
+- des jours joués sur l'ancienne échéance, qui ne s'échange presque plus.
+
+Corrigés tous ensemble, ils déplacent les t de 0,1 à 0,4 point et **aucun marché ne devient positif**.
+Le verdict ne change pas. `resultats.txt` contient maintenant aussi les chiffres avant frais (produits
+par `analyse.py`).

@@ -212,6 +212,15 @@ def main():
         print(f"     {a}-{int(z) - 1} : moyenne {x.mean():+.3f} (t {t_stat(x):+.2f}) | NQ seul {nq[(nq.index >= a) & (nq.index < z)].mean():+.3f}")
         ok &= x.mean() > 0
     print(f"\nCriteres (t >= 3, positif dans chaque sous-periode, Sharpe > NQ seul) : {'REMPLIS' if ok else 'NON REMPLIS'}\n")
+    print("Information (non prevu dans les regles) : 2016-2026, par jour de trade et pour 1 micro, avant et apres frais :")
+    for nom, (fichier, pt, tick, m0, m1) in MARCHES.items():
+        jours_, O, H, L, C, P, V, ech = charger(fichier, m0, m1)
+        z, _ = zone_de_bruit(jours_, O, H, L, C, P, V, ech)
+        z = z[z.index >= DEBUT_COMMUN]
+        brut, cout = z["brut"] * pt, 2 * (FRAIS_ORDRE + tick * pt) * z["allers"]
+        print(f"  {nom:3s} : avant frais {brut.mean():+7.2f} $ (t {t_stat(brut):+.2f}) | frais {cout.mean():5.2f} $"
+              f" | apres frais {(brut - cout).mean():+7.2f} $ (t {t_stat(brut - cout):+.2f})", flush=True)
+    print()
     if not ok:
         return
     from bot_challenge import FRACTIONS, REGLES
