@@ -1,6 +1,10 @@
 Phidias (+4000 / -2500 fin de journee)                  toujours acheteur  : reussi  32%, perdu  68% (theorie sans avantage 38%)
 Phidias (+4000 / -2500 fin de journee)                  sens au hasard     : reussi  31%, perdu  69% (theorie sans avantage 38%)
-Topstep sans regle de regularite (+3000 / -2000)        toujours acheteur  : reussi  33%, perdu  67% (theorie sans avantage 40%)
-Topstep sans regle de regularite (+3000 / -2000)        sens au hasard     : reussi  34%, perdu  66% (theorie sans avantage 40%)
+Topstep sans regularite ni limite du jour (+3000/-2000) toujours acheteur  : reussi  33%, perdu  67% (theorie sans avantage 40%)
+Topstep sans regularite ni limite du jour (+3000/-2000) sens au hasard     : reussi  34%, perdu  66% (theorie sans avantage 40%)
 Apex (+3000 / -2500 suit le plus haut latent, 30 jours) toujours acheteur  : reussi  16%, perdu  84% (theorie sans avantage 30%)
 Apex (+3000 / -2500 suit le plus haut latent, 30 jours) sens au hasard     : reussi  18%, perdu  82% (theorie sans avantage 30%)
+
+Revue : pour Apex, le resultat depend de l'ordre suppose du plus haut et du plus bas dans chaque minute.
+Ici, le plus haut vient d'abord, ce qui est pessimiste. Dans l'ordre inverse, on obtient 25-26 %. La fourchette
+est donc de 16 a 26 %. Le blocage de la limite a 50 100 $ n'est pas modelise.

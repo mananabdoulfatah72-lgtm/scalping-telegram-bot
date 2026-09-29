@@ -39,8 +39,9 @@ journée de trading suivante**. Acheter à 18 h et revendre à 9 h 30 respecte d
 | NQ (MNQ) | 4 123 | +4,84 $ | 1,74 | −0,10 $ | +2,04 $ | +10,19 $ |
 
 Le critère n'est pas rempli : pas de challenge simulé.
-- Pour information, la hausse de nuit du Nasdaq se fait surtout **en dehors des heures qu'une prop firm
-  intraday autorise** : juste après 16 h (+1,1 point de base pour la barre de 16 h) et autour de
-  l'ouverture européenne (+1,2 pour 2 h). Le reste de la nuit rapporte à peine plus que les frais.
+- Pour information : la seule heure forte hors de la fenêtre testée est celle qui suit la clôture de 16 h
+  (+1,1 point de base sur NQ), et une prop firm intraday ne la laisse pas garder. L'ouverture européenne
+  (+1,2 pour la barre de 2 h) est **dans** la fenêtre testée, comme l'a relevé la revue. Même avec elle,
+  la nuit autorisée rapporte à peine plus que les frais.
 - Après une séance en baisse, la nuit est un peu meilleure (+0,06 % contre +0,03 % sur NQ), comme le
   trouvent Boyarchenko et al. Ce n'est pas testé comme stratégie, puisque ce n'était pas fixé à l'avance.
