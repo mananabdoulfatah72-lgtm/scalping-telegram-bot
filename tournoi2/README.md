@@ -57,19 +57,20 @@ Nombre d'essais : 14 stratégies × 2 marchés, plus la paire, soit **29**.
 
 ## Résultats (30 septembre 2026) : aucun survivant, 0 sur 29
 
-Code figé avant le calcul (commit 94d8a4a) ; tests dans `test_concurrents2.py`. Détail dans
+Code figé avant le calcul (commit 94d8a4a), puis corrigé après la revue (voir plus bas) ; tests dans
+`test_concurrents2.py`. Détail dans
 `exploration.txt` et `exploration.csv`.
 
 **Étape 1 (t ≥ 2 sur 2011-2022) : aucune ne passe.** Les moins mauvaises :
 
 | Stratégie | Marché | t 2011-2022 | 2011-2016 | 2017-2022 | Plus haut t sur bruit | Corrélation avec la zone |
 |---|---|---|---|---|---|---|
-| Range d'ouverture 5 min + volume relatif | NQ | +1,34 | −0,77 | +2,13 | +2,33 | 0,28 |
-| Jour de l'emploi américain | NQ | +0,53 | +1,19 | −0,28 | +2,18 | 0,08 |
-| NR7 + range d'ouverture 30 min | NQ | −0,16 | −2,15 | +1,15 | +1,81 | 0,17 |
-| Lundi contre vendredi | NQ | −0,32 | −0,89 | +0,22 | −0,32 | −0,01 |
+| Range d'ouverture 5 min + volume relatif | NQ | +1,54 | −0,67 | +2,26 | +2,39 | 0,28 |
+| Jour de l'emploi américain | NQ | +0,53 | +1,19 | −0,28 | +2,26 | 0,08 |
+| NR7 + range d'ouverture 30 min | ES | −0,11 | −2,63 | +1,66 | −0,60 | 0,17 |
+| NR7 + range d'ouverture 30 min | NQ | −0,19 | −1,84 | +0,97 | +1,77 | 0,18 |
 
-Les 25 autres essais sont négatifs, de −0,5 à −35 :
+Les 25 autres essais sont négatifs, de −0,4 à −35 :
 - **Les 7 indicateurs populaires sur barres de 5 minutes** (moyennes, Supertrend, MACD, Bollinger,
   RSI(2), Donchian) perdent tous sur les deux marchés, de t −0,5 (Supertrend NQ) à t −35 (RSI(2) ES).
   Ils tradent presque tous les jours, souvent plusieurs fois : les frais les écrasent. Face à leurs
@@ -77,11 +78,11 @@ Les 25 autres essais sont négatifs, de −0,5 à −35 :
   bruit, le MACD, la cassure de Bollinger et Donchian font moins bien.
 - **Les effets de calendrier** perdent tous : lundi contre vendredi, échéance des options (t −2,2 à
   −2,4), jour de l'emploi sur ES, retournement de la mi-journée (t −2,6 et −5,7).
-- **La paire NQ / ES** perd nettement (t −3,70, contre +0,48 au mieux sur bruit). L'écart entre le
+- **La paire NQ / ES** perd nettement (t −6,15, contre −1,88 au mieux sur bruit). L'écart entre le
   Nasdaq et le S&P a tendance à continuer dans la journée, pas à se refermer.
 - **Le seul candidat de l'article récent (Zarattini, Barbon, Aziz 2024)**, le range de 5 min avec le
-  volume, gagne sur NQ depuis 2017 (t +2,13). Mais il fait t +1,34 sur 12 ans, et une version sur
-  bruit fait mieux (+2,33). Sur ES, il perd (t −3,74).
+  volume, gagne sur NQ depuis 2017 (t +2,26). Mais il fait t +1,54 sur 12 ans, et une version sur
+  bruit fait mieux (+2,39). Sur ES, il perd (t −3,47).
 
 **Pas de survivant, donc le coffre 2023-2026 reste fermé.**
 
@@ -97,3 +98,24 @@ Les 25 autres essais sont négatifs, de −0,5 à −35 :
   Elle n'est rentable après frais que depuis 2017 environ, et la zone de bruit l'exploite le mieux.
 - Aucune autre stratégie intraday publiée et testée honnêtement ne donne t ≥ 2. Pour un challenge 50K,
   la zone de bruit sur MNQ reste la seule candidate, et son suivi en argent virtuel décide.
+
+## Corrections après la revue de code (30 septembre 2026)
+
+Tous les défauts relevés sont corrigés et le tournoi a été relancé. **Le verdict ne change pas : 0
+survivant.** Les chiffres ci-dessus sont les chiffres corrigés.
+
+- **Paire** : le seuil valait « rien » pendant 20 séances après chaque jour férié ou fermeture
+  anticipée. La moitié des jours ne pouvaient donc pas trader. Il se calcule maintenant sur les 20
+  dernières séances complètes : 579 jours de trade au lieu de 290, et t −3,70 → −6,15.
+- **NR7** : la fenêtre porte sur les 7 dernières séances complètes, comme écrit dans les règles (avant :
+  7 lignes consécutives complètes, 18 % des jours perdus).
+- **Indicateurs sur 5 minutes** : le flux continu ne contient plus que les séances complètes. Les fins
+  recopiées à plat des jours fériés forçaient des signaux de Bollinger et Donchian le lendemain.
+- **Jour intérieur, lundi contre vendredi, moyennes sur 14 jours** : veille = dernière séance complète.
+- **Corrections communes au tournoi n°1** (voir `tournoi/README.md`) :
+  - entrée à heure fixe ;
+  - bruit arrondi au tick ;
+  - générateur de bruit unique ;
+  - explorateur commun ;
+  - marché aléatoire de contrôle, sur lequel la paire fait t −0,57 et les 14 autres stratégies
+    restent sous +0,85.

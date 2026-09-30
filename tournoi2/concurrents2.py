@@ -120,13 +120,18 @@ def points(q, o5, c_fin, cout):
     return brut - chg * cout / 2
 
 
-def signaux5(O, H, L, C):
+def signaux5(O, H, L, C, complete):
     """Signaux (entree achat, entree vente, sortie achat, sortie vente) des 7 indicateurs, calcules en continu sur
-    toutes les barres de 5 minutes des seances, a la cloture de chaque barre."""
+    les barres de 5 minutes des seances completes (les lignes de jours feries et les fermetures anticipees, dont la
+    fin est recopiee a plat, sont sautees), a la cloture de chaque barre. Aucun signal les autres jours."""
     o5, h5, l5, c5 = barres5(O, H, L, C)
     nd = o5.shape[0]
-    h, l, c = h5.ravel(), l5.ravel(), c5.ravel()
-    forme = lambda x: np.asarray(x).reshape(nd, NB)
+    ic = np.where(complete)[0]
+    h, l, c = h5[ic].ravel(), l5[ic].ravel(), c5[ic].ravel()
+    def forme(x):
+        out = np.zeros((nd, NB), bool)
+        out[ic] = np.asarray(x).reshape(len(ic), NB)
+        return out
     sig = {}
     def toujours(s):                                     # toujours en position, du cote de s
         return (s > 0, s < 0, s < 0, s > 0)
@@ -160,34 +165,36 @@ def schemas(J, O, H, L, C, X, ok, cout):
     o0 = O[:, 0]
     rien = np.full(nd, NAN)
     jours = pd.DatetimeIndex(J)
+    complete = X["complete"]
     hj, lj = H.max(axis=1), L.min(axis=1)
+    amp = hj - lj
+    prec = K1.precedente(complete)                       # derniere seance complete
+    prec_c = K1.precedente(complete, X.get("contrat"))   # idem, meme contrat
     res = {}
     # 8. NR7 + range d'ouverture 30 min : amplitude de la veille = la plus faible des 7 dernieres seances completes
-    amp = np.where(X["complete"], hj - lj, NAN)
-    mini7 = pd.Series(amp).rolling(7, min_periods=7).min().values
-    nr7 = np.r_[False, (amp[:-1] <= mini7[:-1]) & ~np.isnan(mini7[:-1])]
+    mini7 = K1.glissant_complet(amp, complete, 7, "min")
+    nr7 = K1.de_la(amp, prec) <= mini7                  # NaN -> False
     hh, ll = H[:, :30].max(axis=1), L[:, :30].min(axis=1)
     res["NR7 + range d'ouverture 30 min"] = K1.cassure(O, H, L, C, ok & nr7, cout, hh, ll, ll, hh, 30)
-    # 9. jour interieur (la veille comprise dans l'avant-veille, meme contrat, deux seances completes) : cassure de la veille
-    h1, l1, h2, l2 = np.r_[NAN, hj[:-1]], np.r_[NAN, lj[:-1]], np.r_[NAN, NAN, hj[:-2]], np.r_[NAN, NAN, lj[:-2]]
-    comp1 = np.r_[False, X["complete"][:-1]]
-    comp2 = np.r_[False, False, X["complete"][:-2]]
-    meme = ~X["echeance"] & ~np.r_[False, X["echeance"][:-1]]
-    interieur = (h1 <= h2) & (l1 >= l2) & comp1 & comp2 & meme
+    # 9. jour interieur (la veille comprise dans l'avant-veille, seances completes, meme contrat) : cassure de la veille
+    prec2 = np.where(prec_c >= 0, prec_c[np.maximum(prec_c, 0)], -1)
+    h1, l1, h2, l2 = K1.de_la(hj, prec_c), K1.de_la(lj, prec_c), K1.de_la(hj, prec2), K1.de_la(lj, prec2)
+    interieur = (h1 <= h2) & (l1 >= l2)
     mil = (h1 + l1) / 2
     res["Jour interieur + cassure de la veille"] = K1.cassure(O, H, L, C, ok & interieur, cout, h1, l1, mil, mil, 0)
-    # 10. range d'ouverture 5 min + volume relatif (Zarattini, Barbon, Aziz 2024)
+    # 10. range d'ouverture 5 min + volume relatif (Zarattini, Barbon, Aziz 2024) ; moyennes sur 14 seances completes
     v5 = X["V"][:, :5].sum(axis=1)
-    v5_moy = pd.Series(v5).rolling(14, min_periods=14).mean().shift(1).values
-    amp14 = pd.Series(hj - lj).rolling(14, min_periods=14).mean().shift(1).values
+    v5_moy = K1.glissant_complet(v5, complete, 14)
+    amp14 = K1.glissant_complet(amp, complete, 14)
     s10 = np.where(v5 > v5_moy, np.sign(C[:, 4] - o0), 0).astype(np.int64)
     e = O[:, 5]
     stop10 = e - s10 * 0.1 * amp14
     res["Range d'ouverture 5 min + volume relatif"] = K1.entree_fixe(O, H, L, C, ok, cout, s10, 5, stop10, rien, N - 1)
-    # 12. lundi contre vendredi : le lundi, a l'inverse de la seance du vendredi (seance precedente = ce vendredi)
+    # 12. lundi contre vendredi : le lundi, a l'inverse de la seance du vendredi (derniere seance complete = ce vendredi)
     jsem = jours.weekday.values
-    veille_ven = np.r_[False, (jsem[:-1] == 4)] & np.r_[False, (J[1:] - J[:-1]) <= np.timedelta64(3, "D")]
-    r_ven = np.r_[NAN, C[:-1, N - 1] - o0[:-1]]
+    jp = np.where(prec >= 0, J.values[np.maximum(prec, 0)], np.datetime64("NaT", "ns"))
+    veille_ven = (prec >= 0) & (pd.DatetimeIndex(jp).weekday.values == 4) & ((J.values - jp) <= np.timedelta64(3, "D"))
+    r_ven = K1.de_la(C[:, N - 1] - o0, prec)
     s12 = np.where((jsem == 0) & veille_ven, -np.sign(np.nan_to_num(r_ven)), 0).astype(np.int64)
     res["Lundi contre vendredi"] = K1.entree_fixe(O, H, L, C, ok, cout, s12, 0, rien, rien, N - 1)
     # 13. echeance mensuelle des options (3e vendredi) : a 12 h, a l'inverse de 9 h 30 - 12 h, jusqu'a 16 h
@@ -207,7 +214,7 @@ def toutes(J, O, H, L, C, P, X, cout):
     """Points nets par seance des 14 strategies a un marche ; ok = seance complete et pas de changement d'echeance."""
     complete = st.journees_completes(P)
     ok = complete & ~X["echeance"]
-    o5, sig = signaux5(O, H, L, C)
+    o5, sig = signaux5(O, H, L, C, complete)
     res = {nom: points(positions(*s, ok), o5, C[:, N - 1], cout) for nom, s in sig.items()}
     res.update(schemas(J, O, H, L, C, {**X, "complete": complete}, ok, cout))
     return res, ok
@@ -249,36 +256,22 @@ def aligner(a, b):
     J = a[0].intersection(b[0])
     def sel(m):
         i = m[0].get_indexer(J)
-        X = {"V": m[6]["V"][i], "echeance": m[6]["echeance"][i], "contrat": None}
+        X = {"V": m[6]["V"][i], "echeance": m[6]["echeance"][i],
+             "contrat": m[6]["contrat"][i] if m[6].get("contrat") is not None else None}
         return (J,) + tuple(x[i] for x in m[1:6]) + (X,)
     return sel(a), sel(b)
 
 
 def paire(a, b, cout_a, cout_b):
-    """a, b alignes (aligner). Seuil : 1,5 fois l'ecart-type (20 seances precedentes) de l'ecart de fin de seance."""
+    """a, b alignes (aligner). Seuil : 1,5 fois l'ecart-type de l'ecart de fin de seance sur les 20 dernieres seances
+    completes des deux marches."""
     Ja, Oa, _, _, Ca, Pa, Xa = a
     _, Ob, _, _, Cb, Pb, Xb = b
     ok = st.journees_completes(Pa) & st.journees_completes(Pb) & ~Xa["echeance"] & ~Xb["echeance"]
+    complete = st.journees_completes(Pa) & st.journees_completes(Pb)
     fin = np.log(Ca[:, N - 1] / Oa[:, 0]) - np.log(Cb[:, N - 1] / Ob[:, 0])
-    fin = np.where(st.journees_completes(Pa) & st.journees_completes(Pb), fin, NAN)
-    seuil = 1.5 * pd.Series(fin).rolling(20, min_periods=20).std().shift(1).values
+    seuil = 1.5 * K1.glissant_complet(fin, complete, 20, "std")
     return _paire(Oa, Ca, Ob, Cb, ok, seuil, cout_a, cout_b), ok
 
 
-def melanger_perm(O, H, L, C, V, perm):
-    """Comme tournoi/concurrents.melanger, avec un ordre des minutes impose (le meme pour les deux marches de la paire)."""
-    ro = np.ones_like(O)
-    ro[:, 1:] = O[:, 1:] / C[:, :-1]
-    rh, rl, rc = H / O, L / O, C / O
-    ro, rh, rl, rc, V2 = (np.take_along_axis(x, perm, axis=1) for x in (ro, rh, rl, rc, V))
-    O2, H2, L2, C2 = (np.empty_like(O) for _ in range(4))
-    prix = O[:, 0].copy()
-    for m in range(O.shape[1]):
-        om = prix * (ro[:, m] if m > 0 else 1.0)
-        O2[:, m], H2[:, m], L2[:, m], C2[:, m] = om, om * rh[:, m], om * rl[:, m], om * rc[:, m]
-        prix = C2[:, m]
-    return O2, H2, L2, C2, V2
-
-
-def ordre_hasard(nd, rng):
-    return np.concatenate([np.zeros((nd, 1), int), 1 + np.argsort(rng.random((nd, N - 1)), axis=1)], axis=1)
+melanger_perm, ordre_hasard = K1.melanger_perm, K1.ordre_hasard      # meme generateur de bruit que le tournoi n°1

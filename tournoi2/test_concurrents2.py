@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Tests du tournoi n°2 : pas de regard vers le futur (a la barre et a la seance), calculs compares a des versions
-Python simples (Supertrend de TradingView, Donchian, paire), achat permanent exact.
+"""Tests du tournoi n°2 : pas de regard vers le futur (a la barre, entre seances, et dans la seance sur un marche
+aleatoire), calculs compares a des versions Python simples (Supertrend de TradingView, Donchian, paire), achat
+permanent exact.
 Lancer depuis ce dossier : python3 test_concurrents2.py"""
 import numpy as np
 import pandas as pd
 
 import concurrents2 as K
 from explorer2 import charger
+from test_concurrents import controle_martingale, marche_aleatoire   # tournoi/
 
 N = K.N
 
@@ -40,14 +42,16 @@ def supertrend_pine(h, l, c, n, f):
     return out
 
 
-def donchian_simple(o5, h5, l5, c5, ok, d):
-    h, l, c = h5.ravel(), l5.ravel(), c5.ravel()
+def donchian_simple(o5, h5, l5, c5, ok, complete, d):
+    ic = np.where(complete)[0]
+    h, l, c = h5[ic].ravel(), l5[ic].ravel(), c5[ic].ravel()
     q = np.zeros(K.NB, int)
     if not ok[d]:
         return q
+    j = int(np.searchsorted(ic, d))
     pos = 0
     for b in range(K.NB - 1):
-        i = d * K.NB + b
+        i = j * K.NB + b
         if i < 20:
             continue
         hh20, ll20, hh10, ll10 = h[i - 20:i].max(), l[i - 20:i].min(), h[i - 10:i].max(), l[i - 10:i].min()
@@ -80,7 +84,8 @@ def paire_simple(a, b, d, seuil, ca, cb):
 def main():
     J, O, H, L, C, P, X = charger("nasdaq100")
     cout = K.st.cout_aller_retour("nasdaq100")
-    ok = K.st.journees_completes(P) & ~X["echeance"]
+    complete = K.st.journees_completes(P)
+    ok = complete & ~X["echeance"]
     o5, h5, l5, c5 = K.barres5(O, H, L, C)
     rng = np.random.default_rng(5)
     # 1. barres de 5 minutes
@@ -99,10 +104,10 @@ def main():
     assert np.array_equal(a[9:], b[9:]), np.where(a != b)[0][:10]
     print(f"3. Supertrend = traduction de ta.supertrend ({len(c)} barres, {int((np.diff(a[9:]) != 0).sum())} retournements) : OK")
     # 4. Donchian = version simple
-    _, sig = K.signaux5(O, H, L, C)
+    _, sig = K.signaux5(O, H, L, C, complete)
     qd = K.positions(*sig["Canal de Donchian 20 / 10"], ok)
     for d in rng.choice(np.where(ok)[0], 200, replace=False):
-        assert np.array_equal(qd[d], donchian_simple(o5, h5, l5, c5, ok, d)), d
+        assert np.array_equal(qd[d], donchian_simple(o5, h5, l5, c5, ok, complete, d)), d
     print("4. Donchian = version simple (200 seances) : OK")
     # 5. regard vers le futur a la barre : modifier les minutes >= 5k de la seance d (et la suite) ne change pas
     #    les positions tenues jusqu'a la barre k incluse (entree a l'ouverture de la barre k)
@@ -114,7 +119,7 @@ def main():
             x[d:] *= f
             x[d, :5 * k] = y[d, :5 * k]
         O2[d, 5 * k] = O[d, 5 * k]                       # le prix d'execution de la barre k est connu
-        _, sig2 = K.signaux5(O2, H2, L2, C2)
+        _, sig2 = K.signaux5(O2, H2, L2, C2, complete)
         for nom in sig:
             q1, q2 = K.positions(*sig[nom], ok), K.positions(*sig2[nom], ok)
             assert np.array_equal(q1[:d], q2[:d]) and np.array_equal(q1[d, :k + 1], q2[d, :k + 1]), f"regard vers le futur : {nom}"
@@ -138,8 +143,12 @@ def main():
     ca, cb = cout, K.st.cout_aller_retour("sp500")
     r, okp = K.paire(a, b, ca, cb)
     fin = np.log(a[4][:, N - 1] / a[1][:, 0]) - np.log(b[4][:, N - 1] / b[1][:, 0])
-    fin = np.where(K.st.journees_completes(a[5]) & K.st.journees_completes(b[5]), fin, np.nan)
-    seuil = 1.5 * pd.Series(fin).rolling(20, min_periods=20).std().shift(1).values
+    comp = K.st.journees_completes(a[5]) & K.st.journees_completes(b[5])
+    seuil = np.full(len(fin), np.nan)                     # ecart-type des 20 dernieres seances completes
+    ic = np.where(comp)[0]
+    for k, d in enumerate(ic):
+        if k >= 20:
+            seuil[d] = 1.5 * np.std(fin[ic[k - 20:k]], ddof=1)
     for d in rng.choice(np.where(okp & ~np.isnan(seuil))[0], 300, replace=False):
         assert abs(r[d] - paire_simple(a, b, d, seuil[d], ca, cb)) < 1e-12, d
     d = 2000
@@ -149,6 +158,16 @@ def main():
     r2, _ = K.paire(a2, b, ca, cb)
     assert np.array_equal(r[:d], r2[:d])
     print(f"7. paire = version simple (300 seances, {int((r != 0).sum())} seances avec trade), pas de regard vers le futur : OK")
+    # 8. dans la seance : marche aleatoire (14 strategies, puis la paire sur deux marches aleatoires lies)
+    ts, t1, t2 = controle_martingale(K.toutes)
+    rng = np.random.default_rng(12)
+    a = marche_aleatoire(12000, rng)
+    b = marche_aleatoire(12000, rng, correle=a[7])
+    rp, okp = K.paire(a[:7], b[:7], 0.0, 0.0)
+    tp = float(rp[okp].mean() / rp[okp].std() * np.sqrt(okp.sum()))
+    assert tp < 4.0, tp
+    print(f"8. marche aleatoire (12 000 seances) : tricheurs detectes (t {t1:+.1f} et {t2:+.1f}), aucune strategie au-dessus"
+          f" de 4 (max {max(ts.values()):+.2f}, paire {tp:+.2f}, {int((rp != 0).sum())} seances de trade) : OK")
 
 
 if __name__ == "__main__":

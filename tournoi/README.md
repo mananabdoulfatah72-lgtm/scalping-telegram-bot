@@ -63,10 +63,10 @@ Détail dans `exploration.txt`, `exploration.csv` et `reference_zone_coffre.txt`
 
 | Stratégie | Marché | t 2011-2022 | 2011-2016 | 2017-2022 | Plus haut t sur bruit | Corrélation avec la zone |
 |---|---|---|---|---|---|---|
-| Cassure de Williams | NQ | +0,95 | −1,31 | +2,08 | +1,23 | 0,59 |
-| Zone de bruit (référence) | NQ | +0,62 | −2,62 | +2,77 | −0,82 | 1 |
-| Tournant du mois | NQ | −0,33 | −1,42 | +0,52 | — | 0,00 |
-| Continuation du gap | NQ | −0,44 | −1,61 | +0,58 | +1,89 | 0,34 |
+| Cassure de Williams | NQ | +0,81 | −1,44 | +2,01 | +1,29 | 0,59 |
+| Zone de bruit (référence) | NQ | +0,62 | −2,62 | +2,77 | −0,83 | 1 |
+| Tournant du mois | NQ | +0,07 | −0,94 | +0,70 | +0,07 (identique : ne dépend pas de l'ordre des minutes) | 0,00 |
+| Étirement de Crabel | NQ | −0,38 | −1,39 | +0,50 | +2,56 | 0,49 |
 
 Toutes les autres sont négatives, et souvent nettement : sur l'ES, t de −1,5 à −6. L'achat simple intraday est lui aussi négatif (t −0,7 sur NQ, −1,5 sur ES) : les frais de chaque jour mangent la hausse.
 
@@ -84,3 +84,31 @@ en dollars : les années récentes, où le Nasdaq est cher, y pèsent plus lourd
 - La plus proche, la cassure de Williams, ressemble à la zone (corrélation 0,59) et ne bat pas le bruit.
 - L'effet exploité par la zone (le Nasdaq qui continue dans le sens de sa cassure) est récent. Il peut
   disparaître comme il est apparu : c'est pourquoi le suivi en argent virtuel reste l'étape décisive.
+
+## Corrections après la revue de code (30 septembre 2026)
+
+La revue maximale du code a relevé des défauts. Tous sont corrigés et les deux tournois ont été relancés.
+**Le verdict ne change pas : 0 survivant.** Chiffres ci-dessus et `exploration.txt` à jour.
+
+- **Entrée à heure fixe** : un stop ou un objectif déjà franchi à l'ouverture de la minute d'entrée était
+  exécuté au niveau lui-même, ce qui créait des gains ou des pertes fictifs (quelques dizaines de jours).
+  Désormais, la sortie se fait à l'ouverture, comme dans `intraday/strategies.py`.
+- **Tendance VWAP** : exécution à l'ouverture de la minute suivante (avant : au prix du signal). t NQ
+  −2,33 → −2,35.
+- **Jours fériés de la CME** (séance arrêtée à 13 h, fin recopiée à plat) : ils servaient de « veille »
+  et comptaient dans le rang du mois. La veille est maintenant la dernière séance complète, du même
+  contrat. Williams NQ passe de +0,95 à +0,81.
+- **Bruit** : prix arrondis au tick, comme les vrais. Une stratégie qui ne dépend pas de l'ordre des
+  minutes a exactement le même t sur bruit, donc ne passe jamais l'étape 2 (avant, c'était décidé par un
+  arrondi informatique).
+- **Tests** :
+  - nouveau contrôle sur un marché aléatoire tick par tick, 12 000 séances où rien ne peut gagner avant
+    frais : toutes les stratégies restent sous t = 4 ;
+  - deux tricheurs plantés sont bien détectés, l'un qui regarde la clôture de 16 h, l'autre une seule
+    minute trop tard ;
+  - entrée à heure fixe comparée à une version simple sur 2000 cas.
+- **Reproductibilité** : `reference_zone.py` refait `reference_zone_coffre.txt` (chiffres identiques).
+- **Libellés** : « $ par jour de trade » et « jours gagnants » (et non par trade).
+
+Vérifié en plus : la zone de bruit exécutée une minute plus tard (comme en réel, ou dans TradingView)
+garde le même résultat. Sur NQ, t 2023-2026 passe de 2,01 à 2,00, soit −84 $ sur 4 ans pour 1 micro.
