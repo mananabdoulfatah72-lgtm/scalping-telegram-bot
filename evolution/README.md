@@ -97,3 +97,13 @@ fait moins de 150 trades, sa fitness est réduite en proportion.
 
 Suivi en direct : page au style de SETS (réserve génétique, génome du leader, sélection, moteur de
 trading), mise à jour pendant les calculs.
+
+### Précisions (30 septembre, avant tout calcul)
+
+- **Finalistes** : « Sharpe d'entraînement ≥ 0,5 » veut dire une fitness ≥ 0,5, c'est-à-dire un Sharpe
+  réduit s'il y a moins de 150 trades. Le finaliste doit aussi passer la porte (au moins 100 trades en
+  validation), pour écarter les stratégies à trois trades.
+- **Comparaison avec le bruit** : pour chercher avec la même intensité, le champion réel est comparé au
+  meilleur Sharpe de validation obtenu sur l'ensemble des 5 graines sur bruit, avec le même filtre.
+- **Suivi en direct** : les calculs sont rapides (environ 7 ms par backtest). La page rejoue chaque
+  évolution génération par génération, comme SETS, et affiche l'état des calculs pendant qu'ils tournent.
