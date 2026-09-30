@@ -54,6 +54,6 @@ Aucun autre réglage (heure, nombre de jours, largeur de la zone) n'est essayé 
 vu, mais on sait déjà que la base y est bonne. D'où le critère sur la différence avec V1, et pas sur
 le résultat seul.
 
-On donne aussi les résultats **aux frais d'aujourd'hui** : 1,5 point sur un NQ à environ 24 000, soit
-environ 0,6 pb. C'est pour information, pour lire le passé avec le coût actuel. Les critères
+On donne aussi les résultats **aux frais d'aujourd'hui** : 1,5 point sur un NQ à environ 30 900
+(dernier cours des données), soit environ 0,5 pb. C'est pour information, pour lire le passé avec le coût actuel. Les critères
 restent aux frais en points de chaque époque.

@@ -60,3 +60,53 @@ def journal(J, O, H, L, C, P, X, sigma=None, veille=None, vwap=None, ok=None, pa
     t["jour"] = pd.DatetimeIndex(J)[t["d"].values]
     t["sigma"] = sigma[t["d"].values, t["m_entree"].values]
     return t
+
+
+def niveaux_propres(J, O, H, L, C, P, X, jours_moyenne=14):
+    """V1 : sigma sur les 14 dernieres seances COMPLETES (a chaque minute), veille = cloture de la derniere seance
+    complete du meme contrat. Les seances incompletes (feries CME, fermetures anticipees) ne servent plus."""
+    sigma0, _, vwap, ok = niveaux(J, O, H, L, C, P, X, jours_moyenne)
+    comp = ok
+    mv = np.abs(C / O[:, :1] - 1)
+    sigma = np.full_like(mv, np.nan)
+    sigma[comp] = pd.DataFrame(mv[comp]).rolling(jours_moyenne, min_periods=jours_moyenne).mean().shift(1).values
+    contrat = X.get("contrat")
+    idx = np.where(comp, np.arange(len(J)), -1)
+    prec = np.r_[-1, np.maximum.accumulate(idx)[:-1]]
+    if contrat is not None:
+        prec = np.where((prec >= 0) & (contrat[np.maximum(prec, 0)] == contrat), prec, -1)
+    veille = np.where(prec >= 0, C[np.maximum(prec, 0), N - 1], np.nan)
+    return sigma, veille, vwap, ok
+
+
+def zone(J, O, H, L, C, P, X, propre=True, max_trades=99, jours=None, achats_seuls=False, stop="limite_vwap", pas=30):
+    """Gain brut en points et nombre d'allers-retours par seance, selon la variante (README.md, partie 2).
+    jours : masque des seances ou l'on peut entrer (filtre GEX) ; stop : "limite_vwap" (regle d'origine) ou "vwap"."""
+    sigma, veille, vwap, ok = niveaux_propres(J, O, H, L, C, P, X) if propre else niveaux(J, O, H, L, C, P, X)
+    ouverture = O[:, 0]
+    haut_ref, bas_ref = np.fmax(ouverture, veille), np.fmin(ouverture, veille)
+    nd = len(J)
+    brut, allers = np.zeros(nd), np.zeros(nd)
+    permis = np.ones(nd, bool) if jours is None else jours
+    for d in np.where(ok & permis & ~np.isnan(veille) & ~np.isnan(sigma[:, pas]))[0]:
+        pos, entree, n, tot = 0, 0.0, 0, 0.0
+        for m in range(pas, N, pas):
+            p = C[d, m]
+            ub, lb = haut_ref[d] * (1 + sigma[d, m]), bas_ref[d] * (1 - sigma[d, m])
+            lim_l = max(ub, vwap[d, m]) if stop == "limite_vwap" else vwap[d, m]
+            lim_c = min(lb, vwap[d, m]) if stop == "limite_vwap" else vwap[d, m]
+            if pos > 0 and p <= lim_l:
+                tot += p - entree
+                pos = 0
+            elif pos < 0 and p >= lim_c:
+                tot += entree - p
+                pos = 0
+            if pos == 0 and n < max_trades:
+                if p > ub:
+                    pos, entree, n = 1, p, n + 1
+                elif p < lb and not achats_seuls:
+                    pos, entree, n = -1, p, n + 1
+        if pos:
+            tot += pos * (C[d, N - 1] - entree)
+        brut[d], allers[d] = tot, n
+    return brut, allers
