@@ -66,3 +66,4 @@ date,dossier,essai,resultat
 2026-09-30,evolution,machine evolutive (genetique facon SETS) : 22892 strategies sur vraies donnees NQ/ES 5 min + 23381 sur bruit ; 4 finalistes ouverts sur 2023-2026,voir evolution/README.md
 2026-09-30,tournoi,14 strategies intraday classiques a parametres fixes x NQ ES (28 essais) + controle bruit ; aucun survivant,voir tournoi/README.md
 2026-09-30,tournoi2,15 strategies intraday (7 indicateurs populaires sur 5 min + 8 schemas publies dont paire NQ/ES) x NQ ES (29 essais) + controle bruit ; aucun survivant,voir tournoi2/README.md
+2026-09-30,ordres,order flow ES par conditions : 6 signaux x 2 durees x 15 cases (heure volatilite volume sens du jour) = 180 cas ; aucune case efficace,voir ordres/CONDITIONS.md

@@ -49,3 +49,30 @@ Le tri est fait séparément aux frais MES et aux frais ES. Une case efficace ne
 faudrait la confirmer sur des séances jamais vues (après le 25 septembre) avant tout usage.
 
 Les 180 cas sont inscrits dans `fonds/essais.csv`.
+
+## Résultats (30 septembre 2026) : aucune condition efficace, 0 sur 180
+
+`python3 conditions.py` refait tout (`resultats_conditions.txt`, `.csv`, `.json`). 23 séances,
+8 832 minutes de décision.
+
+**Aucune case ne passe, ni aux frais MES (2,6 ticks) ni aux frais ES (1,4 tick).** Le meilleur t de
+toutes les cases est de +1,58, loin du seuil de 3,45.
+
+Ce qui ressort quand même (à lire comme des tendances, pas comme des preuves) :
+
+| Condition | Effet sur les signaux |
+|---|---|
+| **Durée** | Sur 5 minutes, le carnet fort vaut +1,4 tick brut, contre +0,6 sur 1 minute. |
+| **Volatilité et volume forts** | Les signaux valent le plus : le carnet fort + CVD d'accord fait +3,3 à +3,6 ticks brut sur 5 min. |
+| **Volatilité ou volume faibles** | Les signaux ne valent rien (−0,2 à +0,4 tick). |
+| **Heure** | 11 h - 13 h est le meilleur moment pour le carnet (+2 à +2,5 ticks sur 5 min). L'ouverture (9 h 31 - 10 h) n'apporte rien. 13 h - 14 h est le pire moment. |
+| **« Flux réel » (carnet + CVD d'accord)** | Un peu mieux que le carnet seul (+2,0 ticks contre +1,4 sur 5 min). |
+| **Divergence prix / CVD** | Très rare (112 signaux en 23 séances). Aucun t au-dessus de 1,6. |
+
+**En clair** :
+- Même dans les meilleures conditions, le mouvement capté ne couvre pas les frais sur MES : il reste
+  négatif ou tout juste positif, avec un t proche de 0.
+- Sur le contrat ES entier, quelques cases feraient +1,5 à +2 ticks net, mais avec un t de 1 à 1,3 :
+  impossible de les distinguer du hasard avec 23 séances.
+- Pour savoir si ces cases sont réelles, il faudrait environ 7 fois plus de séances (environ
+  160). Cela coûterait de l'ordre de 150 à 200 $ de données Databento.
