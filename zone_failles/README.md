@@ -57,3 +57,39 @@ le résultat seul.
 On donne aussi les résultats **aux frais d'aujourd'hui** : 1,5 point sur un NQ à environ 30 900
 (dernier cours des données), soit environ 0,5 pb. C'est pour information, pour lire le passé avec le coût actuel. Les critères
 restent aux frais en points de chaque époque.
+
+## 3. Résultats (30 septembre 2026)
+
+`variantes.py` refait tout (`variantes.txt`). Chiffres : t des rendements quotidiens nets sur NQ.
+
+| Variante | 2011-2016 | 2017-2022 | 2011-2022 | 2023-2026 | Aux frais d'aujourd'hui, 2011-2022 | Verdict |
+|---|---|---|---|---|---|---|
+| V0 zone d'origine | −2,62 | +2,77 | +0,62 | +2,01 | +3,38 | référence |
+| **V1 données propres** | **−2,26** | **+2,78** | **+0,81** | **+2,00** | **+3,61** | **adoptée** |
+| V2 un trade par jour | −0,72 | +2,42 | +1,48 | +1,48 | +3,61 | rejetée |
+| V3 filtre GEX | −0,49 | +2,65 | +1,99 | +1,38 | +3,39 | rejetée |
+| V4 achats seulement | −0,76 | +1,97 | +1,09 | +2,07 | +3,30 | rejetée |
+| V5 stop sur le VWAP | −1,89 | +2,98 | +1,17 | +1,76 | +3,40 | rejetée |
+
+Pourquoi les rejets :
+- **V2, V3 et V4** sauvent 2011-2016 mais font moins bien sur 2017-2022.
+- **V5** fait mieux sur les deux moitiés mais moins bien sur 2023-2026. Le t de sa différence avec V1
+  y vaut −0,38.
+- **V3 (GEX) est le piège typique** : t 1,99 sur 2011-2022, la meilleure sur le passé. Mais sur
+  2023-2026, elle fait 1,38 contre 2,00 pour V1. Sans le tri, on l'aurait adoptée à tort.
+
+Sur ES, V1 ne change rien (t −1,72) et toutes les variantes restent négatives sur 2023-2026.
+
+**Ce qu'on retient** :
+- **Correction adoptée** (V1, données propres), portée dans le robot et le script TradingView sur main.
+  Le robot corrigé donne exactement le backtest corrigé : 2 287 jours de trade, écart nul.
+- **Aucune « amélioration » ne tient** hors de l'échantillon. La zone telle que publiée, corrigée de
+  la faille de données, reste la meilleure version connue.
+- **Le vrai frein était les frais, pas la règle.** Aux frais d'aujourd'hui (0,5 pb avec le NQ à
+  30 900), la version corrigée aurait fait t +3,61 sur 2011-2022, contre +0,81 aux frais de chaque
+  époque. Le NQ vaut aujourd'hui 10 fois plus qu'en 2011, pour les mêmes 1,5 point de frais.
+  L'avantage de la zone est plus régulier qu'il n'y paraissait, et les frais pèsent peu au prix
+  actuel.
+- **Les pertes viennent des allers-retours**, inhérents à une règle de suivi de tendance : trades
+  coupés en 30 min, jours à plusieurs entrées. Les couper (V2) fait perdre les bonnes journées.
+  C'est le prix du système.
