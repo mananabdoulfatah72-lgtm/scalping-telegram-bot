@@ -5,6 +5,7 @@
 // A utiliser sur un graphique 1 MINUTE du contrat MNQ du trimestre (par exemple MNQZ2026), en temps reel.
 // - Toutes les 30 minutes de 10 h a 15 h 30 (heure de New York), on compare la cloture de la minute a la zone :
 //   haut = max(ouverture 9 h 30, cloture de la veille) x (1 + mouvement moyen des 14 dernieres seances a cette heure)
+//   (seances completes seulement : les demi-seances ne comptent ni dans la moyenne ni comme veille, correction V1)
 //   bas  = min(ouverture 9 h 30, cloture de la veille) x (1 - meme mouvement)
 //   Au-dessus du haut : achat ; sous le bas : vente. En position, sortie si le prix repasse la limite ou le VWAP.
 // - Tout est ferme a 15 h 59. Pas de position la nuit. Pas de trade les jours de fete ou de demi-seance
@@ -69,6 +70,7 @@ var bool debutComplet = false                                  // la seance a co
 var bool court = false
 var int posOrdres = 0                                          // position des ordres affiches (0 si taille nulle)
 var bool actifHier = false                                     // la seance precedente pouvait etre tradee
+var bool finVue = false                                        // la minute de 15 h 59 de la seance a ete vue
 
 nouvelleSeance = enSeance and (na(jourCourant) or jourNY != jourCourant)
 
@@ -78,20 +80,21 @@ if nouvelleSeance
         // position encore ouverte (la minute de 15 h 59 manquait) : fermee au dernier prix de la veille, comme le backtest
         pointsJour += sens * (derniereCloture - entree)
         sens := 0
-    if seanceVue and debutComplet
-        // seance precedente : les controles non atteints (demi-seance) prennent le dernier prix, comme le backtest
-        if idxMouv < NB_CTRL
-            array.fill(mouvJour, math.abs(derniereCloture / ouvJour - 1), idxMouv)
+    // correction V1 : seule une seance complete (9 h 30 - 15 h 59, pas une demi-seance) entre dans la moyenne et sert de veille
+    completeHier = seanceVue and debutComplet and finVue and not court
+    if completeHier
         matrix.add_row(mouvements, matrix.rows(mouvements), mouvJour.copy())
         if matrix.rows(mouvements) > MEMOIRE
             matrix.remove_row(mouvements, 0)
+    if seanceVue and debutComplet
         // le risque ne compte que les seances ou le script pouvait trader (pas l'historique de demarrage)
         if actifHier
             array.push(resultats, (pointsJour - coutPts * allers) * valeurPt)
             if array.size(resultats) > FENETRE
                 array.shift(resultats)
-    if seanceVue
+    if completeHier
         veille := derniereCloture
+    finVue := false
     ouvJour := open
     debutComplet := minuteSeance == 0
     court := jourCourt(annee, mois, jourMois, jourSemaine)
@@ -143,6 +146,8 @@ if enSeance and seanceVue
                 allers += 1
         idxMouv += 1
     derniereCloture := close
+    if minuteSeance == 389
+        finVue := true
 // fin de seance : tout est ferme a 15 h 59 ; si cette minute manque, a la premiere minute apres la seance
 finSeance = sens != 0 and ((enSeance and minuteSeance == 389) or not enSeance)
 if finSeance

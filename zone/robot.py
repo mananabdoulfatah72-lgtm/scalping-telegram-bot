@@ -115,10 +115,16 @@ def zone_de_bruit(jours, O, H, L, C, P, V, echeance):
     """Copie de intraday/strategies.py zone_de_bruit (avec VWAP), qui note aussi les trades du jour."""
     ok = P[:, 0] & P[:, N - 1] & (P.sum(axis=1) >= 370)
     ouverture = O[:, 0]
-    veille = np.r_[np.nan, C[:-1, N - 1]]
-    veille[echeance] = np.nan
+    # correction V1 (zone_failles/README.md sur la branche de recherche) : les seances incompletes (feries CME,
+    # demi-seances) ne servent ni a la moyenne sur 14 jours ni de veille ; veille = derniere seance complete, meme contrat
+    contrat = np.cumsum(echeance)
+    idx = np.where(ok, np.arange(len(jours)), -1)
+    prec = np.r_[-1, np.maximum.accumulate(idx)[:-1]]
+    prec = np.where((prec >= 0) & (contrat[np.maximum(prec, 0)] == contrat), prec, -1)
+    veille = np.where(prec >= 0, C[np.maximum(prec, 0), N - 1], np.nan)
     mouvement = np.abs(C / ouverture[:, None] - 1)
-    sigma = pd.DataFrame(mouvement).rolling(JOURS_MOYENNE, min_periods=JOURS_MOYENNE).mean().shift(1).values
+    sigma = np.full_like(mouvement, np.nan)
+    sigma[ok] = pd.DataFrame(mouvement[ok]).rolling(JOURS_MOYENNE, min_periods=JOURS_MOYENNE).mean().shift(1).values
     typique = (H + L + C) / 3
     cumv = np.cumsum(V, axis=1)
     prix_moyen = np.where(cumv > 0, np.cumsum(typique * V, axis=1) / np.where(cumv > 0, cumv, 1),
@@ -196,11 +202,14 @@ def niveaux(minutes, r):
     cloture de la veille, mouvement moyen des 14 dernieres seances a chaque controle, taille conseillee."""
     jours, O, H, L, C, P, V, ech = tableaux(minutes)
     if not (P[-1, 0] and P[-1, N - 1]) and not jour_court(jours[-1]):
-        jours, O, C = jours[:-1], O[:-1], C[:-1]      # derniere seance encore incomplete (delai des donnees) : ecartee
+        jours, O, C, P = jours[:-1], O[:-1], C[:-1], P[:-1]   # derniere seance encore incomplete (delai des donnees) : ecartee
     ctrl = list(range(PAS, N, PAS))
-    if len(jours) < JOURS_MOYENNE:
+    # correction V1 : seules les seances completes comptent (moyenne sur 14 jours et veille)
+    complete = P[:, 0] & P[:, N - 1] & (P.sum(axis=1) >= 370)
+    if complete.sum() < JOURS_MOYENNE:
         return None
-    sigma = np.abs(C[-JOURS_MOYENNE:, :] / O[-JOURS_MOYENNE:, :1] - 1)[:, ctrl].mean(axis=0)
+    Cc, Oc = C[complete], O[complete]
+    sigma = np.abs(Cc[-JOURS_MOYENNE:, :] / Oc[-JOURS_MOYENNE:, :1] - 1)[:, ctrl].mean(axis=0)
     prochaine = pd.Timestamp(jours[-1]) + pd.Timedelta(days=1)
     while jour_ferme(prochaine):
         prochaine += pd.Timedelta(days=1)
@@ -211,7 +220,7 @@ def niveaux(minutes, r):
         heures.append({"ny": t_ny.strftime("%Hh%M"), "paris": t_ny.tz_convert("Europe/Paris").strftime("%Hh%M"), "sigma": float(sg)})
     ok = np.isfinite(r) and r > 0
     taille = lambda c, f: int(min(MAX_MNQ, np.floor(f * c / r))) if ok else 0
-    return {"seance": str(prochaine.date()), "jour_court": court, "veille": float(C[-1, N - 1]), "controles": heures,
+    return {"seance": str(prochaine.date()), "jour_court": court, "veille": float(Cc[-1, N - 1]), "controles": heures,
             "risque_1_mnq": r if ok else None,
             "tailles": {f"{f:.2f}": {"Phidias (coussin 2 500 $)": taille(2500, f), "Topstep (coussin 2 000 $)": taille(2000, f)}
                         for f in (0.15, 0.25, 0.35)}}
