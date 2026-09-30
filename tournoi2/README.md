@@ -1,6 +1,6 @@
 # Tournoi intraday n°2 : d'autres stratégies que la zone de bruit
 
-## Règles (fixées le 1er octobre 2026, avant tout calcul)
+## Règles (fixées le 30 septembre 2026, avant tout calcul)
 
 Même principe que le tournoi n°1 (`tournoi/`) :
 - **réglages standards de chaque indicateur ou de sa source, sans aucun ajustement** ;
@@ -72,8 +72,9 @@ Code figé avant le calcul (commit 94d8a4a) ; tests dans `test_concurrents2.py`.
 Les 25 autres essais sont négatifs, de −0,5 à −35 :
 - **Les 7 indicateurs populaires sur barres de 5 minutes** (moyennes, Supertrend, MACD, Bollinger,
   RSI(2), Donchian) perdent tous sur les deux marchés, de t −0,5 (Supertrend NQ) à t −35 (RSI(2) ES).
-  Ils tradent presque tous les jours, souvent plusieurs fois : les frais les écrasent. Les
-  indicateurs de tendance font mieux que leurs versions sur bruit, ceux de retour à la moyenne non.
+  Ils tradent presque tous les jours, souvent plusieurs fois : les frais les écrasent. Face à leurs
+  versions sur bruit, rien de net : les moyennes 9/21 et le Supertrend font mieux que la moyenne du
+  bruit, le MACD, la cassure de Bollinger et Donchian font moins bien.
 - **Les effets de calendrier** perdent tous : lundi contre vendredi, échéance des options (t −2,2 à
   −2,4), jour de l'emploi sur ES, retournement de la mi-journée (t −2,6 et −5,7).
 - **La paire NQ / ES** perd nettement (t −3,70, contre +0,48 au mieux sur bruit). L'écart entre le
@@ -89,9 +90,9 @@ Les 25 autres essais sont négatifs, de −0,5 à −35 :
   2011-2022**, zone de bruit comprise (t 0,62).
 - La seule structure réelle du Nasdaq en journée, c'est la **continuation** : un mouvement a tendance
   à se poursuivre. On la voit :
-  - dans la zone de bruit ;
-  - dans les indicateurs de tendance, meilleurs que sur bruit ;
-  - dans la paire, qui perd parce que l'écart continue.
+  - dans la zone de bruit, qui bat ses versions sur bruit ;
+  - dans la paire, qui perd plus que sur bruit parce que l'écart continue ;
+  - dans les bandes de VWAP (`ordres/`), où le retour au VWAP fait moins bien que le hasard.
 
   Elle n'est rentable après frais que depuis 2017 environ, et la zone de bruit l'exploite le mieux.
 - Aucune autre stratégie intraday publiée et testée honnêtement ne donne t ≥ 2. Pour un challenge 50K,
