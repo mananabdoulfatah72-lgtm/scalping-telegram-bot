@@ -49,23 +49,31 @@ tous les deux (environ 3 semaines en mars et une semaine fin octobre), tout se d
 ## Ordres automatiques (facultatif)
 
 Le script peut envoyer ses ordres tout seul, par un « webhook » vers un service qui passe les ordres chez le
-courtier de ta prop firm. Il te faut un abonnement TradingView qui permet les webhooks.
+courtier de ta prop firm. Il te faut un abonnement TradingView qui permet les webhooks, avec la
+**double authentification activée** sur ton compte TradingView (sinon l'adresse du webhook ne peut pas être
+enregistrée).
 1. **Vérifie d'abord que ta prop firm autorise le trading automatique** : certaines l'interdisent ou
    exigent que tu sois présent, et un compte peut être fermé pour ça.
-2. Ouvre un compte chez un service qui relie TradingView au courtier de ta firme (par exemple TradersPost
-   ou PickMyTrade, selon le courtier : Tradovate, Rithmic, NinjaTrader...), et relie-le toi-même à ton
-   compte. Ne donne tes identifiants à personne d'autre.
+2. Ouvre un compte **TradersPost** (les messages du script sont à son format) et relie-le toi-même au
+   courtier de ton compte de challenge, s'il est pris en charge (Tradovate, par exemple). Ne donne tes
+   identifiants à personne d'autre. Dans la stratégie TradersPost, règle-la pour **utiliser la quantité
+   envoyée par le signal** et pour **fermer puis inverser la position sur un signal opposé**. Un autre
+   service (PickMyTrade, CrossTrade...) attend un autre format de message : le script devrait être adapté.
 3. Dans les réglages du script : « Format des alertes » = JSON, et « Symbole envoyé dans les ordres » =
    le symbole attendu par le service (par exemple MNQZ2026).
 4. Crée l'alerte : condition = le script, « Appels de fonction alert() uniquement », coche « URL du
    webhook » et colle l'adresse donnée par le service. Les messages ont ce format :
    `{"ticker": "MNQZ2026", "action": "buy", "sentiment": "long", "quantity": 2}` pour un achat, et
    `{"ticker": "MNQZ2026", "action": "exit", "sentiment": "flat"}` pour une sortie. Un retournement
-   est un seul message dans l'autre sens : règle le service pour qu'il ferme puis inverse la position.
+   (rare) est un seul message dans l'autre sens, d'où le réglage « fermer puis inverser » ci-dessus.
 5. **Teste plusieurs jours sur un compte de démonstration du service** avant le challenge, et vérifie
    que chaque ordre arrive.
 6. Surveille quand même : si TradingView ou le service tombe en panne, un ordre peut manquer (surtout
-   la fermeture de 15 h 59). Quand la taille change, supprime et recrée l'alerte.
+   la fermeture de 15 h 59).
+7. **Une alerte garde tous les réglages du moment où elle a été créée** (taille, coussin, format,
+   symbole). À chaque changement, supprime-la et recrée-la. En particulier, au changement de contrat
+   (mars, juin, septembre, décembre) : passe le graphique **et** le réglage « Symbole envoyé » au
+   nouveau contrat, puis recrée l'alerte.
 
 ## Étape 3 : un challenge, si les étapes 1 et 2 se passent bien
 

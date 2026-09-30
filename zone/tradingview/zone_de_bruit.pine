@@ -11,7 +11,7 @@
 //   (le backtest ne les trade pas) ; ne pas trader non plus le jour ou l'on change de contrat.
 // - Taille : nombre de contrats = f x coussin / ecart-type du resultat quotidien (1 contrat, 60 dernieres seances).
 // Ordres automatiques : mettre "Format des alertes" sur JSON et relier l'alerte (webhook) a un service qui passe
-// les ordres chez le courtier de la prop firm (TradersPost, PickMyTrade...), si la firme autorise l'automatisation.
+// les ordres chez le courtier de la prop firm (format TradersPost), si la firme autorise l'automatisation.
 strategy("Zone de bruit MNQ (challenge)", overlay = true, process_orders_on_close = true,
      commission_type = strategy.commission.cash_per_contract, commission_value = 1.0, slippage = 1,
      default_qty_type = strategy.fixed, default_qty_value = 1, initial_capital = 50000, margin_long = 0, margin_short = 0)
@@ -151,13 +151,13 @@ if finSeance
 
 // messages d'alerte : texte lisible, ou JSON pour un service d'ordres automatiques (format TradersPost, ordres au marche)
 modeJson = formatAlerte != "Texte (notification)"
-symbole = tickerOrdre == "" ? syminfo.ticker : tickerOrdre
+symbole = str.trim(tickerOrdre) == "" ? syminfo.ticker : str.trim(tickerOrdre)
 msgSortie(bool fin) =>
     modeJson ? '{"ticker": "' + symbole + '", "action": "exit", "sentiment": "flat"}' :
          "ZONE MNQ : " + (fin ? "FERMER (fin de seance)" : "SORTIE") + " a " + str.tostring(close)
-msgEntree(int s, int q, int avant) =>
+msgEntree(int s, int q, bool retournement) =>
     modeJson ? '{"ticker": "' + symbole + '", "action": "' + (s > 0 ? "buy" : "sell") + '", "sentiment": "' + (s > 0 ? "long" : "short") + '", "quantity": ' + str.tostring(q) + '}' :
-         "ZONE MNQ : " + (s > 0 ? "ACHAT " : "VENTE ") + str.tostring(q) + " contrat(s) a " + str.tostring(close) + (avant != 0 ? " (retournement : fermer d'abord la position en cours)" : "")
+         "ZONE MNQ : " + (s > 0 ? "ACHAT " : "VENTE ") + str.tostring(q) + " contrat(s) a " + str.tostring(close) + (retournement ? " (retournement : fermer d'abord la position en cours)" : "")
 
 // ordres affiches et alertes : un seul message par minute, vers la position voulue. Un retournement est un seul
 // message d'entree dans l'autre sens ("sentiment" long/short : le service ferme la position en cours puis l'inverse)
@@ -168,7 +168,7 @@ if posVoulue != posOrdres
         alert(msgSortie(finSeance), alert.freq_once_per_bar_close)
     else
         strategy.entry(posVoulue > 0 ? "Achat" : "Vente", posVoulue > 0 ? strategy.long : strategy.short, qty = qte)
-        alert(msgEntree(posVoulue, qte, posOrdres), alert.freq_once_per_bar_close)
+        alert(msgEntree(posVoulue, qte, posOrdres != 0), alert.freq_once_per_bar_close)
     posOrdres := posVoulue
 
 // ----------------------------------------------------------------------------- affichage
