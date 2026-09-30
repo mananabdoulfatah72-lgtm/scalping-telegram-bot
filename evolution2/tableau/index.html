@@ -1,0 +1,618 @@
+<meta charset="utf-8">
+<title>Machine évolutive n°2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Mise en page : colonne de panneaux blancs sur fond bleu pâle pointillé, comme SETS ; grilles qui passent à une colonne sur téléphone */
+:root {
+  --fond: #edf2fb; --point: #d3def2; --panneau: #ffffff; --encre: #0c1c44; --doux: #62739a; --trait: #d8e2f2;
+  --bleu: #1f5bdb; --ciel: #3fa9f5; --clair: #e7eefb; --vert: #138a5b; --rouge: #c8364a; --orange: #c77a12;
+  --esp0: #0b2c78; --esp1: #2f6fe0; --esp2: #74aef6; --esp3: #129aa7; --esp4: #7a3fd1; --esp5: #c2410c; --esp6: #b8860b; --esp7: #be185d; --esp8: #15803d;
+  --titre: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --fond: #0a1226; --point: #16213d; --panneau: #0f1a33; --encre: #e3ebfa; --doux: #8ea1c7; --trait: #22314f;
+  --bleu: #5c8dff; --ciel: #58b8ff; --clair: #172646; --vert: #3cc58c; --rouge: #ff6b7f; --orange: #f0a43a;
+  --esp0: #9db8ff; --esp1: #5c8dff; --esp2: #8fd0ff; --esp3: #34c4cf; --esp4: #b794f6; --esp5: #fb923c; --esp6: #facc15; --esp7: #f472b6; --esp8: #4ade80; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --fond: #0a1226; --point: #16213d; --panneau: #0f1a33; --encre: #e3ebfa; --doux: #8ea1c7; --trait: #22314f;
+  --bleu: #5c8dff; --ciel: #58b8ff; --clair: #172646; --vert: #3cc58c; --rouge: #ff6b7f; --orange: #f0a43a;
+  --esp0: #9db8ff; --esp1: #5c8dff; --esp2: #8fd0ff; --esp3: #34c4cf; --esp4: #b794f6; --esp5: #fb923c; --esp6: #facc15; --esp7: #f472b6; --esp8: #4ade80; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--fond); background-image: radial-gradient(var(--point) 1px, transparent 1px); background-size: 18px 18px;
+  color: var(--encre); font-family: var(--mono); font-size: 13px; margin: 0 }
+.page { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 28px; display: grid; gap: 14px }
+.panneau { background: var(--panneau); border: 1px solid var(--trait); border-radius: 14px; padding: 18px 20px; min-width: 0 }
+.rang { display: grid; gap: 14px; min-width: 0 }
+.r2 { grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr) }
+.r3 { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.r2b { grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr) }
+.r2c { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+@media (max-width: 900px) { .r2, .r3, .r2b, .r2c { grid-template-columns: minmax(0, 1fr) } }
+h1 { font-family: var(--titre); font-weight: 700; font-size: clamp(26px, 4vw, 40px); letter-spacing: .01em; margin: 0; line-height: 1 }
+h1 .b { color: var(--bleu) }
+h2 { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin: 0 }
+.sous { color: var(--doux); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px }
+.tete { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: center; justify-content: space-between }
+.marque { display: flex; gap: 16px; align-items: center; min-width: 0 }
+.stats { display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: flex-end }
+.stat .l { font-size: 10px; letter-spacing: .14em; color: var(--doux); text-transform: uppercase }
+.stat .v { font-family: var(--titre); font-weight: 700; font-size: 24px; font-variant-numeric: tabular-nums; margin-top: 4px }
+.stat .v.b { color: var(--bleu) }
+.pastille { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid var(--bleu); color: var(--bleu); border-radius: 999px;
+  padding: 3px 12px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase }
+.pastille::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor }
+.pastille.vive::before { animation: pouls 1.2s infinite }
+@keyframes pouls { 50% { opacity: .25 } }
+.horloge { font-family: var(--mono); font-weight: 700; font-size: 22px; font-variant-numeric: tabular-nums; text-align: right }
+.cmd { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+button, select { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--encre);
+  background: var(--panneau); border: 1.5px solid var(--trait); border-radius: 9px; padding: 9px 14px; cursor: pointer }
+button:hover, select:hover { border-color: var(--bleu) }
+button:focus-visible, select:focus-visible, canvas:focus-visible { outline: 2px solid var(--ciel); outline-offset: 2px }
+button.principal { background: var(--encre); color: var(--panneau); border-color: var(--encre); min-width: 120px }
+.vitesses { display: inline-flex; border: 1.5px solid var(--trait); border-radius: 9px; overflow: hidden }
+.vitesses button { border: 0; border-radius: 0; padding: 9px 12px }
+.vitesses button[aria-pressed="true"] { background: var(--clair); color: var(--bleu) }
+.info { color: var(--doux); font-size: 11px; margin-left: auto; text-align: right }
+.entete { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap }
+.entete .d { color: var(--doux); font-size: 11px; letter-spacing: .08em; text-transform: uppercase }
+.etiquette { display: inline-block; background: var(--clair); color: var(--bleu); border-radius: 999px; padding: 3px 10px; font-size: 10px;
+  font-weight: 700; letter-spacing: .1em; text-transform: uppercase }
+canvas { display: block; width: 100%; max-width: 100% }
+.ligne-phase { margin-top: 10px; border: 1px solid var(--trait); border-radius: 10px; padding: 9px 12px; font-size: 12px; color: var(--encre); min-height: 38px }
+.ligne-phase b { color: var(--bleu) }
+.chiffres { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 8px }
+.chiffres .l { font-size: 10px; color: var(--doux); letter-spacing: .12em; text-transform: uppercase }
+.chiffres .v { font-weight: 700; font-size: 15px; margin-top: 3px; font-variant-numeric: tabular-nums }
+.legende { display: grid; gap: 4px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; margin-top: 8px }
+.legende span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 7px; vertical-align: -1px; background: var(--c) }
+.pied { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; color: var(--doux); font-size: 10px; letter-spacing: .1em;
+  text-transform: uppercase; border-top: 1px solid var(--trait); padding-top: 9px; margin-top: 6px }
+.genes { display: grid; gap: 7px; margin-top: 14px }
+.gene { display: grid; grid-template-columns: 112px minmax(0, 1fr) 96px; gap: 10px; align-items: center; font-size: 11px }
+.gene .n { color: var(--doux); letter-spacing: .08em; text-transform: uppercase }
+.gene .val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums }
+.barre { display: grid; grid-template-columns: repeat(20, 1fr); gap: 2px; height: 11px }
+.barre i { background: var(--clair); border-radius: 1px }
+.barre i.on { background: var(--bleu) }
+.resume { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--trait); margin-top: 12px; padding-top: 9px; font-size: 11px; color: var(--doux) }
+.resume b { color: var(--bleu) }
+.entonnoir { display: grid; gap: 12px; margin-top: 14px }
+.etape .t { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--doux) }
+.etape .t b { color: var(--encre) }
+.etape.actif .t { color: var(--bleu) }
+.jauge { height: 14px; background: var(--clair); border-radius: 4px; margin-top: 5px; overflow: hidden }
+.jauge i { display: block; height: 100%; background: linear-gradient(90deg, var(--esp0), var(--bleu)); border-radius: 4px; transition: width .5s }
+.grand { font-family: var(--titre); font-weight: 700; font-size: 56px; color: var(--bleu); line-height: 1 }
+table { width: 100%; border-collapse: collapse; font-size: 11px; font-variant-numeric: tabular-nums }
+th { text-align: left; color: var(--doux); font-weight: 500; letter-spacing: .1em; text-transform: uppercase; padding: 6px 4px; border-bottom: 1px solid var(--trait) }
+td { padding: 6px 4px; border-bottom: 1px solid var(--trait) }
+.defile { overflow-x: auto }
+.bon { color: var(--vert) } .mauvais { color: var(--rouge) }
+.journal { margin-top: 12px; font-size: 11px; display: grid; gap: 4px; max-height: 220px; overflow-y: auto }
+.journal b.a { color: var(--bleu) } .journal b.v { color: var(--rouge) } .journal b.s { color: var(--doux) }
+.cadenas { display: grid; place-items: center; gap: 10px; text-align: center; padding: 18px 8px; border: 1.5px dashed var(--trait); border-radius: 12px; margin-top: 12px }
+.cadenas .ico { width: 40px; height: 34px; border: 3px solid var(--encre); border-radius: 7px; position: relative; margin-top: 16px }
+.cadenas .ico::before { content: ""; position: absolute; width: 22px; height: 20px; border: 3px solid var(--encre); border-bottom: 0; border-radius: 12px 12px 0 0; left: 6px; top: -21px }
+.criteres { font-size: 11px; color: var(--doux); display: grid; gap: 4px; text-align: left }
+.progression { height: 6px; background: var(--clair); border-radius: 3px; overflow: hidden; margin-top: 8px }
+.progression i { display: block; height: 100%; background: var(--bleu); transition: width .4s }
+footer { color: var(--doux); font-size: 11px; text-align: center; padding-top: 4px }
+p.note { color: var(--doux); font-size: 11px; line-height: 1.55; margin: 10px 0 0 }
+@media (prefers-reduced-motion: reduce) { .pastille.vive::before { animation: none } .jauge i, .progression i { transition: none } }
+</style>
+
+<div class="page">
+  <header class="panneau tete">
+    <div class="marque">
+      <canvas id="logo" width="64" height="64" style="width:56px;height:56px" aria-hidden="true"></canvas>
+      <div>
+        <h1>MACHINE <span class="b">ÉVOLUTIVE</span> N°2</h1>
+        <div class="sous">Système de trading auto-évolutif · MNQ / MES · 5 min · papier · honnête</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="l">Génération</div><div class="v" id="s-gen">#0</div></div>
+      <div class="stat"><div class="l">Backtests</div><div class="v" id="s-bt">0</div></div>
+      <div class="stat"><div class="l">Taux de mort</div><div class="v b" id="s-mort">0 %</div></div>
+      <div class="stat"><div class="l">Passent la porte</div><div class="v" id="s-surv">0/96</div></div>
+      <div class="stat"><canvas id="c-spark" width="240" height="60" style="width:120px;height:30px" aria-hidden="true"></canvas><div class="l" style="text-align:center">porte / génération</div></div>
+      <div><div class="horloge" id="horloge">00:00:00</div><div style="text-align:right;margin-top:6px"><span class="pastille" id="etat">chargement</span></div></div>
+    </div>
+  </header>
+
+  <section class="panneau">
+    <div class="cmd">
+      <button class="principal" id="b-jouer" type="button">▶ Lecture</button>
+      <button id="b-etape" type="button">Étape ›</button>
+      <div class="vitesses" role="group" aria-label="Vitesse">
+        <button type="button" data-v="1" aria-pressed="true">1×</button><button type="button" data-v="2" aria-pressed="false">2×</button>
+        <button type="button" data-v="4" aria-pressed="false">4×</button><button type="button" data-v="8" aria-pressed="false">8×</button>
+      </div>
+      <label for="choix-run" class="sous" style="margin:0">Graine</label>
+      <select id="choix-run"></select>
+      <button id="b-debut" type="button">Recommencer</button>
+      <div class="info" id="info">NQ + ES · barres de 5 min · entraînement 2011-2018 · validation 2019-2022 · coffre 2023-2026 verrouillé</div>
+    </div>
+    <div id="live" class="note" hidden></div>
+    <div class="progression" id="prog-wrap" hidden><i id="prog"></i></div>
+  </section>
+
+  <div class="rang r2">
+    <section class="panneau">
+      <div class="entete"><h2>Boucle d'évolution</h2><span class="etiquette">auto-réécriture</span></div>
+      <div class="sous">Observer → muter → tester → sélectionner → déployer</div>
+      <canvas id="c-boucle" width="600" height="440" aria-label="Boucle d'évolution : phase en cours"></canvas>
+    </section>
+    <section class="panneau">
+      <div class="entete"><h2>Fitness · meilleure de la génération</h2><span class="d" id="f-best">meilleure 0</span></div>
+      <div class="sous">Sharpe d'entraînement 2011-2018 · la meilleure peut baisser : une stratégie qui rate la porte meurt</div>
+      <canvas id="c-fit" width="1200" height="300" aria-label="Fitness par génération"></canvas>
+      <div class="chiffres">
+        <div><div class="l">Population</div><div class="v">96</div></div>
+        <div><div class="l">Descendants / gén.</div><div class="v" id="f-desc">80</div></div>
+        <div><div class="l">Élites gardées</div><div class="v" id="f-elite">8</div></div>
+        <div><div class="l">Δ fitness · 10 gén.</div><div class="v" id="f-delta" style="color:var(--bleu)">+0,000</div></div>
+      </div>
+      <div class="ligne-phase" id="phase" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <section class="panneau">
+    <div class="entete"><h2>Réserve génétique · graphe des stratégies</h2><span class="etiquette" id="p-phase">phase</span></div>
+    <div class="sous">Position = gènes (rétrospection, seuil) · taille = rang · touche un point pour lire son génome</div>
+    <div class="legende" id="legende"></div>
+    <canvas id="c-pool" width="2400" height="900" tabindex="0" aria-label="Réserve génétique : une stratégie par point"></canvas>
+    <div class="pied"><span>Un point = une stratégie · trait = parent → enfant · anneau = naissance · plein = NQ, creux = ES</span><span id="p-bilan">gén 0</span></div>
+  </section>
+
+  <div class="rang r3">
+    <section class="panneau">
+      <div class="entete"><h2 id="g-titre">Génome · leader</h2><span class="d" id="g-id">—</span></div>
+      <div class="sous" id="g-sous">ADN de la stratégie qui passe la porte avec la meilleure fitness</div>
+      <div class="genes" id="genes"></div>
+      <div class="resume" id="g-resume"></div>
+    </section>
+    <section class="panneau">
+      <div class="entete"><h2>Sélection naturelle</h2><span class="d" id="n-gen">gén 0</span></div>
+      <div class="sous">Qui survit à cette génération</div>
+      <div class="entonnoir" id="entonnoir"></div>
+      <div class="resume"><span>Porte : <b>Sharpe 2019-2022 ≥ 0,5</b> · <b>≥ 100 trades</b></span></div>
+    </section>
+    <section class="panneau">
+      <div class="entete"><h2>Taille challenge 50K</h2><span class="d">coussin · f = 0,25</span></div>
+      <div class="sous">Remplace la mise de Kelly de SETS : un challenge coupe à la perte maximale</div>
+      <div style="display:flex;gap:16px;align-items:center;margin-top:14px;flex-wrap:wrap">
+        <div class="grand" id="t-mnq">—</div>
+        <div style="font-size:12px;line-height:1.6">contrats micro sur un compte neuf<br><span style="color:var(--doux)">= 0,25 × 2 500 $ ÷ risque d'une journée</span></div>
+      </div>
+      <canvas id="c-taille" width="600" height="200" aria-label="Taille selon le coussin restant"></canvas>
+      <div class="resume" id="t-resume"></div>
+    </section>
+  </div>
+
+  <div class="rang r2b">
+    <section class="panneau">
+      <div class="entete"><h2>Moteur intraday · <span style="color:var(--bleu)" id="m-marche">MNQ</span> · papier</h2><span class="d" id="m-etat">—</span></div>
+      <div class="sous" id="m-sous">Leader final de la graine, séances de validation (2019-2022)</div>
+      <canvas id="c-bougies" width="1400" height="560" aria-label="Bougies de 5 minutes et trades du leader"></canvas>
+      <div class="chiffres" id="m-chiffres"></div>
+    </section>
+    <section class="panneau">
+      <div class="entete"><h2>Courbe de gain</h2><span class="etiquette" id="m-badge">validation</span></div>
+      <div class="sous">$ pour 1 micro, frais compris, 2019-2022</div>
+      <canvas id="c-courbe" width="700" height="300" aria-label="Courbe de gain du leader en validation"></canvas>
+      <div class="sous" style="margin-top:12px">Journal d'exécution</div>
+      <div class="journal" id="journal"></div>
+    </section>
+  </div>
+
+  <div class="rang r2c">
+    <section class="panneau">
+      <div class="entete"><h2>Contrôle · évolution sur du bruit</h2><span class="etiquette">ce que SETS ne fait pas</span></div>
+      <div class="sous">Même machine, sur des séances dont les barres sont mélangées au hasard</div>
+      <canvas id="c-bruit" width="1200" height="360" aria-label="Sharpe de validation des leaders réels et sur bruit"></canvas>
+      <p class="note" id="bruit-texte">Chaque point est le leader final d'une graine. Si la machine trouve d'aussi bons « leaders » sur du bruit, la validation ne prouve rien : seul le coffre tranche.</p>
+    </section>
+    <section class="panneau">
+      <div class="entete"><h2>Coffre 2023 - 2026</h2><span class="etiquette" id="coffre-etat">verrouillé</span></div>
+      <div class="sous">Jamais chargé pendant l'évolution · ouvert une seule fois, pour 4 finalistes</div>
+      <div id="coffre"></div>
+    </section>
+  </div>
+
+  <footer>Papier sur données historiques CME (Databento). Aucun ordre réel, aucune clé. Ce n'est pas un conseil financier. Protocole fixé avant les calculs : evolution2/README.md</footer>
+</div>
+
+<script>
+"use strict";
+let ESPECES = ["Momentum", "Retour à la moyenne", "Cassure de canal", "Range d'ouverture", "Retour zone de valeur", "Acceptation hors zone", "Retour au POC", "Rejet des murs", "Cassure des murs"];
+const MARCHES = ["NQ", "ES"], MICRO = ["MNQ", "MES"];
+const SENS = ["les deux", "achat seul", "vente seule"], FILTRES = ["aucun", "jours agités", "jours calmes", "GEX bas", "GEX haut", "VIX en déport", "VIX en contango", "DIX haut", "DIX bas"];
+const NB_ESP = () => (donnees && donnees.especes ? donnees.especes.length : 7);
+const CASE = e => { const n = NB_ESP(), col = 3, lig = Math.ceil(n / col); return [((e % col) + 0.5) / col, (Math.floor(e / col) + 0.5) / lig]; };
+const COULEURS = () => Array.from({ length: 9 }, (_, i) => css("--esp" + i));
+const PHASES = [["Observer", "lecture de la population"], ["Hypothèse", "immigrants tirés au hasard"], ["Muter", "croisement + mutation"],
+  ["Backtest", "chaque nouveau venu est testé sur 2011-2022"], ["Sélectionner", "tout ce qui n'est pas élite meurt"], ["Déployer", "le leader prend la main"]];
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const fmt = (x, d = 2) => (x == null || isNaN(x)) ? "—" : x.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const signe = (x, d = 2) => (x > 0 ? "+" : "") + fmt(x, d);
+
+let donnees = null, run = null, cleRun = null, g = 0, phase = 0, t0 = performance.now(), lecture = true, vitesse = 1, choisi = null, debutHorloge = Date.now();
+
+function decoder(a) {                               // [esp, marche, uL, uZ, sens, uStop, uObj, uDebut, filtre, fit, porte, valSh, p1, p2, ne]
+  const esp = a[0];
+  return { esp, marche: a[1], L: esp === 3 ? 1 + Math.round(a[2] * 11) : Math.round(6 * 20 ** a[2]), Z: 0.25 + 2.75 * a[3], sens: a[4],
+    stop: 0.001 * 15 ** a[5], obj: 0.001 * 30 ** a[6], debut: 1 + Math.round(a[7] * 53), filtre: a[8], fit: a[9], porte: a[10], val: a[11],
+    parents: [a[12], a[13]].filter(Boolean), ne: a[14], u: [a[2], a[3], a[5], a[6], a[7]] };
+}
+const heure = b => { const m = 570 + 5 * b; return `${Math.floor(m / 60)}h${String(m % 60).padStart(2, "0")}`; };
+
+function toile(id) {
+  const c = $(id), r = c.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+  const w = Math.max(10, r.width);
+  if (!c._ratio) c._ratio = c.height / c.width;
+  const mobile = { "c-pool": 0.85, "c-bougies": 0.7, "c-bruit": 0.62, "c-fit": 0.5 }[id];
+  const h = w * (w < 620 && mobile ? mobile : c._ratio);
+  if (c._w !== w || c._dpr !== dpr) { c.style.height = h + "px"; c._w = w; c._dpr = dpr; c._h = h; c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
+  const x = c.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, w, c._h);
+  return [x, w, c._h];
+}
+
+// ------------------------------------------------------------------ logo (petit ordinateur en pixels)
+function logo() {
+  const c = $("logo"), x = c.getContext("2d"), p = 4, ink = css("--encre"), bleu = css("--bleu"), clair = css("--ciel");
+  x.clearRect(0, 0, 64, 64);
+  const px = (i, j, col) => { x.fillStyle = col; x.fillRect(i * p, j * p, p, p); };
+  for (let i = 1; i < 15; i++) { px(i, 1, ink); px(i, 11, ink); }
+  for (let j = 1; j < 12; j++) { px(1, j, ink); px(14, j, ink); }
+  for (let i = 2; i < 14; i++) for (let j = 2; j < 11; j++) px(i, j, bleu);
+  [[3, 7], [4, 6], [5, 6], [6, 5], [7, 6], [8, 4], [9, 4], [10, 3], [11, 4], [12, 3]].forEach(([i, j]) => px(i, j, clair));
+  for (let i = 5; i < 11; i++) px(i, 12, ink);
+  for (let i = 3; i < 13; i++) px(i, 13, ink);
+}
+
+// ------------------------------------------------------------------ données
+async function chargerDonnees() {
+  try {
+    const r = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error(r.status);
+    donnees = await r.json();
+  } catch (e) { $("etat").textContent = "données indisponibles"; return; }
+  const sel = $("choix-run"), cles = Object.keys(donnees.runs).filter(k => k.startsWith("reel_"));
+  const avant = sel.value;
+  sel.innerHTML = cles.map(k => `<option value="${k}">Réelle ${k.split("_")[1]}</option>`).join("") || `<option value="">en attente</option>`;
+  if (cles.includes(avant)) sel.value = avant;
+  const c = donnees.courant;
+  $("etat").textContent = c ? "calcul en cours" : "terminé";
+  $("etat").classList.toggle("vive", !!c);
+  $("live").hidden = !c; $("prog-wrap").hidden = !c;
+  if (c) {
+    const nb = Object.keys(donnees.runs).length;
+    $("live").textContent = `Calcul en direct : ${c.nature === "reel" ? "vraies données" : "bruit"}, graine ${c.graine}, génération ${c.gen}/${c.total} · ${c.stats.backtests.toLocaleString("fr-FR")} backtests dans cette graine · ${nb}/10 évolutions terminées · mis à jour ${donnees.maj}`;
+    $("prog").style.width = (100 * (nb + c.gen / c.total) / 10).toFixed(1) + "%";
+  }
+  if (!cleRun && cles.length) await chargerRun(sel.value || cles[0]);
+  dessinerBruit(); dessinerCoffre();
+}
+async function chargerRun(cle) {
+  if (!cle) return;
+  try {
+    const r = await fetch(cle + ".json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error(r.status);
+    run = await r.json(); cleRun = cle; g = 0; phase = 0; t0 = performance.now(); choisi = null;
+    run.dec = {}; for (const [id, a] of Object.entries(run.genomes)) run.dec[id] = decoder(a);
+    run.pos = {};
+    afficherMoteur();
+  } catch (e) { $("phase").textContent = "Cette graine n'est pas encore publiée."; }
+}
+
+// ------------------------------------------------------------------ boucle d'évolution (anneau)
+function dessinerBoucle(fr) {
+  const [x, w, h] = toile("c-boucle"), cx = w / 2, cy = h / 2 + 6, R = Math.min(w, h) * 0.33;
+  x.lineWidth = 1.5; x.strokeStyle = css("--trait"); x.setLineDash([3, 4]); x.beginPath(); x.arc(cx, cy, R, 0, 2 * Math.PI); x.stroke(); x.setLineDash([]);
+  const a0 = -Math.PI / 2, pas = 2 * Math.PI / 6, courant = a0 + pas * (phase + fr);
+  x.strokeStyle = css("--bleu"); x.lineWidth = 3; x.beginPath(); x.arc(cx, cy, R, a0, courant); x.stroke();
+  const pt = [cx + R * Math.cos(courant), cy + R * Math.sin(courant)];
+  const halo = x.createRadialGradient(pt[0], pt[1], 0, pt[0], pt[1], 22); halo.addColorStop(0, css("--ciel")); halo.addColorStop(1, "transparent");
+  x.fillStyle = halo; x.beginPath(); x.arc(pt[0], pt[1], 22, 0, 2 * Math.PI); x.fill();
+  x.textBaseline = "middle";
+  PHASES.forEach(([nom], i) => {
+    const a = a0 + pas * i, px = cx + R * Math.cos(a), py = cy + R * Math.sin(a), on = i === phase, fait = i < phase;
+    x.fillStyle = on || fait ? css("--encre") : css("--panneau"); x.strokeStyle = on || fait ? css("--encre") : css("--doux");
+    x.lineWidth = 1.5; x.beginPath(); x.arc(px, py, on ? 13 : 10, 0, 2 * Math.PI); x.fill(); x.stroke();
+    x.fillStyle = on || fait ? css("--panneau") : css("--doux"); x.font = `700 ${on ? 12 : 10}px ${css("--mono")}`; x.textAlign = "center"; x.fillText(i + 1, px, py + 1);
+    const lx = cx + (R + 34) * Math.cos(a), ly = cy + (R + 30) * Math.sin(a);
+    x.fillStyle = on ? css("--bleu") : css("--encre"); x.font = `700 11px ${css("--mono")}`;
+    x.textAlign = Math.cos(a) > 0.3 ? "left" : Math.cos(a) < -0.3 ? "right" : "center";
+    x.fillText(nom.toUpperCase(), Math.cos(a) > 0.3 ? lx - 12 : Math.cos(a) < -0.3 ? lx + 12 : lx, ly);
+  });
+  x.textAlign = "center"; x.fillStyle = css("--doux"); x.font = `500 10px ${css("--mono")}`; x.fillText("GÉNÉRATION", cx, cy - 26);
+  x.fillStyle = css("--encre"); x.font = `700 44px ${css("--titre")}`; x.fillText(run ? run.stats[g].gen : 0, cx, cy + 4);
+  x.fillStyle = css("--doux"); x.font = `500 10px ${css("--mono")}`; x.fillText(`CYCLE ${(4.8 / vitesse).toFixed(1)} S`, cx, cy + 34);
+}
+
+// ------------------------------------------------------------------ fitness
+function dessinerFitness() {
+  const [x, w, h] = toile("c-fit"); if (!run) return;
+  const s = run.stats.slice(0, g + 1), best = s.map(v => v.meilleure), moy = s.map(v => v.moyenne), n = run.stats.length;
+  const tous = run.stats.flatMap(v => [v.meilleure, v.moyenne]), lo = Math.min(0, ...tous), hi = Math.max(...tous) * 1.1 || 1;
+  const gx = i => 12 + (w - 70) * i / Math.max(1, n - 1), gy = v => h - 26 - (h - 40) * (v - lo) / (hi - lo);
+  x.font = `500 10px ${css("--mono")}`; x.fillStyle = css("--doux"); x.strokeStyle = css("--trait"); x.lineWidth = 1;
+  for (let k = 0; k <= 3; k++) { const v = lo + (hi - lo) * k / 3, y = gy(v); x.beginPath(); x.moveTo(12, y); x.lineTo(w - 58, y); x.stroke(); x.textAlign = "left"; x.fillText(fmt(v, 2), w - 52, y + 3); }
+  for (let i = 10; i < n; i += 10) { x.textAlign = "center"; x.fillText("G" + i, gx(i), h - 8); }
+  if (s.length > 1) {
+    const grad = x.createLinearGradient(0, gy(hi), 0, gy(lo)); grad.addColorStop(0, css("--clair")); grad.addColorStop(1, "transparent");
+    x.beginPath(); best.forEach((v, i) => i ? x.lineTo(gx(i), gy(v)) : x.moveTo(gx(i), gy(v))); x.lineTo(gx(s.length - 1), gy(lo)); x.lineTo(gx(0), gy(lo)); x.closePath(); x.fillStyle = grad; x.fill();
+    x.setLineDash([4, 4]); x.strokeStyle = css("--ciel"); x.lineWidth = 1.5; x.beginPath(); moy.forEach((v, i) => i ? x.lineTo(gx(i), gy(v)) : x.moveTo(gx(i), gy(v))); x.stroke(); x.setLineDash([]);
+    x.strokeStyle = css("--bleu"); x.lineWidth = 2; x.beginPath(); best.forEach((v, i) => i ? x.lineTo(gx(i), gy(v)) : x.moveTo(gx(i), gy(v))); x.stroke();
+  }
+  const b = best[best.length - 1], px = gx(s.length - 1), py = gy(b);
+  x.fillStyle = css("--bleu"); x.beginPath(); x.arc(px, py, 4.5, 0, 2 * Math.PI); x.fill();
+  x.fillStyle = css("--encre"); const txt = fmt(b, 4), tw = x.measureText(txt).width + 14;
+  x.fillRect(Math.min(px - tw - 8, w - 70 - tw), py + 8, tw, 18); x.fillStyle = css("--panneau"); x.textAlign = "left"; x.font = `700 11px ${css("--mono")}`; x.fillText(txt, Math.min(px - tw - 1, w - 63 - tw), py + 21);
+  x.fillStyle = css("--doux"); x.font = `500 10px ${css("--mono")}`; x.textAlign = "left"; x.fillText("— meilleure   - - moyenne de la population", 12, 12);
+  $("f-best").textContent = "meilleure " + fmt(b, 4);
+  const d10 = g >= 10 ? b - run.stats[g - 10].meilleure : b - run.stats[0].meilleure;
+  $("f-delta").textContent = signe(d10, 3);
+  $("f-desc").textContent = run.stats[g].descendants; $("f-elite").textContent = 96 - run.stats[g].descendants - run.stats[g].immigrants;
+}
+
+// ------------------------------------------------------------------ réserve génétique
+function position(id, w, h) {
+  const d = run.dec[id]; if (!d) return null;
+  const k = id + "_" + w;
+  if (run.pos[k]) return run.pos[k];
+  const [fx, fy] = CASE(d.esp), lig = Math.ceil(NB_ESP() / 3), cx = fx * w, cy = (fy + 0.04 / lig) * h;
+  const hsh = Math.sin(id * 12.9898) * 43758.5453, j = hsh - Math.floor(hsh), j2 = (Math.sin(id * 78.233) * 12345.678) % 1;
+  const p = [cx + (d.u[0] - 0.5) * w * 0.26 + (j - 0.5) * 12, cy + (0.5 - d.u[1]) * h * 0.7 / lig + (j2 - 0.5) * 10];
+  run.pos[k] = p; return p;
+}
+function dessinerPool(fr) {
+  const [x, w, h] = toile("c-pool"); if (!run) return;
+  const ids = run.gens[g], suivants = new Set(run.gens[Math.min(g + 1, run.gens.length - 1)]), leader = run.stats[g].leader;
+  const cols = COULEURS(), lig = Math.ceil(NB_ESP() / 3);
+  const rangs = [...ids].sort((a, b) => run.dec[b].fit - run.dec[a].fit), rang = {}; rangs.forEach((id, i) => rang[id] = i);
+  x.font = `700 11px ${css("--mono")}`; x.textAlign = "center";
+  x.font = `700 10px ${css("--mono")}`;
+  ESPECES.slice(0, NB_ESP()).forEach((e, i) => { const [fx, fy] = CASE(i); x.fillStyle = css("--doux"); x.fillText(e.toUpperCase(), fx * w, (fy - 0.5 / lig) * h + 12); });
+  const naissance = phase >= 1 && phase <= 3, mort = phase >= 4 && g < run.gens.length - 1;
+  // traits parent -> enfant
+  for (const id of ids) {
+    const d = run.dec[id]; if (d.ne !== run.stats[g].gen || !d.parents.length) continue;
+    const p = position(id, w, h);
+    for (const pa of d.parents) { const q = position(pa, w, h); if (!q) continue;
+      x.strokeStyle = cols[d.esp]; x.globalAlpha = naissance ? 0.35 : 0.14; x.lineWidth = 1; x.beginPath(); x.moveTo(q[0], q[1]); x.lineTo(p[0], p[1]); x.stroke(); }
+  }
+  x.globalAlpha = 1;
+  for (const id of ids) {
+    const d = run.dec[id], p = position(id, w, h), r = 3 + 9 * (1 - rang[id] / ids.length);
+    let a = 1;
+    const ne = d.ne === run.stats[g].gen && run.stats[g].gen > 0;
+    if (ne && phase < 3) a = phase === 0 ? 0.15 : phase === 1 ? (d.parents.length ? 0.15 : fr) : (d.parents.length ? fr : 1);
+    if (mort && !suivants.has(id)) a = Math.max(0.12, 1 - (phase - 4 + fr) / 1.5);
+    x.globalAlpha = a;
+    const halo = x.createRadialGradient(p[0], p[1], 0, p[0], p[1], r * 2.4); halo.addColorStop(0, cols[d.esp] + "55"); halo.addColorStop(1, "transparent");
+    x.fillStyle = halo; x.beginPath(); x.arc(p[0], p[1], r * 2.4, 0, 2 * Math.PI); x.fill();
+    x.fillStyle = cols[d.esp]; x.strokeStyle = cols[d.esp]; x.lineWidth = 2;
+    x.beginPath(); x.arc(p[0], p[1], r, 0, 2 * Math.PI); d.marche === 0 ? x.fill() : x.stroke();
+    if (ne && naissance) { x.globalAlpha = a * 0.6; x.lineWidth = 1; x.beginPath(); x.arc(p[0], p[1], r + 6 + 6 * fr, 0, 2 * Math.PI); x.stroke(); }
+    if (d.porte) { x.globalAlpha = a; x.fillStyle = css("--panneau"); x.beginPath(); x.arc(p[0], p[1], Math.max(1.5, r * 0.28), 0, 2 * Math.PI); x.fill(); }
+  }
+  x.globalAlpha = 1;
+  const cible = choisi && run.dec[choisi] ? choisi : leader;
+  if (cible) {
+    const p = position(cible, w, h);
+    x.strokeStyle = css("--encre"); x.lineWidth = 2; x.beginPath(); x.arc(p[0], p[1], 17, 0, 2 * Math.PI); x.stroke();
+    const txt = (cible === leader ? "LEADER g" : "g") + cible; x.font = `700 11px ${css("--mono")}`; const tw = x.measureText(txt).width + 14;
+    x.fillStyle = css("--encre"); x.fillRect(p[0] - tw / 2, p[1] - 44, tw, 20); x.fillStyle = css("--panneau"); x.textAlign = "center"; x.fillText(txt, p[0], p[1] - 30);
+  }
+  const st = run.stats[g];
+  $("p-bilan").textContent = `gén ${st.gen} · nées ${st.nes.toLocaleString("fr-FR")} · mortes ${st.morts.toLocaleString("fr-FR")}`;
+  $("p-phase").textContent = `phase ${phase + 1} / 6 · ${PHASES[phase][0].toLowerCase()}`;
+  const par = new Array(NB_ESP()).fill(0); ids.forEach(id => par[run.dec[id].esp]++);
+  $("legende").innerHTML = ESPECES.slice(0, NB_ESP()).map((e, i) => `<span style="--c:${cols[i]}">${e} ${par[i]}</span>`).join("");
+}
+$("c-pool").addEventListener("click", ev => {
+  if (!run) return; const c = $("c-pool"), r = c.getBoundingClientRect(), mx = ev.clientX - r.left, my = ev.clientY - r.top;
+  let best = null, bd = 400;
+  for (const id of run.gens[g]) { const p = position(id, r.width, c._h); const dd = (p[0] - mx) ** 2 + (p[1] - my) ** 2; if (dd < bd) { bd = dd; best = id; } }
+  choisi = best; afficherGenome();
+});
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape") { choisi = null; afficherGenome(); }
+  if (ev.key === " " && ev.target === document.body) { ev.preventDefault(); basculer(); }
+  if (ev.key === "ArrowRight") etape();
+});
+
+// ------------------------------------------------------------------ génome, sélection, taille
+function barre(u) { const n = Math.round(Math.max(0, Math.min(1, u)) * 20); return `<div class="barre">${Array.from({ length: 20 }, (_, i) => `<i class="${i < n ? "on" : ""}"></i>`).join("")}</div>`; }
+function afficherGenome() {
+  if (!run) return;
+  const leader = run.stats[g].leader, id = choisi && run.dec[choisi] ? choisi : leader;
+  $("g-titre").textContent = id === leader ? "Génome · leader" : "Génome · stratégie choisie";
+  if (!id) { $("genes").innerHTML = `<p class="note">Aucune stratégie ne passe encore la porte.</p>`; $("g-id").textContent = "—"; $("g-resume").innerHTML = ""; return; }
+  const d = run.dec[id];
+  $("g-id").textContent = `g${id} · née gén ${d.ne}`;
+  $("g-sous").textContent = id === leader ? "ADN de la stratégie qui passe la porte avec la meilleure fitness" : "Échap pour revenir au leader";
+  const lignes = [["Espèce", 1, ESPECES[d.esp]], ["Marché", d.marche ? 0.5 : 1, MICRO[d.marche]], ["Rétrospection", d.u[0], d.esp >= 4 ? "sans objet (niveaux de la veille)" : d.L + (d.esp === 3 ? " barres d'ouv." : " × 5 min")],
+    ["Seuil Z", d.u[1], fmt(d.Z, 2) + "σ"], ["Sens", [1, 0.5, 0.5][d.sens], SENS[d.sens]], ["Stop", d.u[2], fmt(100 * d.stop, 2) + " %"],
+    ["Objectif", d.u[3], fmt(100 * d.obj, 2) + " %"], ["Début", d.u[4], heure(d.debut)], ["Filtre", d.filtre ? 0.5 : 0, FILTRES[d.filtre]]];
+  $("genes").innerHTML = lignes.map(([n, u, v]) => `<div class="gene"><span class="n">${n}</span>${barre(u)}<span class="val">${v}</span></div>`).join("");
+  $("g-resume").innerHTML = `<span>Entraînement : fitness <b>${fmt(d.fit, 2)}</b></span><span>Validation : Sharpe <b>${fmt(d.val, 2)}</b> ${d.porte ? "· porte ✓" : "· porte ✗"}</span>`;
+}
+function afficherSelection() {
+  if (!run) return; const s = run.stats[g], nouveaux = s.descendants + s.immigrants;
+  const etapes = [["Générés", nouveaux, 96], ["Backtestés", nouveaux, 96], ["Passent la porte", s.passent, 96], ["Élites gardées", 96 - nouveaux, 96], ["Déployé", s.leader ? 1 : 0, 96]];
+  const actif = [1, 1, 2, 3, 3, 4][phase];
+  $("entonnoir").innerHTML = etapes.map(([n, v, m], i) => `<div class="etape ${i === actif ? "actif" : ""}"><div class="t"><span>${n}</span><b>${v}</b></div><div class="jauge"><i style="width:${(100 * v / m).toFixed(1)}%"></i></div></div>`).join("");
+  $("n-gen").textContent = "gén " + s.gen;
+  $("s-gen").textContent = "#" + s.gen; $("s-bt").textContent = s.backtests.toLocaleString("fr-FR");
+  $("s-mort").textContent = s.nes ? fmt(100 * s.morts / s.nes, 1) + " %" : "0 %"; $("s-surv").textContent = s.passent + "/96";
+  const [x, w, h] = toile("c-spark"), vals = run.stats.slice(0, g + 1).map(v => v.passent), n = run.stats.length;
+  vals.forEach((v, i) => { x.fillStyle = i === vals.length - 1 ? css("--bleu") : css("--esp2"); const bh = h * v / 96; x.fillRect(i * w / n, h - bh, Math.max(1, w / n - 1), bh); });
+}
+function afficherTaille() {
+  const L = run && run.leader;
+  if (!L) { $("t-mnq").textContent = "—"; return; }
+  $("t-mnq").textContent = L.taille_50k;
+  const [x, w, h] = toile("c-taille"), r = L.risque_1_micro, pts = [];
+  for (let c = 0; c <= 2500; c += 25) pts.push([c, Math.floor(0.25 * c / r)]);
+  const mx = Math.max(1, ...pts.map(p => p[1])), gx = c => 30 + (w - 40) * c / 2500, gy = v => h - 22 - (h - 36) * v / mx;
+  x.strokeStyle = css("--trait"); x.fillStyle = css("--doux"); x.font = `500 10px ${css("--mono")}`; x.textAlign = "center";
+  [0, 500, 1000, 1500, 2000, 2500].forEach(c => { x.fillText(c, gx(c), h - 6); });
+  x.textAlign = "right"; for (let v = 0; v <= mx; v += Math.max(1, Math.ceil(mx / 4))) { x.fillText(v, 24, gy(v) + 3); x.beginPath(); x.moveTo(30, gy(v)); x.lineTo(w - 10, gy(v)); x.stroke(); }
+  x.strokeStyle = css("--bleu"); x.lineWidth = 2; x.beginPath(); pts.forEach(([c, v], i) => { const X = gx(c), Y = gy(v); i ? (x.lineTo(X, gy(pts[i - 1][1])), x.lineTo(X, Y)) : x.moveTo(X, Y); }); x.stroke();
+  $("t-resume").innerHTML = `<span>Risque d'une journée, 1 micro : <b>${fmt(r, 0)} $</b></span><span>coussin restant ($) → contrats</span>`;
+}
+
+// ------------------------------------------------------------------ moteur intraday
+let seanceIdx = 0;
+function afficherMoteur() {
+  const L = run && run.leader;
+  if (!L) { $("m-etat").textContent = "aucun leader"; return; }
+  $("m-marche").textContent = MICRO[L.g.marche];
+  $("m-sous").textContent = `Leader final g${L.id} · ${ESPECES[L.g.espece]} · L ${L.g.L} · Z ${fmt(L.g.Z, 2)} · stop ${fmt(100 * L.g.stop, 2)} % · objectif ${fmt(100 * L.g.objectif, 2)} % · séances de validation`;
+  const v = L.validation, e = L.entrainement;
+  $("m-chiffres").innerHTML = [["Sharpe entraînement", fmt(e.sharpe, 2)], ["Sharpe validation", fmt(v.sharpe, 2)], ["Trades validation", v.trades.toLocaleString("fr-FR")],
+    ["Gain validation (1 micro)", signe(v.dollars, 0) + " $"]].map(([l, x]) => `<div><div class="l">${l}</div><div class="v">${x}</div></div>`).join("");
+  const j = [];
+  L.seances.forEach(s => s.trades.forEach(t => {
+    j.push(`<div><b class="${t.sens > 0 ? "a" : "v"}">${t.sens > 0 ? "ACHAT" : "VENTE"}</b> ${s.date} ${heure(t.entree)} @ ${fmt(t.px_e, 2)}</div>`);
+    j.push(`<div><b class="s">${["STOP", "OBJECTIF", "CLÔTURE"][t.raison]}</b> ${s.date} ${heure(t.sortie)} @ ${fmt(t.px_s, 2)} · <span class="${(t.px_s - t.px_e) * t.sens > 0 ? "bon" : "mauvais"}">${signe((t.px_s - t.px_e) * t.sens, 2)} pts</span></div>`);
+  }));
+  $("journal").innerHTML = j.join("") || `<div>Aucun trade récent.</div>`;
+  $("m-badge").textContent = v.sharpe >= 0.5 ? "porte passée" : "porte ratée";
+  dessinerCourbe();
+}
+function dessinerBougies(fr) {
+  const L = run && run.leader; const [x, w, h] = toile("c-bougies"); if (!L || !L.seances.length) return;
+  const s = L.seances[seanceIdx % L.seances.length], n = s.o.length;
+  let lo = Math.min(...s.l), hi = Math.max(...s.h);
+  s.trades.forEach(t => { [t.px_e * (1 - t.sens * L.g.stop), t.px_e * (1 + t.sens * L.g.objectif)].forEach(v => { lo = Math.min(lo, v); hi = Math.max(hi, v); }); });
+  const pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
+  const gx = i => 10 + (w - 90) * (i + 0.5) / n, gy = v => 16 + (h - 44) * (hi - v) / (hi - lo), bw = Math.max(2, (w - 90) / n * 0.62);
+  x.font = `500 10px ${css("--mono")}`; x.fillStyle = css("--doux"); x.textAlign = "left";
+  for (let k = 0; k <= 4; k++) { const v = lo + (hi - lo) * k / 4; x.strokeStyle = css("--trait"); x.beginPath(); x.moveTo(10, gy(v)); x.lineTo(w - 80, gy(v)); x.stroke(); x.fillText(fmt(v, 2), w - 74, gy(v) + 3); }
+  [0, 12, 24, 36, 48, 60, 72].forEach(i => { x.textAlign = "center"; x.fillText(heure(i), gx(i), h - 8); });
+  const jusque = Math.floor(n * Math.min(1, (phase + fr) / 6 * 1.2 + 0.001)) || n;
+  for (let i = 0; i < Math.min(n, jusque); i++) {
+    const up = s.c[i] >= s.o[i]; x.strokeStyle = up ? css("--bleu") : css("--esp2"); x.fillStyle = up ? css("--bleu") : css("--panneau");
+    x.beginPath(); x.moveTo(gx(i), gy(s.h[i])); x.lineTo(gx(i), gy(s.l[i])); x.stroke();
+    const y1 = gy(Math.max(s.o[i], s.c[i])), y2 = gy(Math.min(s.o[i], s.c[i]));
+    x.fillRect(gx(i) - bw / 2, y1, bw, Math.max(1, y2 - y1)); x.strokeRect(gx(i) - bw / 2, y1, bw, Math.max(1, y2 - y1));
+  }
+  s.trades.forEach(t => {
+    if (t.entree >= jusque) return;
+    const st = t.px_e * (1 - t.sens * L.g.stop), ob = t.px_e * (1 + t.sens * L.g.objectif), x1 = gx(t.entree), x2 = gx(Math.min(t.sortie, jusque - 1));
+    x.setLineDash([4, 4]); x.lineWidth = 1;
+    x.strokeStyle = css("--rouge"); x.beginPath(); x.moveTo(x1, gy(st)); x.lineTo(x2, gy(st)); x.stroke();
+    x.strokeStyle = css("--ciel"); x.beginPath(); x.moveTo(x1, gy(ob)); x.lineTo(x2, gy(ob)); x.stroke();
+    x.setLineDash([]); x.strokeStyle = css("--encre"); x.beginPath(); x.moveTo(x1, gy(t.px_e)); x.lineTo(x2, gy(t.px_e)); x.stroke();
+    x.fillStyle = t.sens > 0 ? css("--bleu") : css("--rouge"); x.beginPath();
+    const y = gy(t.px_e); t.sens > 0 ? (x.moveTo(x1, y + 5), x.lineTo(x1 - 6, y + 15), x.lineTo(x1 + 6, y + 15)) : (x.moveTo(x1, y - 5), x.lineTo(x1 - 6, y - 15), x.lineTo(x1 + 6, y - 15));
+    x.fill();
+    if (t.sortie < jusque) { x.strokeStyle = css("--encre"); x.lineWidth = 2; const X = gx(t.sortie), Y = gy(t.px_s); x.beginPath(); x.moveTo(X - 5, Y - 5); x.lineTo(X + 5, Y + 5); x.moveTo(X + 5, Y - 5); x.lineTo(X - 5, Y + 5); x.stroke(); }
+  });
+  const dern = s.c[Math.min(n, jusque) - 1], txt = fmt(dern, 2); x.font = `700 13px ${css("--mono")}`;
+  x.fillStyle = css("--encre"); const tw = x.measureText(txt).width + 16; x.fillRect(w - 80 - tw / 2 + 36, gy(dern) - 11, tw, 22);
+  x.fillStyle = css("--panneau"); x.textAlign = "center"; x.fillText(txt, w - 44 + 0, gy(dern) + 4);
+  x.fillStyle = css("--doux"); x.font = `500 10px ${css("--mono")}`; x.textAlign = "left";
+  x.fillText(`${s.date} · séance ${seanceIdx % L.seances.length + 1}/${L.seances.length} · résultat ${signe(s.dollars, 0)} $ (1 micro) · ▲ achat ▼ vente ✕ sortie · stop rouge · objectif bleu clair`, 10, 10);
+  $("m-etat").textContent = s.trades.length + " trade(s) ce jour";
+}
+function dessinerCourbe() {
+  const L = run && run.leader; const [x, w, h] = toile("c-courbe"); if (!L) return;
+  const c = L.courbe, lo = Math.min(0, ...c), hi = Math.max(0, ...c) || 1, gx = i => 8 + (w - 60) * i / Math.max(1, c.length - 1), gy = v => 10 + (h - 34) * (hi - v) / (hi - lo);
+  x.strokeStyle = css("--trait"); x.fillStyle = css("--doux"); x.font = `500 10px ${css("--mono")}`; x.textAlign = "left";
+  [lo, 0, hi].forEach(v => { x.beginPath(); x.moveTo(8, gy(v)); x.lineTo(w - 52, gy(v)); x.stroke(); x.fillText(fmt(v, 0) + " $", w - 50, gy(v) + 3); });
+  x.textAlign = "center"; ["2019", "2020", "2021", "2022"].forEach((a, i) => x.fillText(a, 8 + (w - 60) * (i + 0.5) / 4, h - 6));
+  const grad = x.createLinearGradient(0, gy(hi), 0, gy(lo)); grad.addColorStop(0, css("--clair")); grad.addColorStop(1, "transparent");
+  x.beginPath(); c.forEach((v, i) => i ? x.lineTo(gx(i), gy(v)) : x.moveTo(gx(i), gy(v))); x.lineTo(gx(c.length - 1), gy(0)); x.lineTo(gx(0), gy(0)); x.closePath(); x.fillStyle = grad; x.fill();
+  x.strokeStyle = css("--bleu"); x.lineWidth = 2; x.beginPath(); c.forEach((v, i) => i ? x.lineTo(gx(i), gy(v)) : x.moveTo(gx(i), gy(v))); x.stroke();
+  x.fillStyle = css("--bleu"); x.beginPath(); x.arc(gx(c.length - 1), gy(c[c.length - 1]), 4, 0, 2 * Math.PI); x.fill();
+}
+
+// ------------------------------------------------------------------ contrôles honnêtes
+function dessinerBruit() {
+  const [x, w, h] = toile("c-bruit"); if (!donnees) return;
+  const pts = Object.values(donnees.runs).filter(r => r.leader).map(r => ({ reel: r.nature === "reel", graine: r.graine, e: r.leader.entrainement.sharpe, v: r.leader.validation.sharpe }));
+  if (!pts.length) { x.fillStyle = css("--doux"); x.font = `500 12px ${css("--mono")}`; x.fillText("En attente des premières évolutions…", 16, h / 2); return; }
+  const vmax = Math.max(1.5, ...pts.map(p => p.v)) * 1.1, gx = v => 150 + (w - 190) * v / vmax;
+  const lignes = [["Sur du bruit", false], ["Vraies données", true]];
+  x.font = `700 11px ${css("--mono")}`;
+  lignes.forEach(([nom, reel], k) => {
+    const y = 60 + k * (h - 120);
+    x.fillStyle = css("--encre"); x.textAlign = "left"; x.fillText(nom.toUpperCase(), 8, y + 4);
+    x.strokeStyle = css("--trait"); x.beginPath(); x.moveTo(150, y); x.lineTo(w - 40, y); x.stroke();
+    pts.filter(p => p.reel === reel).forEach(p => { x.fillStyle = reel ? css("--bleu") : css("--orange"); x.beginPath(); x.arc(gx(p.v), y, 8, 0, 2 * Math.PI); x.fill();
+      x.fillStyle = css("--doux"); x.font = `500 10px ${css("--mono")}`; x.textAlign = "center"; x.fillText(p.graine, gx(p.v), y - 14); x.font = `700 11px ${css("--mono")}`; });
+  });
+  x.fillStyle = css("--doux"); x.font = `500 10px ${css("--mono")}`; x.textAlign = "center";
+  for (let v = 0; v <= vmax; v += 0.5) { x.fillText(fmt(v, 1), gx(v), h - 18); x.strokeStyle = css("--trait"); x.setLineDash([2, 4]); x.beginPath(); x.moveTo(gx(v), 30); x.lineTo(gx(v), h - 30); x.stroke(); x.setLineDash([]); }
+  x.fillText("Sharpe de validation 2019-2022 du leader final de chaque graine", 150 + (w - 190) / 2, h - 4);
+  const cf = donnees.coffre;
+  if (cf && cf.ouvert) $("bruit-texte").innerHTML = `Chaque point est le leader final d'une graine. Le test fixé d'avance compare les <b>meilleures</b> stratégies de toute la recherche (fitness ≥ 0,5, porte passée) : ` +
+    `sur <b>bruit</b>, Sharpe de validation <b>${fmt(cf.max_bruit, 2)}</b> ; sur <b>vraies données</b>, <b>${fmt(cf.max_reel, 2)}</b>. ` +
+    `<b class="mauvais">Le bruit fait mieux</b> : sur ${cf.evaluees.bruit.toLocaleString("fr-FR")} stratégies, la sélection trouve des « champions » dans du hasard.`;
+  else $("bruit-texte").textContent = "Chaque point est le leader final d'une graine. Si le bruit fait aussi bien, la validation ne prouve rien : seul le coffre tranche.";
+}
+function dessinerCoffre() {
+  const c = donnees && donnees.coffre;
+  if (!c || !c.ouvert) {
+    $("coffre-etat").textContent = "verrouillé";
+    $("coffre").innerHTML = `<div class="cadenas"><div class="ico" aria-hidden="true"></div><b>Pas encore ouvert</b>
+      <div class="criteres"><span>1. Finalistes : la meilleure stratégie de chaque espèce en validation (fitness ≥ 0,5, porte passée), sur les 5 graines réelles.</span>
+      <span>2. Le champion passe si : t ≥ 2,7 sur 2023-2026 · positif en 2023, 2024, 2025 et 2026 · meilleur Sharpe de validation que tout le bruit.</span>
+      <span>3. S'il passe : simulation des challenges Topstep, Apex et Phidias 50K.</span></div></div>`;
+    return;
+  }
+  $("coffre-etat").textContent = "ouvert";
+  const lignes = c.finalistes.map(f => `<tr><td>${f.champion ? "★ " : ""}${ESPECES[f.g.espece]}</td><td>${MICRO[f.g.marche]}</td><td>${fmt(f.validation.sharpe, 2)}</td><td class="${f.coffre.t >= 2.7 ? "bon" : "mauvais"}">${fmt(f.coffre.t, 2)}</td><td>${fmt(f.coffre.sharpe, 2)}</td><td>${f.coffre.annees.map(a => `<span class="${a.dollars > 0 ? "bon" : "mauvais"}">${a.annee.slice(2)}</span>`).join(" ")}</td></tr>`).join("");
+  $("coffre").innerHTML = `<div class="defile" style="margin-top:12px"><table><thead><tr><th>Finaliste</th><th>Marché</th><th>Sharpe val.</th><th>t coffre</th><th>Sharpe coffre</th><th>Années +</th></tr></thead><tbody>${lignes}</tbody></table></div>
+    <p class="note"><b>${c.verdict}</b></p>`;
+}
+
+// ------------------------------------------------------------------ lecture
+function etape() { if (!run) return; phase = 0; t0 = performance.now(); g = Math.min(g + 1, run.stats.length - 1); if (g === run.stats.length - 1) { seanceIdx++; } choisi = null; majPanneaux(); }
+function basculer() { lecture = !lecture; $("b-jouer").textContent = lecture ? "❚❚ Pause" : "▶ Lecture"; t0 = performance.now(); }
+function majPanneaux() { afficherGenome(); afficherSelection(); afficherTaille(); }
+$("b-jouer").addEventListener("click", basculer);
+$("b-etape").addEventListener("click", () => { lecture = false; $("b-jouer").textContent = "▶ Lecture"; etape(); });
+$("b-debut").addEventListener("click", () => { g = 0; phase = 0; t0 = performance.now(); majPanneaux(); });
+$("choix-run").addEventListener("change", e => chargerRun(e.target.value).then(majPanneaux));
+document.querySelectorAll(".vitesses button").forEach(b => b.addEventListener("click", () => {
+  vitesse = +b.dataset.v; document.querySelectorAll(".vitesses button").forEach(o => o.setAttribute("aria-pressed", o === b ? "true" : "false"));
+}));
+let dernierePhase = -1;
+function image(now) {
+  const duree = 800 / vitesse;
+  let fr = 0;
+  if (run) {
+    if (lecture) {
+      const t = Math.max(0, (now - t0) / duree); phase = Math.floor(t);      // l'horodatage de l'image peut preceder t0
+      if (phase >= 6) { if (g < run.stats.length - 1) { g++; choisi = null; } else { seanceIdx++; g = run.stats.length - 1; } t0 = now; phase = 0; majPanneaux(); }
+      fr = Math.min(1, t - Math.floor(t));
+    }
+    if (phase !== dernierePhase) {
+      dernierePhase = phase; afficherSelection();
+      const s = run.stats[g];
+      $("phase").innerHTML = `<b>${PHASES[phase][0].toUpperCase()}</b> · ${PHASES[phase][1]} · gén ${s.gen} : ${s.immigrants} immigrants, ${s.descendants} descendants, ${s.passent} passent la porte`;
+    }
+    dessinerBoucle(fr); dessinerFitness(); dessinerPool(fr); dessinerBougies(fr);
+  }
+  const t = Math.floor((Date.now() - debutHorloge) / 1000);
+  $("horloge").textContent = [t / 3600, (t / 60) % 60, t % 60].map(v => String(Math.floor(v)).padStart(2, "0")).join(":");
+  requestAnimationFrame(image);
+}
+window.addEventListener("resize", () => { if (run) { run.pos = {}; majPanneaux(); dessinerCourbe(); } dessinerBruit(); });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { logo(); majPanneaux(); dessinerCourbe(); dessinerBruit(); });
+logo();
+$("b-jouer").textContent = "❚❚ Pause";
+chargerDonnees().then(() => { majPanneaux(); afficherMoteur(); });
+setInterval(chargerDonnees, 20000);
+requestAnimationFrame(image);
+</script>
