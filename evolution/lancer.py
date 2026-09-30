@@ -6,6 +6,7 @@ strategies evaluees (runs/*.csv) pour le choix des finalistes. Les donnees 2023-
 Lancer depuis ce dossier : python3 lancer.py
 """
 import json
+import os
 import time
 from pathlib import Path
 
@@ -16,8 +17,10 @@ import genetique as G
 import moteur as M
 
 ICI = Path(__file__).resolve().parent
-RUNS, TABLEAU = ICI / "runs", ICI / "tableau"
-GENERATIONS, GRAINES = 60, [1, 2, 3, 4, 5]
+SORTIE = Path(os.getenv("EVO_SORTIE", ICI))            # pour les essais du programme : un autre dossier
+RUNS, TABLEAU = SORTIE / "runs", SORTIE / "tableau"
+GENERATIONS = int(os.getenv("EVO_GENERATIONS", 60))
+GRAINES = [int(x) for x in os.getenv("EVO_GRAINES", "1,2,3,4,5").split(",")]
 
 
 def donnees_recherche():
@@ -115,8 +118,8 @@ def une_evolution(nature, graine, donnees, tableau, publier):
 
 
 def main():
-    RUNS.mkdir(exist_ok=True)
-    TABLEAU.mkdir(exist_ok=True)
+    RUNS.mkdir(parents=True, exist_ok=True)
+    TABLEAU.mkdir(parents=True, exist_ok=True)
     reelles = donnees_recherche()
     tableau = {"debut": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()), "runs": {}, "courant": None, "coffre": {"ouvert": False}}
     fichier = TABLEAU / "data.json"
@@ -140,7 +143,7 @@ def main():
         tableau["runs"][f"reel_{graine}"] = {k: run[k] for k in ("nature", "graine", "stats", "backtests", "leader")}
         publier(True)
         print(f"reel {graine} : {run['backtests']} strategies, leader "
-              + (f"{G.decoder and M.ESPECES[run['leader']['g']['espece']]} {G.MARCHES[run['leader']['g']['marche']]}, "
+              + (f"{M.ESPECES[run['leader']['g']['espece']]} {G.MARCHES[run['leader']['g']['marche']]}, "
                  f"Sharpe entrainement {run['leader']['entrainement']['sharpe']:.2f}, validation {run['leader']['validation']['sharpe']:.2f}"
                  if run["leader"] else "aucun"), flush=True)
     tableau["courant"] = None
