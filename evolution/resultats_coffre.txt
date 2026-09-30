@@ -1,0 +1,12 @@
+CHAMPION  momentum             NQ {'espece': 0, 'marche': 0, 'L': 120, 'Z': 2.325, 'sens': 1, 'stop': 0.01394, 'objectif': 0.00577, 'debut': 1, 'filtre': 1} | Sharpe entrainement 0.77 (256 trades), validation 1.72 (127) | COFFRE 2023-2026 : t +1.21, Sharpe +0.63, 136 trades, +4,067 $ pour 1 micro | 2023:+136$ 2024:+2,803$ 2025:-2,620$ 2026:+3,748$
+finaliste range d'ouverture    NQ {'espece': 3, 'marche': 0, 'L': 9, 'Z': 2.88, 'sens': 0, 'stop': 0.01345, 'objectif': 0.03, 'debut': 46, 'filtre': 1} | Sharpe entrainement 0.52 (450 trades), validation 1.32 (214) | COFFRE 2023-2026 : t +0.08, Sharpe +0.04, 214 trades, -77 $ pour 1 micro | 2023:+105$ 2024:-472$ 2025:+1,592$ 2026:-1,301$
+finaliste cassure de canal     NQ {'espece': 2, 'marche': 0, 'L': 13, 'Z': 2.308, 'sens': 1, 'stop': 0.00756, 'objectif': 0.03, 'debut': 1, 'filtre': 0} | Sharpe entrainement 0.58 (331 trades), validation 1.09 (194) | COFFRE 2023-2026 : t +0.91, Sharpe +0.48, 198 trades, +4,708 $ pour 1 micro | 2023:-1,086$ 2024:+2,353$ 2025:+390$ 2026:+3,052$
+finaliste retour a la moyenne  NQ {'espece': 1, 'marche': 0, 'L': 71, 'Z': 1.633, 'sens': 1, 'stop': 0.01379, 'objectif': 0.00213, 'debut': 51, 'filtre': 2} | Sharpe entrainement 0.55 (206 trades), validation 0.85 (113) | COFFRE 2023-2026 : t -0.52, Sharpe -0.27, 87 trades, -176 $ pour 1 micro | 2023:-961$ 2024:-959$ 2025:+734$ 2026:+1,011$
+
+Strategies evaluees : 22892 reelles, 23381 sur bruit ; filtre des finalistes : 2178 reelles, 2470 bruit
+Meilleur Sharpe de validation : reelles 1.72, bruit 2.21
+  ECHEC t >= 2,5 sur 2023-2026
+  ECHEC positif en 2023, 2024, 2025 et 2026
+  ECHEC Sharpe de validation > meilleur du bruit (2.21)
+
+Le champion est rejeté : t >= 2,5 sur 2023-2026, positif en 2023, 2024, 2025 et 2026, Sharpe de validation > meilleur du bruit (2.21).

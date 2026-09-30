@@ -63,3 +63,4 @@ date,dossier,essai,resultat
 2026-09-29,nuit,derive de nuit dans la journee de trading des prop firms (achat 18 h vente 9 h) ES et NQ,voir nuit/README.md
 2026-09-29,challenge,tout miser sur un trade par tentative (plafond sans avantage) Phidias Topstep Apex,voir challenge/resultats_audace.txt
 2026-09-29,zone_multi,zone de bruit sur 7 marches (NQ ES RTY YM GC CL 6E) et portefeuille a risque egal,voir zone_multi/README.md
+2026-09-30,evolution,machine evolutive (genetique facon SETS) : 22892 strategies sur vraies donnees NQ/ES 5 min + 23381 sur bruit ; 4 finalistes ouverts sur 2023-2026,voir evolution/README.md

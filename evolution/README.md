@@ -107,3 +107,41 @@ trading), mise à jour pendant les calculs.
   meilleur Sharpe de validation obtenu sur l'ensemble des 5 graines sur bruit, avec le même filtre.
 - **Suivi en direct** : les calculs sont rapides (environ 7 ms par backtest). La page rejoue chaque
   évolution génération par génération, comme SETS, et affiche l'état des calculs pendant qu'ils tournent.
+
+## Résultats (30 septembre 2026) : aucune stratégie retenue
+
+46 273 stratégies évaluées : 22 892 sur vraies données et 23 381 sur bruit, soit 5 graines de 60
+générations chacune. Détail dans `resultats_coffre.txt` ; page de suivi dans `tableau/`.
+
+**1. Le contrôle sur bruit échoue.** Sur des séances mélangées au hasard, la même machine trouve un
+meilleur Sharpe de validation (2,21) que sur les vraies données (1,72). Les leaders sur bruit ont un
+Sharpe d'entraînement de 1,0 à 1,8 : la sélection fabrique de belles stratégies à partir de rien.
+C'est le défaut de SETS, mesuré.
+
+**2. Le coffre 2023-2026, ouvert une fois :**
+
+| Finaliste (NQ) | Validation 2019-2022 | Coffre : Sharpe (t) | 2023 | 2024 | 2025 | 2026 | Total 1 micro |
+|---|---|---|---|---|---|---|---|
+| ★ Momentum, achat seul (champion) | 1,72 | 0,63 (1,21) | +136 $ | +2 803 $ | −2 620 $ | +3 748 $ | +4 067 $ |
+| Cassure de canal, achat seul | 1,09 | 0,48 (0,91) | −1 086 $ | +2 353 $ | +390 $ | +3 052 $ | +4 708 $ |
+| Range d'ouverture | 1,32 | 0,04 (0,08) | +105 $ | −472 $ | +1 592 $ | −1 301 $ | −77 $ |
+| Retour à la moyenne, achat seul | 0,85 | −0,27 (−0,52) | −961 $ | −959 $ | +734 $ | +1 011 $ | −176 $ |
+
+Le champion rate les trois critères : t = 1,21 (il fallait 2,5), une perte en 2025, et un score
+inférieur au bruit. Pas de simulation de challenge, comme prévu. Les gains restants viennent surtout
+de la hausse du Nasdaq : les finalistes qui gagnent sont « achat seul ».
+
+**Revue du code (niveau maximal)** : aucune fuite des données 2023-2026, statistiques glissantes
+exactes, ordre stop / objectif et frais corrects, finalistes conformes aux règles. Le verdict tient.
+
+Défauts relevés, sans effet sur le verdict :
+- **Changement d'échéance du 19 juin 2024** (demi-séance supprimée) : les deux séances suivantes
+  étaient tradables. Seule la cassure de canal est touchée : t passe de 0,91 à 0,995 si on les bloque.
+- **Le mélange** retire aussi la saisonnalité de la volatilité dans la journée. Ce n'est donc pas un
+  bruit parfait, et son effet va dans les deux sens.
+- **La taille 50K affichée** sous-estime le risque des stratégies qui tradent peu. Elle ne sert pas au
+  verdict.
+- **Immigrants** : 9 à 11 par génération au lieu de 8.
+- **Pénalité sous 150 trades** : elle rapproche un Sharpe négatif de zéro, ce qui ne touche pas les
+  finalistes.
+- **Page** : textes et tracé de l'objectif corrigés.

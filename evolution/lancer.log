@@ -1,0 +1,10 @@
+bruit 1 : 4732 strategies, leader Sharpe entrainement 1.03, validation 0.94
+bruit 2 : 4727 strategies, leader Sharpe entrainement 1.80, validation 0.64
+bruit 3 : 4700 strategies, leader Sharpe entrainement 1.39, validation 0.71
+bruit 4 : 4692 strategies, leader Sharpe entrainement 1.05, validation 0.77
+bruit 5 : 4530 strategies, leader Sharpe entrainement 1.53, validation 1.13
+reel 1 : 4668 strategies, leader range d'ouverture NQ, Sharpe entrainement 0.94, validation 0.64
+reel 2 : 4546 strategies, leader momentum NQ, Sharpe entrainement 1.03, validation 0.64
+reel 3 : 4476 strategies, leader range d'ouverture NQ, Sharpe entrainement 0.93, validation 0.55
+reel 4 : 4699 strategies, leader momentum NQ, Sharpe entrainement 1.18, validation 1.31
+reel 5 : 4503 strategies, leader momentum NQ, Sharpe entrainement 1.23, validation 1.17

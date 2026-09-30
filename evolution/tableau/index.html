@@ -147,7 +147,7 @@ p.note { color: var(--doux); font-size: 11px; line-height: 1.55; margin: 10px 0 
     </section>
     <section class="panneau">
       <div class="entete"><h2>Fitness · meilleure de la génération</h2><span class="d" id="f-best">meilleure 0</span></div>
-      <div class="sous">Sharpe d'entraînement 2011-2018 · les élites restent, donc la meilleure ne baisse jamais</div>
+      <div class="sous">Sharpe d'entraînement 2011-2018 · la meilleure peut baisser : une stratégie qui rate la porte meurt</div>
       <canvas id="c-fit" width="1200" height="300" aria-label="Fitness par génération"></canvas>
       <div class="chiffres">
         <div><div class="l">Population</div><div class="v">96</div></div>
@@ -230,7 +230,7 @@ p.note { color: var(--doux); font-size: 11px; line-height: 1.55; margin: 10px 0 
 const ESPECES = ["Momentum", "Retour à la moyenne", "Cassure de canal", "Range d'ouverture"];
 const MARCHES = ["NQ", "ES"], MICRO = ["MNQ", "MES"];
 const SENS = ["les deux", "achat seul", "vente seule"], FILTRES = ["aucun", "jours agités", "jours calmes"];
-const PHASES = [["Observer", "lecture de la population"], ["Hypothèse", "8 immigrants tirés au hasard"], ["Muter", "croisement + mutation"],
+const PHASES = [["Observer", "lecture de la population"], ["Hypothèse", "immigrants tirés au hasard"], ["Muter", "croisement + mutation"],
   ["Backtest", "chaque nouveau venu est testé sur 2011-2022"], ["Sélectionner", "tout ce qui n'est pas élite meurt"], ["Déployer", "le leader prend la main"]];
 const $ = id => document.getElementById(id);
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
@@ -487,7 +487,7 @@ function dessinerBougies(fr) {
   const L = run && run.leader; const [x, w, h] = toile("c-bougies"); if (!L || !L.seances.length) return;
   const s = L.seances[seanceIdx % L.seances.length], n = s.o.length;
   let lo = Math.min(...s.l), hi = Math.max(...s.h);
-  s.trades.forEach(t => { lo = Math.min(lo, t.px_e * (1 - L.g.stop)); hi = Math.max(hi, t.px_e * (1 + L.g.stop)); });
+  s.trades.forEach(t => { [t.px_e * (1 - t.sens * L.g.stop), t.px_e * (1 + t.sens * L.g.objectif)].forEach(v => { lo = Math.min(lo, v); hi = Math.max(hi, v); }); });
   const pad = (hi - lo) * 0.06; lo -= pad; hi += pad;
   const gx = i => 10 + (w - 90) * (i + 0.5) / n, gy = v => 16 + (h - 44) * (hi - v) / (hi - lo), bw = Math.max(2, (w - 90) / n * 0.62);
   x.font = `500 10px ${css("--mono")}`; x.fillStyle = css("--doux"); x.textAlign = "left";
@@ -549,9 +549,11 @@ function dessinerBruit() {
   x.fillStyle = css("--doux"); x.font = `500 10px ${css("--mono")}`; x.textAlign = "center";
   for (let v = 0; v <= vmax; v += 0.5) { x.fillText(fmt(v, 1), gx(v), h - 18); x.strokeStyle = css("--trait"); x.setLineDash([2, 4]); x.beginPath(); x.moveTo(gx(v), 30); x.lineTo(gx(v), h - 30); x.stroke(); x.setLineDash([]); }
   x.fillText("Sharpe de validation 2019-2022 du leader final de chaque graine", 150 + (w - 190) / 2, h - 4);
-  const mb = Math.max(...pts.filter(p => !p.reel).map(p => p.v), -Infinity), mr = Math.max(...pts.filter(p => p.reel).map(p => p.v), -Infinity);
-  if (isFinite(mb)) $("bruit-texte").innerHTML = `Chaque point est le leader final d'une graine. Meilleur leader sur <b>bruit</b> : Sharpe de validation <b>${fmt(mb, 2)}</b>` +
-    (isFinite(mr) ? ` · sur <b>vraies données</b> : <b>${fmt(mr, 2)}</b>.` : ".") + ` Si le bruit fait aussi bien, la validation ne prouve rien : seul le coffre tranche.`;
+  const cf = donnees.coffre;
+  if (cf && cf.ouvert) $("bruit-texte").innerHTML = `Chaque point est le leader final d'une graine. Le test fixé d'avance compare les <b>meilleures</b> stratégies de toute la recherche (fitness ≥ 0,5, porte passée) : ` +
+    `sur <b>bruit</b>, Sharpe de validation <b>${fmt(cf.max_bruit, 2)}</b> ; sur <b>vraies données</b>, <b>${fmt(cf.max_reel, 2)}</b>. ` +
+    `<b class="mauvais">Le bruit fait mieux</b> : sur ${cf.evaluees.bruit.toLocaleString("fr-FR")} stratégies, la sélection trouve des « champions » dans du hasard.`;
+  else $("bruit-texte").textContent = "Chaque point est le leader final d'une graine. Si le bruit fait aussi bien, la validation ne prouve rien : seul le coffre tranche.";
 }
 function dessinerCoffre() {
   const c = donnees && donnees.coffre;

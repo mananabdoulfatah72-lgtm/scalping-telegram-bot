@@ -1,0 +1,206 @@
+{
+ "ouvert": true,
+ "finalistes": [
+  {
+   "champion": true,
+   "g": {
+    "espece": 0,
+    "marche": 0,
+    "L": 120,
+    "Z": 2.325,
+    "sens": 1,
+    "stop": 0.01394,
+    "objectif": 0.00577,
+    "debut": 1,
+    "filtre": 1
+   },
+   "fichier": "reel_2",
+   "entrainement": {
+    "sharpe": 0.7739882619604894,
+    "trades": 256
+   },
+   "validation": {
+    "sharpe": 1.7155470134500144,
+    "trades": 127
+   },
+   "coffre": {
+    "t": 1.207175239822466,
+    "sharpe": 0.6290665627208238,
+    "trades": 136,
+    "dollars": 4067.005200000134,
+    "annees": [
+     {
+      "annee": "2023",
+      "dollars": 135.5473950000196
+     },
+     {
+      "annee": "2024",
+      "dollars": 2802.8594100000264
+     },
+     {
+      "annee": "2025",
+      "dollars": -2619.611894999958
+     },
+     {
+      "annee": "2026",
+      "dollars": 3748.2102900000464
+     }
+    ]
+   }
+  },
+  {
+   "champion": false,
+   "g": {
+    "espece": 3,
+    "marche": 0,
+    "L": 9,
+    "Z": 2.88,
+    "sens": 0,
+    "stop": 0.01345,
+    "objectif": 0.03,
+    "debut": 46,
+    "filtre": 1
+   },
+   "fichier": "reel_3",
+   "entrainement": {
+    "sharpe": 0.5190013525141758,
+    "trades": 450
+   },
+   "validation": {
+    "sharpe": 1.32306695240906,
+    "trades": 214
+   },
+   "coffre": {
+    "t": 0.07511593873019293,
+    "sharpe": 0.03914338517206479,
+    "trades": 214,
+    "dollars": -77.12439999997878,
+    "annees": [
+     {
+      "annee": "2023",
+      "dollars": 104.50342500000261
+     },
+     {
+      "annee": "2024",
+      "dollars": -472.0072749999963
+     },
+     {
+      "annee": "2025",
+      "dollars": 1591.5214250000136
+     },
+     {
+      "annee": "2026",
+      "dollars": -1301.1419749999986
+     }
+    ]
+   }
+  },
+  {
+   "champion": false,
+   "g": {
+    "espece": 2,
+    "marche": 0,
+    "L": 13,
+    "Z": 2.308,
+    "sens": 1,
+    "stop": 0.00756,
+    "objectif": 0.03,
+    "debut": 1,
+    "filtre": 0
+   },
+   "fichier": "reel_2",
+   "entrainement": {
+    "sharpe": 0.5812570175037355,
+    "trades": 331
+   },
+   "validation": {
+    "sharpe": 1.0922320066059603,
+    "trades": 194
+   },
+   "coffre": {
+    "t": 0.9136975324991142,
+    "sharpe": 0.4761334951007162,
+    "trades": 198,
+    "dollars": 4708.404480000001,
+    "annees": [
+     {
+      "annee": "2023",
+      "dollars": -1086.3971000000056
+     },
+     {
+      "annee": "2024",
+      "dollars": 2353.2353800000055
+     },
+     {
+      "annee": "2025",
+      "dollars": 389.8145000000077
+     },
+     {
+      "annee": "2026",
+      "dollars": 3051.7516999999934
+     }
+    ]
+   }
+  },
+  {
+   "champion": false,
+   "g": {
+    "espece": 1,
+    "marche": 0,
+    "L": 71,
+    "Z": 1.633,
+    "sens": 1,
+    "stop": 0.01379,
+    "objectif": 0.00213,
+    "debut": 51,
+    "filtre": 2
+   },
+   "fichier": "reel_5",
+   "entrainement": {
+    "sharpe": 0.5523800360615495,
+    "trades": 206
+   },
+   "validation": {
+    "sharpe": 0.8483628034610705,
+    "trades": 113
+   },
+   "coffre": {
+    "t": -0.5160438445496784,
+    "sharpe": -0.26891367284160556,
+    "trades": 87,
+    "dollars": -175.50703500007148,
+    "annees": [
+     {
+      "annee": "2023",
+      "dollars": -961.1344200000058
+     },
+     {
+      "annee": "2024",
+      "dollars": -959.2484150000018
+     },
+     {
+      "annee": "2025",
+      "dollars": 733.5224649999582
+     },
+     {
+      "annee": "2026",
+      "dollars": 1011.353334999978
+     }
+    ]
+   }
+  }
+ ],
+ "criteres": {
+  "t >= 2,5 sur 2023-2026": false,
+  "positif en 2023, 2024, 2025 et 2026": false,
+  "Sharpe de validation > meilleur du bruit (2.21)": false
+ },
+ "passe": false,
+ "verdict": "Le champion est rejeté : t >= 2,5 sur 2023-2026, positif en 2023, 2024, 2025 et 2026, Sharpe de validation > meilleur du bruit (2.21).",
+ "max_bruit": 2.208452492538689,
+ "max_reel": 1.7155470134500144,
+ "evaluees": {
+  "reel": 22892,
+  "bruit": 23381
+ }
+}
