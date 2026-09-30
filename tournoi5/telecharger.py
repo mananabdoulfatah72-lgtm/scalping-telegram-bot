@@ -7,6 +7,7 @@ Le cout est demande avant : plafond total 25 $ ; le bitcoin est abandonne en pre
 Cle : DATABENTO_API_KEY (secret). Sorties : tournoi5/donnees/."""
 import json
 import sys
+import time
 import urllib.request
 from pathlib import Path
 
@@ -33,6 +34,26 @@ def en_tableau(df, garde=None):
     return pd.DataFrame({"t": t[g].strftime("%Y-%m-%d %H:%M"), "o": prix["open"].values[g], "h": prix["high"].values[g],
                          "l": prix["low"].values[g], "c": prix["close"].values[g], "v": df["volume"].values[g],
                          "contrat": df["instrument_id"].values[g]})
+
+
+def plage(client, sym, schema, debut, fin):
+    """Demande annee par annee (le serveur coupe les tres longues demandes), avec 4 essais par annee."""
+    morceaux = []
+    a0, a1 = int(debut[:4]), int(fin[:4])
+    for a in range(a0, a1 + 1):
+        deb, fi = (debut if a == a0 else f"{a}-01-01"), (fin if a == a1 else f"{a + 1}-01-01")
+        for essai in range(4):
+            try:
+                df = client.timeseries.get_range(dataset=JEU, symbols=[sym], stype_in="continuous", schema=schema, start=deb, end=fi).to_df()
+                break
+            except Exception as e:                   # noqa: BLE001
+                print(f"  {sym} {a} : essai {essai + 1} rate ({e})", flush=True)
+                time.sleep(2 ** (essai + 2))
+        else:
+            raise RuntimeError(f"{sym} {a} : 4 essais rates")
+        if not df.empty:
+            morceaux.append(df)
+    return pd.concat(morceaux)
 
 
 def adjudications():
@@ -66,20 +87,13 @@ def main():
         sys.exit(0)
     lignes.append(f"Bitcoin {'telecharge' if avec_btc else 'abandonne (plafond)'} ; total {c_h + (c_b if avec_btc else 0):.2f} $")
     for nom, sym in HEURE.items():
-        df = client.timeseries.get_range(dataset=JEU, symbols=[sym], stype_in="continuous", schema="ohlcv-1h",
-                                         start="2010-06-06", end=fin).to_df()
-        out = en_tableau(df)
+        out = en_tableau(plage(client, sym, "ohlcv-1h", "2010-06-06", fin)).drop_duplicates("t", keep="last")
         out.to_csv(SORTIE / f"{nom}_1h.csv.gz", index=False, float_format="%.8g")
         lignes.append(f"{nom} : {len(out)} heures du {out['t'].iloc[0]} au {out['t'].iloc[-1]}")
         print(lignes[-1], flush=True)
     if avec_btc:
-        morceaux = []
-        for a in range(2017, int(fin[:4]) + 1):
-            deb, fi = (f"{a}-01-01" if a > 2017 else "2017-12-17"), (f"{a + 1}-01-01" if a < int(fin[:4]) else fin)
-            df = client.timeseries.get_range(dataset=JEU, symbols=["BTC.v.0"], stype_in="continuous", schema="ohlcv-1m",
-                                             start=deb, end=fi).to_df()
-            if not df.empty:
-                morceaux.append(en_tableau(df, lambda t: ((t.hour * 60 + t.minute) >= 540) & ((t.hour * 60 + t.minute) < 990) & (t.dayofweek < 5)))
+        df = plage(client, "BTC.v.0", "ohlcv-1m", "2017-12-17", fin)
+        morceaux = [en_tableau(df, lambda t: ((t.hour * 60 + t.minute) >= 540) & ((t.hour * 60 + t.minute) < 990) & (t.dayofweek < 5))]
         out = pd.concat(morceaux, ignore_index=True).drop_duplicates("t", keep="last")
         out.to_csv(SORTIE / "bitcoin_1min.csv.gz", index=False, float_format="%.8g")
         lignes.append(f"bitcoin : {len(out)} minutes du {out['t'].iloc[0]} au {out['t'].iloc[-1]}")
