@@ -1,0 +1,40 @@
+name: Donnees evolution 2 : murs d options ES et NQ (Databento) et equity-lab.com
+
+# Cle API lue uniquement dans le secret du depot DATABENTO_API_KEY.
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - evolution2/telecharger_murs.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger
+        env:
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY }}
+        run: |
+          pip install -q databento pandas
+          python3 evolution2/telecharger_murs.py
+      - name: Enregistrer sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evolution2/donnees
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees : murs d options ES et NQ, equity-lab.com (evolution 2)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

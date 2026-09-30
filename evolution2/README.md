@@ -68,6 +68,21 @@ Mêmes conditions que les tournois n°1 et n°2 :
 
 **Essais** : 9 stratégies × 2 marchés = 18, plus 6 si les murs sont testés.
 
+**Précision sur les murs** (30 septembre, après avoir vu les coûts, avant tout calcul). L'intérêt
+ouvert quotidien des options ES coûte 42 $ depuis 2011, celui des NQ 41 $, au-dessus du plafond. On
+le relève donc **une fois par semaine** : les chiffres du vendredi, publiés avant le lundi, servent
+toute la semaine suivante. Deux autres précisions :
+- les options utilisées sont les options trimestrielles standard (ES et NQ) ; les hebdomadaires et les
+  0DTE ne sont pas dans ces données ;
+- les murs sont pris sur l'échéance trimestrielle la plus proche, car la règle des « 45 jours » laisserait
+  la moitié des semaines sans mur.
+
+Le zéro gamma est calculé sur toutes les échéances trimestrielles. Coût visé : moins de 25 $ au
+total, vérifié avant le téléchargement.
+
+**Précision sur W1 et W2** : le premier contact se fait par en dessous pour le call wall (seulement les
+jours qui ouvrent sous le mur), par au-dessus pour le put wall.
+
 **Le tri** (comme les tournois n°1 et n°2) :
 1. t ≥ 2 sur 2011-2022, sur les rendements quotidiens nets en % du prix, jours sans trade compris.
 2. **Bruit** : battre le plus haut t de 20 versions où les minutes de chaque séance sont mélangées. Le
