@@ -131,3 +131,8 @@ nouveaux filtres.
 **À savoir** : les années 2023-2026 ont déjà servi de coffre à d'autres essais (évolution n°1, zone de
 bruit). La machine n°2 ne les voit jamais pendant la recherche, mais ce coffre n'est plus vierge. Tous
 les essais sont comptés dans `fonds/essais.csv`.
+
+## Décision de l'utilisateur (30 septembre 2026)
+
+La machine évolutive n°2 n'est lancée que si une stratégie survit au tournoi n°3, murs d'options
+compris. Sinon, elle reste prête mais n'est pas lancée : le code et les tests sont dans ce dossier.
