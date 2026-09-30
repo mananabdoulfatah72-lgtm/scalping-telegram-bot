@@ -1,0 +1,10 @@
+
+Tournoi n°5 - exploration jusqu'a 2022 (t sur les rendements quotidiens nets) :
+  C1 CL                   | t -1.36 (1re moitie -1.25, 2e -0.71) |  349 jours de trade, -4.8 pb net par jour de trade | bruit max -0.86 | elimine
+  B1 RTY                  | t -2.15 (1re moitie -3.93, 2e -0.58) | 1333 jours de trade, -2.3 pb net par jour de trade | bruit max -1.46 | elimine
+  B2 YM                   | t -2.25 (1re moitie -4.03, 2e -0.31) | 1688 jours de trade, -1.8 pb net par jour de trade | bruit max -2.63 | elimine
+  B4 CL                   | t -2.63 (1re moitie -3.78, 2e -0.99) | 1668 jours de trade, -4.9 pb net par jour de trade | bruit max -1.91 | elimine
+  B3 GC                   | t -8.00 (1re moitie -7.09, 2e -4.21) | 1689 jours de trade, -2.6 pb net par jour de trade | bruit max -5.34 | elimine
+  B5 6E                   | t -15.82 (1re moitie -13.88, 2e -8.89) | 1705 jours de trade, -2.8 pb net par jour de trade | bruit max -12.64 | elimine
+
+Survivants : 0
