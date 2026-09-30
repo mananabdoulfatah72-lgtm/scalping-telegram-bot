@@ -1,0 +1,28 @@
+Zone de bruit MNQ, 2011-03-02 -> 2026-09-25, un depart par semaine, 2 comptes au plus
+
+Aujourd'hui : un jour normal = 213 $ de risque pour 1 MNQ. Sur un compte neuf :
+   Topstep 50K : f=0.15 -> 1 MNQ, f=0.25 -> 2 MNQ, f=0.35 -> 3 MNQ
+   Apex 50K : f=0.15 -> 1 MNQ, f=0.25 -> 2 MNQ, f=0.35 -> 4 MNQ
+   Phidias 50K : f=0.15 -> 1 MNQ, f=0.25 -> 2 MNQ, f=0.35 -> 4 MNQ
+
+  Topstep 50K  f=0.15 2011-2026   : valide en 1 mois   1% | 3 mois   8% | 6 mois  14% | 12 mois  21% | si valide : 89 seances en mediane (~4.2 mois)
+  Topstep 50K  f=0.15 depuis 2020 : valide en 1 mois   3% | 3 mois  10% | 6 mois  15% | 12 mois  23% | si valide : 86 seances en mediane (~4.1 mois)
+  Topstep 50K  f=0.25 2011-2026   : valide en 1 mois   6% | 3 mois  16% | 6 mois  21% | 12 mois  27% | si valide : 43 seances en mediane (~2.0 mois)
+  Topstep 50K  f=0.25 depuis 2020 : valide en 1 mois   7% | 3 mois  18% | 6 mois  29% | 12 mois  44% | si valide : 86 seances en mediane (~4.1 mois)
+  Topstep 50K  f=0.35 2011-2026   : valide en 1 mois   8% | 3 mois  15% | 6 mois  19% | 12 mois  20% | si valide : 26 seances en mediane (~1.2 mois)
+  Topstep 50K  f=0.35 depuis 2020 : valide en 1 mois   8% | 3 mois  19% | 6 mois  27% | 12 mois  29% | si valide : 45 seances en mediane (~2.1 mois)
+
+  Apex 50K     f=0.15 2011-2026   : valide en 1 mois   6% | 3 mois  11% | 6 mois  11% | 12 mois  11% | si valide : 19 seances en mediane (~0.9 mois)
+  Apex 50K     f=0.15 depuis 2020 : valide en 1 mois   9% | 3 mois  15% | 6 mois  15% | 12 mois  15% | si valide : 18 seances en mediane (~0.9 mois)
+  Apex 50K     f=0.25 2011-2026   : valide en 1 mois  16% | 3 mois  27% | 6 mois  27% | 12 mois  27% | si valide : 19 seances en mediane (~0.9 mois)
+  Apex 50K     f=0.25 depuis 2020 : valide en 1 mois  19% | 3 mois  33% | 6 mois  33% | 12 mois  33% | si valide : 20 seances en mediane (~0.9 mois)
+  Apex 50K     f=0.35 2011-2026   : valide en 1 mois  22% | 3 mois  33% | 6 mois  33% | 12 mois  33% | si valide : 13 seances en mediane (~0.6 mois)
+  Apex 50K     f=0.35 depuis 2020 : valide en 1 mois  29% | 3 mois  41% | 6 mois  41% | 12 mois  41% | si valide : 13 seances en mediane (~0.6 mois)
+
+  Phidias 50K  f=0.15 2011-2026   : valide en 1 mois   2% | 3 mois  10% | 6 mois  20% | 12 mois  33% | si valide : 98 seances en mediane (~4.7 mois)
+  Phidias 50K  f=0.15 depuis 2020 : valide en 1 mois   4% | 3 mois  15% | 6 mois  29% | 12 mois  44% | si valide : 94 seances en mediane (~4.5 mois)
+  Phidias 50K  f=0.25 2011-2026   : valide en 1 mois   9% | 3 mois  20% | 6 mois  25% | 12 mois  31% | si valide : 42 seances en mediane (~2.0 mois)
+  Phidias 50K  f=0.25 depuis 2020 : valide en 1 mois  10% | 3 mois  25% | 6 mois  35% | 12 mois  49% | si valide : 61 seances en mediane (~2.9 mois)
+  Phidias 50K  f=0.35 2011-2026   : valide en 1 mois  14% | 3 mois  21% | 6 mois  25% | 12 mois  29% | si valide : 23 seances en mediane (~1.1 mois)
+  Phidias 50K  f=0.35 depuis 2020 : valide en 1 mois  20% | 3 mois  33% | 6 mois  39% | 12 mois  43% | si valide : 25 seances en mediane (~1.2 mois)
+
