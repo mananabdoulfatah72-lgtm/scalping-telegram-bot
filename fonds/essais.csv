@@ -69,3 +69,4 @@ date,dossier,essai,resultat
 2026-09-30,ordres,order flow ES par conditions : 6 signaux x 2 durees x 15 cases (heure volatilite volume sens du jour) = 180 cas ; aucune case efficace,voir ordres/CONDITIONS.md
 2026-09-30,tournoi4,8 pistes pas encore vues (periodicite des demi-heures x2, reequilibrage fin de mois, fin de seance apres grand mouvement, range de la nuit x2, rebond, modele appris) x NQ ES (16) + paire en continuation jugee sur le coffre ; aucun survivant,voir tournoi4/README.md
 2026-09-30,evolution2,tournoi n°3 : GEX DIX VIX et profil de volume (9 strategies x NQ ES = 18) ; murs d options en attente des donnees ; aucun survivant sur les 18,voir evolution2/README.md
+2026-09-30,tournoi4,modele appris sur minutes melangees (t +9.7 sur le melange) trade sur les vraies seances (20 versions NQ ES) : equivalent a l'achat simple 10h-16h,voir tournoi4/README.md

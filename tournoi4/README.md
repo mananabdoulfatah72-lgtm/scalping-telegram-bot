@@ -93,3 +93,22 @@ les frais dépassent le mouvement.
   - Ce défaut du contrôle ne change aucun verdict : le modèle fait t 1,09 sur vraies données, sous le
     seuil de 2, et le range de 5 minutes avec volume du tournoi n°2 fait t 1,54.
   - Pour une future stratégie au volume, il faudra mélanger les minutes sans leur volume.
+
+### Le « t +9,7 » du modèle appris peut-il se trader ? (question de l'utilisateur, `modele_bruit.py`)
+
+On a entraîné le modèle sur chacune des 20 séries de minutes mélangées, année par année sur le passé
+seulement, puis on l'a fait trader sur les **vraies** séances.
+
+| NQ | t 2013-2022 | t 2023-2026 | 2023-2026, 1 micro |
+|---|---|---|---|
+| Sur les minutes mélangées (là où il brille) | +6,2 à +9,5 | — | — |
+| Appris sur le mélange, tradé sur les vraies séances | −0,57 en moyenne (−1,85 à +1,01) | +1,38 en moyenne | +10 103 $ |
+| Achat simple de 10 h à 16 h, tous les jours | −0,90 | +1,17 | +9 308 $ |
+
+Sur ES : −0,99 en moyenne sur 2013-2022 et +0,53 sur 2023-2026. Même profil que l'achat simple.
+
+**Verdict** : sur les vraies séances, le modèle ne fait qu'acheter la plupart des jours. Son résultat
+suit la hausse du Nasdaq, comme l'achat simple : perdant en 2013-2022, gagnant en 2023-2026. Le
+t +9,7 n'existe que dans les fausses séances. Dans ces séances, le résultat du jour est fixé d'avance
+et les grosses minutes peuvent être placées au début : le volume du début « sait » alors ce qui
+reste à venir. En séance réelle, personne ne connaît la clôture à 10 h.

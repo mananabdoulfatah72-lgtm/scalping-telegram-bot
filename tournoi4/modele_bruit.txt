@@ -1,0 +1,8 @@
+NQ - modele appris sur les vraies seances : t 2013-2022 +1.09 | t 2023-2026 +1.48
+NQ - le meme modele sur les 20 versions melangees : t de +6.24 a +9.45 (moyenne +7.83)
+NQ - appris sur le melange, trade sur les VRAIES seances : t 2013-2022 de -1.85 a +1.01 (moyenne -0.57) | t 2023-2026 de +0.31 a +1.86 (moyenne +1.38), en moyenne +10,103 $ sur 2023-2026 pour 1 micro
+
+ES - modele appris sur les vraies seances : t 2013-2022 -0.43 | t 2023-2026 +0.47
+ES - le meme modele sur les 20 versions melangees : t de +4.39 a +7.15 (moyenne +5.44)
+ES - appris sur le melange, trade sur les VRAIES seances : t 2013-2022 de -1.90 a -0.38 (moyenne -0.99) | t 2023-2026 de -0.08 a +1.32 (moyenne +0.53), en moyenne +1,973 $ sur 2023-2026 pour 1 micro
+

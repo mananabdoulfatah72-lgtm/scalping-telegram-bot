@@ -107,9 +107,8 @@ def logistique(X, y, lam=1.0, iterations=25):
     return w
 
 
-def modele_appris(J, O, H, L, C, X, ok, complete, Q):
-    """Sens a 10 h (+1, -1, 0) donne par la regression logistique reentrainee chaque 1er janvier sur les annees passees."""
-    nd = len(J)
+def variables(J, O, H, L, C, X, complete, Q):
+    """Les 8 variables connues a 10 h (README.md, strategie 8) et la cible (10 h -> 16 h en hausse)."""
     prec = K1.precedente(complete, X.get("contrat"))
     pc = K1.de_la(C[:, N - 1], prec)
     v30 = X["V"][:, :30].sum(axis=1)
@@ -121,17 +120,27 @@ def modele_appris(J, O, H, L, C, X, ok, complete, Q):
               K1.de_la(amp, prec) / K1.glissant_complet(amp, complete, 20),
               T3.veille(J, Q["vix_ratio"]), T3.veille(J, Q["gex"]), T3.veille(J, Q["dix"])]
     y = (C[:, N - 1] > O[:, 30]).astype(float)
+    return F, y
+
+
+def modele_appris(J, O, H, L, C, X, ok, complete, Q, apprendre=None):
+    """Sens a 10 h (+1, -1, 0) donne par la regression logistique reentrainee chaque 1er janvier sur les annees passees.
+    apprendre : (F, y) d'autres donnees pour l'apprentissage (par defaut, les memes seances)."""
+    nd = len(J)
+    F, y = variables(J, O, H, L, C, X, complete, Q)
+    Fa, ya = apprendre if apprendre is not None else (F, y)
     utilisable = ok & np.all(np.isfinite(F), axis=1)
+    util_a = ok & np.all(np.isfinite(Fa), axis=1)
     annee = pd.DatetimeIndex(J).year.values
     sens = np.zeros(nd, np.int64)
     for a in range(2013, annee.max() + 1):
-        app = utilisable & (annee < a)
+        app = util_a & (annee < a)
         jeu = utilisable & (annee == a)
         if app.sum() < 200 or not jeu.any():
             continue
-        mu, sd = F[app].mean(axis=0), F[app].std(axis=0)
+        mu, sd = Fa[app].mean(axis=0), Fa[app].std(axis=0)
         sd[sd == 0] = 1
-        w = logistique((F[app] - mu) / sd, y[app])
+        w = logistique((Fa[app] - mu) / sd, ya[app])
         p = 1 / (1 + np.exp(-(w[0] + ((F[jeu] - mu) / sd) @ w[1:])))
         sens[jeu] = np.where(p > 0.55, 1, np.where(p < 0.45, -1, 0))
     return sens
