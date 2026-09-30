@@ -1,0 +1,177 @@
+//@version=6
+// Zone de bruit (Zarattini, Aziz, Barbon) sur le Nasdaq 100 : memes regles que le robot en argent virtuel
+// (zone/robot.py) et que le backtest (intraday/strategies.py zone_de_bruit, challenge/bot_challenge.py).
+//
+// A utiliser sur un graphique 1 MINUTE du contrat MNQ du trimestre (par exemple MNQZ2026), en temps reel.
+// - Toutes les 30 minutes de 10 h a 15 h 30 (heure de New York), on compare la cloture de la minute a la zone :
+//   haut = max(ouverture 9 h 30, cloture de la veille) x (1 + mouvement moyen des 14 dernieres seances a cette heure)
+//   bas  = min(ouverture 9 h 30, cloture de la veille) x (1 - meme mouvement)
+//   Au-dessus du haut : achat ; sous le bas : vente. En position, sortie si le prix repasse la limite ou le VWAP.
+// - Tout est ferme a 15 h 59. Pas de position la nuit. Pas de trade les jours de fete ou de demi-seance
+//   (le backtest ne les trade pas) ; ne pas trader non plus le jour ou l'on change de contrat.
+// - Taille : nombre de contrats = f x coussin / ecart-type du resultat quotidien (1 contrat, 60 dernieres seances).
+// Aucun ordre n'est passe par ce script : il affiche les signaux et envoie des alertes.
+strategy("Zone de bruit MNQ (challenge)", overlay = true, process_orders_on_close = true,
+     commission_type = strategy.commission.cash_per_contract, commission_value = 1.0, slippage = 1,
+     default_qty_type = strategy.fixed, default_qty_value = 1)
+
+f         = input.float(0.25, "Fraction du coussin (f)", minval = 0.05, maxval = 0.50, step = 0.05)
+coussin   = input.float(2500, "Coussin actuel en $ (solde - limite de perte)", minval = 0)
+qteImpose = input.int(0, "Nombre de contrats impose (0 = calcul automatique)", minval = 0)
+valeurPt  = input.float(2.0, "$ par point (MNQ = 2 ; NQ = 20)")
+coutPts   = input.float(1.5, "Frais par aller-retour, en points (MNQ : 1 $ par ordre + 1 tick = 1,5)")
+
+if timeframe.period != "1"
+    runtime.error("Mettre le graphique en 1 minute")
+
+TZ = "America/New_York"
+NB_CTRL = 12                                      // controles de 10 h 00 (minute 30) a 15 h 30 (minute 360)
+MEMOIRE = 14
+FENETRE = 60
+annee = year(time, TZ)
+mois = month(time, TZ)
+jourMois = dayofmonth(time, TZ)
+jourSemaine = dayofweek(time, TZ)
+minuteSeance = hour(time, TZ) * 60 + minute(time, TZ) - 570
+enSemaine = jourSemaine != dayofweek.saturday and jourSemaine != dayofweek.sunday
+enSeance = enSemaine and minuteSeance >= 0 and minuteSeance < 390
+jourNY = jourMois + 100 * mois + 10000 * annee
+
+// jours ou la bourse ferme tot (fetes americaines, demi-seances) : exclus du backtest
+jourCourt(int a, int m, int d, int w) =>
+    lundi = w == dayofweek.monday
+    ouvre = w != dayofweek.saturday and w != dayofweek.sunday
+    fetes = (m == 1 and lundi and d >= 15 and d <= 21) or (m == 2 and lundi and d >= 15 and d <= 21) or
+         (m == 5 and lundi and d >= 25) or (m == 9 and lundi and d <= 7) or
+         (a >= 2022 and m == 6 and ((d == 19 and ouvre) or (d == 18 and w == dayofweek.friday) or (d == 20 and lundi))) or
+         (m == 7 and (((d == 3 or d == 4) and ouvre) or (d == 5 and lundi))) or
+         (m == 11 and ((w == dayofweek.thursday and d >= 22 and d <= 28) or (w == dayofweek.friday and d >= 23 and d <= 29))) or
+         (m == 12 and d == 24 and ouvre)
+    fetes
+
+var matrix<float> mouvements = matrix.new<float>(0, NB_CTRL)   // une ligne par seance passee
+var array<float> mouvJour = array.new<float>(NB_CTRL, na)
+var array<float> resultats = array.new<float>()                // resultat net par seance complete, $ pour 1 contrat
+var float ouvJour = na
+var float veille = na
+var float derniereCloture = na
+var int jourCourant = na
+var int idxMouv = 0
+var int sens = 0                                               // position simulee (1 contrat), comme le backtest
+var float entree = na
+var float pointsJour = 0.0
+var int allers = 0
+var bool seanceVue = false
+var bool debutComplet = false                                  // la seance a commence a 9 h 30 dans l'historique
+var bool court = false
+var int posOrdres = 0                                          // position des ordres affiches (0 si taille nulle)
+
+nouvelleSeance = enSeance and (na(jourCourant) or jourNY != jourCourant)
+
+// ----------------------------------------------------------------------------- nouvelle seance
+if nouvelleSeance
+    if seanceVue and debutComplet
+        // seance precedente : les controles non atteints (demi-seance) prennent le dernier prix, comme le backtest
+        if idxMouv < NB_CTRL
+            for i = idxMouv to NB_CTRL - 1
+                array.set(mouvJour, i, math.abs(derniereCloture / ouvJour - 1))
+        matrix.add_row(mouvements, matrix.rows(mouvements), array.copy(mouvJour))
+        if matrix.rows(mouvements) > MEMOIRE
+            matrix.remove_row(mouvements, 0)
+        if not court
+            array.push(resultats, (pointsJour - coutPts * allers) * valeurPt)
+            if array.size(resultats) > FENETRE
+                array.shift(resultats)
+    if seanceVue
+        veille := derniereCloture
+    ouvJour := open
+    debutComplet := minuteSeance == 0
+    court := jourCourt(annee, mois, jourMois, jourSemaine)
+    jourCourant := jourNY
+    idxMouv := 0
+    for i = 0 to NB_CTRL - 1
+        array.set(mouvJour, i, na)
+    sens := 0
+    pointsJour := 0.0
+    allers := 0
+    seanceVue := true
+
+// taille : f x coussin / ecart-type des 60 dernieres seances (au moins 40)
+risque1 = array.size(resultats) >= 40 ? array.stdev(resultats, false) : na
+qteAuto = na(risque1) or risque1 <= 0 ? 0 : int(math.min(50, math.floor(f * coussin / risque1)))
+qte = qteImpose > 0 ? qteImpose : qteAuto
+
+vw = ta.vwap(hlc3, nouvelleSeance)
+pret = matrix.rows(mouvements) == MEMOIRE and not na(veille) and debutComplet
+actif = pret and not court
+hautRef = math.max(ouvJour, veille)
+basRef = math.min(ouvJour, veille)
+sigma(int i) => array.avg(matrix.col(mouvements, i))
+
+if enSeance and seanceVue
+    clotPrec = nz(derniereCloture, close)
+    // mouvement du jour a chaque controle franchi (prix de la minute du controle, ou le dernier prix connu)
+    while idxMouv < NB_CTRL and (idxMouv + 1) * 30 <= minuteSeance
+        px = (idxMouv + 1) * 30 == minuteSeance ? close : clotPrec
+        array.set(mouvJour, idxMouv, math.abs(px / ouvJour - 1))
+        if actif
+            ub = hautRef * (1 + sigma(idxMouv))
+            lb = basRef * (1 - sigma(idxMouv))
+            // sortie sur limite ou VWAP (comme le backtest : une sortie puis une entree au meme prix compte un aller-retour)
+            if sens > 0 and px <= math.max(ub, vw)
+                pointsJour += px - entree
+                sens := 0
+            else if sens < 0 and px >= math.min(lb, vw)
+                pointsJour += entree - px
+                sens := 0
+            if sens == 0 and px > ub
+                sens := 1
+                entree := px
+                allers += 1
+            else if sens == 0 and px < lb
+                sens := -1
+                entree := px
+                allers += 1
+        idxMouv += 1
+    derniereCloture := close
+// fin de seance : tout est ferme a 15 h 59 ; si cette minute manque, a la premiere minute apres la seance
+finSeance = sens != 0 and ((enSeance and minuteSeance == 389) or not enSeance)
+if finSeance
+    pointsJour += sens * (derniereCloture - entree)
+    sens := 0
+
+// ordres affiches et alertes : un seul ordre par minute, vers la position voulue
+posVoulue = qte > 0 ? sens : 0
+if posVoulue != posOrdres
+    if posVoulue == 0
+        strategy.close_all(comment = finSeance ? "Fin de seance" : "Sortie")
+        alert("ZONE MNQ : " + (finSeance ? "FERMER (fin de seance)" : "SORTIE") + " a " + str.tostring(close), alert.freq_once_per_bar_close)
+    else if posVoulue > 0
+        strategy.entry("Achat", strategy.long, qty = qte)
+        alert("ZONE MNQ : ACHAT " + str.tostring(qte) + " contrat(s) a " + str.tostring(close) + (posOrdres < 0 ? " (fermer d'abord la vente)" : ""), alert.freq_once_per_bar_close)
+    else
+        strategy.entry("Vente", strategy.short, qty = qte)
+        alert("ZONE MNQ : VENTE " + str.tostring(qte) + " contrat(s) a " + str.tostring(close) + (posOrdres > 0 ? " (fermer d'abord l'achat)" : ""), alert.freq_once_per_bar_close)
+    posOrdres := posVoulue
+
+// ----------------------------------------------------------------------------- affichage
+prochain = enSeance and actif and idxMouv < NB_CTRL
+plot(prochain ? hautRef * (1 + sigma(math.min(idxMouv, NB_CTRL - 1))) : na, "Haut de la zone (prochain controle)", color.new(color.green, 0), 1, plot.style_linebr)
+plot(prochain ? basRef * (1 - sigma(math.min(idxMouv, NB_CTRL - 1))) : na, "Bas de la zone (prochain controle)", color.new(color.red, 0), 1, plot.style_linebr)
+plot(enSeance ? vw : na, "VWAP", color.new(color.orange, 0), 1, plot.style_linebr)
+bgcolor(posOrdres > 0 ? color.new(color.green, 90) : posOrdres < 0 ? color.new(color.red, 90) : na)
+
+var table info = table.new(position.top_right, 2, 6, bgcolor = color.new(color.black, 20), border_width = 1)
+if barstate.islast
+    table.cell(info, 0, 0, "Taille du jour", text_color = color.white)
+    table.cell(info, 1, 0, str.tostring(qte) + " contrat(s)" + (qteImpose > 0 ? " (imposee)" : ""), text_color = color.white)
+    table.cell(info, 0, 1, "Risque 1 contrat / jour", text_color = color.white)
+    table.cell(info, 1, 1, na(risque1) ? "en attente (" + str.tostring(array.size(resultats)) + " / 40 seances)" : str.tostring(risque1, "#") + " $", text_color = color.white)
+    table.cell(info, 0, 2, "Seances en memoire", text_color = color.white)
+    table.cell(info, 1, 2, str.tostring(matrix.rows(mouvements)) + " / 14", text_color = color.white)
+    table.cell(info, 0, 3, "Aujourd'hui", text_color = color.white)
+    table.cell(info, 1, 3, court ? "fete ou demi-seance : pas de trade" : actif ? "signaux actifs" : "pas encore pret", text_color = color.white)
+    table.cell(info, 0, 4, "Position", text_color = color.white)
+    table.cell(info, 1, 4, posOrdres > 0 ? "ACHAT" : posOrdres < 0 ? "VENTE" : "aucune", text_color = color.white)
+    table.cell(info, 0, 5, "Coussin / f", text_color = color.white)
+    table.cell(info, 1, 5, str.tostring(coussin, "#") + " $ / " + str.tostring(f), text_color = color.white)

@@ -29,6 +29,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import requests
+from pandas.tseries.holiday import GoodFriday, Holiday, nearest_workday, sunday_to_monday
 
 DOSSIER = Path(os.getenv("ROBOT_DOSSIER", Path(__file__).parent / "robot"))
 MINUTES = DOSSIER / "nq_1min.csv.gz"
@@ -155,6 +156,27 @@ def zone_de_bruit(jours, O, H, L, C, P, V, echeance):
     return z, trades, pd.DatetimeIndex(jours[ok])
 
 
+def jour_court(d):
+    """Fetes americaines ou la bourse CME ferme a 13 h, et demi-seances : le backtest ne les trade pas
+    (memes regles que zone/tradingview/zone_de_bruit.pine)."""
+    d = pd.Timestamp(d)
+    a, m, j, w = d.year, d.month, d.day, d.dayofweek
+    ouvre, lundi = w < 5, w == 0
+    return bool((m == 1 and lundi and 15 <= j <= 21) or (m == 2 and lundi and 15 <= j <= 21) or (m == 5 and lundi and j >= 25)
+                or (m == 9 and lundi and j <= 7)
+                or (a >= 2022 and m == 6 and ((j == 19 and ouvre) or (j == 18 and w == 4) or (j == 20 and lundi)))
+                or (m == 7 and (((j == 3 or j == 4) and ouvre) or (j == 5 and lundi)))
+                or (m == 11 and ((w == 3 and 22 <= j <= 28) or (w == 4 and 23 <= j <= 29))) or (m == 12 and j == 24 and ouvre))
+
+
+def jour_ferme(d):
+    """Jours sans seance : Nouvel an, Vendredi saint, Noel (jours observes)."""
+    d = pd.Timestamp(d)
+    fetes = [Holiday("an", month=1, day=1, observance=sunday_to_monday), GoodFriday,
+             Holiday("noel", month=12, day=25, observance=nearest_workday)]
+    return d.dayofweek >= 5 or any(len(h.dates(d, d)) for h in fetes)
+
+
 def serie_du_bot(minutes):
     """Gain, pire moment et risque prevu par jour pour 1 MNQ (comme challenge/bot_challenge.py donnees)."""
     jours, O, H, L, C, P, V, ech = tableaux(minutes)
@@ -165,7 +187,32 @@ def serie_du_bot(minutes):
     pire = np.minimum(pire, np.minimum(gain, 0))
     risque1 = gain.rolling(60, min_periods=40).std().shift(1)
     d = pd.DataFrame({"gain": gain, "pire": pire, "risque1": risque1}).dropna()
-    return d, trades, jours
+    risque_demain = gain.rolling(60, min_periods=40).std()             # connu ce soir, utilise demain
+    return d, trades, jours, float(risque_demain.iloc[-1]) if len(risque_demain) else float("nan")
+
+
+def niveaux(minutes, r):
+    """Niveaux pour la prochaine seance (a utiliser en direct, par exemple avec zone/tradingview/zone_de_bruit.pine) :
+    cloture de la veille, mouvement moyen des 14 dernieres seances a chaque controle, taille conseillee."""
+    jours, O, H, L, C, P, V, ech = tableaux(minutes)
+    if not (P[-1, 0] and P[-1, N - 1]) and not jour_court(jours[-1]):
+        jours, O, C = jours[:-1], O[:-1], C[:-1]      # derniere seance encore incomplete (delai des donnees) : ecartee
+    ctrl = list(range(PAS, N, PAS))
+    sigma = np.abs(C[-JOURS_MOYENNE:, :] / O[-JOURS_MOYENNE:, :1] - 1)[:, ctrl].mean(axis=0)
+    prochaine = pd.Timestamp(jours[-1]) + pd.Timedelta(days=1)
+    while jour_ferme(prochaine):
+        prochaine += pd.Timedelta(days=1)
+    court = jour_court(prochaine)
+    heures = []
+    for m, sg in zip(ctrl, sigma):
+        t_ny = pd.Timestamp(prochaine.date()).tz_localize("America/New_York") + pd.Timedelta(minutes=570 + m)
+        heures.append({"ny": t_ny.strftime("%Hh%M"), "paris": t_ny.tz_convert("Europe/Paris").strftime("%Hh%M"), "sigma": float(sg)})
+    ok = np.isfinite(r) and r > 0
+    taille = lambda c, f: int(min(MAX_MNQ, np.floor(f * c / r))) if ok else 0
+    return {"seance": str(prochaine.date()), "jour_court": court, "veille": float(C[-1, N - 1]), "controles": heures,
+            "risque_1_mnq": r if ok else None,
+            "tailles": {f"{f:.2f}": {"Phidias (coussin 2 500 $)": taille(2500, f), "Topstep (coussin 2 000 $)": taille(2000, f)}
+                        for f in (0.15, 0.25, 0.35)}}
 
 
 # ----------------------------------------------------------------------------- comptes virtuels
@@ -226,7 +273,7 @@ def une_journee(etat, x, date):
 
 
 # ----------------------------------------------------------------------------- sorties
-def tableau(etat, journal, trades_du_jour):
+def tableau(etat, journal, trades_du_jour, niv=None):
     t = etat["tentatives"][-1]
     if etat["phase"] == "challenge":
         haut = etat["haut"]
@@ -256,6 +303,24 @@ def tableau(etat, journal, trades_du_jour):
     ]
     if trades_du_jour:
         lignes += [f"## Trades du {etat['derniere_date']}", ""] + [f"- {x}" for x in trades_du_jour] + [""]
+    if niv and niv["jour_court"]:
+        lignes += [f"## Seance du {niv['seance']} : fete ou demi-seance, PAS DE TRADE", "",
+                   "Le backtest ne trade pas ces jours-la. Les niveaux de la seance suivante seront publies apres.", ""]
+    elif niv and niv["risque_1_mnq"] is None:
+        lignes += [f"## Seance du {niv['seance']} : pas encore assez d'historique pour la taille", ""]
+    elif niv:
+        lignes += [f"## Pour la seance du {niv['seance']} (a utiliser en direct)", "",
+                   f"Cloture de la veille (16 h New York) : **{niv['veille']:,.2f}**. Apres l'ouverture de 9 h 30 : "
+                   "haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). "
+                   "A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; "
+                   "en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).", "",
+                   "| Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |", "|---|---|---|---|---|",
+                   *[f"| {c['ny']} | {c['paris']} | {c['sigma']:.3%} | {1 + c['sigma']:.5f} | {1 - c['sigma']:.5f} |"
+                     for c in niv["controles"]], "",
+                   f"Taille : un jour normal = {niv['risque_1_mnq']:,.0f} $ de risque pour 1 MNQ. Sur un compte neuf : "
+                   + " ; ".join(f"f = {f} -> " + ", ".join(f"{k} {v} MNQ" for k, v in t.items()) for f, t in niv["tailles"].items())
+                   + ". En cours de challenge : MNQ = f x (solde - limite de perte) / "
+                   + f"{niv['risque_1_mnq']:,.0f}, arrondi en dessous.", ""]
     lignes += ["## Derniers jours", "", "| Date | Phase | MNQ | Resultat du jour | Solde | Pour 1 MNQ | Evenement |",
                "|---|---|---|---|---|---|---|",
                *[f"| {r.date} | {r.phase} n°{r.tentative} | {r.mnq} | {r.gain:+,.0f} $ | {r.solde:,.0f} $ | {r.gain_1_mnq:+,.0f} $ |"
@@ -287,7 +352,7 @@ def main():
         minutes = pd.read_csv(MINUTES)
     if os.getenv("ROBOT_JUSQU_AU"):
         minutes = minutes[minutes["t"].str[:10] <= os.getenv("ROBOT_JUSQU_AU")]
-    d, trades, jours = serie_du_bot(minutes)
+    d, trades, jours, risque_demain = serie_du_bot(minutes)
     # la derniere seance n'est jouee que si elle est complete (sinon les donnees arrivent peut-etre encore)
     if len(jours) and jours[-1] not in d.index and jours[-1] > d.index[-1]:
         print(f"Seance du {jours[-1].date()} incomplete pour l'instant : elle sera jouee au prochain passage")
@@ -297,7 +362,10 @@ def main():
     for date, x in d[d.index > pd.Timestamp(etat["derniere_date"])].iterrows():
         lignes.append(une_journee(etat, x, str(date.date())))
         etat["derniere_date"] = str(date.date())
-    if not lignes and not neuf:
+    niv = niveaux(minutes, risque_demain)
+    f_niv = DOSSIER / "niveaux.json"
+    ancien_niv = json.loads(f_niv.read_text()) if f_niv.exists() else None
+    if not lignes and not neuf and niv == ancien_niv:
         print(f"Pas de nouvelle seance depuis le {etat['derniere_date']} : rien a faire.")
         return
     ancien = pd.read_csv(JOURNAL) if JOURNAL.exists() else None
@@ -306,7 +374,8 @@ def main():
         journal.to_csv(JOURNAL, index=False)
     ETAT.write_text(json.dumps(etat, indent=1, ensure_ascii=False))
     du_jour = trades.get(pd.Timestamp(etat["derniere_date"]), [])
-    tableau(etat, journal if len(journal) else pd.DataFrame(columns=["date"]), du_jour)
+    f_niv.write_text(json.dumps(niv, indent=1, ensure_ascii=False))
+    tableau(etat, journal if len(journal) else pd.DataFrame(columns=["date"]), du_jour, niv)
     msg = [f"Robot zone de bruit MNQ (argent virtuel) - {etat['derniere_date']}"]
     if lignes:
         msg.append(f"Depuis le dernier message : {sum(l['gain'] for l in lignes):+,.0f} $ ({len(lignes)} seance(s)),"
@@ -315,6 +384,12 @@ def main():
     msg.append(f"Phase : {etat['phase']} n°{etat['tentatives'][-1]['numero']}, solde {etat['solde']:,.0f} $"
                f" ({etat['solde'] - CAPITAL:+,.0f} $), recu en tout {etat['recu_total']:,.0f} $")
     msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
+    if niv["jour_court"]:
+        msg.append(f"Seance du {niv['seance']} : fete ou demi-seance, PAS DE TRADE")
+    else:
+        msg.append(f"Seance du {niv['seance']} : veille {niv['veille']:,.2f} ; mouvements "
+                   + " ".join(f"{c['paris']}:{c['sigma']:.2%}" for c in niv["controles"])
+                   + f" ; compte neuf f=0,25 : {niv['tailles']['0.25']['Phidias (coussin 2 500 $)']} MNQ (Phidias)")
     envoyer("\n".join(msg))
 
 
