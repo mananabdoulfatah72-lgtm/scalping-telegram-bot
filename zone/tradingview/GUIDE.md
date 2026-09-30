@@ -46,6 +46,27 @@ Heures de contrôle : de 10 h à 15 h 30 à New York, soit **de 16 h à 21 h 30 
 tous les deux (environ 3 semaines en mars et une semaine fin octobre), tout se décale d'une heure : de
 15 h à 20 h 30, et fermeture à 20 h 59 à Paris. Le robot donne chaque matin les heures de Paris exactes.
 
+## Ordres automatiques (facultatif)
+
+Le script peut envoyer ses ordres tout seul, par un « webhook » vers un service qui passe les ordres chez le
+courtier de ta prop firm. Il te faut un abonnement TradingView qui permet les webhooks.
+1. **Vérifie d'abord que ta prop firm autorise le trading automatique** : certaines l'interdisent ou
+   exigent que tu sois présent, et un compte peut être fermé pour ça.
+2. Ouvre un compte chez un service qui relie TradingView au courtier de ta firme (par exemple TradersPost
+   ou PickMyTrade, selon le courtier : Tradovate, Rithmic, NinjaTrader...), et relie-le toi-même à ton
+   compte. Ne donne tes identifiants à personne d'autre.
+3. Dans les réglages du script : « Format des alertes » = JSON, et « Symbole envoyé dans les ordres » =
+   le symbole attendu par le service (par exemple MNQZ2026).
+4. Crée l'alerte : condition = le script, « Appels de fonction alert() uniquement », coche « URL du
+   webhook » et colle l'adresse donnée par le service. Les messages ont ce format :
+   `{"ticker": "MNQZ2026", "action": "buy", "sentiment": "long", "quantity": 2}` pour un achat, et
+   `{"ticker": "MNQZ2026", "action": "exit", "sentiment": "flat"}` pour une sortie. Un retournement
+   est un seul message dans l'autre sens : règle le service pour qu'il ferme puis inverse la position.
+5. **Teste plusieurs jours sur un compte de démonstration du service** avant le challenge, et vérifie
+   que chaque ordre arrive.
+6. Surveille quand même : si TradingView ou le service tombe en panne, un ordre peut manquer (surtout
+   la fermeture de 15 h 59). Quand la taille change, supprime et recrée l'alerte.
+
 ## Étape 3 : un challenge, si les étapes 1 et 2 se passent bien
 
 - Firme : Phidias ou Topstep 50K. Vérifie leurs règles actuelles : limite de perte, règles de

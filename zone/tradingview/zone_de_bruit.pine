@@ -10,7 +10,8 @@
 // - Tout est ferme a 15 h 59. Pas de position la nuit. Pas de trade les jours de fete ou de demi-seance
 //   (le backtest ne les trade pas) ; ne pas trader non plus le jour ou l'on change de contrat.
 // - Taille : nombre de contrats = f x coussin / ecart-type du resultat quotidien (1 contrat, 60 dernieres seances).
-// Aucun ordre n'est passe par ce script : il affiche les signaux et envoie des alertes.
+// Ordres automatiques : mettre "Format des alertes" sur JSON et relier l'alerte (webhook) a un service qui passe
+// les ordres chez le courtier de la prop firm (TradersPost, PickMyTrade...), si la firme autorise l'automatisation.
 strategy("Zone de bruit MNQ (challenge)", overlay = true, process_orders_on_close = true,
      commission_type = strategy.commission.cash_per_contract, commission_value = 1.0, slippage = 1,
      default_qty_type = strategy.fixed, default_qty_value = 1, initial_capital = 50000, margin_long = 0, margin_short = 0)
@@ -18,6 +19,8 @@ strategy("Zone de bruit MNQ (challenge)", overlay = true, process_orders_on_clos
 f         = input.float(0.25, "Fraction du coussin (f)", minval = 0.05, maxval = 0.50, step = 0.05)
 coussin   = input.float(2500, "Coussin actuel en $ (solde - limite de perte)", minval = 0)
 qteImpose = input.int(0, "Nombre de contrats impose (0 = calcul automatique)", minval = 0)
+formatAlerte = input.string("Texte (notification)", "Format des alertes", options = ["Texte (notification)", "JSON (webhook pour ordres automatiques)"])
+tickerOrdre = input.string("", "Symbole envoye dans les ordres (vide = celui du graphique)")
 valeurPt = syminfo.pointvalue                                     // MNQ : 2 $ par point ; NQ : 20 $
 coutPts = 2 * (1.0 + syminfo.mintick * valeurPt) / valeurPt        // 1 $ par ordre + 1 tick de glissement (MNQ : 1,5 point)
 
@@ -146,18 +149,26 @@ if finSeance
     pointsJour += sens * (derniereCloture - entree)
     sens := 0
 
-// ordres affiches et alertes : un seul ordre par minute, vers la position voulue
+// messages d'alerte : texte lisible, ou JSON pour un service d'ordres automatiques (format TradersPost, ordres au marche)
+modeJson = formatAlerte != "Texte (notification)"
+symbole = tickerOrdre == "" ? syminfo.ticker : tickerOrdre
+msgSortie(bool fin) =>
+    modeJson ? '{"ticker": "' + symbole + '", "action": "exit", "sentiment": "flat"}' :
+         "ZONE MNQ : " + (fin ? "FERMER (fin de seance)" : "SORTIE") + " a " + str.tostring(close)
+msgEntree(int s, int q, int avant) =>
+    modeJson ? '{"ticker": "' + symbole + '", "action": "' + (s > 0 ? "buy" : "sell") + '", "sentiment": "' + (s > 0 ? "long" : "short") + '", "quantity": ' + str.tostring(q) + '}' :
+         "ZONE MNQ : " + (s > 0 ? "ACHAT " : "VENTE ") + str.tostring(q) + " contrat(s) a " + str.tostring(close) + (avant != 0 ? " (retournement : fermer d'abord la position en cours)" : "")
+
+// ordres affiches et alertes : un seul message par minute, vers la position voulue. Un retournement est un seul
+// message d'entree dans l'autre sens ("sentiment" long/short : le service ferme la position en cours puis l'inverse)
 posVoulue = qte > 0 ? sens : 0
 if posVoulue != posOrdres
     if posVoulue == 0
         strategy.close_all(comment = finSeance ? "Fin de seance" : "Sortie")
-        alert("ZONE MNQ : " + (finSeance ? "FERMER (fin de seance)" : "SORTIE") + " a " + str.tostring(close), alert.freq_once_per_bar_close)
-    else if posVoulue > 0
-        strategy.entry("Achat", strategy.long, qty = qte)
-        alert("ZONE MNQ : ACHAT " + str.tostring(qte) + " contrat(s) a " + str.tostring(close) + (posOrdres < 0 ? " (fermer d'abord la vente)" : ""), alert.freq_once_per_bar_close)
+        alert(msgSortie(finSeance), alert.freq_once_per_bar_close)
     else
-        strategy.entry("Vente", strategy.short, qty = qte)
-        alert("ZONE MNQ : VENTE " + str.tostring(qte) + " contrat(s) a " + str.tostring(close) + (posOrdres > 0 ? " (fermer d'abord l'achat)" : ""), alert.freq_once_per_bar_close)
+        strategy.entry(posVoulue > 0 ? "Achat" : "Vente", posVoulue > 0 ? strategy.long : strategy.short, qty = qte)
+        alert(msgEntree(posVoulue, qte, posOrdres), alert.freq_once_per_bar_close)
     posOrdres := posVoulue
 
 // ----------------------------------------------------------------------------- affichage
