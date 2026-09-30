@@ -40,6 +40,15 @@ def range_nuit(fichier, J, contrat):
 
 # ---------------------------------------------------------------- briques
 
+def quantile_valides(x, q):
+    """Quantile q des 252 valeurs existantes precedentes (les seances sans valeur, par exemple un changement
+    d'echeance, sont sautees au lieu d'annuler toute la fenetre)."""
+    v = np.isfinite(x)
+    out = np.full(len(x), NAN)
+    out[v] = pd.Series(x[v]).rolling(252, min_periods=252).quantile(q).shift(1).values
+    return out
+
+
 def meme_demi_heure(O, C, ok, cout, complete, tranches):
     """Heston-Korajczyk-Sadka : pour chaque demi-heure k de tranches, dans le sens de la moyenne de cette demi-heure sur
     les 20 seances completes precedentes ; entree a l'ouverture de la demi-heure, sortie a sa derniere cloture."""
@@ -155,14 +164,15 @@ def toutes(J, O, H, L, C, P, X, cout, Q, nuit):
     q = (onh - onl) / 4
     res["6"] = T3.rejet(O, H, L, C, ok & dedans, cout, np.where(dedans, onh, NAN), np.where(dedans, onl, NAN), onh + q, onl - q, mil, mil)
     rv = K1.de_la(C[:, N - 1] / o0 - 1, prec)
-    f7 = np.nan_to_num(rv <= T3.quantile_252(rv, 0.1), nan=0).astype(bool)
+    q7 = quantile_valides(rv, 0.1)
+    f7 = np.nan_to_num(rv <= q7, nan=0).astype(bool)
     base7 = K1.entree_fixe(O, H, L, C, ok, cout, np.ones(nd, np.int64), 0, rien, rien, N - 1)
     res["7"] = np.where(f7, base7, 0.0)
     s8 = modele_appris(J, O, H, L, C, X, ok, complete, Q)
     res["8"] = K1.entree_fixe(O, H, L, C, ok, cout, s8, 30, rien, rien, N - 1)
     # tirages au hasard (etape 3) : parmi les seances ou le signal existe, meme sens que la strategie
     jours = {"3": (base3, f3, np.isfinite(T3.quantile_252(np.abs(mtd), 2 / 3)) & (mtd != 0)),
-             "7": (base7, f7, np.isfinite(T3.quantile_252(rv, 0.1)) & np.isfinite(rv))}
+             "7": (base7, f7, np.isfinite(q7) & np.isfinite(rv))}
     return res, ok, jours
 
 

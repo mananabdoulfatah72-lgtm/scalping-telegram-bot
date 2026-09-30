@@ -56,3 +56,40 @@ au moins 3 années positives sur 4.
 
 Les 17 essais sont inscrits dans `fonds/essais.csv`. Rien n'est ajouté ni changé après avoir vu les
 résultats.
+
+## Résultats (30 septembre 2026) : aucun survivant, 0 sur 17
+
+Détail dans `exploration4.txt` et `coffre4.txt`.
+
+**Correction pendant le calcul** : la stratégie 7 n'avait aucun trade. Son seuil sur 252 jours valait
+« rien » dès qu'une séance sans veille (un changement d'échéance) tombait dans la fenêtre. Le seuil
+porte maintenant sur les 252 dernières valeurs existantes, puis tout a été relancé.
+
+| Stratégie | NQ : t 2011-2022 | ES : t 2011-2022 | Remarque |
+|---|---|---|---|
+| 7. Rebond après une forte baisse | +1,80 (2017-22 : +2,09) | +1,48 | le plus proche, mais sous 2 ; bat les jours au hasard |
+| 8. Modèle appris à 10 h | +1,09 | −0,43 | voir l'encadré sur le bruit |
+| 4. Fin de séance après un grand mouvement | +0,78 | +0,52 | |
+| 3. Rééquilibrage de fin de mois | +0,63 | +0,15 | ne bat pas les jours au hasard |
+| 5. Cassure du range de la nuit | −0,09 | −1,59 | |
+| 6. Rejet du range de la nuit | −4,00 | −6,75 | |
+| 1. Même demi-heure (début et fin) | −7,69 | −10,09 | |
+| 2. Même demi-heure (toute la journée) | −24,21 | −38,08 | 13 allers-retours par jour |
+
+**Paire en continuation (jugée seulement sur le coffre 2023-2026)** : t −1,52, négative chaque année
+(−1,4 %, −0,5 %, −0,2 %, −0,8 %). Rejetée. En retour à la moyenne comme en continuation, la paire perd :
+les frais dépassent le mouvement.
+
+**Ce qu'on retient** :
+- La périodicité des demi-heures (Heston, Korajczyk, Sadka) existe peut-être sur les actions une par
+  une, mais pas sur le Nasdaq ou le S&P entiers après frais.
+- Le rebond après une forte baisse est la seule piste qui s'approche : t 1,80 sur NQ et 1,48 sur ES,
+  et il bat les jours tirés au hasard. Mais il n'atteint pas 2, et il ne gagne que depuis 2017.
+- **Le bruit est trop sévère pour les stratégies qui lisent le volume.** Sur les minutes mélangées, le
+  modèle appris fait t +9,7. Mélanger les minutes avec leur volume peut placer au début les grosses
+  minutes, qui portent le mouvement du jour. Comme le résultat du jour est conservé, un gros volume
+  en début de séance « annonce » alors que le mouvement est déjà fait. Sur vraies données, ce lien
+  n'existe pas : le modèle y utilise surtout l'écart d'ouverture et le premier mouvement.
+  - Ce défaut du contrôle ne change aucun verdict : le modèle fait t 1,09 sur vraies données, sous le
+    seuil de 2, et le range de 5 minutes avec volume du tournoi n°2 fait t 1,54.
+  - Pour une future stratégie au volume, il faudra mélanger les minutes sans leur volume.
