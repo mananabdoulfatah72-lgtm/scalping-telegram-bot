@@ -1,0 +1,74 @@
+  NQ bruit 1/20 (7 s)
+  NQ bruit 2/20 (7 s)
+  NQ bruit 3/20 (8 s)
+  NQ bruit 4/20 (8 s)
+  NQ bruit 5/20 (9 s)
+  NQ bruit 6/20 (9 s)
+  NQ bruit 7/20 (10 s)
+  NQ bruit 8/20 (10 s)
+  NQ bruit 9/20 (10 s)
+  NQ bruit 10/20 (11 s)
+  NQ bruit 11/20 (11 s)
+  NQ bruit 12/20 (12 s)
+  NQ bruit 13/20 (12 s)
+  NQ bruit 14/20 (12 s)
+  NQ bruit 15/20 (13 s)
+  NQ bruit 16/20 (13 s)
+  NQ bruit 17/20 (14 s)
+  NQ bruit 18/20 (14 s)
+  NQ bruit 19/20 (14 s)
+  NQ bruit 20/20 (15 s)
+  ES bruit 1/20 (19 s)
+  ES bruit 2/20 (19 s)
+  ES bruit 3/20 (20 s)
+  ES bruit 4/20 (20 s)
+  ES bruit 5/20 (20 s)
+  ES bruit 6/20 (21 s)
+  ES bruit 7/20 (21 s)
+  ES bruit 8/20 (22 s)
+  ES bruit 9/20 (22 s)
+  ES bruit 10/20 (22 s)
+  ES bruit 11/20 (23 s)
+  ES bruit 12/20 (23 s)
+  ES bruit 13/20 (24 s)
+  ES bruit 14/20 (24 s)
+  ES bruit 15/20 (25 s)
+  ES bruit 16/20 (25 s)
+  ES bruit 17/20 (25 s)
+  ES bruit 18/20 (26 s)
+  ES bruit 19/20 (26 s)
+  ES bruit 20/20 (27 s)
+
+Exploration 2011-2022 (t sur les rendements quotidiens nets ; bruit : 20 melanges) :
+  Cassure de Williams                  NQ | t +0.95 (2011-16 -1.31, 2017-22 +2.08) | 2222 jours de trade,   +5.01 $ par trade (1 micro), gagnants 45% | bruit : max +1.23, moyen -0.20 | corr. zone +0.59 | elimine
+  Zone de bruit (reference)            NQ | t +0.62 (2011-16 -2.62, 2017-22 +2.77) | 1784 jours de trade,   +5.21 $ par trade (1 micro), gagnants 40% | bruit : max -0.82, moyen -2.43 | corr. zone +1.00 | elimine
+  Tournant du mois                     NQ | t -0.33 (2011-16 -1.42, 2017-22 +0.52) |  547 jours de trade,   -1.91 $ par trade (1 micro), gagnants 49% | bruit : max -0.33, moyen -0.33 | corr. zone -0.00 | elimine
+  Continuation du gap                  NQ | t -0.44 (2011-16 -1.61, 2017-22 +0.58) | 1789 jours de trade,   +0.16 $ par trade (1 micro), gagnants 39% | bruit : max +1.89, moyen +1.12 | corr. zone +0.34 | elimine
+  Comblement du gap                    NQ | t -0.56 (2011-16 -1.24, 2017-22 +0.33) | 1806 jours de trade,   +0.15 $ par trade (1 micro), gagnants 53% | bruit : max -3.09, moyen -4.09 | corr. zone -0.07 | elimine
+  Etirement de Crabel                  NQ | t -0.58 (2011-16 -1.42, 2017-22 +0.29) | 2911 jours de trade,   +0.55 $ par trade (1 micro), gagnants 41% | bruit : max +2.48, moyen +0.69 | corr. zone +0.49 | elimine
+  Continuation du gap                  ES | t -0.70 (2011-16 -1.45, 2017-22 +0.23) | 1589 jours de trade,   -0.89 $ par trade (1 micro), gagnants 42% | bruit : max +0.89, moyen +0.43 | corr. zone +0.33 | elimine
+  Achat simple intraday                NQ | t -0.73 (2011-16 -1.41, 2017-22 +0.10) | 2928 jours de trade,   -1.84 $ par trade (1 micro), gagnants 53% | bruit : max -0.73, moyen -0.73 | corr. zone -0.10 | elimine
+  Momentum de la 1re heure             NQ | t -0.75 (2011-16 -1.60, 2017-22 +0.20) | 2923 jours de trade,   +0.29 $ par trade (1 micro), gagnants 50% | bruit : max +0.93, moyen -0.17 | corr. zone +0.35 | elimine
+  Veille de la Fed (jour meme)         ES | t -0.89 (2011-16 -0.54, 2017-22 -0.78) |   91 jours de trade,   -4.87 $ par trade (1 micro), gagnants 37% | bruit : max +0.34, moyen -0.48 | corr. zone +0.01 | elimine
+  Tournant du mois                     ES | t -0.94 (2011-16 -1.68, 2017-22 +0.05) |  549 jours de trade,   -3.61 $ par trade (1 micro), gagnants 48% | bruit : max -0.94, moyen -0.94 | corr. zone -0.03 | elimine
+  Range d'ouverture 60 min             NQ | t -1.04 (2011-16 -2.59, 2017-22 +0.57) | 2804 jours de trade,   +1.05 $ par trade (1 micro), gagnants 48% | bruit : max +1.55, moyen -0.56 | corr. zone +0.49 | elimine
+  Cassure de la veille                 NQ | t -1.11 (2011-16 -1.75, 2017-22 -0.12) | 2630 jours de trade,   -1.17 $ par trade (1 micro), gagnants 45% | bruit : max +0.01, moyen -1.09 | corr. zone +0.41 | elimine
+  Veille de la Fed (jour meme)         NQ | t -1.44 (2011-16 -1.68, 2017-22 -0.25) |   86 jours de trade,   -6.36 $ par trade (1 micro), gagnants 35% | bruit : max +0.10, moyen -0.64 | corr. zone -0.00 | elimine
+  Achat simple intraday                ES | t -1.53 (2011-16 -1.68, 2017-22 -0.64) | 2941 jours de trade,   -2.84 $ par trade (1 micro), gagnants 51% | bruit : max -1.53, moyen -1.53 | corr. zone -0.12 | elimine
+  Range d'ouverture 30 min             NQ | t -1.56 (2011-16 -2.80, 2017-22 +0.10) | 2915 jours de trade,   -0.15 $ par trade (1 micro), gagnants 42% | bruit : max +1.13, moyen -0.41 | corr. zone +0.52 | elimine
+  Range d'ouverture 15 min             NQ | t -1.57 (2011-16 -3.09, 2017-22 +0.26) | 2934 jours de trade,   -0.18 $ par trade (1 micro), gagnants 37% | bruit : max +0.68, moyen -0.40 | corr. zone +0.51 | elimine
+  Cassure de Williams                  ES | t -1.69 (2011-16 -3.41, 2017-22 +0.45) | 2239 jours de trade,   -0.58 $ par trade (1 micro), gagnants 42% | bruit : max -3.79, moyen -5.05 | corr. zone +0.55 | elimine
+  Zone de bruit (reference)            ES | t -1.73 (2011-16 -4.13, 2017-22 +1.19) | 1815 jours de trade,   -0.46 $ par trade (1 micro), gagnants 35% | bruit : max -5.84, moyen -6.68 | corr. zone +1.00 | elimine
+  Range d'ouverture 60 min             ES | t -1.89 (2011-16 -2.95, 2017-22 -0.07) | 2873 jours de trade,   -1.24 $ par trade (1 micro), gagnants 45% | bruit : max -3.26, moyen -4.94 | corr. zone +0.46 | elimine
+  Cassure de la veille                 ES | t -2.15 (2011-16 -2.81, 2017-22 -0.53) | 2632 jours de trade,   -2.63 $ par trade (1 micro), gagnants 44% | bruit : max -2.39, moyen -3.34 | corr. zone +0.45 | elimine
+  Tendance VWAP                        NQ | t -2.33 (2011-16 -5.39, 2017-22 +1.14) | 2934 jours de trade,   +0.07 $ par trade (1 micro), gagnants 46% | bruit : max -2.35, moyen -4.43 | corr. zone +0.52 | elimine
+  Etirement de Crabel                  ES | t -3.13 (2011-16 -3.14, 2017-22 -1.49) | 2905 jours de trade,   -3.38 $ par trade (1 micro), gagnants 40% | bruit : max -2.62, moyen -4.05 | corr. zone +0.45 | elimine
+  Range d'ouverture 15 min             ES | t -3.21 (2011-16 -5.05, 2017-22 -0.13) | 2937 jours de trade,   -2.35 $ par trade (1 micro), gagnants 34% | bruit : max -3.66, moyen -4.91 | corr. zone +0.44 | elimine
+  Range d'ouverture 30 min             ES | t -3.24 (2011-16 -4.53, 2017-22 -0.53) | 2930 jours de trade,   -3.09 $ par trade (1 micro), gagnants 39% | bruit : max -3.27, moyen -4.93 | corr. zone +0.49 | elimine
+  Momentum de la 1re heure             ES | t -3.39 (2011-16 -3.73, 2017-22 -1.40) | 2892 jours de trade,   -4.80 $ par trade (1 micro), gagnants 46% | bruit : max -1.77, moyen -3.09 | corr. zone +0.33 | elimine
+  Retournement apres 30 min extremes   NQ | t -3.91 (2011-16 -4.74, 2017-22 -1.57) |  687 jours de trade,   -6.88 $ par trade (1 micro), gagnants 7% | bruit : max -0.54, moyen -2.75 | corr. zone -0.03 | elimine
+  Comblement du gap                    ES | t -5.17 (2011-16 -4.17, 2017-22 -3.18) | 1812 jours de trade,   -6.17 $ par trade (1 micro), gagnants 49% | bruit : max -5.60, moyen -6.67 | corr. zone -0.05 | elimine
+  Retournement apres 30 min extremes   ES | t -5.86 (2011-16 -7.70, 2017-22 -2.22) |  675 jours de trade,   -7.84 $ par trade (1 micro), gagnants 6% | bruit : max -1.21, moyen -4.02 | corr. zone -0.02 | elimine
+  Tendance VWAP                        ES | t -6.01 (2011-16 -7.40, 2017-22 -1.79) | 2940 jours de trade,   -8.60 $ par trade (1 micro), gagnants 43% | bruit : max -9.78, moyen -10.65 | corr. zone +0.52 | elimine
+
+Survivants des etapes 1 et 2 : 0

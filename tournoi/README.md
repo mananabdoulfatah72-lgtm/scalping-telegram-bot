@@ -54,3 +54,33 @@ ordre, soit 1,5 point de NQ ou 0,9 point d'ES par aller-retour.
      simulation du challenge 50K (bot coussin, comme dans `challenge/`).
 5. Les 28 essais sont inscrits dans `fonds/essais.csv`. Aucune stratégie, aucun paramètre ni aucun
    marché ne sera ajouté ou changé après avoir vu les résultats.
+
+## Résultats (30 septembre 2026) : aucun rival
+
+Détail dans `exploration.txt`, `exploration.csv` et `reference_zone_coffre.txt`.
+
+**Étape 1 (t ≥ 2 sur 2011-2022) : aucune des 28 ne passe.** Les meilleures :
+
+| Stratégie | Marché | t 2011-2022 | 2011-2016 | 2017-2022 | Plus haut t sur bruit | Corrélation avec la zone |
+|---|---|---|---|---|---|---|
+| Cassure de Williams | NQ | +0,95 | −1,31 | +2,08 | +1,23 | 0,59 |
+| Zone de bruit (référence) | NQ | +0,62 | −2,62 | +2,77 | −0,82 | 1 |
+| Tournant du mois | NQ | −0,33 | −1,42 | +0,52 | — | 0,00 |
+| Continuation du gap | NQ | −0,44 | −1,61 | +0,58 | +1,89 | 0,34 |
+
+Toutes les autres sont négatives, et souvent nettement : sur l'ES, t de −1,5 à −6. L'achat simple intraday est lui aussi négatif (t −0,7 sur NQ, −1,5 sur ES) : les frais de chaque jour mangent la hausse.
+
+**Pas de survivant, donc pas d'ouverture du coffre pour les concurrents.**
+
+**La zone de bruit elle-même échoue au premier tri.** Avec la même mesure (rendements en % du prix),
+elle fait t = 0,62 sur 2011-2022 : perdante en 2011-2016 (t −2,62), puis nettement gagnante depuis 2017
+(t +2,77). Sur 2023-2026, pour information : t = +2,01, avec des années positives qui baissent
+(+14 %, +7,5 %, +6,4 %, +2,8 %). Elle bat les 20 versions sur bruit : sa structure intraday est réelle.
+Mais son avantage n'existe que depuis 2017 environ. Le « t = 2,55 » cité avant portait sur 2011-2026
+en dollars : les années récentes, où le Nasdaq est cher, y pèsent plus lourd.
+
+**Ce qu'on retient** :
+- Parmi les stratégies intraday classiques, rien ne rivalise avec la zone de bruit sur le Nasdaq.
+- La plus proche, la cassure de Williams, ressemble à la zone (corrélation 0,59) et ne bat pas le bruit.
+- L'effet exploité par la zone (le Nasdaq qui continue dans le sens de sa cassure) est récent. Il peut
+  disparaître comme il est apparu : c'est pourquoi le suivi en argent virtuel reste l'étape décisive.
