@@ -198,6 +198,8 @@ def niveaux(minutes, r):
     if not (P[-1, 0] and P[-1, N - 1]) and not jour_court(jours[-1]):
         jours, O, C = jours[:-1], O[:-1], C[:-1]      # derniere seance encore incomplete (delai des donnees) : ecartee
     ctrl = list(range(PAS, N, PAS))
+    if len(jours) < JOURS_MOYENNE:
+        return None
     sigma = np.abs(C[-JOURS_MOYENNE:, :] / O[-JOURS_MOYENNE:, :1] - 1)[:, ctrl].mean(axis=0)
     prochaine = pd.Timestamp(jours[-1]) + pd.Timedelta(days=1)
     while jour_ferme(prochaine):
@@ -306,8 +308,6 @@ def tableau(etat, journal, trades_du_jour, niv=None):
     if niv and niv["jour_court"]:
         lignes += [f"## Seance du {niv['seance']} : fete ou demi-seance, PAS DE TRADE", "",
                    "Le backtest ne trade pas ces jours-la. Les niveaux de la seance suivante seront publies apres.", ""]
-    elif niv and niv["risque_1_mnq"] is None:
-        lignes += [f"## Seance du {niv['seance']} : pas encore assez d'historique pour la taille", ""]
     elif niv:
         lignes += [f"## Pour la seance du {niv['seance']} (a utiliser en direct)", "",
                    f"Cloture de la veille (16 h New York) : **{niv['veille']:,.2f}**. Apres l'ouverture de 9 h 30 : "
@@ -317,10 +317,14 @@ def tableau(etat, journal, trades_du_jour, niv=None):
                    "| Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |", "|---|---|---|---|---|",
                    *[f"| {c['ny']} | {c['paris']} | {c['sigma']:.3%} | {1 + c['sigma']:.5f} | {1 - c['sigma']:.5f} |"
                      for c in niv["controles"]], "",
-                   f"Taille : un jour normal = {niv['risque_1_mnq']:,.0f} $ de risque pour 1 MNQ. Sur un compte neuf : "
-                   + " ; ".join(f"f = {f} -> " + ", ".join(f"{k} {v} MNQ" for k, v in t.items()) for f, t in niv["tailles"].items())
-                   + ". En cours de challenge : MNQ = f x (solde - limite de perte) / "
-                   + f"{niv['risque_1_mnq']:,.0f}, arrondi en dessous.", ""]
+                   (f"Taille : un jour normal = {niv['risque_1_mnq']:,.0f} $ de risque pour 1 MNQ. Sur un compte neuf : "
+                    + " ; ".join(f"f = {f} -> " + ", ".join(f"{k} {v} MNQ" for k, v in t.items()) for f, t in niv["tailles"].items())
+                    + ". **En cours de challenge : MNQ = f x (solde - limite de perte) / "
+                    + f"{niv['risque_1_mnq']:,.0f}, arrondi en dessous** (exemple : f = 0,25, coussin 1 500 $ -> "
+                    + f"{int(np.floor(0.25 * 1500 / niv['risque_1_mnq']))} MNQ).") if niv["risque_1_mnq"] else
+                   "Taille : pas encore assez d'historique (40 seances).", "",
+                   "Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la reouverture de 18 h). "
+                   "On ne regarde le prix qu'aux heures de controle : pas de stop place dans le marche.", ""]
     lignes += ["## Derniers jours", "", "| Date | Phase | MNQ | Resultat du jour | Solde | Pour 1 MNQ | Evenement |",
                "|---|---|---|---|---|---|---|",
                *[f"| {r.date} | {r.phase} n°{r.tentative} | {r.mnq} | {r.gain:+,.0f} $ | {r.solde:,.0f} $ | {r.gain_1_mnq:+,.0f} $ |"
@@ -354,7 +358,7 @@ def main():
         minutes = minutes[minutes["t"].str[:10] <= os.getenv("ROBOT_JUSQU_AU")]
     d, trades, jours, risque_demain = serie_du_bot(minutes)
     # la derniere seance n'est jouee que si elle est complete (sinon les donnees arrivent peut-etre encore)
-    if len(jours) and jours[-1] not in d.index and jours[-1] > d.index[-1]:
+    if len(jours) and jours[-1] not in d.index and jours[-1] > d.index[-1] and not jour_court(jours[-1]):
         print(f"Seance du {jours[-1].date()} incomplete pour l'instant : elle sera jouee au prochain passage")
     neuf = not ETAT.exists()
     etat = lire_etat(d)
@@ -374,7 +378,8 @@ def main():
         journal.to_csv(JOURNAL, index=False)
     ETAT.write_text(json.dumps(etat, indent=1, ensure_ascii=False))
     du_jour = trades.get(pd.Timestamp(etat["derniere_date"]), [])
-    f_niv.write_text(json.dumps(niv, indent=1, ensure_ascii=False))
+    if niv is not None:
+        f_niv.write_text(json.dumps(niv, indent=1, ensure_ascii=False))
     tableau(etat, journal if len(journal) else pd.DataFrame(columns=["date"]), du_jour, niv)
     msg = [f"Robot zone de bruit MNQ (argent virtuel) - {etat['derniere_date']}"]
     if lignes:
@@ -383,8 +388,11 @@ def main():
         msg += [l["evenement"] for l in lignes if l["evenement"]]
     msg.append(f"Phase : {etat['phase']} n°{etat['tentatives'][-1]['numero']}, solde {etat['solde']:,.0f} $"
                f" ({etat['solde'] - CAPITAL:+,.0f} $), recu en tout {etat['recu_total']:,.0f} $")
-    msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
-    if niv["jour_court"]:
+    if lignes:
+        msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
+    if niv is None:
+        pass
+    elif niv["jour_court"]:
         msg.append(f"Seance du {niv['seance']} : fete ou demi-seance, PAS DE TRADE")
     else:
         msg.append(f"Seance du {niv['seance']} : veille {niv['veille']:,.2f} ; mouvements "

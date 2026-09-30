@@ -24,14 +24,18 @@ souvent fallu 2 à 5 mois.
    - « Séances en mémoire » doit afficher **14 / 14**. Il faut environ 20 000 barres d'une minute
      d'historique, car le graphique contient aussi la nuit. Selon ton abonnement TradingView, ce n'est
      pas toujours possible. Dans ce cas, utilise les niveaux publiés chaque matin par le robot
-     (étape 1) : il te suffit du prix d'ouverture de 9 h 30.
-   - « Taille du jour » : le calcul automatique demande 40 séances, soit environ 55 000 barres, plus
-     que ce que charge TradingView. Reporte donc la taille publiée chaque matin par le robot dans le
-     réglage « Nombre de contrats imposé ».
+     (étape 1). Il te suffit alors du prix d'ouverture de 9 h 30, et d'un VWAP calculé **depuis 9 h 30**
+     (dans TradingView, l'indicateur VWAP avec un point de départ à 9 h 30 : son réglage « Séance »
+     part de 18 h sur les futures). Ne regarde le prix qu'aux heures de contrôle, sans stop placé dans
+     le marché.
+   - « Taille du jour » : le calcul automatique demande 40 séances où le script pouvait trader, soit
+     plus d'historique que ce que charge TradingView. Mets donc toi-même la taille dans le réglage
+     « Nombre de contrats imposé » (voir l'étape 3 pour la calculer).
    - « Aujourd'hui » indique les jours de fête ou de demi-séance, où le script ne trade pas (comme le
      backtest).
-4. Crée une alerte : bouton « Alerte », condition « Zone de bruit MNQ (challenge) », puis « N'importe
-   quel appel de fonction alert() », avec notification sur l'application mobile. **Une alerte garde les
+4. Crée une alerte : bouton « Alerte », condition « Zone de bruit MNQ (challenge) », puis « Appels de
+   fonction alert() uniquement » (sinon chaque signal arrive en double), avec notification sur
+   l'application mobile. **Une alerte garde les
    réglages du moment où elle a été créée** : si tu changes la taille, supprime-la et recrée-la.
 5. **Pendant 2 à 4 semaines**, compare chaque jour les signaux TradingView avec les « Trades du ... »
    publiés par le robot le lendemain matin. Ils doivent être les mêmes, à quelques points près (les
@@ -46,13 +50,19 @@ tous les deux (environ 3 semaines en mars et une semaine fin octobre), tout se d
 
 - Firme : Phidias ou Topstep 50K. Vérifie leurs règles actuelles : limite de perte, règles de
   régularité, trading automatique permis ou non, horaires de fermeture.
-- Taille : f = 0,25, soit environ **2 MNQ** sur un compte neuf. Chaque matin, mets à jour le coussin
-  (solde − limite de perte) dans les réglages du script, ou lis la taille publiée par le robot.
+- Taille : f = 0,25, soit environ **2 MNQ** sur un compte neuf. En cours de challenge, la taille baisse
+  quand le compte s'approche de sa limite. Chaque matin : **MNQ = 0,25 × (solde − limite de perte) /
+  risque d'un MNQ**, arrondi en dessous. Le risque est publié chaque matin par le robot (environ 215 $
+  en ce moment). Exemple : coussin de 1 500 $ → 0,25 × 1 500 / 215 = 1,7 → 1 MNQ. La taille « compte
+  neuf » publiée ne vaut que tant que le coussin est entier.
 - Ne trade pas :
   - les jours de fête américaine où la bourse ferme à 13 h, ni les demi-séances. Le script et le robot
     les signalent (« pas de trade ») ;
-  - le jour où tu passes au contrat du trimestre suivant, environ une semaine avant l'échéance du
-    3e vendredi de mars, juin, septembre et décembre (le backtest ne trade pas ce jour-là).
+  - le jour où tu passes au contrat du trimestre suivant. Le backtest change de contrat quand le
+    suivant devient le plus échangé, en général **le mercredi de la semaine d'échéance** (2 jours de
+    bourse avant le 3e vendredi de mars, juin, septembre et décembre ; entre 1 et 4 jours selon les
+    années). Change ce jour-là et ne trade pas ce jour-là. Avant, les niveaux publiés par le robot
+    sont ceux de l'ancien contrat : ils ne valent pas pour le nouveau.
 - N'ajoute rien, ne coupe rien à la main : les chiffres ne valent que si les règles sont suivies à la
   lettre.
 - Chances d'après l'historique, avec 2 comptes au plus : environ 30 % de valider en 12 mois sur
