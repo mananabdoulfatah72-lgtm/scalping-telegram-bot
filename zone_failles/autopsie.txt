@@ -1,0 +1,102 @@
+=== NQ (1 micro = 2 $ par point ; frais 1.50 pts par aller-retour) ===
+  Tout 2011-2022                     |  2789 trades, gagnants  34% | brut   +3.17 pts, net   +1.67 pts par trade | t avant frais +3.89, apres frais +0.62
+  2011-2016                          |  1393 trades, gagnants  30% | brut   +0.37 pts, net   -1.13 pts par trade | t avant frais +1.28, apres frais -2.62
+  2017-2022                          |  1396 trades, gagnants  38% | brut   +5.96 pts, net   +4.46 pts par trade | t avant frais +3.89, apres frais +2.77
+  -- frais en % du prix : 2011:6.5pb 2012:5.7pb 2013:4.9pb 2014:3.9pb 2015:3.4pb 2016:3.3pb 2017:2.6pb 2018:2.1pb 2019:2.0pb 2020:1.5pb 2021:1.0pb 2022:1.2pb
+  -- par rang du trade dans la journee
+  trade n°1                          |  1791 trades, gagnants  34% | brut   +3.73 pts, net   +2.23 pts par trade | t avant frais +3.89, apres frais +1.42
+  trade n°2                          |   684 trades, gagnants  32% | brut   +1.76 pts, net   +0.26 pts par trade | t avant frais +0.45, apres frais -1.24
+  trade n°3+                         |   314 trades, gagnants  37% | brut   +3.04 pts, net   +1.54 pts par trade | t avant frais +1.29, apres frais +0.00
+  -- par heure d'entree
+  entree a 10h00                     |   784 trades, gagnants  35% | brut   +4.56 pts, net   +3.06 pts par trade | t avant frais +2.93, apres frais +1.41
+  entree a 10h30                     |   321 trades, gagnants  27% | brut   -1.58 pts, net   -3.08 pts par trade | t avant frais -1.21, apres frais -2.27
+  entree a 11h00                     |   242 trades, gagnants  34% | brut   +2.20 pts, net   +0.70 pts par trade | t avant frais +2.00, apres frais +0.95
+  entree a 11h30                     |   222 trades, gagnants  39% | brut   +7.47 pts, net   +5.97 pts par trade | t avant frais +2.31, apres frais +1.60
+  entree a 12h00                     |   208 trades, gagnants  31% | brut   -0.84 pts, net   -2.34 pts par trade | t avant frais +0.37, apres frais -0.47
+  entree a 12h30                     |   176 trades, gagnants  31% | brut   +0.89 pts, net   -0.61 pts par trade | t avant frais +0.50, apres frais -0.41
+  entree a 13h00                     |   134 trades, gagnants  29% | brut   -0.07 pts, net   -1.57 pts par trade | t avant frais -0.09, apres frais -0.93
+  entree a 13h30                     |   152 trades, gagnants  40% | brut   +8.91 pts, net   +7.41 pts par trade | t avant frais +1.73, apres frais +0.95
+  entree a 14h00                     |   134 trades, gagnants  34% | brut   +5.21 pts, net   +3.71 pts par trade | t avant frais +1.35, apres frais +0.47
+  entree a 14h30                     |   145 trades, gagnants  34% | brut   -1.19 pts, net   -2.69 pts par trade | t avant frais -0.54, apres frais -1.38
+  entree a 15h00                     |   137 trades, gagnants  40% | brut   +6.74 pts, net   +5.24 pts par trade | t avant frais +0.94, apres frais +0.22
+  entree a 15h30                     |   134 trades, gagnants  42% | brut   +5.97 pts, net   +4.47 pts par trade | t avant frais +1.36, apres frais +0.51
+  -- par sens
+  achats                             |  1380 trades, gagnants  38% | brut   +3.32 pts, net   +1.82 pts par trade | t avant frais +3.60, apres frais +1.05
+  ventes                             |  1409 trades, gagnants  31% | brut   +3.01 pts, net   +1.51 pts par trade | t avant frais +2.10, apres frais -0.04
+  -- par sortie
+  sortie sur stop suiveur            |  1874 trades, gagnants  13% | brut  -12.50 pts, net  -14.00 pts par trade | t avant frais -22.81, apres frais -25.39
+  sortie a la cloture                |   915 trades, gagnants  78% | brut  +35.25 pts, net  +33.75 pts par trade | t avant frais +19.21, apres frais +18.22
+  -- par duree du trade
+  30 min                             |  1134 trades, gagnants  11% | brut  -13.06 pts, net  -14.56 pts par trade | t avant frais -17.16, apres frais -19.12
+  1 h a 2 h                          |   834 trades, gagnants  26% | brut   -3.96 pts, net   -5.46 pts par trade | t avant frais -6.16, apres frais -8.47
+  plus de 2 h                        |   821 trades, gagnants  75% | brut  +32.81 pts, net  +31.31 pts par trade | t avant frais +17.53, apres frais +16.58
+  -- selon la volatilite (sigma a l'entree, tiers)
+  volatilite calme                   |   930 trades, gagnants  31% | brut   +1.47 pts, net   -0.03 pts par trade | t avant frais +2.37, apres frais -0.20
+  volatilite moyenne                 |   929 trades, gagnants  33% | brut   +2.52 pts, net   +1.02 pts par trade | t avant frais +1.48, apres frais -0.58
+  volatilite agitee                  |   930 trades, gagnants  39% | brut   +5.51 pts, net   +4.01 pts par trade | t avant frais +2.80, apres frais +1.42
+  -- selon le marche des options (veille)
+  VIX en contango (< 1)              |  2519 trades, gagnants  34% | brut   +2.75 pts, net   +1.25 pts par trade | t avant frais +3.27, apres frais -0.19
+  VIX en deport (>= 1)               |   270 trades, gagnants  40% | brut   +7.05 pts, net   +5.55 pts par trade | t avant frais +2.09, apres frais +1.47
+  GEX sous sa mediane (252 j)        |  1331 trades, gagnants  39% | brut   +4.67 pts, net   +3.17 pts par trade | t avant frais +3.52, apres frais +1.86
+  GEX au-dessus de sa mediane        |  1149 trades, gagnants  30% | brut   +2.10 pts, net   +0.60 pts par trade | t avant frais +1.46, apres frais -0.92
+  -- journees a allers-retours
+  jours a 1 trade                    |  1107 trades, gagnants  46% | brut  +12.60 pts, net  +11.10 pts par trade | t avant frais +9.18, apres frais +7.56
+  jours a 2 trades ou plus           |  1682 trades, gagnants  26% | brut   -3.04 pts, net   -4.54 pts par trade | t avant frais -5.57, apres frais -8.48
+  -- donnees : jours touches par une seance incomplete (ferie CME, fermeture anticipee)
+  veille = seance incomplete         |    66 trades, gagnants  33% | brut   +2.09 pts, net   +0.59 pts par trade | t avant frais +0.51, apres frais +0.14
+  sigma calcule avec une seance incomplete |  1010 trades, gagnants  33% | brut   +2.36 pts, net   +0.86 pts par trade | t avant frais +1.46, apres frais -0.39
+  jours propres                      |  1779 trades, gagnants  35% | brut   +3.62 pts, net   +2.12 pts par trade | t avant frais +3.76, apres frais +1.08
+  -- taille : fixe (1 contrat) contre taille inverse de la volatilite (regle de l'article, cible de volatilite)
+  taille fixe : t +0.62 | taille / volatilite 14 j : t -0.44
+
+=== ES (1 micro = 5 $ par point ; frais 0.90 pts par aller-retour) ===
+  Tout 2011-2022                     |  2890 trades, gagnants  31% | brut   +0.84 pts, net   -0.06 pts par trade | t avant frais +3.59, apres frais -1.73
+  2011-2016                          |  1488 trades, gagnants  27% | brut   +0.18 pts, net   -0.72 pts par trade | t avant frais +1.37, apres frais -4.13
+  2017-2022                          |  1402 trades, gagnants  35% | brut   +1.54 pts, net   +0.64 pts par trade | t avant frais +3.53, apres frais +1.19
+  -- frais en % du prix : 2011:7.1pb 2012:6.5pb 2013:5.5pb 2014:4.7pb 2015:4.4pb 2016:4.3pb 2017:3.7pb 2018:3.3pb 2019:3.1pb 2020:2.8pb 2021:2.1pb 2022:2.2pb
+  -- par rang du trade dans la journee
+  trade n°1                          |  1815 trades, gagnants  29% | brut   +0.86 pts, net   -0.04 pts par trade | t avant frais +2.49, apres frais -1.47
+  trade n°2                          |   741 trades, gagnants  32% | brut   +0.79 pts, net   -0.11 pts par trade | t avant frais +1.69, apres frais -0.86
+  trade n°3+                         |   334 trades, gagnants  37% | brut   +0.85 pts, net   -0.05 pts par trade | t avant frais +2.13, apres frais -0.17
+  -- par heure d'entree
+  entree a 10h00                     |   775 trades, gagnants  31% | brut   +1.20 pts, net   +0.30 pts par trade | t avant frais +2.46, apres frais -0.02
+  entree a 10h30                     |   319 trades, gagnants  27% | brut   +1.24 pts, net   +0.34 pts par trade | t avant frais +0.79, apres frais -0.78
+  entree a 11h00                     |   269 trades, gagnants  28% | brut   -0.44 pts, net   -1.34 pts par trade | t avant frais -0.26, apres frais -1.78
+  entree a 11h30                     |   203 trades, gagnants  28% | brut   +0.26 pts, net   -0.64 pts par trade | t avant frais +0.31, apres frais -1.11
+  entree a 12h00                     |   211 trades, gagnants  22% | brut   -0.14 pts, net   -1.04 pts par trade | t avant frais -0.27, apres frais -1.59
+  entree a 12h30                     |   170 trades, gagnants  29% | brut   -0.60 pts, net   -1.50 pts par trade | t avant frais -0.45, apres frais -1.72
+  entree a 13h00                     |   152 trades, gagnants  30% | brut   +0.21 pts, net   -0.69 pts par trade | t avant frais +0.42, apres frais -1.27
+  entree a 13h30                     |   170 trades, gagnants  29% | brut   +1.17 pts, net   +0.27 pts par trade | t avant frais +0.96, apres frais -0.23
+  entree a 14h00                     |   148 trades, gagnants  39% | brut   +1.78 pts, net   +0.88 pts par trade | t avant frais +1.96, apres frais +0.81
+  entree a 14h30                     |   155 trades, gagnants  34% | brut   +0.51 pts, net   -0.39 pts par trade | t avant frais +0.81, apres frais -0.34
+  entree a 15h00                     |   152 trades, gagnants  40% | brut   +2.44 pts, net   +1.54 pts par trade | t avant frais +2.06, apres frais +0.77
+  entree a 15h30                     |   166 trades, gagnants  46% | brut   +2.19 pts, net   +1.29 pts par trade | t avant frais +3.44, apres frais +1.83
+  -- par sens
+  achats                             |  1401 trades, gagnants  35% | brut   +1.11 pts, net   +0.21 pts par trade | t avant frais +3.84, apres frais -0.35
+  ventes                             |  1489 trades, gagnants  27% | brut   +0.59 pts, net   -0.31 pts par trade | t avant frais +1.53, apres frais -1.91
+  -- par sortie
+  sortie sur stop suiveur            |  1978 trades, gagnants  10% | brut   -3.55 pts, net   -4.45 pts par trade | t avant frais -22.10, apres frais -26.21
+  sortie a la cloture                |   912 trades, gagnants  77% | brut  +10.37 pts, net   +9.47 pts par trade | t avant frais +18.76, apres frais +17.26
+  -- par duree du trade
+  30 min                             |  1249 trades, gagnants  10% | brut   -3.28 pts, net   -4.18 pts par trade | t avant frais -16.70, apres frais -20.34
+  1 h a 2 h                          |   873 trades, gagnants  24% | brut   -1.02 pts, net   -1.92 pts par trade | t avant frais -4.25, apres frais -7.75
+  plus de 2 h                        |   768 trades, gagnants  73% | brut   +9.67 pts, net   +8.77 pts par trade | t avant frais +15.84, apres frais +14.45
+  -- selon la volatilite (sigma a l'entree, tiers)
+  volatilite calme                   |   964 trades, gagnants  29% | brut   +0.88 pts, net   -0.02 pts par trade | t avant frais +2.69, apres frais -1.02
+  volatilite moyenne                 |   963 trades, gagnants  30% | brut   +0.45 pts, net   -0.45 pts par trade | t avant frais +1.39, apres frais -2.04
+  volatilite agitee                  |   963 trades, gagnants  34% | brut   +1.19 pts, net   +0.29 pts par trade | t avant frais +2.21, apres frais -0.29
+  -- selon le marche des options (veille)
+  VIX en contango (< 1)              |  2607 trades, gagnants  30% | brut   +0.70 pts, net   -0.20 pts par trade | t avant frais +2.98, apres frais -2.84
+  VIX en deport (>= 1)               |   283 trades, gagnants  37% | brut   +2.20 pts, net   +1.30 pts par trade | t avant frais +2.00, apres frais +1.04
+  GEX sous sa mediane (252 j)        |  1381 trades, gagnants  34% | brut   +1.21 pts, net   +0.31 pts par trade | t avant frais +2.99, apres frais +0.08
+  GEX au-dessus de sa mediane        |  1187 trades, gagnants  29% | brut   +0.53 pts, net   -0.37 pts par trade | t avant frais +1.57, apres frais -2.76
+  -- journees a allers-retours
+  jours a 1 trade                    |  1074 trades, gagnants  41% | brut   +3.65 pts, net   +2.75 pts par trade | t avant frais +8.25, apres frais +5.74
+  jours a 2 trades ou plus           |  1816 trades, gagnants  25% | brut   -0.82 pts, net   -1.72 pts par trade | t avant frais -4.45, apres frais -9.38
+  -- donnees : jours touches par une seance incomplete (ferie CME, fermeture anticipee)
+  veille = seance incomplete         |    81 trades, gagnants  26% | brut   -0.79 pts, net   -1.69 pts par trade | t avant frais -0.46, apres frais -1.23
+  sigma calcule avec une seance incomplete |  1057 trades, gagnants  31% | brut   +0.62 pts, net   -0.28 pts par trade | t avant frais +1.30, apres frais -1.73
+  jours propres                      |  1833 trades, gagnants  31% | brut   +0.97 pts, net   +0.07 pts par trade | t avant frais +3.54, apres frais -0.84
+  -- taille : fixe (1 contrat) contre taille inverse de la volatilite (regle de l'article, cible de volatilite)
+  taille fixe : t -1.72 | taille / volatilite 14 j : t -3.03
+
