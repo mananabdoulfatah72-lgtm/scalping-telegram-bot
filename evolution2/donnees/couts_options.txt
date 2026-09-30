@@ -1,0 +1,17 @@
+Fin des donnees GLBX.MDP3 : 2026-09-30
+ES.OPT statistics depuis 2011-01-01 : 42.41 $
+ES.OPT statistics depuis 2017-01-01 : 32.81 $
+ES.OPT statistics depuis 2023-01-01 : 13.39 $
+ES.OPT definition depuis 2011-01-01 : 24.49 $
+ES.OPT definition depuis 2017-01-01 : 14.79 $
+ES.OPT definition depuis 2023-01-01 : 5.97 $
+NQ.OPT statistics depuis 2011-01-01 : 40.78 $
+NQ.OPT statistics depuis 2017-01-01 : 30.55 $
+NQ.OPT statistics depuis 2023-01-01 : 8.51 $
+NQ.OPT definition depuis 2011-01-01 : 11.44 $
+NQ.OPT definition depuis 2017-01-01 : 6.54 $
+NQ.OPT definition depuis 2023-01-01 : 2.18 $
+Echantillon ES.OPT definition 2026-09-25 : 0.0060 $
+  7283 lignes, colonnes : ts_event, rtype, publisher_id, instrument_id, raw_symbol, security_update_action, instrument_class, min_price_increment, display_factor, expiration, activation, high_limit_price, low_limit_price, max_price_variation, unit_of_measure_qty, min_price_increment_amount, price_ratio, inst_attrib_value, underlying_id, raw_instrument_id, market_depth_implied, market_depth, market_segment_id, max_trade_vol, min_lot_size, min_lot_size_block, min_lot_size_round_lot, min_trade_vol, contract_multiplier, decay_quantity, original_contract_size, appl_id, maturity_year, decay_start_date, channel_id, currency, settl_currency, secsubtype, group, exchange, asset, cfi, security_type, unit_of_measure, underlying, strike_price_currency, strike_price, match_algorithm, main_fraction, price_display_format, sub_fraction, underlying_product, maturity_month, maturity_day, maturity_week, user_defined_instrument, contract_multiplier_unit, flow_schedule_type, tick_rule, leg_count, leg_index, leg_instrument_id, leg_raw_symbol, leg_instrument_class, leg_side, leg_price, leg_delta, leg_ratio_price_numerator, leg_ratio_price_denominator, leg_ratio_qty_numerator, leg_ratio_qty_denominator, leg_underlying_id, symbol
+Echantillon ES.OPT statistics 2026-09-25 : 0.0074 $
+  99310 lignes, colonnes : ts_event, rtype, publisher_id, instrument_id, ts_ref, price, quantity, sequence, ts_in_delta, stat_type, channel_id, update_action, stat_flags, symbol

@@ -1,0 +1,67 @@
+=== https://equitylab.fr/ : 200
+Titre : La mondialisation et l’équité : La bonne formule !
+Texte : La mondialisation et l’équité : La bonne formule ! Politique / Social Société / Tendances Entreprise / Monde du travail Économie / Finances Écologie / Humanitaire Culture / Arts Blog Actualités et tendances tous égaux, tous libres ! Entreprise, économie, politique, social, culture…notre monde est en perpétuel chamboulement, alors comment trouver sa place dans une société qui change tous les jours? Equitylab c’est le site des actu et des nouvelles tendances de notre vie quotidienne. Equitylab : un monde en mouvement ! Droit des femmes Des avancées et des axes d’amélioration : action contre les violences et contre le harcèlement sexuel, égalité professionnelle et plafond de verre, meilleure parité dans tous les domaines, accès à la retraite plus juste, vies professionnelles et personnelles plus équilibrées, charge mentale allégée, accès à la contraception et à l’IVG, liberté sexuelle, lutte contre les stéréotypes sexistes, encouragement de l’entreprenariat féminin. Entreprenariat Devenir entrepreneur séduit de plus en plus de français et pour cause, vous êtes très nombreux à avoir répondu aux sirènes des différents statuts crées à cet effet : auto-entrepreneurs entreprises en croissance , micro-entreprise, freelance etc.…comment expliquer cet engouement ? Une voie de sortie face à un chômage grandissant d’une part mais aussi des dispositifs et des aides qui facilitent les démarches. Comment innover, créer et produire ? Suivez le guide ! Bien-être au travail C’est la tendance forte de ces dernières années : améliorer la qualité de vie au travail. Dans quel but ? Les entreprises l’ont bien compris : cela aide à l’épanouissement des collaborateurs, ça les fidélise et améliore leur rendement. Quelques exemples d’actions concrètes dans ce sens : télétravail, implication, team-building, récompense, amélioration du cadre de travail, coaching d’entreprise, optimisation de l’expérience collaborateur… Nouveaux investissements Dans un monde plein de bouleversement, nous nous sommes mis à vouloir nous protéger financièrement des aléas de la vie : l’accès à la propriété mais aussi les investissements et les épargnes sont devenus nos nouvelles priorités. Pour nous mettre à l’abri, préparer notre avenir et protéger nos proches, comprendre l’impact de la mondialisation sur les livrets d’épargne réglementés devient essentiel. Décryptons ensemble ces nouvelles tendances économiques : entre crowfunding, investissement immobilier ou encore dans l’or ou le vin, bitcoin, mini trading, assurance vie, blockchain… Street Art Murs, mobilier urbain, trottoirs, immeubles, parcs ou monuments… Le Street Art, d’abord expression artistique des quartiers populaires, est devenu l’un des symboles de notre liberté en termes de création artistique. Plus qu’un courant artistique c’est un véritable phénomène de société. Entre art, vandalisme et illégalité, le Street Art revendique, provoque, dénonce dans un but de diffusion la plus large possible. Parce que notre monde est également une vaste toile vierge et que l’art doit être accessible à tous. Nos différences : notre richesse ! Que nos différences individuelles fassent notre force collective ! Focus sur les différents phénomènes qui ont bousculé la société ces dernières années entre revendications sexuelles (féminisme, #metoo, LGBT, GayPride, Queer, Nogender, Mariage pour tous…), religieuses (laïcité, port du voile, islamisme, mouvements identitaires, extrémismes…) et ethniques (communauté noire, régionalisme, immigrations…). Orientations sexuelles Croyances et religions Origines et racines Les enjeux de l’écologie La prise de conscience de l’urgence écologique a bousculé notre quotidien : dans notre mode de pensée, de vivre et de consommer. Le développement durable, le recyclage, le dérèglement climatique, le bio, l’écoresponsabilité sont autant de termes rentrés dans nos vies et dans notre façon d’envisager le monde et l’avenir. Aménagement du territoire, alimentation, mobilités, éducation, santé : tous les doma
+Liens : /plan-du-site/ /wp-content/uploads/2024/02/equitylab-vaf-icon.webp https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap https://www.actua-net.com/ https://www.equitylab.fr https://www.equitylab.fr/ https://www.equitylab.fr/blog/ https://www.equitylab.fr/comment-pictalk-revolutionne-la-communication-des-personnes-en-situation-de-handicap-mental/ https://www.equitylab.fr/culture-arts/ https://www.equitylab.fr/ecologie-humanitaire/ https://www.equitylab.fr/economie-finances/ https://www.equitylab.fr/entreprise-monde-du-travail/ https://www.equitylab.fr/les-morceaux-de-viande-oublies-a-redecouvrir-chez-votre-boucher/ https://www.equitylab.fr/politique-social/ https://www.equitylab.fr/quel-est-l-impact-de-la-mondialisation-et-de-l-etat-de-l-economie-europeenne-sur-le-rendement-d-un-lep/ https://www.equitylab.fr/societe-tendances/ https://www.equitylab.fr/wp-json/ https://www.equitylab.fr/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.equitylab.fr%2F https://www.equitylab.fr/wp-json/wp/v2/pages/2 https://www.equitylab.fr/xmlrpc.php?rsd https://www.reponsesolidaire.fr/ https://www.toulousethic.fr/
+
+=== https://equitylab.fr/robots.txt : 200
+User-agent: *
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+Sitemap: https://www.equitylab.fr/wp-sitemap.xml
+
+
+=== https://www.equitylab.fr/ : 200
+Titre : La mondialisation et l’équité : La bonne formule !
+Texte : La mondialisation et l’équité : La bonne formule ! Politique / Social Société / Tendances Entreprise / Monde du travail Économie / Finances Écologie / Humanitaire Culture / Arts Blog Actualités et tendances tous égaux, tous libres ! Entreprise, économie, politique, social, culture…notre monde est en perpétuel chamboulement, alors comment trouver sa place dans une société qui change tous les jours? Equitylab c’est le site des actu et des nouvelles tendances de notre vie quotidienne. Equitylab : un monde en mouvement ! Droit des femmes Des avancées et des axes d’amélioration : action contre les violences et contre le harcèlement sexuel, égalité professionnelle et plafond de verre, meilleure parité dans tous les domaines, accès à la retraite plus juste, vies professionnelles et personnelles plus équilibrées, charge mentale allégée, accès à la contraception et à l’IVG, liberté sexuelle, lutte contre les stéréotypes sexistes, encouragement de l’entreprenariat féminin. Entreprenariat Devenir entrepreneur séduit de plus en plus de français et pour cause, vous êtes très nombreux à avoir répondu aux sirènes des différents statuts crées à cet effet : auto-entrepreneurs entreprises en croissance , micro-entreprise, freelance etc.…comment expliquer cet engouement ? Une voie de sortie face à un chômage grandissant d’une part mais aussi des dispositifs et des aides qui facilitent les démarches. Comment innover, créer et produire ? Suivez le guide ! Bien-être au travail C’est la tendance forte de ces dernières années : améliorer la qualité de vie au travail. Dans quel but ? Les entreprises l’ont bien compris : cela aide à l’épanouissement des collaborateurs, ça les fidélise et améliore leur rendement. Quelques exemples d’actions concrètes dans ce sens : télétravail, implication, team-building, récompense, amélioration du cadre de travail, coaching d’entreprise, optimisation de l’expérience collaborateur… Nouveaux investissements Dans un monde plein de bouleversement, nous nous sommes mis à vouloir nous protéger financièrement des aléas de la vie : l’accès à la propriété mais aussi les investissements et les épargnes sont devenus nos nouvelles priorités. Pour nous mettre à l’abri, préparer notre avenir et protéger nos proches, comprendre l’impact de la mondialisation sur les livrets d’épargne réglementés devient essentiel. Décryptons ensemble ces nouvelles tendances économiques : entre crowfunding, investissement immobilier ou encore dans l’or ou le vin, bitcoin, mini trading, assurance vie, blockchain… Street Art Murs, mobilier urbain, trottoirs, immeubles, parcs ou monuments… Le Street Art, d’abord expression artistique des quartiers populaires, est devenu l’un des symboles de notre liberté en termes de création artistique. Plus qu’un courant artistique c’est un véritable phénomène de société. Entre art, vandalisme et illégalité, le Street Art revendique, provoque, dénonce dans un but de diffusion la plus large possible. Parce que notre monde est également une vaste toile vierge et que l’art doit être accessible à tous. Nos différences : notre richesse ! Que nos différences individuelles fassent notre force collective ! Focus sur les différents phénomènes qui ont bousculé la société ces dernières années entre revendications sexuelles (féminisme, #metoo, LGBT, GayPride, Queer, Nogender, Mariage pour tous…), religieuses (laïcité, port du voile, islamisme, mouvements identitaires, extrémismes…) et ethniques (communauté noire, régionalisme, immigrations…). Orientations sexuelles Croyances et religions Origines et racines Les enjeux de l’écologie La prise de conscience de l’urgence écologique a bousculé notre quotidien : dans notre mode de pensée, de vivre et de consommer. Le développement durable, le recyclage, le dérèglement climatique, le bio, l’écoresponsabilité sont autant de termes rentrés dans nos vies et dans notre façon d’envisager le monde et l’avenir. Aménagement du territoire, alimentation, mobilités, éducation, santé : tous les doma
+Liens : /plan-du-site/ /wp-content/uploads/2024/02/equitylab-vaf-icon.webp https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap https://www.actua-net.com/ https://www.equitylab.fr https://www.equitylab.fr/ https://www.equitylab.fr/blog/ https://www.equitylab.fr/comment-pictalk-revolutionne-la-communication-des-personnes-en-situation-de-handicap-mental/ https://www.equitylab.fr/culture-arts/ https://www.equitylab.fr/ecologie-humanitaire/ https://www.equitylab.fr/economie-finances/ https://www.equitylab.fr/entreprise-monde-du-travail/ https://www.equitylab.fr/les-morceaux-de-viande-oublies-a-redecouvrir-chez-votre-boucher/ https://www.equitylab.fr/politique-social/ https://www.equitylab.fr/quel-est-l-impact-de-la-mondialisation-et-de-l-etat-de-l-economie-europeenne-sur-le-rendement-d-un-lep/ https://www.equitylab.fr/societe-tendances/ https://www.equitylab.fr/wp-json/ https://www.equitylab.fr/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.equitylab.fr%2F https://www.equitylab.fr/wp-json/wp/v2/pages/2 https://www.equitylab.fr/xmlrpc.php?rsd https://www.reponsesolidaire.fr/ https://www.toulousethic.fr/
+
+=== https://www.equitylab.fr/robots.txt : 200
+User-agent: *
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+Sitemap: https://www.equitylab.fr/wp-sitemap.xml
+
+
+=== https://equitylab.com/ : ECHEC <urlopen error timed out>
+
+=== https://equitylab.com/robots.txt : ECHEC <urlopen error timed out>
+
+=== https://www.equitylab.com/ : 200
+Titre : 
+Texte : has been recently registered with namecheap.com Want a domain name like this? Discover domains on auction now See all auctions Download the Namecheap Auctions app Take auctions with you wherever you go
+Liens : /assets/index-B_f2Ggms.css https://apps.apple.com/us/app/namecheap-auctions/id6743634772?itscg=30200&itsct=apps_box_badge&mttnsubad=6743634772 https://play.google.com/store/apps/details?id=marketplace.com.namecheap https://www.namecheap.com/?utm_source=parkingpage&utm_medium=referral&utm_campaign=nc_market https://www.namecheap.com/market/?utm_source=parkingpage&utm_medium=referral&utm_campaign=nc_market
+
+=== https://www.equitylab.com/robots.txt : ECHEC HTTP Error 404: Not Found
+
+=== https://equitylab.ai/ : ECHEC <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'equitylab.ai'. (_ssl.c:1016)>
+
+=== https://equitylab.ai/robots.txt : ECHEC <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'equitylab.ai'. (_ssl.c:1016)>
+
+=== https://equitylab.io/ : ECHEC <urlopen error [Errno -5] No address associated with hostname>
+
+=== https://equitylab.io/robots.txt : ECHEC <urlopen error [Errno -5] No address associated with hostname>
+
+=== https://equitylab.app/ : ECHEC <urlopen error [Errno -2] Name or service not known>
+
+=== https://equitylab.app/robots.txt : ECHEC <urlopen error [Errno -2] Name or service not known>
+
+=== https://equity-lab.com/ : 200
+Titre : 
+Texte : 
+Liens : 
+
+=== https://equity-lab.com/robots.txt : 200
+User-agent: *
+Allow: /
+LLM-Policy: /llms.txt
+Sitemap: /sitemap.xml
+
+=== https://equity-lab.fr/ : ECHEC <urlopen error [Errno -2] Name or service not known>
+
+=== https://equity-lab.fr/robots.txt : ECHEC <urlopen error [Errno -2] Name or service not known>
+
+=== https://app.equitylab.fr/ : ECHEC <urlopen error [Errno -2] Name or service not known>
+
+=== https://app.equitylab.fr/robots.txt : ECHEC <urlopen error [Errno -2] Name or service not known>
