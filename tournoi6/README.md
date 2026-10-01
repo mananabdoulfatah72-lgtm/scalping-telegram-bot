@@ -75,6 +75,18 @@ Pour le challenge, chaque source reçoit un budget de f × marge / √(nombre de
 
 Tous les essais sont inscrits dans `fonds/essais.csv`.
 
+### Ajout (1er octobre 2026, avant de recevoir les données du tournoi 5)
+
+Le tournoi 5 avait fixé ses règles le 30 septembre, mais son téléchargement avait été annulé :
+- familles A1 et A2 : fixing des devises ;
+- famille D1 : bitcoin CME ;
+- familles E1 et E2 : adjudications du Trésor sur le ZN.
+
+Le téléchargement est relancé, avec le même plafond de 25 $. Ces 5 essais sont jugés par les règles
+du tournoi 5 : t ≥ 2 sur la période d'exploration, plus son contrôle propre. Une stratégie qui passe
+entre directement dans le portefeuille de l'étape 2 ci-dessus, avec la zone de bruit, et se juge de la
+même façon sur 2023-2026. Rien d'autre ne change.
+
 ## Résultats (1er octobre 2026) : aucune source retenue, arrêt à l'étape 1
 
 `tournoi6.py` → `tournoi6.txt`, `etape1.csv`. Contrôle : sur NQ, les 7 familles généralisées
