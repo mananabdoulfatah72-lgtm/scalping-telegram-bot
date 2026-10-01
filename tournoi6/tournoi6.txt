@@ -1,0 +1,57 @@
+Controle : sur NQ, les 7 familles generalisees redonnent exactement les tournois 1 et 4 : OK
+
+Etape 1 : 2016-2022 (Russell : juillet 2017 - 2022), gains nets, 1 micro
+
+  RTY
+    Range d'ouverture 30 min             t -1.06 (2016-19 +0.40, 2020-22 -1.40) | 1323 jours de trade,   -1.28 $ par jour de trade | corr. zone +0.23
+    Cassure de Williams                  t -1.22 (2016-19 +1.07, 2020-22 -1.99) | 1045 jours de trade,   -1.61 $ par jour de trade | corr. zone +0.31
+    Etirement de Crabel                  t -1.43 (2016-19 +0.31, 2020-22 -1.83) | 1322 jours de trade,   -2.84 $ par jour de trade | corr. zone +0.20
+    Cassure de la veille                 t -2.20 (2016-19 -0.11, 2020-22 -2.42) | 1206 jours de trade,   -4.96 $ par jour de trade | corr. zone +0.13
+    Momentum de la 1re heure             t -0.93 (2016-19 -1.23, 2020-22 -0.34) | 1333 jours de trade,   -1.98 $ par jour de trade | corr. zone +0.24
+    Retournement apres 30 min extremes   t -2.94 (2016-19 -0.69, 2020-22 -3.10) |  308 jours de trade,   -5.98 $ par jour de trade | corr. zone -0.01
+    Rebond apres une forte baisse        t +1.23 (2016-19 -0.18, 2020-22 +1.41) |  126 jours de trade,  +12.30 $ par jour de trade | corr. zone +0.13
+    Achat simple (controle)              t -1.88 (2016-19 -1.93, 2020-22 -1.06) | 1337 jours de trade,   -6.44 $ par jour de trade | corr. zone -0.05
+
+  YM
+    Range d'ouverture 30 min             t -0.98 (2016-19 -1.05, 2020-22 -0.49) | 1698 jours de trade,   -1.35 $ par jour de trade | corr. zone +0.37
+    Cassure de Williams                  t -0.75 (2016-19 -0.97, 2020-22 -0.22) | 1296 jours de trade,   -1.04 $ par jour de trade | corr. zone +0.34
+    Etirement de Crabel                  t -1.14 (2016-19 -1.71, 2020-22 -0.20) | 1691 jours de trade,   -1.68 $ par jour de trade | corr. zone +0.26
+    Cassure de la veille                 t -2.16 (2016-19 -1.06, 2020-22 -1.91) | 1531 jours de trade,   -4.98 $ par jour de trade | corr. zone +0.20
+    Momentum de la 1re heure             t -2.04 (2016-19 -2.99, 2020-22 -0.28) | 1706 jours de trade,   -5.04 $ par jour de trade | corr. zone +0.20
+    Retournement apres 30 min extremes   t -2.24 (2016-19 -0.84, 2020-22 -2.18) |  397 jours de trade,   -4.77 $ par jour de trade | corr. zone +0.01
+    Rebond apres une forte baisse        t +1.80 (2016-19 +0.25, 2020-22 +2.05) |  178 jours de trade,  +20.01 $ par jour de trade | corr. zone +0.18
+    Achat simple (controle)              t -0.56 (2016-19 -0.49, 2020-22 -0.34) | 1711 jours de trade,   -2.23 $ par jour de trade | corr. zone -0.03
+
+  GC
+    Range d'ouverture 30 min             t -1.95 (2016-19 -1.98, 2020-22 -0.90) | 1685 jours de trade,   -3.03 $ par jour de trade | corr. zone +0.03
+    Cassure de Williams                  t -1.71 (2016-19 -2.84, 2020-22 +0.12) | 1243 jours de trade,   -2.74 $ par jour de trade | corr. zone +0.06
+    Etirement de Crabel                  t -0.92 (2016-19 -2.15, 2020-22 +0.57) | 1668 jours de trade,   -1.16 $ par jour de trade | corr. zone +0.06
+    Cassure de la veille                 t -1.47 (2016-19 -2.06, 2020-22 -0.19) | 1466 jours de trade,   -2.98 $ par jour de trade | corr. zone +0.03
+    Momentum de la 1re heure             t -2.86 (2016-19 -2.88, 2020-22 -1.39) | 1674 jours de trade,   -5.42 $ par jour de trade | corr. zone +0.07
+    Retournement apres 30 min extremes   t -2.19 (2016-19 -1.68, 2020-22 -1.41) |  382 jours de trade,   -5.19 $ par jour de trade | corr. zone -0.00
+    Rebond apres une forte baisse        t +0.34 (2016-19 +0.53, 2020-22 +0.14) |  137 jours de trade,   +2.99 $ par jour de trade | corr. zone +0.02
+    Achat simple (controle)              t -2.25 (2016-19 -2.54, 2020-22 -0.85) | 1699 jours de trade,   -5.26 $ par jour de trade | corr. zone -0.05
+
+  CL
+    Range d'ouverture 30 min             t -2.09 (2016-19 -1.12, 2020-22 -1.78) | 1674 jours de trade,   -1.00 $ par jour de trade | corr. zone +0.02
+    Cassure de Williams                  t -1.47 (2016-19 -1.36, 2020-22 -0.86) | 1282 jours de trade,   -1.16 $ par jour de trade | corr. zone +0.01
+    Etirement de Crabel                  t -1.80 (2016-19 -1.38, 2020-22 -1.21) | 1658 jours de trade,   -2.18 $ par jour de trade | corr. zone +0.07
+    Cassure de la veille                 t -0.96 (2016-19 -1.35, 2020-22 -0.23) | 1490 jours de trade,   -2.23 $ par jour de trade | corr. zone -0.03
+    Momentum de la 1re heure             t -1.65 (2016-19 -0.63, 2020-22 -1.58) | 1660 jours de trade,   -2.24 $ par jour de trade | corr. zone +0.07
+    Retournement apres 30 min extremes   t -2.35 (2016-19 -2.79, 2020-22 -1.13) |  397 jours de trade,   -4.72 $ par jour de trade | corr. zone +0.03
+    Rebond apres une forte baisse        t -1.40 (2016-19 -1.80, 2020-22 -0.86) |  152 jours de trade,  -20.64 $ par jour de trade | corr. zone +0.09
+    Achat simple (controle)              t -1.70 (2016-19 -2.00, 2020-22 -0.62) | 1677 jours de trade,   -6.50 $ par jour de trade | corr. zone +0.00
+
+  6E
+    Range d'ouverture 30 min             t -3.08 (2016-19 -1.41, 2020-22 -3.01) | 1703 jours de trade,   -2.63 $ par jour de trade | corr. zone +0.04
+    Cassure de Williams                  t -5.61 (2016-19 -5.31, 2020-22 -2.70) | 1269 jours de trade,   -5.35 $ par jour de trade | corr. zone -0.00
+    Etirement de Crabel                  t -5.40 (2016-19 -4.92, 2020-22 -2.76) | 1675 jours de trade,   -4.93 $ par jour de trade | corr. zone +0.03
+    Cassure de la veille                 t -5.09 (2016-19 -4.46, 2020-22 -2.72) | 1547 jours de trade,   -5.04 $ par jour de trade | corr. zone -0.04
+    Momentum de la 1re heure             t -5.19 (2016-19 -3.70, 2020-22 -3.64) | 1695 jours de trade,   -5.16 $ par jour de trade | corr. zone -0.00
+    Retournement apres 30 min extremes   t -0.40 (2016-19 +0.26, 2020-22 -0.87) |  348 jours de trade,   -0.91 $ par jour de trade | corr. zone +0.00
+    Rebond apres une forte baisse        t -2.03 (2016-19 +0.74, 2020-22 -2.90) |  153 jours de trade,   -6.84 $ par jour de trade | corr. zone +0.00
+    Achat simple (controle)              t -2.97 (2016-19 -1.78, 2020-22 -2.43) | 1712 jours de trade,   -3.65 $ par jour de trade | corr. zone -0.03
+
+35 essais. t >= 2 : 0 ; t >= 2,5 : 0 ; t <= -2 : 15. Attendu par hasard pour t >= 2 : environ 0.8.
+Sources retenues : aucune
+Aucune source retenue : arret (README). 2023-2026 n'est pas regarde pour ces sources.

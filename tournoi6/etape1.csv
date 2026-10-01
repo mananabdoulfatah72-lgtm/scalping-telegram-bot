@@ -1,0 +1,41 @@
+marche,famille,t,t_2016_2019,t_2020_2022,jours_trade,dollars_par_jour_trade,corr_zone,retenue
+RTY,Range d'ouverture 30 min,-1.056,0.3994,-1.403,1323,-1.277,0.2306,False
+RTY,Cassure de Williams,-1.219,1.073,-1.994,1045,-1.612,0.3089,False
+RTY,Etirement de Crabel,-1.429,0.313,-1.827,1322,-2.843,0.2007,False
+RTY,Cassure de la veille,-2.203,-0.1119,-2.424,1206,-4.957,0.1262,False
+RTY,Momentum de la 1re heure,-0.9254,-1.232,-0.3407,1333,-1.983,0.2369,False
+RTY,Retournement apres 30 min extremes,-2.942,-0.6855,-3.104,308,-5.976,-0.00954,False
+RTY,Rebond apres une forte baisse,1.225,-0.1838,1.415,126,12.3,0.1269,False
+RTY,Achat simple (controle),-1.881,-1.933,-1.06,1337,-6.439,-0.05394,False
+YM,Range d'ouverture 30 min,-0.9775,-1.05,-0.4856,1698,-1.346,0.3724,False
+YM,Cassure de Williams,-0.7536,-0.9737,-0.2212,1296,-1.044,0.3443,False
+YM,Etirement de Crabel,-1.144,-1.708,-0.2014,1691,-1.676,0.257,False
+YM,Cassure de la veille,-2.161,-1.059,-1.906,1531,-4.976,0.2048,False
+YM,Momentum de la 1re heure,-2.043,-2.986,-0.2776,1706,-5.037,0.2025,False
+YM,Retournement apres 30 min extremes,-2.242,-0.8389,-2.178,397,-4.775,0.005306,False
+YM,Rebond apres une forte baisse,1.797,0.2471,2.048,178,20.01,0.18,False
+YM,Achat simple (controle),-0.5604,-0.4907,-0.3366,1711,-2.231,-0.03085,False
+GC,Range d'ouverture 30 min,-1.947,-1.985,-0.9042,1685,-3.034,0.03404,False
+GC,Cassure de Williams,-1.715,-2.838,0.1152,1243,-2.738,0.05569,False
+GC,Etirement de Crabel,-0.9231,-2.148,0.5704,1668,-1.162,0.06088,False
+GC,Cassure de la veille,-1.466,-2.055,-0.1906,1466,-2.983,0.032,False
+GC,Momentum de la 1re heure,-2.864,-2.88,-1.391,1674,-5.425,0.06541,False
+GC,Retournement apres 30 min extremes,-2.195,-1.683,-1.41,382,-5.194,-0.003748,False
+GC,Rebond apres une forte baisse,0.3393,0.5265,0.1425,137,2.985,0.01702,False
+GC,Achat simple (controle),-2.254,-2.537,-0.8508,1699,-5.257,-0.04811,False
+CL,Range d'ouverture 30 min,-2.089,-1.115,-1.781,1674,-1.004,0.02335,False
+CL,Cassure de Williams,-1.475,-1.364,-0.859,1282,-1.165,0.008713,False
+CL,Etirement de Crabel,-1.796,-1.377,-1.215,1658,-2.177,0.07253,False
+CL,Cassure de la veille,-0.9588,-1.348,-0.2343,1490,-2.226,-0.02562,False
+CL,Momentum de la 1re heure,-1.651,-0.6256,-1.581,1660,-2.239,0.06527,False
+CL,Retournement apres 30 min extremes,-2.345,-2.788,-1.126,397,-4.723,0.02947,False
+CL,Rebond apres une forte baisse,-1.403,-1.802,-0.8623,152,-20.64,0.09189,False
+CL,Achat simple (controle),-1.699,-1.999,-0.6231,1677,-6.499,0.004593,False
+6E,Range d'ouverture 30 min,-3.083,-1.406,-3.008,1703,-2.626,0.04152,False
+6E,Cassure de Williams,-5.614,-5.308,-2.702,1269,-5.349,-0.003411,False
+6E,Etirement de Crabel,-5.398,-4.918,-2.757,1675,-4.931,0.03449,False
+6E,Cassure de la veille,-5.093,-4.463,-2.724,1547,-5.036,-0.04459,False
+6E,Momentum de la 1re heure,-5.191,-3.703,-3.639,1695,-5.156,-0.003225,False
+6E,Retournement apres 30 min extremes,-0.3987,0.2619,-0.8742,348,-0.9098,0.001537,False
+6E,Rebond apres une forte baisse,-2.028,0.7399,-2.898,153,-6.845,0.002852,False
+6E,Achat simple (controle),-2.968,-1.784,-2.426,1712,-3.653,-0.02729,False
