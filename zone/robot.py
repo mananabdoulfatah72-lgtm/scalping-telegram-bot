@@ -3,8 +3,8 @@
 puis, s'il est reussi, un compte finance virtuel (etude : challenge/ sur la branche de recherche).
 
 Regles, identiques au backtest corrige V1 (zone_failles/journal.py sur la branche de recherche ; taille comme
-challenge/bot_challenge.py, f = 0,15), plus depuis le 1er octobre 2026 un second moteur en test (rebond apres forte
-baisse, fonction rebond) :
+challenge/bot_challenge.py, f = 0,15). Depuis le 1er octobre 2026, un second moteur est suivi A PART, hors du compte de
+challenge (rebond apres forte baisse, fonction rebond : gain pour 1 MNQ dans le journal, colonne gain_rebond_1_mnq) :
 - seance de 9 h 30 a 16 h (New York) ; toutes les 30 minutes, de 10 h a 15 h 30, on compare le prix a la
   "zone de bruit" : ouverture (ou cloture de la veille) +/- mouvement moyen des 14 dernieres seances a
   cette minute (seances completes seulement, veille = derniere seance complete du meme contrat). Au-dessus : achat ; en dessous : vente ; sortie si le prix repasse la limite ou le prix
@@ -42,7 +42,7 @@ F, MAX_MNQ = 0.15, 50
 CAPITAL, OBJECTIF, PERTE = 50_000.0, 4_000.0, 2_500.0
 BLOCAGE, SEUIL_RETRAIT, PART, PERIODE = 50_100.0, 52_600.0, 0.80, 21
 PLAFOND_DATABENTO = 2.0                 # $ au maximum par telechargement
-HISTORIQUE = ("backtest 2011-2026 de la version d'origine (avant la correction V1, non recalcule) : une tentative de challenge reussit 39 % du temps et saute 4 % "
+HISTORIQUE = ("backtest 2011-2026 de la zone seule, version d'origine (avant la correction V1 et sans le rebond, non recalcule) : une tentative de challenge reussit 39 % du temps et saute 4 % "
               "(les autres n'ont pas fini) ; environ 1 chance sur 3 de valider en 12 mois ; une fois finance, "
               "environ 680 $ recus par an en moyenne, rien dans 86 % des cas")
 
@@ -113,18 +113,29 @@ def tableaux(d):
     return pd.DatetimeIndex(jours), tab["o"], tab["h"], tab["l"], C, presentes, V, echeance
 
 
+def seances_completes(P):
+    """Seances completes : premiere et derniere minute presentes et au moins 370 minutes sur 390."""
+    return P[:, 0] & P[:, N - 1] & (P.sum(axis=1) >= 370)
+
+
+def precedente(complete, segment=None):
+    """Indice de la derniere seance complete avant chaque seance (-1 : aucune) ; avec segment, du meme contrat."""
+    idx = np.where(complete, np.arange(len(complete)), -1)
+    prec = np.r_[-1, np.maximum.accumulate(idx)[:-1]]
+    if segment is not None:
+        prec = np.where((prec >= 0) & (segment[np.maximum(prec, 0)] == segment), prec, -1)
+    return prec
+
+
 def zone_de_bruit(jours, O, H, L, C, P, V, echeance):
     """Zone de bruit corrigee (V1, zone_failles/journal.py zone(propre=True) sur la branche de recherche), qui note aussi
     les trades du jour. intraday/strategies.py zone_de_bruit et challenge/ restent la version d'origine (V0) : ne pas
     resynchroniser cette fonction sur eux."""
-    ok = P[:, 0] & P[:, N - 1] & (P.sum(axis=1) >= 370)
+    ok = seances_completes(P)
     ouverture = O[:, 0]
     # correction V1 (zone_failles/README.md sur la branche de recherche) : les seances incompletes (feries CME,
     # demi-seances) ne servent ni a la moyenne sur 14 jours ni de veille ; veille = derniere seance complete, meme contrat
-    contrat = np.cumsum(echeance)
-    idx = np.where(ok, np.arange(len(jours)), -1)
-    prec = np.r_[-1, np.maximum.accumulate(idx)[:-1]]
-    prec = np.where((prec >= 0) & (contrat[np.maximum(prec, 0)] == contrat), prec, -1)
+    prec = precedente(ok, np.cumsum(echeance))
     veille = np.where(prec >= 0, C[np.maximum(prec, 0), N - 1], np.nan)
     mouvement = np.abs(C / ouverture[:, None] - 1)
     sigma = np.full_like(mouvement, np.nan)
@@ -187,50 +198,55 @@ def jour_ferme(d):
     return d.dayofweek >= 5 or any(len(h.dates(d, d)) for h in fetes)
 
 
-def rebond(jours, O, H, L, C, P, ech):
+def rebond(jours, O, L, C, P):
     """Second moteur, ajoute le 1er octobre 2026 a la demande de l'utilisateur (zone_sources/ sur la branche de
-    recherche, piste S4) : achat de 1 MNQ de 9 h 30 a 16 h le lendemain d'une seance dont le mouvement ouverture ->
-    cloture est dans les 10 % les plus bas des 252 valeurs precedentes. Seance precedente = derniere seance complete
-    du meme contrat. Non valide statistiquement (t de l'apport 1,44 sur 2023-2026) : le suivi virtuel doit le juger.
-    Renvoie (gains par seance, signal pour la prochaine seance, mouvement de la derniere seance, seuil)."""
-    complete = P[:, 0] & P[:, N - 1] & (P.sum(axis=1) >= 370)
-    segment = np.cumsum(ech)
-    idx = np.where(complete, np.arange(len(jours)), -1)
-    prec = np.r_[-1, np.maximum.accumulate(idx)[:-1]]
-    prec = np.where((prec >= 0) & (segment[np.maximum(prec, 0)] == segment), prec, -1)
+    recherche, piste S4), non valide statistiquement : le suivi virtuel doit le juger. Achat de 1 MNQ a l'ouverture de
+    9 h 30, sortie a la cloture (15 h 59), le lendemain d'une seance dont le mouvement ouverture -> cloture est dans les
+    10 % les plus bas. Seance de reference = derniere seance complete, quel que soit le contrat (le mouvement se mesure
+    dans la seance). Seuil = 10e centile des 252 valeurs precedentes de cette reference, une valeur par seance : apres une
+    seance incomplete, la meme reference compte deux fois, comme dans la recherche.
+    Regle executable : contrairement a la piste S4, les jours de changement de contrat ne sont pas ecartes (on ne peut pas
+    les connaitre la veille) ; seuls les jours de fete et les demi-seances, connus d'avance, le sont.
+    Renvoie (trades par seance, achat pour la seance suivante, mouvement de reference, seuil ou None si moins de 252
+    valeurs)."""
+    complete = seances_completes(P)
+    prec = precedente(complete)
     mouv = C[:, N - 1] / O[:, 0] - 1
     rv = np.where(prec >= 0, mouv[np.maximum(prec, 0)], np.nan)
     v = np.isfinite(rv)
     seuil = np.full(len(jours), np.nan)
     seuil[v] = pd.Series(rv[v]).rolling(252, min_periods=252).quantile(0.1).shift(1).values
-    signal = np.nan_to_num(rv <= seuil, nan=0).astype(bool) & complete & ~ech
-    lignes = {jours[d]: {"brut": C[d, N - 1] - O[d, 0], "pire": min(0.0, L[d].min() - O[d, 0]), "entree": O[d, 0], "sortie": C[d, N - 1]}
-              for d in np.where(signal)[0]}
-    # prochaine seance : nouvelle ligne dont la veille est la derniere seance complete
+    signal = (rv <= seuil) & complete                     # NaN : pas de signal
+    lignes = {jours[d]: {"brut": C[d, N - 1] - O[d, 0], "pire": min(0.0, L[d].min() - O[d, 0]), "entree": O[d, 0],
+                         "sortie": C[d, N - 1]} for d in np.where(signal)[0]}
+    # seance suivante : sa reference est la derniere seance complete ; son seuil, les 252 dernieres valeurs
     dernier = np.where(complete)[0][-1]
     valeurs = rv[v]
-    seuil_demain = float(np.quantile(valeurs[-252:], 0.1)) if len(valeurs) >= 252 else float("nan")
+    if len(valeurs) < 252:
+        return lignes, False, float(mouv[dernier]), None
+    seuil_demain = float(np.quantile(valeurs[-252:], 0.1))
     return lignes, bool(mouv[dernier] <= seuil_demain), float(mouv[dernier]), seuil_demain
 
 
 def serie_du_bot(minutes):
-    """Gain, pire moment et risque prevu par jour pour 1 MNQ (comme challenge/bot_challenge.py donnees)."""
+    """Gain, pire moment et risque prevu par jour pour 1 MNQ (comme challenge/bot_challenge.py donnees) : zone seule.
+    La colonne rebond donne le gain du second moteur pour 1 MNQ, suivi a part : il n'entre pas dans le compte virtuel
+    (rejeu 2023-2026 : avec lui, le compte finance tombait a 0 MNQ des novembre 2023)."""
     jours, O, H, L, C, P, V, ech = tableaux(minutes)
     z, trades, completes = zone_de_bruit(jours, O, H, L, C, P, V, ech)
     dollars = (z["brut"] - COUT * z["allers"]) * PT if len(z) else pd.Series(dtype=float)
     gain = dollars.reindex(completes).fillna(0)
     pire = (z["pire"] * PT).reindex(completes).fillna(0).clip(upper=0) if len(z) else gain * 0
-    # second moteur (rebond) : son gain s'ajoute ; son pire moment aussi (prudent : comme s'ils tombaient ensemble)
-    rb, _, _, _ = rebond(jours, O, H, L, C, P, ech)
-    for j, x in rb.items():
-        if j in gain.index:
-            gain[j] += (x["brut"] - COUT) * PT
-            pire[j] += x["pire"] * PT
-            trades.setdefault(j, []).append(f"rebond : achat 9h30 a {x['entree']:,.2f} -> sortie 16h00 a {x['sortie']:,.2f}")
     pire = np.minimum(pire, np.minimum(gain, 0))
     risque1 = gain.rolling(60, min_periods=40).std().shift(1)
-    d = pd.DataFrame({"gain": gain, "pire": pire, "risque1": risque1}).dropna()
     risque_demain = gain.rolling(60, min_periods=40).std()             # connu ce soir, utilise demain
+    # second moteur (rebond), suivi a part pour 1 MNQ
+    gain_rb = gain * 0
+    for j, x in rebond(jours, O, L, C, P)[0].items():
+        gain_rb[j] = (x["brut"] - COUT) * PT
+        trades.setdefault(j, []).append(f"rebond (suivi a part, hors compte) : achat 9h30 a {x['entree']:,.2f} -> sortie 16h00"
+                                        f" a {x['sortie']:,.2f}, {gain_rb[j]:+,.0f} $ pour 1 MNQ")
+    d = pd.DataFrame({"gain": gain, "pire": pire, "risque1": risque1, "rebond": gain_rb}).dropna()
     return d, trades, jours, float(risque_demain.iloc[-1]) if len(risque_demain) else float("nan")
 
 
@@ -242,7 +258,7 @@ def niveaux(minutes, r):
         jours, O, H, L, C, P, ech = jours[:-1], O[:-1], H[:-1], L[:-1], C[:-1], P[:-1], ech[:-1]   # derniere seance encore incomplete (delai des donnees) : ecartee
     ctrl = list(range(PAS, N, PAS))
     # correction V1 : seules les seances completes comptent (moyenne sur 14 jours et veille)
-    complete = P[:, 0] & P[:, N - 1] & (P.sum(axis=1) >= 370)
+    complete = seances_completes(P)
     if complete.sum() < JOURS_MOYENNE:
         return None
     Cc, Oc = C[complete], O[complete]
@@ -262,9 +278,9 @@ def niveaux(minutes, r):
         heures.append({"ny": t_ny.strftime("%Hh%M"), "paris": t_ny.tz_convert("Europe/Paris").strftime("%Hh%M"), "sigma": float(sg)})
     ok = np.isfinite(r) and r > 0
     taille = lambda c, f: int(min(MAX_MNQ, np.floor(f * c / r))) if ok else 0
-    _, rb_demain, rb_mouv, rb_seuil = rebond(jours, O, H, L, C, P, ech)
+    _, rb_demain, rb_mouv, rb_seuil = rebond(jours, O, L, C, P)
     return {"seance": str(prochaine.date()), "jour_court": court, "pas_de_trade": bool(raison), "raison": raison,
-            "rebond": {"achat": bool(rb_demain and not raison), "mouvement_veille": rb_mouv, "seuil": rb_seuil},
+            "rebond": {"achat": bool(rb_demain and not court), "mouvement_veille": rb_mouv, "seuil": rb_seuil},
             "veille": None if changement else float(Cc[-1, N - 1]), "controles": heures,
             "risque_1_mnq": r if ok else None,
             "tailles": {f"{f:.2f}": {"Phidias (coussin 2 500 $)": taille(2500, f), "Topstep (coussin 2 000 $)": taille(2000, f)}
@@ -299,8 +315,10 @@ def une_journee(etat, x, date):
     n = int(np.clip(np.floor(F * coussin / x["risque1"]), 0, MAX_MNQ)) if x["risque1"] > 0 else 0
     jour, creux = n * x["gain"], n * x["pire"]
     ligne = {"date": date, "phase": etat["phase"], "tentative": etat["tentatives"][-1]["numero"], "mnq": n,
-             "gain": round(jour, 2), "gain_1_mnq": round(x["gain"], 2), "retrait": 0.0}
+             "gain": round(jour, 2), "gain_1_mnq": round(x["gain"], 2), "gain_rebond_1_mnq": round(x["rebond"], 2),
+             "retrait": 0.0}
     etat["gain_1_mnq"] += x["gain"]
+    etat["gain_rebond_1_mnq"] = etat.get("gain_rebond_1_mnq", 0.0) + x["rebond"]
     if etat["solde"] + creux <= plancher or etat["solde"] + jour <= plancher:
         # le compte est coupe a sa limite : la perte du jour est la distance a la limite
         ligne.update(gain=round(plancher - etat["solde"], 2), solde=round(plancher, 2), evenement="COMPTE PERDU (limite touchee)")
@@ -355,6 +373,7 @@ def tableau(etat, journal, trades_du_jour, niv=None):
         + ", ".join(f"n°{x['numero']} {x['issue']}" for x in etat["tentatives"]) + ") |",
         f"| Recu en retraits virtuels (80 %) | {etat['recu_total']:,.0f} $ |",
         f"| Gain de la strategie pour 1 MNQ depuis le depart | {etat['gain_1_mnq']:+,.0f} $ |",
+        f"| Rebond (second moteur suivi a part, hors compte) pour 1 MNQ depuis le 1er octobre 2026 | {etat.get('gain_rebond_1_mnq', 0.0):+,.0f} $ |",
         "",
     ]
     if trades_du_jour:
@@ -381,16 +400,18 @@ def tableau(etat, journal, trades_du_jour, niv=None):
                    "On ne regarde le prix qu'aux heures de controle : pas de stop place dans le marche.", ""]
     if niv and niv.get("rebond"):
         rb = niv["rebond"]
-        lignes += ["## Second moteur : rebond apres forte baisse (en test virtuel)", "",
-                   (f"**ACHAT le {niv['seance']} a l'ouverture de 9 h 30, sortie a 15 h 59**, en plus de la zone et a la meme taille."
-                    if rb["achat"] else f"Pas d'achat le {niv['seance']}.")
-                   + f" Seance precedente : {rb['mouvement_veille']:+.2%} (ouverture -> cloture) ; seuil des 10 % les plus bas :"
-                   + f" {rb['seuil']:+.2%}. Ajoute le 1er octobre 2026 a la demande de l'utilisateur, non valide statistiquement"
-                   + " (zone_sources/ sur la branche de recherche) : c'est ce suivi qui doit le juger.", ""]
-    lignes += ["## Derniers jours", "", "| Date | Phase | MNQ | Resultat du jour | Solde | Pour 1 MNQ | Evenement |",
-               "|---|---|---|---|---|---|---|",
+        seuil = f"{rb['seuil']:+.2%}" if rb["seuil"] is not None else "pas encore assez d'historique (252 seances)"
+        lignes += ["## Second moteur : rebond apres forte baisse (suivi a part, hors compte)", "",
+                   (f"**ACHAT le {niv['seance']} a l'ouverture de 9 h 30, sortie a 15 h 59** (1 MNQ, suivi a part, hors compte"
+                    " de challenge ; meme un jour de changement de contrat)." if rb["achat"] else f"Pas d'achat le {niv['seance']}.")
+                   + f" Derniere seance complete : {rb['mouvement_veille']:+.2%} (ouverture -> cloture) ; seuil des 10 % les plus bas :"
+                   + f" {seuil}. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains"
+                   + " passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.", ""]
+    lignes += ["## Derniers jours", "", "| Date | Phase | MNQ | Resultat du jour | Solde | Pour 1 MNQ | Rebond (a part, 1 MNQ) | Evenement |",
+               "|---|---|---|---|---|---|---|---|",
                *[f"| {r.date} | {r.phase} n°{r.tentative} | {r.mnq} | {r.gain:+,.0f} $ | {r.solde:,.0f} $ | {r.gain_1_mnq:+,.0f} $ |"
-                 f" {r.evenement if isinstance(r.evenement, str) else ''} |" for r in j.itertuples()], ""]
+                 f" {getattr(r, 'gain_rebond_1_mnq', 0.0):+,.0f} $ | {r.evenement if isinstance(r.evenement, str) else ''} |"
+                 for r in j.itertuples()], ""]
     TABLEAU.write_text("\n".join(lignes))
 
 
@@ -437,6 +458,7 @@ def main():
     ancien = pd.read_csv(JOURNAL) if JOURNAL.exists() else None
     journal = pd.concat([ancien, pd.DataFrame(lignes)], ignore_index=True) if ancien is not None else pd.DataFrame(lignes)
     if len(journal):
+        journal["gain_rebond_1_mnq"] = journal.get("gain_rebond_1_mnq", pd.Series(0.0, index=journal.index)).fillna(0.0)
         journal.to_csv(JOURNAL, index=False)
     ETAT.write_text(json.dumps(etat, indent=1, ensure_ascii=False))
     du_jour = trades.get(pd.Timestamp(etat["derniere_date"]), [])
@@ -452,13 +474,14 @@ def main():
                f" ({etat['solde'] - CAPITAL:+,.0f} $), recu en tout {etat['recu_total']:,.0f} $")
     if lignes:
         msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
+    if niv is not None and niv["rebond"]["achat"]:
+        msg.append(f"Rebond (suivi a part, 1 MNQ, hors compte) : ACHAT {niv['seance']} 9h30 -> 15h59"
+                   f" (derniere seance {niv['rebond']['mouvement_veille']:+.2%})")
     if niv is None:
         pass
     elif niv["pas_de_trade"]:
-        msg.append(f"Seance du {niv['seance']} : {niv['raison']}, PAS DE TRADE")
+        msg.append(f"Seance du {niv['seance']} : {niv['raison']}, PAS DE TRADE (zone)")
     else:
-        if niv["rebond"]["achat"]:
-            msg.append(f"Rebond (second moteur, test) : ACHAT {niv['seance']} 9h30 -> 15h59 (veille {niv['rebond']['mouvement_veille']:+.2%})")
         msg.append(f"Seance du {niv['seance']} : veille {niv['veille']:,.2f} ; mouvements "
                    + " ".join(f"{c['paris']}:{c['sigma']:.2%}" for c in niv["controles"])
                    + f" ; compte neuf f=0,25 : {niv['tailles']['0.25']['Phidias (coussin 2 500 $)']} MNQ (Phidias)")

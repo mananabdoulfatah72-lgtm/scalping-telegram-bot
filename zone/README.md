@@ -49,28 +49,50 @@ Après la revue de code :
 - le script TradingView exige au moins 370 minutes pour compter une séance comme complète, comme le
   robot.
 
-## Second moteur en test : rebond après forte baisse (1er octobre 2026)
+## Second moteur suivi à part : rebond après forte baisse (1er octobre 2026)
 
 Ajouté à la demande de l'utilisateur. La recherche (`zone_sources/` sur la branche de recherche,
 piste S4) l'a trouvé comme la seule nouvelle source qui améliore les trois périodes. Son apport n'est
-pas prouvé statistiquement (t de la différence avec la zone seule : 1,44, contre 2,33 exigé). C'est ce
-suivi en argent virtuel qui doit le juger.
+pas prouvé statistiquement.
 
-Règle : le lendemain d'une séance dont le mouvement ouverture → clôture est dans les 10 % les plus bas
-des 252 valeurs précédentes, achat à l'ouverture de 9 h 30 et sortie à la clôture (15 h 59), en plus de
-la zone et à la même taille. La séance de référence est la dernière séance complète du même contrat.
-Pas d'achat un jour de fête, de demi-séance ou de changement de contrat. Environ 24 jours par an.
+Règle : le lendemain d'une séance dont le mouvement ouverture → clôture est dans les 10 % les plus bas,
+achat de 1 MNQ à l'ouverture de 9 h 30 et sortie à la clôture (15 h 59).
+- La séance de référence est la dernière séance complète, quel que soit le contrat.
+- Le seuil est le 10e centile des 252 valeurs précédentes de cette référence, une valeur par séance.
+  Après une séance incomplète, la même référence compte deux fois, comme dans la recherche.
+- Pas d'achat un jour de fête ou de demi-séance (connus d'avance).
+- Environ 24 achats par an.
 
-Contrôle : rejoué sur 2023-2026, le robot donne exactement les gains de la recherche. Pour 1 MNQ, la
-zone seule fait 10 668 $, la zone plus le rebond 18 758 $ :
+**Version exécutable.** La revue de code a montré que la piste S4 écartait les jours de changement de
+contrat, ce qu'on ne peut pas savoir la veille. Le robot aurait donc annoncé des achats que le
+backtest ne comptait pas : 7 depuis 2017, pour −1 880 $ par MNQ. Le robot prend maintenant chaque
+achat qu'il annonce. Contrôle jour par jour sur 2011-2026 : 0 écart entre l'annonce de la veille et le
+trade du lendemain. Cela change les chiffres (NQ, 1 MNQ, frais réels) :
 
-| Année | 2023 | 2024 | 2025 | 2026 (à fin septembre) |
-|---|---|---|---|---|
-| Zone + rebond, 1 MNQ | +3 923 $ | +3 886 $ | +8 451 $ | +2 498 $ |
+| | Piste S4 (recherche) | Version exécutable |
+|---|---|---|
+| Rebond seul, 2023-2026 | +8 089 $ | +6 420 $ |
+| Zone + rebond, t 2023-2026 (zone seule : 2,00) | 2,04 | 1,91 |
+| t de l'apport du rebond, 2023-2026 | 1,44 | 1,21 |
+| Rebond seul, 2011-2022 | +6 428 $ | +6 871 $ |
 
-Le tableau de bord et le message Telegram annoncent l'achat la veille au soir. Pas encore dans le script
-TradingView. Si les deux moteurs tradent le même compte en réel, un achat du rebond et une vente de la
-zone le même jour se compensent en partie : le gain total reste la somme des deux.
+**D'où vient le gain** (version exécutable, 1 MNQ) : de deux krachs suivis d'un rebond. 2020 (Covid)
+rapporte +6 408 $ et 2025 (droits de douane, avril) +6 568 $. Les 14 autres années réunies ne font
+qu'environ +300 $. Un seul jour, le 9 avril 2025 (pause des droits de douane), rapporte +4 119 $. Les
+pires jours sont lourds pour un compte de challenge : −1 066 $ le 17 juin 2026, et six jours à plus de
+−780 $ depuis fin 2021.
 
-Les chiffres historiques du haut de cette page (39 % de challenges réussis, 680 $ par an) sont ceux de
-la zone seule : ils n'ont pas été refaits avec le rebond.
+**Pourquoi hors du compte de challenge.** Rejoué sur 2023-2026 avec la taille du robot, le compte avec
+le rebond passe le challenge, mais le compte financé tombe à 0 MNQ dès novembre 2023 et n'en sort plus.
+La zone seule tient jusqu'en octobre 2025. Le compte virtuel joue donc la zone seule, exactement comme
+avant (contrôle : journal identique sur 2023-2026). Le rebond est annoncé et compté à part, pour
+1 MNQ : colonne `gain_rebond_1_mnq` du journal, ligne à part du tableau de bord.
+
+Le tableau de bord et le message Telegram annoncent l'achat le matin de la séance, vers 7 h 35 heure
+de Paris (au plus tard 14 h 35 si les données de Databento sont en retard). Le rebond n'est pas dans le
+script TradingView.
+
+**À savoir sur la taille, avec ou sans rebond.** La règle de taille arrondit à 0 MNQ quand la marge
+avant la limite passe sous environ 1 400 $ : le compte ne trade plus, donc ne remonte plus, et reste
+bloqué. C'est ce qui arrive en octobre 2025 au compte financé rejoué, et c'est pour cela que tant de
+tentatives « n'ont pas fini » dans l'historique.
