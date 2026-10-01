@@ -48,3 +48,29 @@ Après la revue de code :
   trade (changement de contrat) », comme le backtest ;
 - le script TradingView exige au moins 370 minutes pour compter une séance comme complète, comme le
   robot.
+
+## Second moteur en test : rebond après forte baisse (1er octobre 2026)
+
+Ajouté à la demande de l'utilisateur. La recherche (`zone_sources/` sur la branche de recherche,
+piste S4) l'a trouvé comme la seule nouvelle source qui améliore les trois périodes. Son apport n'est
+pas prouvé statistiquement (t de la différence avec la zone seule : 1,44, contre 2,33 exigé). C'est ce
+suivi en argent virtuel qui doit le juger.
+
+Règle : le lendemain d'une séance dont le mouvement ouverture → clôture est dans les 10 % les plus bas
+des 252 valeurs précédentes, achat à l'ouverture de 9 h 30 et sortie à la clôture (15 h 59), en plus de
+la zone et à la même taille. La séance de référence est la dernière séance complète du même contrat.
+Pas d'achat un jour de fête, de demi-séance ou de changement de contrat. Environ 24 jours par an.
+
+Contrôle : rejoué sur 2023-2026, le robot donne exactement les gains de la recherche. Pour 1 MNQ, la
+zone seule fait 10 668 $, la zone plus le rebond 18 758 $ :
+
+| Année | 2023 | 2024 | 2025 | 2026 (à fin septembre) |
+|---|---|---|---|---|
+| Zone + rebond, 1 MNQ | +3 923 $ | +3 886 $ | +8 451 $ | +2 498 $ |
+
+Le tableau de bord et le message Telegram annoncent l'achat la veille au soir. Pas encore dans le script
+TradingView. Si les deux moteurs tradent le même compte en réel, un achat du rebond et une vente de la
+zone le même jour se compensent en partie : le gain total reste la somme des deux.
+
+Les chiffres historiques du haut de cette page (39 % de challenges réussis, 680 $ par an) sont ceux de
+la zone seule : ils n'ont pas été refaits avec le rebond.
