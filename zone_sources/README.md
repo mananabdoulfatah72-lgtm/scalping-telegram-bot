@@ -34,3 +34,31 @@ Chaque nouveau test l'use un peu plus. D'où le seuil durci. Même une piste ret
 par les mois à venir, dans le suivi en argent virtuel.
 
 Tous les essais sont inscrits dans `fonds/essais.csv`.
+
+## Résultats (1er octobre 2026) : aucune source retenue
+
+`sources.py` → `sources.txt`. Contrôle : le moteur sans filtre redonne exactement V1.
+
+| Piste | 2011-2016 | 2017-2022 | 2023-2026 | 2023-2026, 1 MNQ | t de la différence avec V1 (2023-2026) | Verdict |
+|---|---|---|---|---|---|---|
+| V1 zone corrigée | −2,26 | +2,78 | +2,00 | +10 668 $ | — | référence |
+| S1 confirmation par l'ES | −1,42 | +2,92 | +1,48 | +6 882 $ | −1,67 | rejetée |
+| S2 confirmation par le volume | −1,84 | +2,98 | +1,64 | +7 468 $ | −1,45 | rejetée |
+| S3 tendance de fond | −1,97 | +1,79 | +3,50 | +10 792 $ | 0,00 | rejetée |
+| S4 + rebond après forte baisse | −1,88 | +3,44 | +2,04 | +18 758 $ | +1,44 | rejetée (la plus proche) |
+| S5 sortie du range de la nuit | −1,80 | +3,71 | +1,92 | +10 428 $ | −0,48 | rejetée |
+
+Ce qu'on en tire :
+- **Les confirmations (ES, volume, nuit) aident sur 2011-2022 mais pas depuis 2023.** Elles écartent de
+  fausses cassures, mais aussi de bonnes : depuis 2023, une partie des meilleures journées part sans
+  l'ES, sans volume particulier ou depuis l'intérieur du range de la nuit.
+- **La tendance de fond (S3) fait t 3,50 sur 2023-2026**, mais pour le même gain que V1 avec deux fois
+  moins de trades. Elle perd sur 2017-2022, et sa différence avec V1 vaut zéro. C'est l'effet du
+  marché haussier, pas un avantage.
+- **Le rebond après forte baisse (S4) est la seule piste qui améliore les trois périodes.** Il ajoute
+  8 090 $ sur 2023-2026 pour 1 MNQ. C'est un second moteur, peu lié à la zone, qui ne trade qu'environ
+  8 jours par an. Mais son apport n'est pas assez sûr pour passer le seuil (t 1,44 contre 2,33 exigé) :
+  il n'est pas ajouté au robot. Il reste un candidat à suivre en argent virtuel, à part, pour voir s'il
+  tient sur des mois nouveaux.
+
+**La zone corrigée V1 reste la version de référence.**

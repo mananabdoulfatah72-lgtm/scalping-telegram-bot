@@ -1,0 +1,22 @@
+Zone corrigee V1 et nouvelles sources (NQ, 1 MNQ, frais reels). Controle : moteur sans filtre = V1 exactement.
+  V1 zone corrigee V1             | 2011-2016 t -2.26 | 2017-2022 t +2.78 | 2023-2026 t +2.00 | 2023-2026 : +10,668 $ ; trades/an 131
+  S1 confirmation par l'ES        | 2011-2016 t -1.42 | 2017-2022 t +2.92 | 2023-2026 t +1.48 | 2023-2026 : +6,882 $ ; trades/an 109
+  S2 confirmation par le volume   | 2011-2016 t -1.84 | 2017-2022 t +2.98 | 2023-2026 t +1.64 | 2023-2026 : +7,468 $ ; trades/an 109
+  S3 tendance de fond             | 2011-2016 t -1.97 | 2017-2022 t +1.79 | 2023-2026 t +3.50 | 2023-2026 : +10,792 $ ; trades/an 67
+  S4 + rebond apres forte baisse  | 2011-2016 t -1.88 | 2017-2022 t +3.44 | 2023-2026 t +2.04 | 2023-2026 : +18,758 $ ; trades/an 139
+  S5 sortie du range de la nuit   | 2011-2016 t -1.80 | 2017-2022 t +3.71 | 2023-2026 t +1.92 | 2023-2026 : +10,428 $ ; trades/an 125
+
+Tri (README.md) :
+  S1 : mieux que V1 sur 2011-2016 et 2017-2022 OUI | 2023-2026 mieux, t de la difference -1.67 (seuil 2,33) non => rejetee
+  S2 : mieux que V1 sur 2011-2016 et 2017-2022 OUI | 2023-2026 mieux, t de la difference -1.45 (seuil 2,33) non => rejetee
+  S3 : mieux que V1 sur 2011-2016 et 2017-2022 non | 2023-2026 mieux, t de la difference +0.00 (seuil 2,33) non => rejetee
+  S4 : mieux que V1 sur 2011-2016 et 2017-2022 OUI | 2023-2026 mieux, t de la difference +1.44 (seuil 2,33) non => rejetee
+  S5 : mieux que V1 sur 2011-2016 et 2017-2022 OUI | 2023-2026 mieux, t de la difference -0.48 (seuil 2,33) non => rejetee
+
+Pistes retenues : aucune
+  V1 par annee ($, 1 MNQ) : 2017:-218 2018:+3,685 2019:-358 2020:+2,282 2021:+1,680 2022:+5,320 2023:+4,034 2024:+2,788 2025:+1,884 2026:+1,963
+  S1 par annee ($, 1 MNQ) : 2017:-397 2018:+2,593 2019:-120 2020:+2,584 2021:+221 2022:+6,644 2023:+2,015 2024:+1,920 2025:+994 2026:+1,952
+  S2 par annee ($, 1 MNQ) : 2017:-70 2018:+3,138 2019:-400 2020:+2,812 2021:+236 2022:+5,872 2023:+3,280 2024:+1,360 2025:-165 2026:+2,994
+  S3 par annee ($, 1 MNQ) : 2017:-225 2018:+2,370 2019:-96 2020:+486 2021:+858 2022:+2,060 2023:+3,210 2024:+4,664 2025:+1,597 2026:+1,322
+  S4 par annee ($, 1 MNQ) : 2017:+58 2018:+3,910 2019:+626 2020:+8,690 2021:+1,576 2022:+4,154 2023:+3,923 2024:+3,886 2025:+8,451 2026:+2,498
+  S5 par annee ($, 1 MNQ) : 2017:-67 2018:+3,740 2019:-340 2020:+3,314 2021:+1,934 2022:+6,279 2023:+3,662 2024:+1,264 2025:+3,588 2026:+1,914
