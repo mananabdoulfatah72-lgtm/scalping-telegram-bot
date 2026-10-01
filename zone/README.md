@@ -92,10 +92,37 @@ Le tableau de bord et le message Telegram annoncent l'achat le matin de la séan
 de Paris (au plus tard 14 h 35 si les données de Databento sont en retard). Le rebond n'est pas dans le
 script TradingView.
 
-**À savoir sur la taille, avec ou sans rebond.** La règle de taille arrondit à 0 MNQ quand la marge
-avant la limite passe sous environ 1 400 $ : le compte ne trade plus, donc ne remonte plus, et reste
-bloqué. C'est ce qui arrive en octobre 2025 au compte financé rejoué, et c'est pour cela que tant de
-tentatives « n'ont pas fini » dans l'historique.
+## Taille : 1 MNQ minimum (1er octobre 2026)
+
+L'ancienne règle arrondissait à 0 MNQ quand la marge avant la limite passait sous environ 1 400 $. Le
+compte ne tradait plus, donc ne remontait plus, et restait bloqué : c'est ce qui arrivait en octobre
+2025 au compte financé rejoué, et c'est pour cela que tant de tentatives « n'avaient pas fini ». À la
+demande de l'utilisateur, le robot garde maintenant **au moins 1 MNQ** :
+nombre de MNQ = max(1, arrondi inférieur de 0,15 × marge / risque d'un MNQ).
+
+Effet mesuré avec le code du robot (`zone_taille/` sur la branche de recherche). Zone seule, règles
+Phidias du robot, un départ par semaine, chaque départ suivi 12 mois :
+
+| | Départs 2011-2021, ancienne | Départs 2011-2021, nouvelle | Départs 2023-2025, ancienne | Départs 2023-2025, nouvelle |
+|---|---|---|---|---|
+| challenge validé en 12 mois | 21 % | 32 % | 42 % | 67 % |
+| challenges commencés (chacun se paie) | 1,23 | 1,85 | 1,00 | 1,88 |
+| comptes perdus | 0,23 | 0,85 | 0 | 0,88 |
+| séances gelées à 0 MNQ, sur 252 | 113 | 0 | 123 | 0 |
+| reçu en 12 mois, moyenne | 29 $ | 48 $ | 83 $ | 83 $ |
+| départs qui ne reçoivent rien | 97 % | 95 % | 93 % | 93 % |
+
+- **Le gel disparaît, et le challenge passe beaucoup plus souvent.**
+- **En échange, plus de comptes sautent.** Il faut en moyenne près d'un challenge payant de plus par an.
+- **L'argent reçu ne bouge presque pas.** Partir de 50 000 $, monter au-dessus de 52 600 $ avec 1 ou
+  2 MNQ, puis respecter la règle des 30 % pour retirer, prend le plus souvent plus de 12 mois.
+  C'est la prochaine limite, plus que la stratégie.
+
+Rejeu unique depuis le 30 décembre 2022 :
+- **Ancienne règle :** challenge réussi le 8 juin 2023, puis compte financé gelé.
+- **Nouvelle règle :** même challenge réussi. Le compte financé trade jusqu'au 23 janvier 2026, où il
+  saute. Le challenge suivant est à +3 494 $ fin septembre 2026.
+- Aucun retrait dans les deux cas.
 
 ## Tableau de bord en direct
 

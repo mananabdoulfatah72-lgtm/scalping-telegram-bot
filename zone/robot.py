@@ -10,7 +10,8 @@ challenge (rebond apres forte baisse, fonction rebond : gain pour 1 MNQ dans le 
   cette minute (seances completes seulement, veille = derniere seance complete du meme contrat). Au-dessus : achat ; en dessous : vente ; sortie si le prix repasse la limite ou le prix
   moyen du jour (VWAP) ; tout est ferme a 16 h. Frais : 1,5 point de NQ par aller-retour.
 - taille : nombre de MNQ = 0,15 x coussin / ecart-type des gains des 60 dernieres seances (1 MNQ),
-  coussin = solde - limite de perte. Plus le compte s'approche de la limite, plus il reduit.
+  coussin = solde - limite de perte, arrondi en dessous, AU MOINS 1 MNQ (depuis le 1er octobre 2026 : avant, le compte
+  tombait a 0 MNQ sous environ 1 400 $ de coussin et restait gele). Plus le compte s'approche de la limite, plus il reduit.
 - challenge Phidias 50K (regles a verifier) : +4 000 $ a atteindre, perte max 2 500 $ sous le plus haut de fin
   de journee. Compte finance : limite bloquee a 50 100 $ quand le solde atteint 52 600 $ ; retrait tous les
   21 jours de ce qui depasse 52 600 $ si la meilleure journee <= 30 % du gain ; 80 % du retrait pour toi.
@@ -38,7 +39,7 @@ MINUTES = DOSSIER / "nq_1min.csv.gz"
 ETAT, JOURNAL, TABLEAU = DOSSIER / "etat.json", DOSSIER / "journal.csv", DOSSIER / "TABLEAU_DE_BORD.md"
 N, PAS, JOURS_MOYENNE = 390, 30, 14
 PT, COUT = 2.0, 1.5                     # $ par point de NQ pour 1 MNQ ; points par aller-retour (frais + glissement)
-F, MAX_MNQ = 0.15, 50
+F, MIN_MNQ, MAX_MNQ = 0.15, 1, 50      # au moins 1 MNQ depuis le 1er octobre 2026 (sinon le compte se gelait a 0)
 CAPITAL, OBJECTIF, PERTE = 50_000.0, 4_000.0, 2_500.0
 BLOCAGE, SEUIL_RETRAIT, PART, PERIODE = 50_100.0, 52_600.0, 0.80, 21
 PLAFOND_DATABENTO = 2.0                 # $ au maximum par telechargement
@@ -241,7 +242,7 @@ def serie_du_bot(minutes):
     risque1 = gain.rolling(60, min_periods=40).std().shift(1)
     risque_demain = gain.rolling(60, min_periods=40).std()             # connu ce soir, utilise demain
     # second moteur (rebond), suivi a part pour 1 MNQ
-    gain_rb = gain * 0
+    gain_rb = pd.Series(0.0, index=gain.index)
     for j, x in rebond(jours, O, L, C, P)[0].items():
         gain_rb[j] = (x["brut"] - COUT) * PT
         trades.setdefault(j, []).append(f"rebond (suivi a part, hors compte) : achat 9h30 a {x['entree']:,.2f} -> sortie 16h00"
@@ -277,7 +278,7 @@ def niveaux(minutes, r):
         t_ny = pd.Timestamp(prochaine.date()).tz_localize("America/New_York") + pd.Timedelta(minutes=570 + m)
         heures.append({"ny": t_ny.strftime("%Hh%M"), "paris": t_ny.tz_convert("Europe/Paris").strftime("%Hh%M"), "sigma": float(sg)})
     ok = np.isfinite(r) and r > 0
-    taille = lambda c, f: int(min(MAX_MNQ, np.floor(f * c / r))) if ok else 0
+    taille = lambda c, f: int(np.clip(np.floor(f * c / r), MIN_MNQ, MAX_MNQ)) if ok else 0
     _, rb_demain, rb_mouv, rb_seuil = rebond(jours, O, L, C, P)
     return {"seance": str(prochaine.date()), "jour_court": court, "pas_de_trade": bool(raison), "raison": raison,
             "rebond": {"achat": bool(rb_demain and not court), "mouvement_veille": rb_mouv, "seuil": rb_seuil},
@@ -312,7 +313,7 @@ def une_journee(etat, x, date):
     haut = etat["haut"]
     plancher = (BLOCAGE if haut >= SEUIL_RETRAIT else haut - PERTE) if finance else haut - PERTE
     coussin = etat["solde"] - plancher
-    n = int(np.clip(np.floor(F * coussin / x["risque1"]), 0, MAX_MNQ)) if x["risque1"] > 0 else 0
+    n = int(np.clip(np.floor(F * coussin / x["risque1"]), MIN_MNQ, MAX_MNQ)) if x["risque1"] > 0 else MIN_MNQ
     jour, creux = n * x["gain"], n * x["pire"]
     ligne = {"date": date, "phase": etat["phase"], "tentative": etat["tentatives"][-1]["numero"], "mnq": n,
              "gain": round(jour, 2), "gain_1_mnq": round(x["gain"], 2), "gain_rebond_1_mnq": round(x["rebond"], 2),
@@ -393,8 +394,8 @@ def tableau(etat, journal, trades_du_jour, niv=None):
                    (f"Taille : un jour normal = {niv['risque_1_mnq']:,.0f} $ de risque pour 1 MNQ. Sur un compte neuf : "
                     + " ; ".join(f"f = {f} -> " + ", ".join(f"{k} {v} MNQ" for k, v in t.items()) for f, t in niv["tailles"].items())
                     + ". **En cours de challenge : MNQ = f x (solde - limite de perte) / "
-                    + f"{niv['risque_1_mnq']:,.0f}, arrondi en dessous** (exemple : f = 0,25, coussin 1 500 $ -> "
-                    + f"{int(np.floor(0.25 * 1500 / niv['risque_1_mnq']))} MNQ).") if niv["risque_1_mnq"] else
+                    + f"{niv['risque_1_mnq']:,.0f}, arrondi en dessous, au moins 1 MNQ** (exemple : f = 0,25, coussin 1 500 $ -> "
+                    + f"{max(MIN_MNQ, int(np.floor(0.25 * 1500 / niv['risque_1_mnq'])))} MNQ).") if niv["risque_1_mnq"] else
                    "Taille : pas encore assez d'historique (40 seances).", "",
                    "Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la reouverture de 18 h). "
                    "On ne regarde le prix qu'aux heures de controle : pas de stop place dans le marche.", ""]

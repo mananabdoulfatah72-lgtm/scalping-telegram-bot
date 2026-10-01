@@ -135,7 +135,7 @@ footer { color: var(--doux); font-size: 11px; text-align: center; line-height: 1
         <div><div class="l">Tentatives</div><div class="v" id="c-tent">—</div></div>
         <div><div class="l">Retraits reçus</div><div class="v" id="c-recu">—</div></div>
       </div>
-      <p class="note" id="regles">Règles virtuelles : +4 000 $ à atteindre, perte maximale 2 500 $ sous le plus haut de fin de journée. Taille = 0,15 × marge / risque d'un MNQ, arrondie en dessous.</p>
+      <p class="note" id="regles">Règles virtuelles : +4 000 $ à atteindre, perte maximale 2 500 $ sous le plus haut de fin de journée. Taille = 0,15 × marge / risque d'un MNQ, arrondie en dessous, au moins 1 MNQ.</p>
     </section>
     <section class="panneau" aria-labelledby="t-compte">
       <div class="entete"><h2 id="t-compte">Compte virtuel, séance par séance</h2><span class="d" id="compte-d">—</span></div>
@@ -192,7 +192,7 @@ footer { color: var(--doux); font-size: 11px; text-align: center; line-height: 1
 
 <script>
 const D = /*DONNEES*/null;
-const CAPITAL = 50000, OBJECTIF = 4000, PERTE = 2500, BLOCAGE = 50100, SEUIL_RETRAIT = 52600, F = 0.15;
+const CAPITAL = 50000, OBJECTIF = 4000, PERTE = 2500, BLOCAGE = 50100, SEUIL_RETRAIT = 52600, F = 0.15, MIN_MNQ = 1;
 const $ = id => document.getElementById(id);
 const nf = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
 const dol = (x, signe) => (signe && x > 0 ? "+" : x < 0 ? "−" : "") + nf.format(Math.abs(Math.round(x))) + " $";
@@ -342,14 +342,15 @@ function resume() {
   jm.style.left = "0"; jm.style.width = pm + "%";
   jm.style.background = pm > 60 ? "var(--bleu)" : pm > 40 ? "var(--orange)" : "var(--rouge)";
   const r = D.niveaux && D.niveaux.risque_1_mnq;
-  const n = r ? Math.min(50, Math.max(0, Math.floor(F * k.marge / r))) : null;
+  const n = r ? Math.min(50, Math.max(MIN_MNQ, Math.floor(F * k.marge / r))) : null;
   $("c-taille").textContent = n === null ? "—" : n + " MNQ";
-  $("c-taille").className = "v" + (n === 0 ? " mauvais" : "");
+  const plancherTaille = r && Math.floor(F * k.marge / r) < MIN_MNQ;
+  $("c-taille").className = "v" + (plancherTaille ? " mauvais" : "");
   $("c-tent").textContent = e.tentatives.length;
   $("c-recu").textContent = dol(e.recu_total);
-  $("regles").innerHTML = (n === 0 ? "<b>Attention : à cette marge, la règle de taille donne 0 MNQ ; le compte ne trade plus et reste bloqué (faille connue de la règle, voir zone/README.md).</b> " : "")
+  $("regles").innerHTML = (plancherTaille ? "<b>Marge faible : la règle donnerait moins de 1 MNQ ; le robot garde 1 MNQ (minimum depuis le 1er octobre 2026).</b> " : "")
     + "Règles virtuelles : +4 000 $ à atteindre, perte maximale 2 500 $ sous le plus haut de fin de journée. Taille = 0,15 × marge / risque d'un MNQ"
-    + (r ? ` (${nf.format(Math.round(r))} $ aujourd'hui)` : "") + ", arrondie en dessous.";
+    + (r ? ` (${nf.format(Math.round(r))} $ aujourd'hui)` : "") + ", arrondie en dessous, au moins 1 MNQ.";
 }
 
 function graphCompte() {
