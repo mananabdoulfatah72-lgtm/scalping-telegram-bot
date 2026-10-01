@@ -1,0 +1,19 @@
+Controle : la regle simple (10 h 30 -> fin de seance) = entree_fixe des tournois, sur les 7 marches : OK
+
+Partie A, exploration 2016-2022 : 84 essais (7 sources x 6 cibles x 2 sens). Les 12 meilleurs :
+   CL -> NQ  contrer t +0.45 (2016-19 -1.31, 2020-22 +1.55) | 1619 trades,  +5.89 $ par trade
+   YM -> NQ  contrer t -0.05 (2016-19 +0.43, 2020-22 -0.38) | 1700 trades,  +1.09 $ par trade
+   6E -> RTY suivre  t -0.11 (2016-19 -0.06, 2020-22 -0.09) | 1297 trades,  +0.17 $ par trade
+   NQ -> CL  suivre  t -0.17 (2016-19 -1.56, 2020-22 +0.88) | 1636 trades,  +0.03 $ par trade
+  RTY -> NQ  suivre  t -0.48 (2016-19 -0.86, 2020-22 -0.02) | 1325 trades,  -1.13 $ par trade
+   6E -> YM  suivre  t -0.55 (2016-19 -0.99, 2020-22 +0.08) | 1657 trades,  -0.34 $ par trade
+   NQ -> RTY suivre  t -0.55 (2016-19 -1.83, 2020-22 +0.45) | 1329 trades,  -0.37 $ par trade
+   ES -> NQ  suivre  t -0.59 (2016-19 -1.76, 2020-22 +0.55) | 1683 trades,  -1.29 $ par trade
+  RTY -> NQ  contrer t -0.66 (2016-19 -0.37, 2020-22 -0.54) | 1327 trades,  -4.87 $ par trade
+   6E -> NQ  suivre  t -0.67 (2016-19 -1.36, 2020-22 +0.18) | 1663 trades,  -0.51 $ par trade
+   YM -> RTY contrer t -0.68 (2016-19 -0.18, 2020-22 -0.68) | 1324 trades,  -0.88 $ par trade
+   GC -> NQ  suivre  t -0.68 (2016-19 -0.07, 2020-22 -0.79) | 1628 trades,  -2.93 $ par trade
+  t >= 2 : 0 ; t >= 3 : 0 ; t <= -2 : 33
+
+Controle global (200 tirages, signaux d'un autre jour de la meme annee) : meilleur t par tirage, mediane +1.03, 95e centile +2.09 ; meilleur t reel +0.45 => ne passe pas (part des tirages au moins aussi bons : 88%)
+Survivants avant le coffre : aucun

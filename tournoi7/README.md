@@ -64,3 +64,19 @@ Si les minutes du bitcoin arrivent, les 7 familles du tournoi 6 y sont aussi tes
 - frais du micro-bitcoin : 2 $ + 2 ticks par aller-retour.
 
 Tous les essais sont inscrits dans `fonds/essais.csv`.
+
+## Résultats, partie A (1er octobre 2026) : aucune information croisée
+
+`tournoi7.py` → `tournoi7.txt`, `partieA.csv`, `hasard_max_t.txt`. Contrôle : la règle simple redonne
+exactement `entree_fixe` des tournois sur les 7 marchés.
+
+- **0 essai sur 84 atteint t ≥ 2.** Le meilleur fait t +0,45 (pétrole → Nasdaq, contrer). 33 font
+  t ≤ −2 : les frais d'un trade par jour ne sont pas couverts.
+- **Le contrôle global est net.** Si l'on prend le signal d'un autre jour de la même année, le meilleur
+  des 84 essais fait en médiane t +1,03 sur 200 tirages, et +2,09 au 95e centile. **Le vrai signal du
+  jour fait moins bien que le hasard** : le mouvement de 9 h 30 - 10 h 30 d'un marché n'apporte aucune
+  information sur la suite de la séance d'un autre. Il l'oriente même plutôt à contre-sens, puisque ces
+  marchés bougent ensemble le matin et que leurs après-midi corrigent un peu le matin.
+- Rien ne passe : le coffre 2023-2026 n'est pas ouvert, rien n'est combiné avec la zone.
+
+Les sources ZN, dollar et bitcoin, ainsi que la partie B, attendent le téléchargement du tournoi 5.
