@@ -22,7 +22,8 @@ souvent fallu 2 à 5 mois.
    « Enregistrer », puis « Ajouter au graphique ».
 3. Regarde le tableau en haut à droite :
    - « Séances en mémoire » doit afficher **14 / 14**. Il faut environ 20 000 barres d'une minute
-     d'historique, car le graphique contient aussi la nuit. Selon ton abonnement TradingView, ce n'est
+     d'historique, car le graphique contient aussi la nuit. Les demi-séances (jours fériés) ne comptent
+     pas : pendant environ trois semaines après une fête, il faut 21 000 à 22 000 barres. Selon ton abonnement TradingView, ce n'est
      pas toujours possible. Dans ce cas, utilise les niveaux publiés chaque matin par le robot
      (étape 1). Il te suffit alors du prix d'ouverture de 9 h 30, et d'un VWAP calculé **depuis 9 h 30**
      (dans TradingView, l'indicateur VWAP avec un point de départ à 9 h 30 : son réglage « Séance »

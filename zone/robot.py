@@ -2,10 +2,11 @@
 """Robot ZONE DE BRUIT (Nasdaq, contrats micro MNQ) en ARGENT VIRTUEL, avec un challenge Phidias 50K virtuel
 puis, s'il est reussi, un compte finance virtuel (etude : challenge/ sur la branche de recherche).
 
-Regles, identiques au backtest (intraday/strategies.py zone_de_bruit et challenge/bot_challenge.py, f = 0,15) :
+Regles, identiques au backtest corrige V1 (zone_failles/journal.py sur la branche de recherche ; taille comme
+challenge/bot_challenge.py, f = 0,15) :
 - seance de 9 h 30 a 16 h (New York) ; toutes les 30 minutes, de 10 h a 15 h 30, on compare le prix a la
   "zone de bruit" : ouverture (ou cloture de la veille) +/- mouvement moyen des 14 dernieres seances a
-  cette minute. Au-dessus : achat ; en dessous : vente ; sortie si le prix repasse la limite ou le prix
+  cette minute (seances completes seulement, veille = derniere seance complete du meme contrat). Au-dessus : achat ; en dessous : vente ; sortie si le prix repasse la limite ou le prix
   moyen du jour (VWAP) ; tout est ferme a 16 h. Frais : 1,5 point de NQ par aller-retour.
 - taille : nombre de MNQ = 0,15 x coussin / ecart-type des gains des 60 dernieres seances (1 MNQ),
   coussin = solde - limite de perte. Plus le compte s'approche de la limite, plus il reduit.
@@ -40,7 +41,7 @@ F, MAX_MNQ = 0.15, 50
 CAPITAL, OBJECTIF, PERTE = 50_000.0, 4_000.0, 2_500.0
 BLOCAGE, SEUIL_RETRAIT, PART, PERIODE = 50_100.0, 52_600.0, 0.80, 21
 PLAFOND_DATABENTO = 2.0                 # $ au maximum par telechargement
-HISTORIQUE = ("backtest 2011-2026 au meme reglage : une tentative de challenge reussit 39 % du temps et saute 4 % "
+HISTORIQUE = ("backtest 2011-2026 de la version d'origine (avant la correction V1, non recalcule) : une tentative de challenge reussit 39 % du temps et saute 4 % "
               "(les autres n'ont pas fini) ; environ 1 chance sur 3 de valider en 12 mois ; une fois finance, "
               "environ 680 $ recus par an en moyenne, rien dans 86 % des cas")
 
@@ -112,7 +113,9 @@ def tableaux(d):
 
 
 def zone_de_bruit(jours, O, H, L, C, P, V, echeance):
-    """Copie de intraday/strategies.py zone_de_bruit (avec VWAP), qui note aussi les trades du jour."""
+    """Zone de bruit corrigee (V1, zone_failles/journal.py zone(propre=True) sur la branche de recherche), qui note aussi
+    les trades du jour. intraday/strategies.py zone_de_bruit et challenge/ restent la version d'origine (V0) : ne pas
+    resynchroniser cette fonction sur eux."""
     ok = P[:, 0] & P[:, N - 1] & (P.sum(axis=1) >= 370)
     ouverture = O[:, 0]
     # correction V1 (zone_failles/README.md sur la branche de recherche) : les seances incompletes (feries CME,
@@ -202,25 +205,31 @@ def niveaux(minutes, r):
     cloture de la veille, mouvement moyen des 14 dernieres seances a chaque controle, taille conseillee."""
     jours, O, H, L, C, P, V, ech = tableaux(minutes)
     if not (P[-1, 0] and P[-1, N - 1]) and not jour_court(jours[-1]):
-        jours, O, C, P = jours[:-1], O[:-1], C[:-1], P[:-1]   # derniere seance encore incomplete (delai des donnees) : ecartee
+        jours, O, C, P, ech = jours[:-1], O[:-1], C[:-1], P[:-1], ech[:-1]   # derniere seance encore incomplete (delai des donnees) : ecartee
     ctrl = list(range(PAS, N, PAS))
     # correction V1 : seules les seances completes comptent (moyenne sur 14 jours et veille)
     complete = P[:, 0] & P[:, N - 1] & (P.sum(axis=1) >= 370)
     if complete.sum() < JOURS_MOYENNE:
         return None
     Cc, Oc = C[complete], O[complete]
+    # meme contrat (comme le backtest V1) : si le contrat a change depuis la derniere seance complete (par exemple une
+    # demi-seance qui est aussi le premier jour du nouveau contrat), il n'y a pas de veille valable : pas de trade
+    segment = np.cumsum(ech)
+    changement = segment[np.where(complete)[0][-1]] != segment[-1]
     sigma = np.abs(Cc[-JOURS_MOYENNE:, :] / Oc[-JOURS_MOYENNE:, :1] - 1)[:, ctrl].mean(axis=0)
     prochaine = pd.Timestamp(jours[-1]) + pd.Timedelta(days=1)
     while jour_ferme(prochaine):
         prochaine += pd.Timedelta(days=1)
     court = jour_court(prochaine)
+    raison = "fete ou demi-seance" if court else ("changement de contrat depuis la derniere seance complete" if changement else "")
     heures = []
     for m, sg in zip(ctrl, sigma):
         t_ny = pd.Timestamp(prochaine.date()).tz_localize("America/New_York") + pd.Timedelta(minutes=570 + m)
         heures.append({"ny": t_ny.strftime("%Hh%M"), "paris": t_ny.tz_convert("Europe/Paris").strftime("%Hh%M"), "sigma": float(sg)})
     ok = np.isfinite(r) and r > 0
     taille = lambda c, f: int(min(MAX_MNQ, np.floor(f * c / r))) if ok else 0
-    return {"seance": str(prochaine.date()), "jour_court": court, "veille": float(Cc[-1, N - 1]), "controles": heures,
+    return {"seance": str(prochaine.date()), "jour_court": court, "pas_de_trade": bool(raison), "raison": raison,
+            "veille": None if changement else float(Cc[-1, N - 1]), "controles": heures,
             "risque_1_mnq": r if ok else None,
             "tailles": {f"{f:.2f}": {"Phidias (coussin 2 500 $)": taille(2500, f), "Topstep (coussin 2 000 $)": taille(2000, f)}
                         for f in (0.15, 0.25, 0.35)}}
@@ -314,8 +323,8 @@ def tableau(etat, journal, trades_du_jour, niv=None):
     ]
     if trades_du_jour:
         lignes += [f"## Trades du {etat['derniere_date']}", ""] + [f"- {x}" for x in trades_du_jour] + [""]
-    if niv and niv["jour_court"]:
-        lignes += [f"## Seance du {niv['seance']} : fete ou demi-seance, PAS DE TRADE", "",
+    if niv and niv["pas_de_trade"]:
+        lignes += [f"## Seance du {niv['seance']} : {niv['raison']}, PAS DE TRADE", "",
                    "Le backtest ne trade pas ces jours-la. Les niveaux de la seance suivante seront publies apres.", ""]
     elif niv:
         lignes += [f"## Pour la seance du {niv['seance']} (a utiliser en direct)", "",
@@ -401,8 +410,8 @@ def main():
         msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
     if niv is None:
         pass
-    elif niv["jour_court"]:
-        msg.append(f"Seance du {niv['seance']} : fete ou demi-seance, PAS DE TRADE")
+    elif niv["pas_de_trade"]:
+        msg.append(f"Seance du {niv['seance']} : {niv['raison']}, PAS DE TRADE")
     else:
         msg.append(f"Seance du {niv['seance']} : veille {niv['veille']:,.2f} ; mouvements "
                    + " ".join(f"{c['paris']}:{c['sigma']:.2%}" for c in niv["controles"])

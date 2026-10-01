@@ -38,4 +38,13 @@ Quatre autres corrections ont été testées, avec des règles fixées avant le 
 - achats seulement ;
 - stop sur le VWAP seul.
 
-Aucune ne fait mieux que la version corrigée sur 2023-2026 : elles ne sont pas retenues.
+Aucune ne passe le tri : chacune fait moins bien que la version corrigée sur 2017-2022 ou sur
+2023-2026. Les achats seuls font un peu mieux sur 2023-2026 (t 2,07 contre 2,00), mais moins bien sur
+2017-2022 (1,97 contre 2,78), et leur écart avec la version corrigée n'est pas significatif. Elles ne
+sont pas retenues.
+
+Après la revue de code :
+- les niveaux publiés n'annoncent plus de veille prise sur l'ancien contrat : ils disent « pas de
+  trade (changement de contrat) », comme le backtest ;
+- le script TradingView exige au moins 370 minutes pour compter une séance comme complète, comme le
+  robot.

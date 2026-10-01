@@ -71,6 +71,7 @@ var bool court = false
 var int posOrdres = 0                                          // position des ordres affiches (0 si taille nulle)
 var bool actifHier = false                                     // la seance precedente pouvait etre tradee
 var bool finVue = false                                        // la minute de 15 h 59 de la seance a ete vue
+var int barresJour = 0                                         // minutes presentes dans la seance (complete : au moins 370)
 
 nouvelleSeance = enSeance and (na(jourCourant) or jourNY != jourCourant)
 
@@ -81,7 +82,7 @@ if nouvelleSeance
         pointsJour += sens * (derniereCloture - entree)
         sens := 0
     // correction V1 : seule une seance complete (9 h 30 - 15 h 59, pas une demi-seance) entre dans la moyenne et sert de veille
-    completeHier = seanceVue and debutComplet and finVue and not court
+    completeHier = seanceVue and debutComplet and finVue and barresJour >= 370 and not court
     if completeHier
         matrix.add_row(mouvements, matrix.rows(mouvements), mouvJour.copy())
         if matrix.rows(mouvements) > MEMOIRE
@@ -95,6 +96,7 @@ if nouvelleSeance
     if completeHier
         veille := derniereCloture
     finVue := false
+    barresJour := 0
     ouvJour := open
     debutComplet := minuteSeance == 0
     court := jourCourt(annee, mois, jourMois, jourSemaine)
@@ -146,6 +148,7 @@ if enSeance and seanceVue
                 allers += 1
         idxMouv += 1
     derniereCloture := close
+    barresJour += 1
     if minuteSeance == 389
         finVue := true
 // fin de seance : tout est ferme a 15 h 59 ; si cette minute manque, a la premiere minute apres la seance
