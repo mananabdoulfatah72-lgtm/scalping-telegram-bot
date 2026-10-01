@@ -1,0 +1,16 @@
+Zone corrigee V1 seule, 1 MNQ, frais reels, regles Phidias du robot. 2011-03-02 -> 2026-09-25, un depart par semaine, suivi 12 mois.
+
+=== departs 2011-2021 (540 departs)
+  ancienne (0 MNQ possible)  | challenge valide en 12 mois  21% | challenges commences 1.23 | comptes perdus 0.23 | seances a 0 MNQ 112.7 sur 252 | recu : moyenne     29 $, mediane      0 $, rien  97%
+  nouvelle (1 MNQ minimum)   | challenge valide en 12 mois  32% | challenges commences 1.85 | comptes perdus 0.85 | seances a 0 MNQ   0.0 sur 252 | recu : moyenne     48 $, mediane      0 $, rien  95%
+
+=== departs 2023-2025 (136 departs)
+  ancienne (0 MNQ possible)  | challenge valide en 12 mois  42% | challenges commences 1.00 | comptes perdus 0.00 | seances a 0 MNQ 122.5 sur 252 | recu : moyenne     83 $, mediane      0 $, rien  93%
+  nouvelle (1 MNQ minimum)   | challenge valide en 12 mois  67% | challenges commences 1.88 | comptes perdus 0.88 | seances a 0 MNQ   0.0 sur 252 | recu : moyenne     83 $, mediane      0 $, rien  93%
+
+=== Rejeu unique du robot depuis le 30 decembre 2022 (comme zone/README.md)
+  ancienne : solde final 50,926 $ | recu 0 $ | seances a 0 MNQ 245 | evenements :
+     2023-06-08 CHALLENGE REUSSI : passage au compte finance virtuel
+  nouvelle : solde final 53,494 $ | recu 0 $ | seances a 0 MNQ 0 | evenements :
+     2023-06-08 CHALLENGE REUSSI : passage au compte finance virtuel
+     2026-01-23 COMPTE PERDU (limite touchee)
