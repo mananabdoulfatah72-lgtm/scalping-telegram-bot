@@ -73,3 +73,4 @@ date,dossier,essai,resultat
 2026-09-30,zone_failles,zone de bruit NQ : 5 variantes (donnees propres adoptee ; 1 trade/jour, filtre GEX, achats seuls, stop VWAP rejetees sur 2023-2026),voir zone_failles/README.md
 2026-10-01,zone_optimisation,zone de bruit NQ : optimisation glissante (108 reglages x 3 versions) ; V1 reste ; 33 conditions descriptives,voir zone_optimisation/README.md
 2026-10-01,zone_sources,zone de bruit NQ : 5 nouvelles sources (ES, volume, tendance de fond, rebond, range de la nuit) ; aucune retenue (rebond le plus proche t diff 1.44),voir zone_sources/README.md
+2026-10-01,zone_sources,decision de l'utilisateur : rebond (S4) ajoute au robot zone en argent virtuel malgre le critere non rempli (t diff 1.44 < 2.33),voir zone_sources/README.md

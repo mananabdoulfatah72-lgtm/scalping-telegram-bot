@@ -58,7 +58,21 @@ Ce qu'on en tire :
 - **Le rebond après forte baisse (S4) est la seule piste qui améliore les trois périodes.** Il ajoute
   8 090 $ sur 2023-2026 pour 1 MNQ. C'est un second moteur, peu lié à la zone, qui ne trade qu'environ
   24 jours par an. Mais son apport n'est pas assez sûr pour passer le seuil (t 1,44 contre 2,33 exigé) :
-  il n'est pas ajouté au robot. Il reste un candidat à suivre en argent virtuel, à part, pour voir s'il
-  tient sur des mois nouveaux.
+  selon ces règles, il n'aurait pas été ajouté au robot. Il reste un candidat à suivre en argent virtuel
+  pour voir s'il tient sur des mois nouveaux.
 
 **La zone corrigée V1 reste la version de référence.**
+
+## Décision de l'utilisateur (1er octobre 2026) : le rebond entre dans le robot, en test
+
+L'utilisateur choisit d'ajouter S4 au robot de la zone corrigée, en argent virtuel. Ses raisons : le
+rebond apporte 8 090 $ sur 2023-2026, une période que la règle n'avait jamais vue, et c'est une
+information que la zone n'utilise pas. C'est sa décision, en connaissance de cause : le critère fixé
+d'avance n'est pas rempli (t 1,44 contre 2,33). Le suivi en argent virtuel doit maintenant le juger.
+
+Porté dans `zone/robot.py` sur main (fonction `rebond`). Rejoué sur 2023-2026, le robot redonne
+exactement les gains de `sources.py` : 18 758 $ pour 1 MNQ, zone comprise. Le robot compte 3 jours de
+rebond de plus que la recherche (375 contre 372 sur 2011-2026). Ce sont 3 jours à gain net nul (1,5
+point brut, exactement les frais), que `sources.py` ne compte pas comme trades. Aucun signal de rebond
+depuis le départ du robot (25 septembre 2026) : son compte virtuel est inchangé. Le rebond n'est pas
+encore dans le script TradingView.
