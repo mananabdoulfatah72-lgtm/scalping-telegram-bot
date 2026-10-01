@@ -57,7 +57,7 @@ Ce qu'on en tire :
   marché haussier, pas un avantage.
 - **Le rebond après forte baisse (S4) est la seule piste qui améliore les trois périodes.** Il ajoute
   8 090 $ sur 2023-2026 pour 1 MNQ. C'est un second moteur, peu lié à la zone, qui ne trade qu'environ
-  8 jours par an. Mais son apport n'est pas assez sûr pour passer le seuil (t 1,44 contre 2,33 exigé) :
+  24 jours par an. Mais son apport n'est pas assez sûr pour passer le seuil (t 1,44 contre 2,33 exigé) :
   il n'est pas ajouté au robot. Il reste un candidat à suivre en argent virtuel, à part, pour voir s'il
   tient sur des mois nouveaux.
 
