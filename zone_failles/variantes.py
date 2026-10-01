@@ -68,8 +68,8 @@ def main():
         ecrire(f"  {n} : mieux que V1 sur NQ 2011-2016 et 2017-2022 {'OUI' if e1 else 'non'} | pas pire sur ES {'OUI' if e2 else 'non'}"
                f" | 2023-2026 mieux que V1, t de la difference {diff:+.2f} {'OUI' if e3 else 'non'} => {'RETENUE' if passe else 'rejetee'}")
     ecrire(f"\nVariantes retenues : {retenues or 'aucune'}")
-    J, O, H, L, C, P, X = charger("nasdaq100", fin=None)
     if retenues:
+        J, O, H, L, C, P, X = charger("nasdaq100", fin=None)
         kw = {}
         vs = variantes(J, O, H, L, C, P, X, Q)
         for n in retenues:

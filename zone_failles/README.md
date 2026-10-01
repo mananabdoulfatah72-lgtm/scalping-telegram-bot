@@ -13,7 +13,7 @@ Sur NQ, 2011-2022 :
 
 | Constat | Chiffres |
 |---|---|
-| **Les frais expliquent l'échec de 2011-2016** | Avant frais, t +3,89 sur 2011-2022 (+1,28 sur 2011-2016). 1,5 point de frais valait 6,5 pb du prix en 2011, 3,3 pb en 2016, 1 à 1,5 pb depuis 2020. |
+| **Les frais pèsent lourd en 2011-2016** | Avant frais, t +3,89 sur 2011-2022, mais seulement +1,28 sur 2011-2016 : la règle y était déjà faible, et les frais l'ont rendue perdante. 1,5 point de frais valait 6,5 pb du prix en 2011, 3,3 pb en 2016, 1 à 1,5 pb depuis 2020. |
 | **Les allers-retours coûtent tout** | Jours à un seul trade : +11,1 pts par trade (t +7,6). Jours à 2 trades ou plus : −4,5 pts par trade (t −8,5). Trades coupés au bout de 30 min : −14,6 pts, 11 % de gagnants. |
 | **Le régime compte** | GEX de la veille sous sa médiane : t +1,86 ; au-dessus : −0,92. Volatilité forte : t +1,42 ; calme : −0,20. VIX en déport : t +1,47. |
 | **Les achats portent le résultat** | Achats : t +1,05 après frais ; ventes : −0,04 (toutes deux positives avant frais). |
@@ -85,11 +85,41 @@ Sur ES, V1 ne change rien (t −1,72) et toutes les variantes restent négatives
   Le robot corrigé donne exactement le backtest corrigé : 2 287 jours de trade, écart nul.
 - **Aucune « amélioration » ne tient** hors de l'échantillon. La zone telle que publiée, corrigée de
   la faille de données, reste la meilleure version connue.
-- **Le vrai frein était les frais, pas la règle.** Aux frais d'aujourd'hui (0,5 pb avec le NQ à
-  30 900), la version corrigée aurait fait t +3,61 sur 2011-2022, contre +0,81 aux frais de chaque
-  époque. Le NQ vaut aujourd'hui 10 fois plus qu'en 2011, pour les mêmes 1,5 point de frais.
-  L'avantage de la zone est plus régulier qu'il n'y paraissait, et les frais pèsent peu au prix
-  actuel.
+- **Les frais pèsent moins aujourd'hui, mais ils n'expliquent pas tout.** Le NQ vaut environ 13,5 fois
+  son prix moyen de 2011, pour les mêmes 1,5 point de frais. Aux frais d'aujourd'hui (0,5 pb avec le NQ
+  à 30 900), la version corrigée fait t +3,61 sur 2011-2022, mais ce chiffre vient de 2017-2022. Sur
+  2011-2016, elle ne fait que t +1,22 : la règle elle-même y gagnait peu (1,9 pb brut par trade,
+  contre 6,0 pb en 2017-2022). Et 0,5 pb était moins qu'un tick aux prix de 2011-2016 : ces frais-là
+  n'existaient pas à l'époque. L'avantage de la zone est donc récent, comme dit avant. Au prix actuel,
+  les frais ne le mangent presque plus.
 - **Les pertes viennent des allers-retours**, inhérents à une règle de suivi de tendance : trades
   coupés en 30 min, jours à plusieurs entrées. Les couper (V2) fait perdre les bonnes journées.
   C'est le prix du système.
+
+## 4. Revue de code maximale (1er octobre 2026)
+
+Constats confirmés :
+- le robot corrigé donne exactement le backtest V1 (2 287 jours de trade, écart nul) ;
+- aucun regard vers le futur ;
+- règles pré-enregistrées suivies, résultats reproductibles ;
+- la logique du script TradingView, rejouée minute par minute, donne les mêmes trades que V1, sauf les
+  jours de changement de contrat.
+
+Corrections apportées :
+- **Robot, niveaux publiés** : il publiait encore une « veille » de l'ancien contrat quand une
+  demi-séance était aussi le premier jour du nouveau (cas du 20 juin 2024). Il annonce maintenant
+  « pas de trade (changement de contrat) », comme le backtest. Contrôle sur 61 séances : 0 écart.
+- **Script TradingView** : une séance n'est complète qu'avec au moins 370 minutes, comme dans le
+  robot. Le guide précise qu'il faut 21 000 à 22 000 barres pendant les trois semaines qui suivent une
+  fête.
+- **Même définition du contrat** dans le backtest et le robot (segment entre deux changements
+  d'échéance). Repli sans volumes ajouté.
+- **Vérification dans les deux sens** : mêmes jours et mêmes gains que la référence.
+- **Test commité** : `test_v1.py` (pas de regard vers le futur, veille du même contrat ; robot =
+  backtest si `ROBOT_ZONE` donne le chemin du robot).
+- Après tout cela, `variantes.txt` et `autopsie.txt` sont identiques.
+- **Textes corrigés** : la phrase sur les frais (voir plus haut) et la raison du rejet de V4 sur main.
+
+**Biais noté, verdict inchangé** : V3 (filtre GEX) ne trade pas les 323 premières séances, faute de
+GEX sur 252 jours. Elle était donc comparée à V1 sur des jours où elle restait à plat, ce qui
+l'avantageait sur 2011-2016. Elle échoue quand même, sur 2017-2022 et sur 2023-2026.

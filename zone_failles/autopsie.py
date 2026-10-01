@@ -41,11 +41,12 @@ def main():
     for marche, (fichier, pt) in MARCHES.items():
         J, O, H, L, C, P, X = charger(fichier)
         assert J.max() <= pd.Timestamp("2022-12-31")
-        cout = st_cout = Z.st.cout_aller_retour(fichier)
+        cout = Z.st.cout_aller_retour(fichier)
         t = Z.journal(J, O, H, L, C, P, X)
         # verification : meme resultat que le backtest de reference
         ref = Z.st.zone_de_bruit(J, O, H, L, C, P, X)
         par_jour = t.groupby("jour")["brut"].sum()
+        assert set(par_jour.index) == set(ref.index), "jours de trade differents du backtest de reference"
         assert np.allclose(par_jour.reindex(ref.index).values, ref["brut"].values) and (t.groupby("jour").size().reindex(ref.index).values == ref["allers"].values).all()
         ok = Z.st.journees_completes(P) & ~X["echeance"]
         t = t[ok[t["d"].values]].copy()                    # jours retenus par les tournois (pas de changement d'echeance)

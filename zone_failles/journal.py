@@ -15,17 +15,22 @@ import strategies as st  # noqa: E402
 N = 390
 
 
+def vwap_jour(H, L, C, X):
+    """VWAP de la seance depuis 9 h 30 ; sans volumes, prix moyen cumule (comme st.zone_de_bruit)."""
+    typique = (H + L + C) / 3
+    if X.get("V") is None:
+        return np.cumsum(typique, axis=1) / np.arange(1, N + 1)
+    cumv = np.cumsum(X["V"], axis=1)
+    return np.where(cumv > 0, np.cumsum(typique * X["V"], axis=1) / np.where(cumv > 0, cumv, 1), np.cumsum(typique, axis=1) / np.arange(1, N + 1))
+
+
 def niveaux(J, O, H, L, C, P, X, jours_moyenne=14):
     """sigma, veille, VWAP, ok : exactement comme st.zone_de_bruit."""
     ok = st.journees_completes(P)
     ouverture = O[:, 0]
     veille = st.cloture_veille(C, X)
     sigma = pd.DataFrame(np.abs(C / ouverture[:, None] - 1)).rolling(jours_moyenne, min_periods=jours_moyenne).mean().shift(1).values
-    typique = (H + L + C) / 3
-    V = X["V"]
-    cumv = np.cumsum(V, axis=1)
-    vwap = np.where(cumv > 0, np.cumsum(typique * V, axis=1) / np.where(cumv > 0, cumv, 1), np.cumsum(typique, axis=1) / np.arange(1, N + 1))
-    return sigma, veille, vwap, ok
+    return sigma, veille, vwap_jour(H, L, C, X), ok
 
 
 def journal(J, O, H, L, C, P, X, sigma=None, veille=None, vwap=None, ok=None, pas=30):
@@ -65,16 +70,16 @@ def journal(J, O, H, L, C, P, X, sigma=None, veille=None, vwap=None, ok=None, pa
 def niveaux_propres(J, O, H, L, C, P, X, jours_moyenne=14):
     """V1 : sigma sur les 14 dernieres seances COMPLETES (a chaque minute), veille = cloture de la derniere seance
     complete du meme contrat. Les seances incompletes (feries CME, fermetures anticipees) ne servent plus."""
-    sigma0, _, vwap, ok = niveaux(J, O, H, L, C, P, X, jours_moyenne)
-    comp = ok
+    ok = st.journees_completes(P)
+    vwap = vwap_jour(H, L, C, X)
     mv = np.abs(C / O[:, :1] - 1)
     sigma = np.full_like(mv, np.nan)
-    sigma[comp] = pd.DataFrame(mv[comp]).rolling(jours_moyenne, min_periods=jours_moyenne).mean().shift(1).values
-    contrat = X.get("contrat")
-    idx = np.where(comp, np.arange(len(J)), -1)
+    sigma[ok] = pd.DataFrame(mv[ok]).rolling(jours_moyenne, min_periods=jours_moyenne).mean().shift(1).values
+    # meme contrat = meme segment entre deux changements d'echeance (meme definition que zone/robot.py sur main)
+    segment = np.cumsum(X["echeance"])
+    idx = np.where(ok, np.arange(len(J)), -1)
     prec = np.r_[-1, np.maximum.accumulate(idx)[:-1]]
-    if contrat is not None:
-        prec = np.where((prec >= 0) & (contrat[np.maximum(prec, 0)] == contrat), prec, -1)
+    prec = np.where((prec >= 0) & (segment[np.maximum(prec, 0)] == segment), prec, -1)
     veille = np.where(prec >= 0, C[np.maximum(prec, 0), N - 1], np.nan)
     return sigma, veille, vwap, ok
 
