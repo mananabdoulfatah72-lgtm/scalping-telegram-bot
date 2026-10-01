@@ -76,3 +76,4 @@ date,dossier,essai,resultat
 2026-10-01,zone_sources,decision de l'utilisateur : rebond (S4) ajoute au robot zone en argent virtuel malgre le critere non rempli (t diff 1.44 < 2.33),voir zone_sources/README.md
 2026-10-01,zone_sources,rebond version executable (jours de changement de contrat inclus) : 2023-2026 +6 420 $ ; t zone+rebond 1.91 < 2.00 ; t apport 1.21 ; suivi a part hors compte du robot,voir zone_sources/README.md
 2026-10-01,zone_taille,taille 1 MNQ minimum (demande de l'utilisateur) : plus de gel ; challenge valide 12 mois 21->32 % (2011-2021) et 42->67 % (2023-2025) ; ~0.9 compte perdu de plus par an ; recu quasi nul,voir zone_taille/README.md
+2026-10-01,zone_retrait,retrait compte finance Phidias : regles publiques corrigees ; 128 gestions (f challenge/avant/apres blocage, marge) ; toutes negatives 2011-2020 ; choisie echoue au controle 2023-2024 (-70 vs -22 $/an) ; gestion actuelle gardee,voir zone_retrait/README.md

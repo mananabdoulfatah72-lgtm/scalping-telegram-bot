@@ -1,0 +1,38 @@
+Controle : simulateur rapide = une_journee du robot (12 carrieres tirees au hasard) : OK
+Zone V1 seule, 1 MNQ minimum, regles Phidias 50K Fundamental publiques (README.md), challenge 164 $. 2011-03-02 -> 2026-09-25
+
+=== Choix : departs 2011-2020 (489 departs, 24 mois chacun)
+  actuelle (0,15 / 0,15 / 0,15 / 0 $), rang 5 sur 128 : net   -184 $/an | recu     61 $/an (mediane     0) | challenges 1.49/an | comptes perdus 0.99/an | retraits 0.07/an | rien en 24 mois  85%
+  10 meilleures :
+     1. f challenge 0.15 | avant blocage 0.15 | apres 0.15 | marge 1000 $ : net   -164 $/an | recu     80 $/an (mediane     0) | challenges 1.49/an | comptes perdus 0.99/an | retraits 0.09/an | rien en 24 mois  87%
+     2. f challenge 0.25 | avant blocage 0.25 | apres 0.15 | marge    0 $ : net   -165 $/an | recu    319 $/an (mediane     0) | challenges 2.95/an | comptes perdus 2.45/an | retraits 0.20/an | rien en 24 mois  71%
+     3. f challenge 0.25 | avant blocage 0.25 | apres 0.15 | marge 1000 $ : net   -178 $/an | recu    306 $/an (mediane     0) | challenges 2.95/an | comptes perdus 2.45/an | retraits 0.20/an | rien en 24 mois  71%
+     4. f challenge 0.15 | avant blocage 0.25 | apres 0.15 | marge    0 $ : net   -179 $/an | recu     79 $/an (mediane     0) | challenges 1.57/an | comptes perdus 1.07/an | retraits 0.05/an | rien en 24 mois  90%
+     5. f challenge 0.15 | avant blocage 0.15 | apres 0.15 | marge    0 $ : net   -184 $/an | recu     61 $/an (mediane     0) | challenges 1.49/an | comptes perdus 0.99/an | retraits 0.07/an | rien en 24 mois  85%
+     6. f challenge 0.15 | avant blocage 0.50 | apres 0.15 | marge    0 $ : net   -184 $/an | recu     79 $/an (mediane     0) | challenges 1.60/an | comptes perdus 1.10/an | retraits 0.05/an | rien en 24 mois  90%
+     7. f challenge 0.15 | avant blocage 0.50 | apres 0.15 | marge 1000 $ : net   -186 $/an | recu     77 $/an (mediane     0) | challenges 1.60/an | comptes perdus 1.10/an | retraits 0.05/an | rien en 24 mois  90%
+     8. f challenge 0.15 | avant blocage 0.35 | apres 0.15 | marge    0 $ : net   -188 $/an | recu     79 $/an (mediane     0) | challenges 1.62/an | comptes perdus 1.12/an | retraits 0.05/an | rien en 24 mois  90%
+     9. f challenge 0.15 | avant blocage 0.35 | apres 0.15 | marge 1000 $ : net   -188 $/an | recu     79 $/an (mediane     0) | challenges 1.62/an | comptes perdus 1.12/an | retraits 0.05/an | rien en 24 mois  90%
+    10. f challenge 0.25 | avant blocage 0.15 | apres 0.15 | marge    0 $ : net   -191 $/an | recu    250 $/an (mediane     0) | challenges 2.69/an | comptes perdus 2.19/an | retraits 0.18/an | rien en 24 mois  65%
+  mediane des 128 : net -497 $/an
+  voisins de la gestion choisie (un reglage change) :
+     f_ch   0.15:-164  0.25:-202  0.35:-441  0.5:-508
+     f_av   0.15:-164  0.25:-218  0.35:-188  0.5:-186
+     f_ap   0.15:-164  0.25:-233  0.35:-243  0.5:-268
+     marge  0:-184  1000:-164
+
+=== Controle : departs 2023-01 a 2024-09-11 (85 departs, 24 mois) ; une seule periode de marche
+  actuelle (0.15, 0.15, 0.15, 0.0) : net    -22 $/an | recu    158 $/an (mediane     0) | challenges 1.09/an | comptes perdus 0.59/an | retraits 0.11/an | rien en 24 mois  79%
+  choisie  (np.float64(0.15), np.float64(0.15), np.float64(0.15), np.float64(1000.0)) : net    -70 $/an | recu    109 $/an (mediane     0) | challenges 1.09/an | comptes perdus 0.59/an | retraits 0.11/an | rien en 24 mois  79%
+
+=== Controle sur 12 mois : departs 2023-2025 (136 departs)
+  actuelle : net   -114 $/an | recu    197 $/an (mediane     0) | challenges 1.90/an | comptes perdus 0.90/an | retraits 0.13/an | rien en 12 mois  87%
+  choisie  : net   -175 $/an | recu    137 $/an (mediane     0) | challenges 1.90/an | comptes perdus 0.90/an | retraits 0.13/an | rien en 12 mois  87%
+
+=== Variante (information) : 10 jours de trading au lieu de 10 jours qualifiants (>= 150 $)
+  actuelle 2011-2020 : net    -86 $/an | recu    159 $/an (mediane     0) | challenges 1.49/an | comptes perdus 0.99/an | retraits 0.13/an | rien en 24 mois  73%
+  actuelle 2023-2024 : net    -22 $/an | recu    158 $/an (mediane     0) | challenges 1.09/an | comptes perdus 0.59/an | retraits 0.11/an | rien en 24 mois  79%
+  choisie  2011-2020 : net    -68 $/an | recu    176 $/an (mediane     0) | challenges 1.49/an | comptes perdus 0.99/an | retraits 0.15/an | rien en 24 mois  75%
+  choisie  2023-2024 : net    -70 $/an | recu    109 $/an (mediane     0) | challenges 1.09/an | comptes perdus 0.59/an | retraits 0.11/an | rien en 24 mois  79%
+
+Adoption (README) : score de la choisie sur le controle -70 $/an contre -22 $/an pour l'actuelle => non adoptee (seules les regles corrigees sont portees)
