@@ -12,9 +12,11 @@ challenge (rebond apres forte baisse, fonction rebond : gain pour 1 MNQ dans le 
 - taille : nombre de MNQ = 0,15 x coussin / ecart-type des gains des 60 dernieres seances (1 MNQ),
   coussin = solde - limite de perte, arrondi en dessous, AU MOINS 1 MNQ (depuis le 1er octobre 2026 : avant, le compte
   tombait a 0 MNQ sous environ 1 400 $ de coussin et restait gele). Plus le compte s'approche de la limite, plus il reduit.
-- challenge Phidias 50K (regles a verifier) : +4 000 $ a atteindre, perte max 2 500 $ sous le plus haut de fin
-  de journee. Compte finance : limite bloquee a 50 100 $ quand le solde atteint 52 600 $ ; retrait tous les
-  21 jours de ce qui depasse 52 600 $ si la meilleure journee <= 30 % du gain ; 80 % du retrait pour toi.
+- challenge Phidias 50K Fundamental (regles publiques d'octobre 2026, a verifier ; zone_retrait/ sur la branche de
+  recherche) : +4 000 $ a atteindre, perte max 2 500 $ sous le plus haut de fin de journee, 164 $ le challenge.
+  Compte finance : limite bloquee a 50 100 $ quand le solde atteint 52 600 $ ; retrait possible apres 10 jours
+  qualifiants (au moins +150 $) depuis le dernier retrait, de ce qui depasse 52 600 $ (+ MARGE_RETRAIT), 500 $ minimum
+  et 2 000 $ maximum, si la meilleure journee <= 30 % du gain depuis le dernier retrait ; 80 % du retrait pour toi.
   Un compte perdu est remplace par un nouveau challenge le lendemain.
 
 Chaque matin de semaine (GitHub Actions ; les barres minute historiques de Databento arrivent environ 8 heures apres
@@ -39,13 +41,16 @@ MINUTES = DOSSIER / "nq_1min.csv.gz"
 ETAT, JOURNAL, TABLEAU = DOSSIER / "etat.json", DOSSIER / "journal.csv", DOSSIER / "TABLEAU_DE_BORD.md"
 N, PAS, JOURS_MOYENNE = 390, 30, 14
 PT, COUT = 2.0, 1.5                     # $ par point de NQ pour 1 MNQ ; points par aller-retour (frais + glissement)
-F, MIN_MNQ, MAX_MNQ = 0.15, 1, 50      # au moins 1 MNQ depuis le 1er octobre 2026 (sinon le compte se gelait a 0)
+F_CHALLENGE, F_AVANT, F_APRES = 0.15, 0.15, 0.15   # f du challenge, du compte finance avant puis apres le blocage de la limite
+MIN_MNQ, MAX_MNQ = 1, 50               # au moins 1 MNQ depuis le 1er octobre 2026 (sinon le compte se gelait a 0)
 CAPITAL, OBJECTIF, PERTE = 50_000.0, 4_000.0, 2_500.0
-BLOCAGE, SEUIL_RETRAIT, PART, PERIODE = 50_100.0, 52_600.0, 0.80, 21
+BLOCAGE, SEUIL_RETRAIT, PART, PRIX_CHALLENGE = 50_100.0, 52_600.0, 0.80, 164.0
+JOURS_QUALIF, GAIN_QUALIF, RETRAIT_MIN, RETRAIT_MAX, REGULARITE = 10, 150.0, 500.0, 2_000.0, 0.30
+MARGE_RETRAIT = 0.0                     # marge gardee en plus des 52 600 $ apres un retrait
 PLAFOND_DATABENTO = 2.0                 # $ au maximum par telechargement
-HISTORIQUE = ("backtest 2011-2026 de la zone seule, version d'origine (avant la correction V1 et sans le rebond, non recalcule) : une tentative de challenge reussit 39 % du temps et saute 4 % "
-              "(les autres n'ont pas fini) ; environ 1 chance sur 3 de valider en 12 mois ; une fois finance, "
-              "environ 680 $ recus par an en moyenne, rien dans 86 % des cas")
+HISTORIQUE = ("rejeu de cette gestion avec les regles Phidias publiques d'octobre 2026 (zone_retrait/ sur la branche de "
+              "recherche), departs 2023-2024 suivis 24 mois : environ 160 $ recus par an pour 1,1 challenge paye par an "
+              "(164 $ chacun), rien recu dans 79 % des departs. Aucune autre gestion testee (128) ne fait mieux de facon fiable")
 
 
 # ----------------------------------------------------------------------------- donnees
@@ -291,7 +296,7 @@ def niveaux(minutes, r):
 # ----------------------------------------------------------------------------- comptes virtuels
 def nouveau_challenge(etat, date):
     etat["tentatives"].append({"numero": len(etat["tentatives"]) + 1, "debut": date, "fin": None, "issue": "en cours"})
-    etat.update(phase="challenge", solde=CAPITAL, haut=CAPITAL, meilleur=0.0, gain_periode=0.0, jours_finance=0)
+    etat.update(phase="challenge", solde=CAPITAL, haut=CAPITAL, meilleur=0.0, gain_periode=0.0, jours_finance=0, jours_qualifies=0)
 
 
 def lire_etat(d):
@@ -312,8 +317,9 @@ def une_journee(etat, x, date):
         etat["tentatives"][-1]["debut"] = date
     haut = etat["haut"]
     plancher = (BLOCAGE if haut >= SEUIL_RETRAIT else haut - PERTE) if finance else haut - PERTE
+    f = (F_APRES if haut >= SEUIL_RETRAIT else F_AVANT) if finance else F_CHALLENGE
     coussin = etat["solde"] - plancher
-    n = int(np.clip(np.floor(F * coussin / x["risque1"]), MIN_MNQ, MAX_MNQ)) if x["risque1"] > 0 else MIN_MNQ
+    n = int(np.clip(np.floor(f * coussin / x["risque1"]), MIN_MNQ, MAX_MNQ)) if x["risque1"] > 0 else MIN_MNQ
     jour, creux = n * x["gain"], n * x["pire"]
     ligne = {"date": date, "phase": etat["phase"], "tentative": etat["tentatives"][-1]["numero"], "mnq": n,
              "gain": round(jour, 2), "gain_1_mnq": round(x["gain"], 2), "gain_rebond_1_mnq": round(x["rebond"], 2),
@@ -332,16 +338,17 @@ def une_journee(etat, x, date):
     if not finance and etat["solde"] - CAPITAL >= OBJECTIF:
         ligne.update(solde=round(etat["solde"], 2), evenement="CHALLENGE REUSSI : passage au compte finance virtuel")
         etat["tentatives"][-1].update(fin=date, issue="reussi")
-        etat.update(phase="finance", solde=CAPITAL, haut=CAPITAL, meilleur=0.0, gain_periode=0.0, jours_finance=0)
+        etat.update(phase="finance", solde=CAPITAL, haut=CAPITAL, meilleur=0.0, gain_periode=0.0, jours_finance=0, jours_qualifies=0)
     elif finance:
         etat["jours_finance"] += 1
         etat["meilleur"], etat["gain_periode"] = max(etat["meilleur"], jour), etat["gain_periode"] + jour
-        if (etat["jours_finance"] % PERIODE == 0 and etat["solde"] > SEUIL_RETRAIT and etat["gain_periode"] > 0
-                and etat["meilleur"] <= 0.3 * etat["gain_periode"]):
-            retrait = etat["solde"] - SEUIL_RETRAIT
+        etat["jours_qualifies"] = etat.get("jours_qualifies", 0) + int(jour >= GAIN_QUALIF)
+        retrait = min(RETRAIT_MAX, etat["solde"] - SEUIL_RETRAIT - MARGE_RETRAIT)
+        if (etat["jours_qualifies"] >= JOURS_QUALIF and retrait >= RETRAIT_MIN and etat["gain_periode"] > 0
+                and etat["meilleur"] <= REGULARITE * etat["gain_periode"]):
             etat["recu_total"] += PART * retrait
             etat["solde"] -= retrait
-            etat["meilleur"], etat["gain_periode"] = 0.0, 0.0
+            etat["meilleur"], etat["gain_periode"], etat["jours_qualifies"] = 0.0, 0.0, 0
             ligne.update(retrait=round(PART * retrait, 2), evenement=f"RETRAIT virtuel : {PART * retrait:,.0f} $ pour toi")
     ligne.setdefault("solde", round(etat["solde"], 2))
     return ligne

@@ -12,8 +12,9 @@ financé virtuel avec retraits. Tableau de bord : [`robot/TABLEAU_DE_BORD.md`](r
 - Databento publie les barres minute environ 8 heures après la séance : chaque séance est rejouée le
   lendemain matin (heure de Paris). Pour trader en vrai, il faudrait recevoir les signaux en direct,
   toutes les 30 minutes.
-- Historique : une tentative réussit 39 % du temps et saute 4 % du temps. Une fois financé, le compte
-  rapporte environ 680 $ par an en moyenne, et rien dans 86 % des cas. Ce n'est pas un revenu.
+- Historique, refait le 1er octobre 2026 avec les règles Phidias publiques (`zone_retrait/` sur la
+  branche de recherche) : sur 24 mois, environ 160 $ reçus par an, pour 1,1 challenge payé par an à
+  164 $. Rien n'est reçu dans 79 % des départs. Ce n'est pas un revenu (voir « Retraits » plus bas).
 
 ## Correction du 30 septembre 2026 (données propres, dite V1)
 
@@ -137,3 +138,45 @@ Page : https://claude.ai/artifact/J3yAQvPZtmSHhY74Xf4mVv (privée ; partage depu
 `zone/tableau/reference.json` (rejeu 2023-2026 pour 1 MNQ). Une routine Claude la reconstruit et la
 republie chaque jour de semaine vers 14 h 50 (Paris), après le passage du robot et avant l'ouverture
 de New York.
+
+## Retraits : règles corrigées, gestion inchangée (1er octobre 2026)
+
+Le robot supposait un retrait tous les 21 jours, sans plafond. D'après les sources publiques d'octobre
+2026 (le site de Phidias est bloqué depuis l'environnement de calcul, donc à vérifier), le compte
+financé 50K Fundamental fonctionne ainsi :
+- retrait possible après 10 jours qualifiants depuis le dernier retrait (jours à au moins +150 $) ;
+- de 500 $ à 2 000 $ par retrait, sur ce qui dépasse 52 600 $ ;
+- meilleure journée ≤ 30 % du gain depuis le dernier retrait ;
+- 80 % pour toi ;
+- challenge à 164 $ (souvent moins avec un code promo).
+
+Le robot suit maintenant ces règles.
+
+L'utilisateur voulait retirer plus. 128 gestions ont été essayées (`zone_retrait/`), avec des règles
+fixées avant le calcul :
+- taille du challenge ;
+- taille du compte financé, avant et après le blocage de la limite ;
+- marge gardée après un retrait.
+
+**Aucune ne gagne de l'argent de façon fiable** :
+
+| Départs suivis 24 mois | Reçu par an | Challenges payés par an | Gain net par an (164 $ le challenge) | Départs sans rien |
+|---|---|---|---|---|
+| 2011-2020, gestion actuelle | 61 $ | 1,49 | −184 $ | 85 % |
+| 2011-2020, meilleure des 128 | 80 $ | 1,49 | −164 $ | 87 % |
+| 2023-2024, gestion actuelle | 158 $ | 1,09 | −22 $ | 79 % |
+| 2023-2024, meilleure du passé | 109 $ | 1,09 | −70 $ | 79 % |
+
+- La gestion actuelle est déjà dans le haut de la grille (5e sur 128). La médiane des 128 fait −497 $
+  par an. Prendre plus de risque fait sauter plus de comptes qu'il ne rapporte de retraits.
+- Avec un challenge à 65,60 $ (code promo), une gestion plus agressive (f = 0,25 au challenge et
+  avant blocage) gagnait +126 $ par an sur 2011-2020. Mais sur 2023-2024 elle fait moins bien que
+  l'actuelle : +27 $ contre +86 $ par an.
+
+**Pourquoi.** Le frein n'est pas la gestion, c'est l'avantage. La zone gagne en moyenne 11,5 $ par
+séance pour 1 MNQ, avec un écart-type de 202 $ (Sharpe annuel 0,9 sur 2023-2026, 0,3 sur 2011-2020).
+Avant le moindre retrait, il faut monter de 2 600 $ sans jamais reculer de 2 500 $. Ensuite il faut
+10 jours à +150 $, alors qu'à 1 MNQ, seuls 14 % des séances y arrivent. Avec un tel avantage, le
+compte saute à peu près aussi souvent qu'il arrive au premier retrait. Pour retirer vraiment plus, il
+faut une stratégie au rapport gain/risque nettement meilleur, ou plusieurs sources de gain peu liées
+qui tradent ensemble.

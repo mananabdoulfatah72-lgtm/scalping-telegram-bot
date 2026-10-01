@@ -132,10 +132,10 @@ footer { color: var(--doux); font-size: 11px; text-align: center; line-height: 1
       </div>
       <div class="chiffres">
         <div><div class="l">Taille demain</div><div class="v" id="c-taille">—</div></div>
-        <div><div class="l">Tentatives</div><div class="v" id="c-tent">—</div></div>
+        <div><div class="l">Challenges payés</div><div class="v" id="c-tent">—</div></div>
         <div><div class="l">Retraits reçus</div><div class="v" id="c-recu">—</div></div>
       </div>
-      <p class="note" id="regles">Règles virtuelles : +4 000 $ à atteindre, perte maximale 2 500 $ sous le plus haut de fin de journée. Taille = 0,15 × marge / risque d'un MNQ, arrondie en dessous, au moins 1 MNQ.</p>
+      <p class="note" id="regles">Règles virtuelles du challenge et du compte financé.</p>
     </section>
     <section class="panneau" aria-labelledby="t-compte">
       <div class="entete"><h2 id="t-compte">Compte virtuel, séance par séance</h2><span class="d" id="compte-d">—</span></div>
@@ -346,10 +346,10 @@ function resume() {
   $("c-taille").textContent = n === null ? "—" : n + " MNQ";
   const plancherTaille = r && Math.floor(F * k.marge / r) < MIN_MNQ;
   $("c-taille").className = "v" + (plancherTaille ? " mauvais" : "");
-  $("c-tent").textContent = e.tentatives.length;
+  $("c-tent").textContent = e.tentatives.length + " × 164 $";
   $("c-recu").textContent = dol(e.recu_total);
   $("regles").innerHTML = (plancherTaille ? "<b>Marge faible : la règle donnerait moins de 1 MNQ ; le robot garde 1 MNQ (minimum depuis le 1er octobre 2026).</b> " : "")
-    + "Règles virtuelles : +4 000 $ à atteindre, perte maximale 2 500 $ sous le plus haut de fin de journée. Taille = 0,15 × marge / risque d'un MNQ"
+    + "Règles virtuelles (Phidias 50K Fundamental, à vérifier) : +4 000 $ à atteindre, perte maximale 2 500 $ sous le plus haut de fin de journée. Compte financé : retrait après 10 jours à +150 $, de 500 à 2 000 $ au-dessus de 52 600 $, meilleure journée ≤ 30 % du gain, 80 % pour toi. Taille = 0,15 × marge / risque d'un MNQ"
     + (r ? ` (${nf.format(Math.round(r))} $ aujourd'hui)` : "") + ", arrondie en dessous, au moins 1 MNQ.";
 }
 
