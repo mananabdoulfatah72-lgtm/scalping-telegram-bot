@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Barres de 5 minutes des 5 marches (README.md) depuis les minutes de zone_multi/. Ecrit cache/recherche_<m>.npz
+"""Barres de 5 minutes des 7 marches (README.md, regles v2) depuis les minutes de zone_multi/ et intraday/, avec le cours
+du marche leader a la cloture de chaque barre (famille 15). Ecrit cache/recherche_<m>.npz
 (seances jusqu'au 31 decembre 2022, seules lues par l'evolution) et cache/complet_<m>.npz (toutes les seances, lues
 seulement par coffre3.py). Lancer depuis ce dossier : python3 donnees3.py"""
 import sys
@@ -21,7 +22,11 @@ MARCHES = {
     "GC": (R / "zone_multi/donnees/or_1min.csv.gz", 10.0, 0.10, 500, 810),
     "CL": (R / "zone_multi/donnees/petrole_1min.csv.gz", 100.0, 0.01, 540, 870),
     "6E": (R / "zone_multi/donnees/euro_1min.csv.gz", 12500.0, 0.0001, 500, 900),
+    "NQ": (R / "intraday/donnees/nasdaq100_1min.csv.gz", 2.0, 0.25, 570, 960),
+    "ES": (R / "intraday/donnees/sp500_1min.csv.gz", 5.0, 0.25, 570, 960),
 }
+LEADER = {"NQ": "ES", "ES": "NQ", "RTY": "ES", "YM": "ES", "CL": "ES", "GC": "6E", "6E": "GC"}
+DEBUT = pd.Timestamp("2016-01-01")       # regles v2 : 2011-2015 ne servent pas (NQ et ES)
 FIN_RECHERCHE = np.datetime64("2022-12-31")
 
 
@@ -29,6 +34,7 @@ def minutes(fichier, m0, m1):
     n = m1 - m0
     d = pd.read_csv(fichier)
     t = pd.to_datetime(d["t"])
+    d, t = d[t >= DEBUT], t[t >= DEBUT]
     minute = (t.dt.hour * 60 + t.dt.minute - m0).values
     garde = (minute >= 0) & (minute < n)
     d, t, minute = d[garde], t[garde], minute[garde]
@@ -49,9 +55,27 @@ def minutes(fichier, m0, m1):
     return pd.DatetimeIndex(jours), tab["o"], tab["h"], tab["l"], C, tab["v"], P, ech, contrat
 
 
-def construire(nom):
+def cours_leader(nom, mins):
+    """Cours du leader a la derniere minute de chaque barre de 5 minutes de `nom` (meme jour, meme heure de New York),
+    NaN si le leader n'a pas de seance ce jour-la ou pas de cours a cette heure-la."""
+    J, m0, _, _ = mins[nom]
+    Jl, m0l, Cl, Pl = mins[LEADER[nom]]
+    nb = (MARCHES[nom][4] - m0) // 5
+    fin = m0 + 5 * np.arange(nb) + 4 - m0l              # minute du leader correspondant a la fin de chaque barre
+    ok = (fin >= 0) & (fin < Cl.shape[1])
+    lc = np.full((len(J), nb), np.nan)
+    il = Jl.get_indexer(J)
+    for i, k in enumerate(il):
+        if k >= 0 and Pl[k, 0]:
+            lc[i, ok] = Cl[k, fin[ok]]
+    return lc
+
+
+def construire(nom, mins=None):
     fichier, pt, tick, m0, m1 = MARCHES[nom]
     J, O, H, L, C, V, P, ech, contrat = minutes(fichier, m0, m1)
+    if mins is not None:
+        mins[nom] = (J, m0, C, P)
     n = m1 - m0
     nb = n // 5
     complete = P[:, 0] & P[:, n - 1] & (P.sum(axis=1) >= n - 20)
@@ -80,15 +104,20 @@ def construire(nom):
 
 
 def main():
+    mins, tout = {}, {}
     for nom in MARCHES:
-        d = construire(nom)
+        tout[nom] = construire(nom, mins)
+    for nom in MARCHES:
+        d = tout[nom]
+        d["lc"] = cours_leader(nom, mins)
         r = d["jours"] <= FIN_RECHERCHE
         assert (d["prec"] < np.arange(len(r))).all()          # la veille est toujours avant : couper ne la change pas
         np.savez_compressed(ICI / "cache" / f"recherche_{nom}.npz",
                             **{k: (v[r] if isinstance(v, np.ndarray) and v.ndim >= 1 and len(v) == len(r) else v) for k, v in d.items()})
         np.savez_compressed(ICI / "cache" / f"complet_{nom}.npz", **d)
         print(f"{nom} : {len(d['jours'])} seances ({int(r.sum())} pour la recherche, jusqu'au {d['jours'][r].max()}),"
-              f" {d['nb']} barres, jouables {int((~d['interdit']).sum())}, frais {d['cout']:.5g} points", flush=True)
+              f" {d['nb']} barres, jouables {int((~d['interdit']).sum())}, frais {d['cout']:.5g} points,"
+              f" leader {LEADER[nom]} present sur {np.isfinite(d['lc']).mean():.0%} des barres", flush=True)
 
 
 if __name__ == "__main__":

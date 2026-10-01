@@ -165,3 +165,13 @@ Il ne sert pas aux familles 11 et 14.
 - On publie aussi, pour chaque finaliste et sur chaque période : Sharpe, **perte maximale** (en $ pour
   1 micro et en % de 50 000 $), part de jours gagnants, gain moyen et perte moyenne par trade. Ces mesures
   servent à décrire, pas à choisir : la sélection reste celle écrite ci-dessus.
+
+### Version 2.1 (1er octobre 2026, avant le vrai lancement)
+
+Un essai de fonctionnement du programme (2 générations, graine 1) a montré un défaut du contrôle sur
+bruit : en gardant les vrais cours du marché leader alors que les barres du marché sont mélangées, la
+famille 15 obtenait un Sharpe de 2,5 sur bruit. La clôture de chaque séance mélangée est la vraie, et le
+vrai parcours du leader laisse deviner la fin de la séance. **Correction :** sur bruit, les rendements de
+5 minutes du leader sont mélangés avec **la même permutation** que ceux du marché. Les mouvements
+simultanés restent ensemble ; l'avance de l'un sur l'autre est détruite. Les sorties de cet essai ont été
+effacées par le vrai lancement et ne servent à rien.

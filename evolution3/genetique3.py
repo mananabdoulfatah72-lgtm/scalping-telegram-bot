@@ -1,16 +1,16 @@
-"""Algorithme genetique de la machine n°3 (README.md) : 128 strategies par generation, elites (4 meilleures + la
-meilleure de chaque famille), 15 descendants par famille (tournoi, croisement uniforme, mutation p = 0,18), le reste
+"""Algorithme genetique de la machine n°3 (README.md, regles v2) : 256 strategies par generation, elites (4 meilleures +
+la meilleure de chaque famille), 14 descendants par famille (tournoi, croisement uniforme, mutation p = 0,18), le reste
 en immigrants. Fitness sur 2016-2019, porte sur 2020-2022."""
 import numpy as np
 
 import moteur3 as M
 
-POP, QUOTA, P_MUT, SIGMA_MUT = 128, 15, 0.18, 0.12
+POP, QUOTA, P_MUT, SIGMA_MUT = 256, 14, 0.18, 0.12
 NF = len(M.FAMILLES)
 CONTINUS = ["L", "Z", "stop", "objectif", "debut", "duree"]
-DISCRETS = {"famille": NF, "inverse": 2, "marche": 5, "sens": 3, "filtre": 3}
-MARCHES = ["RTY", "YM", "GC", "CL", "6E"]
-FIN_ENTRAINEMENT = np.datetime64("2019-12-31")
+MARCHES = ["RTY", "YM", "GC", "CL", "6E", "NQ", "ES"]
+DISCRETS = {"famille": NF, "inverse": 2, "marche": len(MARCHES), "sens": 3, "filtre": 3}
+DEBUT_ENTRAINEMENT, FIN_ENTRAINEMENT = np.datetime64("2016-01-01"), np.datetime64("2019-12-31")
 MIN_TRADES_FIT, MIN_TRADES_PORTE, SHARPE_PORTE = 150, 100, 0.5
 
 
@@ -73,7 +73,7 @@ class Evaluateur:
             d = self.donnees[MARCHES[g["marche"]]]
             rend, dol, ntr = M.lancer(d, g)
             jouable = ~d["interdit"]
-            e = (d["jours"] <= FIN_ENTRAINEMENT) & jouable
+            e = (d["jours"] >= DEBUT_ENTRAINEMENT) & (d["jours"] <= FIN_ENTRAINEMENT) & jouable
             v = (d["jours"] > FIN_ENTRAINEMENT) & jouable
             tr, va = mesures(rend[e], dol[e], ntr[e]), mesures(rend[v], dol[v], ntr[v])
             fit = tr["sharpe"] * min(1.0, tr["trades"] / MIN_TRADES_FIT)
@@ -150,4 +150,4 @@ class Evolution:
         h["leader"].append(self.leader["id"] if self.leader else None)
         h["nes"].append(self.nes)
         h["morts"].append(self.morts)
-        h["par_marche"].append([sum(1 for x in passent if x["g"]["marche"] == m) for m in range(5)])
+        h["par_marche"].append([sum(1 for x in passent if x["g"]["marche"] == m) for m in range(len(MARCHES))])
