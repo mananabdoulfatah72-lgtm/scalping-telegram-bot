@@ -1,14 +1,58 @@
 {
  "debut": "2026-09-28",
- "derniere_date": "2026-09-29",
- "solde": 50000.0,
+ "derniere_date": "2026-09-30",
+ "solde": 49987.5,
  "plus_haut": 50000.0,
- "montants": {},
- "liquidites": 50000.0,
- "dernier_reequilibrage": null,
- "ordres": [],
+ "montants": {
+  "AMD": 4998.75,
+  "CSCO": 4998.75,
+  "LRCX": 4998.75,
+  "MU": 4998.75,
+  "NOW": 4998.75
+ },
+ "liquidites": 24993.75,
+ "dernier_reequilibrage": "2026-09-30",
+ "ordres": [
+  {
+   "ticker": "AMD",
+   "sens": "Achat",
+   "montant": 5000.0,
+   "actions": 8.17,
+   "prix": 611.76
+  },
+  {
+   "ticker": "CSCO",
+   "sens": "Achat",
+   "montant": 5000.0,
+   "actions": 46.46,
+   "prix": 107.63
+  },
+  {
+   "ticker": "LRCX",
+   "sens": "Achat",
+   "montant": 5000.0,
+   "actions": 15.22,
+   "prix": 328.51
+  },
+  {
+   "ticker": "MU",
+   "sens": "Achat",
+   "montant": 5000.0,
+   "actions": 4.69,
+   "prix": 1065.11
+  },
+  {
+   "ticker": "NOW",
+   "sens": "Achat",
+   "montant": 5000.0,
+   "actions": 37.31,
+   "prix": 134.01
+  }
+ ],
  "challenge": {
-  "etat": "en attente du premier achat",
-  "date": null
- }
+  "etat": "en cours",
+  "date": "2026-09-30",
+  "depart": 49987.5
+ },
+ "frais_dernier_reequilibrage": 12.5
 }
