@@ -196,7 +196,18 @@ r1 = M.simuler(d["o"][jour:jour + 1].ravel(), d["h"][jour:jour + 1].ravel(), d["
                d["c"][jour:jour + 1].ravel(), d["vwap"][jour:jour + 1].ravel(), d["v"][jour:jour + 1].ravel(),
                d["vref"][jour:jour + 1].ravel(), d["lc"][jour:jour + 1].ravel(), d["pc"][jour:jour + 1], d["ph"][jour:jour + 1],
                d["pl"][jour:jour + 1], d["gap_moy"][jour:jour + 1], np.zeros(1, bool), d["regime"][jour:jour + 1], nb, M.VOLUME,
-               0, 2, 1.0, 1, 0.5, 0.9, 1, 3, 0, float(d["cout"]), float(d["pt"]))
+               0, 2, 1.0, 1, 0.5, 0.9, 1, 3, 0, float(d["cout"]), float(d["pt"]), np.zeros(1))
 assert np.isclose(r1[1][0], dol[jour]), (r1[1][0], dol[jour])
 print(f"6. pic de volume (NQ {d['jours'][jour]}) : 1er signal barre {b}, entree barre {b + 1}, premier trade {premier:+.2f} $,"
       f" journee {dol[jour]:+.2f} $ ({ntr[jour]} trades) : OK")
+
+# 7. le journal des trades redonne les $ de chaque seance, sans changer les resultats
+for nom in ("NQ", "GC"):
+    d = D[nom]
+    for famille in range(len(M.FAMILLES)):
+        g = genes(int(d["nb"]), famille)
+        r1, d1, n1 = M.lancer(d, g)
+        r2, d2, n2, j = M.lancer_journal(d, g)
+        assert np.array_equal(r1, r2) and np.array_equal(d1, d2) and np.array_equal(n1, n2)
+        assert np.allclose(np.nansum(j.reshape(len(d["jours"]), -1), axis=1), d1) and (np.isfinite(j).sum() == n1.sum())
+print("7. journal des trades : meme resultat, somme par seance et nombre de trades exacts : OK")

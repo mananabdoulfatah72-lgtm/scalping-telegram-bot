@@ -101,7 +101,7 @@ def main():
             res["periodes"] = {}
             for nom, (a, b) in PERIODES.items():
                 k = jouable & (d["jours"] >= np.datetime64(a)) & (d["jours"] <= np.datetime64(b))
-                kt = (jour_du_trade >= np.datetime64(a)) & (jour_du_trade <= np.datetime64(b)) & (pnl != 0)
+                kt = (jour_du_trade >= np.datetime64(a)) & (jour_du_trade <= np.datetime64(b)) & np.isfinite(pnl)
                 res["periodes"][nom] = mesures(rend[k], dol[k], ntr[k], pnl[kt])
             co = jouable & (d["jours"] >= np.datetime64("2023-01-01"))
             annees = pd.Series(dol[co], index=pd.DatetimeIndex(d["jours"][co]).year).groupby(level=0).sum()

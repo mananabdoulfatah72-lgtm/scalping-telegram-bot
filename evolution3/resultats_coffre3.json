@@ -1,0 +1,191 @@
+{
+ "barriere_bruit": {
+  "RTY": 1.8225,
+  "YM": 2.2181,
+  "GC": 2.9854,
+  "CL": 1.0384,
+  "6E": 0.5,
+  "NQ": 2.8936,
+  "ES": 2.301
+ },
+ "finalistes": [
+  {
+   "strategie": "NQ · MACD (suivre), L 50, Z 1.33, achat et vente, stop 1.31%, objectif 0.85%, entree des la barre 50, sortie apres 56 barres, tous les jours",
+   "genes": {
+    "famille": 8,
+    "inverse": 0,
+    "marche": 5,
+    "L": 50,
+    "Z": 1.335,
+    "sens": 0,
+    "stop": 0.01307,
+    "objectif": 0.00854,
+    "debut": 50,
+    "duree": 56,
+    "filtre": 0
+   },
+   "fitness": 0.681,
+   "sharpe_validation": 2.221,
+   "barriere_bruit": 2.894,
+   "bat_le_bruit": false,
+   "trouvee_par": "reel_4"
+  },
+  {
+   "strategie": "RTY · fair value gap (suivre), L 95, Z 2.52, achat et vente, stop 0.77%, objectif 0.40%, entree des la barre 41, sortie apres 34 barres, jours agites",
+   "genes": {
+    "famille": 12,
+    "inverse": 0,
+    "marche": 0,
+    "L": 95,
+    "Z": 2.525,
+    "sens": 0,
+    "stop": 0.00771,
+    "objectif": 0.00402,
+    "debut": 41,
+    "duree": 34,
+    "filtre": 1
+   },
+   "fitness": 0.6,
+   "sharpe_validation": 1.594,
+   "barriere_bruit": 1.823,
+   "bat_le_bruit": false,
+   "trouvee_par": "reel_2"
+  },
+  {
+   "strategie": "ES · pic de volume (suivre), L 86, Z 0.95, achat et vente, stop 0.86%, objectif 0.79%, entree des la barre 36, sortie apres 60 barres, jours calmes",
+   "genes": {
+    "famille": 14,
+    "inverse": 0,
+    "marche": 6,
+    "L": 86,
+    "Z": 0.948,
+    "sens": 0,
+    "stop": 0.00857,
+    "objectif": 0.00789,
+    "debut": 36,
+    "duree": 60,
+    "filtre": 2
+   },
+   "fitness": 0.559,
+   "sharpe_validation": 1.59,
+   "barriere_bruit": 2.301,
+   "bat_le_bruit": false,
+   "trouvee_par": "reel_4"
+  },
+  {
+   "strategie": "YM · fair value gap (suivre), L 3, Z 2.07, vente seule, stop 1.04%, objectif 0.19%, entree des la barre 40, sortie apres 46 barres, jours agites",
+   "genes": {
+    "famille": 12,
+    "inverse": 0,
+    "marche": 1,
+    "L": 3,
+    "Z": 2.073,
+    "sens": 2,
+    "stop": 0.01037,
+    "objectif": 0.0019,
+    "debut": 40,
+    "duree": 46,
+    "filtre": 1
+   },
+   "fitness": 0.673,
+   "sharpe_validation": 1.268,
+   "barriere_bruit": 2.218,
+   "bat_le_bruit": false,
+   "trouvee_par": "reel_5"
+  },
+  {
+   "strategie": "CL · marche leader (contrer), L 28, Z 2.17, vente seule, stop 1.29%, objectif 3.00%, entree des la barre 31, sortie apres 32 barres, tous les jours",
+   "genes": {
+    "famille": 15,
+    "inverse": 1,
+    "marche": 3,
+    "L": 28,
+    "Z": 2.165,
+    "sens": 2,
+    "stop": 0.01291,
+    "objectif": 0.03,
+    "debut": 31,
+    "duree": 32,
+    "filtre": 0
+   },
+   "fitness": 0.726,
+   "sharpe_validation": 1.233,
+   "barriere_bruit": 1.038,
+   "bat_le_bruit": true,
+   "trouvee_par": "reel_3",
+   "periodes": {
+    "entrainement 2016-2019": {
+     "seances": 952,
+     "trades": 253,
+     "sharpe": 0.726,
+     "t": 1.411,
+     "dollars_1_micro": 755.76,
+     "perte_max_1_micro": -539.7,
+     "perte_max_pct_50k": -1.079,
+     "jours_gagnants": 0.508,
+     "trades_gagnants": 0.506,
+     "gain_moyen": 31.96,
+     "perte_moyenne": -26.68
+    },
+    "validation 2020-2022": {
+     "seances": 717,
+     "trades": 192,
+     "sharpe": 1.233,
+     "t": 2.079,
+     "dollars_1_micro": 1554.33,
+     "perte_max_1_micro": -588.61,
+     "perte_max_pct_50k": -1.177,
+     "jours_gagnants": 0.511,
+     "trades_gagnants": 0.51,
+     "gain_moyen": 60.42,
+     "perte_moyenne": -46.45
+    },
+    "coffre 2023-2026": {
+     "seances": 912,
+     "trades": 326,
+     "sharpe": -0.5,
+     "t": -0.95,
+     "dollars_1_micro": -744.93,
+     "perte_max_1_micro": -1609.76,
+     "perte_max_pct_50k": -3.22,
+     "jours_gagnants": 0.459,
+     "trades_gagnants": 0.457,
+     "gain_moyen": 43.68,
+     "perte_moyenne": -40.98
+    }
+   },
+   "annees_coffre": {
+    "2023": 826.82,
+    "2024": -885.69,
+    "2025": -241.92,
+    "2026": -444.14
+   },
+   "passe": false
+  },
+  {
+   "strategie": "GC · gap (suivre), L 4, Z 0.57, vente seule, stop 0.29%, objectif 1.89%, entree des la barre 11, sortie apres 50 barres, tous les jours",
+   "genes": {
+    "famille": 5,
+    "inverse": 0,
+    "marche": 2,
+    "L": 4,
+    "Z": 0.571,
+    "sens": 2,
+    "stop": 0.00292,
+    "objectif": 0.01887,
+    "debut": 11,
+    "duree": 50,
+    "filtre": 0
+   },
+   "fitness": 0.942,
+   "sharpe_validation": 0.851,
+   "barriere_bruit": 2.985,
+   "bat_le_bruit": false,
+   "trouvee_par": "reel_6"
+  }
+ ],
+ "evaluees_reel": 139876,
+ "evaluees_bruit": 139915,
+ "retenues_reel": 13585,
+ "retenues_bruit": 24869
+}

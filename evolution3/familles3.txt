@@ -1,0 +1,29 @@
+Description seulement (la selection est celle du README). Par famille, sur les 8 + 8 evolutions :
+strategies retenues (fitness >= 0,5 et porte) et meilleur Sharpe de validation, vraies donnees contre bruit
+
+famille                        retenues reel   bruit  meilleur reel   bruit  meilleur reel plus haut que le bruit ?
+ecart a la moyenne                      1284     583           1.55    2.47  non
+cassure de canal                         595     564           1.49    1.91  non
+range d'ouverture                       1614    1317           2.03    2.11  non
+ecart au VWAP                           1316    1224           1.52    1.96  non
+mouvement depuis l'ouverture            1314    1702           1.31    1.67  non
+gap                                      567     966           1.25    1.60  non
+niveaux de la veille                     906    1404           1.56    1.71  non
+RSI                                      643     589           1.85    2.05  non
+MACD                                     787    3072           2.22    2.84  non
+Bollinger squeeze                        186    1763           1.45    2.29  non
+balayage de liquidite                    735    1624           1.98    2.09  non
+balayage de la veille                    375    1106           1.29    2.05  non
+fair value gap                           780    1197           1.59    2.10  non
+order flow estime                       1040    2069           1.82    2.99  non
+pic de volume                           1029    3022           1.59    2.17  non
+marche leader                            414    2667           1.23    2.89  non
+
+Par marche :
+  RTY  retenues   1916 reel /   2092 bruit ; meilleur Sharpe de validation 1.59 / 1.82
+  YM   retenues   1153 reel /   1207 bruit ; meilleur Sharpe de validation 1.27 / 2.22
+  GC   retenues    104 reel /   3142 bruit ; meilleur Sharpe de validation 0.85 / 2.99
+  CL   retenues    263 reel /     20 bruit ; meilleur Sharpe de validation 1.23 / 1.04
+  6E   retenues      0 reel /      0 bruit ; meilleur Sharpe de validation nan / nan
+  NQ   retenues   9965 reel /  17603 bruit ; meilleur Sharpe de validation 2.22 / 2.89
+  ES   retenues    184 reel /    805 bruit ; meilleur Sharpe de validation 1.59 / 2.30

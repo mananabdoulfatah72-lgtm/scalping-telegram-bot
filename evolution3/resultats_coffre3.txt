@@ -1,0 +1,38 @@
+Machine evolutive n°3 (regles v2.1) : 139876 strategies evaluees sur vraies donnees, 139915 sur bruit (8 + 8 evolutions).
+Fitness >= 0,5 et porte passee : 13585 sur vraies donnees, 24869 sur bruit.
+
+Barriere du bruit par marche (meilleur Sharpe de validation sur bruit, meme filtre) :
+  RTY   1.82  (2092 strategies de bruit retenues)
+  YM    2.22  (1207 strategies de bruit retenues)
+  GC    2.99  (3142 strategies de bruit retenues)
+  CL    1.04  (20 strategies de bruit retenues)
+  6E    0.50  (0 strategies de bruit retenues)
+  NQ    2.89  (17603 strategies de bruit retenues)
+  ES    2.30  (805 strategies de bruit retenues)
+
+Finalistes (un par marche au plus) : 6
+
+- NQ · MACD (suivre), L 50, Z 1.33, achat et vente, stop 1.31%, objectif 0.85%, entree des la barre 50, sortie apres 56 barres, tous les jours
+  fitness 0.68, Sharpe de validation 2.22 contre 2.89 sur bruit : NE BAT PAS le bruit, elimine sans ouvrir le coffre
+
+- RTY · fair value gap (suivre), L 95, Z 2.52, achat et vente, stop 0.77%, objectif 0.40%, entree des la barre 41, sortie apres 34 barres, jours agites
+  fitness 0.60, Sharpe de validation 1.59 contre 1.82 sur bruit : NE BAT PAS le bruit, elimine sans ouvrir le coffre
+
+- ES · pic de volume (suivre), L 86, Z 0.95, achat et vente, stop 0.86%, objectif 0.79%, entree des la barre 36, sortie apres 60 barres, jours calmes
+  fitness 0.56, Sharpe de validation 1.59 contre 2.30 sur bruit : NE BAT PAS le bruit, elimine sans ouvrir le coffre
+
+- YM · fair value gap (suivre), L 3, Z 2.07, vente seule, stop 1.04%, objectif 0.19%, entree des la barre 40, sortie apres 46 barres, jours agites
+  fitness 0.67, Sharpe de validation 1.27 contre 2.22 sur bruit : NE BAT PAS le bruit, elimine sans ouvrir le coffre
+
+- CL · marche leader (contrer), L 28, Z 2.17, vente seule, stop 1.29%, objectif 3.00%, entree des la barre 31, sortie apres 32 barres, tous les jours
+  fitness 0.73, Sharpe de validation 1.23 contre 1.04 sur bruit : bat le bruit
+  entrainement 2016-2019 Sharpe  0.73  t  1.41    253 trades        +756 $  perte max     -540 $ (-1.08 % de 50 000 $)  jours gagnants 51%  gain moyen +32 $ / perte moyenne -27 $
+  validation 2020-2022   Sharpe  1.23  t  2.08    192 trades       +1554 $  perte max     -589 $ (-1.18 % de 50 000 $)  jours gagnants 51%  gain moyen +60 $ / perte moyenne -46 $
+  coffre 2023-2026       Sharpe -0.50  t -0.95    326 trades        -745 $  perte max    -1610 $ (-3.22 % de 50 000 $)  jours gagnants 46%  gain moyen +44 $ / perte moyenne -41 $
+  annees du coffre : 2023 +827 $, 2024 -886 $, 2025 -242 $, 2026 -444 $
+  VERDICT : ELIMINE (t -0.95 contre 2.6 exige ; 1 annees positives sur 4, 3 exigees)
+
+- GC · gap (suivre), L 4, Z 0.57, vente seule, stop 0.29%, objectif 1.89%, entree des la barre 11, sortie apres 50 barres, tous les jours
+  fitness 0.94, Sharpe de validation 0.85 contre 2.98 sur bruit : NE BAT PAS le bruit, elimine sans ouvrir le coffre
+
+Survivants : 0

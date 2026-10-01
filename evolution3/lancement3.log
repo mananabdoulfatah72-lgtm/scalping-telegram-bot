@@ -1,0 +1,17 @@
+bruit_2  : 17388 backtests en 70.9 s ; nes 19243, morts 18987, deployes 7777, elimines 11466 ; meilleure fitness 2.08
+bruit_1  : 17490 backtests en 73.6 s ; nes 19242, morts 18986, deployes 7714, elimines 11528 ; meilleure fitness 2.27
+reel_2   : 17569 backtests en 107.5 s ; nes 19262, morts 19006, deployes 6075, elimines 13187 ; meilleure fitness 1.92
+reel_1   : 17650 backtests en 118.0 s ; nes 19242, morts 18986, deployes 6244, elimines 12998 ; meilleure fitness 1.52
+bruit_3  : 17448 backtests en 73.1 s ; nes 19231, morts 18975, deployes 7392, elimines 11839 ; meilleure fitness 2.57
+reel_3   : 17353 backtests en 83.0 s ; nes 19242, morts 18986, deployes 6790, elimines 12452 ; meilleure fitness 1.56
+bruit_4  : 17479 backtests en 76.5 s ; nes 19233, morts 18977, deployes 7240, elimines 11993 ; meilleure fitness 1.80
+reel_4   : 17225 backtests en 107.3 s ; nes 19259, morts 19003, deployes 7298, elimines 11961 ; meilleure fitness 1.56
+reel_5   : 17566 backtests en 73.7 s ; nes 19244, morts 18988, deployes 6746, elimines 12498 ; meilleure fitness 1.48
+bruit_5  : 17577 backtests en 71.7 s ; nes 19224, morts 18968, deployes 8259, elimines 10965 ; meilleure fitness 2.49
+reel_6   : 17528 backtests en 73.5 s ; nes 19232, morts 18976, deployes 6120, elimines 13112 ; meilleure fitness 1.89
+reel_7   : 17434 backtests en 69.9 s ; nes 19227, morts 18971, deployes 5651, elimines 13576 ; meilleure fitness 1.46
+bruit_6  : 17530 backtests en 80.1 s ; nes 19229, morts 18973, deployes 8821, elimines 10408 ; meilleure fitness 2.08
+bruit_7  : 17602 backtests en 68.9 s ; nes 19225, morts 18969, deployes 6784, elimines 12441 ; meilleure fitness 2.43
+reel_8   : 17551 backtests en 86.4 s ; nes 19256, morts 19000, deployes 6072, elimines 13184 ; meilleure fitness 1.85
+bruit_8  : 17401 backtests en 74.4 s ; nes 19235, morts 18979, deployes 7785, elimines 11450 ; meilleure fitness 2.50
+Fini en 367 s

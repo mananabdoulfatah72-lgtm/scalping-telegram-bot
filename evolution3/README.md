@@ -175,3 +175,28 @@ vrai parcours du leader laisse deviner la fin de la séance. **Correction :** su
 5 minutes du leader sont mélangés avec **la même permutation** que ceux du marché. Les mouvements
 simultanés restent ensemble ; l'avance de l'un sur l'autre est détruite. Les sorties de cet essai ont été
 effacées par le vrai lancement et ne servent à rien.
+
+## Résultats (1er octobre 2026) : aucun survivant
+
+`lancer3.py` (8 graines réelles + 8 sur bruit, 80 générations, 6 minutes) → `runs/`, `lancement3.log` ;
+`coffre3.py` → `resultats_coffre3.txt` et `.json` ; comparaison par famille (descriptive) → `familles3.txt`.
+
+- **139 876 stratégies évaluées sur les vraies données, 139 915 sur bruit.** Fitness ≥ 0,5 et porte
+  passée : **13 585 sur les vraies données, 24 869 sur bruit**. La machine trouve plus de « bonnes »
+  stratégies dans des séances mélangées au hasard que dans les vraies.
+- **Famille par famille, le bruit fait au moins aussi bien partout.** Pour les 16 familles (Bollinger,
+  Donchian, ORB, VWAP, RSI, MACD, squeeze, balayages ICT, FVG, order flow estimé, pic de volume, marché
+  leader…), le meilleur Sharpe de validation sur bruit dépasse celui des vraies données. Exemples :
+  ORB 2,03 contre 2,11 ; MACD 2,22 contre 2,84 ; FVG 1,59 contre 2,10 ; order flow estimé 1,82
+  contre 2,99.
+- **6 finalistes, 5 éliminés par la barrière du bruit** (NQ MACD, RTY FVG, ES pic de volume, YM FVG,
+  or gap). L'euro n'a aucune stratégie retenue, même sur bruit : les frais sont trop lourds.
+- **Un seul finaliste bat le bruit : pétrole (CL), marché leader (contrer), vente seule.** Sharpe 0,73
+  à l'entraînement, 1,23 en validation (contre 1,04 sur bruit). **Coffre 2023-2026 : Sharpe −0,50,
+  t −0,95, −745 $ pour 1 micro**, perte maximale −1 610 $ (−3,2 % de 50 000 $) ; 2023 +827 $,
+  2024 −886 $, 2025 −242 $, 2026 −444 $. **Éliminé.**
+
+**Conclusion.** Ni les indicateurs classiques (RSI, MACD, Bollinger, VWAP, cassures), ni les idées
+ICT/SMC qu'on peut écrire sans ambiguïté (balayages de liquidité, fair value gaps), ni l'order flow
+estimé, ni l'avance d'un marché sur un autre ne donnent, sur ces 7 marchés en 5 minutes, un avantage que
+le hasard ne reproduit pas. La zone de bruit NQ reste la seule stratégie qui a passé tous les contrôles.

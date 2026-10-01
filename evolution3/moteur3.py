@@ -244,8 +244,9 @@ def signaux(famille, o, h, l, c, v, vref, lc, ph, pl, sig, ect, nb, L, Z):
 
 @njit(cache=True)
 def simuler(o, h, l, c, vwap, v, vref, lc, pc, ph, pl, gap_moy, interdit, regime, nb, famille, inverse, L, Z, sens, stop,
-            objectif, debut, duree, filtre, cout, pt):
-    """Renvoie (rendement net par seance, $ net par seance pour 1 micro, trades par seance).
+            objectif, debut, duree, filtre, cout, pt, journal):
+    """Renvoie (rendement net par seance, $ net par seance pour 1 micro, trades par seance). Si `journal` a la taille de la
+    serie, le $ net de chaque trade y est ecrit a la barre de sortie (au plus une sortie par barre).
     sens : 0 les deux, 1 achat seul, 2 vente seule ; filtre : 0 aucun, 1 jours agites, 2 jours calmes."""
     n = c.shape[0]
     nj = n // nb
@@ -374,6 +375,8 @@ def simuler(o, h, l, c, vwap, v, vref, lc, pc, ph, pl, gap_moy, interdit, regime
                 rend[d] += points / entree
                 dollars[d] += points * pt
                 ntr[d] += 1
+                if journal.shape[0] == n:
+                    journal[i] = points * pt
                 pos = 0
     return rend, dollars, ntr
 
@@ -402,7 +405,19 @@ def lancer(d, g):
     return simuler(d["o"].ravel(), d["h"].ravel(), d["l"].ravel(), d["c"].ravel(), d["vwap"].ravel(), d["v"].ravel(),
                    d["vref"].ravel(), d["lc"].ravel(), d["pc"], d["ph"], d["pl"], d["gap_moy"], d["interdit"], d["regime"], int(d["nb"]), int(g["famille"]), int(g["inverse"]),
                    int(g["L"]), float(g["Z"]), int(g["sens"]), float(g["stop"]), float(g["objectif"]), int(g["debut"]),
-                   int(g["duree"]), int(g["filtre"]), float(d["cout"]), float(d["pt"]))
+                   int(g["duree"]), int(g["filtre"]), float(d["cout"]), float(d["pt"]), np.zeros(1))
+
+
+def lancer_journal(d, g):
+    """Comme lancer(), plus le $ net de chaque trade (tableau de la taille de la serie, NaN hors des barres de sortie : un
+    trade peut finir a 0 $ net)."""
+    journal = np.full(d["c"].size, np.nan)
+    rend, dol, ntr = simuler(d["o"].ravel(), d["h"].ravel(), d["l"].ravel(), d["c"].ravel(), d["vwap"].ravel(), d["v"].ravel(),
+                             d["vref"].ravel(), d["lc"].ravel(), d["pc"], d["ph"], d["pl"], d["gap_moy"], d["interdit"],
+                             d["regime"], int(d["nb"]), int(g["famille"]), int(g["inverse"]), int(g["L"]), float(g["Z"]),
+                             int(g["sens"]), float(g["stop"]), float(g["objectif"]), int(g["debut"]), int(g["duree"]),
+                             int(g["filtre"]), float(d["cout"]), float(d["pt"]), journal)
+    return rend, dol, ntr, journal
 
 
 def charger(chemin):
