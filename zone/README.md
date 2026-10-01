@@ -96,3 +96,17 @@ script TradingView.
 avant la limite passe sous environ 1 400 $ : le compte ne trade plus, donc ne remonte plus, et reste
 bloqué. C'est ce qui arrive en octobre 2025 au compte financé rejoué, et c'est pour cela que tant de
 tentatives « n'ont pas fini » dans l'historique.
+
+## Tableau de bord en direct
+
+Page : https://claude.ai/artifact/J3yAQvPZtmSHhY74Xf4mVv (privée ; partage depuis le menu de la page).
+- Compte virtuel : solde, objectif, marge avant la limite, taille du lendemain.
+- Niveaux de la séance, avec les heures de Paris et le prochain contrôle en direct.
+- Rebond suivi à part.
+- Courbe du robot comparée à la fourchette attendue par le backtest.
+- Backtest 2023-2026 et journal.
+
+`zone/tableau/construire.py` fabrique la page à partir de `zone/robot/` et de
+`zone/tableau/reference.json` (rejeu 2023-2026 pour 1 MNQ). Une routine Claude la reconstruit et la
+republie chaque jour de semaine vers 14 h 50 (Paris), après le passage du robot et avant l'ouverture
+de New York.

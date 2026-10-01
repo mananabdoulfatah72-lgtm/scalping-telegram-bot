@@ -1,0 +1,535 @@
+<title>Robot Zone de bruit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Mise en page : la famille visuelle de la Machine evolutive (panneaux blancs sur fond bleu pale pointille),
+   resume en haut, puis seance du jour, rebond, live contre backtest, journal ; une colonne sur telephone */
+:root {
+  --fond: #edf2fb; --point: #d3def2; --panneau: #ffffff; --encre: #0c1c44; --doux: #62739a; --trait: #d8e2f2;
+  --bleu: #1f5bdb; --ciel: #3fa9f5; --clair: #e7eefb; --vert: #138a5b; --rouge: #c8364a; --orange: #c77a12;
+  --bande1: rgba(31, 91, 219, .10); --bande2: rgba(31, 91, 219, .20); --violet: #7a4fd6;
+  --titre: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --fond: #0a1226; --point: #16213d; --panneau: #0f1a33; --encre: #e3ebfa; --doux: #8ea1c7; --trait: #22314f;
+  --bleu: #5c8dff; --ciel: #58b8ff; --clair: #172646; --vert: #3cc58c; --rouge: #ff6b7f; --orange: #f0a43a;
+  --bande1: rgba(92, 141, 255, .12); --bande2: rgba(92, 141, 255, .24); --violet: #b394ff; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --fond: #0a1226; --point: #16213d; --panneau: #0f1a33; --encre: #e3ebfa; --doux: #8ea1c7; --trait: #22314f;
+  --bleu: #5c8dff; --ciel: #58b8ff; --clair: #172646; --vert: #3cc58c; --rouge: #ff6b7f; --orange: #f0a43a;
+  --bande1: rgba(92, 141, 255, .12); --bande2: rgba(92, 141, 255, .24); --violet: #b394ff; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--fond); background-image: radial-gradient(var(--point) 1px, transparent 1px); background-size: 18px 18px;
+  color: var(--encre); font-family: var(--mono); font-size: 13px; margin: 0 }
+.page { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 28px; display: grid; gap: 14px }
+.panneau { background: var(--panneau); border: 1px solid var(--trait); border-radius: 14px; padding: 18px 20px; min-width: 0 }
+.rang { display: grid; gap: 14px; min-width: 0 }
+.r2 { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) }
+.r2b { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr) }
+.r2c { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+@media (max-width: 900px) { .r2, .r2b, .r2c { grid-template-columns: minmax(0, 1fr) } }
+h1 { font-family: var(--titre); font-weight: 700; font-size: clamp(26px, 4vw, 40px); letter-spacing: .01em; margin: 0; line-height: 1; text-wrap: balance }
+h1 .b { color: var(--bleu) }
+h2 { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin: 0 }
+.sous { color: var(--doux); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-top: 6px }
+.tete { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: center; justify-content: space-between }
+.marque { display: flex; gap: 16px; align-items: center; min-width: 0 }
+.stats { display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center }
+.stat .l { font-size: 10px; color: var(--doux); letter-spacing: .12em; text-transform: uppercase }
+.stat .v { font-family: var(--titre); font-weight: 700; font-size: 24px; font-variant-numeric: tabular-nums; margin-top: 4px }
+.horloges { display: grid; gap: 2px; text-align: right }
+.horloge { font-weight: 700; font-size: 22px; font-variant-numeric: tabular-nums }
+.horloge small { font-size: 10px; color: var(--doux); letter-spacing: .12em; margin-left: 6px }
+.horloge.ny { font-size: 13px; color: var(--doux) }
+.pastille { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid currentColor; color: var(--bleu); border-radius: 999px;
+  padding: 3px 12px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap }
+.pastille::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor }
+.pastille.vive::before { animation: pouls 1.2s infinite }
+.pastille.ferme { color: var(--doux) }
+.pastille.vert { color: var(--vert) } .pastille.rouge { color: var(--rouge) } .pastille.orange { color: var(--orange) }
+@keyframes pouls { 50% { opacity: .25 } }
+.entete { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap }
+.entete .d { color: var(--doux); font-size: 11px; letter-spacing: .08em; text-transform: uppercase }
+.etiquette { display: inline-block; background: var(--clair); color: var(--bleu); border-radius: 999px; padding: 3px 10px; font-size: 10px;
+  font-weight: 700; letter-spacing: .1em; text-transform: uppercase }
+canvas { display: block; width: 100%; max-width: 100% }
+.grand { font-family: var(--titre); font-weight: 700; font-size: 48px; line-height: 1; font-variant-numeric: tabular-nums }
+.jalons { display: grid; gap: 14px; margin-top: 16px }
+.jalon .t { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--doux) }
+.jalon .t b { color: var(--encre); font-variant-numeric: tabular-nums }
+.jauge { position: relative; height: 14px; background: var(--clair); border-radius: 4px; margin-top: 6px; overflow: hidden }
+.jauge i { position: absolute; top: 0; bottom: 0; border-radius: 4px; transition: width .5s, left .5s }
+.jauge .zero { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--encre); opacity: .5 }
+.chiffres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 16px; border-top: 1px solid var(--trait); padding-top: 12px }
+.chiffres .l { font-size: 10px; color: var(--doux); letter-spacing: .12em; text-transform: uppercase }
+.chiffres .v { font-weight: 700; font-size: 15px; margin-top: 3px; font-variant-numeric: tabular-nums }
+.legende { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--doux); margin-top: 8px }
+.legende span::before { content: ""; display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 7px; vertical-align: 3px; background: var(--c) }
+.legende span.b::before { height: 10px; vertical-align: -1px }
+table { width: 100%; border-collapse: collapse; font-size: 11px; font-variant-numeric: tabular-nums }
+th { text-align: left; color: var(--doux); font-weight: 500; letter-spacing: .1em; text-transform: uppercase; padding: 6px 6px; border-bottom: 1px solid var(--trait); white-space: nowrap }
+td { padding: 6px 6px; border-bottom: 1px solid var(--trait); white-space: nowrap }
+td.n, th.n { text-align: right }
+tr.prochain td { background: var(--clair); color: var(--bleu); font-weight: 700 }
+tr.passe td { color: var(--doux) }
+.defile { overflow-x: auto; margin-top: 12px }
+.defile.haut { max-height: 340px; overflow-y: auto }
+.bon { color: var(--vert) } .mauvais { color: var(--rouge) }
+p.note { color: var(--doux); font-size: 11px; line-height: 1.6; margin: 12px 0 0; max-width: 72ch }
+p.note b { color: var(--encre) }
+.bandeau { margin-top: 12px; border: 1px solid var(--trait); border-radius: 10px; padding: 10px 12px; font-size: 12px; line-height: 1.5 }
+.bandeau b { color: var(--bleu) }
+.signal { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap }
+.signal .grand { font-size: 34px }
+.echelle { position: relative; height: 46px; margin-top: 18px }
+.echelle .axe { position: absolute; left: 0; right: 0; top: 20px; height: 6px; background: var(--clair); border-radius: 3px }
+.echelle .zone-achat { position: absolute; top: 20px; height: 6px; left: 0; background: var(--bande2); border-radius: 3px 0 0 3px }
+.echelle .seuil { position: absolute; top: 12px; height: 22px; width: 0; border-left: 2px dashed var(--orange) }
+.echelle .point { position: absolute; top: 16px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--bleu); border: 2px solid var(--panneau) }
+.echelle .lab { position: absolute; top: 36px; font-size: 10px; color: var(--doux); transform: translateX(-50%); white-space: nowrap }
+.echelle .lab.h { top: 0 }
+.trades { display: grid; gap: 6px; margin-top: 10px; font-size: 12px }
+.trades div { border-left: 3px solid var(--bleu); padding: 4px 10px; background: var(--clair); border-radius: 0 6px 6px 0; overflow-wrap: anywhere }
+.pied { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; color: var(--doux); font-size: 10px; letter-spacing: .1em;
+  text-transform: uppercase; border-top: 1px solid var(--trait); padding-top: 9px; margin-top: 14px }
+footer { color: var(--doux); font-size: 11px; text-align: center; line-height: 1.6 }
+@media (prefers-reduced-motion: reduce) { .pastille.vive::before { animation: none } .jauge i { transition: none } }
+</style>
+
+<div class="page">
+  <header class="panneau tete">
+    <div class="marque">
+      <canvas id="logo" width="112" height="112" style="width:56px;height:56px" aria-hidden="true"></canvas>
+      <div>
+        <h1>ROBOT <span class="b">ZONE DE BRUIT</span></h1>
+        <div class="sous">MNQ · Nasdaq 100 micro · argent virtuel · challenge Phidias 50K</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="l">Solde virtuel</div><div class="v" id="s-solde">—</div></div>
+      <div class="stat"><div class="l">Phase</div><div class="v" id="s-phase">—</div></div>
+      <div class="stat"><div class="l">Séances jouées</div><div class="v" id="s-seances">—</div></div>
+      <div class="stat"><div class="l">Pour 1 MNQ</div><div class="v" id="s-1mnq">—</div></div>
+      <div class="horloges">
+        <div class="horloge" id="h-paris">--:--:--<small>PARIS</small></div>
+        <div class="horloge ny" id="h-ny">--:--<small>NEW YORK</small></div>
+        <div style="margin-top:6px"><span class="pastille ferme" id="marche">marché</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="rang r2">
+    <section class="panneau" aria-labelledby="t-challenge">
+      <div class="entete"><h2 id="t-challenge">Challenge</h2><span class="etiquette" id="tentative">n°1</span></div>
+      <div class="grand" id="resultat" style="margin-top:14px">—</div>
+      <div class="sous" id="resultat-l">sur l'objectif de +4 000 $</div>
+      <div class="jalons">
+        <div class="jalon"><div class="t"><span>Vers l'objectif</span><b id="j-obj-v">—</b></div>
+          <div class="jauge"><i id="j-obj"></i></div></div>
+        <div class="jalon"><div class="t"><span>Marge avant la limite de perte</span><b id="j-marge-v">—</b></div>
+          <div class="jauge"><i id="j-marge"></i></div></div>
+      </div>
+      <div class="chiffres">
+        <div><div class="l">Taille demain</div><div class="v" id="c-taille">—</div></div>
+        <div><div class="l">Tentatives</div><div class="v" id="c-tent">—</div></div>
+        <div><div class="l">Retraits reçus</div><div class="v" id="c-recu">—</div></div>
+      </div>
+      <p class="note" id="regles">Règles virtuelles : +4 000 $ à atteindre, perte maximale 2 500 $ sous le plus haut de fin de journée. Taille = 0,15 × marge / risque d'un MNQ, arrondie en dessous.</p>
+    </section>
+    <section class="panneau" aria-labelledby="t-compte">
+      <div class="entete"><h2 id="t-compte">Compte virtuel, séance par séance</h2><span class="d" id="compte-d">—</span></div>
+      <canvas id="g-compte" role="img" aria-label="Solde du compte virtuel par séance, avec l'objectif et la limite de perte"></canvas>
+      <div class="legende">
+        <span style="--c:var(--bleu)">solde</span><span style="--c:var(--vert)">objectif</span><span style="--c:var(--rouge)">limite de perte</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="rang r2b">
+    <section class="panneau" aria-labelledby="t-seance">
+      <div class="entete"><h2 id="t-seance">Séance</h2><span class="pastille" id="seance-etat">—</span></div>
+      <div id="seance-corps"></div>
+    </section>
+    <section class="panneau" aria-labelledby="t-rebond">
+      <div class="entete"><h2 id="t-rebond">Rebond après forte baisse</h2><span class="etiquette">suivi à part</span></div>
+      <div id="rebond-corps"></div>
+    </section>
+  </div>
+
+  <div class="rang r2c">
+    <section class="panneau" aria-labelledby="t-cone">
+      <div class="entete"><h2 id="t-cone">Live contre backtest</h2><span class="d">zone, 1 MNQ, depuis le départ</span></div>
+      <canvas id="g-cone" role="img" aria-label="Gain cumulé du robot pour 1 MNQ comparé à la fourchette attendue par le backtest"></canvas>
+      <div class="legende">
+        <span style="--c:var(--bleu)">robot (live)</span><span style="--c:var(--doux)">attendu (moyenne)</span>
+        <span class="b" style="--c:var(--bande2)">1 fois sur 2</span><span class="b" style="--c:var(--bande1)">9 fois sur 10</span>
+      </div>
+      <p class="note" id="cone-note"></p>
+    </section>
+    <section class="panneau" aria-labelledby="t-bt">
+      <div class="entete"><h2 id="t-bt">Backtest 2023-2026</h2><span class="d">gain cumulé pour 1 MNQ, frais réels</span></div>
+      <canvas id="g-bt" role="img" aria-label="Gain cumulé du backtest 2023-2026 pour la zone et pour le rebond"></canvas>
+      <div class="legende"><span style="--c:var(--bleu)">zone de bruit</span><span style="--c:var(--violet)">rebond (à part)</span></div>
+      <p class="note" id="bt-note"></p>
+    </section>
+  </div>
+
+  <section class="panneau" aria-labelledby="t-journal">
+    <div class="entete"><h2 id="t-journal">Journal</h2><span class="d" id="journal-d">—</span></div>
+    <div id="trades"></div>
+    <div class="defile haut">
+      <table>
+        <thead><tr><th>Date</th><th>Phase</th><th class="n">MNQ</th><th class="n">Résultat</th><th class="n">Solde</th><th class="n">Pour 1 MNQ</th><th class="n">Rebond (à part)</th><th>Événement</th></tr></thead>
+        <tbody id="journal"></tbody>
+      </table>
+    </div>
+    <div class="pied"><span id="pied-g">—</span><span>aucun argent réel engagé</span></div>
+  </section>
+
+  <footer id="pied"></footer>
+</div>
+
+<script>
+const D = /*DONNEES*/null;
+const CAPITAL = 50000, OBJECTIF = 4000, PERTE = 2500, BLOCAGE = 50100, SEUIL_RETRAIT = 52600, F = 0.15;
+const $ = id => document.getElementById(id);
+const nf = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
+const dol = (x, signe) => (signe && x > 0 ? "+" : x < 0 ? "−" : "") + nf.format(Math.abs(Math.round(x))) + " $";
+const pct = x => (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x * 100).toFixed(2).replace(".", ",") + " %";
+const prix = x => new Intl.NumberFormat("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(x);
+const dateFr = s => new Date(s + "T12:00:00Z").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "long", timeZone: "UTC" });
+const classe = x => x > 0 ? "bon" : x < 0 ? "mauvais" : "";
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+// ------------------------------------------------------------------ heure de New York et de Paris
+function parties(tz, d = new Date()) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", weekday: "short" }).formatToParts(d).map(x => [x.type, x.value]));
+  return { jour: `${p.year}-${p.month}-${p.day}`, h: +p.hour, m: +p.minute, s: +p.second, sem: p.weekday };
+}
+
+// ------------------------------------------------------------------ comptes : plus haut et limite, comme le robot
+function lignesCompte() {
+  const j = D.journal || [];
+  let cle = null, haut = CAPITAL;
+  return j.map(r => {
+    const k = r.phase + "#" + r.tentative;
+    if (k !== cle) { cle = k; haut = CAPITAL; }
+    const finance = r.phase === "finance";
+    const plancher = finance ? (haut >= SEUIL_RETRAIT ? BLOCAGE : haut - PERTE) : haut - PERTE;
+    if (!String(r.evenement || "").startsWith("COMPTE PERDU")) haut = Math.max(haut, r.solde);
+    return { ...r, cle: k, plancher };
+  });
+}
+
+function etatCompte() {
+  const e = D.etat;
+  const finance = e.phase === "finance";
+  const plancher = finance ? (e.haut >= SEUIL_RETRAIT ? BLOCAGE : e.haut - PERTE) : e.haut - PERTE;
+  return { finance, plancher, marge: e.solde - plancher };
+}
+
+// ------------------------------------------------------------------ graphiques (canvas, echelle unique)
+function pasJoli(e) {
+  const p = Math.pow(10, Math.floor(Math.log10(e))), r = e / p;
+  return (r <= 1 ? 1 : r <= 2 ? 2 : r <= 5 ? 5 : 10) * p;
+}
+function graphique(cv, o) {
+  const w = Math.max(240, cv.clientWidth || 300), h = o.h || 250, dpr = window.devicePixelRatio || 1;
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); cv.style.height = h + "px";
+  const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+  const c = { encre: cssv("--encre"), doux: cssv("--doux"), trait: cssv("--trait") };
+  const pad = { l: 66, r: 12, t: 12, b: 26 };
+  let vals = [];
+  (o.series || []).forEach(s => vals.push(...s.y.filter(Number.isFinite)));
+  (o.bandes || []).forEach(b => vals.push(...b.bas, ...b.haut));
+  (o.lignes || []).forEach(l => vals.push(...(Array.isArray(l.y) ? l.y : [l.y])));
+  if (!vals.length) vals = [0, 1];
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  if (hi - lo < 1e-9) { lo -= 1; hi += 1; }
+  const marge = (hi - lo) * 0.08; lo -= marge; hi += marge;
+  const pas = pasJoli((hi - lo) / 4);
+  lo = Math.floor(lo / pas) * pas; hi = Math.ceil(hi / pas) * pas;
+  const n = Math.max(2, o.n);
+  const X = i => pad.l + i / (n - 1) * (w - pad.l - pad.r);
+  const Y = v => pad.t + (hi - v) / (hi - lo) * (h - pad.t - pad.b);
+  g.font = "10px " + cssv("--mono"); g.textBaseline = "middle";
+  for (let v = lo; v <= hi + pas / 2; v += pas) {
+    g.strokeStyle = c.trait; g.lineWidth = 1; g.setLineDash([]);
+    g.beginPath(); g.moveTo(pad.l, Y(v)); g.lineTo(w - pad.r, Y(v)); g.stroke();
+    g.fillStyle = c.doux; g.textAlign = "right"; g.fillText(o.yFmt(v), pad.l - 8, Y(v));
+  }
+  g.textAlign = "center"; g.textBaseline = "top";
+  let droite = -1e9;                              // etiquettes de l'axe : on saute celles qui chevaucheraient la precedente
+  (o.xTicks || []).forEach(t => {
+    if (t.i < 0 || t.i > n - 1) return;
+    const tw = g.measureText(t.label).width, x = Math.min(Math.max(X(t.i), pad.l + tw / 2), w - pad.r - tw / 2);
+    if (x - tw / 2 < droite + 8) return;
+    g.fillStyle = c.doux; g.fillText(t.label, x, h - pad.b + 8); droite = x + tw / 2;
+  });
+  (o.bandes || []).forEach(b => {
+    g.fillStyle = b.couleur; g.beginPath();
+    b.haut.forEach((v, i) => i ? g.lineTo(X(b.x0 + i), Y(v)) : g.moveTo(X(b.x0 + i), Y(v)));
+    for (let i = b.bas.length - 1; i >= 0; i--) g.lineTo(X(b.x0 + i), Y(b.bas[i]));
+    g.closePath(); g.fill();
+  });
+  (o.lignes || []).forEach(l => {
+    g.strokeStyle = l.couleur; g.lineWidth = 1.5; g.setLineDash(l.tirets || [5, 4]); g.beginPath();
+    if (Array.isArray(l.y)) l.y.forEach((v, i) => { const x = X(l.x0 + i); if (i) { g.lineTo(x, Y(l.y[i - 1])); g.lineTo(x, Y(v)); } else g.moveTo(x, Y(v)); });
+    else { g.moveTo(pad.l, Y(l.y)); g.lineTo(w - pad.r, Y(l.y)); }
+    g.stroke(); g.setLineDash([]);
+  });
+  (o.series || []).forEach(s => {
+    g.strokeStyle = s.couleur; g.lineWidth = s.epaisseur || 2; g.lineJoin = "round"; g.setLineDash(s.tirets || []); g.beginPath();
+    let premier = true;
+    s.y.forEach((v, i) => { if (!Number.isFinite(v)) return; const x = X((s.x0 || 0) + i); premier ? g.moveTo(x, Y(v)) : g.lineTo(x, Y(v)); premier = false; });
+    g.stroke(); g.setLineDash([]);
+    if (s.point) {
+      const i = s.y.length - 1, x = X((s.x0 || 0) + i), y = Y(s.y[i]);
+      g.fillStyle = cssv("--panneau"); g.beginPath(); g.arc(x, y, 5.5, 0, 7); g.fill();
+      g.fillStyle = s.couleur; g.beginPath(); g.arc(x, y, 3.8, 0, 7); g.fill();
+    }
+  });
+  if (o.vide) { g.fillStyle = c.doux; g.textAlign = "center"; g.textBaseline = "middle"; g.font = "12px " + cssv("--mono"); g.fillText(o.vide, (pad.l + w - pad.r) / 2, (pad.t + h - pad.b) / 2); }
+}
+
+function logo() {
+  const cv = $("logo"), g = cv.getContext("2d"), s = cv.width;
+  g.clearRect(0, 0, s, s);
+  const bleu = cssv("--bleu"), clair = cssv("--clair"), encre = cssv("--encre");
+  g.fillStyle = clair; g.beginPath(); if (g.roundRect) g.roundRect(4, 4, s - 8, s - 8, 22); else g.rect(4, 4, s - 8, s - 8); g.fill();
+  g.fillStyle = cssv("--bande2"); g.fillRect(14, 44, s - 28, 28);
+  g.strokeStyle = bleu; g.lineWidth = 2; g.setLineDash([5, 4]);
+  [44, 72].forEach(y => { g.beginPath(); g.moveTo(14, y); g.lineTo(s - 14, y); g.stroke(); });
+  g.setLineDash([]); g.strokeStyle = encre; g.lineWidth = 5; g.lineJoin = "round"; g.lineCap = "round"; g.beginPath();
+  [[16, 60], [28, 52], [38, 64], [50, 55], [60, 66], [70, 50], [80, 36], [92, 24]].forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y));
+  g.stroke();
+  g.fillStyle = bleu; g.beginPath(); g.arc(92, 24, 7, 0, 7); g.fill();
+}
+
+// ------------------------------------------------------------------ rendu
+function resume() {
+  const e = D.etat, k = etatCompte(), j = D.journal || [];
+  $("s-solde").textContent = dol(e.solde);
+  $("s-phase").textContent = (e.phase === "finance" ? "Financé" : "Challenge") + " n°" + e.tentatives[e.tentatives.length - 1].numero;
+  $("s-seances").textContent = j.length;
+  $("s-1mnq").textContent = dol(e.gain_1_mnq, true);
+  $("s-1mnq").className = "v " + classe(e.gain_1_mnq);
+  const t = e.tentatives[e.tentatives.length - 1];
+  $("tentative").textContent = (e.phase === "finance" ? "compte financé" : "challenge") + " n°" + t.numero;
+  const gain = e.solde - CAPITAL;
+  $("resultat").textContent = dol(gain, true);
+  $("resultat").className = "grand " + classe(gain);
+  $("resultat-l").textContent = k.finance ? "depuis l'ouverture du compte financé virtuel" : "sur l'objectif de +4 000 $";
+  // jauge objectif : de -2 500 $ a +4 000 $, zero marque
+  const jo = $("j-obj");
+  if (k.finance) {
+    $("j-obj-v").textContent = dol(Math.max(0, e.solde - SEUIL_RETRAIT), false) + " retirable";
+    jo.style.left = "0"; jo.style.width = Math.max(0, Math.min(100, (e.solde - CAPITAL) / (SEUIL_RETRAIT - CAPITAL) * 100)) + "%";
+    jo.style.background = "var(--vert)";
+    jo.parentElement.previousElementSibling.firstElementChild.textContent = "Vers le seuil de retrait (52 600 $)";
+  } else {
+    $("j-obj-v").textContent = dol(gain, true) + " / +4 000 $";
+    const z = PERTE / (PERTE + OBJECTIF) * 100, pos = (gain + PERTE) / (PERTE + OBJECTIF) * 100;
+    jo.style.left = Math.min(z, pos) + "%"; jo.style.width = Math.abs(pos - z) + "%";
+    jo.style.background = gain >= 0 ? "var(--vert)" : "var(--rouge)";
+    const zero = document.createElement("span"); zero.className = "zero"; zero.style.left = z + "%";
+    jo.parentElement.querySelector(".zero")?.remove(); jo.parentElement.appendChild(zero);
+  }
+  const jm = $("j-marge"), pm = Math.max(0, Math.min(100, k.marge / PERTE * 100));
+  $("j-marge-v").textContent = dol(k.marge) + " / 2 500 $";
+  jm.style.left = "0"; jm.style.width = pm + "%";
+  jm.style.background = pm > 60 ? "var(--bleu)" : pm > 40 ? "var(--orange)" : "var(--rouge)";
+  const r = D.niveaux && D.niveaux.risque_1_mnq;
+  const n = r ? Math.min(50, Math.max(0, Math.floor(F * k.marge / r))) : null;
+  $("c-taille").textContent = n === null ? "—" : n + " MNQ";
+  $("c-taille").className = "v" + (n === 0 ? " mauvais" : "");
+  $("c-tent").textContent = e.tentatives.length;
+  $("c-recu").textContent = dol(e.recu_total);
+  $("regles").innerHTML = (n === 0 ? "<b>Attention : à cette marge, la règle de taille donne 0 MNQ ; le compte ne trade plus et reste bloqué (faille connue de la règle, voir zone/README.md).</b> " : "")
+    + "Règles virtuelles : +4 000 $ à atteindre, perte maximale 2 500 $ sous le plus haut de fin de journée. Taille = 0,15 × marge / risque d'un MNQ"
+    + (r ? ` (${nf.format(Math.round(r))} $ aujourd'hui)` : "") + ", arrondie en dessous.";
+}
+
+function graphCompte() {
+  const L = lignesCompte();
+  const cle = L.length ? L[L.length - 1].cle : null;
+  const cur = L.filter(x => x.cle === cle);
+  const e = D.etat, k = etatCompte();
+  const soldes = [CAPITAL, ...cur.map(x => x.solde)];
+  const planchers = [CAPITAL - PERTE, ...cur.map((x, i) => i + 1 < cur.length ? cur[i + 1].plancher : k.plancher)];
+  const finance = e.phase === "finance";
+  const n = Math.max(soldes.length, 12);
+  const dates = ["départ", ...cur.map(x => x.date)];
+  const ticks = []; const pasx = Math.max(1, Math.ceil(dates.length / 6));
+  for (let i = 0; i < dates.length; i += pasx) ticks.push({ i, label: i ? dates[i].slice(5).split("-").reverse().join("/") : "départ" });
+  graphique($("g-compte"), {
+    n, h: 260, yFmt: v => nf.format(v), xTicks: ticks,
+    lignes: [{ y: finance ? SEUIL_RETRAIT : CAPITAL + OBJECTIF, couleur: cssv("--vert") }, { y: planchers, x0: 0, couleur: cssv("--rouge"), tirets: [] }],
+    series: [{ y: soldes, couleur: cssv("--bleu"), epaisseur: 2.5, point: true }],
+    vide: cur.length ? null : "pas encore de séance jouée",
+  });
+  $("compte-d").textContent = cur.length ? `${cur.length} séance${cur.length > 1 ? "s" : ""} depuis le ${dateFr(cur[0].date)}` : "en attente";
+}
+
+let cleSeance = "";
+function seance() {
+  const v = D.niveaux, corps = $("seance-corps"), etat = $("seance-etat");
+  if (!v) { $("t-seance").textContent = "Séance"; corps.innerHTML = '<p class="note">Pas encore de niveaux publiés par le robot.</p>'; etat.textContent = "—"; return; }
+  $("t-seance").textContent = "Séance du " + dateFr(v.seance);
+  const ny = parties("America/New_York");
+  const aujourdhui = ny.jour === v.seance, minNy = ny.h * 60 + ny.m;
+  if (v.pas_de_trade) {
+    cleSeance = "";
+    etat.className = "pastille orange"; etat.textContent = "zone : pas de trade";
+    corps.innerHTML = `<div class="bandeau"><b>Pas de trade de la zone</b> : ${v.raison}. Le backtest ne trade pas ces jours-là.</div>`;
+    return;
+  }
+  let prochain = -1;
+  const ctrl = v.controles.map(c => { const [h, m] = c.ny.split("h").map(Number); return { ...c, min: h * 60 + m }; });
+  if (aujourdhui) prochain = ctrl.findIndex(c => c.min > minNy || (c.min === minNy && ny.s === 0));
+  const cle = [v.seance, aujourdhui, prochain, minNy >= 570, minNy >= 960, ny.jour].join("|");
+  if (cle === cleSeance) return;
+  cleSeance = cle;
+  if (aujourdhui && minNy >= 570 && minNy < 960) { etat.className = "pastille vive"; etat.textContent = "séance en cours"; }
+  else if (aujourdhui && minNy < 570) { etat.className = "pastille"; etat.textContent = "aujourd'hui"; }
+  else if (v.seance > ny.jour) { etat.className = "pastille"; etat.textContent = "à venir"; }
+  else { etat.className = "pastille ferme"; etat.textContent = "terminée, rejouée demain matin"; }
+  const lignes = ctrl.map((c, i) => {
+    const cl = i === prochain ? "prochain" : (aujourdhui && c.min < minNy ? "passe" : "");
+    return `<tr class="${cl}"><td>${c.ny}</td><td>${c.paris}</td><td class="n">${(c.sigma * 100).toFixed(3).replace(".", ",")} %</td>`
+      + `<td class="n">${prix(v.veille * (1 + c.sigma))}</td><td class="n">${prix(v.veille * (1 - c.sigma))}</td></tr>`;
+  }).join("");
+  const compte = prochain >= 0
+    ? `<div class="bandeau">Prochain contrôle à <b>${ctrl[prochain].paris}</b> (Paris), dans <b id="compteur" data-min="${ctrl[prochain].min}">…</b>.</div>` : "";
+  corps.innerHTML = `
+    <div class="chiffres" style="border-top:0;padding-top:0;margin-top:14px">
+      <div><div class="l">Clôture de la veille</div><div class="v">${prix(v.veille)}</div></div>
+      <div><div class="l">Risque pour 1 MNQ</div><div class="v">${v.risque_1_mnq ? nf.format(Math.round(v.risque_1_mnq)) + " $" : "—"}</div></div>
+      <div><div class="l">Compte neuf, f = 0,25</div><div class="v">${v.tailles ? v.tailles["0.25"]["Phidias (coussin 2 500 $)"] + " MNQ" : "—"}</div></div>
+    </div>${compte}
+    <div class="defile"><table>
+      <thead><tr><th>Contrôle (NY)</th><th>Paris</th><th class="n">Mouvement moyen</th><th class="n">Haut si ouv. = veille</th><th class="n">Bas si ouv. = veille</th></tr></thead>
+      <tbody>${lignes}</tbody></table></div>
+    <p class="note">Après l'ouverture de 9 h 30 : haut = max(ouverture, veille) × (1 + mouvement), bas = min(ouverture, veille) × (1 − mouvement). À chaque contrôle, clôture de la minute au-dessus du haut : achat ; sous le bas : vente. En position, sortie si le prix repasse la limite ou le VWAP. Tout est fermé à 15 h 59 (New York). Les niveaux affichés supposent une ouverture égale à la veille.</p>`;
+}
+
+function rebond() {
+  const v = D.niveaux, corps = $("rebond-corps"), e = D.etat;
+  const total = e.gain_rebond_1_mnq || 0;
+  if (!v || !v.rebond) { corps.innerHTML = '<p class="note">Pas encore de signal publié.</p>'; return; }
+  const rb = v.rebond, achat = rb.achat;
+  let echelle = "";
+  if (rb.seuil !== null && rb.seuil !== undefined) {
+    const lo = Math.min(-0.035, rb.mouvement_veille * 1.15, rb.seuil * 1.15), hi = Math.max(0.025, rb.mouvement_veille * 1.15);
+    const P = x => ((x - lo) / (hi - lo) * 100).toFixed(2) + "%";
+    echelle = `<div class="echelle" aria-label="Mouvement de la dernière séance comparé au seuil">
+      <div class="axe"></div><div class="zone-achat" style="width:${P(rb.seuil)}"></div>
+      <div class="seuil" style="left:${P(rb.seuil)}"></div><div class="point" style="left:${P(rb.mouvement_veille)}"></div>
+      <div class="lab h" style="left:${P(rb.seuil)}">seuil ${pct(rb.seuil)}</div>
+      <div class="lab" style="left:${P(rb.mouvement_veille)}">dernière séance ${pct(rb.mouvement_veille)}</div>
+    </div>`;
+  }
+  corps.innerHTML = `
+    <div class="signal"><div class="grand ${achat ? "bon" : ""}">${achat ? "ACHAT" : "PAS D'ACHAT"}</div>
+      <div class="sous" style="margin:0">${dateFr(v.seance)}${achat ? " · 9 h 30 → 15 h 59 · 1 MNQ" : ""}</div></div>
+    ${echelle}
+    <div class="chiffres">
+      <div><div class="l">Seuil (10 % les plus bas)</div><div class="v">${rb.seuil === null || rb.seuil === undefined ? "—" : pct(rb.seuil)}</div></div>
+      <div><div class="l">Dernière séance</div><div class="v ${classe(rb.mouvement_veille)}">${pct(rb.mouvement_veille)}</div></div>
+      <div><div class="l">Gain depuis le 1er oct.</div><div class="v ${classe(total)}">${dol(total, true)}</div></div>
+    </div>
+    <p class="note">Achat de 1 MNQ à l'ouverture le lendemain d'une séance dans les 10 % les plus basses (ouverture → clôture, 252 séances). <b>Hors du compte de challenge</b> : compté à part. Non validé statistiquement : dans le backtest, son gain vient surtout de deux krachs (2020 et avril 2025).</p>`;
+}
+
+function cone() {
+  const R = D.reference, j = D.journal || [];
+  const mu = R.moyenne_zone, sd = R.ecart_zone;
+  let cum = 0; const live = [0, ...j.map(r => (cum += r.gain_1_mnq))];
+  const H = Math.max(126, live.length + 20);
+  const k = Array.from({ length: H + 1 }, (_, i) => i);
+  const moy = k.map(i => mu * i), b50h = k.map(i => mu * i + 0.674 * sd * Math.sqrt(i)), b50b = k.map(i => mu * i - 0.674 * sd * Math.sqrt(i));
+  const b90h = k.map(i => mu * i + 1.645 * sd * Math.sqrt(i)), b90b = k.map(i => mu * i - 1.645 * sd * Math.sqrt(i));
+  const ticks = [0, 21, 42, 63, 84, 105, 126, 189, 252].filter(i => i <= H).map(i => ({ i, label: i ? (i / 21) + " mois" : "départ" }));
+  graphique($("g-cone"), {
+    n: H + 1, h: 250, yFmt: v => nf.format(v), xTicks: ticks,
+    bandes: [{ x0: 0, haut: b90h, bas: b90b, couleur: cssv("--bande1") }, { x0: 0, haut: b50h, bas: b50b, couleur: cssv("--bande2") }],
+    series: [{ y: moy, couleur: cssv("--doux"), epaisseur: 1.5, tirets: [4, 4] }, { y: live, couleur: cssv("--bleu"), epaisseur: 2.5, point: true }],
+  });
+  const n = live.length - 1, a6 = 126;
+  const f = (i, z) => mu * i + z * sd * Math.sqrt(i);
+  $("cone-note").innerHTML = `Après <b>${n} séance${n > 1 ? "s" : ""}</b>, le robot fait <b class="${classe(cum)}">${dol(cum, true)}</b> pour 1 MNQ ; le backtest attendait ${dol(mu * n, true)}`
+    + (n ? `, entre ${dol(f(n, -1.645), true)} et ${dol(f(n, 1.645), true)} 9 fois sur 10` : "") + `. `
+    + `Même après six mois (${a6} séances), cette fourchette va de ${dol(f(a6, -1.645), true)} à ${dol(f(a6, 1.645), true)} : <b>quelques mois de suivi ne prouvent pas l'avantage</b>. Ils vérifient que le robot reste dans ce que prévoit le backtest. Une sortie franche de la bande du bas serait un signal d'alerte.`;
+}
+
+function backtest() {
+  const R = D.reference;
+  let a = 0, b = 0; const z = R.zone.map(x => (a += x)), r = R.rebond.map(x => (b += x));
+  const ticks = []; let an = "";
+  R.dates.forEach((d, i) => { if (d.slice(0, 4) !== an) { an = d.slice(0, 4); ticks.push({ i, label: an }); } });
+  graphique($("g-bt"), {
+    n: R.dates.length, h: 250, yFmt: v => nf.format(v), xTicks: ticks,
+    lignes: [{ y: 0, couleur: cssv("--trait"), tirets: [] }],
+    series: [{ y: r, couleur: cssv("--violet"), epaisseur: 2 }, { y: z, couleur: cssv("--bleu"), epaisseur: 2.5, point: true }],
+  });
+  $("bt-note").innerHTML = `Zone : <b>${dol(a, true)}</b> sur ${R.dates.length} séances (${R.jours_trade_zone} jours de trade), en moyenne ${dol(R.moyenne_zone, true)} par séance pour un écart-type de ${nf.format(Math.round(R.ecart_zone))} $. `
+    + `Rebond : <b>${dol(b, true)}</b> en ${R.jours_rebond} achats, dont l'essentiel en avril 2025. Rejeu du robot sur les données de la recherche, frais réels de 1,5 point par aller-retour.`;
+}
+
+function journal() {
+  const j = D.journal || [];
+  $("journal").innerHTML = j.slice().reverse().map(r => `<tr><td>${r.date}</td><td>${r.phase} n°${r.tentative}</td><td class="n">${r.mnq}</td>`
+    + `<td class="n ${classe(r.gain)}">${dol(r.gain, true)}</td><td class="n">${nf.format(r.solde)} $</td><td class="n ${classe(r.gain_1_mnq)}">${dol(r.gain_1_mnq, true)}</td>`
+    + `<td class="n ${classe(r.gain_rebond_1_mnq)}">${r.gain_rebond_1_mnq ? dol(r.gain_rebond_1_mnq, true) : "—"}</td><td>${r.evenement || ""}</td></tr>`).join("")
+    || '<tr><td colspan="8">Pas encore de séance jouée.</td></tr>';
+  $("journal-d").textContent = j.length ? `du ${dateFr(j[0].date)} au ${dateFr(j[j.length - 1].date)}` : "—";
+  const t = D.trades, box = $("trades");
+  const derniere = D.etat.derniere_date;
+  if (t && t.date === derniere && t.lignes.length) {
+    box.innerHTML = `<div class="sous">Trades du ${dateFr(t.date)}</div><div class="trades">${t.lignes.map(x => `<div>${x.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</div>`).join("")}</div>`;
+  } else if (j.length) {
+    box.innerHTML = `<div class="sous">Aucun trade le ${dateFr(derniere)}</div>`;
+  }
+  $("pied-g").textContent = `données du robot : séance du ${derniere}`;
+  const c = new Date(D.construit);
+  $("pied").innerHTML = `Page construite le ${c.toLocaleString("fr-FR", { timeZone: "Europe/Paris", dateStyle: "long", timeStyle: "short" })} (Paris) à partir des fichiers du robot sur GitHub (branche main, zone/robot/).<br>`
+    + `Le robot rejoue chaque séance le lendemain matin (données Databento environ 8 h après la clôture) ; cette page est reconstruite chaque jour de semaine vers 14 h 50, heure de Paris.`;
+}
+
+function horloge() {
+  const p = parties("Europe/Paris"), ny = parties("America/New_York");
+  $("h-paris").firstChild.nodeValue = [p.h, p.m, p.s].map(x => String(x).padStart(2, "0")).join(":");
+  $("h-ny").firstChild.nodeValue = [ny.h, ny.m].map(x => String(x).padStart(2, "0")).join(":");
+  const m = ny.h * 60 + ny.m, ouvre = !["Sat", "Sun"].includes(ny.sem), el = $("marche");
+  if (ouvre && m >= 570 && m < 960) { el.className = "pastille vive vert"; el.textContent = "séance US ouverte"; }
+  else if (ouvre && m < 570) { const r = 570 - m; el.className = "pastille"; el.textContent = `ouverture dans ${Math.floor(r / 60)} h ${String(r % 60).padStart(2, "0")}`; }
+  else { el.className = "pastille ferme"; el.textContent = "séance US fermée"; }
+}
+
+function tic() {
+  horloge();
+  if (!D) return;
+  seance();                                       // ne redessine que si le prochain controle ou l'etat change
+  const el = $("compteur");
+  if (el) {
+    const ny = parties("America/New_York"), reste = +el.dataset.min * 60 - (ny.h * 3600 + ny.m * 60 + ny.s);
+    if (reste >= 0) el.textContent = `${Math.floor(reste / 60)} min ${String(reste % 60).padStart(2, "0")} s`;
+  }
+}
+
+function tout() {
+  logo();
+  if (!D) return;
+  cleSeance = "";
+  resume(); graphCompte(); seance(); rebond(); cone(); backtest(); journal();
+}
+
+tout(); tic();
+setInterval(tic, 1000);
+let attente;
+new ResizeObserver(() => { clearTimeout(attente); attente = setTimeout(() => { if (D) { graphCompte(); cone(); backtest(); } }, 120); }).observe(document.querySelector(".page"));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", tout);
+new MutationObserver(tout).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>
