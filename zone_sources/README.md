@@ -71,8 +71,8 @@ information que la zone n'utilise pas. C'est sa décision, en connaissance de ca
 d'avance n'est pas rempli (t 1,44 contre 2,33). Le suivi en argent virtuel doit maintenant le juger.
 
 Porté dans `zone/robot.py` sur main (fonction `rebond`). Rejoué sur 2023-2026, le robot redonne
-exactement les gains de `sources.py` : 18 758 $ pour 1 MNQ, zone comprise. Le robot compte 3 jours de
-rebond de plus que la recherche (375 contre 372 sur 2011-2026). Ce sont 3 jours à gain net nul (1,5
-point brut, exactement les frais), que `sources.py` ne compte pas comme trades. Aucun signal de rebond
+exactement les gains de `sources.py` : 18 758 $ pour 1 MNQ, zone comprise. Les jours de rebond sont les
+mêmes. Le décompte montrait 375 jours contre 372 sur 2011-2026 : les 3 jours d'écart ont un gain net
+nul (1,5 point brut, exactement les frais) et disparaissent quand on ne compte que les gains non nuls. Aucun signal de rebond
 depuis le départ du robot (25 septembre 2026) : son compte virtuel est inchangé. Le rebond n'est pas
 encore dans le script TradingView.
