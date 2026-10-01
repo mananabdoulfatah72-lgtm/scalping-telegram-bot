@@ -104,3 +104,64 @@ Toutes les stratégies évaluées sont comptées dans `fonds/essais.csv`.
 - naissances, mutations, morts et déploiements ;
 - leader par marché ;
 - comparaison avec le bruit.
+
+## Version 2 des règles (1er octobre 2026, toujours avant tout calcul)
+
+L'utilisateur demande d'explorer aussi le RSI, le MACD, les bandes de Bollinger, l'order flow, l'ICT/SMC,
+d'autres sources d'information, et de juger aussi le risque (pertes, Sharpe). Aucune évolution n'a encore
+tourné : les règles sont élargies ici, avant de lancer quoi que ce soit. Tout ce qui n'est pas changé
+ci-dessous reste comme plus haut.
+
+### 7 marchés au lieu de 5
+
+On ajoute le **Nasdaq 100 (NQ, micro MNQ, 2 $ le point)** et le **S&P 500 (ES, micro MES, 5 $ le point)**,
+séance 9 h 30 - 16 h, barres d'une minute Databento de `intraday/` (2011-2026). Mêmes frais (1 $ par ordre,
+1 tick de glissement par ordre), mêmes périodes : entraînement **2016-2019** (les années 2011-2015 ne sont
+pas utilisées), validation 2020-2022, coffre 2023 - septembre 2026.
+
+Le coffre 2023-2026 du NQ a déjà servi à d'autres tests (zone de bruit, tournois). Il reste valable pour
+juger une stratégie nouvelle, choisie sans le regarder ; chaque ouverture est comptée dans le registre.
+
+### 16 familles au lieu de 7
+
+Les 7 familles de départ restent. La famille 0 (écart à la moyenne sur L barres de plus de Z écarts-types)
+est exactement la **bande de Bollinger** (L, Z) ; la famille 1 est la **cassure de Donchian**, la famille 2
+l'**ORB**, la famille 3 les **bandes de VWAP**. On ajoute :
+
+| Famille | Hypothèse : à la clôture de la barre j, signal d'achat si… (vente : le symétrique) |
+|---|---|
+| 7 RSI | le RSI de Wilder sur L barres dépasse 50 + 15 × Z (vente : passe sous 50 − 15 × Z). « Suivre » = momentum ; « contrer » = le classique surachat / survente |
+| 8 MACD | l'histogramme du MACD (moyennes exponentielles L et 26/12 × L, signal 9/12 × L) dépasse Z × 0,1 × √L × écart-type (≈ Z écarts-types de l'histogramme d'une marche au hasard) |
+| 9 Bollinger squeeze | les bandes étaient resserrées à la barre j − 1 (écart-type sur L barres < 0,8 × sa moyenne des 100 barres d'avant) et la clôture sort de la bande moyenne + Z écarts-types |
+| 10 Balayage de liquidité (ICT) | le plus bas de la barre passe sous le plus bas des L barres précédentes d'au moins (Z − 0,25) × 0,5 × écart-type, mais la barre clôture au-dessus de ce niveau (chasse aux stops puis rejet). « Suivre » = acheter le rejet, comme l'ICT |
+| 11 Balayage de la veille (ICT) | même chose avec le plus bas (vente : le plus haut) de la séance précédente |
+| 12 Fair value gap (ICT/SMC) | un FVG haussier s'est formé (plus bas de la barre k > plus haut de la barre k − 2, écart ≥ Z × 0,5 × écart-type) il y a au plus L barres, et le prix revient dedans sans clôturer sous son bas. Un seul trade par FVG ; un FVG est oublié si une clôture passe sous son bas |
+| 13 Order flow estimé | la pression acheteuse estimée sur L barres, Σ volume × (2 × clôture − haut − bas) / (haut − bas) divisé par Σ volume, dépasse Z × 0,5 / √L |
+| 14 Pic de volume | le volume de la barre dépasse (1 + Z) fois le volume moyen de la même barre sur les 20 séances jouables d'avant, et la barre est haussière (clôture > ouverture). « Suivre » = continuation ; « contrer » = épuisement |
+| 15 Marché leader (nouvelle source) | le marché leader a monté sur les L dernières barres plus que ce marché, en écarts-types : z(leader) − z(marché) > Z, avec z = rendement sur L barres / (écart-type des rendements de 5 minutes sur 20 barres × √L). Leaders : NQ ← ES, ES ← NQ, RTY ← ES, YM ← ES, CL ← ES, GC ← euro, euro ← or. Pas de signal quand le leader n'a pas de cours à cette heure-là |
+
+**Ce qui n'est pas testé ici, et pourquoi :**
+- **Le vrai order flow** (sens des transactions, footprint, carnet) a déjà été testé dans `ordres/` sur
+  les transactions du ES avec leur sens : aucun signal ne battait les frais. Les barres d'une minute
+  n'ont pas le sens des transactions ; la famille 13 n'en est qu'une estimation.
+- **Les order blocks** (ICT) n'ont pas de définition unique et mesurable ; les balayages et les FVG
+  couvrent les idées ICT qu'on peut écrire sans ambiguïté. Les « kill zones » sont couvertes par les
+  gènes début et durée.
+
+Le gène L va de 2 à 120 barres pour toutes les nouvelles familles (âge maximal du FVG pour la famille 12).
+Il ne sert pas aux familles 11 et 14.
+
+### Boucle, finalistes et coffre ajustés
+
+- **256 stratégies par génération** ; élites : les 4 meilleures et la meilleure de chaque famille ;
+  **14 descendants par famille** ; le reste en immigrants. 80 générations, 8 graines, et 8 graines sur
+  bruit.
+- Bruit : les séances du marché sont mélangées comme plus haut ; le volume moyen par barre est recalculé
+  sur le bruit ; le marché leader garde ses vrais cours. Le lien entre les deux est donc détruit.
+- Finalistes : au plus un par marché, soit **au plus 7**. Même règle qu'avant, et toujours la barrière
+  du meilleur Sharpe de validation obtenu sur bruit pour le même marché.
+- **Coffre, une seule fois** : t ≥ **2,6** sur 2023-2026 (correction pour 7 finalistes), au moins
+  3 années positives sur 4.
+- On publie aussi, pour chaque finaliste et sur chaque période : Sharpe, **perte maximale** (en $ pour
+  1 micro et en % de 50 000 $), part de jours gagnants, gain moyen et perte moyenne par trade. Ces mesures
+  servent à décrire, pas à choisir : la sélection reste celle écrite ci-dessus.
