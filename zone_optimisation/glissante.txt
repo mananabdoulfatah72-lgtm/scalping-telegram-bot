@@ -1,0 +1,63 @@
+Choix de chaque 1er janvier (selon les seules annees passees) :
+  2014 G1 : k 1.25, 28 j, 30 min, stop VWAP seul (t passe -0.75)
+  2014 G2 : k 1.25, 28 j, 30 min, stop VWAP seul (t passe -0.75)
+  2014 G3 : 10 reglages, dont k 1.25, 28 j, 30 min, stop VWAP seul en tete
+  2015 G1 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe -0.33)
+  2015 G2 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe -0.33)
+  2015 G3 : 10 reglages, dont k 1.5, 28 j, 15 min, stop VWAP seul en tete
+  2016 G1 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe +0.04)
+  2016 G2 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe +0.64)
+  2016 G3 : 10 reglages, dont k 1.5, 28 j, 15 min, stop VWAP seul en tete
+  2017 G1 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe +0.06)
+  2017 G2 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe +0.57)
+  2017 G3 : 10 reglages, dont k 1.5, 28 j, 15 min, stop VWAP seul en tete
+  2018 G1 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe -0.03)
+  2018 G2 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe +0.81)
+  2018 G3 : 10 reglages, dont k 1.5, 28 j, 15 min, stop VWAP seul en tete
+  2019 G1 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe +1.07)
+  2019 G2 : k 1.5, 7 j, 60 min, stop limite seule (t passe +1.96)
+  2019 G3 : 10 reglages, dont k 1.5, 28 j, 15 min, stop VWAP seul en tete
+  2020 G1 : k 1.5, 28 j, 15 min, stop VWAP seul (t passe +1.11)
+  2020 G2 : k 1.5, 28 j, 30 min, stop limite seule (t passe +2.13)
+  2020 G3 : 10 reglages, dont k 1.5, 28 j, 15 min, stop VWAP seul en tete
+  2021 G1 : k 1.5, 28 j, 30 min, stop limite seule (t passe +1.19)
+  2021 G2 : k 1.5, 14 j, 30 min, stop VWAP seul (t passe +2.73)
+  2021 G3 : 10 reglages, dont k 1.5, 28 j, 30 min, stop limite seule en tete
+  2022 G1 : k 1.5, 14 j, 30 min, stop VWAP seul (t passe +1.49)
+  2022 G2 : k 1.5, 14 j, 30 min, stop VWAP seul (t passe +3.40)
+  2022 G3 : 10 reglages, dont k 1.5, 14 j, 30 min, stop VWAP seul en tete
+  2023 G1 : k 1.5, 28 j, 30 min, stop VWAP seul (t passe +2.25)
+  2023 G2 : k 1.5, 14 j, 30 min, stop VWAP seul (t passe +2.83)
+  2023 G3 : 10 reglages, dont k 1.5, 28 j, 30 min, stop VWAP seul en tete
+  2024 G1 : k 1.5, 28 j, 30 min, stop VWAP seul (t passe +2.18)
+  2024 G2 : k 1, 7 j, 60 min, stop limite seule (t passe +3.65)
+  2024 G3 : 10 reglages, dont k 1.5, 28 j, 30 min, stop VWAP seul en tete
+  2025 G1 : k 1.5, 14 j, 30 min, stop VWAP seul (t passe +2.51)
+  2025 G2 : k 1, 7 j, 60 min, stop VWAP seul (t passe +3.72)
+  2025 G3 : 10 reglages, dont k 1.5, 14 j, 30 min, stop VWAP seul en tete
+  2026 G1 : k 1.5, 14 j, 30 min, stop VWAP seul (t passe +2.72)
+  2026 G2 : k 1.25, 7 j, 60 min, stop VWAP seul (t passe +3.24)
+  2026 G3 : 10 reglages, dont k 1.5, 14 j, 30 min, stop VWAP seul en tete
+
+Resultats HORS ECHANTILLON (t des rendements quotidiens nets, frais reels) :
+                         2014-2022 |  2023-2026 |  2014-2026 | 2023-2026, 1 MNQ
+  V1 (reglage d'origine corrige)   |      +1.62 |      +2.00 |      +2.44 | +10,668 $
+  G1                               |      +1.97 |      +1.56 |      +2.46 | +8,082 $
+  G2                               |      +2.64 |      +0.92 |      +2.66 | +4,722 $
+  G3                               |      +2.10 |      +1.29 |      +2.47 | +6,371 $
+
+Critere d'adoption (README.md) :
+  G1 : mieux que V1 sur 2014-2022 OUI | sur 2023-2026 non | t de la difference -0.34 non => rejetee
+  G2 : mieux que V1 sur 2014-2022 OUI | sur 2023-2026 non | t de la difference +0.05 non => rejetee
+  G3 : mieux que V1 sur 2014-2022 OUI | sur 2023-2026 non | t de la difference -0.91 non => rejetee
+
+Verdict : V1 reste (aucune optimisation ne fait mieux hors echantillon)
+
+Pour information, l'ORACLE (reglage choisi APRES avoir vu 2023-2026) : k 1.5, 14 j, 30 min, stop VWAP seul -> t 2023-2026 +2.24 ; mais t 2014-2022 +2.72
+V1 est 8e sur 108 reglages sur 2023-2026 ; mediane des 108 reglages : t +1.16
+
+Robustesse : t 2023-2026 selon chaque reglage, les autres a la valeur d'origine
+  largeur k  : 0.75: +0.58 | 1.0: +2.00 | 1.25: +2.09 | 1.5: +1.80
+  jours      : 14: +2.00 | 28: +1.66 | 7: +1.54
+  intervalle : 15: +0.98 | 30: +2.00 | 60: +1.93
+  stop       : VWAP seul: +1.76 | limite ou VWAP: +2.00 | limite seule: +2.05
