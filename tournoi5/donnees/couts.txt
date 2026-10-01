@@ -1,0 +1,11 @@
+Cout barres d'une heure (6 devises + ZN) : 6.67 $
+Cout minutes bitcoin : 6.88 $
+Bitcoin telecharge ; total 13.56 $
+6E : 96216 heures du 2010-06-06 20:00 au 2026-09-30 16:00
+6B : 96191 heures du 2010-06-06 20:00 au 2026-09-30 16:00
+6J : 96196 heures du 2010-06-06 20:00 au 2026-09-30 16:00
+6A : 96204 heures du 2010-06-06 20:00 au 2026-09-30 16:00
+6C : 96207 heures du 2010-06-06 20:00 au 2026-09-30 16:00
+6S : 96156 heures du 2010-06-06 20:00 au 2026-09-30 16:00
+ZN : 96362 heures du 2010-06-06 20:00 au 2026-09-30 16:00
+bitcoin : 775616 minutes du 2017-12-18 09:02 au 2026-09-30 16:22
