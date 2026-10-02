@@ -295,3 +295,14 @@ Dans le robot :
   filtrée. Au bilan (60 séances), on décide si le filtre entre dans le compte.
 - **En direct sur ta plateforme** : à chaque signal de la zone, regarder le delta cumulé des 30 dernières
   minutes. S'il va contre le trade, ne pas le prendre.
+
+### Secours Yahoo si Databento refuse (2 octobre 2026)
+
+Le 2 octobre 2026, Databento a répondu « account locked » à toutes les demandes. Pour que le robot continue,
+il prend alors les barres d'une minute du contrat NQ en cours chez Yahoo (7 derniers jours). Le contrat suit
+la même règle que Databento : changement le mercredi avant le 3e vendredi de mars, juin, septembre et
+décembre. Vérifié hors ligne : avec les mêmes barres, le robot retrouve exactement son journal du 28 au
+30 septembre. Les séances prises chez Yahoo sont notées dans `robot/secours_yahoo.json`. Dès que Databento
+répond, il les remplace. Yahoo ne donne pas le côté acheteur ou vendeur de chaque transaction : **pendant une
+panne de Databento, le filtre delta ne peut pas être mesuré**. Le message Telegram le signale, et les trades
+seront mesurés quand Databento reviendra.

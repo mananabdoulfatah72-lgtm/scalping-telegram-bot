@@ -25,7 +25,7 @@ jobs:
           python-version: "3.11"
 
       - name: Installer les dependances
-        run: pip install databento pandas numpy requests
+        run: pip install databento pandas numpy requests yfinance
 
       - name: Conversation Telegram gardee entre les passages (cache GitHub, jamais commitee)
         uses: actions/cache@v4

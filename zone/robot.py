@@ -59,6 +59,7 @@ DEBUT_RSI2 = os.getenv("ROBOT_DEBUT_RSI2", "2026-10-01")   # RSI(2) dans le comp
 RISQUE_RSI2_REF = 233.19                # ecart-type d'un jour en position, 1 MNQ, 2011-2022 (tournoi8/ sur la recherche)
 DEBUT_FILTRE = os.getenv("ROBOT_DEBUT_FILTRE", "2026-10-01")   # filtre order flow H1 : trades mesures a partir de cette date
 FILTRE = DOSSIER / "filtre_delta.csv"
+SECOURS = DOSSIER / "secours_yahoo.json"   # seances prises chez Yahoo faute de Databento (remplacees quand il revient)
 BUDGET_FILTRE_MOIS, PLAFOND_FENETRE = 1.0, 0.25   # $ par mois (accord de l'utilisateur, 2 octobre 2026) ; $ par fenetre
 COLONNES_FILTRE = ["date", "heure", "sens", "achats", "ventes", "delta_30min", "garde", "gain_1_mnq", "cout", "mesure_le", "statut"]
 MOTIF_ZONE = re.compile(r"(achat|vente) (\d+)h(\d+) a ([\d,.]+) -> sortie (\d+)h(\d+) a ([\d,.]+)")
@@ -74,6 +75,8 @@ def telecharger():
     import databento as db
     ancien = pd.read_csv(MINUTES) if MINUTES.exists() else None
     debut = ancien["t"].str[:10].max() if ancien is not None else str((pd.Timestamp.now() - pd.Timedelta(days=200)).date())
+    if SECOURS.exists():                    # seances venues de Yahoo pendant une panne : Databento les remplace
+        debut = min(debut, json.loads(SECOURS.read_text())["premier_jour"])
     client = db.Historical()
     fin = pd.Timestamp(client.metadata.get_dataset_range(dataset="GLBX.MDP3")["end"]).isoformat()
     cout = client.metadata.get_cost(dataset="GLBX.MDP3", symbols=["NQ.v.0"], stype_in="continuous", schema="ohlcv-1m",
@@ -108,7 +111,61 @@ def telecharger():
         return
     # gzip sans date dans l'en-tete : un fichier identique ne cree pas de nouveau commit
     tout.to_csv(MINUTES, index=False, float_format="%.2f", compression={"method": "gzip", "mtime": 0})
+    SECOURS.unlink(missing_ok=True)
     print(f"Databento : {len(neuf)} minutes du {debut} au {fin[:16]} ({cout:.3f} $)")
+
+
+def contrat_nq(jour):
+    """Contrat que suit NQ.v.0 chez Databento un jour donne : changement le mercredi avant le 3e vendredi de mars, juin,
+    septembre et decembre (regle observee de 2024 a 2026). Renvoie (symbole Yahoo, annee, mois d'echeance)."""
+    d = pd.Timestamp(jour).normalize()
+    for a in (d.year, d.year + 1):
+        for mo in (3, 6, 9, 12):
+            premier = pd.Timestamp(a, mo, 1)
+            vendredi3 = premier + pd.Timedelta(days=(4 - premier.weekday()) % 7 + 14)
+            if vendredi3 - pd.Timedelta(days=2) > d:
+                return f"NQ{'HMUZ'[mo // 3 - 1]}{a % 100:02d}.CME", a, mo
+
+
+def telecharger_yahoo():
+    """Secours quand Databento refuse : barres d'une minute du contrat en cours chez Yahoo (7 derniers jours ; pas de
+    delta, donc pas de filtre H1). Les seances ainsi ajoutees sont notees dans SECOURS ; Databento les remplace des
+    qu'il repond. Renvoie le nombre de minutes ajoutees."""
+    import yfinance as yf
+    ancien = pd.read_csv(MINUTES)
+    debut = ancien["t"].str[:10].max()      # la derniere seance enregistree est reprise (peut-etre incomplete)
+    sym = contrat_nq(pd.Timestamp.now(tz="America/New_York").tz_localize(None))[0]
+    df = pd.DataFrame()
+    for s in (sym, "NQ=F"):                 # le contrat precis d'abord, sinon le contrat continu de Yahoo
+        df = yf.download(s, interval="1m", period="7d", progress=False, auto_adjust=False)
+        if not df.empty:
+            break
+    if df.empty:
+        raise RuntimeError("Yahoo ne renvoie aucune barre")
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.get_level_values(0)
+    t = pd.DatetimeIndex(df.index)
+    t = (t.tz_localize("UTC") if t.tz is None else t).tz_convert("America/New_York")
+    minute = t.hour * 60 + t.minute
+    jour = t.strftime("%Y-%m-%d")
+    garde = (minute >= 570) & (minute < 960) & (t.dayofweek < 5) & (jour >= debut)
+    if not garde.any():
+        return 0
+    # numero de contrat : celui de Databento tant que l'echeance est la meme, sinon un numero propre a l'echeance
+    ref = contrat_nq(ancien["t"].iloc[-1][:10])[1:]
+    ref_id = int(ancien["contrat"].iloc[-1])
+    ids = [ref_id if contrat_nq(j)[1:] == ref else 900_000 + contrat_nq(j)[1] * 100 + contrat_nq(j)[2] for j in jour[garde]]
+    neuf = pd.DataFrame({"t": t[garde].strftime("%Y-%m-%d %H:%M"), "o": df["Open"].to_numpy(float)[garde],
+                         "h": df["High"].to_numpy(float)[garde], "l": df["Low"].to_numpy(float)[garde],
+                         "c": df["Close"].to_numpy(float)[garde], "v": df["Volume"].fillna(0).to_numpy()[garde].astype("int64"),
+                         "contrat": ids}).dropna()
+    tout = pd.concat([ancien[ancien["t"].str[:10] < debut], neuf], ignore_index=True)
+    tout = tout.drop_duplicates("t", keep="last").sort_values("t").reset_index(drop=True)
+    tout.to_csv(MINUTES, index=False, float_format="%.2f", compression={"method": "gzip", "mtime": 0})
+    premier = json.loads(SECOURS.read_text())["premier_jour"] if SECOURS.exists() else debut
+    SECOURS.write_text(json.dumps({"premier_jour": min(premier, debut), "symbole": s}))
+    print(f"Yahoo (secours) : {len(neuf)} minutes depuis le {debut} ({s})")
+    return len(neuf)
 
 
 def tableaux(d):
@@ -384,7 +441,7 @@ def filtre_delta(trades, derniere_date):
     cloture de la minute de decision va dans son sens. Transactions Databento (schema trades, NQ.v.0), au plus
     PLAFOND_FENETRE par fenetre et BUDGET_FILTRE_MOIS par mois. Suivi a part : le compte virtuel garde la zone d'origine
     (regle de jugement inchangee). Mesure les trades de zone joues depuis DEBUT_FILTRE qui ne le sont pas encore.
-    Renvoie (toutes les lignes, lignes ajoutees)."""
+    Renvoie (toutes les lignes, lignes ajoutees, nombre de trades encore a mesurer)."""
     ancien = pd.read_csv(FILTRE, dtype={"garde": str}) if FILTRE.exists() else pd.DataFrame(columns=COLONNES_FILTRE)
     deja = set(zip(ancien["date"].astype(str), ancien["heure"].astype(str)))
     a_faire = []
@@ -396,12 +453,16 @@ def filtre_delta(trades, derniere_date):
                 if (date, heure) not in deja:
                     a_faire.append((date, m, heure, sens, gain))
     if not a_faire:
-        return ancien, []
+        return ancien, [], 0
     if not (os.getenv("DATABENTO_API_KEY") or "").strip():
         print(f"Filtre delta : cle Databento absente, {len(a_faire)} trade(s) a mesurer au prochain passage")
-        return ancien, []
-    import databento as db
-    client = db.Historical()
+        return ancien, [], len(a_faire)
+    try:
+        import databento as db
+        client = db.Historical()
+    except Exception as e:
+        print(f"Filtre delta : Databento indisponible ({type(e).__name__}), {len(a_faire)} trade(s) a mesurer plus tard")
+        return ancien, [], len(a_faire)
     maintenant = pd.Timestamp.now(tz="UTC")
     mois = maintenant.strftime("%Y-%m")
     depense = float(pd.to_numeric(ancien.loc[ancien["mesure_le"].astype(str).str[:7] == mois, "cout"], errors="coerce").sum())
@@ -427,15 +488,18 @@ def filtre_delta(trades, derniere_date):
                              cout=round(cout, 4), statut="mesure")
         except Exception as e:                 # donnees pas encore publiees, reseau : nouvel essai au prochain passage
             print(f"Filtre delta {date} {heure} : pas encore mesurable ({type(e).__name__} : {str(e)[:150]})")
+            if 400 <= (getattr(e, "http_status", None) or 0) < 500:      # acces refuse : inutile d'insister ce passage
+                break
             continue
         nouveaux.append(ligne)
+    attente = len(a_faire) - len(nouveaux)
     if nouveaux:
         tout = pd.concat([ancien, pd.DataFrame(nouveaux)], ignore_index=True).reindex(columns=COLONNES_FILTRE)
         tout = tout.sort_values(["date", "heure"], key=lambda c: c.str.zfill(5) if c.name == "heure" else c).reset_index(drop=True)
         tout.to_csv(FILTRE, index=False)
         print(f"Filtre delta : {len(nouveaux)} trade(s) mesure(s), {depense:.3f} $ depenses en {mois} (budget {BUDGET_FILTRE_MOIS:.2f} $)")
-        return tout, nouveaux
-    return ancien, []
+        return tout, nouveaux, attente
+    return ancien, [], attente
 
 
 def bilan_filtre(f):
@@ -802,16 +866,22 @@ def envoyer(message):
 
 def main():
     DOSSIER.mkdir(parents=True, exist_ok=True)
+    source = ""
     if os.getenv("ROBOT_MINUTES"):
         minutes = pd.read_csv(os.getenv("ROBOT_MINUTES"))
     else:
         try:
             telecharger()
-        except Exception as e:             # compte verrouille, cle refusee, panne : prevenir au lieu d'echouer en silence
+        except Exception as e:             # compte verrouille, cle refusee, panne : barres de Yahoo en secours
             raison = (str(e).strip().splitlines() or [type(e).__name__])[0][:200]
-            envoyer(f"Robot zone de bruit MNQ : ALERTE, Databento refuse le telechargement des barres ({raison})."
-                    " Aucune seance ne peut etre rejouee tant que ce n'est pas regle (compte Databento a verifier).")
-            raise SystemExit(1)
+            print(f"Databento refuse le telechargement ({raison}) : secours Yahoo")
+            try:
+                telecharger_yahoo()
+                source = f"barres Yahoo en secours (Databento refuse : {raison})"
+            except Exception as e2:
+                envoyer(f"Robot zone de bruit MNQ : ALERTE, Databento refuse le telechargement des barres ({raison}) et le"
+                        f" secours Yahoo echoue ({type(e2).__name__} : {str(e2)[:150]}). Aucune seance ne peut etre rejouee.")
+                raise SystemExit(1)
         minutes = pd.read_csv(MINUTES)
     if os.getenv("ROBOT_JUSQU_AU"):
         minutes = minutes[minutes["t"].str[:10] <= os.getenv("ROBOT_JUSQU_AU")]
@@ -825,7 +895,7 @@ def main():
     for date, x in d[d.index > pd.Timestamp(etat["derniere_date"])].iterrows():
         lignes.append(une_journee(etat, x, str(date.date())))
         etat["derniere_date"] = str(date.date())
-    filtre, filtre_neuf = filtre_delta(trades, etat["derniere_date"])
+    filtre, filtre_neuf, filtre_attente = filtre_delta(trades, etat["derniere_date"])
     niv = niveaux(minutes, risque_demain)
     f_niv = DOSSIER / "niveaux.json"
     ancien_niv = json.loads(f_niv.read_text()) if f_niv.exists() else None
@@ -856,6 +926,11 @@ def main():
                f" ({etat['solde'] - CAPITAL:+,.0f} $), recu en tout {etat['recu_total']:,.0f} $")
     if lignes:
         msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
+    if source:
+        msg.append(f"Donnees : {source}")
+    if filtre_attente:
+        msg.append(f"Filtre delta : {filtre_attente} trade(s) de zone pas encore mesure(s) (transactions Databento indisponibles)."
+                   " En direct, applique le filtre a la main : delta cumule des 30 dernieres minutes dans le sens du trade")
     if (bf := bilan_filtre(filtre)) is not None:
         msg.append(f"Zone filtree par le delta 30 min (suivi a part) depuis le {DEBUT_FILTRE} : {bf['filtree']:+,.0f} $ pour 1 MNQ"
                    f" (zone seule {bf['zone']:+,.0f} $), {bf['ecartes']} trade(s) ecarte(s) sur {bf['trades']}")
