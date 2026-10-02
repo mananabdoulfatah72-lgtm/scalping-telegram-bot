@@ -1,0 +1,173 @@
+{
+ "P4": {
+  "gardes": 3148,
+  "ecartes": 317,
+  "points_gardes": 3.01,
+  "points_ecartes": -1.2,
+  "t": 1.62,
+  "zone_seule": 9108.0,
+  "zone_filtree": 9489.8,
+  "confirme": false
+ },
+ "P1": {
+  "gardes": 3024,
+  "ecartes": 441,
+  "points_gardes": 2.75,
+  "points_ecartes": 1.8,
+  "t": 0.39,
+  "zone_seule": 9108.0,
+  "zone_filtree": 8314.0,
+  "confirme": null
+ },
+ "P2": {
+  "gardes": 2922,
+  "ecartes": 543,
+  "points_gardes": 2.89,
+  "points_ecartes": 1.23,
+  "t": 0.67,
+  "zone_seule": 9108.0,
+  "zone_filtree": 8440.0,
+  "confirme": null
+ },
+ "P3": {
+  "gardes": 3024,
+  "ecartes": 441,
+  "points_gardes": 2.78,
+  "points_ecartes": 1.56,
+  "t": 0.48,
+  "zone_seule": 9108.0,
+  "zone_filtree": 8418.5,
+  "confirme": null
+ },
+ "par_annee": [
+  {
+   "annee": "2011",
+   "trades": 237,
+   "gardes": -0.9,
+   "ecartes": 0.2,
+   "zone": -202.0,
+   "filtree": -206.0
+  },
+  {
+   "annee": "2012",
+   "trades": 227,
+   "gardes": -0.2,
+   "ecartes": -0.5,
+   "zone": -60.0,
+   "filtree": -47.0
+  },
+  {
+   "annee": "2013",
+   "trades": 208,
+   "gardes": -0.8,
+   "ecartes": -1.4,
+   "zone": -180.0,
+   "filtree": -154.0
+  },
+  {
+   "annee": "2014",
+   "trades": 223,
+   "gardes": -0.6,
+   "ecartes": -4.3,
+   "zone": -220.0,
+   "filtree": -130.0
+  },
+  {
+   "annee": "2015",
+   "trades": 223,
+   "gardes": -0.8,
+   "ecartes": -2.1,
+   "zone": -194.0,
+   "filtree": -152.0
+  },
+  {
+   "annee": "2016",
+   "trades": 243,
+   "gardes": -1.7,
+   "ecartes": -3.2,
+   "zone": -447.0,
+   "filtree": -363.0
+  },
+  {
+   "annee": "2017",
+   "trades": 232,
+   "gardes": -0.3,
+   "ecartes": -2.2,
+   "zone": -109.0,
+   "filtree": -54.0
+  },
+  {
+   "annee": "2018",
+   "trades": 218,
+   "gardes": 8.8,
+   "ecartes": 3.1,
+   "zone": 1842.0,
+   "filtree": 1800.0
+  },
+  {
+   "annee": "2019",
+   "trades": 227,
+   "gardes": 0.1,
+   "ecartes": -5.6,
+   "zone": -179.0,
+   "filtree": 28.0
+  },
+  {
+   "annee": "2020",
+   "trades": 219,
+   "gardes": 4.9,
+   "ecartes": 7.8,
+   "zone": 1141.0,
+   "filtree": 976.0
+  },
+  {
+   "annee": "2021",
+   "trades": 219,
+   "gardes": 3.9,
+   "ecartes": 2.6,
+   "zone": 840.0,
+   "filtree": 809.0
+  },
+  {
+   "annee": "2022",
+   "trades": 258,
+   "gardes": 10.7,
+   "ecartes": 1.3,
+   "zone": 2660.0,
+   "filtree": 2647.0
+  },
+  {
+   "annee": "2023",
+   "trades": 219,
+   "gardes": 8.2,
+   "ecartes": 22.4,
+   "zone": 2017.0,
+   "filtree": 1680.0
+  },
+  {
+   "annee": "2024",
+   "trades": 218,
+   "gardes": 9.8,
+   "ecartes": -33.6,
+   "zone": 1394.0,
+   "filtree": 1965.0
+  },
+  {
+   "annee": "2025",
+   "trades": 232,
+   "gardes": 4.4,
+   "ecartes": 2.0,
+   "zone": 942.0,
+   "filtree": 883.0
+  },
+  {
+   "annee": "2026",
+   "trades": 62,
+   "gardes": -3.8,
+   "ecartes": 4.8,
+   "zone": -139.0,
+   "filtree": -191.0
+  }
+ ],
+ "annees_mieux": 8
+}

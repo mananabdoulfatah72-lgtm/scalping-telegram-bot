@@ -82,3 +82,25 @@ Ce choix ne regarde aucun gain, et aucune donnée de 2011 à mars 2026.
   pour 1 MNQ), et la part de trades écartés. P1 à P3 : mêmes mesures, à titre descriptif seulement.
 - Limite : c'est un test de l'**approximation**, qui prend la même décision que le vrai filtre dans 92 % des
   99 trades connus. Pas un test du vrai delta.
+
+## Résultat du test gratuit (2 octobre 2026) : `test_gratuit.txt`
+
+| | Gardés | Écartés | Écart | t | Zone seule | Zone filtrée |
+|---|---|---|---|---|---|---|
+| **P4 (test)** | 3 148 trades, +3,01 pt | 317 (9 %), −1,20 pt | +4,22 pt | **1,62** | +9 108 pt | +9 490 pt |
+| P1 (descriptif) | 3 024, +2,75 pt | 441 (13 %), +1,80 pt | +0,95 pt | 0,39 | +9 108 pt | +8 314 pt |
+| P2 (descriptif) | 2 922, +2,89 pt | 543 (16 %), +1,23 pt | +1,66 pt | 0,67 | +9 108 pt | +8 440 pt |
+| P3 (descriptif) | 3 024, +2,78 pt | 441 (13 %), +1,56 pt | +1,22 pt | 0,48 | +9 108 pt | +8 418 pt |
+
+- **Le filtre approché n'est pas confirmé** (t = 1,62 < 2). Il va dans le bon sens, mais l'effet est petit :
+  +382 points en 15 ans pour 1 MNQ (environ +760 $, soit 50 $ par an). La zone filtrée fait mieux que la
+  zone seule 8 années sur 16.
+- Les approximations par le volume (P1 à P3) n'ont aucun effet.
+- **Lecture** : sur 15 ans, rien ne ressemble aux +67 points du coffre d'`orderflow/`. Deux explications sont
+  possibles, et ces données ne permettent pas de trancher :
+  1. l'effet mesuré sur avril - octobre 2026 tenait en partie à la chance (20 trades écartés) ;
+  2. l'effet vient du vrai delta, que les barres d'une minute ne voient pas (l'approximation ne reprend
+     que 12 des 20 trades écartés par le vrai filtre).
+- Seul l'historique du vrai delta trancherait (Databento, ou l'historique tick par tick de la plateforme de
+  l'utilisateur quand il aura un compte, par exemple via Rithmic). En attendant, le filtre reste **suivi à
+  part** dans le robot, hors du compte virtuel.
