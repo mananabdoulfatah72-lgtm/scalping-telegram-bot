@@ -1,0 +1,25 @@
+RSI(2) sans week-end, NQ 1 MNQ, du 2012-03-06 au 2026-09-25
+
+toute la periode : original t +3.05, +19,498 $ ; sans week-end t +2.49, +12,670 $ (65% de l'original) ; vendredis fermes 101
+coffre 2023-2026 : original t +1.95, +11,098 $ ; sans week-end t +0.90, +4,516 $ (41% de l'original) ; vendredis fermes 32
+
+-> UTILISABLE (t >= 2 : oui ; au moins la moitie des dollars : oui)
+
+Annee par annee ($ pour 1 MNQ) : annee | original | sans week-end | vendredis fermes
+2012 | +482 | +526 | 9
+2013 | +674 | +555 | 7
+2014 | +646 | +512 | 4
+2015 | +51 | +668 | 10
+2016 | -369 | -814 | 8
+2017 | +883 | +530 | 7
+2018 | -214 | -368 | 7
+2019 | +1,563 | +1,706 | 4
+2020 | +716 | -269 | 5
+2021 | +5,510 | +5,523 | 6
+2022 | -1,544 | -414 | 2
+2023 | +1,512 | +1,035 | 8
+2024 | +3,362 | +1,338 | 8
+2025 | +3,408 | +647 | 8
+2026 | +2,816 | +1,496 | 8
+
+Week-ends passes en position : 101 ; mouvement du vendredi 15 h 50 au lundi 9 h 30 : moyenne +32.3 pt, total +3,262 pt ; journee du lundi gardee : moyenne +8.1 pt

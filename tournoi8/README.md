@@ -145,3 +145,17 @@ dans environ 6 trades sur 10 depuis 2012. On mesure ce que coûte une fermeture 
 
 Publié dans tous les cas : les deux versions sur toute la période et sur le coffre 2023-2026, année par
 année, et le nombre de fermetures du vendredi.
+
+### Résultat (2 octobre 2026) : `sans_weekend.txt`
+
+| | Original | Sans week-end |
+|---|---|---|
+| 2012 - septembre 2026 | t 3,05, +19 498 $ | **t 2,49, +12 670 $ (65 %)** |
+| Coffre 2023 - 2026 | t 1,95, +11 098 $ | t 0,90, +4 516 $ (41 %) |
+
+- L'original redonne exactement le coffre ci-dessus (+11 098 $, t 1,95) : même code, mêmes données.
+- **Selon la règle fixée, la variante est utilisable** (t 2,49 ≥ 2, et 65 % des dollars gardés).
+- Mais elle est faible là où le RSI(2) avait été validé : sur 2023 - 2026, elle ne garde que 41 % des
+  dollars, avec t 0,90. Une grosse part du gain récent se fait pendant le week-end : en moyenne +32 points
+  du vendredi 15 h 50 au lundi 9 h 30, sur 101 week-ends.
+- Elle ne fait mieux que l'original que 5 années sur 15 (2012, 2015, 2019, 2021, 2022).
