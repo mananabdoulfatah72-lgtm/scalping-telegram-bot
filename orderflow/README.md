@@ -140,3 +140,14 @@ sortie au meilleur prix du côté reçu, + 0,5 point par ordre. Une position à 
   finalistes, et gain net positif.
 
 Toutes les stratégies évaluées sont comptées dans `fonds/essais.csv`.
+
+### Note du 2 octobre 2026, à l'arrivée des données (avant tout calcul de résultat)
+
+- Reçu : **131 séances** du 1er avril au 1er octobre 2026, pour **74,46 $** (`donnees/achats.txt`).
+- **4 jours fériés américains** (25 mai, 19 juin, 3 juillet, 7 septembre) : le marché ferme à 13 h et le
+  volume vaut 6 à 11 % d'une séance normale. Ces séances sont **retirées**. Il reste 127 séances.
+- **Séances minces** : volume sous 40 % de la médiane des 20 séances d'avant. Ce sont les veilles de
+  changement de contrat, où le symbole suit encore l'ancien contrat presque abandonné (15 et 16 juin,
+  15 septembre). **Pas de trade** ces jours-là, comme un jour de changement de contrat.
+- Découpage : **exploration = 84 séances** (1er avril - 31 juillet), **coffre = 43 séances**
+  (3 août - 1er octobre).

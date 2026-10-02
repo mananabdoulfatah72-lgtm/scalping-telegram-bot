@@ -29,6 +29,10 @@ class Seances:
         sec = ((t - jour).dt.total_seconds() - 34200).astype(int).to_numpy()
         garde = (sec >= 0) & (sec < NS)
         s, jour, sec = s[garde], jour[garde], sec[garde]
+        # jours feries americains (cloture anticipee a 13 h) : seances retirees (note du 2 octobre, README)
+        fin = pd.Series(sec).groupby(jour.to_numpy()).max()
+        garde = ~jour.isin(fin.index[fin < 12900]).to_numpy()
+        s, jour, sec = s[garde], jour[garde], sec[garde]
         self.jours = pd.DatetimeIndex(np.sort(jour.unique()))
         ij = self.jours.get_indexer(jour)
         nj = len(self.jours)
@@ -44,7 +48,12 @@ class Seances:
         self.achat, self.vente = grille("achat", False), grille("vente", False)
         contrat = pd.Series(s["contrat"].to_numpy()).groupby(ij).agg(lambda x: x.mode().iloc[0])
         self.contrat = contrat.reindex(range(nj)).to_numpy()
-        self.change = np.r_[False, self.contrat[1:] != self.contrat[:-1]]     # premiere seance d'un nouveau contrat
+        changement = np.r_[False, self.contrat[1:] != self.contrat[:-1]]     # premiere seance d'un nouveau contrat
+        # seance mince (volume < 40 % de la mediane des 20 seances d'avant, ex. veille d'un changement de contrat ou le
+        # symbole suit encore l'ancien contrat) : pas de trade, comme un jour de changement (note du 2 octobre, README)
+        vol = self.achat.sum(axis=1) + self.vente.sum(axis=1)
+        self.mince = np.array([d > 0 and vol[d] < 0.4 * np.median(vol[max(0, d - 20):d]) for d in range(nj)])
+        self.change = changement | self.mince                                  # seances sans trade
         self.n_secondes = np.bincount(ij, minlength=nj)
         self.n_trades = np.bincount(ij, weights=s["n"].to_numpy(float), minlength=nj)
 
@@ -52,7 +61,7 @@ class Seances:
         """Ne garde que les n premieres seances (l'exploration ne voit pas le coffre)."""
         for a in ("prix", "bid", "ask", "bid_q", "ask_q", "haut", "bas", "achat", "vente"):
             setattr(self, a, getattr(self, a)[:n].copy())
-        for a in ("contrat", "change", "n_secondes", "n_trades"):
+        for a in ("contrat", "change", "mince", "n_secondes", "n_trades"):
             setattr(self, a, getattr(self, a)[:n])
         self.jours = self.jours[:n]
         return self
