@@ -49,3 +49,36 @@ incertain, pas une promesse.
   qui sont contenues dans les fenêtres achetées.
 - Le filtre n'est pas réglé sur ces données. Une version différente (seuil, autre fenêtre) devrait être
   testée sur d'autres données avant d'être utilisée.
+
+## Ce qui s'est passé : Databento verrouillé, version gratuite (2 octobre 2026)
+
+Le téléchargement n'a pas eu lieu : Databento répond « account locked » à toute demande. **Rien n'a été
+acheté.** L'utilisateur a demandé d'exploiter les données gratuites. Les barres d'une minute du NQ de
+2011 à 2026 sont déjà dans le dépôt, mais elles ne disent pas qui achète et qui vend. On remplace donc le
+delta par une approximation, et on vérifie d'abord qu'elle ressemble au vrai delta.
+
+### Choix de l'approximation (sur avril - septembre 2026 seulement, là où le vrai delta est connu)
+
+Quatre approximations du delta des 30 minutes, calculées sur les barres d'une minute :
+
+| Approximation | Même signe que le vrai delta (1 463 fenêtres de 30 min) | Même décision que le vrai filtre (99 trades de zone) |
+|---|---|---|
+| P1 : volume × sens de la bougie | 71,3 % | 89 % |
+| P2 : volume × position de la clôture dans la bougie | 67,7 % | 90 % |
+| P3 : volume × sens de clôture à clôture | 71,8 % | 89 % |
+| **P4 : mouvement du prix sur les 30 minutes** | **75,7 %** | **92 %** |
+
+**P4 est retenue**, parce qu'elle a le même signe que le vrai delta le plus souvent sur toutes les fenêtres.
+Ce choix ne regarde aucun gain, et aucune donnée de 2011 à mars 2026.
+
+### Règles du test gratuit (fixées le 2 octobre 2026, avant de le lancer)
+
+- Trades : les 3 465 trades de zone de `trades_zone.csv` (24 janvier 2011 - 31 mars 2026).
+- Règle : le trade est gardé si la clôture de la minute du signal moins la clôture de la minute qui précède
+  la fenêtre de 30 minutes va dans le sens du trade ; sinon il est écarté (un mouvement nul écarte).
+- **Le filtre approché est confirmé si** les trades gardés battent les trades écartés avec **t ≥ 2** (test
+  de Welch), et si la zone filtrée gagne plus que la zone seule au total.
+- Publié dans tous les cas : le résultat année par année, la zone seule et la zone filtrée (points et $
+  pour 1 MNQ), et la part de trades écartés. P1 à P3 : mêmes mesures, à titre descriptif seulement.
+- Limite : c'est un test de l'**approximation**, qui prend la même décision que le vrai filtre dans 92 % des
+  99 trades connus. Pas un test du vrai delta.
