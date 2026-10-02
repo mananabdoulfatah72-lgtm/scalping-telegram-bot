@@ -62,3 +62,15 @@ calendrier (`tournoi2/`), tendance multi-marchés (`tendance/`), order flow (`or
   fixée d'avance. S'il devait être repris, ce serait comme nouvelle idée, testée sur d'autres données.
 - Les deux stratégies sur le VIX ressemblent beaucoup au RSI(2) (corrélation de 0,5 à 0,6) : même quand
   elles gagnent, elles n'apportent pas une source vraiment nouvelle.
+
+## Seconde chance pour le mardi de rebond (décidée le 2 octobre 2026, après l'exploration, avant de lire 2023-2026)
+
+L'utilisateur ne veut pas écarter une stratégie qui frôle les seuils. Le mardi de rebond (T3) est donc testé
+une fois sur **2023 - septembre 2026**, années jamais lues pour lui. Comme ce test est décidé **après** avoir
+vu l'exploration, la barre est plus haute que pour un coffre normal :
+- t ≥ 2 (au lieu de 1,65 pour un seul survivant) ;
+- battre 95 % de 1 000 placements au hasard des mêmes trades ;
+- résultat positif au moins 3 années sur 4.
+
+Même s'il passe, ce sera une preuve plus faible qu'un survivant normal : il entrerait en suivi virtuel, pas
+dans le compte.
