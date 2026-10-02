@@ -64,7 +64,8 @@ SECOURS = DOSSIER / "secours_yahoo.json"
 DEBUT_COMBINE = os.getenv("ROBOT_DEBUT_COMBINE", "2026-10-02")    # premiere seance jouee
 ETAT_C, JOURNAL_C = DOSSIER / "etat_combine.json", DOSSIER / "journal_combine.csv"
 TAILLE_COMBINE = 1                       # MNQ par source, fixe (choix de l'utilisateur)
-ATTENTE_MAX_FILTRE = 1                   # seances d'attente du vrai delta ; au-dela, filtre approche (mouvement du prix sur 30 min)   # seances prises chez Yahoo faute de Databento (remplacees quand il revient)
+# pas d'approximation du delta : rejouee d'avril a septembre 2026, l'approximation par le mouvement du prix faisait perdre le
+# challenge le 29 juillet (elle ratait les trades ecartes des 27 et 28 juillet). Le bot attend le vrai delta.   # seances prises chez Yahoo faute de Databento (remplacees quand il revient)
 BUDGET_FILTRE_MOIS, PLAFOND_FENETRE = 1.0, 0.25   # $ par mois (accord de l'utilisateur, 2 octobre 2026) ; $ par fenetre
 COLONNES_FILTRE = ["date", "heure", "sens", "achats", "ventes", "delta_30min", "garde", "gain_1_mnq", "cout", "mesure_le", "statut"]
 MOTIF_ZONE = re.compile(r"(achat|vente) (\d+)h(\d+) a ([\d,.]+) -> sortie (\d+)h(\d+) a ([\d,.]+)")
@@ -675,19 +676,13 @@ def une_journee(etat, x, date, fixe=None):
     return ligne
 
 
-def jouer_combine(d, trades, filtre, minutes=None):
+def jouer_combine(d, trades, filtre):
     """Bot 3 en 1 : zone de bruit filtree par le delta des 30 minutes (H1) + RSI(2), TAILLE_COMBINE MNQ chacun, sur son
-    propre challenge 50K virtuel depuis DEBUT_COMBINE. Le vrai delta vient des transactions Databento (filtre_delta.csv).
-    Si un trade n'est pas mesure apres ATTENTE_MAX_FILTRE seance (Databento indisponible), le bot prend le filtre
-    approche gratuit : le trade est garde si la cloture de la minute du signal moins celle de la minute qui precede la
-    fenetre de 30 minutes va dans son sens (P4 de filtre_h1/, meme decision que le vrai filtre dans 92 % des 99 trades
-    connus ; non confirme sur 15 ans, t = 1,62). C'est signale. Sans barres minute, le trade est garde. Les jours ou le
-    filtre ecarte des trades, le creux du jour est approche par min(0, gain des trades gardes).
+    propre challenge 50K virtuel depuis DEBUT_COMBINE. Le delta est TOUJOURS le vrai (transactions Databento,
+    filtre_delta.csv) : une seance dont un trade de zone n'est pas encore mesure attend, et les suivantes aussi (le compte
+    se joue dans l'ordre). Quand Databento revient, filtre_delta mesure les trades en retard et le bot rattrape tout seul.
+    Les jours ou le filtre ecarte des trades, le creux du jour est approche par min(0, gain des trades gardes).
     Renvoie (etat, lignes jouees, seances en attente)."""
-    clotures = {}
-    if minutes is not None:
-        jj, _, _, _, C, _, _, _ = tableaux(minutes)
-        clotures = {str(pd.Timestamp(j).date()): C[k] for k, j in enumerate(jj)}
     if ETAT_C.exists():
         etat = json.loads(ETAT_C.read_text())
     else:
@@ -706,15 +701,6 @@ def jouer_combine(d, trades, filtre, minutes=None):
         for m, sens, g in zt:
             r = mesures.get((date, f"{(570 + m) // 60}h{(570 + m) % 60:02d}"))
             if r is None:
-                if len(jours) - k - 1 >= ATTENTE_MAX_FILTRE:
-                    forces += 1
-                    c = clotures.get(date)
-                    mouvement = c[m] - c[m - 30] if c is not None and m >= 30 else np.nan
-                    if np.isfinite(mouvement) and np.sign(mouvement) != sens:
-                        ecartes += 1
-                    else:
-                        gain += g
-                    continue
                 complet = False
                 break
             if str(r.get("garde")) == "non":
@@ -742,9 +728,8 @@ def texte_combine(etat, attente):
             + (f"challenge n°{t['numero']}, {etat['solde'] - CAPITAL:+,.0f} $ sur +4 000 $" if etat["phase"] == "challenge"
                else f"compte finance, solde {etat['solde']:,.0f} $, recu {etat['recu_total']:,.0f} $")
             + f", marge avant la limite {etat['solde'] - plancher:,.0f} $"
-            + (f" ; {attente} seance(s) en attente du filtre delta (transactions Databento indisponibles)" if attente else "")
-            + (f" ; {etat['non_mesures']} trade(s) de zone juge(s) avec le filtre approche (mouvement du prix sur 30 min, Databento indisponible)"
-               if etat.get("non_mesures") else ""))
+            + (f" ; EN PAUSE : {attente} seance(s) en attente du vrai delta (transactions Databento indisponibles ; le bot rattrapera"
+               " tout seul quand elles reviendront)" if attente else ""))
 
 
 # ----------------------------------------------------------------------------- sorties
@@ -815,8 +800,9 @@ def tableau(etat, journal, trades_du_jour, niv=None, filtre=None, combine=None):
                    "Demande de l'utilisateur du 2 octobre 2026 : la zone de bruit ne garde que les trades dont le delta des 30"
                    " minutes va dans leur sens, plus le RSI(2), 1 MNQ chacun, taille fixe. Rejeu d'avril a septembre 2026 (mois ou le"
                    " filtre a ete trouve, donc flatteur) : challenge reussi en 3 a 4 mois selon le mois de depart, marge la plus"
-                   " basse 414 $ le 29 juillet 2026. Quand Databento ne repond pas, le filtre est approche par le mouvement du prix"
-                   " sur les 30 minutes (meme decision que le vrai filtre dans 92 % des 99 trades connus, non confirme sur 15 ans).", ""]
+                   " basse 414 $ le 29 juillet 2026. Le bot n'utilise que le vrai delta (transactions Databento) : sans lui, il se met"
+                   " en pause et rattrape quand les donnees reviennent. Une approximation par le prix aurait fait perdre le challenge"
+                   " le 29 juillet.", ""]
         if len(jc):
             lignes += ["| Date | Phase | Resultat du jour | Solde | Zone gardee (1 MNQ) | Trades ecartes | RSI(2) (1 MNQ) | Evenement |",
                        "|---|---|---|---|---|---|---|---|",
@@ -991,7 +977,7 @@ def main():
         lignes.append(une_journee(etat, x, str(date.date())))
         etat["derniere_date"] = str(date.date())
     filtre, filtre_neuf, filtre_attente = filtre_delta(trades, etat["derniere_date"])
-    etat_c, lignes_c, attente_c = jouer_combine(d, trades, filtre, minutes)
+    etat_c, lignes_c, attente_c = jouer_combine(d, trades, filtre)
     niv = niveaux(minutes, risque_demain)
     f_niv = DOSSIER / "niveaux.json"
     ancien_niv = json.loads(f_niv.read_text()) if f_niv.exists() else None
