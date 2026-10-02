@@ -1,4 +1,5 @@
-date,phase,tentative,mnq,gain,gain_1_mnq,retrait,evenement,solde,gain_rebond_1_mnq
-2026-09-28,challenge,1,1,-246.0,-246.0,0.0,,49754.0,0.0
-2026-09-29,challenge,1,1,0.0,0.0,0.0,,49754.0,0.0
-2026-09-30,challenge,1,1,-30.5,-30.5,0.0,,49723.5,0.0
+date,phase,tentative,mnq,gain,gain_1_mnq,retrait,evenement,solde,gain_rebond_1_mnq,mnq_rsi2,gain_rsi2_1_mnq
+2026-09-28,challenge,1,1,-246.0,-246.0,0.0,,49754.0,0.0,0,0.0
+2026-09-29,challenge,1,1,0.0,0.0,0.0,,49754.0,0.0,0,0.0
+2026-09-30,challenge,1,1,-30.5,-30.5,0.0,,49723.5,0.0,0,0.0
+2026-10-01,challenge,1,1,0.0,0.0,0.0,,49723.5,0.0,0,0.0

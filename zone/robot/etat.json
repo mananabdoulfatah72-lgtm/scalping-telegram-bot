@@ -1,6 +1,6 @@
 {
  "debut": "2026-09-25",
- "derniere_date": "2026-09-30",
+ "derniere_date": "2026-10-01",
  "tentatives": [
   {
    "numero": 1,
@@ -17,5 +17,6 @@
  "meilleur": 0.0,
  "gain_periode": 0.0,
  "jours_finance": 0,
- "gain_rebond_1_mnq": 0.0
+ "gain_rebond_1_mnq": 0.0,
+ "gain_rsi2_1_mnq": 0.0
 }
