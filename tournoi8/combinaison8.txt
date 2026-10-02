@@ -1,0 +1,23 @@
+Zone de bruit (robot, 1 MNQ) et RSI(2) NQ (1 MNQ) : 3877 seances communes, 2011-03-02 -> 2026-09-25
+
+Correlation quotidienne 2011-2022 : -0.06
+Correlation quotidienne 2023-2026 (coffre) : -0.02
+
+Sharpe 2023-2026 (ecarts-types de 2011-2022 pour le meme risque) :
+  zone seule 0.90 | RSI(2) seul 0.94 | melange au meme risque 1.31
+  (pour comparaison, 2011-2022 : zone 0.61 | RSI(2) 0.57 | melange 0.87)
+
+Controle : zone seule = simulateur de zone_retrait/ (lui-meme verifie egal au robot) : OK
+
+Challenge Phidias 50K, departs 2023-2024, 24 mois (85 departs) :
+  zone seule      : net     -22 $/an | recu    158 $/an | challenges 1.09/an | reussis 1.18 | retraits 0.11/an | rien recu  79%
+  zone + RSI(2)   : net    +254 $/an | recu    448 $/an | challenges 1.18/an | reussis 1.53 | retraits 0.42/an | rien recu  27%
+
+Challenge Phidias 50K, departs 2023-2025, 12 mois (136 departs) :
+  zone seule      : net    -114 $/an | recu    197 $/an | challenges 1.90/an | reussis 0.68 | retraits 0.13/an | rien recu  87%
+  zone + RSI(2)   : net    -115 $/an | recu    234 $/an | challenges 2.12/an | reussis 0.93 | retraits 0.24/an | rien recu  78%
+
+Challenge Phidias 50K, information, en echantillon : departs 2011-2020, 24 mois (490 departs) :
+  zone seule      : net    -183 $/an | recu     61 $/an | challenges 1.49/an | reussis 0.56 | retraits 0.07/an | rien recu  85%
+  zone + RSI(2)   : net      -6 $/an | recu    161 $/an | challenges 1.02/an | reussis 0.57 | retraits 0.13/an | rien recu  81%
+

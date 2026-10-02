@@ -71,3 +71,55 @@ Day, Juneteenth (depuis 2022), fête nationale, Labor Day, Thanksgiving et Noël
    le Dow (YM), minutes de `zone_multi/`, 2016-2022 en exploration.
 6. Les 10 essais sont inscrits dans `fonds/essais.csv`. Aucune stratégie, aucun paramètre ni aucun
    marché ne sera ajouté ou changé après avoir vu les résultats.
+
+## Résultats (2 octobre 2026) : un survivant, le RSI(2) sur le NQ
+
+`tournoi8.py` → `exploration8.txt` ; `coffre8.py` → `coffre8.txt` ; `combinaison8.py` → `combinaison8.txt` ;
+contrôle descriptif → `coffre8_hasard.txt`. Tests : `test_tournoi8.py` (5 contrôles, tous passés).
+
+**Exploration 2011-2022** (t ≥ 2 et battre 95 % des placements au hasard) :
+
+| Stratégie | NQ : t / bat le hasard | ES : t / bat le hasard |
+|---|---|---|
+| RSI(2) | **+2,40 / 95,5 % → survit** | +2,09 / 94,3 % (échoue de peu) |
+| Double 7 | +1,91 / 68 % | +1,50 / 58 % |
+| IBS | +1,22 / 78 % | +1,97 / 96,8 % (échoue de peu) |
+| Rebond de 5 jours | +1,43 / 39 % | +0,79 / 20 % |
+| Veille de jour férié | +1,22 / 84 % | +1,41 / 91 % |
+
+Robustesse, à titre descriptif, sur 2016-2022 : RSI(2) sur le Dow t +1,42, sur le Russell t −0,08.
+
+**Coffre 2023 - septembre 2026, ouvert une fois (m = 1, seuil t ≥ 1,64) : le RSI(2) NQ passe.**
+- t +1,95, Sharpe 1,01 ;
+- 40 trades, **+11 098 $ pour 1 MNQ** ;
+- perte maximale −2 590 $, en position 14 % du temps ;
+- 68 % de trades gagnants, gain moyen +603 $, perte moyenne −399 $ ;
+- 2023 +1 512 $, 2024 +3 362 $, 2025 +3 408 $, 2026 +2 816 $.
+
+Contrôle descriptif, qui n'est pas une règle du tri : sur le coffre, les mêmes 40 trades placés au
+hasard donnent un t médian de +0,85, car le marché a beaucoup monté. Le RSI(2) bat **88 %** de ces
+placements, pas 95 % : une partie de son gain récent vient de la hausse du marché. Il reste en position
+seulement 14 % du temps.
+
+**Avec la zone de bruit** :
+- corrélation quotidienne −0,06 (2011-2022) et −0,02 (2023-2026) : **les deux sources sont
+  indépendantes** ;
+- Sharpe 2023-2026 : zone seule 0,90, RSI(2) seul 0,94, **mélange au même risque 1,31**.
+
+Challenge Phidias 50K (gestion du robot, chaque source à f × coussin / √2, au moins 1 MNQ chacune) :
+
+| Départs | Zone seule | Zone + RSI(2) |
+|---|---|---|
+| 2023-2024, suivis 24 mois | −22 $/an net, rien reçu dans 79 % des cas | **+254 $/an net, rien reçu dans 27 % des cas** |
+| 2023-2025, suivis 12 mois | −114 $/an, 87 % | −115 $/an, 78 % |
+| 2011-2020, 24 mois (en échantillon) | −183 $/an, 85 % | −6 $/an, 81 % |
+
+**Lecture.** Le RSI(2) est la première stratégie qui passe toutes les étapes depuis la zone de bruit.
+Elle est indépendante de la zone et améliore nettement le mélange. Mais :
+- elle a passé l'exploration de justesse ;
+- son coffre ne compte que 40 trades ;
+- une partie de son gain récent vient de la hausse du marché ;
+- avec 1 MNQ par source, le challenge reste peu rentable : environ +250 $/an sur 24 mois, et rien sur
+  12 mois.
+
+C'est une deuxième source plausible, pas une certitude.

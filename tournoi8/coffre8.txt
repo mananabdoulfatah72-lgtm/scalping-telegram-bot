@@ -1,0 +1,5 @@
+Coffre 2023 - septembre 2026, ouvert une fois pour 1 survivant(s).
+
+NQ RSI(2) : t +1.95 (seuil 1.64), Sharpe +1.01, 40 trades, +11098 $ pour 1 micro, perte max -2590 $, en position 14%, trades gagnants 68%, gain moyen +603 $ / perte moyenne -399 $
+  annees : 2023 +1512 $, 2024 +3362 $, 2025 +3408 $, 2026 +2816 $
+  VERDICT : PASSE

@@ -1,0 +1,23 @@
+[
+ {
+  "t": 1.945,
+  "sharpe": 1.009,
+  "dollars_1_micro": 11098.5,
+  "perte_max_1_micro": -2589.5,
+  "en_position": 0.144,
+  "trades": 40,
+  "trades_gagnants": 0.675,
+  "gain_moyen": 603.4,
+  "perte_moyenne": -399.4,
+  "annees": {
+   "2023": 1512.0,
+   "2024": 3362.5,
+   "2025": 3407.5,
+   "2026": 2816.5
+  },
+  "seuil_t": 1.645,
+  "passe": true,
+  "marche": "NQ",
+  "strategie": "RSI(2)"
+ }
+]

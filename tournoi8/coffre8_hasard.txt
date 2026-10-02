@@ -1,0 +1,2 @@
+RSI(2) NQ 2023-2026 : t reel +1.95 ; memes 40 trades places au hasard dans le coffre (1 000 fois) : t median +0.85, 95 % +2.40 ; le reel bat 87.9% des placements
+Pour reference, achat permanent du NQ sur la meme periode (sans frais) : Sharpe 1.47
