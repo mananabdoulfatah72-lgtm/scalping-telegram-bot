@@ -1,0 +1,12 @@
+Coffre order flow NQ : 43 seances du 2026-08-03 au 2026-10-01, ouvert une fois.
+
+Hypotheses survivantes de l'exploration : aucune
+
+Finalistes de la machine : 1 ; seuil de Bonferroni 1.64 (t par seance)
+- desequilibre sur 1 min au-dela de 0.35 ; contrer ; sortie 60 min ; 11h00-15h45
+  39 trades, +3.21 pt net par trade (+6.42 $ par MNQ), total +125.2 pt, t par seance +0.50 -> echoue
+
+H1, filtre order flow de la zone de bruit (confirmation : ecart > 0 et t >= 1,65) :
+  23 trades de zone ; delta des 30 min dans le sens du trade : 18 trades, +67.40 pt ; contre : 5 trades, -35.15 pt ; tous : +45.11 pt. Ecart +102.55 pt, t 2.34 -> CONFIRME
+
+Passent le coffre : 1

@@ -1,0 +1,29 @@
+Machine order flow NQ, exploration : 84 seances du 2026-04-01 au 2026-07-31 ; le coffre (43 seances) n'est pas charge.
+6 graines x 60 generations x 200 strategies, sur les vraies donnees puis sur des sens tires au hasard.
+Strategies distinctes evaluees : 41567 sur les vraies donnees, 42231 sur le hasard.
+Fitness = t du gain net par seance, reduit sous 60 trades. Execution au marche (ecart paye) + 1 point par aller-retour.
+
+Meilleure fitness obtenue sur le hasard (sans aucune information de sens) : 3.53
+Strategies reelles au-dessus : 9
+
+Meilleure strategie par famille (vraies donnees | hasard) :
+- toucher d'un niveau : fitness 3.31 (t +3.31, 63 trades, +13.49 pt net par trade) | hasard 3.16
+    toucher d'un niveau : plus bas veille, tolerance 5 ticks, confirmation delta dans le sens du mouvement ; suivre ; sortie 5 min ; 10h00-15h45
+- desequilibre : fitness 3.74 (t +3.74, 70 trades, +35.79 pt net par trade) | hasard 2.88
+    desequilibre sur 1 min au-dela de 0.35 ; contrer ; sortie 60 min ; 11h00-15h45
+- divergence CVD : fitness 1.98 (t +1.99, 209 trades, +10.42 pt net par trade) | hasard 2.80
+    divergence CVD sur 5 min ; suivre ; sortie 60 min ; 13h00-15h45
+- carnet 1er niveau : fitness 3.47 (t +3.48, 138 trades, +23.23 pt net par trade) | hasard 2.67
+    carnet 1er niveau au-dela de 0.25 ; contrer ; sortie 60 min ; 10h00-13h00
+- gros ordres : fitness 3.17 (t +3.17, 76 trades, +10.43 pt net par trade) | hasard 3.53
+    gros ordres sur 5 min, z >= 3.8 ; contrer ; sortie 5 min ; 10h00-13h00
+- empilement : fitness 2.69 (t +2.69, 162 trades, +30.99 pt net par trade) | hasard 2.76
+    empilement, ratio 2.5 ; contrer ; sortie 60 min ; 9h35-11h00
+- pic de volume : fitness 2.99 (t +2.99, 167 trades, +13.07 pt net par trade) | hasard 3.07
+    pic de volume, volume >= 1.6 fois la normale ; contrer ; sortie 10 min ; 10h00-11h00
+
+Finalistes (au plus 5, familles differentes, au-dessus du hasard) : 1
+1. desequilibre sur 1 min au-dela de 0.35 ; contrer ; sortie 60 min ; 11h00-15h45
+   fitness 3.74, t +3.74, 70 trades, +35.79 pt net par trade
+
+Duree : 51 s

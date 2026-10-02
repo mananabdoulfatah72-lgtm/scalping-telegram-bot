@@ -162,3 +162,49 @@ C'est en dessous de 2, et l'échantillon est petit.
 H1 est donc **ajoutée au coffre comme test de confirmation**, avec une règle fixée ici : sur les séances
 du coffre, le filtre est confirmé si l'écart de gain par trade (gardés − écartés) est positif avec
 **t ≥ 1,65** (un seul test). Le gain par trade de la zone avec et sans filtre est publié dans tous les cas.
+
+## Résultats (2 octobre 2026)
+
+### Exploration (84 séances, 1er avril - 31 juillet 2026) : `exploration_of.txt`
+
+| # | Trades | Net par trade | t | Bat le hasard | Verdict |
+|---|---|---|---|---|---|
+| H2 absorption sur un niveau | 199 | +4,20 pt | +0,69 | 84 % | éliminée |
+| H3 suivre les gros ordres | 1 680 | −4,48 pt | −2,97 | 3 % | éliminée (suivre les gros ordres perd) |
+| H4 divergence du CVD | 61 | +0,07 pt | +0,01 | 94 % | éliminée |
+| H5 suivre le delta de 15 min | 2 | −12,88 pt | −0,42 | 26 % | éliminée (le seuil de 0,15 n'est presque jamais atteint sur le NQ) |
+| H1 filtre de la zone | 76 trades de zone | gardés +9,24 pt, écartés −41,25 pt | 1,68 | | descriptif, ajoutée au coffre |
+
+### Machine : `machine_of.txt`, `machine/`
+
+- **41 567 stratégies distinctes** testées sur les vraies données, **42 231** sur des sens tirés au hasard.
+- Meilleure fitness obtenue au hasard : **3,53**. Meilleure réelle : **3,74**. Seules 9 stratégies réelles font
+  mieux que le hasard, toutes de la famille « déséquilibre ».
+- Dans 4 familles sur 7 (divergence CVD, gros ordres, empilement, pics de volume), le hasard fait aussi bien
+  ou mieux que les vraies données.
+- 1 finaliste : contrer un déséquilibre d'une minute au-delà de 0,35, sortie 60 minutes, 11 h - 15 h 45
+  (70 trades, +35,8 points nets par trade, t = 3,74 sur l'exploration).
+
+### Coffre (43 séances, 3 août - 1er octobre 2026), ouvert une fois : `coffre_of.txt`
+
+- **Finaliste de la machine : échoue.** 39 trades, +3,21 points nets par trade, t par séance = 0,50
+  (seuil 1,64). L'avantage vu en exploration a presque disparu.
+- **H1, filtre delta de la zone de bruit : confirmé.** 23 trades de zone : delta des 30 minutes dans le sens
+  du trade, 18 trades à +67,40 points ; contre, 5 trades à −35,15 points. Écart +102,55 points, t = 2,34
+  (seuil 1,65).
+- Contrôle : le delta s'arrête à la seconde exacte où la zone entre (barres du robot alignées sur les
+  transactions), donc le filtre ne voit pas le futur.
+
+### Lecture
+
+- **Aucune stratégie order flow autonome** ne bat le hasard après frais, ni parmi les cinq idées fixées
+  d'avance, ni parmi plus de 40 000 combinaisons. Cela rejoint `ordres/` (ES) : l'information de
+  l'order flow existe, mais elle est plus petite que l'écart payé et les frais.
+- **L'order flow sert comme filtre** : ne prendre un trade de zone que si le delta des 30 dernières
+  minutes va dans son sens. Sur les 6 mois (99 trades de zone), cela écarte 20 trades à −39,7 points en
+  moyenne. La zone passe de +982 à +1 777 points, soit environ +1 590 $ pour 1 MNQ.
+- **Descriptif, après le coffre** : le filtre marche aussi avec un delta sur 15, 45, 60 ou 90 minutes
+  (t de 1,7 à 2,5), pas sur 5 ou 10 minutes.
+- **Prudence** : la confirmation repose sur 5 trades écartés dans le coffre, et 20 en tout. L'effet réel est
+  probablement plus petit que celui mesuré. Le filtre doit être suivi en virtuel avec la zone avant
+  d'être utilisé en vrai.

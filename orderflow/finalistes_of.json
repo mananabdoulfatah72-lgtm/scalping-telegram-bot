@@ -1,0 +1,29 @@
+{
+ "finalistes": [
+  {
+   "g": {
+    "famille": 1,
+    "niveau": 0,
+    "confirmation": 0,
+    "W": 1,
+    "seuil": 0.66,
+    "sens": 1,
+    "sortie": 60,
+    "stop": 0,
+    "debut": 90,
+    "fin": 375
+   },
+   "description": "desequilibre sur 1 min au-dela de 0.35 ; contrer ; sortie 60 min ; 11h00-15h45",
+   "exploration": {
+    "fitness": 3.7437,
+    "t": 3.744,
+    "trades": 70,
+    "net_pts": 35.793,
+    "seances_gagnantes": 0.774
+   }
+  }
+ ],
+ "meilleure_fitness_hasard": 3.526,
+ "seances_exploration": 84,
+ "seances_total": 127
+}

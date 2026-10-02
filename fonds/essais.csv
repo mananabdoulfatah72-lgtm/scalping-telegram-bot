@@ -84,3 +84,6 @@ date,dossier,essai,resultat
 2026-10-02,comptes,"plusieurs comptes Phidias (1, 2, 3, 5 le meme jour ; 2, 3 echelonnes) avec zone + RSI(2) : N comptes = N fois un compte ; echelonnes pas mieux","description, voir comptes/README.md"
 2026-10-02,comptes,"frein contre les comptes perdus : 4 regles (sous 750/1250 $ de coussin, une seule source) ; choisie sur 2011-2020 = base sur 2023-2024",non adoptee ; voir comptes/README.md
 2026-10-02,tournoi9,"tournoi 9 : troisieme source sur or, petrole, euro, ZN (RSI(2), Double 7, rebond 5 jours symetriques ; fin de mois ZN) = 13 essais, hasard des dates ; aucun t >= 2",aucun survivant ; voir tournoi9/README.md
+2026-10-02,orderflow,"order flow NQ, 5 idees fixees d'avance (filtre delta de la zone, absorption, gros ordres, divergence CVD, delta 15 min) sur 84 seances tbbo",aucun survivant parmi H2-H5 ; H1 descriptif (t 1.68) ; voir orderflow/README.md
+2026-10-02,orderflow,"machine order flow NQ : 41 567 strategies (7 familles dont volume profile POC/VAH/VAL/HVN/LVN, VWAP, carnet 1er niveau, gros ordres, empilement, pics), controle 42 231 sur sens au hasard",1 finaliste (desequilibre 1 min contre) ; echoue au coffre (t 0.50)
+2026-10-02,orderflow,"H1 filtre delta 30 min de la zone de bruit, confirmation sur 43 seances du coffre",confirme (t 2.34 ; 5 trades ecartes) ; a suivre en virtuel

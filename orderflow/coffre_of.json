@@ -1,0 +1,24 @@
+{
+ "hypotheses": {},
+ "finalistes": [
+  {
+   "description": "desequilibre sur 1 min au-dela de 0.35 ; contrer ; sortie 60 min ; 11h00-15h45",
+   "trades": 39,
+   "net_pts": 3.212,
+   "t_seances": 0.497,
+   "total_pts": 125.25,
+   "passe": false
+  }
+ ],
+ "H1": {
+  "trades": 23,
+  "gardes": 18,
+  "ecartes": 5,
+  "points_gardes": 67.4,
+  "points_ecartes": -35.15,
+  "points_tous": 45.11,
+  "difference": 102.55,
+  "t_difference": 2.34,
+  "passe": true
+ }
+}
