@@ -71,3 +71,72 @@ Le déséquilibre du premier niveau du carnet et l'OFI contiennent une vraie inf
 mais elle vaut moins que les frais d'un aller-retour au marché. Delta 1 minute, CVD 15 minutes,
 footprint empilé et absorption à 5 minutes : rien d'exploitable. Ici, on cherche donc sur des horizons
 plus longs (15 à 30 minutes), sur le NQ, et autour de niveaux.
+
+## Version 2 des règles (2 octobre 2026, avant l'arrivée des données) : la machine order flow
+
+L'utilisateur demande d'utiliser **tous les outils** de l'order flow, dont le volume profile (POC,
+VAH, VAL, HVN, LVN), et de tester **des milliers de stratégies**. Les données ne sont pas encore
+arrivées : les règles sont élargies ici, avant tout calcul. Les 5 hypothèses ci-dessus restent
+testées telles quelles.
+
+### Ce que nos données permettent, et ce qu'elles ne permettent pas
+
+| Outil | Disponible | D'où |
+|---|---|---|
+| Tape, delta, CVD, footprint, déséquilibres empilés | oui | chaque transaction avec son sens |
+| Volume profile : POC, VAH, VAL (70 % du volume), HVN, LVN | oui | footprint (volume par prix) |
+| VWAP et bandes de VWAP | oui | transactions |
+| Gros ordres | oui | transactions d'au moins 10 contrats |
+| Carnet au 1er niveau (meilleur acheteur / vendeur et quantités) | oui | schéma tbbo |
+| **DOM au-delà du 1er niveau, heatmap, icebergs, ordres retirés** | **non** | il faut le carnet complet : enregistrements de la plateforme de l'utilisateur |
+
+### Les briques (toutes calculées avec les seules données connues à la fin de la minute)
+
+- **Niveaux** (16) :
+  - de la veille : plus haut, plus bas, clôture, POC, VAH, VAL, HVN et LVN les plus proches ;
+  - du jour : VWAP, VWAP ± 1 écart-type, VWAP ± 2 écarts-types, plus haut et plus bas des 30
+    premières minutes, POC du jour en cours.
+- **HVN et LVN de la veille** : maxima et minima locaux du profil de volume lissé sur 5 ticks.
+- **Value area** : la plus petite zone autour du POC qui contient 70 % du volume.
+- **Mesures d'order flow sur W minutes** (W = 1, 3, 5, 10, 15, 30 ou 60) :
+  - déséquilibre (achat − vente) / (achat + vente) ;
+  - divergence entre le prix et le CVD ;
+  - déséquilibre du carnet au 1er niveau (moyenne des 10 dernières secondes de la minute) ;
+  - volume net des gros ordres ;
+  - déséquilibres empilés du footprint (au moins 3 prix de suite où l'achat dépasse r fois la vente
+    du prix juste en dessous, ou l'inverse) ;
+  - pic de volume par rapport à la même minute des 5 séances d'avant.
+
+### Le génome (une stratégie = une combinaison)
+
+| Gène | Valeurs |
+|---|---|
+| famille | toucher d'un niveau, déséquilibre, divergence CVD, carnet 1er niveau, gros ordres, empilement, pic de volume |
+| niveau | les 16 niveaux (famille « toucher d'un niveau ») |
+| confirmation | aucune ; delta de la minute dans le sens du mouvement ; delta contre le mouvement (absorption) |
+| W | 1, 3, 5, 10, 15, 30, 60 minutes |
+| seuil | un nombre de 0 à 1, traduit selon la famille (déséquilibre 0,05 à 0,5 ; ratio 2 à 5 ; multiple 1,5 à 5 ; tolérance de 1 à 8 ticks pour toucher un niveau) |
+| sens | suivre, contrer |
+| sortie | après 5, 10, 15, 30 ou 60 minutes, ou à la fin de la séance |
+| stop | aucun, 10, 20 ou 40 ticks |
+| heures | début 9 h 35, 10 h, 11 h ou 13 h ; fin 11 h, 13 h, 15 h ou 15 h 45 |
+
+Décision à la clôture de la minute, exécution à la seconde suivante au meilleur prix du côté payé,
+sortie au meilleur prix du côté reçu, + 0,5 point par ordre. Une position à la fois.
+
+### La boucle, le contrôle et le coffre
+
+- **Algorithme génétique** sur les séances d'exploration (deux premiers tiers) : 200 stratégies par
+  génération, 60 générations, 6 graines. Élites, descendants par famille et immigrants, comme la
+  machine n°3.
+- **Fitness** : t du gain net **par séance** (les trades d'une même séance ne sont pas indépendants),
+  réduit en proportion sous 60 trades.
+- **Contrôle sur hasard** : la même machine, mêmes graines, où le sens de chaque trade est remplacé par
+  un sens tiré au hasard (fixe pour une séance et une minute données). On mesure ainsi le meilleur
+  résultat que la sélection produit sans aucune information de sens.
+- **Finalistes** : les 5 meilleures stratégies réelles de familles différentes, si leur fitness dépasse
+  la meilleure obtenue sur hasard.
+- **Coffre, une seule fois** (dernier tiers des séances) : t par séance ≥ seuil de Bonferroni pour les
+  finalistes, et gain net positif.
+
+Toutes les stratégies évaluées sont comptées dans `fonds/essais.csv`.
