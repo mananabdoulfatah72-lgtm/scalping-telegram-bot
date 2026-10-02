@@ -805,7 +805,13 @@ def main():
     if os.getenv("ROBOT_MINUTES"):
         minutes = pd.read_csv(os.getenv("ROBOT_MINUTES"))
     else:
-        telecharger()
+        try:
+            telecharger()
+        except Exception as e:             # compte verrouille, cle refusee, panne : prevenir au lieu d'echouer en silence
+            raison = (str(e).strip().splitlines() or [type(e).__name__])[0][:200]
+            envoyer(f"Robot zone de bruit MNQ : ALERTE, Databento refuse le telechargement des barres ({raison})."
+                    " Aucune seance ne peut etre rejouee tant que ce n'est pas regle (compte Databento a verifier).")
+            raise SystemExit(1)
         minutes = pd.read_csv(MINUTES)
     if os.getenv("ROBOT_JUSQU_AU"):
         minutes = minutes[minutes["t"].str[:10] <= os.getenv("ROBOT_JUSQU_AU")]
