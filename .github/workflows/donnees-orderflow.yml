@@ -1,0 +1,41 @@
+name: Donnees order flow NQ (Databento, 3 lots de 25 $ au plus)
+
+# Cle API lue uniquement dans le secret du depot DATABENTO_API_KEY.
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - orderflow/telecharger_nq.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger
+        env:
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY }}
+        run: |
+          [ -n "$DATABENTO_API_KEY" ] || { echo "::error::Secret DATABENTO_API_KEY absent"; exit 1; }
+          pip install -q databento pandas
+          python3 orderflow/telecharger_nq.py
+      - name: Enregistrer sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add orderflow/donnees
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees : transactions NQ agregees pour l order flow (Databento)"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
