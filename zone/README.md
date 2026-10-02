@@ -283,6 +283,14 @@ Sur les 6 mois, la zone passe de +982 à +1 777 points (environ +1 590 $ pour 1 
 avec un delta sur 15, 45, 60 ou 90 minutes, pas sur 5 ou 10. **Mais il repose sur 20 trades écartés en tout.**
 L'effet réel est sans doute plus petit.
 
+**Test sur 15 ans (2 octobre 2026, `filtre_h1/` sur la recherche)** : Databento étant verrouillé, le vrai delta
+de 2011 à 2026 n'a pas pu être acheté. Une approximation gratuite tirée des barres d'une minute (mouvement du
+prix sur les 30 minutes) prend la même décision que le vrai filtre dans 92 % des 99 trades connus. Sur les
+3 465 trades de zone de 2011 à mars 2026, elle n'est pas confirmée : les trades écartés font −1,2 point, les
+gardés +3,0 points, t = 1,62. Gain du filtre : environ 50 $ par an pour 1 MNQ. Rien de comparable aux
++67 points du coffre : soit c'était en partie de la chance, soit l'effet est dans le vrai delta, que
+l'approximation ne voit pas.
+
 Dans le robot :
 - Chaque matin, pour chaque trade de zone joué depuis le 1er octobre 2026, le robot achète à Databento les
   transactions des 30 minutes avant le signal (schéma `trades`, NQ.v.0) et note le delta, gardé ou écarté,

@@ -733,8 +733,9 @@ def tableau(etat, journal, trades_du_jour, niv=None, filtre=None):
     lignes += ["## Filtre order flow (H1) : delta des 30 dernieres minutes (suivi a part)", "",
                "Un trade de zone n'est garde que si le delta (achats agressifs - ventes agressives) des 30 minutes qui finissent"
                " a la minute du signal va dans son sens. Confirme au coffre le 2 octobre 2026 (orderflow/ sur la branche de"
-               " recherche : trades gardes +67 points, ecartes -35 points, t = 2,34), mais sur peu de trades ecartes (20 en 6 mois) :"
-               " suivi ici a part, le compte virtuel garde la zone d'origine. **En direct : a chaque signal de la zone, regarder le"
+               " recherche : trades gardes +67 points, ecartes -35 points, t = 2,34), mais sur peu de trades ecartes (20 en 6 mois)."
+               " Sur 15 ans, une approximation gratuite du delta (mouvement du prix sur 30 min) ne le confirme pas : effet faible, t = 1,62"
+               " (filtre_h1/ sur la recherche). Suivi ici a part, le compte virtuel garde la zone d'origine. **En direct : a chaque signal de la zone, regarder le"
                " delta cumule des 30 dernieres minutes sur ta plateforme ; s'il va contre le trade, ne pas le prendre.**", ""]
     if bf:
         lignes += [f"Depuis le {DEBUT_FILTRE} : zone seule {bf['zone']:+,.0f} $ pour 1 MNQ, zone filtree **{bf['filtree']:+,.0f} $**"
