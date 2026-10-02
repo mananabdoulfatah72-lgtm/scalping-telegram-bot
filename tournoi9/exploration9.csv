@@ -1,0 +1,14 @@
+t,sharpe,dollars_1_contrat,perte_max_1_contrat,en_position,trades,trades_gagnants,gain_moyen,perte_moyenne,hasard_part_battue,hasard_t_95,strategie,marche,survit
+-0.607,-0.176,-1088.4,-5225.2,0.185,118,0.576,167.6,-249.7,0.311,1.495,RSI(2) symetrique,GC,False
+0.655,0.189,3977.2,-1874.3,0.171,125,0.616,170.4,-190.5,0.784,1.543,RSI(2) symetrique,CL,False
+-0.164,-0.047,-541.2,-2158.3,0.182,131,0.649,82.4,-164.1,0.544,1.275,RSI(2) symetrique,6E,False
+0.247,0.071,2240.4,-7935.6,0.178,119,0.63,401.5,-633.5,0.764,1.201,RSI(2) symetrique,ZN,False
+-0.065,-0.019,421.9,-5861.6,0.47,152,0.592,255.0,-363.4,0.515,1.562,Double 7 symetrique,GC,False
+-1.123,-0.324,-2942.4,-8476.1,0.496,136,0.618,236.4,-438.4,0.18,1.606,Double 7 symetrique,CL,False
+1.064,0.307,3037.9,-3146.1,0.442,159,0.698,123.1,-221.4,0.905,1.367,Double 7 symetrique,6E,False
+0.244,0.07,4194.4,-15336.8,0.454,148,0.655,634.9,-1125.4,0.727,1.229,Double 7 symetrique,ZN,False
+-0.917,-0.265,-6491.4,-9707.4,0.639,395,0.681,319.1,-291.0,0.247,1.399,Rebond de 5 jours symetrique,GC,False
+-0.609,-0.176,1056.2,-9249.5,0.623,394,0.723,325.6,-282.0,0.371,1.443,Rebond de 5 jours symetrique,CL,False
+-0.85,-0.246,-2290.0,-4863.5,0.624,367,0.711,160.9,-167.8,0.375,1.027,Rebond de 5 jours symetrique,6E,False
+-1.185,-0.342,-19997.2,-25809.5,0.643,393,0.669,854.3,-732.7,0.339,0.908,Rebond de 5 jours symetrique,ZN,False
+0.068,0.02,660.0,-2929.6,0.048,144,0.493,284.0,-267.2,0.8,0.915,Fin de mois des obligations,ZN,False

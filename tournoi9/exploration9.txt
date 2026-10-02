@@ -1,0 +1,18 @@
+Exploration 2011-2022 (survie : t >= 2 et t reel au-dessus de 95 % des 1 000 placements au hasard des memes trades).
+
+strategie                      marche                        t Sharpe bat hasard trades en pos. gagnants gain moy perte moy   total $ perte max $
+RSI(2) symetrique              or (MGC)                  -0.61  -0.18      31.1%    118   18.5%      58%     +168      -250     -1088       -5225  elimine
+RSI(2) symetrique              petrole (MCL)             +0.66  +0.19      78.4%    125   17.1%      62%     +170      -190     +3977       -1874  elimine
+RSI(2) symetrique              euro (M6E)                -0.16  -0.05      54.4%    131   18.2%      65%      +82      -164      -541       -2158  elimine
+RSI(2) symetrique              obligation 10 ans (ZN)    +0.25  +0.07      76.4%    119   17.8%      63%     +402      -634     +2240       -7936  elimine
+Double 7 symetrique            or (MGC)                  -0.07  -0.02      51.5%    152   47.0%      59%     +255      -363      +422       -5862  elimine
+Double 7 symetrique            petrole (MCL)             -1.12  -0.32      18.0%    136   49.6%      62%     +236      -438     -2942       -8476  elimine
+Double 7 symetrique            euro (M6E)                +1.06  +0.31      90.5%    159   44.2%      70%     +123      -221     +3038       -3146  elimine
+Double 7 symetrique            obligation 10 ans (ZN)    +0.24  +0.07      72.7%    148   45.4%      66%     +635     -1125     +4194      -15337  elimine
+Rebond de 5 jours symetrique   or (MGC)                  -0.92  -0.27      24.7%    395   63.9%      68%     +319      -291     -6491       -9707  elimine
+Rebond de 5 jours symetrique   petrole (MCL)             -0.61  -0.18      37.1%    394   62.3%      72%     +326      -282     +1056       -9250  elimine
+Rebond de 5 jours symetrique   euro (M6E)                -0.85  -0.25      37.5%    367   62.4%      71%     +161      -168     -2290       -4864  elimine
+Rebond de 5 jours symetrique   obligation 10 ans (ZN)    -1.19  -0.34      33.9%    393   64.3%      67%     +854      -733    -19997      -25810  elimine
+Fin de mois des obligations    obligation 10 ans (ZN)    +0.07  +0.02      80.0%    144    4.8%      49%     +284      -267      +660       -2930  elimine
+
+Survivants : 0

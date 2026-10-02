@@ -50,3 +50,29 @@ la Bourse), sans regarder les données futures.
    trades, trades gagnants, gain moyen, perte moyenne.
 5. Les 13 essais sont inscrits dans `fonds/essais.csv`. Rien n'est ajouté ni changé après avoir vu
    les résultats.
+
+## Résultats (2 octobre 2026) : aucun survivant, coffre non ouvert
+
+`tournoi9.py` → `exploration9.txt`, `exploration9.csv`. Tests : `test_tournoi9.py`, 5 contrôles passés
+(rendements sans saut d'échéance, aucun regard vers le futur, fin de mois au calendrier, trade à la
+main, placements au hasard fidèles).
+
+Détail d'exécution précisé en codant, sans voir de résultat : les séances courtes des jours fériés de
+la Bourse (le CME ouvre parfois) sont fusionnées avec la séance suivante, pour garder une décision par
+vraie séance. Les variations journalières de plus de 50 % (pétrole sous zéro, avril 2020) sont
+neutralisées, comme dans `fonds/`.
+
+| Stratégie | Or | Pétrole | Euro | ZN |
+|---|---|---|---|---|
+| RSI(2) symétrique | t −0,61 | t +0,66 | t −0,16 | t +0,25 |
+| Double 7 symétrique | t −0,07 | t −1,12 | t +1,06 (bat 90,5 % du hasard) | t +0,24 |
+| Rebond de 5 jours symétrique | t −0,92 | t −0,61 | t −0,85 | t −1,19 |
+| Fin de mois des obligations | — | — | — | t +0,07 |
+
+**Aucun des 13 essais n'atteint t ≥ 2.** Le retour vers la moyenne de quelques jours, qui marche sur
+le Nasdaq (RSI(2), tournoi 8), ne marche pas sur l'or, le pétrole, l'euro ni les obligations. L'effet
+de fin de mois des obligations n'apparaît pas sur le ZN en 2011-2022.
+
+**Et la tendance ?** C'est la famille qui marche sur ces marchés, mais elle a déjà été étudiée
+(`tendance/`) : Sharpe négatif sur 2023-2026 (−0,16), et sur un compte de 50 000 $ les contrats micro
+sont trop gros (sans eux, Sharpe 0,16). Elle ne convient pas comme troisième source pour le challenge.
