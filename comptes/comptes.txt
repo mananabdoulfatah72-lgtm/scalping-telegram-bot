@@ -1,0 +1,35 @@
+Controle : ce simulateur sans frein = celui de zone_deux/ (lui-meme verifie egal au robot) : OK
+Zone de bruit + RSI(2), gestion actuelle. Seances 2011-03-02 -> 2026-09-25. Challenge 164 $.
+
+=== A. Departs 2023-2024 (87 departs, horizon 24 mois apres l'ouverture du premier compte)
+  1 compte(s) ouvert(s) le meme jour : net en 24 mois : moyenne    +498 $, mediane    +638 $, pire    -984 $, perte d'argent dans  29% des cas | challenges payes   390 $ | au moins un compte finance  53% du temps | premier retrait apres 12.6 mois (mediane), dans  71% des cas
+  2 compte(s) ouvert(s) le meme jour : net en 24 mois : moyenne    +996 $, mediane  +1,275 $, pire  -1,968 $, perte d'argent dans  29% des cas | challenges payes   780 $ | au moins un compte finance  53% du temps | premier retrait apres 12.6 mois (mediane), dans  71% des cas
+  3 compte(s) ouvert(s) le meme jour : net en 24 mois : moyenne  +1,495 $, mediane  +1,913 $, pire  -2,952 $, perte d'argent dans  29% des cas | challenges payes 1,171 $ | au moins un compte finance  53% du temps | premier retrait apres 12.6 mois (mediane), dans  71% des cas
+  5 compte(s) ouvert(s) le meme jour : net en 24 mois : moyenne  +2,491 $, mediane  +3,188 $, pire  -4,920 $, perte d'argent dans  29% des cas | challenges payes 1,951 $ | au moins un compte finance  53% du temps | premier retrait apres 12.6 mois (mediane), dans  71% des cas
+  2 comptes echelonnes (un tous les 3 mois) : net en 24 mois : moyenne    +683 $, mediane  +1,275 $, pire  -1,968 $, perte d'argent dans  39% des cas | challenges payes   839 $ | au moins un compte finance  55% du temps | premier retrait apres 12.6 mois (mediane), dans  71% des cas
+  3 comptes echelonnes (un tous les 3 mois) : net en 24 mois : moyenne    +621 $, mediane    +990 $, pire  -2,952 $, perte d'argent dans  44% des cas | challenges payes 1,327 $ | au moins un compte finance  55% du temps | premier retrait apres 12.6 mois (mediane), dans  71% des cas
+
+=== A. Information, en echantillon : departs 2011-2020 (494 departs, horizon 24 mois apres l'ouverture du premier compte)
+  1 compte(s) ouvert(s) le meme jour : net en 24 mois : moyenne     -22 $, mediane    -328 $, pire    -656 $, perte d'argent dans  82% des cas | challenges payes   334 $ | au moins un compte finance  22% du temps | premier retrait apres 15.2 mois (mediane), dans  18% des cas
+  2 compte(s) ouvert(s) le meme jour : net en 24 mois : moyenne     -43 $, mediane    -656 $, pire  -1,312 $, perte d'argent dans  82% des cas | challenges payes   668 $ | au moins un compte finance  22% du temps | premier retrait apres 15.2 mois (mediane), dans  18% des cas
+  3 compte(s) ouvert(s) le meme jour : net en 24 mois : moyenne     -65 $, mediane    -984 $, pire  -1,968 $, perte d'argent dans  82% des cas | challenges payes 1,002 $ | au moins un compte finance  22% du temps | premier retrait apres 15.2 mois (mediane), dans  18% des cas
+  5 compte(s) ouvert(s) le meme jour : net en 24 mois : moyenne    -108 $, mediane  -1,640 $, pire  -3,280 $, perte d'argent dans  82% des cas | challenges payes 1,670 $ | au moins un compte finance  22% du temps | premier retrait apres 15.2 mois (mediane), dans  18% des cas
+  2 comptes echelonnes (un tous les 3 mois) : net en 24 mois : moyenne     -36 $, mediane    -656 $, pire  -1,148 $, perte d'argent dans  75% des cas | challenges payes   643 $ | au moins un compte finance  24% du temps | premier retrait apres 16.1 mois (mediane), dans  25% des cas
+  3 comptes echelonnes (un tous les 3 mois) : net en 24 mois : moyenne    -105 $, mediane    -656 $, pire  -1,640 $, perte d'argent dans  75% des cas | challenges payes   933 $ | au moins un compte finance  25% du temps | premier retrait apres 16.7 mois (mediane), dans  29% des cas
+
+=== B. Frein contre les comptes perdus : choix sur les departs 2011-2020 (494 departs, 24 mois)
+  base (gestion actuelle)                       net    -11 $/an | recu   156 $/an | comptes perdus 0.52/an | rien recu  82%
+  frein : sous 750 $ de coussin, RSI(2) seul    net    +20 $/an | recu   151 $/an | comptes perdus 0.30/an | rien recu  82%
+  frein : sous 750 $ de coussin, zone seul      net    +70 $/an | recu   212 $/an | comptes perdus 0.37/an | rien recu  74%
+  frein : sous 1,250 $ de coussin, RSI(2) seul  net    +67 $/an | recu   184 $/an | comptes perdus 0.22/an | rien recu  79%
+  frein : sous 1,250 $ de coussin, zone seul    net    -76 $/an | recu    54 $/an | comptes perdus 0.29/an | rien recu  94%
+  choisie : frein : sous 750 $ de coussin, zone seul
+
+  Controle, departs 2023-2024 (87 departs, 24 mois) :
+  base (gestion actuelle)                       net   +249 $/an | recu   444 $/an | comptes perdus 0.69/an | rien recu  29%
+  frein : sous 750 $ de coussin, RSI(2) seul    net   +304 $/an | recu   472 $/an | comptes perdus 0.52/an | rien recu  25%
+  frein : sous 750 $ de coussin, zone seul      net   +249 $/an | recu   444 $/an | comptes perdus 0.69/an | rien recu  29%
+  frein : sous 1,250 $ de coussin, RSI(2) seul  net   +174 $/an | recu   410 $/an | comptes perdus 0.94/an | rien recu  24%
+  frein : sous 1,250 $ de coussin, zone seul    net   +228 $/an | recu   404 $/an | comptes perdus 0.57/an | rien recu  33%
+
+Adoption (README) : frein : sous 750 $ de coussin, zone seul -> non adoptee (+249 $/an contre +249 ; comptes perdus 0.69 contre 0.69)
