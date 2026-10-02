@@ -1,0 +1,5 @@
+Achats Databento tbbo NQ.v.0 (2026-10-02 09:31 UTC), plafond 25 $ par lot
+lot 1 : 46 seances du 2026-07-30 au 2026-10-01, 24.97 $
+lot 2 : 41 seances du 2026-06-03 au 2026-07-29, 24.74 $
+lot 3 : 44 seances du 2026-04-01 au 2026-06-02, 24.75 $
+total : 131 seances, 74.46 $
