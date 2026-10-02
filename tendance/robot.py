@@ -222,11 +222,45 @@ def charger_prix():
     return telecharger()
 
 
+FICHIER_CHAT = Path(__file__).resolve().parent.parent / ".telegram_chat"   # conversation Telegram (jamais commitee)
+def chat_telegram(jeton):
+    """Conversation Telegram ou envoyer le resume : secret CHAT_ID s'il existe ; sinon celle gardee par un passage
+    precedent (fichier .telegram_chat, conserve par le cache de GitHub Actions, jamais commite ni affiche) ; sinon la
+    premiere conversation privee qui a ecrit au bot (getUpdates : messages des dernieres 24 heures). Une fois trouvee,
+    elle est gardee : un inconnu qui ecrirait ensuite au bot ne la remplace pas."""
+    chat = (os.getenv("CHAT_ID") or "").strip()
+    if chat:
+        return chat
+    if FICHIER_CHAT.exists() and FICHIER_CHAT.read_text().strip():
+        return FICHIER_CHAT.read_text().strip()
+    try:
+        rep = requests.get(f"https://api.telegram.org/bot{jeton}/getUpdates", timeout=20)
+    except requests.RequestException as e:
+        print(f"Erreur Telegram (recherche de la conversation) : {type(e).__name__}")
+        return None
+    if not rep.ok:
+        print(f"Erreur Telegram {rep.status_code} (recherche de la conversation) : {rep.text[:200]}")
+        return None
+    for u in rep.json().get("result", []):
+        for cle in ("message", "edited_message", "my_chat_member"):
+            c = (u.get(cle) or {}).get("chat") or {}
+            if c.get("type") == "private" and c.get("id"):
+                FICHIER_CHAT.write_text(str(c["id"]))
+                print("(Telegram : conversation trouvee, gardee pour les prochains envois)")
+                return str(c["id"])
+    print("(Telegram : le bot n'a recu aucun message depuis 24 h. Envoie-lui un message sur Telegram (par exemple"
+          " /start) : le prochain passage trouvera la conversation tout seul)")
+    return None
+
+
 def telegram(message):
-    jeton, chat = os.getenv("TELEGRAM_TOKEN"), os.getenv("CHAT_ID")
+    jeton = (os.getenv("TELEGRAM_TOKEN") or "").strip()
     print(message)
-    if not jeton or not chat:
-        print("(Telegram non configure : secrets TELEGRAM_TOKEN / CHAT_ID absents)")
+    if not jeton:
+        print("(Telegram non configure : secret TELEGRAM_TOKEN absent)")
+        return
+    chat = chat_telegram(jeton)
+    if not chat:
         return
     try:
         rep = requests.post(f"https://api.telegram.org/bot{jeton}/sendMessage",

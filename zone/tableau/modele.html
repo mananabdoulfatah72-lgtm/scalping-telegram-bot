@@ -78,6 +78,10 @@ tr.passe td { color: var(--doux) }
 .bon { color: var(--vert) } .mauvais { color: var(--rouge) }
 p.note { color: var(--doux); font-size: 11px; line-height: 1.6; margin: 12px 0 0; max-width: 72ch }
 p.note b { color: var(--encre) }
+.voyant { display: flex; gap: 10px; align-items: flex-start; margin: 4px 0 12px; padding: 10px 12px; border-radius: 10px;
+  background: var(--clair); font-size: 12px; line-height: 1.5 }
+.voyant .pastille { flex: 0 0 12px; width: 12px; max-width: 12px; height: 12px; padding: 0; border-radius: 50%; margin-top: 3px; background: var(--c) }
+.voyant b { color: var(--c) }
 .bandeau { margin-top: 12px; border: 1px solid var(--trait); border-radius: 10px; padding: 10px 12px; font-size: 12px; line-height: 1.5 }
 .bandeau b { color: var(--bleu) }
 .signal { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap }
@@ -160,6 +164,7 @@ footer { color: var(--doux); font-size: 11px; text-align: center; line-height: 1
   <div class="rang r2c">
     <section class="panneau" aria-labelledby="t-cone">
       <div class="entete"><h2 id="t-cone">Live contre backtest</h2><span class="d">zone, 1 MNQ, depuis le départ</span></div>
+      <div class="voyant" id="voyant" role="status"></div>
       <canvas id="g-cone" role="img" aria-label="Gain cumulé du robot pour 1 MNQ comparé à la fourchette attendue par le backtest"></canvas>
       <div class="legende">
         <span style="--c:var(--bleu)">robot (live)</span><span style="--c:var(--doux)">attendu (moyenne)</span>
@@ -460,6 +465,21 @@ function cone() {
   });
   const n = live.length - 1, a6 = 126;
   const f = (i, z) => mu * i + z * sd * Math.sqrt(i);
+  // regle de jugement fixee le 1er octobre 2026 (zone/README.md) : memes calculs que voyant() dans zone/robot.py
+  const juger = i => { const c = live[i]; return c >= f(i, -0.674) ? "vert" : (c >= f(i, -1.645) ? "orange" : "rouge"); };
+  const couleurs = { vert: "--vert", orange: "--orange", rouge: "--rouge" };
+  const sens = { vert: "dans la fourchette normale", orange: "dans le bas de la fourchette (arrive environ 1 fois sur 5 par hasard), pas une alerte", rouge: "sous la ligne des 5 % : alerte" };
+  const bilans = [60, 120].filter(b => b <= n).map(b => {
+    const k = juger(b);
+    return `Bilan des ${b} séances : ${dol(live[b], true)} contre ${dol(f(b, -1.645), true)} → <b>${k === "rouge" ? "arrêter et chercher la cause" : "continuer"}</b>.`;
+  });
+  const prochain = [60, 120].find(b => b > n);
+  const kn = n ? juger(n) : "vert";
+  $("voyant").style.setProperty("--c", cssv(couleurs[kn]));
+  $("voyant").innerHTML = `<i class="pastille" aria-hidden="true"></i><div><b>Voyant ${kn}</b> : ${sens[kn]}. `
+    + (n ? `Alerte si le gain pour 1 MNQ passe sous ${dol(f(n, -1.645), true)} (ligne des 5 % après ${n} séance${n > 1 ? "s" : ""}). ` : "")
+    + bilans.join(" ") + (prochain ? ` Prochain bilan à ${prochain} séances : rouge = arrêter le suivi et chercher la cause, sinon continuer.` : "")
+    + `</div>`;
   $("cone-note").innerHTML = `Après <b>${n} séance${n > 1 ? "s" : ""}</b>, le robot fait <b class="${classe(cum)}">${dol(cum, true)}</b> pour 1 MNQ ; le backtest attendait ${dol(mu * n, true)}`
     + (n ? `, entre ${dol(f(n, -1.645), true)} et ${dol(f(n, 1.645), true)} 9 fois sur 10` : "") + `. `
     + `Même après six mois (${a6} séances), cette fourchette va de ${dol(f(a6, -1.645), true)} à ${dol(f(a6, 1.645), true)} : <b>quelques mois de suivi ne prouvent pas l'avantage</b>. Ils vérifient que le robot reste dans ce que prévoit le backtest. Une sortie franche de la bande du bas serait un signal d'alerte.`;

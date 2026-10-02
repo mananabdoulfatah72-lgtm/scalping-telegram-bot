@@ -27,6 +27,13 @@ jobs:
       - name: Installer les dependances
         run: pip install databento pandas numpy requests
 
+      - name: Conversation Telegram gardee entre les passages (cache GitHub, jamais commitee)
+        uses: actions/cache@v4
+        with:
+          path: .telegram_chat
+          key: telegram-chat-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: telegram-chat-
+
       - name: Lancer le robot
         run: python3 zone/robot.py
         env:

@@ -180,3 +180,49 @@ Avant le moindre retrait, il faut monter de 2 600 $ sans jamais reculer de 2 500
 compte saute à peu près aussi souvent qu'il arrive au premier retrait. Pour retirer vraiment plus, il
 faut une stratégie au rapport gain/risque nettement meilleur, ou plusieurs sources de gain peu liées
 qui tradent ensemble.
+
+## Juger le virtuel : règle fixée le 1er octobre 2026
+
+**Ce que le virtuel peut prouver, et ce qu'il ne peut pas.** Sur le rejeu 2023-2026, la zone gagne en
+moyenne **+11,5 $ par séance pour 1 MNQ**, avec un écart-type de **202 $** par séance. Pour prouver
+l'avantage en direct (t ≥ 2), il faudrait environ **1 200 séances, soit 5 ans**. Quelques mois de
+virtuel ne prouvent donc pas que la stratégie gagne. Ils vérifient deux choses :
+1. le robot fait exactement ce que fait le backtest (même code, `une_journee`) ;
+2. rien n'est cassé : données, marché qui change, glissement plus fort que prévu.
+
+**Voyant** (calculé chaque jour par `voyant()` dans `robot.py`, affiché sur la page et dans le message
+Telegram). Gain cumulé pour 1 MNQ depuis le départ, après n séances, comparé à la fourchette du
+backtest, moyenne × n − z × 202 × √n :
+
+| Voyant | Condition | Sens |
+|---|---|---|
+| vert | au-dessus de la ligne des 25 % (z = 0,674) | fourchette normale |
+| orange | entre la ligne des 5 % (z = 1,645) et celle des 25 % | bas de la fourchette, arrive 1 fois sur 5 par hasard ; pas une alerte |
+| rouge | sous la ligne des 5 % | alerte |
+
+**Bilans à 60 puis 120 séances** (60 séances : vers le 21 décembre 2026) :
+- **rouge → arrêter le suivi et chercher la cause** (données, glissement, changement du marché) avant
+  tout argent réel ;
+- sinon → continuer jusqu'au bilan suivant.
+
+Ligne des 5 % : environ **−1 890 $ pour 1 MNQ après 60 séances**, **−2 270 $ après 120 séances**.
+
+**Avant de payer un challenge**, deux conditions :
+- le voyant n'est pas rouge au bilan de 60 séances, et le glissement réel est conforme, mesuré sur
+  un compte démo avec les alertes TradingView (`tradingview/GUIDE.md`) ;
+- la simulation du challenge donne un gain attendu nettement positif après le prix des challenges.
+  Avec la zone seule, ce n'est pas le cas : environ 160 $ reçus par an pour 1,1 challenge payé à
+  164 $. Une deuxième stratégie validée est cherchée (tournoi des stratégies de plusieurs jours sur la
+  branche de recherche).
+
+## Telegram
+
+Le résumé du matin part sur Telegram si le secret `TELEGRAM_TOKEN` existe :
+- **conversation** : secret `CHAT_ID` s'il existe ;
+- sinon, la **première conversation privée qui a écrit au bot**, trouvée automatiquement (`getUpdates`)
+  puis gardée d'un passage à l'autre par le cache de GitHub Actions (fichier `.telegram_chat`, jamais
+  commité ni affiché dans les journaux, le dépôt étant public).
+
+Il suffit d'envoyer une fois un message au bot (par exemple `/start`) : le passage suivant du robot le
+trouve. Telegram ne garde les messages que 24 heures ; si le robot passe plus tard, renvoyer un message.
+Le robot de tendance fait de même.

@@ -48,6 +48,9 @@ BLOCAGE, SEUIL_RETRAIT, PART, PRIX_CHALLENGE = 50_100.0, 52_600.0, 0.80, 164.0
 JOURS_QUALIF, GAIN_QUALIF, RETRAIT_MIN, RETRAIT_MAX, REGULARITE = 10, 150.0, 500.0, 2_000.0, 0.30
 MARGE_RETRAIT = 0.0                     # marge gardee en plus des 52 600 $ apres un retrait
 PLAFOND_DATABENTO = 2.0                 # $ au maximum par telechargement
+FICHIER_CHAT = Path(__file__).resolve().parent.parent / ".telegram_chat"   # conversation Telegram (jamais commitee)
+REFERENCE = Path(__file__).parent / "tableau" / "reference.json"         # rejeu 2023-2026 pour 1 MNQ (zone/tableau/)
+BILANS = (60, 120)                      # seances apres lesquelles on juge le virtuel (zone/README.md, 1er octobre 2026)
 HISTORIQUE = ("rejeu de cette gestion avec les regles Phidias publiques d'octobre 2026 (zone_retrait/ sur la branche de "
               "recherche), departs 2023-2024 suivis 24 mois : environ 160 $ recus par an pour 1,1 challenge paye par an "
               "(164 $ chacun), rien recu dans 79 % des departs. Aucune autre gestion testee (128) ne fait mieux de facon fiable")
@@ -375,6 +378,7 @@ def tableau(etat, journal, trades_du_jour, niv=None):
         "",
         f"**{situation}**",
         "",
+        *([f"{v['texte']}.", ""] if (v := voyant(journal)) else []),
         "| Mesure | Valeur |",
         "|---|---|",
         f"| Tentatives de challenge | {len(etat['tentatives'])} ("
@@ -423,11 +427,80 @@ def tableau(etat, journal, trades_du_jour, niv=None):
     TABLEAU.write_text("\n".join(lignes))
 
 
+def chat_telegram(jeton):
+    """Conversation Telegram ou envoyer le resume : secret CHAT_ID s'il existe ; sinon celle gardee par un passage
+    precedent (fichier .telegram_chat, conserve par le cache de GitHub Actions, jamais commite ni affiche) ; sinon la
+    premiere conversation privee qui a ecrit au bot (getUpdates : messages des dernieres 24 heures). Une fois trouvee,
+    elle est gardee : un inconnu qui ecrirait ensuite au bot ne la remplace pas."""
+    chat = (os.getenv("CHAT_ID") or "").strip()
+    if chat:
+        return chat
+    if FICHIER_CHAT.exists() and FICHIER_CHAT.read_text().strip():
+        return FICHIER_CHAT.read_text().strip()
+    try:
+        rep = requests.get(f"https://api.telegram.org/bot{jeton}/getUpdates", timeout=20)
+    except requests.RequestException as e:
+        print(f"Erreur Telegram (recherche de la conversation) : {type(e).__name__}")
+        return None
+    if not rep.ok:
+        print(f"Erreur Telegram {rep.status_code} (recherche de la conversation) : {rep.text[:200]}")
+        return None
+    for u in rep.json().get("result", []):
+        for cle in ("message", "edited_message", "my_chat_member"):
+            c = (u.get(cle) or {}).get("chat") or {}
+            if c.get("type") == "private" and c.get("id"):
+                FICHIER_CHAT.write_text(str(c["id"]))
+                print("(Telegram : conversation trouvee, gardee pour les prochains envois)")
+                return str(c["id"])
+    print("(Telegram : le bot n'a recu aucun message depuis 24 h. Envoie-lui un message sur Telegram (par exemple"
+          " /start) : le prochain passage trouvera la conversation tout seul)")
+    return None
+
+
+def voyant(journal, nouveaux=1):
+    """Regle de jugement du virtuel (zone/README.md, fixee le 1er octobre 2026) : gain cumule pour 1 MNQ depuis le depart
+    compare a la fourchette du backtest apres n seances, moyenne x n - z x ecart-type x racine(n) (comme la page) :
+    vert au-dessus de la ligne des 25 %, orange entre 5 % et 25 %, rouge sous la ligne des 5 %. Aux bilans (60 puis
+    120 seances) : rouge -> arreter le suivi et chercher la cause ; sinon continuer. `nouveaux` : seances jouees par ce
+    passage (pour annoncer un bilan franchi pendant un rattrapage)."""
+    if not REFERENCE.exists() or not len(journal):
+        return None
+    r = json.loads(REFERENCE.read_text())
+    mu, sd = r["moyenne_zone"], r["ecart_zone"]
+    gains = journal["gain_1_mnq"].to_numpy(float)
+
+    def juger(n):
+        cumul = float(gains[:n].sum())
+        l5, l25 = mu * n - 1.645 * sd * n ** 0.5, mu * n - 0.674 * sd * n ** 0.5
+        return cumul, l5, ("vert" if cumul >= l25 else ("orange" if cumul >= l5 else "rouge"))
+
+    n = len(gains)
+    cumul, l5, couleur = juger(n)
+    v = {"seances": n, "cumul": cumul, "ligne_5": l5, "couleur": couleur, "prochain_bilan": next((b for b in BILANS if b > n), None)}
+    sens = {"vert": "fourchette normale", "orange": "bas de la fourchette, arrive 1 fois sur 5 par hasard, pas une alerte",
+            "rouge": "sous la ligne des 5 %, ALERTE"}[couleur]
+    v["texte"] = (f"Voyant {couleur.upper()} ({sens}) : {cumul:+,.0f} $ pour 1 MNQ apres {n} seance(s) ; le backtest attendait"
+                  f" {mu * n:+,.0f} $, alerte sous {l5:+,.0f} $ (ligne des 5 %)")
+    for b in BILANS:
+        if b <= n:
+            cb, lb, kb = juger(b)
+            nouveau = "BILAN" if n - nouveaux < b else "Bilan"
+            v["texte"] += (f". {nouveau} des {b} seances ({journal['date'].iloc[b - 1]}) : {cb:+,.0f} $ contre {lb:+,.0f} $ -> "
+                           + ("ARRETER le suivi et chercher la cause (donnees, glissement, marche change)" if kb == "rouge"
+                              else "continuer, rien d'anormal"))
+    if v["prochain_bilan"]:
+        v["texte"] += f". Prochain bilan a {v['prochain_bilan']} seances"
+    return v
+
+
 def envoyer(message):
-    jeton, chat = os.getenv("TELEGRAM_TOKEN"), os.getenv("CHAT_ID")
+    jeton = (os.getenv("TELEGRAM_TOKEN") or "").strip()
     print(message)
-    if not jeton or not chat:
-        print("(Telegram non configure : secrets TELEGRAM_TOKEN / CHAT_ID absents)")
+    if not jeton:
+        print("(Telegram non configure : secret TELEGRAM_TOKEN absent)")
+        return
+    chat = chat_telegram(jeton)
+    if not chat:
         return
     try:
         rep = requests.post(f"https://api.telegram.org/bot{jeton}/sendMessage", data={"chat_id": chat, "text": message},
@@ -482,6 +555,8 @@ def main():
                f" ({etat['solde'] - CAPITAL:+,.0f} $), recu en tout {etat['recu_total']:,.0f} $")
     if lignes:
         msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
+    if (v := voyant(journal, len(lignes))) is not None:
+        msg.append(v["texte"])
     if niv is not None and niv["rebond"]["achat"]:
         msg.append(f"Rebond (suivi a part, 1 MNQ, hors compte) : ACHAT {niv['seance']} 9h30 -> 15h59"
                    f" (derniere seance {niv['rebond']['mouvement_veille']:+.2%})")
