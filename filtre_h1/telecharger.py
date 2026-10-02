@@ -24,7 +24,8 @@ def essayer(f, essais=5):
         try:
             return f()
         except Exception as e:
-            if k == essais - 1:
+            statut = getattr(e, "http_status", None) or 0
+            if k == essais - 1 or (400 <= statut < 500 and statut != 429):     # refus (compte, cle, requete) : pas de nouvel essai
                 raise
             print(f"  nouvelle tentative : {repr(e)[:150]}", flush=True)
             time.sleep(5 * (k + 1))
@@ -55,6 +56,7 @@ def main():
     F = fenetres(pd.read_csv(ICI / "trades_zone.csv")).sort_values("jour", ascending=False).reset_index(drop=True)
     args = [dict(dataset=JEU, symbols=[SYMBOLE], stype_in="continuous", schema=SCHEMA,
                  start=bornes(*x)[0], end=bornes(*x)[1]) for x in F[["jour", "debut", "fin"]].itertuples(index=False)]
+    float(essayer(lambda: client.metadata.get_cost(**args[0])))      # un premier appel seul : un refus arrete tout de suite
     with ThreadPoolExecutor(FILS) as ex:
         F["cout"] = list(ex.map(lambda a: float(essayer(lambda: client.metadata.get_cost(**a))), args))
     F["an"] = F["jour"].str[:4]
