@@ -1,0 +1,19 @@
+Tournoi 10 : nouvelles progressions sur le NQ, exploration 2011-2022 (le coffre 2023-2026 n'est pas lu).
+
+NQ (decision) : 3014 seances du 2011-01-03 au 2022-12-30, frais 1.5 points par aller-retour
+  T1 VIX tendu : t +1.45, bat le hasard 82.0%, 90 trades, en position 8%, +4,674 $ pour 1 micro, Sharpe 0.42, perte max -4,502 $ ; correlation RSI(2) +0.50, zone -0.04 -> elimine
+  T2 RSI du VIX : t +0.77, bat le hasard 54.4%, 53 trades, en position 6%, +986 $ pour 1 micro, Sharpe 0.22, perte max -1,982 $ ; correlation RSI(2) +0.60, zone -0.06 -> elimine
+  T3 Mardi de rebond : t +2.09, bat le hasard 94.4%, 239 trades, en position 8%, +6,793 $ pour 1 micro, Sharpe 0.60, perte max -2,018 $ ; correlation RSI(2) +0.15, zone +0.02 -> elimine
+  T4 Nuit apres une fin de seance en baisse : t +0.49, bat le hasard 55.9%, 568 nuits, 53% gagnantes, +827 $ pour 1 micro, perte max -3,012 $ ; correlation RSI(2) +0.05, zone -0.10 -> elimine
+  T5 Nouveau plus haut de 252 seances : t +1.47, bat le hasard 16.3%, 51 trades, en position 50%, +5,608 $ pour 1 micro, Sharpe 0.42, perte max -5,036 $ ; correlation RSI(2) +0.40, zone -0.11 -> elimine
+  T6 Achat pilote par la volatilite : t de l'alpha +0.89 (alpha +3.1 % par an, beta 0.63) ; Sharpe 0.73 contre 0.75 pour l'achat permanent ; exposition moyenne 1.07 ; correlation RSI(2) +0.41, zone -0.07 -> elimine
+
+ES (descriptif) : 3014 seances du 2011-01-03 au 2022-12-30, frais 0.9 points par aller-retour
+  T1 VIX tendu : t +1.60, bat le hasard 86.4%, 90 trades, en position 8%, +3,505 $ pour 1 micro, Sharpe 0.46, perte max -1,544 $ ; correlation RSI(2) +0.65
+  T2 RSI du VIX : t +1.00, bat le hasard 66.4%, 54 trades, en position 6%, +1,556 $ pour 1 micro, Sharpe 0.29, perte max -1,681 $ ; correlation RSI(2) +0.67
+  T3 Mardi de rebond : t +2.20, bat le hasard 97.0%, 251 trades, en position 8%, +5,837 $ pour 1 micro, Sharpe 0.64, perte max -982 $ ; correlation RSI(2) +0.12
+  T4 Nuit apres une fin de seance en baisse : t +0.64, bat le hasard 88.8%, 554 nuits, 52% gagnantes, +918 $ pour 1 micro, perte max -1,887 $ ; correlation RSI(2) +0.02
+  T5 Nouveau plus haut de 252 seances : t +0.76, bat le hasard 3.2%, 47 trades, en position 47%, +2,478 $ pour 1 micro, Sharpe 0.22, perte max -6,058 $ ; correlation RSI(2) +0.45
+  T6 Achat pilote par la volatilite : t de l'alpha +0.08 (alpha +0.3 % par an, beta 0.61) ; Sharpe 0.52 contre 0.73 pour l'achat permanent ; exposition moyenne 1.12 ; correlation RSI(2) +0.41
+
+Survivants (NQ) : aucun

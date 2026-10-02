@@ -44,3 +44,21 @@ calendrier (`tournoi2/`), tendance multi-marchés (`tendance/`), order flow (`or
    aux deux).
 4. Les 6 essais sont inscrits dans `fonds/essais.csv`. Rien ne sera ajouté ou changé après avoir vu les
    résultats.
+
+## Résultats de l'exploration 2011-2022 (2 octobre 2026) : `exploration10.txt`
+
+| Stratégie (NQ) | t | Bat le hasard | Trades | $ pour 1 MNQ | Corrélation RSI(2) / zone | Verdict |
+|---|---|---|---|---|---|---|
+| T1 VIX tendu | 1,45 | 82,0 % | 90 | +4 674 | +0,50 / −0,04 | éliminé |
+| T2 RSI du VIX | 0,77 | 54,4 % | 53 | +986 | +0,60 / −0,06 | éliminé |
+| T3 Mardi de rebond | **2,09** | **94,4 %** | 239 | +6 793 | +0,15 / +0,02 | éliminé de justesse (seuil 95 %) |
+| T4 Nuit après une fin de séance en baisse | 0,49 | 55,9 % | 568 nuits | +827 | +0,05 / −0,10 | éliminé |
+| T5 Nouveau plus haut de 252 séances | 1,47 | 16,3 % | 51 | +5 608 | +0,40 / −0,11 | éliminé (le hasard fait mieux) |
+| T6 Achat piloté par la volatilité | alpha t = 0,89 | | | | +0,41 / −0,07 | éliminé (Sharpe 0,73 contre 0,75 pour l'achat simple) |
+
+- **Aucun survivant.** Le coffre 2023-2026 n'est pas ouvert.
+- Le mardi de rebond est le seul à frôler les deux seuils, avec une corrélation faible au RSI(2) et à la
+  zone. Sur l'ES (descriptif seulement) : t = 2,20, bat le hasard 97 %. Il est éliminé selon la règle
+  fixée d'avance. S'il devait être repris, ce serait comme nouvelle idée, testée sur d'autres données.
+- Les deux stratégies sur le VIX ressemblent beaucoup au RSI(2) (corrélation de 0,5 à 0,6) : même quand
+  elles gagnent, elles n'apportent pas une source vraiment nouvelle.
