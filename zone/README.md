@@ -226,3 +226,43 @@ Le résumé du matin part sur Telegram si le secret `TELEGRAM_TOKEN` existe :
 Il suffit d'envoyer une fois un message au bot (par exemple `/start`) : le passage suivant du robot le
 trouve. Telegram ne garde les messages que 24 heures ; si le robot passe plus tard, renvoyer un message.
 Le robot de tendance fait de même.
+
+## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
+
+Seul survivant du tournoi des stratégies de plusieurs jours (`tournoi8/` sur la branche de recherche,
+règles fixées avant calcul, contrôle par dates tirées au hasard, coffre 2023-2026 ouvert une fois).
+
+**Règle (Connors, Alvarez 2008), achat seulement, 1 décision par séance à 15 h 50 New York :**
+- **achat** si la clôture de 15 h 49 est au-dessus de la moyenne des 200 clôtures et que le RSI de
+  Wilder sur 2 clôtures est sous 10 ;
+- **vente** quand la clôture dépasse la moyenne des 5 clôtures ;
+- exécution à l'ouverture de 15 h 50, position gardée la nuit et le week-end ;
+- position fermée à la dernière décision d'un contrat ;
+- jours fériés de la Bourse ignorés, décision 10 minutes avant la fin les jours courts.
+
+**Chiffres de la recherche (1 MNQ) :**
+- exploration 2011-2022 : t 2,40 ;
+- coffre 2023-2026 : t 1,95, Sharpe 1,01, +11 098 $, 4 années positives ;
+- corrélation avec la zone ≈ 0 ; Sharpe du mélange 1,31 contre 0,90 pour la zone seule.
+- Limites : passé de justesse, 40 trades dans le coffre, une partie du gain récent vient de la hausse
+  du marché.
+
+**Dans le compte virtuel :**
+- chaque source reçoit f × coussin / √2 de risque (f = 0,15, au moins 1 MNQ), pour les décisions à
+  partir du 1er octobre 2026. Le risque d'un MNQ du RSI(2) est l'écart-type de ses gains les jours en
+  position sur les 252 séances d'avant ;
+- une taille plus grande a été testée (`zone_deux/`) et ne fait pas mieux sur le contrôle 2023-2024.
+
+**Résultats attendus, rejeu du challenge, départs 2023-2024 suivis 24 mois :**
+
+| | Gain net par an | Rien reçu |
+|---|---|---|
+| Zone + RSI(2) | **+254 $** | 27 % des départs |
+| Zone seule | −22 $ | 79 % des départs |
+
+**Contrôle :** sur les minutes 2011-2026 de la recherche, la fonction `rsi2()` du robot redonne
+exactement la série du tournoi : 3 950 séances, mêmes gains, mêmes pires moments.
+
+**Chaque matin**, la page et le message donnent la consigne du soir : en position, le prix de vente ;
+sinon, la fourchette de prix où l'on achèterait à 15 h 50. Le voyant reste celui de la zone (règle
+ci-dessus) ; le journal montre les deux sources séparément.

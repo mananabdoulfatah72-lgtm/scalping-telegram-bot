@@ -51,9 +51,12 @@ PLAFOND_DATABENTO = 2.0                 # $ au maximum par telechargement
 FICHIER_CHAT = Path(__file__).resolve().parent.parent / ".telegram_chat"   # conversation Telegram (jamais commitee)
 REFERENCE = Path(__file__).parent / "tableau" / "reference.json"         # rejeu 2023-2026 pour 1 MNQ (zone/tableau/)
 BILANS = (60, 120)                      # seances apres lesquelles on juge le virtuel (zone/README.md, 1er octobre 2026)
-HISTORIQUE = ("rejeu de cette gestion avec les regles Phidias publiques d'octobre 2026 (zone_retrait/ sur la branche de "
-              "recherche), departs 2023-2024 suivis 24 mois : environ 160 $ recus par an pour 1,1 challenge paye par an "
-              "(164 $ chacun), rien recu dans 79 % des departs. Aucune autre gestion testee (128) ne fait mieux de facon fiable")
+DEBUT_RSI2 = os.getenv("ROBOT_DEBUT_RSI2", "2026-10-01")   # RSI(2) dans le compte : decisions a partir de cette date
+RISQUE_RSI2_REF = 233.19                # ecart-type d'un jour en position, 1 MNQ, 2011-2022 (tournoi8/ sur la recherche)
+HISTORIQUE = ("rejeu de cette gestion avec les regles Phidias publiques d'octobre 2026, departs 2023-2024 suivis 24 mois "
+              "(tournoi8/ et zone_deux/ sur la branche de recherche) : zone + RSI(2) environ +254 $ nets par an, rien recu dans "
+              "27 % des departs ; zone seule -22 $ par an, rien recu dans 79 %. Sur 12 mois, environ -115 $ par an dans les deux "
+              "cas : le premier retrait arrive en general apres 12 mois. Une taille plus grande ne fait pas mieux (zone_deux/)")
 
 
 # ----------------------------------------------------------------------------- donnees
@@ -237,6 +240,115 @@ def rebond(jours, O, L, C, P):
     return lignes, bool(mouv[dernier] <= seuil_demain), float(mouv[dernier]), seuil_demain
 
 
+def feries_bourse(annees):
+    """Jours feries de la Bourse de New York, avec leurs reports (comme tournoi8/tournoi8.py feries)."""
+    out = set()
+    for a in annees:
+        def nieme(mois, jour_sem, n):
+            j = pd.date_range(f"{a}-{mois:02d}-01", periods=31, freq="D")
+            return j[(j.month == mois) & (j.dayofweek == jour_sem)][n]
+
+        def reporte(d, samedi_vendredi=True):
+            if d.dayofweek == 6:
+                return d + pd.Timedelta(days=1)
+            if d.dayofweek == 5:
+                return d - pd.Timedelta(days=1) if samedi_vendredi else None
+            return d
+        jours = [reporte(pd.Timestamp(f"{a}-01-01"), samedi_vendredi=False), nieme(1, 0, 2), nieme(2, 0, 2),
+                 GoodFriday.dates(f"{a}-01-01", f"{a}-12-31")[0], nieme(5, 0, -1), reporte(pd.Timestamp(f"{a}-07-04")),
+                 nieme(9, 0, 0), nieme(11, 3, 3), reporte(pd.Timestamp(f"{a}-12-25"))]
+        if a >= 2022:
+            jours.append(reporte(pd.Timestamp(f"{a}-06-19")))
+        out |= {d.normalize() for d in jours if d is not None}
+    return out
+
+
+def rsi2(jours, O, H, L, C, P, ech):
+    """Second moteur DANS le compte depuis le 1er octobre 2026 (tournoi8/ sur la branche de recherche : seul survivant du
+    tournoi des strategies de plusieurs jours, coffre 2023-2026 passe, independant de la zone). RSI(2) de Connors sur le
+    NQ, achat seulement, 1 decision par seance 10 minutes avant la fin (15 h 50) : achat si cloture (15 h 49) > moyenne
+    des 200 clotures et RSI de Wilder sur 2 clotures < 10 ; vente si cloture > moyenne des 5 clotures ; execution a
+    l'ouverture de 15 h 50 ; position fermee a la derniere decision d'un contrat. Seances ignorees : jours feries de la
+    Bourse, moins de 60 minutes ; la derniere seance n'est gardee que si elle est complete (ou une demi-seance connue).
+    Renvoie un tableau par seance (gain, pire moment et risque pour 1 MNQ, position) et l'etat pour la prochaine decision."""
+    pres = P
+    derniere = N - 1 - np.argmax(pres[:, ::-1], axis=1)
+    dec = derniere - 9
+    fer = feries_bourse(range(pd.Timestamp(jours[0]).year - 1, pd.Timestamp(jours[-1]).year + 2))
+    ok = (pres.sum(axis=1) >= 60) & pres[:, 0] & (dec >= 2) & ~pd.DatetimeIndex(jours).normalize().isin(list(fer))
+    if len(ok) and not (pres[-1, N - 1] or jour_court(jours[-1])):
+        ok[-1] = False                                      # derniere seance encore incomplete (delai des donnees)
+    idx = np.where(ok)[0]
+    if len(idx) < 205:
+        return None, None
+    lig = np.arange(len(jours))[idx]
+    dd = dec[idx]
+    Px = O[lig, dd]                                         # ouverture de la minute de decision (comblee par la cloture d'avant)
+    Cx = C[lig, dd - 1]
+    masque = np.arange(N)[None, :] < dd[:, None]
+    Hx = np.where(masque, H[lig], -np.inf).max(axis=1)
+    Lx = np.where(masque, L[lig], np.inf).min(axis=1)
+    seg = np.cumsum(ech)[lig]
+    roule = np.r_[seg[1:] != seg[:-1], False]               # la seance suivante est sur un autre contrat
+    n = len(idx)
+    m200 = pd.Series(Cx).rolling(200).mean().to_numpy()
+    m5 = pd.Series(Cx).rolling(5).mean().to_numpy()
+    rsi = np.full(n, np.nan)
+    d = np.diff(Cx)
+    gg, pp = np.maximum(d, 0), np.maximum(-d, 0)
+    mg, mp = gg[:2].mean(), pp[:2].mean()
+    for i in range(2, n):
+        if i > 2:
+            mg, mp = (mg + gg[i - 1]) / 2, (mp + pp[i - 1]) / 2
+        rsi[i] = 100.0 if mp == 0 else 100 - 100 / (1 + mg / mp)
+    pos = np.zeros(n, np.int8)
+    tenu = False
+    for t in range(n):
+        if tenu and Cx[t] > m5[t]:
+            tenu = False
+        elif not tenu and Cx[t] > m200[t] and rsi[t] < 10:
+            tenu = True
+        if roule[t]:
+            tenu = False
+        pos[t] = tenu
+    dates = pd.DatetimeIndex(jours[idx])
+    actif = np.where(dates >= pd.Timestamp(DEBUT_RSI2), pos, 0)       # dans le compte : decisions depuis DEBUT_RSI2
+    cote = 1.0 / PT + 0.25                                  # points par ordre : 1 $ + 1 tick de glissement
+    def dollars(q):
+        avant = np.r_[0, q[:-1]].astype(float)
+        chg = np.abs(q - avant)
+        gain = (avant * np.r_[0.0, Px[1:] - Px[:-1]] - chg * cote) * PT
+        pire = np.where(avant == 1, (np.minimum(Lx, Px) - np.r_[Px[0], Px[:-1]]) * PT - chg * cote * PT, 0.0)
+        return gain, np.minimum(pire, np.minimum(gain, 0.0)), avant
+    gain, pire, _ = dollars(actif)
+    gain_h, _, avant_h = dollars(pos.astype(np.int8))       # historique complet : sert a estimer le risque d'un MNQ
+    risque = np.full(n, RISQUE_RSI2_REF)
+    for k in range(n):
+        x = gain_h[max(0, k - 252):k][avant_h[max(0, k - 252):k] == 1]
+        if len(x) >= 20:
+            risque[k] = x.std()
+    tab = pd.DataFrame({"gain_rsi2": gain, "pire_rsi2": pire, "risque_rsi2": risque, "pos_rsi2": actif,
+                        "prix_rsi2": Px, "mouv_rsi2": np.r_[0, np.diff(actif)]}, index=dates)
+    # prochaine decision : seuils sur le prix de 15 h 49 (le RSI de Wilder ne depend que de la derniere cloture)
+    def rsi_avec(x):
+        dx = x - Cx[-1]
+        g2, p2 = (mg + max(dx, 0)) / 2, (mp + max(-dx, 0)) / 2
+        return 100.0 if p2 == 0 else 100 - 100 / (1 + g2 / p2)
+    bas, haut_ = Cx[-1] * 0.5, Cx[-1] * 1.5
+    if rsi_avec(bas) < 10:                                  # le RSI monte avec le prix : plus haut prix ou il reste < 10
+        for _ in range(60):
+            mil = (bas + haut_) / 2
+            bas, haut_ = (mil, haut_) if rsi_avec(mil) < 10 else (bas, mil)
+        plafond_rsi = bas
+    else:
+        plafond_rsi = None
+    prochain = {"tenu": bool(pos[-1]), "seance": str(dates[-1].date()), "cloture": float(Cx[-1]),
+                "achat_au_dessus": float(Cx[-199:].sum() / 199),                  # cloture > moyenne des 200 (avec elle)
+                "achat_au_dessous": None if plafond_rsi is None else float(plafond_rsi),  # RSI(2) < 10
+                "vente_au_dessus": float(Cx[-4:].sum() / 4)}                       # cloture > moyenne des 5 (avec elle)
+    return tab, prochain
+
+
 def serie_du_bot(minutes):
     """Gain, pire moment et risque prevu par jour pour 1 MNQ (comme challenge/bot_challenge.py donnees) : zone seule.
     La colonne rebond donne le gain du second moteur pour 1 MNQ, suivi a part : il n'entre pas dans le compte virtuel
@@ -255,7 +367,22 @@ def serie_du_bot(minutes):
         gain_rb[j] = (x["brut"] - COUT) * PT
         trades.setdefault(j, []).append(f"rebond (suivi a part, hors compte) : achat 9h30 a {x['entree']:,.2f} -> sortie 16h00"
                                         f" a {x['sortie']:,.2f}, {gain_rb[j]:+,.0f} $ pour 1 MNQ")
-    d = pd.DataFrame({"gain": gain, "pire": pire, "risque1": risque1, "rebond": gain_rb}).dropna()
+    d = pd.DataFrame({"gain": gain, "pire": pire, "risque1": risque1, "rebond": gain_rb})
+    # second moteur dans le compte (RSI(2)) : ses jours s'ajoutent a ceux de la zone (une seance sans zone peut porter un
+    # gain du RSI(2), par exemple une demi-seance tenue en position)
+    r, _ = rsi2(jours, O, H, L, C, P, ech)
+    if r is not None:
+        d = d.join(r[["gain_rsi2", "pire_rsi2", "risque_rsi2", "pos_rsi2"]], how="outer")
+        d[["gain", "pire", "rebond", "gain_rsi2", "pire_rsi2"]] = d[["gain", "pire", "rebond", "gain_rsi2", "pire_rsi2"]].fillna(0.0)
+        d["risque1"] = d["risque1"].ffill()
+        d["risque_rsi2"] = d["risque_rsi2"].ffill().fillna(RISQUE_RSI2_REF)
+        d["pos_rsi2"] = d["pos_rsi2"].ffill().fillna(0).astype(int)
+        for j, x in r[r["mouv_rsi2"] != 0].iterrows():
+            trades.setdefault(j, []).append(f"RSI(2) : {'achat' if x['mouv_rsi2'] > 0 else 'vente'} 15h50 a {x['prix_rsi2']:,.2f}"
+                                            + (f" ({x['gain_rsi2']:+,.0f} $ ce jour pour 1 MNQ)" if x["mouv_rsi2"] < 0 else ""))
+    else:
+        d = d.assign(gain_rsi2=0.0, pire_rsi2=0.0, risque_rsi2=RISQUE_RSI2_REF, pos_rsi2=0)
+    d = d.dropna()
     return d, trades, jours, float(risque_demain.iloc[-1]) if len(risque_demain) else float("nan")
 
 
@@ -288,7 +415,9 @@ def niveaux(minutes, r):
     ok = np.isfinite(r) and r > 0
     taille = lambda c, f: int(np.clip(np.floor(f * c / r), MIN_MNQ, MAX_MNQ)) if ok else 0
     _, rb_demain, rb_mouv, rb_seuil = rebond(jours, O, L, C, P)
+    _, rs = rsi2(jours, O, H, L, C, P, ech)
     return {"seance": str(prochaine.date()), "jour_court": court, "pas_de_trade": bool(raison), "raison": raison,
+            "rsi2": rs,
             "rebond": {"achat": bool(rb_demain and not court), "mouvement_veille": rb_mouv, "seuil": rb_seuil},
             "veille": None if changement else float(Cc[-1, N - 1]), "controles": heures,
             "risque_1_mnq": r if ok else None,
@@ -322,12 +451,21 @@ def une_journee(etat, x, date):
     plancher = (BLOCAGE if haut >= SEUIL_RETRAIT else haut - PERTE) if finance else haut - PERTE
     f = (F_APRES if haut >= SEUIL_RETRAIT else F_AVANT) if finance else F_CHALLENGE
     coussin = etat["solde"] - plancher
-    n = int(np.clip(np.floor(f * coussin / x["risque1"]), MIN_MNQ, MAX_MNQ)) if x["risque1"] > 0 else MIN_MNQ
+    deux = date >= DEBUT_RSI2                                # deux sources : chacune f x coussin / racine(2)
+    ks = np.sqrt(2.0) if deux else 1.0
+    n = int(np.clip(np.floor(f * coussin / ks / x["risque1"]), MIN_MNQ, MAX_MNQ)) if x["risque1"] > 0 else MIN_MNQ
     jour, creux = n * x["gain"], n * x["pire"]
+    g2 = float(x.get("gain_rsi2", 0.0)) if deux else 0.0
+    n2 = 0
+    if deux:
+        r2 = float(x.get("risque_rsi2", RISQUE_RSI2_REF))
+        n2 = int(np.clip(np.floor(f * coussin / ks / r2), MIN_MNQ, MAX_MNQ)) if r2 > 0 else MIN_MNQ
+        jour, creux = jour + n2 * g2, creux + n2 * float(x.get("pire_rsi2", 0.0))
     ligne = {"date": date, "phase": etat["phase"], "tentative": etat["tentatives"][-1]["numero"], "mnq": n,
              "gain": round(jour, 2), "gain_1_mnq": round(x["gain"], 2), "gain_rebond_1_mnq": round(x["rebond"], 2),
-             "retrait": 0.0}
+             "retrait": 0.0, "mnq_rsi2": n2 if g2 != 0 or x.get("pos_rsi2", 0) else 0, "gain_rsi2_1_mnq": round(g2, 2)}
     etat["gain_1_mnq"] += x["gain"]
+    etat["gain_rsi2_1_mnq"] = etat.get("gain_rsi2_1_mnq", 0.0) + g2
     etat["gain_rebond_1_mnq"] = etat.get("gain_rebond_1_mnq", 0.0) + x["rebond"]
     if etat["solde"] + creux <= plancher or etat["solde"] + jour <= plancher:
         # le compte est coupe a sa limite : la perte du jour est la distance a la limite
@@ -385,7 +523,8 @@ def tableau(etat, journal, trades_du_jour, niv=None):
         + ", ".join(f"n°{x['numero']} {x['issue']}" for x in etat["tentatives"]) + ") |",
         f"| Recu en retraits virtuels (80 %) | {etat['recu_total']:,.0f} $ |",
         f"| Gain de la strategie pour 1 MNQ depuis le depart | {etat['gain_1_mnq']:+,.0f} $ |",
-        f"| Rebond (second moteur suivi a part, hors compte) pour 1 MNQ depuis le 1er octobre 2026 | {etat.get('gain_rebond_1_mnq', 0.0):+,.0f} $ |",
+        f"| RSI(2) (second moteur, dans le compte depuis le 1er octobre 2026) pour 1 MNQ | {etat.get('gain_rsi2_1_mnq', 0.0):+,.0f} $ |",
+        f"| Rebond (suivi a part, hors compte) pour 1 MNQ depuis le 1er octobre 2026 | {etat.get('gain_rebond_1_mnq', 0.0):+,.0f} $ |",
         "",
     ]
     if trades_du_jour:
@@ -410,6 +549,13 @@ def tableau(etat, journal, trades_du_jour, niv=None):
                    "Taille : pas encore assez d'historique (40 seances).", "",
                    "Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la reouverture de 18 h). "
                    "On ne regarde le prix qu'aux heures de controle : pas de stop place dans le marche.", ""]
+    if niv and "rsi2" in niv:
+        lignes += ["## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)", "",
+                   texte_rsi2(niv["rsi2"], niv["seance"]), "",
+                   "Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la"
+                   " moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture"
+                   " depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2),"
+                   " au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.", ""]
     if niv and niv.get("rebond"):
         rb = niv["rebond"]
         seuil = f"{rb['seuil']:+.2%}" if rb["seuil"] is not None else "pas encore assez d'historique (252 seances)"
@@ -419,9 +565,11 @@ def tableau(etat, journal, trades_du_jour, niv=None):
                    + f" Derniere seance complete : {rb['mouvement_veille']:+.2%} (ouverture -> cloture) ; seuil des 10 % les plus bas :"
                    + f" {seuil}. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains"
                    + " passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.", ""]
-    lignes += ["## Derniers jours", "", "| Date | Phase | MNQ | Resultat du jour | Solde | Pour 1 MNQ | Rebond (a part, 1 MNQ) | Evenement |",
-               "|---|---|---|---|---|---|---|---|",
-               *[f"| {r.date} | {r.phase} n°{r.tentative} | {r.mnq} | {r.gain:+,.0f} $ | {r.solde:,.0f} $ | {r.gain_1_mnq:+,.0f} $ |"
+    lignes += ["## Derniers jours", "", "| Date | Phase | MNQ zone | RSI(2) MNQ | Resultat du jour | Solde | Zone pour 1 MNQ |"
+               " RSI(2) pour 1 MNQ | Rebond (a part, 1 MNQ) | Evenement |",
+               "|---|---|---|---|---|---|---|---|---|---|",
+               *[f"| {r.date} | {r.phase} n°{r.tentative} | {r.mnq} | {int(getattr(r, 'mnq_rsi2', 0) or 0)} | {r.gain:+,.0f} $ | {r.solde:,.0f} $ |"
+                 f" {r.gain_1_mnq:+,.0f} $ | {float(getattr(r, 'gain_rsi2_1_mnq', 0.0) or 0.0):+,.0f} $ |"
                  f" {getattr(r, 'gain_rebond_1_mnq', 0.0):+,.0f} $ | {r.evenement if isinstance(r.evenement, str) else ''} |"
                  for r in j.itertuples()], ""]
     TABLEAU.write_text("\n".join(lignes))
@@ -493,6 +641,20 @@ def voyant(journal, nouveaux=1):
     return v
 
 
+def texte_rsi2(rs, seance):
+    """Consigne du RSI(2) pour la prochaine decision (15 h 50 New York, 21 h 50 Paris en general)."""
+    if rs is None:
+        return "RSI(2) : pas encore assez d'historique (205 seances)."
+    if rs["tenu"]:
+        return (f"RSI(2) : EN POSITION (achat). Le {seance} a 15 h 50 New York : vente si le prix de 15 h 49 depasse"
+                f" {rs['vente_au_dessus']:,.2f} (moyenne des 5 clotures) ; sinon garder. Le jour d'un changement d'echeance : vente.")
+    a, b = rs["achat_au_dessus"], rs["achat_au_dessous"]
+    if b is None or b <= a:
+        return (f"RSI(2) : pas de position. Pas d'achat possible le {seance} (il faudrait un prix au-dessus de {a:,.2f},"
+                f" moyenne des 200, et un RSI(2) sous 10" + (f", soit un prix sous {b:,.2f})." if b is not None else ")."))
+    return (f"RSI(2) : pas de position. Le {seance} a 15 h 50 New York : ACHAT si le prix de 15 h 49 est entre {a:,.2f}"
+            f" (moyenne des 200) et {b:,.2f} (RSI(2) sous 10), sauf jour de changement d'echeance.")
+
 def envoyer(message):
     jeton = (os.getenv("TELEGRAM_TOKEN") or "").strip()
     print(message)
@@ -540,6 +702,9 @@ def main():
     journal = pd.concat([ancien, pd.DataFrame(lignes)], ignore_index=True) if ancien is not None else pd.DataFrame(lignes)
     if len(journal):
         journal["gain_rebond_1_mnq"] = journal.get("gain_rebond_1_mnq", pd.Series(0.0, index=journal.index)).fillna(0.0)
+        for c in ("mnq_rsi2", "gain_rsi2_1_mnq"):
+            journal[c] = journal.get(c, pd.Series(0.0, index=journal.index)).fillna(0.0)
+        journal["mnq_rsi2"] = journal["mnq_rsi2"].astype(int)
         journal.to_csv(JOURNAL, index=False)
     ETAT.write_text(json.dumps(etat, indent=1, ensure_ascii=False))
     du_jour = trades.get(pd.Timestamp(etat["derniere_date"]), [])
@@ -557,6 +722,8 @@ def main():
         msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
     if (v := voyant(journal, len(lignes))) is not None:
         msg.append(v["texte"])
+    if niv is not None and "rsi2" in niv:
+        msg.append(texte_rsi2(niv["rsi2"], niv["seance"]))
     if niv is not None and niv["rebond"]["achat"]:
         msg.append(f"Rebond (suivi a part, 1 MNQ, hors compte) : ACHAT {niv['seance']} 9h30 -> 15h59"
                    f" (derniere seance {niv['rebond']['mouvement_veille']:+.2%})")

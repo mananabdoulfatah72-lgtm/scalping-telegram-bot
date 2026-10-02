@@ -161,6 +161,13 @@ footer { color: var(--doux); font-size: 11px; text-align: center; line-height: 1
     </section>
   </div>
 
+  <div class="rang">
+    <section class="panneau" aria-labelledby="t-rsi2">
+      <div class="entete"><h2 id="t-rsi2">RSI(2) sur le NQ</h2><span class="etiquette">dans le compte depuis le 1er oct.</span></div>
+      <div id="rsi2-corps"></div>
+    </section>
+  </div>
+
   <div class="rang r2c">
     <section class="panneau" aria-labelledby="t-cone">
       <div class="entete"><h2 id="t-cone">Live contre backtest</h2><span class="d">zone, 1 MNQ, depuis le départ</span></div>
@@ -185,7 +192,7 @@ footer { color: var(--doux); font-size: 11px; text-align: center; line-height: 1
     <div id="trades"></div>
     <div class="defile haut">
       <table>
-        <thead><tr><th>Date</th><th>Phase</th><th class="n">MNQ</th><th class="n">Résultat</th><th class="n">Solde</th><th class="n">Pour 1 MNQ</th><th class="n">Rebond (à part)</th><th>Événement</th></tr></thead>
+        <thead><tr><th>Date</th><th>Phase</th><th class="n">MNQ zone</th><th class="n">MNQ RSI(2)</th><th class="n">Résultat</th><th class="n">Solde</th><th class="n">Zone (1 MNQ)</th><th class="n">RSI(2) (1 MNQ)</th><th class="n">Rebond (à part)</th><th>Événement</th></tr></thead>
         <tbody id="journal"></tbody>
       </table>
     </div>
@@ -499,12 +506,38 @@ function backtest() {
     + `Rebond : <b>${dol(b, true)}</b> en ${R.jours_rebond} achats, dont l'essentiel en avril 2025. Rejeu du robot sur les données de la recherche, frais réels de 1,5 point par aller-retour.`;
 }
 
+function rsi2() {
+  const v = D.niveaux, corps = $("rsi2-corps"), e = D.etat;
+  const total = e.gain_rsi2_1_mnq || 0;
+  const rs = v && v.rsi2;
+  if (!rs) { corps.innerHTML = '<p class="note">Pas encore assez d’historique (205 séances).</p>'; return; }
+  const p2 = x => x === null || x === undefined ? "—" : prix(x);
+  const jour = v.seance ? dateFr(v.seance) : "la prochaine séance";
+  let consigne;
+  if (rs.tenu) {
+    consigne = `<span class="pastille vert">en position</span><div class="bandeau">Le ${jour} à <b>15 h 50 New York</b> (21 h 50 Paris en général) : <b>vente</b> si le prix de 15 h 49 dépasse <b>${p2(rs.vente_au_dessus)}</b> (moyenne des 5 clôtures). Sinon on garde, nuit et week-end compris. Le jour d’un changement d’échéance : vente.</div>`;
+  } else if (rs.achat_au_dessous === null || rs.achat_au_dessous <= rs.achat_au_dessus) {
+    consigne = `<span class="pastille ferme">pas de position</span><div class="bandeau">Pas d’achat possible le ${jour} : il faudrait un prix au-dessus de <b>${p2(rs.achat_au_dessus)}</b> (moyenne des 200 clôtures) et un RSI(2) sous 10${rs.achat_au_dessous === null ? "" : `, soit un prix sous <b>${p2(rs.achat_au_dessous)}</b>`}.</div>`;
+  } else {
+    consigne = `<span class="pastille">à surveiller</span><div class="bandeau">Le ${jour} à <b>15 h 50 New York</b> (21 h 50 Paris en général) : <b>achat</b> si le prix de 15 h 49 est entre <b>${p2(rs.achat_au_dessus)}</b> (moyenne des 200) et <b>${p2(rs.achat_au_dessous)}</b> (RSI(2) sous 10), sauf jour de changement d’échéance.</div>`;
+  }
+  corps.innerHTML = `<div class="signal">${consigne}</div>
+    <div class="chiffres">
+      <div><div class="l">Dernière clôture (15 h 49)</div><div class="v">${p2(rs.cloture)}</div></div>
+      <div><div class="l">Gain depuis le 1er oct. (1 MNQ)</div><div class="v ${classe(total)}">${dol(total, true)}</div></div>
+      <div><div class="l">Coffre 2023-2026 (1 MNQ)</div><div class="v bon">+11 098 $</div></div>
+    </div>
+    <p class="note">Achat quand le NQ, au-dessus de sa moyenne de 200 jours, vient de baisser fort (RSI sur 2 jours sous 10) ; vente quand il repasse au-dessus de sa moyenne de 5 jours. Seul survivant du tournoi des stratégies de plusieurs jours (coffre 2023-2026 : t 1,95, 4 années positives). <b>Indépendant de la zone</b> (corrélation ≈ 0) : ensemble, Sharpe 1,31 contre 0,90 pour la zone seule. Taille : f × coussin / √2 pour chacun, au moins 1 MNQ.</p>`;
+}
+
 function journal() {
   const j = D.journal || [];
   $("journal").innerHTML = j.slice().reverse().map(r => `<tr><td>${r.date}</td><td>${r.phase} n°${r.tentative}</td><td class="n">${r.mnq}</td>`
+    + `<td class="n">${r.mnq_rsi2 ? r.mnq_rsi2 : "—"}</td>`
     + `<td class="n ${classe(r.gain)}">${dol(r.gain, true)}</td><td class="n">${nf.format(r.solde)} $</td><td class="n ${classe(r.gain_1_mnq)}">${dol(r.gain_1_mnq, true)}</td>`
+    + `<td class="n ${classe(r.gain_rsi2_1_mnq || 0)}">${r.gain_rsi2_1_mnq ? dol(r.gain_rsi2_1_mnq, true) : "—"}</td>`
     + `<td class="n ${classe(r.gain_rebond_1_mnq)}">${r.gain_rebond_1_mnq ? dol(r.gain_rebond_1_mnq, true) : "—"}</td><td>${r.evenement || ""}</td></tr>`).join("")
-    || '<tr><td colspan="8">Pas encore de séance jouée.</td></tr>';
+    || '<tr><td colspan="10">Pas encore de séance jouée.</td></tr>';
   $("journal-d").textContent = j.length ? `du ${dateFr(j[0].date)} au ${dateFr(j[j.length - 1].date)}` : "—";
   const t = D.trades, box = $("trades");
   const derniere = D.etat.derniere_date;
@@ -516,7 +549,7 @@ function journal() {
   $("pied-g").textContent = `données du robot : séance du ${derniere}`;
   const c = new Date(D.construit);
   $("pied").innerHTML = `Page construite le ${c.toLocaleString("fr-FR", { timeZone: "Europe/Paris", dateStyle: "long", timeStyle: "short" })} (Paris) à partir des fichiers du robot sur GitHub (branche main, zone/robot/).<br>`
-    + `Le robot rejoue chaque séance le lendemain matin (données Databento environ 8 h après la clôture) ; cette page est reconstruite chaque jour de semaine vers 14 h 50, heure de Paris.`;
+    + `Le robot rejoue chaque séance le lendemain matin (données Databento environ 8 h après la clôture) ; cette page est reconstruite chaque jour de semaine vers 9 h 20 et 15 h 20, heure de Paris.`;
 }
 
 function horloge() {
@@ -544,7 +577,7 @@ function tout() {
   logo();
   if (!D) return;
   cleSeance = "";
-  resume(); graphCompte(); seance(); rebond(); cone(); backtest(); journal();
+  resume(); graphCompte(); seance(); rebond(); rsi2(); cone(); backtest(); journal();
 }
 
 tout(); tic();
