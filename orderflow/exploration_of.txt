@@ -1,0 +1,11 @@
+Order flow NQ, exploration : 84 seances du 2026-04-01 au 2026-07-31 (le coffre, 43 seances, n'est pas charge).
+Execution au marche : achat au meilleur vendeur, vente au meilleur acheteur, a la seconde qui suit le signal, + 0,5 point par ordre (1 $ MNQ).
+
+H2 Absorption sur un niveau, retournement (15 min) : 199 trades | brut +6.07 pt | ecart paye 0.88 pt | net +4.20 pt (+8.39 $ par MNQ) | gagnants 56% | t +0.69 | bat le hasard 84.3% -> elimine
+H3 Suivre les gros ordres (15 min) : 1680 trades | brut -2.76 pt | ecart paye 0.72 pt | net -4.48 pt (-8.95 $ par MNQ) | gagnants 46% | t -2.97 | bat le hasard 2.6% -> elimine
+H4 Divergence du CVD sur nouveau plus haut / bas (15 min) : 61 trades | brut +1.73 pt | ecart paye 0.66 pt | net +0.07 pt (+0.13 $ par MNQ) | gagnants 39% | t +0.01 | bat le hasard 94.3% -> elimine
+H5 Suivre le delta de 15 minutes (30 min) : 2 trades | brut -11.44 pt | ecart paye 0.44 pt | net -12.88 pt (-25.75 $ par MNQ) | gagnants 50% | t -0.42 | bat le hasard 25.9% -> elimine
+
+H1 filtre order flow de la zone de bruit : 76 trades de zone ; delta des 30 min dans le sens du trade : 61 trades, +9.24 pt en moyenne ; contre : 15 trades, -41.25 pt (tous : -0.73 pt). Difference +50.49 pt, t 1.68 (echantillon petit : descriptif).
+
+Survivants (H2 a H5) : aucun

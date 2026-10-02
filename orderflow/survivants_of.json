@@ -1,0 +1,65 @@
+{
+ "survivants": [],
+ "resultats": {
+  "H2": {
+   "trades": 199,
+   "brut_pts": 6.071,
+   "ecart_pts": 0.876,
+   "net_pts": 4.195,
+   "net_dollars_mnq": 8.39,
+   "gagnants": 0.563,
+   "t": 0.686,
+   "hasard_part_battue": 0.843,
+   "hasard_t_95": 1.376,
+   "survit": false
+  },
+  "H3": {
+   "trades": 1680,
+   "brut_pts": -2.759,
+   "ecart_pts": 0.717,
+   "net_pts": -4.476,
+   "net_dollars_mnq": -8.95,
+   "gagnants": 0.465,
+   "t": -2.968,
+   "hasard_part_battue": 0.026,
+   "hasard_t_95": 0.451,
+   "survit": false
+  },
+  "H4": {
+   "trades": 61,
+   "brut_pts": 1.727,
+   "ecart_pts": 0.662,
+   "net_pts": 0.066,
+   "net_dollars_mnq": 0.13,
+   "gagnants": 0.393,
+   "t": 0.008,
+   "hasard_part_battue": 0.943,
+   "hasard_t_95": 0.041,
+   "survit": false
+  },
+  "H5": {
+   "trades": 2,
+   "brut_pts": -11.438,
+   "ecart_pts": 0.438,
+   "net_pts": -12.875,
+   "net_dollars_mnq": -25.75,
+   "gagnants": 0.5,
+   "t": -0.424,
+   "hasard_part_battue": 0.259,
+   "hasard_t_95": 8.034,
+   "survit": false
+  },
+  "H1": {
+   "trades": 76,
+   "gardes": 61,
+   "ecartes": 15,
+   "points_gardes": 9.24,
+   "points_ecartes": -41.25,
+   "points_tous": -0.73,
+   "difference": 50.49,
+   "t_difference": 1.68
+  }
+ },
+ "seances_exploration": 84,
+ "seances_total": 127
+}

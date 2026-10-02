@@ -151,3 +151,14 @@ Toutes les stratégies évaluées sont comptées dans `fonds/essais.csv`.
   15 septembre). **Pas de trade** ces jours-là, comme un jour de changement de contrat.
 - Découpage : **exploration = 84 séances** (1er avril - 31 juillet), **coffre = 43 séances**
   (3 août - 1er octobre).
+
+### Ajout du 2 octobre 2026, après l'exploration des cinq idées, avant l'ouverture du coffre
+
+L'exploration (`exploration_of.txt`) ne laisse aucun survivant parmi H2 à H5. Pour H1, sur 76 trades de
+la zone de bruit, les trades dont le delta des 30 minutes va dans leur sens gagnent +9,24 points en
+moyenne (61 trades), les autres perdent −41,25 points (15 trades) ; écart +50,49 points, t = 1,68.
+C'est en dessous de 2, et l'échantillon est petit.
+
+H1 est donc **ajoutée au coffre comme test de confirmation**, avec une règle fixée ici : sur les séances
+du coffre, le filtre est confirmé si l'écart de gain par trade (gardés − écartés) est positif avec
+**t ≥ 1,65** (un seul test). Le gain par trade de la zone avec et sans filtre est publié dans tous les cas.
