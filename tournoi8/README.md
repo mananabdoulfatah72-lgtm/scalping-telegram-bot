@@ -123,3 +123,25 @@ Elle est indépendante de la zone et améliore nettement le mélange. Mais :
   12 mois.
 
 C'est une deuxième source plausible, pas une certitude.
+
+## RSI(2) sans week-end (règles fixées le 2 octobre 2026, avant le calcul)
+
+**Pourquoi.** L'utilisateur cherche une propfirm futures qui accepte à la fois la zone, le filtre delta et le
+RSI(2) dans un robot qui trade seul. Aucune trouvée : celles qui acceptent les robots et la nuit (The Trading
+Pit Classic Futures, Bulenox 10K) imposent de tout fermer avant le week-end, et le RSI(2) passe un week-end
+dans environ 6 trades sur 10 depuis 2012. On mesure ce que coûte une fermeture chaque vendredi.
+
+**Variante.**
+- Mêmes signaux que le RSI(2) ci-dessus (`positions(s, 0)`), sur `nasdaq100_1min.csv.gz`, de 2011 à la
+  dernière séance disponible de 2026.
+- Si la position est tenue à la décision de la dernière séance de la semaine (la séance suivante tombe dans
+  une autre semaine), elle est fermée à cette décision (15 h 50, prix `P`).
+- Elle est rouverte à l'ouverture de 9 h 30 de la séance suivante, puis suit la règle d'origine.
+- Deux ordres de plus par week-end, au même coût que les autres (1 $ + 1 tick par ordre).
+
+**Décision.** La variante est utilisable dans le robot si, sur toute la période :
+1. le t des rendements nets quotidiens est au moins 2 (même mesure que l'exploration) ;
+2. elle garde au moins la moitié des dollars du RSI(2) d'origine (1 MNQ).
+
+Publié dans tous les cas : les deux versions sur toute la période et sur le coffre 2023-2026, année par
+année, et le nombre de fermetures du vendredi.
