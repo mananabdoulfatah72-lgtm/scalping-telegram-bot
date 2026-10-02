@@ -1,9 +1,13 @@
 name: Donnees filtre H1 (Alpaca, transactions du QQQ, gratuit)
 
 # Cles lues uniquement dans les secrets du depot ALPACA_API_KEY_ID et ALPACA_API_SECRET_KEY.
-# Lancement a la main (onglet Actions) ou par Claude, une fois les secrets en place.
+# Lance par Claude, une fois les secrets en place, en poussant filtre_h1/lancer_alpaca.txt.
 
 on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - filtre_h1/lancer_alpaca.txt
   workflow_dispatch:
 
 permissions:
