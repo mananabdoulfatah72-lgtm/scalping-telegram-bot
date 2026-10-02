@@ -21,6 +21,32 @@ A = ICI / "atelier"
 GROS_PAR_SEANCE = 150
 
 
+def noeuds(prix, volume, largeur=41, n=8):
+    """Pour l'affichage seulement : les n principaux sommets (HVN) et creux (LVN) du profil lisse sur `largeur` ticks
+    (la machine, elle, utilise la definition du README : lissage sur 5 ticks, noeud le plus proche de l'ouverture)."""
+    if len(prix) == 0:
+        return [], []
+    o = np.argsort(prix)
+    p, v = prix[o], volume[o]
+    grille = np.arange(p[0], p[-1] + O.TICK / 2, O.TICK)
+    vg = np.zeros(len(grille))
+    np.add.at(vg, np.round((p - p[0]) / O.TICK).astype(int), v)
+    lisse = np.convolve(vg, np.ones(largeur) / largeur, mode="same")
+    i = np.arange(1, len(lisse) - 1)
+    hi = i[(lisse[1:-1] > lisse[:-2]) & (lisse[1:-1] >= lisse[2:])]
+    lo = i[(lisse[1:-1] < lisse[:-2]) & (lisse[1:-1] <= lisse[2:])]
+    lo = lo[(lo > largeur) & (lo < len(lisse) - largeur)]          # pas les bords du profil
+    def espaces(idx, ordre):
+        pris = []
+        for j in idx[ordre]:
+            if all(abs(j - k) > 2 * largeur for k in pris):
+                pris.append(j)
+            if len(pris) == n:
+                break
+        return sorted(grille[pris].tolist())
+    return espaces(hi, np.argsort(-lisse[hi])), espaces(lo, np.argsort(lisse[lo]))
+
+
 def r2(x):
     return [None if not np.isfinite(v) else round(float(v), 2) for v in x]
 
@@ -46,12 +72,13 @@ def main():
     par_jour = {j: g for j, g in fp.groupby("jour")}
     gros_jour = {j: g for j, g in gros.groupby("jour")}
     (A / "seances").mkdir(parents=True, exist_ok=True)
-    index, profil_veille = [], None
+    index, profil_veille, noeuds_veille = [], None, ([], [])
     for d, jour in enumerate(S.jours):
         nom = f"{jour.date()}"
         g = par_jour.get(jour, fp.iloc[:0])
         tot = g.groupby("prix")[["achat", "vente"]].sum().sum(axis=1)
         profil = P.profil(tot.index.to_numpy(float), tot.to_numpy(float))
+        affiches = noeuds(tot.index.to_numpy(float), tot.to_numpy(float))
         lignes = []
         for m, x in g.groupby("minute"):
             ticks = np.round(x["prix"].to_numpy() / O.TICK).astype(int)
@@ -71,10 +98,9 @@ def main():
             ph, pl = S.veille(d)
             niv = {"veille_haut": ph, "veille_bas": pl, "veille_cloture": round(float(S.prix[d - 1, -1]), 2)}
             if profil_veille is not None and np.isfinite(profil_veille[0]):
-                poc, vah, val, hvn, lvn = profil_veille
-                lo, hi = float(B.l[d].min()) - 40, float(B.h[d].max()) + 40
-                niv.update({"poc": poc, "vah": vah, "val": val, "hvn": [float(x) for x in hvn if lo <= x <= hi],
-                            "lvn": [float(x) for x in lvn if lo <= x <= hi]})
+                poc, vah, val = profil_veille[:3]
+                niv.update({"poc": poc, "vah": vah, "val": val, "hvn": noeuds_veille[0], "lvn": noeuds_veille[1],
+                            "hvn_machine": float(B.niveaux[6, d, 0]), "lvn_machine": float(B.niveaux[7, d, 0])})
         niv.update({"or_haut": float(B.niveaux[13, d, 29]), "or_bas": float(B.niveaux[14, d, 29])})
         fiche = {"jour": nom, "contrat": int(S.contrat[d]), "changement": bool(S.change[d]),
                  "m": {"o": r2(B.o[d]), "h": r2(B.h[d]), "l": r2(B.l[d]), "c": r2(B.c[d]),
@@ -87,7 +113,7 @@ def main():
                       "haut": round(float(B.h[d].max()), 2), "bas": round(float(B.l[d].min()), 2),
                       "volume": int(B.vol[d].sum()), "delta": int((B.achat[d] - B.vente[d]).sum()), "transactions": int(S.n_trades[d]),
                       "changement": bool(S.change[d])})
-        profil_veille = profil
+        profil_veille, noeuds_veille = profil, affiches
     machine = lire("finalistes_of.json")
     reel = ICI / "machine" / "strategies_reel.csv.gz"
     resultats = {"exploration": lire("survivants_of.json"), "exploration_texte": lire("exploration_of.txt"),

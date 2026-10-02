@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 evolution3/cache/
+orderflow/atelier/seances/
+orderflow/atelier/index.json
