@@ -74,3 +74,10 @@ vu l'exploration, la barre est plus haute que pour un coffre normal :
 
 Même s'il passe, ce sera une preuve plus faible qu'un survivant normal : il entrerait en suivi virtuel, pas
 dans le compte.
+
+### Résultat de la seconde chance (`seconde_chance_mardi.txt`) : échoue
+
+NQ, 2023 - septembre 2026 : 64 trades, 55 % gagnants, +1 990 $ pour 1 MNQ, mais **t = 0,71** et il ne bat le
+hasard que dans **53,4 %** des cas. Positif 3 années sur 4 (2026 : −486 $). Le gain vient de la hausse du
+Nasdaq, que n'importe quel achat aurait captée, pas du choix du lundi en baisse. ES (descriptif) : t = 1,35,
+82,9 %. Le mardi de rebond est écarté.
