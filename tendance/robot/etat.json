@@ -2,8 +2,8 @@
   "comptes": {
     "melange": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-09-30",
-      "solde": 49728.36573980199,
+      "derniere_date": "2026-10-01",
+      "solde": 49714.674579557985,
       "plus_haut": 50000.0,
       "positions": {
         "S&P 500": 1.0,
@@ -21,8 +21,8 @@
     },
     "tendance": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-09-30",
-      "solde": 50347.381785426194,
+      "derniere_date": "2026-10-01",
+      "solde": 50110.72015525376,
       "plus_haut": 50347.381785426194,
       "positions": {
         "Russell 2000": 1.0,
