@@ -1,0 +1,43 @@
+name: Donnees filtre H1 (Alpaca, transactions du QQQ, gratuit)
+
+# Cles lues uniquement dans les secrets du depot ALPACA_API_KEY_ID et ALPACA_API_SECRET_KEY.
+# Lancement a la main (onglet Actions) ou par Claude, une fois les secrets en place.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: |
+          [ -n "$ALPACA_API_KEY_ID" ] && [ -n "$ALPACA_API_SECRET_KEY" ] || { echo "::error::Secrets ALPACA_API_KEY_ID / ALPACA_API_SECRET_KEY absents"; exit 1; }
+          pip install -q pandas numpy requests
+          python3 filtre_h1/alpaca.py
+      - name: Enregistrer sur la branche
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add filtre_h1/donnees_alpaca 2>/dev/null || exit 0
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees : transactions du QQQ avant les trades de zone (filtre H1, Alpaca)"
+          for essai in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 10
+          done
+          exit 1

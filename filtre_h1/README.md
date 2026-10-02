@@ -104,3 +104,24 @@ Ce choix ne regarde aucun gain, et aucune donnée de 2011 à mars 2026.
 - Seul l'historique du vrai delta trancherait (Databento, ou l'historique tick par tick de la plateforme de
   l'utilisateur quand il aura un compte, par exemple via Rithmic). En attendant, le filtre reste **suivi à
   part** dans le robot, hors du compte virtuel.
+
+## Version Alpaca : les vraies transactions du QQQ (règles fixées le 2 octobre 2026, avant tout téléchargement)
+
+Le test gratuit ci-dessus ne prouve pas que le filtre est faux : il n'utilisait pas le vrai delta. Pour
+approcher le vrai delta sans Databento, on utilise les **transactions réelles du QQQ** (le fonds coté qui
+suit le Nasdaq 100, des centaines de milliers de transactions par jour), gratuites chez Alpaca depuis 2016
+(offre Basic : données SIP, 200 requêtes par minute).
+
+- Données : Alpaca Market Data API, flux SIP, chaque transaction du QQQ (prix, taille, conditions). Les
+  transactions hors marché normal sont retirées (conditions B, C, G, H, M, N, P, Q, R, T, U, V, W, Z, 4, 7, 9).
+- **Côté acheteur ou vendeur par la règle du tick** : une transaction plus haute que la précédente est un
+  achat, plus basse une vente, au même prix elle garde le côté de la précédente. Delta du QQQ = achats −
+  ventes sur les mêmes 30 minutes que le filtre.
+- **Étape 1, validation** (avril - septembre 2026, où le vrai delta du NQ est connu) : les fenêtres des
+  99 trades de zone, plus 300 fenêtres de contrôle tirées au hasard (graine 1) parmi les heures de contrôle
+  de la zone. Le delta du QQQ est **accepté comme remplaçant** s'il a le même signe que le vrai delta du NQ
+  dans **au moins 85 %** des 300 fenêtres, **et** s'il prend la même décision que le vrai filtre dans
+  **au moins 90 %** des 99 trades.
+- **Étape 2, test** : les trades de zone du 4 janvier 2016 au 31 mars 2026 (`trades_zone.csv`), même règle
+  qu'H1. Si le remplaçant est accepté, le filtre est confirmé avec **t ≥ 2** (Welch) et une zone filtrée
+  meilleure que la zone seule. S'il n'est pas accepté, le test est publié à titre descriptif seulement.
