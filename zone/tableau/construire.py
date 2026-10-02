@@ -31,6 +31,16 @@ def filtre_delta():
     return [{k: (None if pd.isna(v) else v) for k, v in r.items()} for r in d.to_dict("records")]
 
 
+def combine():
+    """Bot 3 en 1 (zone filtree par le delta + RSI(2)) : etat et journal de son challenge virtuel."""
+    if not (ROBOT / "etat_combine.json").exists():
+        return None
+    j = pd.read_csv(ROBOT / "journal_combine.csv") if (ROBOT / "journal_combine.csv").exists() else pd.DataFrame()
+    j = j.fillna({"evenement": ""}) if len(j) else j
+    return {"etat": json.loads((ROBOT / "etat_combine.json").read_text()),
+            "journal": [{k: (None if pd.isna(v) else v) for k, v in r.items()} for r in j.to_dict("records")]}
+
+
 def main():
     sortie = Path(sys.argv[1]) if len(sys.argv) > 1 else ICI / "tableau.html"
     journal = pd.read_csv(ROBOT / "journal.csv") if (ROBOT / "journal.csv").exists() else pd.DataFrame()
@@ -47,6 +57,7 @@ def main():
         "trades": trades_du_jour(tab),
         "reference": json.loads((ICI / "reference.json").read_text()),
         "filtre": filtre_delta(),
+        "combine": combine(),
     }
     texte = json.dumps(donnees, ensure_ascii=False, separators=(",", ":"), allow_nan=False).replace("</", "<\\/")
     modele = (ICI / "modele.html").read_text()

@@ -314,3 +314,24 @@ décembre. Vérifié hors ligne : avec les mêmes barres, le robot retrouve exac
 répond, il les remplace. Yahoo ne donne pas le côté acheteur ou vendeur de chaque transaction : **pendant une
 panne de Databento, le filtre delta ne peut pas être mesuré**. Le message Telegram le signale, et les trades
 seront mesurés quand Databento reviendra.
+
+## Bot 3 en 1 : zone filtrée par le delta + RSI(2) (depuis le 2 octobre 2026)
+
+Demande de l'utilisateur : réunir les trois idées dans un seul bot et le lancer sur un challenge 50K virtuel,
+**1 MNQ par stratégie**, taille fixe.
+- **Zone de bruit** : ne garde que les trades dont le delta des 30 minutes avant le signal va dans leur sens
+  (filtre H1, `filtre_delta.csv`).
+- **RSI(2)** : sans changement.
+- Son propre challenge (`robot/etat_combine.json`, `robot/journal_combine.csv`), à part du compte actuel
+  (zone + RSI(2), taille selon le coussin, sans filtre), pour comparer les deux.
+- **Une séance n'est jouée que quand le filtre a mesuré tous ses trades de zone** : le bot n'invente pas la
+  décision. Le filtre a besoin des transactions Databento. Si un trade attend plus de 5 séances (Databento
+  indisponible), il est pris sans filtre, et le compteur « pris sans mesure » le signale.
+- Les jours où le filtre écarte des trades, le pire moment du jour est approché par min(0, gain des trades
+  gardés).
+- Vérifié hors ligne sur septembre 2026 : même résultat que l'analyse (+1 003 $ jusqu'au 25 septembre).
+- Rejeu d'avril à septembre 2026, 1 MNQ chacun (mois où le filtre a été trouvé, donc flatteur) : challenge
+  réussi le 4 août pour un départ en avril ou en mai, le 23 septembre pour un départ en juin. Marge la plus
+  basse : 414 $, le 29 juillet 2026 (3 jours de baisse sur un trade du RSI(2)). À 2 MNQ, ce même 29 juillet
+  fait perdre le compte.
+- Telegram, `TABLEAU_DE_BORD.md` et la page montrent son solde, sa marge et ses séances en attente.

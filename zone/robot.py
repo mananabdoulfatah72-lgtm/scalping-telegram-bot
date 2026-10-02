@@ -59,7 +59,12 @@ DEBUT_RSI2 = os.getenv("ROBOT_DEBUT_RSI2", "2026-10-01")   # RSI(2) dans le comp
 RISQUE_RSI2_REF = 233.19                # ecart-type d'un jour en position, 1 MNQ, 2011-2022 (tournoi8/ sur la recherche)
 DEBUT_FILTRE = os.getenv("ROBOT_DEBUT_FILTRE", "2026-10-01")   # filtre order flow H1 : trades mesures a partir de cette date
 FILTRE = DOSSIER / "filtre_delta.csv"
-SECOURS = DOSSIER / "secours_yahoo.json"   # seances prises chez Yahoo faute de Databento (remplacees quand il revient)
+SECOURS = DOSSIER / "secours_yahoo.json"
+# bot 3 en 1 (zone filtree par le delta H1 + RSI(2)), demande de l'utilisateur du 2 octobre 2026 : son propre challenge
+DEBUT_COMBINE = os.getenv("ROBOT_DEBUT_COMBINE", "2026-10-02")    # premiere seance jouee
+ETAT_C, JOURNAL_C = DOSSIER / "etat_combine.json", DOSSIER / "journal_combine.csv"
+TAILLE_COMBINE = 1                       # MNQ par source, fixe (choix de l'utilisateur)
+ATTENTE_MAX_FILTRE = 5                   # seances d'attente du filtre ; au-dela, un trade non mesure compte comme garde   # seances prises chez Yahoo faute de Databento (remplacees quand il revient)
 BUDGET_FILTRE_MOIS, PLAFOND_FENETRE = 1.0, 0.25   # $ par mois (accord de l'utilisateur, 2 octobre 2026) ; $ par fenetre
 COLONNES_FILTRE = ["date", "heure", "sens", "achats", "ventes", "delta_30min", "garde", "gain_1_mnq", "cout", "mesure_le", "statut"]
 MOTIF_ZONE = re.compile(r"(achat|vente) (\d+)h(\d+) a ([\d,.]+) -> sortie (\d+)h(\d+) a ([\d,.]+)")
@@ -615,8 +620,9 @@ def lire_etat(d):
     return etat
 
 
-def une_journee(etat, x, date):
-    """Joue une seance sur le compte virtuel (challenge ou finance). Renvoie la ligne du journal."""
+def une_journee(etat, x, date, fixe=None):
+    """Joue une seance sur le compte virtuel (challenge ou finance). Renvoie la ligne du journal. fixe : nombre de MNQ
+    par source impose (bot 3 en 1) au lieu de la taille selon le coussin."""
     finance = etat["phase"] == "finance"
     if etat["tentatives"][-1]["debut"] is None:
         etat["tentatives"][-1]["debut"] = date
@@ -627,12 +633,13 @@ def une_journee(etat, x, date):
     deux = date >= DEBUT_RSI2                                # deux sources : chacune f x coussin / racine(2)
     ks = np.sqrt(2.0) if deux else 1.0
     n = int(np.clip(np.floor(f * coussin / ks / x["risque1"]), MIN_MNQ, MAX_MNQ)) if x["risque1"] > 0 else MIN_MNQ
+    n = fixe or n
     jour, creux = n * x["gain"], n * x["pire"]
     g2 = float(x.get("gain_rsi2", 0.0)) if deux else 0.0
     n2 = 0
     if deux:
         r2 = float(x.get("risque_rsi2", RISQUE_RSI2_REF))
-        n2 = int(np.clip(np.floor(f * coussin / ks / r2), MIN_MNQ, MAX_MNQ)) if r2 > 0 else MIN_MNQ
+        n2 = fixe or (int(np.clip(np.floor(f * coussin / ks / r2), MIN_MNQ, MAX_MNQ)) if r2 > 0 else MIN_MNQ)
         jour, creux = jour + n2 * g2, creux + n2 * float(x.get("pire_rsi2", 0.0))
     ligne = {"date": date, "phase": etat["phase"], "tentative": etat["tentatives"][-1]["numero"], "mnq": n,
              "gain": round(jour, 2), "gain_1_mnq": round(x["gain"], 2), "gain_rebond_1_mnq": round(x["rebond"], 2),
@@ -668,8 +675,66 @@ def une_journee(etat, x, date):
     return ligne
 
 
+def jouer_combine(d, trades, filtre):
+    """Bot 3 en 1 : zone de bruit filtree par le delta des 30 minutes (H1) + RSI(2), TAILLE_COMBINE MNQ chacun, sur son
+    propre challenge 50K virtuel depuis DEBUT_COMBINE. Une seance n'est jouee que quand le filtre a mesure tous ses
+    trades de zone : le bot n'invente pas la decision. Si un trade attend plus de ATTENTE_MAX_FILTRE seances (Databento
+    indisponible), il compte comme garde, et c'est signale. Les jours ou le filtre ecarte des trades, le creux du jour
+    est approche par min(0, gain des trades gardes). Renvoie (etat, lignes jouees, seances en attente)."""
+    if ETAT_C.exists():
+        etat = json.loads(ETAT_C.read_text())
+    else:
+        etat = {"debut": DEBUT_COMBINE, "derniere_date": str((pd.Timestamp(DEBUT_COMBINE) - pd.Timedelta(days=1)).date()),
+                "tentatives": [], "recu_total": 0.0, "gain_1_mnq": 0.0}
+        nouveau_challenge(etat, None)
+    mesures = {}
+    if filtre is not None and len(filtre):
+        mesures = {(str(r["date"]), str(r["heure"])): r for r in filtre.to_dict("records")}
+    jours = [j for j in d.index if j > pd.Timestamp(etat["derniere_date"]) and str(j.date()) >= DEBUT_COMBINE]
+    lignes, attente = [], 0
+    for k, j in enumerate(jours):
+        date, x = str(j.date()), d.loc[j]
+        zt = trades_zone_du_jour(trades.get(j, []))
+        gain, ecartes, forces, complet = 0.0, 0, 0, True
+        for m, sens, g in zt:
+            r = mesures.get((date, f"{(570 + m) // 60}h{(570 + m) % 60:02d}"))
+            if r is None:
+                if len(jours) - k - 1 >= ATTENTE_MAX_FILTRE:
+                    gain, forces = gain + g, forces + 1
+                    continue
+                complet = False
+                break
+            if str(r.get("garde")) == "non":
+                ecartes += 1
+            else:
+                gain += g
+        if not complet:
+            attente = len(jours) - k
+            break
+        y = {"gain": gain, "pire": float(x["pire"]) if not ecartes else min(0.0, gain), "risque1": float(x["risque1"]),
+             "rebond": 0.0, "gain_rsi2": float(x.get("gain_rsi2", 0.0)), "pire_rsi2": float(x.get("pire_rsi2", 0.0)),
+             "risque_rsi2": float(x.get("risque_rsi2", RISQUE_RSI2_REF)), "pos_rsi2": int(x.get("pos_rsi2", 0))}
+        ligne = une_journee(etat, y, date, fixe=TAILLE_COMBINE)
+        ligne.update(trades_zone=len(zt), trades_ecartes=ecartes, non_mesures=forces)
+        etat["non_mesures"] = etat.get("non_mesures", 0) + forces
+        lignes.append(ligne)
+        etat["derniere_date"] = date
+    return etat, lignes, attente
+
+
+def texte_combine(etat, attente):
+    plancher = (BLOCAGE if etat["haut"] >= SEUIL_RETRAIT else etat["haut"] - PERTE) if etat["phase"] == "finance" else etat["haut"] - PERTE
+    t = etat["tentatives"][-1]
+    return (f"Bot 3 en 1 (zone filtree par le delta + RSI(2), {TAILLE_COMBINE} MNQ chacun, depuis le {etat['debut']}) : "
+            + (f"challenge n°{t['numero']}, {etat['solde'] - CAPITAL:+,.0f} $ sur +4 000 $" if etat["phase"] == "challenge"
+               else f"compte finance, solde {etat['solde']:,.0f} $, recu {etat['recu_total']:,.0f} $")
+            + f", marge avant la limite {etat['solde'] - plancher:,.0f} $"
+            + (f" ; {attente} seance(s) en attente du filtre delta (transactions Databento indisponibles)" if attente else "")
+            + (f" ; {etat['non_mesures']} trade(s) de zone pris sans mesure du delta (attente trop longue)" if etat.get("non_mesures") else ""))
+
+
 # ----------------------------------------------------------------------------- sorties
-def tableau(etat, journal, trades_du_jour, niv=None, filtre=None):
+def tableau(etat, journal, trades_du_jour, niv=None, filtre=None, combine=None):
     t = etat["tentatives"][-1]
     if etat["phase"] == "challenge":
         haut = etat["haut"]
@@ -729,6 +794,20 @@ def tableau(etat, journal, trades_du_jour, niv=None, filtre=None):
                    " moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture"
                    " depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2),"
                    " au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.", ""]
+    if combine is not None:
+        ec, jc, att = combine
+        lignes += ["## Bot 3 en 1 : zone filtree par le delta + RSI(2), 1 MNQ chacun (challenge 50K virtuel a part)", "",
+                   f"**{texte_combine(ec, att)}.**", "",
+                   "Demande de l'utilisateur du 2 octobre 2026 : la zone de bruit ne garde que les trades dont le delta des 30"
+                   " minutes va dans leur sens, plus le RSI(2), 1 MNQ chacun, taille fixe. Rejeu d'avril a septembre 2026 (mois ou le"
+                   " filtre a ete trouve, donc flatteur) : challenge reussi en 3 a 4 mois selon le mois de depart, marge la plus"
+                   " basse 414 $ le 29 juillet 2026.", ""]
+        if len(jc):
+            lignes += ["| Date | Phase | Resultat du jour | Solde | Zone gardee (1 MNQ) | Trades ecartes | RSI(2) (1 MNQ) | Evenement |",
+                       "|---|---|---|---|---|---|---|---|",
+                       *[f"| {r.date} | {r.phase} n°{r.tentative} | {r.gain:+,.0f} $ | {r.solde:,.0f} $ | {r.gain_1_mnq:+,.0f} $ |"
+                         f" {int(r.trades_ecartes)}/{int(r.trades_zone)} | {float(r.gain_rsi2_1_mnq):+,.0f} $ |"
+                         f" {r.evenement if isinstance(r.evenement, str) else ''} |" for r in jc.tail(10).iloc[::-1].itertuples()], ""]
     bf = bilan_filtre(filtre)
     lignes += ["## Filtre order flow (H1) : delta des 30 dernieres minutes (suivi a part)", "",
                "Un trade de zone n'est garde que si le delta (achats agressifs - ventes agressives) des 30 minutes qui finissent"
@@ -897,10 +976,11 @@ def main():
         lignes.append(une_journee(etat, x, str(date.date())))
         etat["derniere_date"] = str(date.date())
     filtre, filtre_neuf, filtre_attente = filtre_delta(trades, etat["derniere_date"])
+    etat_c, lignes_c, attente_c = jouer_combine(d, trades, filtre)
     niv = niveaux(minutes, risque_demain)
     f_niv = DOSSIER / "niveaux.json"
     ancien_niv = json.loads(f_niv.read_text()) if f_niv.exists() else None
-    if not lignes and not neuf and niv == ancien_niv and not filtre_neuf:
+    if not lignes and not neuf and niv == ancien_niv and not filtre_neuf and not lignes_c:
         print(f"Pas de nouvelle seance depuis le {etat['derniere_date']} : rien a faire.")
         return
     ancien = pd.read_csv(JOURNAL) if JOURNAL.exists() else None
@@ -912,12 +992,17 @@ def main():
         journal["mnq_rsi2"] = journal["mnq_rsi2"].astype(int)
         journal.to_csv(JOURNAL, index=False)
     ETAT.write_text(json.dumps(etat, indent=1, ensure_ascii=False))
+    ancien_c = pd.read_csv(JOURNAL_C) if JOURNAL_C.exists() else None
+    journal_c = pd.concat([ancien_c, pd.DataFrame(lignes_c)], ignore_index=True) if ancien_c is not None else pd.DataFrame(lignes_c)
+    if len(journal_c):
+        journal_c.to_csv(JOURNAL_C, index=False)
+    ETAT_C.write_text(json.dumps(etat_c, indent=1, ensure_ascii=False))
     du_jour = list(trades.get(pd.Timestamp(etat["derniere_date"]), []))
     if len(filtre):
         du_jour += [texte_filtre(r) for r in filtre[filtre["date"].astype(str) == etat["derniere_date"]].to_dict("records")]
     if niv is not None:
         f_niv.write_text(json.dumps(niv, indent=1, ensure_ascii=False))
-    tableau(etat, journal if len(journal) else pd.DataFrame(columns=["date"]), du_jour, niv, filtre)
+    tableau(etat, journal if len(journal) else pd.DataFrame(columns=["date"]), du_jour, niv, filtre, (etat_c, journal_c, attente_c))
     msg = [f"Robot zone de bruit MNQ (argent virtuel) - {etat['derniere_date']}"]
     if lignes:
         msg.append(f"Depuis le dernier message : {sum(l['gain'] for l in lignes):+,.0f} $ ({len(lignes)} seance(s)),"
@@ -927,6 +1012,7 @@ def main():
                f" ({etat['solde'] - CAPITAL:+,.0f} $), recu en tout {etat['recu_total']:,.0f} $")
     if lignes:
         msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
+    msg.append(texte_combine(etat_c, attente_c) + "".join(f". {l['evenement']}" for l in lignes_c if l.get("evenement")))
     if source:
         msg.append(f"Donnees : {source}")
     if filtre_attente:

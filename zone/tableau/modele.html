@@ -161,6 +161,11 @@ footer { color: var(--doux); font-size: 11px; text-align: center; line-height: 1
     </section>
   </div>
 
+  <section class="panneau" aria-labelledby="t-combine">
+    <div class="entete"><h2 id="t-combine">Bot 3 en 1 : zone filtrée + RSI(2)</h2><span class="etiquette">challenge 50K virtuel, 1 MNQ chacun</span></div>
+    <div id="combine-corps"></div>
+  </section>
+
   <div class="rang r2c">
     <section class="panneau" aria-labelledby="t-rsi2">
       <div class="entete"><h2 id="t-rsi2">RSI(2) sur le NQ</h2><span class="etiquette">dans le compte depuis le 1er oct.</span></div>
@@ -534,6 +539,25 @@ function rsi2() {
     <p class="note">Achat quand le NQ, au-dessus de sa moyenne de 200 jours, vient de baisser fort (RSI sur 2 jours sous 10) ; vente quand il repasse au-dessus de sa moyenne de 5 jours. Seul survivant du tournoi des stratégies de plusieurs jours (coffre 2023-2026 : t 1,95, 4 années positives). <b>Indépendant de la zone</b> (corrélation ≈ 0) : ensemble, Sharpe 1,31 contre 0,90 pour la zone seule. Taille : f × coussin / √2 pour chacun, au moins 1 MNQ.</p>`;
 }
 
+function combine() {
+  const c = D.combine, corps = $("combine-corps");
+  if (!c) { corps.innerHTML = '<p class="note">Le bot 3 en 1 démarre avec la séance du 2 octobre 2026 : il apparaîtra après son premier passage.</p>'; return; }
+  const e = c.etat, j = c.journal || [], t = e.tentatives[e.tentatives.length - 1];
+  const plancher = e.phase === "finance" ? (e.haut >= 52600 ? 50100 : e.haut - 2500) : e.haut - 2500;
+  const gain = e.solde - 50000, marge = e.solde - plancher;
+  const pct = Math.max(0, Math.min(100, gain / 4000 * 100));
+  const lignes = j.slice(-8).reverse().map(r => `<tr><td>${dateFr(r.date)}</td><td class="n ${classe(r.gain)}">${dol(r.gain, true)}</td>`
+    + `<td class="n">${nf.format(r.solde)} $</td><td class="n">${r.trades_ecartes || 0} / ${r.trades_zone || 0}</td><td class="n ${classe(r.gain_rsi2_1_mnq || 0)}">${r.gain_rsi2_1_mnq ? dol(r.gain_rsi2_1_mnq, true) : "—"}</td><td>${r.evenement || ""}</td></tr>`).join("");
+  corps.innerHTML = `<div class="chiffres" style="border-top:0;padding-top:0;margin-top:14px">
+      <div><div class="l">${e.phase === "challenge" ? `Challenge n°${t.numero}` : "Compte financé"}</div><div class="v ${classe(gain)}">${dol(gain, true)}${e.phase === "challenge" ? " / +4 000 $" : ""}</div></div>
+      <div><div class="l">Marge avant la limite</div><div class="v">${nf.format(Math.round(marge))} $</div></div>
+      <div><div class="l">Séances jouées</div><div class="v">${j.length}</div></div>
+    </div>
+    ${e.phase === "challenge" ? `<div class="jauge" style="margin-top:12px" role="img" aria-label="Progression vers +4 000 $"><i style="left:0;width:${pct}%;background:var(--vert)"></i></div>` : ""}
+    ${j.length ? `<div class="defile"><table><thead><tr><th>Date</th><th class="n">Résultat</th><th class="n">Solde</th><th class="n">Zone écartés</th><th class="n">RSI(2)</th><th>Événement</th></tr></thead><tbody>${lignes}</tbody></table></div>` : ""}
+    <p class="note">Zone de bruit qui ne garde que les trades dont le delta des 30 minutes va dans leur sens, plus le RSI(2), 1 MNQ chacun. Rejeu avril - septembre 2026 (mois où le filtre a été trouvé, donc flatteur) : challenge réussi en 3 à 4 mois selon le mois de départ, marge la plus basse 414 $. Une séance attend que le delta soit mesuré (transactions Databento) ; au-delà de 5 séances d'attente, le trade est pris sans filtre et c'est signalé.</p>`;
+}
+
 function filtre() {
   const f = D.filtre || [], corps = $("filtre-corps");
   const garde = r => r.garde !== "non";
@@ -603,7 +627,7 @@ function tout() {
   logo();
   if (!D) return;
   cleSeance = "";
-  resume(); graphCompte(); seance(); rebond(); rsi2(); filtre(); cone(); backtest(); journal();
+  resume(); graphCompte(); seance(); rebond(); rsi2(); filtre(); combine(); cone(); backtest(); journal();
 }
 
 tout(); tic();
