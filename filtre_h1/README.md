@@ -125,3 +125,26 @@ suit le Nasdaq 100, des centaines de milliers de transactions par jour), gratuit
 - **Étape 2, test** : les trades de zone du 4 janvier 2016 au 31 mars 2026 (`trades_zone.csv`), même règle
   qu'H1. Si le remplaçant est accepté, le filtre est confirmé avec **t ≥ 2** (Welch) et une zone filtrée
   meilleure que la zone seule. S'il n'est pas accepté, le test est publié à titre descriptif seulement.
+
+## Résultat de la version Alpaca (2 octobre 2026) : `resultat_alpaca.txt`
+
+Données reçues : 20,3 millions de transactions du QQQ pour la validation (124 séances d'avril à octobre 2026)
+et 79,3 millions pour le test (1 481 séances de 2016 à mars 2026). Gratuit.
+
+**Étape 1, validation : le remplaçant est refusé.**
+- Le delta du QQQ a le même signe que le vrai delta du NQ dans **60,7 %** des 300 fenêtres de contrôle
+  (seuil 85 %). C'est à peine mieux que le hasard (50 %), et moins bien que la simple approximation par le
+  prix (75,7 %).
+- Il prend la même décision que le vrai filtre dans **62,6 %** des 99 trades de zone (seuil 90 %).
+- Raisons probables : le QQQ n'a pas les mêmes acheteurs que le contrat NQ, et la règle du tick devine mal
+  le côté de chaque transaction sur un flux consolidé de plusieurs bourses.
+
+**Étape 2, à titre descriptif seulement** (2 346 trades de zone) : gardés +6,00 points, écartés (30 %)
++0,19 point, t = 1,82. Mais la zone filtrée gagne un peu moins que la zone seule (+9 863 contre +9 999
+points), et ne fait mieux que 5 années sur 11. Ce filtre-là n'est pas le filtre H1, puisque son delta ne
+ressemble pas au vrai.
+
+**Conclusion** : aucune donnée gratuite testée (barres d'une minute, transactions du QQQ) ne reproduit le
+delta du contrat NQ. Le filtre H1 reste confirmé seulement sur avril - octobre 2026 (coffre t = 2,34, 5 trades
+écartés). Pour le tester sur des années, il faut le vrai côté agresseur des transactions NQ : Databento (compte
+à débloquer), ou l'historique tick par tick de la plateforme de l'utilisateur quand il aura un compte.

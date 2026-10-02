@@ -1,0 +1,26 @@
+Filtre H1, version Alpaca : delta du QQQ (regle du tick) a la place du delta du NQ.
+
+Etape 1 : validation sur avril - septembre 2026, contre le vrai delta du NQ
+- meme signe que le vrai delta du NQ : 60.7% sur 300 fenetres de controle (seuil 85 %)
+- meme decision que le vrai filtre : 62.6% sur 99 trades de zone (seuil 90 %)
+-> remplacant REFUSE : le test est seulement descriptif
+
+Etape 2 : test sur 2346 trades de zone mesures (1 sans transaction QQQ) du 2016-01-04 au 2026-03-31
+- gardes : 1645 trades a +6.00 pt ; ecartes : 701 (30%) a +0.19 pt
+- ecart +5.80 pt, t +1.82
+- zone seule +9,999 pt (+19,998 $ pour 1 MNQ) ; zone filtree +9,863 pt (+19,726 $)
+-> descriptif (remplacant refuse)
+
+Annee par annee (points par trade) : annee | trades | gardes | ecartes (nombre) | zone seule | zone filtree
+2016 | 243 | -3.5 | +2.4 (69) | -447 | -615
+2017 | 232 | +0.7 | -2.2 (92) | -109 | +96
+2018 | 217 | +8.9 | +7.9 (52) | +1878 | +1467
+2019 | 227 | -1.2 | +0.1 (77) | -179 | -185
+2020 | 219 | +5.7 | +4.0 (63) | +1141 | +886
+2021 | 219 | +3.2 | +5.6 (59) | +840 | +509
+2022 | 258 | +13.3 | -1.1 (53) | +2660 | +2719
+2023 | 219 | +11.1 | +4.7 (65) | +2017 | +1710
+2024 | 218 | +10.9 | -1.7 (78) | +1394 | +1527
+2025 | 232 | +10.7 | -10.8 (72) | +942 | +1718
+2026 | 62 | +0.8 | -8.1 (21) | -139 | +32
+Annees ou la zone filtree fait mieux : 5 sur 11
