@@ -1,0 +1,44 @@
+name: Donnees filtre H1 (Databento, transactions avant les trades de zone, 75 $ au plus)
+
+# Cle API lue uniquement dans le secret du depot DATABENTO_API_KEY.
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - filtre_h1/telecharger.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger
+        env:
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY }}
+        run: |
+          [ -n "$DATABENTO_API_KEY" ] || { echo "::error::Secret DATABENTO_API_KEY absent"; exit 1; }
+          pip install -q databento pandas numpy
+          python3 filtre_h1/telecharger.py
+      - name: Enregistrer sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add filtre_h1/donnees
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees : transactions NQ avant les trades de zone (filtre H1, Databento)"
+          for essai in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 10
+          done
+          exit 1

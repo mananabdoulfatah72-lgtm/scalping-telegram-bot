@@ -1,0 +1,51 @@
+# Filtre H1 sur 15 ans : le grand backtest
+
+L'utilisateur veut un vrai backtest du filtre H1 avant de s'y fier. Il a donné son accord le 2 octobre 2026
+pour acheter les données Databento nécessaires (« utilise tout ce qu'il te faut »).
+
+Le filtre a été trouvé et confirmé dans `orderflow/` (avril - octobre 2026) : **un trade de la zone de
+bruit n'est gardé que si le delta des 30 minutes qui finissent à la clôture de la minute du signal va dans
+son sens**. Le delta, ce sont les contrats achetés au prix vendeur moins les contrats vendus au prix
+acheteur. Sur ces 6 mois, il a écarté 20 trades sur 99. C'est trop peu pour connaître la taille réelle de
+l'effet. Les +67 points des trades gardés dans le coffre portent sur 18 trades : c'est un chiffre très
+incertain, pas une promesse.
+
+## Règles (fixées le 2 octobre 2026, avant tout téléchargement)
+
+### Les trades
+
+- Trades de la zone de bruit calculés avec le code du robot (`zone/robot.py` sur main, `zone_de_bruit`,
+  version V1), sur les barres d'une minute du NQ de la recherche (`intraday/donnees/nasdaq100_1min.csv.gz`).
+- Période : **24 janvier 2011 - 31 mars 2026**. La période d'avril à octobre 2026, déjà utilisée pour
+  trouver et confirmer le filtre, est exclue.
+- `trades_zone.csv` : **3 465 trades** sur 2 218 séances. Gain de chaque trade en points de NQ, après les
+  frais du robot (1,5 point par aller-retour).
+
+### Les données à acheter
+
+- Databento GLBX.MDP3, schéma `trades` (chaque transaction avec son côté agresseur), symbole NQ.v.0.
+- Pour chaque trade : les 30 minutes qui finissent à la clôture de la minute du signal. Si deux fenêtres
+  d'une même séance se touchent ou se chevauchent, elles sont fusionnées en un seul téléchargement.
+- Le coût de chaque fenêtre est demandé à Databento avant l'achat. Les fenêtres sont achetées **des plus
+  récentes aux plus anciennes**, avec un **plafond de 75 $ au total**. Si le plafond est atteint, le test
+  porte sur les années achetées.
+- **Garde-fou** : si, pour une année, moins de la moitié du volume a un côté agresseur connu, on s'arrête
+  là. Les années plus anciennes ne sont pas achetées.
+- On garde, par séance et par minute, le volume acheteur agressif, le volume vendeur agressif et le
+  volume sans côté connu. Les montants réels sont écrits dans `donnees/achats.txt`.
+
+### Le test
+
+- Règle **exactement** celle d'`orderflow/` : gardé si le signe de (achats − ventes) sur les 30 minutes
+  est celui du trade, écarté sinon (un delta nul écarte le trade).
+- Une fenêtre dont plus de 10 % du volume n'a pas de côté connu est exclue du test, et son nombre est
+  publié.
+- **Le filtre est confirmé si**, sur tous les trades mesurés :
+  1. le gain moyen des trades gardés dépasse celui des trades écartés, avec **t ≥ 2** (test de Welch) ;
+  2. la zone filtrée gagne plus que la zone seule au total.
+- Publié dans tous les cas : le résultat année par année, la zone seule et la zone filtrée (points et $
+  pour 1 MNQ), et la part de trades écartés.
+- Descriptif seulement (aucune décision) : les mêmes mesures avec un delta sur 5, 10, 15 et 20 minutes,
+  qui sont contenues dans les fenêtres achetées.
+- Le filtre n'est pas réglé sur ces données. Une version différente (seuil, autre fenêtre) devrait être
+  testée sur d'autres données avant d'être utilisée.
