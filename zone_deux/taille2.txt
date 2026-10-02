@@ -1,0 +1,33 @@
+Controle : sans RSI(2), ce simulateur = celui de zone_retrait/ (12 carrieres au hasard) : OK
+Zone de bruit + RSI(2) NQ, chacune f x coussin / racine(2), au moins 1 MNQ. Seances 2011-03-02 -> 2026-09-25
+
+=== Choix : departs 2011-2020 (489 departs, 24 mois)
+  actuelle (0,15 partout, marge 0), rang 11 sur 128 : net     -8 $/an | recu    159 $/an | challenges 1.02/an | comptes perdus 0.52/an | retraits 0.13/an | rien recu  82%
+  10 meilleures :
+     1. f challenge 0.15 | avant blocage 0.25 | apres 0.15 | marge    0 $ : net   +134 $/an | recu    308 $/an | challenges 1.06/an | comptes perdus 0.56/an | retraits 0.19/an | rien recu  68%
+     2. f challenge 0.15 | avant blocage 0.35 | apres 0.15 | marge    0 $ : net   +128 $/an | recu    308 $/an | challenges 1.10/an | comptes perdus 0.60/an | retraits 0.19/an | rien recu  69%
+     3. f challenge 0.15 | avant blocage 0.35 | apres 0.15 | marge 1000 $ : net   +126 $/an | recu    305 $/an | challenges 1.10/an | comptes perdus 0.60/an | retraits 0.19/an | rien recu  69%
+     4. f challenge 0.15 | avant blocage 0.25 | apres 0.15 | marge 1000 $ : net   +117 $/an | recu    288 $/an | challenges 1.05/an | comptes perdus 0.55/an | retraits 0.19/an | rien recu  68%
+     5. f challenge 0.25 | avant blocage 0.25 | apres 0.15 | marge    0 $ : net    +76 $/an | recu    401 $/an | challenges 1.98/an | comptes perdus 1.48/an | retraits 0.25/an | rien recu  60%
+     6. f challenge 0.25 | avant blocage 0.25 | apres 0.15 | marge 1000 $ : net    +42 $/an | recu    361 $/an | challenges 1.95/an | comptes perdus 1.45/an | retraits 0.25/an | rien recu  60%
+     7. f challenge 0.25 | avant blocage 0.35 | apres 0.15 | marge    0 $ : net    +33 $/an | recu    371 $/an | challenges 2.06/an | comptes perdus 1.56/an | retraits 0.23/an | rien recu  59%
+     8. f challenge 0.25 | avant blocage 0.35 | apres 0.15 | marge 1000 $ : net    +33 $/an | recu    371 $/an | challenges 2.06/an | comptes perdus 1.56/an | retraits 0.23/an | rien recu  59%
+     9. f challenge 0.15 | avant blocage 0.50 | apres 0.15 | marge    0 $ : net     -4 $/an | recu    183 $/an | challenges 1.14/an | comptes perdus 0.64/an | retraits 0.11/an | rien recu  82%
+    10. f challenge 0.15 | avant blocage 0.50 | apres 0.15 | marge 1000 $ : net     -4 $/an | recu    183 $/an | challenges 1.14/an | comptes perdus 0.64/an | retraits 0.11/an | rien recu  82%
+  mediane des 128 : net -404 $/an
+  voisins de la gestion choisie (un reglage change) :
+     f_ch   0.15:+134  0.25:+76  0.35:-41  0.5:-288
+     f_av   0.15:-8  0.25:+134  0.35:+128  0.5:-4
+     f_ap   0.15:+134  0.25:-113  0.35:-214  0.5:-212
+     marge  0:+134  1000:+117
+
+=== Controle : departs 2023-01 a 2024-09-11 (85 departs, 24 mois)
+  actuelle (0.15, 0.15, 0.15, 0.0) : net   +254 $/an | recu    448 $/an | challenges 1.18/an | comptes perdus 0.68/an | retraits 0.42/an | rien recu  27%
+  choisie  (np.float64(0.15), np.float64(0.25), np.float64(0.15), np.float64(0.0)) : net     -7 $/an | recu    211 $/an | challenges 1.33/an | comptes perdus 0.83/an | retraits 0.15/an | rien recu  71%
+  (zone seule, gestion actuelle : net    -22 $/an | recu    158 $/an | challenges 1.09/an | comptes perdus 0.59/an | retraits 0.11/an | rien recu  79%)
+
+=== Information : departs 2023-2025 suivis 12 mois (136 departs)
+  actuelle : net   -115 $/an | recu    234 $/an | challenges 2.12/an | comptes perdus 1.12/an | retraits 0.24/an | rien recu  78%
+  choisie  : net   -218 $/an | recu    150 $/an | challenges 2.24/an | comptes perdus 1.24/an | retraits 0.12/an | rien recu  88%
+
+Adoption (README) : choisie -7 $/an contre +254 $/an pour l'actuelle sur le controle => non adoptee : on garde 0,15 partout
