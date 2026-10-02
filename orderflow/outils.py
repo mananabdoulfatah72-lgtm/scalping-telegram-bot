@@ -2,13 +2,14 @@
 """Outils d'order flow sur le NQ (README.md) : chargement des donnees agregees, barres d'une minute avec delta, CVD,
 VWAP, niveaux de la veille, footprint, gros ordres, et simulateur d'execution au marche (achat au meilleur vendeur,
 vente au meilleur acheteur, a la seconde qui suit le signal, + 1 $ par ordre MNQ = 0,5 point de NQ)."""
+import os
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 ICI = Path(__file__).resolve().parent
-D = ICI / "donnees"
+D = Path(os.getenv("OF_DONNEES", ICI / "donnees"))     # OF_DONNEES : autre dossier (essais sur donnees fabriquees)
 NS = 23400                       # secondes de 9 h 30 a 16 h
 TICK, COMMISSION = 0.25, 0.5     # points de NQ ; 1 $ par ordre MNQ = 0,5 point
 
@@ -37,6 +38,7 @@ class Seances:
             a[ij, sec] = s[col].to_numpy(float)
             return pd.DataFrame(a).ffill(axis=1).bfill(axis=1).to_numpy().copy() if remplir else np.nan_to_num(a)
         self.prix, self.bid, self.ask = grille("prix", True), grille("bid", True), grille("ask", True)
+        self.bid_q, self.ask_q = grille("bid_q", True), grille("ask_q", True)
         self.haut = np.where(np.isnan(g := self._brut(s, ij, sec, "haut", nj)), self.prix, g)
         self.bas = np.where(np.isnan(g := self._brut(s, ij, sec, "bas", nj)), self.prix, g)
         self.achat, self.vente = grille("achat", False), grille("vente", False)
@@ -48,7 +50,7 @@ class Seances:
 
     def restreindre(self, n):
         """Ne garde que les n premieres seances (l'exploration ne voit pas le coffre)."""
-        for a in ("prix", "bid", "ask", "haut", "bas", "achat", "vente"):
+        for a in ("prix", "bid", "ask", "bid_q", "ask_q", "haut", "bas", "achat", "vente"):
             setattr(self, a, getattr(self, a)[:n].copy())
         for a in ("contrat", "change", "n_secondes", "n_trades"):
             setattr(self, a, getattr(self, a)[:n])
@@ -125,3 +127,10 @@ def hasard(S, trades, n=1000, graine=0):
         sor = np.where(sens > 0, S.bid[d, x], S.ask[d, x])
         ts[i] = t_stat(sens * (sor - ent) - 2 * COMMISSION)
     return ts
+
+
+def lire_footprint(dossier=D, jusqu_au=None):
+    f = pd.concat([pd.read_csv(p) for p in sorted(Path(dossier).glob("nq_footprint_*.csv.gz"))], ignore_index=True)
+    if jusqu_au is not None:
+        f = f[f["m"].str[:10] <= str(pd.Timestamp(jusqu_au).date())]
+    return f

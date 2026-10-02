@@ -8,7 +8,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+import moteur_of as M
 import outils as O
+import precalcul as P
 import signaux as G
 
 
@@ -29,6 +31,12 @@ def fabriquer(dossier, n_jours=8, graine=1):
     cols = ["t", "prix", "haut", "bas", "achat", "vente", "n", "bid", "ask", "bid_q", "ask_q", "contrat"]
     pd.DataFrame(lignes, columns=cols).to_csv(Path(dossier) / "nq_secondes_1.csv.gz", index=False)
     pd.DataFrame(gros, columns=["t", "prix", "sens", "taille"]).to_csv(Path(dossier) / "nq_gros_1.csv.gz", index=False)
+    x = pd.DataFrame(lignes, columns=cols)
+    x["m"] = x["t"].str[:16]
+    for decal in (0.0, 0.25, -0.25):                    # trois prix par seconde pour un footprint epais
+        y = x.assign(prix=x["prix"] + decal)
+        y.groupby(["m", "prix"])[["achat", "vente"]].sum().reset_index().to_csv(
+            Path(dossier) / f"nq_footprint_{int(decal * 4) + 1}.csv.gz", index=False)
 
 
 with tempfile.TemporaryDirectory() as tmp:
@@ -74,3 +82,53 @@ with tempfile.TemporaryDirectory() as tmp:
     ts = O.hasard(S, G.h4_divergence(S, [3, 4, 5]), n=50)
     assert len(ts) == 50 and np.isfinite(ts).all()
     print("5. placements au hasard : OK")
+    # 6. volume profile : POC, value area de 70 %, HVN et LVN
+    prix = np.arange(100, 110, 0.25)
+    vol = np.exp(-((prix - 104) ** 2) / 2) * 100 + np.exp(-((prix - 108) ** 2) / 0.5) * 60
+    poc, vah, val, hvn, lvn = P.profil(prix, vol)
+    assert poc == 104 and val < 104 < vah and vol[(prix >= val) & (prix <= vah)].sum() >= 0.7 * vol.sum()
+    assert any(abs(h - 108) <= 0.5 for h in hvn) and any(105 < l_ < 108 for l_ in lvn)
+    print("6. volume profile : POC, VAH, VAL (70 %), HVN, LVN : OK")
+    # 7. briques et signaux de la machine : aucun regard vers le futur, pour toutes les familles
+    fp = O.lire_footprint(tmp)
+    Bq = P.Briques(S, fp, gros)
+    assert np.isfinite(Bq.niveaux[:, 5, 40]).all(), "les 16 niveaux existent a 10 h 10"
+    rng = np.random.default_rng(3)
+    genomes = []
+    for f in range(len(M.FAMILLES)):
+        for _ in range(12):
+            u = {"famille": f, "niveau": int(rng.integers(16)), "confirmation": int(rng.integers(3)), "W": int(rng.integers(7)),
+                 "seuil": float(rng.random()) * (0.3 if f in (1, 3, 4, 6) else 1), "sens": int(rng.integers(2)), "sortie": 2, "stop": 0, "debut": 0, "fin": 3}
+            genomes.append(M.decoder(u))
+    avant = [M.signal(Bq, g) for g in genomes]
+    cm = 200
+    for a in ("prix", "haut", "bas", "bid", "ask"):
+        getattr(S, a)[5, cm * 60:] += 37.0
+    S.achat[5, cm * 60:] *= 3
+    S.bid_q[5, cm * 60:] *= 4
+    fp2 = fp.copy()
+    tard = (fp2["m"].str[:10] == str(S.jours[5].date())) & (fp2["m"].str[11:] >= f"{(570 + cm) // 60:02d}:{(570 + cm) % 60:02d}")
+    fp2.loc[tard, "prix"] += 37.0
+    fp2.loc[tard, "achat"] *= 3
+    Bq2 = P.Briques(S, fp2, gros)
+    actifs = 0
+    for g, a in zip(genomes, avant):
+        b = M.signal(Bq2, g)
+        assert (a[:5] == b[:5]).all() and (a[5, :cm] == b[5, :cm]).all(), M.decrire(g)
+        actifs += int(a[5, :cm].any())
+    for a in ("prix", "haut", "bas", "bid", "ask"):
+        getattr(S, a)[5, cm * 60:] -= 37.0
+    S.achat[5, cm * 60:] /= 3
+    S.bid_q[5, cm * 60:] /= 4
+    assert actifs >= 30, actifs
+    print(f"7. machine : {len(genomes)} strategies des 7 familles ({actifs} avec des signaux) ; la fin de seance ne change pas les signaux d'avant : OK")
+    # 8. simulateur de la machine = execution au bid/ask des outils, une position a la fois
+    sig = np.zeros((len(S.jours), 390), np.int8)
+    sig[2, [10, 12, 40, 41, 200]] = [1, -1, -1, 1, 1]
+    total, ntr = M.simuler(sig, S.bid, S.ask, 15, 0, 0, np.zeros_like(sig))
+    tr = pd.DataFrame({"seance": [2, 2, 2], "seconde": [659, 2459, 12059], "sens": [1, -1, 1], "duree": [900] * 3})
+    assert ntr == 3 and np.isclose(total[2], O.executer(S, tr)["net"].sum()) and total[[0, 1, 3]].sum() == 0
+    signes = -np.ones_like(sig)
+    total_h, _ = M.simuler(sig, S.bid, S.ask, 15, 0, 1, signes)
+    assert np.isclose(total_h[2], O.executer(S, tr.assign(sens=-1))["net"].sum())
+    print("8. simulateur de la machine = execution des outils (bid/ask, + 1 point, pas de chevauchement) ; controle au hasard : OK")
