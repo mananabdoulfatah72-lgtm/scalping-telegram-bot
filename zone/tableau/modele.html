@@ -555,7 +555,7 @@ function combine() {
     </div>
     ${e.phase === "challenge" ? `<div class="jauge" style="margin-top:12px" role="img" aria-label="Progression vers +4 000 $"><i style="left:0;width:${pct}%;background:var(--vert)"></i></div>` : ""}
     ${j.length ? `<div class="defile"><table><thead><tr><th>Date</th><th class="n">Résultat</th><th class="n">Solde</th><th class="n">Zone écartés</th><th class="n">RSI(2)</th><th>Événement</th></tr></thead><tbody>${lignes}</tbody></table></div>` : ""}
-    <p class="note">Zone de bruit qui ne garde que les trades dont le delta des 30 minutes va dans leur sens, plus le RSI(2), 1 MNQ chacun. Rejeu avril - septembre 2026 (mois où le filtre a été trouvé, donc flatteur) : challenge réussi en 3 à 4 mois selon le mois de départ, marge la plus basse 414 $. Une séance attend que le delta soit mesuré (transactions Databento) ; au-delà de 5 séances d'attente, le trade est pris sans filtre et c'est signalé.</p>`;
+    <p class="note">Zone de bruit qui ne garde que les trades dont le delta des 30 minutes va dans leur sens, plus le RSI(2), 1 MNQ chacun. Rejeu avril - septembre 2026 (mois où le filtre a été trouvé, donc flatteur) : challenge réussi en 3 à 4 mois selon le mois de départ, marge la plus basse 414 $. Le vrai delta vient des transactions Databento. Quand Databento ne répond pas, le bot prend le filtre approché gratuit : le sens du mouvement du prix sur les 30 minutes (même décision que le vrai filtre dans 92 % des 99 trades connus, non confirmé sur 15 ans).${e.non_mesures ? ` Trades jugés ainsi : ${e.non_mesures}.` : ""}</p>`;
 }
 
 function filtre() {

@@ -324,9 +324,13 @@ Demande de l'utilisateur : réunir les trois idées dans un seul bot et le lance
 - **RSI(2)** : sans changement.
 - Son propre challenge (`robot/etat_combine.json`, `robot/journal_combine.csv`), à part du compte actuel
   (zone + RSI(2), taille selon le coussin, sans filtre), pour comparer les deux.
-- **Une séance n'est jouée que quand le filtre a mesuré tous ses trades de zone** : le bot n'invente pas la
-  décision. Le filtre a besoin des transactions Databento. Si un trade attend plus de 5 séances (Databento
-  indisponible), il est pris sans filtre, et le compteur « pris sans mesure » le signale.
+- **Le vrai delta vient des transactions Databento.** Si un trade n'est pas mesuré après une séance
+  d'attente (Databento indisponible : compte bloqué le 2 octobre 2026 pour un solde impayé de 88,01 $), le bot
+  prend le **filtre approché gratuit** : le trade est gardé si le prix a bougé dans son sens sur les 30
+  minutes (clôture de la minute du signal moins celle de la minute d'avant la fenêtre ; P4 de `filtre_h1/`).
+  Sur les 99 trades où l'on connaît le vrai delta, il prend la même décision dans 92 % des cas ; sur 15 ans,
+  il n'est pas confirmé (t = 1,62, effet faible). Le compteur « jugés avec le filtre approché » le signale.
+  Vérifié hors ligne sur septembre 2026 : mêmes décisions que P4 calculé à part.
 - Les jours où le filtre écarte des trades, le pire moment du jour est approché par min(0, gain des trades
   gardés).
 - Vérifié hors ligne sur septembre 2026 : même résultat que l'analyse (+1 003 $ jusqu'au 25 septembre).
