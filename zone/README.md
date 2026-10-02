@@ -266,3 +266,32 @@ exactement la série du tournoi : 3 950 séances, mêmes gains, mêmes pires mom
 **Chaque matin**, la page et le message donnent la consigne du soir : en position, le prix de vente ;
 sinon, la fourchette de prix où l'on achèterait à 15 h 50. Le voyant reste celui de la zone (règle
 ci-dessus) ; le journal montre les deux sources séparément.
+
+## Filtre order flow H1 : le delta des 30 dernières minutes (depuis le 2 octobre 2026)
+
+Étude : `orderflow/` sur la branche de recherche (transactions du NQ, avril à octobre 2026). Parmi tous
+les outils d'order flow testés, un seul passe le coffre : **ne prendre un trade de la zone que si le delta
+des 30 dernières minutes va dans son sens**. Le delta, ce sont les contrats achetés au prix vendeur moins
+les contrats vendus au prix acheteur, sur les 30 minutes qui finissent à la clôture de la minute du signal.
+
+| Période | Trades de zone | Gardés | Écartés | Écart | t |
+|---|---|---|---|---|---|
+| Exploration (avril - juillet) | 76 | 61 trades, +9,24 pt | 15 trades, −41,25 pt | +50,5 pt | 1,68 |
+| Coffre (août - 1er octobre) | 23 | 18 trades, +67,40 pt | 5 trades, −35,15 pt | +102,6 pt | 2,34 |
+
+Sur les 6 mois, la zone passe de +982 à +1 777 points (environ +1 590 $ pour 1 MNQ). Le filtre marche aussi
+avec un delta sur 15, 45, 60 ou 90 minutes, pas sur 5 ou 10. **Mais il repose sur 20 trades écartés en tout.**
+L'effet réel est sans doute plus petit.
+
+Dans le robot :
+- Chaque matin, pour chaque trade de zone joué depuis le 1er octobre 2026, le robot achète à Databento les
+  transactions des 30 minutes avant le signal (schéma `trades`, NQ.v.0) et note le delta, gardé ou écarté,
+  dans `robot/filtre_delta.csv`. Il a été vérifié hors ligne qu'il prend les mêmes 23 décisions que le
+  test du coffre.
+- **Budget accepté par l'utilisateur : 1 $ par mois.** Au plus 0,25 $ par fenêtre ; au-delà du budget du
+  mois, le trade est noté « non mesuré » et compté comme gardé.
+- **Suivi à part** : le compte virtuel garde la zone d'origine, pour ne pas changer la règle de jugement en
+  cours de route. Le message Telegram, `TABLEAU_DE_BORD.md` et la page donnent la zone seule et la zone
+  filtrée. Au bilan (60 séances), on décide si le filtre entre dans le compte.
+- **En direct sur ta plateforme** : à chaque signal de la zone, regarder le delta cumulé des 30 dernières
+  minutes. S'il va contre le trade, ne pas le prendre.

@@ -161,10 +161,14 @@ footer { color: var(--doux); font-size: 11px; text-align: center; line-height: 1
     </section>
   </div>
 
-  <div class="rang">
+  <div class="rang r2c">
     <section class="panneau" aria-labelledby="t-rsi2">
       <div class="entete"><h2 id="t-rsi2">RSI(2) sur le NQ</h2><span class="etiquette">dans le compte depuis le 1er oct.</span></div>
       <div id="rsi2-corps"></div>
+    </section>
+    <section class="panneau" aria-labelledby="t-filtre">
+      <div class="entete"><h2 id="t-filtre">Filtre order flow</h2><span class="etiquette">delta 30 min, suivi à part</span></div>
+      <div id="filtre-corps"></div>
     </section>
   </div>
 
@@ -530,6 +534,28 @@ function rsi2() {
     <p class="note">Achat quand le NQ, au-dessus de sa moyenne de 200 jours, vient de baisser fort (RSI sur 2 jours sous 10) ; vente quand il repasse au-dessus de sa moyenne de 5 jours. Seul survivant du tournoi des stratégies de plusieurs jours (coffre 2023-2026 : t 1,95, 4 années positives). <b>Indépendant de la zone</b> (corrélation ≈ 0) : ensemble, Sharpe 1,31 contre 0,90 pour la zone seule. Taille : f × coussin / √2 pour chacun, au moins 1 MNQ.</p>`;
 }
 
+function filtre() {
+  const f = D.filtre || [], corps = $("filtre-corps");
+  const garde = r => r.garde !== "non";
+  const zone = f.reduce((a, r) => a + r.gain_1_mnq, 0), fil = f.filter(garde).reduce((a, r) => a + r.gain_1_mnq, 0);
+  const ecartes = f.filter(r => !garde(r)).length;
+  const lignes = f.slice(-8).reverse().map(r => {
+    const mes = r.statut === "mesure";
+    const d = mes ? `${r.delta_30min > 0 ? "+" : r.delta_30min < 0 ? "−" : ""}${(Math.abs(r.delta_30min) * 100).toFixed(1).replace(".", ",")} %` : "—";
+    const dec = !mes ? '<span class="pastille ferme">non mesuré</span>' : r.garde === "oui" ? '<span class="pastille vert">gardé</span>' : '<span class="pastille rouge">écarté</span>';
+    return `<tr><td>${dateFr(r.date)}</td><td>${r.heure}</td><td>${r.sens}</td><td class="n">${d}</td><td>${dec}</td><td class="n ${classe(r.gain_1_mnq)}">${dol(r.gain_1_mnq, true)}</td></tr>`;
+  }).join("");
+  corps.innerHTML = `<div class="bandeau">En direct, à chaque signal de la zone : regarde le <b>delta cumulé des 30 dernières minutes</b> sur ta plateforme. <b>S’il va contre le trade, ne le prends pas.</b></div>
+    <div class="chiffres">
+      <div><div class="l">Zone seule (1 MNQ)</div><div class="v ${classe(zone)}">${f.length ? dol(zone, true) : "—"}</div></div>
+      <div><div class="l">Zone filtrée (1 MNQ)</div><div class="v ${classe(fil)}">${f.length ? dol(fil, true) : "—"}</div></div>
+      <div><div class="l">Trades écartés</div><div class="v">${f.length ? `${ecartes} / ${f.length}` : "—"}</div></div>
+    </div>
+    ${f.length ? `<div class="defile"><table><thead><tr><th>Date</th><th>Signal</th><th>Sens</th><th class="n">Delta 30 min</th><th>Décision</th><th class="n">Trade (1 MNQ)</th></tr></thead><tbody>${lignes}</tbody></table></div>`
+      : '<p class="note">Pas encore de trade de zone mesuré depuis le 1er octobre. Le robot mesure chaque trade le lendemain matin.</p>'}
+    <p class="note">Confirmé au coffre le 2 octobre 2026 : trades gardés +67 points, écartés −35 points (t = 2,34), mais sur seulement 20 trades écartés en 6 mois. Suivi à part : le compte virtuel garde la zone d’origine jusqu’au bilan. Données des transactions : 1 $ par mois au plus.</p>`;
+}
+
 function journal() {
   const j = D.journal || [];
   $("journal").innerHTML = j.slice().reverse().map(r => `<tr><td>${r.date}</td><td>${r.phase} n°${r.tentative}</td><td class="n">${r.mnq}</td>`
@@ -577,7 +603,7 @@ function tout() {
   logo();
   if (!D) return;
   cleSeance = "";
-  resume(); graphCompte(); seance(); rebond(); rsi2(); cone(); backtest(); journal();
+  resume(); graphCompte(); seance(); rebond(); rsi2(); filtre(); cone(); backtest(); journal();
 }
 
 tout(); tic();

@@ -19,6 +19,9 @@ challenge (rebond apres forte baisse, fonction rebond : gain pour 1 MNQ dans le 
   et 2 000 $ maximum, si la meilleure journee <= 30 % du gain depuis le dernier retrait ; 80 % du retrait pour toi.
   Un compte perdu est remplace par un nouveau challenge le lendemain.
 
+Depuis le 2 octobre 2026, le filtre order flow H1 (delta des 30 minutes avant chaque signal, transactions Databento,
+budget 1 $ par mois) est mesure sur chaque trade de zone et suivi a part (filtre_delta.csv, fonction filtre_delta).
+
 Chaque matin de semaine (GitHub Actions ; les barres minute historiques de Databento arrivent environ 8 heures apres
 la seance) : telecharge les barres minute NQ (secret DATABENTO_API_KEY), rejoue la seance de la veille, met a jour
 zone/robot/ et envoie un resume Telegram. Aucun ordre reel.
@@ -29,6 +32,7 @@ Rejeu hors ligne : ROBOT_MINUTES=chemin/nasdaq100_1min.csv.gz ROBOT_DEBUT=2025-0
 """
 import json
 import os
+import re
 from pathlib import Path
 
 import numpy as np
@@ -53,6 +57,11 @@ REFERENCE = Path(__file__).parent / "tableau" / "reference.json"         # rejeu
 BILANS = (60, 120)                      # seances apres lesquelles on juge le virtuel (zone/README.md, 1er octobre 2026)
 DEBUT_RSI2 = os.getenv("ROBOT_DEBUT_RSI2", "2026-10-01")   # RSI(2) dans le compte : decisions a partir de cette date
 RISQUE_RSI2_REF = 233.19                # ecart-type d'un jour en position, 1 MNQ, 2011-2022 (tournoi8/ sur la recherche)
+DEBUT_FILTRE = os.getenv("ROBOT_DEBUT_FILTRE", "2026-10-01")   # filtre order flow H1 : trades mesures a partir de cette date
+FILTRE = DOSSIER / "filtre_delta.csv"
+BUDGET_FILTRE_MOIS, PLAFOND_FENETRE = 1.0, 0.25   # $ par mois (accord de l'utilisateur, 2 octobre 2026) ; $ par fenetre
+COLONNES_FILTRE = ["date", "heure", "sens", "achats", "ventes", "delta_30min", "garde", "gain_1_mnq", "cout", "mesure_le", "statut"]
+MOTIF_ZONE = re.compile(r"(achat|vente) (\d+)h(\d+) a ([\d,.]+) -> sortie (\d+)h(\d+) a ([\d,.]+)")
 HISTORIQUE = ("rejeu de cette gestion avec les regles Phidias publiques d'octobre 2026, departs 2023-2024 suivis 24 mois "
               "(tournoi8/ et zone_deux/ sur la branche de recherche) : zone + RSI(2) environ +254 $ nets par an, rien recu dans "
               "27 % des departs ; zone seule -22 $ par an, rien recu dans 79 %. Sur 12 mois, environ -115 $ par an dans les deux "
@@ -349,6 +358,106 @@ def rsi2(jours, O, H, L, C, P, ech):
     return tab, prochain
 
 
+# ----------------------------------------------------------------------------- filtre order flow (H1)
+def trades_zone_du_jour(liste):
+    """Trades de la zone parmi les lignes du jour : (minute de decision depuis 9 h 30, sens, gain pour 1 MNQ en $ apres
+    frais). Les lignes du rebond et du RSI(2) commencent autrement et sont ignorees."""
+    out = []
+    for texte in liste:
+        x = MOTIF_ZONE.match(texte)
+        if x:
+            sens = 1 if x.group(1) == "achat" else -1
+            e, s = float(x.group(4).replace(",", "")), float(x.group(7).replace(",", ""))
+            out.append((int(x.group(2)) * 60 + int(x.group(3)) - 570, sens, round((sens * (s - e) - COUT) * PT, 2)))
+    return out
+
+
+def fenetre_delta(date, m):
+    """Les 30 minutes qui finissent a la cloture de la minute de decision m (comme orderflow/signaux.py h1_filtre)."""
+    fin = pd.Timestamp(f"{date} 09:30", tz="America/New_York") + pd.Timedelta(minutes=m + 1)
+    return (fin - pd.Timedelta(minutes=30)).tz_convert("UTC").isoformat(), fin.tz_convert("UTC").isoformat()
+
+
+def filtre_delta(trades, derniere_date):
+    """Filtre order flow H1 (orderflow/ sur la branche de recherche, confirme au coffre le 2 octobre 2026 : t = 2,34) : un
+    trade de zone n'est garde que si le delta (achats agressifs - ventes agressives) des 30 minutes qui finissent a la
+    cloture de la minute de decision va dans son sens. Transactions Databento (schema trades, NQ.v.0), au plus
+    PLAFOND_FENETRE par fenetre et BUDGET_FILTRE_MOIS par mois. Suivi a part : le compte virtuel garde la zone d'origine
+    (regle de jugement inchangee). Mesure les trades de zone joues depuis DEBUT_FILTRE qui ne le sont pas encore.
+    Renvoie (toutes les lignes, lignes ajoutees)."""
+    ancien = pd.read_csv(FILTRE, dtype={"garde": str}) if FILTRE.exists() else pd.DataFrame(columns=COLONNES_FILTRE)
+    deja = set(zip(ancien["date"].astype(str), ancien["heure"].astype(str)))
+    a_faire = []
+    for j, liste in sorted(trades.items()):
+        date = str(pd.Timestamp(j).date())
+        if DEBUT_FILTRE <= date <= derniere_date:
+            for m, sens, gain in trades_zone_du_jour(liste):
+                heure = f"{(570 + m) // 60}h{(570 + m) % 60:02d}"
+                if (date, heure) not in deja:
+                    a_faire.append((date, m, heure, sens, gain))
+    if not a_faire:
+        return ancien, []
+    if not (os.getenv("DATABENTO_API_KEY") or "").strip():
+        print(f"Filtre delta : cle Databento absente, {len(a_faire)} trade(s) a mesurer au prochain passage")
+        return ancien, []
+    import databento as db
+    client = db.Historical()
+    maintenant = pd.Timestamp.now(tz="UTC")
+    mois = maintenant.strftime("%Y-%m")
+    depense = float(pd.to_numeric(ancien.loc[ancien["mesure_le"].astype(str).str[:7] == mois, "cout"], errors="coerce").sum())
+    nouveaux = []
+    for date, m, heure, sens, gain in a_faire:
+        ligne = {"date": date, "heure": heure, "sens": "achat" if sens > 0 else "vente", "gain_1_mnq": gain,
+                 "mesure_le": str(maintenant.date())}
+        debut, fin = fenetre_delta(date, m)
+        args = dict(dataset="GLBX.MDP3", symbols=["NQ.v.0"], stype_in="continuous", schema="trades", start=debut, end=fin)
+        try:
+            cout = float(client.metadata.get_cost(**args))
+            if cout > PLAFOND_FENETRE or depense + cout > BUDGET_FILTRE_MOIS:
+                ligne.update(cout=0.0, garde="", statut=f"non mesure : budget (deja {depense:.2f} $ ce mois, fenetre {cout:.3f} $)")
+            else:
+                df = client.timeseries.get_range(**args).to_df()
+                depense += cout
+                cote, q = df["side"].astype(str).to_numpy(), df["size"].to_numpy(np.int64)
+                a, v = int(q[cote == "B"].sum()), int(q[cote == "A"].sum())     # B : acheteur agressif, A : vendeur
+                if a + v == 0:
+                    raise ValueError("aucune transaction dans la fenetre")
+                x = (a - v) / (a + v)
+                ligne.update(achats=a, ventes=v, delta_30min=round(x, 4), garde="oui" if np.sign(x) == sens else "non",
+                             cout=round(cout, 4), statut="mesure")
+        except Exception as e:                 # donnees pas encore publiees, reseau : nouvel essai au prochain passage
+            print(f"Filtre delta {date} {heure} : pas encore mesurable ({type(e).__name__} : {str(e)[:150]})")
+            continue
+        nouveaux.append(ligne)
+    if nouveaux:
+        tout = pd.concat([ancien, pd.DataFrame(nouveaux)], ignore_index=True).reindex(columns=COLONNES_FILTRE)
+        tout = tout.sort_values(["date", "heure"], key=lambda c: c.str.zfill(5) if c.name == "heure" else c).reset_index(drop=True)
+        tout.to_csv(FILTRE, index=False)
+        print(f"Filtre delta : {len(nouveaux)} trade(s) mesure(s), {depense:.3f} $ depenses en {mois} (budget {BUDGET_FILTRE_MOIS:.2f} $)")
+        return tout, nouveaux
+    return ancien, []
+
+
+def bilan_filtre(f):
+    """Gains pour 1 MNQ depuis DEBUT_FILTRE : zone seule et zone filtree (un trade non mesure compte comme garde)."""
+    if f is None or not len(f):
+        return None
+    garde = f["garde"].astype(str) != "non"
+    mois = pd.Timestamp.now(tz="UTC").strftime("%Y-%m")
+    return {"trades": int(len(f)), "ecartes": int((~garde).sum()), "non_mesures": int((f["statut"] != "mesure").sum()),
+            "zone": float(f["gain_1_mnq"].sum()), "filtree": float(f.loc[garde, "gain_1_mnq"].sum()),
+            "depense_mois": float(pd.to_numeric(f.loc[f["mesure_le"].astype(str).str[:7] == mois, "cout"], errors="coerce").sum())}
+
+
+def texte_filtre(ligne):
+    if ligne["statut"] != "mesure":
+        return f"filtre delta {ligne['heure']} {ligne['sens']} : {ligne['statut']} (trade garde)"
+    return (f"filtre delta {ligne['heure']} {ligne['sens']} : delta 30 min {100 * float(ligne['delta_30min']):+.1f} %"
+            f" ({int(ligne['achats']):,} achats, {int(ligne['ventes']):,} ventes) -> "
+            + ("GARDE" if ligne["garde"] == "oui" else f"ECARTE ({float(ligne['gain_1_mnq']):+,.0f} $ evites pour 1 MNQ)"
+               if float(ligne["gain_1_mnq"]) < 0 else f"ECARTE ({float(ligne['gain_1_mnq']):+,.0f} $ manques pour 1 MNQ)"))
+
+
 def serie_du_bot(minutes):
     """Gain, pire moment et risque prevu par jour pour 1 MNQ (comme challenge/bot_challenge.py donnees) : zone seule.
     La colonne rebond donne le gain du second moteur pour 1 MNQ, suivi a part : il n'entre pas dans le compte virtuel
@@ -496,7 +605,7 @@ def une_journee(etat, x, date):
 
 
 # ----------------------------------------------------------------------------- sorties
-def tableau(etat, journal, trades_du_jour, niv=None):
+def tableau(etat, journal, trades_du_jour, niv=None, filtre=None):
     t = etat["tentatives"][-1]
     if etat["phase"] == "challenge":
         haut = etat["haut"]
@@ -556,6 +665,24 @@ def tableau(etat, journal, trades_du_jour, niv=None):
                    " moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture"
                    " depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2),"
                    " au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.", ""]
+    bf = bilan_filtre(filtre)
+    lignes += ["## Filtre order flow (H1) : delta des 30 dernieres minutes (suivi a part)", "",
+               "Un trade de zone n'est garde que si le delta (achats agressifs - ventes agressives) des 30 minutes qui finissent"
+               " a la minute du signal va dans son sens. Confirme au coffre le 2 octobre 2026 (orderflow/ sur la branche de"
+               " recherche : trades gardes +67 points, ecartes -35 points, t = 2,34), mais sur peu de trades ecartes (20 en 6 mois) :"
+               " suivi ici a part, le compte virtuel garde la zone d'origine. **En direct : a chaque signal de la zone, regarder le"
+               " delta cumule des 30 dernieres minutes sur ta plateforme ; s'il va contre le trade, ne pas le prendre.**", ""]
+    if bf:
+        lignes += [f"Depuis le {DEBUT_FILTRE} : zone seule {bf['zone']:+,.0f} $ pour 1 MNQ, zone filtree **{bf['filtree']:+,.0f} $**"
+                   f" ({bf['trades']} trades, {bf['ecartes']} ecartes" + (f", {bf['non_mesures']} non mesures" if bf["non_mesures"] else "")
+                   + f"). Donnees du filtre ce mois : {bf['depense_mois']:.2f} $ sur {BUDGET_FILTRE_MOIS:.2f} $.", "",
+                   "| Date | Heure | Sens | Delta 30 min | Decision | Trade pour 1 MNQ |", "|---|---|---|---|---|---|",
+                   *[f"| {r.date} | {r.heure} | {r.sens} | "
+                     + (f"{100 * float(r.delta_30min):+.1f} % | " + ("garde" if r.garde == "oui" else "ecarte") if r.statut == "mesure"
+                        else f"- | {r.statut}")
+                     + f" | {float(r.gain_1_mnq):+,.0f} $ |" for r in filtre.tail(12).iloc[::-1].itertuples()], ""]
+    else:
+        lignes += [f"Pas encore de trade de zone mesure depuis le {DEBUT_FILTRE}.", ""]
     if niv and niv.get("rebond"):
         rb = niv["rebond"]
         seuil = f"{rb['seuil']:+.2%}" if rb["seuil"] is not None else "pas encore assez d'historique (252 seances)"
@@ -692,10 +819,11 @@ def main():
     for date, x in d[d.index > pd.Timestamp(etat["derniere_date"])].iterrows():
         lignes.append(une_journee(etat, x, str(date.date())))
         etat["derniere_date"] = str(date.date())
+    filtre, filtre_neuf = filtre_delta(trades, etat["derniere_date"])
     niv = niveaux(minutes, risque_demain)
     f_niv = DOSSIER / "niveaux.json"
     ancien_niv = json.loads(f_niv.read_text()) if f_niv.exists() else None
-    if not lignes and not neuf and niv == ancien_niv:
+    if not lignes and not neuf and niv == ancien_niv and not filtre_neuf:
         print(f"Pas de nouvelle seance depuis le {etat['derniere_date']} : rien a faire.")
         return
     ancien = pd.read_csv(JOURNAL) if JOURNAL.exists() else None
@@ -707,10 +835,12 @@ def main():
         journal["mnq_rsi2"] = journal["mnq_rsi2"].astype(int)
         journal.to_csv(JOURNAL, index=False)
     ETAT.write_text(json.dumps(etat, indent=1, ensure_ascii=False))
-    du_jour = trades.get(pd.Timestamp(etat["derniere_date"]), [])
+    du_jour = list(trades.get(pd.Timestamp(etat["derniere_date"]), []))
+    if len(filtre):
+        du_jour += [texte_filtre(r) for r in filtre[filtre["date"].astype(str) == etat["derniere_date"]].to_dict("records")]
     if niv is not None:
         f_niv.write_text(json.dumps(niv, indent=1, ensure_ascii=False))
-    tableau(etat, journal if len(journal) else pd.DataFrame(columns=["date"]), du_jour, niv)
+    tableau(etat, journal if len(journal) else pd.DataFrame(columns=["date"]), du_jour, niv, filtre)
     msg = [f"Robot zone de bruit MNQ (argent virtuel) - {etat['derniere_date']}"]
     if lignes:
         msg.append(f"Depuis le dernier message : {sum(l['gain'] for l in lignes):+,.0f} $ ({len(lignes)} seance(s)),"
@@ -720,6 +850,9 @@ def main():
                f" ({etat['solde'] - CAPITAL:+,.0f} $), recu en tout {etat['recu_total']:,.0f} $")
     if lignes:
         msg += [f"- {x}" for x in du_jour] or ["Aucun trade le dernier jour"]
+    if (bf := bilan_filtre(filtre)) is not None:
+        msg.append(f"Zone filtree par le delta 30 min (suivi a part) depuis le {DEBUT_FILTRE} : {bf['filtree']:+,.0f} $ pour 1 MNQ"
+                   f" (zone seule {bf['zone']:+,.0f} $), {bf['ecartes']} trade(s) ecarte(s) sur {bf['trades']}")
     if (v := voyant(journal, len(lignes))) is not None:
         msg.append(v["texte"])
     if niv is not None and "rsi2" in niv:

@@ -22,6 +22,15 @@ def trades_du_jour(tableau):
     return {"date": m.group(1), "lignes": [x[2:] for x in m.group(2).strip().splitlines()]} if m else None
 
 
+def filtre_delta():
+    """Trades de zone mesures par le filtre order flow H1 (zone/robot/filtre_delta.csv), NaN remplaces par None."""
+    f = ROBOT / "filtre_delta.csv"
+    if not f.exists():
+        return []
+    d = pd.read_csv(f, dtype={"garde": str})
+    return [{k: (None if pd.isna(v) else v) for k, v in r.items()} for r in d.to_dict("records")]
+
+
 def main():
     sortie = Path(sys.argv[1]) if len(sys.argv) > 1 else ICI / "tableau.html"
     journal = pd.read_csv(ROBOT / "journal.csv") if (ROBOT / "journal.csv").exists() else pd.DataFrame()
@@ -37,6 +46,7 @@ def main():
         "niveaux": json.loads(niv.read_text()) if niv.exists() else None,
         "trades": trades_du_jour(tab),
         "reference": json.loads((ICI / "reference.json").read_text()),
+        "filtre": filtre_delta(),
     }
     texte = json.dumps(donnees, ensure_ascii=False, separators=(",", ":"), allow_nan=False).replace("</", "<\\/")
     modele = (ICI / "modele.html").read_text()
