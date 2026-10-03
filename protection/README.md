@@ -269,3 +269,33 @@ ceux de 2025 à part :
 
 **Ce qui est publié** : tout, pour que l'utilisateur choisisse. Aucune variante n'est « retenue », c'est une
 comparaison de comptes. Le prix de chaque compte est retiré de l'argent reçu (Trail 75 $, S2L 229 $, S2F 57 $).
+
+### Résultat de la piste 5 (3 octobre 2026) : `piste5.txt`
+
+Contrôle : l'évaluation Trail de `piste5.py` redonne les issues de `piste2.py` (309/309).
+
+| Compte (bot tel quel, 1 MNQ par source) | Réussi | Au moins un retrait en 12 mois | Reçu moyen en 12 mois, prix déduit | Premier retrait (médiane) | Compte financé ou réel perdu |
+|---|---|---|---|---|---|
+| Trail 50K puis Pro | 83 % | 18 % | +174 $ | 157 séances | 23 % |
+| S2L Core 50K | 58 % | 15 % | −97 $ | 232 séances | 30 % |
+| S2L Core 50K, plafond 750 $ en évaluation | 72 % | 39 % | +165 $ | 212 séances | 40 % |
+| S2F 50K (descriptif) | sans évaluation | 43 % | +810 $ | 189 séances | 18 % |
+| **S2F 50K, plafond 500 $ (descriptif)** | sans évaluation | **83 %** | **+1 826 $** | 156 séances | 21 % |
+
+Challenges de 2025 seulement :
+
+| Compte | Au moins un retrait en 12 mois | Reçu moyen, prix déduit | Compte perdu |
+|---|---|---|---|
+| Trail 50K puis Pro | 0 % | −75 $ | 26 % |
+| S2L Core 50K | 0 % (aucune évaluation réussie) | −229 $ | – |
+| S2F 50K, plafond 500 $ | 46 % | +863 $ | 60 % |
+
+- **Le S2F 50K avec un plafond de 500 $ va le mieux au bot** : pas d'évaluation, une limite calculée en fin de
+  journée comme chez Phidias, et le plafond fait passer la règle des 20 %. Mais ses règles de retrait sont les
+  moins sûres des trois (relevées par recherche) : à confirmer avant d'y croire.
+- **Aucun compte ne donne des retraits rapides** : le premier retrait arrive après 150 à 230 séances (7 à
+  11 mois). La raison tient au bot, pas au compte : à 1 MNQ par source, il gagne en moyenne environ 23 $ par jour
+  (+21 767 $ sur 2023 - septembre 2026). Tout compte qui demande +3 000 à +3 500 $ avant un retrait prend donc
+  plusieurs mois.
+- Le S2L fait moins bien : sa limite de 2 000 $ et sa règle des 25 % pendant l'évaluation ne vont pas avec le
+  RSI(2).

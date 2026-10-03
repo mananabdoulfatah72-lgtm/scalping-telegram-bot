@@ -1,0 +1,72 @@
+{
+ "2023 - sept. 2025 | Trail 50K puis Pro": {
+  "reussi": 0.8349514563106796,
+  "retrait_12_mois": 0.18446601941747573,
+  "recu_net_12_mois": 174.13754045307442,
+  "premier_retrait_seances": 157.0,
+  "perdu_ensuite": 0.22868217054263565
+ },
+ "2023 - sept. 2025 | S2L Core 50K": {
+  "reussi": 0.5792880258899676,
+  "retrait_12_mois": 0.15210355987055016,
+  "recu_net_12_mois": -96.90809061488673,
+  "premier_retrait_seances": 232.0,
+  "perdu_ensuite": 0.3016759776536313
+ },
+ "2023 - sept. 2025 | S2L Core 50K, plafond 750 $ en evaluation": {
+  "reussi": 0.7216828478964401,
+  "retrait_12_mois": 0.39158576051779936,
+  "recu_net_12_mois": 164.74368932038837,
+  "premier_retrait_seances": 212.0,
+  "perdu_ensuite": 0.40358744394618834
+ },
+ "2023 - sept. 2025 | S2F 50K (descriptif)": {
+  "reussi": 1.0,
+  "retrait_12_mois": 0.4336569579288026,
+  "recu_net_12_mois": 810.3139158576051,
+  "premier_retrait_seances": 189.0,
+  "perdu_ensuite": 0.1779935275080906
+ },
+ "2023 - sept. 2025 | S2F 50K, plafond 500 $ (descriptif)": {
+  "reussi": 1.0,
+  "retrait_12_mois": 0.8317152103559871,
+  "recu_net_12_mois": 1826.495145631068,
+  "premier_retrait_seances": 156.0,
+  "perdu_ensuite": 0.21035598705501618
+ },
+ "2025 | Trail 50K puis Pro": {
+  "reussi": 0.4942528735632184,
+  "retrait_12_mois": 0.0,
+  "recu_net_12_mois": -75.0,
+  "premier_retrait_seances": null,
+  "perdu_ensuite": 0.2558139534883721
+ },
+ "2025 | S2L Core 50K": {
+  "reussi": 0.0,
+  "retrait_12_mois": 0.0,
+  "recu_net_12_mois": -229.0,
+  "premier_retrait_seances": null,
+  "perdu_ensuite": null
+ },
+ "2025 | S2L Core 50K, plafond 750 $ en evaluation": {
+  "reussi": 0.10344827586206896,
+  "retrait_12_mois": 0.0,
+  "recu_net_12_mois": -229.0,
+  "premier_retrait_seances": null,
+  "perdu_ensuite": 1.0
+ },
+ "2025 | S2F 50K (descriptif)": {
+  "reussi": 1.0,
+  "retrait_12_mois": 0.0,
+  "recu_net_12_mois": -57.0,
+  "premier_retrait_seances": null,
+  "perdu_ensuite": 0.5862068965517241
+ },
+ "2025 | S2F 50K, plafond 500 $ (descriptif)": {
+  "reussi": 1.0,
+  "retrait_12_mois": 0.45977011494252873,
+  "recu_net_12_mois": 862.5402298850574,
+  "premier_retrait_seances": 219.0,
+  "perdu_ensuite": 0.5977011494252874
+ }
+}

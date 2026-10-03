@@ -1,0 +1,18 @@
+Controle : evaluation Trail de piste5 contre piste2, 309 departs : issues identiques 309/309
+
+=== Challenges de 2023 - sept. 2025 (309 achats, 12 mois de suivi chacun) ===
+compte | reussi | au moins un retrait en 12 mois | recu moyen en 12 mois, prix deduit | 1er retrait (mediane, seances apres l'achat) | compte finance/reel perdu
+Trail 50K puis Pro | 83% | 18% | +174 $ | 157 | 23%
+S2L Core 50K | 58% | 15% | -97 $ | 232 | 30%
+S2L Core 50K, plafond 750 $ en evaluation | 72% | 39% | +165 $ | 212 | 40%
+S2F 50K (descriptif) | 100% | 43% | +810 $ | 189 | 18%
+S2F 50K, plafond 500 $ (descriptif) | 100% | 83% | +1,826 $ | 156 | 21%
+
+=== Challenges de 2025 (87 achats, 12 mois de suivi chacun) ===
+compte | reussi | au moins un retrait en 12 mois | recu moyen en 12 mois, prix deduit | 1er retrait (mediane, seances apres l'achat) | compte finance/reel perdu
+Trail 50K puis Pro | 49% | 0% | -75 $ | - | 26%
+S2L Core 50K | 0% | 0% | -229 $ | - | nan%
+S2L Core 50K, plafond 750 $ en evaluation | 10% | 0% | -229 $ | - | 100%
+S2F 50K (descriptif) | 100% | 0% | -57 $ | - | 59%
+S2F 50K, plafond 500 $ (descriptif) | 100% | 46% | +863 $ | 219 | 60%
+
