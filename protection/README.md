@@ -299,3 +299,39 @@ Challenges de 2025 seulement :
   plusieurs mois.
 - Le S2L fait moins bien : sa limite de 2 000 $ et sa règle des 25 % pendant l'évaluation ne vont pas avec le
   RSI(2).
+
+## Piste 6 : une 4e source pour diversifier (règles fixées le 3 octobre 2026, avant le calcul)
+
+**Demande de l'utilisateur** : ajouter au bot la « tendance seule » (le robot de tendance en argent virtuel), ou à
+défaut une autre source qui diversifie.
+
+**Ce que l'on sait déjà** (`tendance/`, `fonds/`) :
+- la tendance fait un Sharpe de 0,56 sur 2007 - 2026 avec des ETF, mais −0,16 sur 2023 - 2026 ;
+- sur 40 vrais futures depuis 2011, son Sharpe est −0,01 ;
+- sur un compte de 50K, les contrats micro sont trop gros pour elle (8 à 23 % de challenges Phidias réussis en
+  2 ans) ;
+- la veille de la Fed (Lucca et Moench, 2015) fait un Sharpe de 0,34, positif après sa publication, mais n'a battu
+  le hasard que dans 87 % des cas (95 % exigés).
+
+**Candidates (fixées maintenant)** :
+- **T100** : la tendance seule exactement comme le robot virtuel (19 marchés, contrats micro entiers optimisés
+  pour 50 000 $, risque visé 12 %/an, rééquilibrage le vendredi, 3,25 $ par contrat échangé ; `tendance/systeme.py`).
+- **T30** : la même, à l'échelle 0,3 de la grille du robot (environ 3,6 %/an de risque).
+- **F** : la veille de la Fed avec 1 MES :
+  - achat à 14 h (heure de New York) la veille d'une annonce programmée, vente à 13 h 55 le jour de l'annonce
+    (12 h en 2011 - 2012), comme `fonds/sources.py` ;
+  - 0,9 point de frais par aller-retour ; événement sauté si le contrat change entre les deux jours.
+
+**Comment elles entrent dans le compte** :
+- leur gain est ajouté au solde à la clôture de chaque séance (tendance : variation du jour des positions de la
+  semaine ; veille de la Fed : de 14 h à la clôture la veille, puis de la clôture à 13 h 55 le jour de l'annonce) ;
+- leurs mouvements à l'intérieur de la séance ne sont pas vus. C'est un peu trop favorable pour le compte Trail
+  (limite suivie en temps réel), et exact pour une limite calculée en fin de journée.
+
+**Jugement de chaque candidate**, ajoutée au bot (zone non filtrée + RSI(2), 1 MNQ chacun), mêmes départs que la
+section « Le jugement » :
+- retenue si, sur le challenge DayTraders Trail 50K, le score (% réussis − % perdus) des départs 2011 - 2022
+  dépasse celui du bot seul d'au moins 3 points ;
+- et si, sur les départs 2023 - 2026, le score n'est pas plus bas que celui du bot seul.
+- Publié aussi, à titre descriptif : l'argent reçu dans les 12 mois après l'achat avec le compte S2F 50K et le
+  plafond de 500 $ (piste 5), et la corrélation quotidienne de chaque candidate avec le bot.
