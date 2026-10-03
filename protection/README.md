@@ -335,3 +335,22 @@ section « Le jugement » :
 - et si, sur les départs 2023 - 2026, le score n'est pas plus bas que celui du bot seul.
 - Publié aussi, à titre descriptif : l'argent reçu dans les 12 mois après l'achat avec le compte S2F 50K et le
   plafond de 500 $ (piste 5), et la corrélation quotidienne de chaque candidate avec le bot.
+
+### Résultat de la piste 6 (3 octobre 2026) : `piste6.txt`
+
+Contrôle : le bot seul redonne exactement les chiffres déjà publiés (scores Trail +29,8 et +45,2 ; S2F +1 826 $ ;
+Trail puis Pro +174 $).
+
+| Ajout au bot | Gain moyen par an | Corrélation avec le bot | Trail 2011 - 2022 : réussis / perdus | Trail 2023 - 2026 : réussis / perdus | S2F + plafond : reçu en 12 mois | Décision |
+|---|---|---|---|---|---|---|
+| aucun (bot seul) | – | – | 31,2 % / 1,4 % | 68,7 % / 23,5 % | +1 826 $ | – |
+| T100 : tendance du robot | +1 977 $ | +0,02 | 43,9 % / **56,1 %** | 48,8 % / **48,8 %** | +907 $ | refusée |
+| T30 : tendance à 0,3 | −44 $ | 0,00 | 23,5 % / 11,7 % | 62,0 % / 30,1 % | +1 218 $ | refusée |
+| F : veille de la Fed (1 MES) | +113 $ | +0,09 | 29,6 % / 4,7 % | 66,3 % / 23,5 % | +1 373 $ | refusée |
+
+- **La tendance diversifie bien** (corrélation 0,02 avec le bot), mais à la taille du robot ses mouvements sont
+  trop grands pour une limite de 2 500 $ : un challenge sur deux est perdu.
+- **À une taille plus petite**, les contrats entiers suppriment son avantage : elle perd de l'argent (−44 $ par
+  an).
+- **La veille de la Fed** rapporte peu (+113 $ par an) et fait perdre un peu plus de challenges.
+- Aucune des trois n'améliore le bot. Le bot reste à trois stratégies.

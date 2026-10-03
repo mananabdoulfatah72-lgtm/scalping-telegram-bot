@@ -1,0 +1,11 @@
+Piste 6 : 4e source ajoutee au bot ; 4041 seances du 2011-01-03 au 2026-09-25
+
+source | gain par an (1 unite) | correlation quotidienne avec le bot | Trail 2011-2022 : reussis / perdus / score | Trail 2023-2026 : idem | S2F + plafond 500 $ : recu en 12 mois / au moins un retrait | Trail puis Pro : recu en 12 mois
+bot seul | +0 $ | +nan | 31.2 / 1.4 / +29.8 | 68.7 / 23.5 / +45.2 | +1,826 $ / 83% | +174 $
++ T100 (tendance du robot) | +1,977 $ | +0.02 | 43.9 / 56.1 / -12.1 | 48.8 / 48.8 / +0.0 | +907 $ / 34% | +354 $
++ T30 (tendance a 0,3) | -44 $ | -0.00 | 23.5 / 11.7 / +11.7 | 62.0 / 30.1 / +31.9 | +1,218 $ / 64% | +40 $
++ F (veille de la Fed, 1 MES) | +113 $ | +0.09 | 29.6 / 4.7 / +24.9 | 66.3 / 23.5 / +42.8 | +1,373 $ / 67% | +334 $
+
+-> + T100 (tendance du robot) : score 2011-2022 -12.1 contre +29.8, 2023-2026 +0.0 contre +45.2 : PAS RETENUE
+-> + T30 (tendance a 0,3) : score 2011-2022 +11.7 contre +29.8, 2023-2026 +31.9 contre +45.2 : PAS RETENUE
+-> + F (veille de la Fed, 1 MES) : score 2011-2022 +24.9 contre +29.8, 2023-2026 +42.8 contre +45.2 : PAS RETENUE
