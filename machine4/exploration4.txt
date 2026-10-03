@@ -1,0 +1,40 @@
+Machine 4, exploration 2011-2022 : 232736 strategies sur 16 marches tradables (40 sources pour la famille croisee), 3163 seances jusqu'au 2022-12-30
+
+Marches tradables (ecart-type du gain journalier d'un contrat, 2011-2022) : ES 153 $, NQ 229 $, RTY 132 $, YM 123 $, ZT 143 $, ZF 233 $, 6E 80 $, 6B 49 $, 6A 54 $, 6C 399 $, 6M 231 $, CL 155 $, GC 154 $, HG 117 $, BTC 123 $, ETH 15 $
+Ecartes (> 400 $) : NKD 1231 $, ZN 401 $, TN 491 $, ZB 936 $, UB 1509 $, 6J 691 $, 6S 895 $, 6N 509 $, BZ 1519 $, HO 2113 $, RB 1874 $, NG 1333 $, SI 478 $, PL 825 $, PA 3570 $, ZC 429 $, ZW 659 $, ZS 796 $, ZM 566 $, ZL 428 $, KE 621 $, LE 490 $, HE 546 $, GF 854 $
+
+Strategies par famille : eligibles reelles / eligibles sur bruit (moyenne des 8) / meilleur t reel / meilleur t bruit (moyenne)
+- 1 RSI court : 36864 strategies ; 7540 / 6796 ; 3.36 / 3.38
+- 2 IBS : 4800 strategies ; 1899 / 1431 ; 3.55 / 2.93
+- 3 plus bas de n jours : 8064 strategies ; 2569 / 2338 ; 3.14 / 3.23
+- 4 grand mouvement : 9600 strategies ; 1760 / 1716 ; 2.68 / 3.09
+- 5 cassure : 2352 strategies ; 312 / 368 ; 2.43 / 2.55
+- 6 tendance : 528 strategies ; 116 / 121 ; 2.46 / 2.55
+- 7 calendrier : 1920 strategies ; 488 / 482 ; 3.51 / 3.10
+- 8 volatilite : 128 strategies ; 38 / 42 ; 2.18 / 2.29
+- 9 croisee : 168480 strategies ; 41038 / 42016 ; 3.86 / 4.03
+
+Taux de fausses decouvertes : seuil t | eligibles reelles au-dessus | sur bruit (moyenne des 8) | part attendue de fausses
+- t >= 2.0 : 1220 | 1695.9 | 139%
+- t >= 2.5 : 169 | 385.5 | 228%
+- t >= 3.0 : 33 | 70.6 | 214%
+- t >= 3.5 : 6 | 12.2 | 204%
+- t >= 4.0 : 0 | 1.6 | 999% (aucune reelle)
+- t >= 4.5 : 0 | 0.4 | 999% (aucune reelle)
+- t >= 5.0 : 0 | 0.0 | 999% (aucune reelle)
+
+Meilleur t sur chaque bruit : 4.67, 4.11, 3.92, 4.55, 3.87, 3.91, 4.48, 4.07
+
+10 candidates (t decroissant, correlation entre elles <= 0,5) :
+- t 3.86 | 6E (M6E) si HE a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 1 s. | 596 trades | +1,408 $/an | periodes +9,209 / +6,071 / +1,573 | corr. bot +0.00 | fausses attendues a ce t : 312%
+- t 3.55 | 6C (6C) IBS < 0.15, sortie apres 5 s., sans filtre, achats et ventes | 277 trades | +5,768 $/an | periodes +29,654 / +27,453 / +11,947 | corr. bot +0.00 | fausses attendues a ce t : 182%
+- t 3.51 | ZF (ZF) calendrier : changement de mois, seances -5 a -1 (0 = 1re du mois), achat | 144 trades | +1,716 $/an | periodes +9,576 / +4,252 / +6,720 | corr. bot +0.00 | fausses attendues a ce t : 194%
+- t 3.36 | 6C (6C) RSI(3) < 25 (vente > 75), sortie apres 1 s., filtre 50, ventes seules | 94 trades | +1,457 $/an | periodes +7,621 / +4,898 / +4,922 | corr. bot +0.04 | fausses attendues a ce t : 248%
+- t 3.28 | YM (MYM) si NG a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : contrer 2 s. | 73 trades | +808 $/an | periodes +713 / +2,289 / +6,672 | corr. bot +0.09 | fausses attendues a ce t : 286%
+- t 3.24 | 6E (M6E) si HE a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : suivre 2 s. | 60 trades | +541 $/an | periodes +2,884 / +2,357 / +1,238 | corr. bot -0.00 | fausses attendues a ce t : 262%
+- t 3.22 | 6B (M6B) si NKD a bouge de >= 2 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 1 s. | 76 trades | +196 $/an | periodes -39 / +1,029 / +1,357 | corr. bot +0.05 | fausses attendues a ce t : 242%
+- t 3.21 | 6A (M6A) si PA a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s. | 110 trades | +799 $/an | periodes +6,370 / +981 / +2,219 | corr. bot -0.01 | fausses attendues a ce t : 231%
+- t 3.20 | HG (MHG) si 6N a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s. | 261 trades | +1,433 $/an | periodes +2,072 / +4,094 / +10,992 | corr. bot -0.02 | fausses attendues a ce t : 219%
+- t 3.14 | ZT (ZT) si HO a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s. | 105 trades | +1,721 $/an | periodes +1,310 / +3,228 / +16,067 | corr. bot +0.02 | fausses attendues a ce t : 227%
+
+Duree : 52 s

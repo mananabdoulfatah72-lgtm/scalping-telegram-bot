@@ -1,0 +1,1545 @@
+{
+ "tradables": [
+  "ES",
+  "NQ",
+  "RTY",
+  "YM",
+  "ZT",
+  "ZF",
+  "6E",
+  "6B",
+  "6A",
+  "6C",
+  "6M",
+  "CL",
+  "GC",
+  "HG",
+  "BTC",
+  "ETH"
+ ],
+ "n_strategies": 232736,
+ "candidates": [
+  {
+   "row": [
+    9,
+    11,
+    36,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "6E (M6E) si HE a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 1 s.",
+   "t": 3.8602537922086837,
+   "corr_bot": 0.004826713150646322,
+   "trades": 596,
+   "par_an": 1407.679042451223,
+   "periodes": [
+    9208.667712395727,
+    6070.894708822249,
+    1573.4838925730808
+   ],
+   "fdr": 3.125
+  },
+  {
+   "row": [
+    2,
+    15,
+    1,
+    0,
+    3,
+    2,
+    0,
+    0,
+    0
+   ],
+   "desc": "6C (6C) IBS < 0.15, sortie apres 5 s., sans filtre, achats et ventes",
+   "t": 3.5547103452860243,
+   "corr_bot": 0.002122478570362746,
+   "trades": 277,
+   "par_an": 5767.792255181396,
+   "periodes": [
+    29653.521312815545,
+    27452.94077168706,
+    11946.828526141167
+   ],
+   "fdr": 1.825
+  },
+  {
+   "row": [
+    7,
+    6,
+    1,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "ZF (ZF) calendrier : changement de mois, seances -5 a -1 (0 = 1re du mois), achat",
+   "t": 3.5129290000773414,
+   "corr_bot": 0.00038815463332587567,
+   "trades": 144,
+   "par_an": 1716.2568409550227,
+   "periodes": [
+    9575.87500000004,
+    4251.59856704989,
+    6719.93472327265
+   ],
+   "fdr": 1.9375
+  },
+  {
+   "row": [
+    1,
+    15,
+    1,
+    25,
+    1,
+    3,
+    1,
+    0,
+    0
+   ],
+   "desc": "6C (6C) RSI(3) < 25 (vente > 75), sortie apres 1 s., filtre 50, ventes seules",
+   "t": 3.363322535222272,
+   "corr_bot": 0.037004997607885885,
+   "trades": 94,
+   "par_an": 1456.76644727921,
+   "periodes": [
+    7620.73163270396,
+    4897.999999999957,
+    4921.999999999953
+   ],
+   "fdr": 2.484375
+  },
+  {
+   "row": [
+    9,
+    3,
+    23,
+    4,
+    1,
+    1,
+    2,
+    1,
+    0
+   ],
+   "desc": "YM (MYM) si NG a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : contrer 2 s.",
+   "t": 3.280473806521589,
+   "corr_bot": 0.0942627315845503,
+   "trades": 73,
+   "par_an": 807.9546868185329,
+   "periodes": [
+    712.6359825850193,
+    2288.76844120926,
+    6671.6086322831525
+   ],
+   "fdr": 2.861111111111111
+  },
+  {
+   "row": [
+    9,
+    11,
+    36,
+    4,
+    1,
+    0,
+    2,
+    1,
+    0
+   ],
+   "desc": "6E (M6E) si HE a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : suivre 2 s.",
+   "t": 3.240440667290637,
+   "corr_bot": -0.002100092347779165,
+   "trades": 60,
+   "par_an": 541.1498253739074,
+   "periodes": [
+    2883.7431209328706,
+    2356.8114693358366,
+    1238.2113746244677
+   ],
+   "fdr": 2.625
+  },
+  {
+   "row": [
+    9,
+    13,
+    4,
+    2,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "6B (M6B) si NKD a bouge de >= 2 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 1 s.",
+   "t": 3.216340624160916,
+   "corr_bot": 0.048091205820266915,
+   "trades": 76,
+   "par_an": 196.04765576286292,
+   "periodes": [
+    -38.50000000000229,
+    1028.5000000000002,
+    1357.126100938722
+   ],
+   "fdr": 2.423076923076923
+  },
+  {
+   "row": [
+    9,
+    14,
+    28,
+    1,
+    0,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "6A (M6A) si PA a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 3.2066307271403174,
+   "corr_bot": -0.0074001128691852875,
+   "trades": 110,
+   "par_an": 799.375350239105,
+   "periodes": [
+    6370.457107469986,
+    980.598530580137,
+    2219.2436939791637
+   ],
+   "fdr": 2.3125
+  },
+  {
+   "row": [
+    9,
+    26,
+    17,
+    1,
+    1,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "HG (MHG) si 6N a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.2009537513601325,
+   "corr_bot": -0.016685115828931295,
+   "trades": 261,
+   "par_an": 1433.0660726598464,
+   "periodes": [
+    2071.666042960379,
+    4093.698363498453,
+    10991.621074552093
+   ],
+   "fdr": 2.191666666666667
+  },
+  {
+   "row": [
+    9,
+    5,
+    21,
+    4,
+    1,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "ZT (ZT) si HO a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 3.141781226496358,
+   "corr_bot": 0.01965967897631046,
+   "trades": 105,
+   "par_an": 1721.0862779839936,
+   "periodes": [
+    1310.4270072889863,
+    3227.7562796556713,
+    16067.044096696998
+   ],
+   "fdr": 2.2708333333333335
+  }
+ ],
+ "placebos": [
+  {
+   "graine": 1000,
+   "row": [
+    3,
+    1,
+    3,
+    5,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) plus bas des 10 clotures, sortie apres 5 s., filtre 50, achats seuls",
+   "t": 4.667113674012889
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    0,
+    19,
+    3,
+    1,
+    0,
+    1,
+    1,
+    0
+   ],
+   "desc": "ES (MES) si CL a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (hausse seule) : suivre 2 s.",
+   "t": 3.9718742512111636
+  },
+  {
+   "graine": 1000,
+   "row": [
+    3,
+    1,
+    3,
+    5,
+    3,
+    2,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) plus bas des 10 clotures, sortie apres 5 s., filtre 200, achats et ventes",
+   "t": 3.78223837310695
+  },
+  {
+   "graine": 1000,
+   "row": [
+    1,
+    1,
+    1,
+    30,
+    1,
+    7,
+    2,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) RSI(3) < 30 (vente > 70), sortie apres 10 s., filtre 50, achats et ventes",
+   "t": 3.7446637128376072
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    0,
+    15,
+    1,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si 6C a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.611339183659944
+  },
+  {
+   "graine": 1000,
+   "row": [
+    2,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "YM (MYM) IBS < 0.10, sortie apres 1 s., sans filtre, achats seuls",
+   "t": 3.573197643043457
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    1,
+    31,
+    2,
+    0,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "NQ (MNQ) si ZS a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.5389506288952766
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    1,
+    2,
+    2,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) si RTY a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.535739219881261
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    2,
+    12,
+    0,
+    1,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "RTY (M2K) si 6J a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 3.4692026889903538
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    19,
+    2,
+    0,
+    1,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "CL (MCL) si RTY a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.432350010353622
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    11,
+    12,
+    2,
+    1,
+    0,
+    2,
+    1,
+    0
+   ],
+   "desc": "6E (M6E) si 6J a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (baisse seule) : suivre 2 s.",
+   "t": 4.1121070684606424
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    2,
+    35,
+    2,
+    1,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "RTY (M2K) si LE a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 4.049782241747076
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    19,
+    13,
+    1,
+    0,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "CL (MCL) si 6B a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 4.004331277288609
+  },
+  {
+   "graine": 1001,
+   "row": [
+    3,
+    18,
+    4,
+    4,
+    1,
+    2,
+    0,
+    0,
+    0
+   ],
+   "desc": "6M (6M) plus bas des 15 clotures, sortie apres 3 s., filtre 50, achats et ventes",
+   "t": 3.6061794485201957
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    3,
+    1,
+    4,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si NQ a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.549371654334089
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    19,
+    27,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0
+   ],
+   "desc": "CL (MCL) si PL a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse seule) : contrer 2 s.",
+   "t": 3.5160410215393965
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    14,
+    36,
+    4,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "6A (M6A) si HE a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.4732442467170563
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    0,
+    30,
+    4,
+    1,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si ZW a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.438137967998514
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    15,
+    9,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0
+   ],
+   "desc": "6C (6C) si ZB a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : contrer 2 s.",
+   "t": 3.4328377237921863
+  },
+  {
+   "graine": 1001,
+   "row": [
+    7,
+    15,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "6C (6C) calendrier : changement de mois, seances -5 a -4 (0 = 1re du mois), vente",
+   "t": 3.3938871795467422
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    26,
+    5,
+    3,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "HG (MHG) si ZT a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.9227160318744656
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    1,
+    2,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "NQ (MNQ) si RTY a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.8395716343518287
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    1,
+    4,
+    3,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "NQ (MNQ) si NKD a bouge de >= 0 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.5970754255189226
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    0,
+    8,
+    4,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si TN a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.522829142030234
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    24,
+    25,
+    1,
+    2,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "GC (MGC) si SI a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.4776077905665925
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    19,
+    14,
+    1,
+    1,
+    0,
+    2,
+    0,
+    0
+   ],
+   "desc": "CL (MCL) si 6A a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : suivre 1 s.",
+   "t": 3.4774463426669424
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    14,
+    37,
+    2,
+    1,
+    1,
+    1,
+    0,
+    0
+   ],
+   "desc": "6A (M6A) si GF a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse seule) : contrer 1 s.",
+   "t": 3.4742858129653706
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    3,
+    11,
+    0,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si 6E a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.4632986569028246
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    15,
+    7,
+    0,
+    2,
+    1,
+    1,
+    2,
+    0
+   ],
+   "desc": "6C (6C) si ZN a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : contrer 5 s.",
+   "t": 3.453029046802398
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    0,
+    5,
+    4,
+    1,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "ES (MES) si ZT a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.4245487913999804
+  },
+  {
+   "graine": 1003,
+   "row": [
+    1,
+    15,
+    1,
+    20,
+    3,
+    6,
+    2,
+    0,
+    0
+   ],
+   "desc": "6C (6C) RSI(3) < 20 (vente > 80), sortie apres 5 s., filtre 200, achats et ventes",
+   "t": 4.545594040906133
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    38,
+    32,
+    2,
+    1,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "BTC (MBT) si ZM a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.8790725736169973
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    3,
+    5,
+    0,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si ZT a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.872283619594678
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    3,
+    38,
+    4,
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "desc": "YM (MYM) si BTC a bouge de >= 0 e.-t. sur 20 s. jusqu'a la veille (hausse seule) : suivre 1 s.",
+   "t": 3.8241076575027924
+  },
+  {
+   "graine": 1003,
+   "row": [
+    1,
+    3,
+    1,
+    30,
+    1,
+    6,
+    0,
+    0,
+    0
+   ],
+   "desc": "YM (MYM) RSI(3) < 30 (vente > 70), sortie apres 5 s., filtre 50, achats seuls",
+   "t": 3.7068749492157815
+  },
+  {
+   "graine": 1003,
+   "row": [
+    4,
+    3,
+    1,
+    1,
+    0,
+    4,
+    1,
+    0,
+    0
+   ],
+   "desc": "YM (MYM) mouvement du jour >= 1.5 e.-t. (hausse ou baisse), contrer 10 s., filtre 50",
+   "t": 3.698723572264733
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    11,
+    12,
+    1,
+    2,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "6E (M6E) si 6J a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.627034809167122
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    0,
+    28,
+    0,
+    2,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si PA a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.625523688220543
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    0,
+    14,
+    1,
+    1,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si 6A a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.6042425220622656
+  },
+  {
+   "graine": 1003,
+   "row": [
+    7,
+    38,
+    1,
+    18,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "BTC (MBT) calendrier : changement de mois, seances -3 a -1 (0 = 1re du mois), vente",
+   "t": 3.5369528500485456
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    3,
+    14,
+    1,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si 6A a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.867532430590113
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    15,
+    2,
+    3,
+    0,
+    0,
+    2,
+    0,
+    0
+   ],
+   "desc": "6C (6C) si RTY a bouge de >= 0 e.-t. sur 10 s. jusqu'a la veille (baisse seule) : suivre 1 s.",
+   "t": 3.7195744942095708
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    1,
+    4,
+    2,
+    0,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) si NKD a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.6839013244468264
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    26,
+    20,
+    4,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "HG (MHG) si BZ a bouge de >= 0 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.619645828387751
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    3,
+    1,
+    0,
+    2,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si NQ a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.5814312222841864
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    0,
+    17,
+    3,
+    1,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "ES (MES) si 6N a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.5338249770682144
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    24,
+    26,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "GC (MGC) si HG a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.4950421376522214
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    11,
+    4,
+    0,
+    2,
+    0,
+    2,
+    1,
+    0
+   ],
+   "desc": "6E (M6E) si NKD a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : suivre 2 s.",
+   "t": 3.417459554920239
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    15,
+    11,
+    4,
+    1,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6C (6C) si 6E a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.3969849793769455
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    38,
+    27,
+    4,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "BTC (MBT) si PL a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.3407104527060176
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    1,
+    21,
+    0,
+    2,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "NQ (MNQ) si HO a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.9119445644774276
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    0,
+    19,
+    1,
+    0,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si CL a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.801288277302148
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    11,
+    30,
+    1,
+    2,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6E (M6E) si ZW a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.66094161711916
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    1,
+    26,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) si HG a bouge de >= 0 e.-t. sur 1 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.6571047738633657
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    3,
+    12,
+    2,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si 6J a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.5942644403308557
+  },
+  {
+   "graine": 1005,
+   "row": [
+    7,
+    1,
+    1,
+    25,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) calendrier : changement de mois, seances -2 a -1 (0 = 1re du mois), achat",
+   "t": 3.518935985823203
+  },
+  {
+   "graine": 1005,
+   "row": [
+    1,
+    1,
+    2,
+    25,
+    2,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) RSI(4) < 25 (vente > 75), sortie clot. > moy. 5, filtre 100, achats seuls",
+   "t": 3.439397991232456
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    1,
+    29,
+    0,
+    2,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) si ZC a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.427881566741105
+  },
+  {
+   "graine": 1005,
+   "row": [
+    1,
+    1,
+    0,
+    5,
+    0,
+    3,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) RSI(2) < 5 (vente > 95), sortie apres 1 s., sans filtre, achats seuls",
+   "t": 3.3464027438552866
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    11,
+    15,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "6E (M6E) si 6C a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.3062687663317
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    2,
+    16,
+    2,
+    0,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "RTY (M2K) si 6S a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 4.476794852795212
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    11,
+    1,
+    3,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "6E (M6E) si NQ a bouge de >= 0 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.7948264584082607
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    0,
+    31,
+    2,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si ZS a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.6729371880552946
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    24,
+    16,
+    3,
+    2,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "GC (MGC) si 6S a bouge de >= 2 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.6684732997767764
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    3,
+    36,
+    2,
+    1,
+    1,
+    2,
+    1,
+    0
+   ],
+   "desc": "YM (MYM) si HE a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (baisse seule) : contrer 2 s.",
+   "t": 3.661930942259672
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    3,
+    19,
+    0,
+    2,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si CL a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.5225302496760715
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    11,
+    1,
+    1,
+    0,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "6E (M6E) si NQ a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 3.5048425222518738
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    0,
+    4,
+    4,
+    0,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si NKD a bouge de >= 0 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.49342154841528
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    15,
+    14,
+    3,
+    1,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6C (6C) si 6A a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.482691598997263
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    2,
+    16,
+    2,
+    0,
+    1,
+    2,
+    1,
+    0
+   ],
+   "desc": "RTY (M2K) si 6S a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (baisse seule) : contrer 2 s.",
+   "t": 3.4389511021944106
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    18,
+    12,
+    2,
+    0,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "6M (6M) si 6J a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 4.069318324604561
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    3,
+    25,
+    1,
+    1,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si SI a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 4.000091895489726
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    13,
+    5,
+    0,
+    2,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6B (M6B) si ZT a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.6928210445707976
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    0,
+    8,
+    3,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si TN a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.6120808458697105
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    19,
+    15,
+    1,
+    2,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "CL (MCL) si 6C a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.5881314591325237
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    11,
+    0,
+    0,
+    2,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6E (M6E) si ES a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.5810805212468884
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    24,
+    19,
+    0,
+    1,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "GC (MGC) si CL a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.4288394149534125
+  },
+  {
+   "graine": 1007,
+   "row": [
+    7,
+    0,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "ES (MES) calendrier : semaine apres l'echeance des options, achat",
+   "t": 3.3503391249741585
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    24,
+    19,
+    3,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "GC (MGC) si CL a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.347357064880833
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    2,
+    28,
+    1,
+    2,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "RTY (M2K) si PA a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.3092826709744285
+  }
+ ]
+}
