@@ -1,0 +1,17 @@
+Machine 4, coffre 2023-01-01 - 2026-09-25 (ouvert une fois) : 10 candidates et 80 placebos
+
+Candidates : t exploration | t coffre | $/an au coffre | 2023 / 2024 / 2025 / 2026 | corr. bot | palier
+- 6E (M6E) si HE a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 1 s. | 3.86 | +0.37 | +185 | -371 / -793 / +692 / +1,158 | +0.03 | REJETEE
+- 6C (6C) IBS < 0.15, sortie apres 5 s., sans filtre, achats et ventes | 3.55 | -0.11 | -194 | +2,466 / -271 / +1,303 / -4,219 | -0.05 | REJETEE
+- ZF (ZF) calendrier : changement de mois, seances -5 a -1 (0 = 1re du mois), achat | 3.51 | +1.31 | +1,238 | -902 / +899 / +3,671 / +938 | +0.00 | INTERESSANTE
+- 6C (6C) RSI(3) < 25 (vente > 75), sortie apres 1 s., filtre 50, ventes seules | 3.36 | -0.06 | -23 | +364 / +55 / +421 / -925 | -0.04 | REJETEE
+- YM (MYM) si NG a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : contrer 2 s. | 3.28 | +1.39 | +960 | +2,129 / +701 / +784 / -43 | +0.14 | INTERESSANTE
+- 6E (M6E) si HE a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : suivre 2 s. | 3.24 | -1.47 | -348 | +12 / -29 / -1,210 / -67 | -0.02 | REJETEE
+- 6B (M6B) si NKD a bouge de >= 2 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 1 s. | 3.22 | +0.55 | +44 | +66 / +127 / -68 / +38 | -0.00 | REJETEE
+- 6A (M6A) si PA a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s. | 3.21 | +0.34 | +114 | -28 / +387 / +382 / -317 | +0.00 | REJETEE
+- HG (MHG) si 6N a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s. | 3.20 | +0.02 | +38 | -2,387 / +1,700 / -2,504 / +3,334 | -0.06 | REJETEE
+- ZT (ZT) si HO a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s. | 3.14 | +0.81 | +993 | -2,162 / +4,410 / -583 / +2,026 | +0.02 | REJETEE
+Palier retenue ou mieux : 0 sur 10 candidates ; 1 sur 80 placebos (1%), soit 0.1 attendus sur 10 sans aucune information
+Palier interessante ou mieux : 2 sur 10 candidates ; 21 sur 80 placebos (26%), soit 2.6 attendus sur 10 sans aucune information
+
+Placebos (regles choisies sur bruit, jugees sur le vrai coffre) : t coffre moyen +0.31, mediane +0.55

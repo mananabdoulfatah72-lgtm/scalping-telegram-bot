@@ -1,0 +1,2516 @@
+{
+ "candidates": [
+  {
+   "row": [
+    9,
+    11,
+    36,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "6E (M6E) si HE a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 1 s.",
+   "t": 3.8602537922086837,
+   "corr_bot": 0.004826713150646322,
+   "trades": 596,
+   "par_an": 1407.679042451223,
+   "periodes": [
+    9208.667712395727,
+    6070.894708822249,
+    1573.4838925730808
+   ],
+   "fdr": 3.125,
+   "coffre_t": 0.3651401061323363,
+   "coffre_corr_bot": 0.02793944404840116,
+   "coffre_par_an": 184.5562868339574,
+   "coffre_annees": [
+    -370.66825783179945,
+    -793.4258769640701,
+    692.2296662580617,
+    1158.0916144243874
+   ],
+   "coffre_trades": 176,
+   "palier": "rejetee"
+  },
+  {
+   "row": [
+    2,
+    15,
+    1,
+    0,
+    3,
+    2,
+    0,
+    0,
+    0
+   ],
+   "desc": "6C (6C) IBS < 0.15, sortie apres 5 s., sans filtre, achats et ventes",
+   "t": 3.5547103452860243,
+   "corr_bot": 0.002122478570362746,
+   "trades": 277,
+   "par_an": 5767.792255181396,
+   "periodes": [
+    29653.521312815545,
+    27452.94077168706,
+    11946.828526141167
+   ],
+   "fdr": 1.825,
+   "coffre_t": -0.10580743158038158,
+   "coffre_corr_bot": -0.05304275854667946,
+   "coffre_par_an": -193.8322735244844,
+   "coffre_annees": [
+    2466.044083263764,
+    -270.833877080706,
+    1303.2967057116398,
+    -4219.224532102802
+   ],
+   "coffre_trades": 75,
+   "palier": "rejetee"
+  },
+  {
+   "row": [
+    7,
+    6,
+    1,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "ZF (ZF) calendrier : changement de mois, seances -5 a -1 (0 = 1re du mois), achat",
+   "t": 3.5129290000773414,
+   "corr_bot": 0.00038815463332587567,
+   "trades": 144,
+   "par_an": 1716.2568409550227,
+   "periodes": [
+    9575.87500000004,
+    4251.59856704989,
+    6719.93472327265
+   ],
+   "fdr": 1.9375,
+   "coffre_t": 1.308899854170799,
+   "coffre_corr_bot": 0.0029669615789323345,
+   "coffre_par_an": 1238.4515536523697,
+   "coffre_annees": [
+    -902.4688361941672,
+    898.9748480354763,
+    3670.65980891753,
+    937.7115830993771
+   ],
+   "coffre_trades": 45,
+   "palier": "interessante"
+  },
+  {
+   "row": [
+    1,
+    15,
+    1,
+    25,
+    1,
+    3,
+    1,
+    0,
+    0
+   ],
+   "desc": "6C (6C) RSI(3) < 25 (vente > 75), sortie apres 1 s., filtre 50, ventes seules",
+   "t": 3.363322535222272,
+   "corr_bot": 0.037004997607885885,
+   "trades": 94,
+   "par_an": 1456.76644727921,
+   "periodes": [
+    7620.73163270396,
+    4897.999999999957,
+    4921.999999999953
+   ],
+   "fdr": 2.484375,
+   "coffre_t": -0.05676374804067189,
+   "coffre_corr_bot": -0.04408448128835559,
+   "coffre_par_an": -22.860192102471558,
+   "coffre_annees": [
+    363.9999999999561,
+    54.99999999999682,
+    420.99999999997976,
+    -924.9999999999955
+   ],
+   "coffre_trades": 25,
+   "palier": "rejetee"
+  },
+  {
+   "row": [
+    9,
+    3,
+    23,
+    4,
+    1,
+    1,
+    2,
+    1,
+    0
+   ],
+   "desc": "YM (MYM) si NG a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : contrer 2 s.",
+   "t": 3.280473806521589,
+   "corr_bot": 0.0942627315845503,
+   "trades": 73,
+   "par_an": 807.9546868185329,
+   "periodes": [
+    712.6359825850193,
+    2288.76844120926,
+    6671.6086322831525
+   ],
+   "fdr": 2.861111111111111,
+   "coffre_t": 1.3940230862916503,
+   "coffre_corr_bot": 0.13932184867288464,
+   "coffre_par_an": 960.3671638499005,
+   "coffre_annees": [
+    2128.8890179657064,
+    700.5000000000003,
+    783.9999999999985,
+    -42.5000000000041
+   ],
+   "coffre_trades": 22,
+   "palier": "interessante"
+  },
+  {
+   "row": [
+    9,
+    11,
+    36,
+    4,
+    1,
+    0,
+    2,
+    1,
+    0
+   ],
+   "desc": "6E (M6E) si HE a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : suivre 2 s.",
+   "t": 3.240440667290637,
+   "corr_bot": -0.002100092347779165,
+   "trades": 60,
+   "par_an": 541.1498253739074,
+   "periodes": [
+    2883.7431209328706,
+    2356.8114693358366,
+    1238.2113746244677
+   ],
+   "fdr": 2.625,
+   "coffre_t": -1.4727154594406102,
+   "coffre_corr_bot": -0.015944951461602512,
+   "coffre_par_an": -348.07326726229934,
+   "coffre_annees": [
+    11.879245326150674,
+    -29.312244233632025,
+    -1209.76975489299,
+    -67.02205344069745
+   ],
+   "coffre_trades": 30,
+   "palier": "rejetee"
+  },
+  {
+   "row": [
+    9,
+    13,
+    4,
+    2,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "6B (M6B) si NKD a bouge de >= 2 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 1 s.",
+   "t": 3.216340624160916,
+   "corr_bot": 0.048091205820266915,
+   "trades": 76,
+   "par_an": 196.04765576286292,
+   "periodes": [
+    -38.50000000000229,
+    1028.5000000000002,
+    1357.126100938722
+   ],
+   "fdr": 2.423076923076923,
+   "coffre_t": 0.5492787931277875,
+   "coffre_corr_bot": -0.004641821569357799,
+   "coffre_par_an": 44.07310565635032,
+   "coffre_annees": [
+    65.87500000000153,
+    127.37499999999777,
+    -67.62499999999685,
+    38.249999999998515
+   ],
+   "coffre_trades": 29,
+   "palier": "rejetee"
+  },
+  {
+   "row": [
+    9,
+    14,
+    28,
+    1,
+    0,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "6A (M6A) si PA a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 3.2066307271403174,
+   "corr_bot": -0.0074001128691852875,
+   "trades": 110,
+   "par_an": 799.375350239105,
+   "periodes": [
+    6370.457107469986,
+    980.598530580137,
+    2219.2436939791637
+   ],
+   "fdr": 2.3125,
+   "coffre_t": 0.34473628369282266,
+   "coffre_corr_bot": 0.0029387154748698736,
+   "coffre_par_an": 113.90590460874586,
+   "coffre_annees": [
+    -27.968429625138647,
+    387.04996204494074,
+    381.9267943903235,
+    -317.47724499109796
+   ],
+   "coffre_trades": 32,
+   "palier": "rejetee"
+  },
+  {
+   "row": [
+    9,
+    26,
+    17,
+    1,
+    1,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "HG (MHG) si 6N a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.2009537513601325,
+   "corr_bot": -0.016685115828931295,
+   "trades": 261,
+   "par_an": 1433.0660726598464,
+   "periodes": [
+    2071.666042960379,
+    4093.698363498453,
+    10991.621074552093
+   ],
+   "fdr": 2.191666666666667,
+   "coffre_t": 0.024595772837486662,
+   "coffre_corr_bot": -0.05964877160783069,
+   "coffre_par_an": 38.41358835479486,
+   "coffre_annees": [
+    -2387.1151857480013,
+    1700.3065575729515,
+    -2504.430286780031,
+    3334.0703922901675
+   ],
+   "coffre_trades": 91,
+   "palier": "rejetee"
+  },
+  {
+   "row": [
+    9,
+    5,
+    21,
+    4,
+    1,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "ZT (ZT) si HO a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 3.141781226496358,
+   "corr_bot": 0.01965967897631046,
+   "trades": 105,
+   "par_an": 1721.0862779839936,
+   "periodes": [
+    1310.4270072889863,
+    3227.7562796556713,
+    16067.044096696998
+   ],
+   "fdr": 2.2708333333333335,
+   "coffre_t": 0.8104256014310424,
+   "coffre_corr_bot": 0.023781260682742125,
+   "coffre_par_an": 992.8378054880877,
+   "coffre_annees": [
+    -2162.101074871167,
+    4410.11424554218,
+    -582.6860744998751,
+    2026.2960139175088
+   ],
+   "coffre_trades": 33,
+   "palier": "rejetee"
+  }
+ ],
+ "placebos": [
+  {
+   "graine": 1000,
+   "row": [
+    3,
+    1,
+    3,
+    5,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) plus bas des 10 clotures, sortie apres 5 s., filtre 50, achats seuls",
+   "t": 4.667113674012889,
+   "coffre_t": 1.7910209627970475,
+   "coffre_corr_bot": 0.29943109559745085,
+   "coffre_par_an": 3116.7901935074146,
+   "coffre_annees": [
+    2525.684833980549,
+    4645.9833562314,
+    1802.0000000000077,
+    2615.349315012042
+   ],
+   "coffre_trades": 20,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    0,
+    19,
+    3,
+    1,
+    0,
+    1,
+    1,
+    0
+   ],
+   "desc": "ES (MES) si CL a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (hausse seule) : suivre 2 s.",
+   "t": 3.9718742512111636,
+   "coffre_t": -1.0702253176676486,
+   "coffre_corr_bot": 0.11223877696048778,
+   "coffre_par_an": -1067.7729841549321,
+   "coffre_annees": [
+    -1697.9859880372358,
+    630.6044409003064,
+    -3149.160718731838,
+    246.29113034030718
+   ],
+   "coffre_trades": 41,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1000,
+   "row": [
+    3,
+    1,
+    3,
+    5,
+    3,
+    2,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) plus bas des 10 clotures, sortie apres 5 s., filtre 200, achats et ventes",
+   "t": 3.78223837310695,
+   "coffre_t": 1.631937541418958,
+   "coffre_corr_bot": 0.4643419188301596,
+   "coffre_par_an": 4596.593801523097,
+   "coffre_annees": [
+    -1288.8151660194612,
+    4840.983356231386,
+    6518.242850371311,
+    7020.8921023816165
+   ],
+   "coffre_trades": 39,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1000,
+   "row": [
+    1,
+    1,
+    1,
+    30,
+    1,
+    7,
+    2,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) RSI(3) < 30 (vente > 70), sortie apres 10 s., filtre 50, achats et ventes",
+   "t": 3.7446637128376072,
+   "coffre_t": 0.8936756459063623,
+   "coffre_corr_bot": 0.2447653524070639,
+   "coffre_par_an": 2939.8806132569866,
+   "coffre_annees": [
+    84.3974683546594,
+    2800.8512598153147,
+    10205.624713253681,
+    -2159.6506849879643
+   ],
+   "coffre_trades": 39,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    0,
+    15,
+    1,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si 6C a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.611339183659944,
+   "coffre_t": 0.6440695193915082,
+   "coffre_corr_bot": 0.24319439806092633,
+   "coffre_par_an": 1016.1672036034538,
+   "coffre_annees": [
+    28.610344315038418,
+    1400.7563659339223,
+    -163.99897304085698,
+    2512.999999999979
+   ],
+   "coffre_trades": 59,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1000,
+   "row": [
+    2,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "YM (MYM) IBS < 0.10, sortie apres 1 s., sans filtre, achats seuls",
+   "t": 3.573197643043457,
+   "coffre_t": 1.325228253521884,
+   "coffre_corr_bot": 0.3158697564132894,
+   "coffre_par_an": 938.7011685550176,
+   "coffre_annees": [
+    -334.5000000000007,
+    203.50000000000108,
+    2549.829344984335,
+    1071.4999999999973
+   ],
+   "coffre_trades": 72,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    1,
+    31,
+    2,
+    0,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "NQ (MNQ) si ZS a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.5389506288952766,
+   "coffre_t": 1.2630741948109772,
+   "coffre_corr_bot": 0.08170659591719617,
+   "coffre_par_an": 5687.259826739087,
+   "coffre_annees": [
+    5299.867597965885,
+    -3528.9792147288636,
+    5323.14764340601,
+    14052.640392620944
+   ],
+   "coffre_trades": 115,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    1,
+    2,
+    2,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) si RTY a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.535739219881261,
+   "coffre_t": 0.4141505567700101,
+   "coffre_corr_bot": 0.3121681651012075,
+   "coffre_par_an": 1866.900737012401,
+   "coffre_annees": [
+    -1405.5020699952006,
+    14008.756592438975,
+    -8300.088630829296,
+    2638.445182118159
+   ],
+   "coffre_trades": 220,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    2,
+    12,
+    0,
+    1,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "RTY (M2K) si 6J a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 3.4692026889903538,
+   "coffre_t": -1.1784304696057335,
+   "coffre_corr_bot": -0.02053650155641967,
+   "coffre_par_an": -1154.0131559553388,
+   "coffre_annees": [
+    -3205.8039914853734,
+    -211.70940205880154,
+    1195.1965110312904,
+    -2068.597114035342
+   ],
+   "coffre_trades": 78,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1000,
+   "row": [
+    9,
+    19,
+    2,
+    0,
+    1,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "CL (MCL) si RTY a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.432350010353622,
+   "coffre_t": 0.44607398301157186,
+   "coffre_corr_bot": -0.03897488985316538,
+   "coffre_par_an": 568.3306050658039,
+   "coffre_annees": [
+    -790.7492871586743,
+    1299.3853717055417,
+    -1648.6145998287038,
+    3253.17604284794
+   ],
+   "coffre_trades": 53,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    11,
+    12,
+    2,
+    1,
+    0,
+    2,
+    1,
+    0
+   ],
+   "desc": "6E (M6E) si 6J a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (baisse seule) : suivre 2 s.",
+   "t": 4.1121070684606424,
+   "coffre_t": -1.4117404920857188,
+   "coffre_corr_bot": -0.0011597080633103769,
+   "coffre_par_an": -303.5709098066233,
+   "coffre_annees": [
+    -536.8750000000086,
+    78.31625734874896,
+    -320.8750000000023,
+    -349.31999738368324
+   ],
+   "coffre_trades": 55,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    2,
+    35,
+    2,
+    1,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "RTY (M2K) si LE a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 4.049782241747076,
+   "coffre_t": 0.25795568571686184,
+   "coffre_corr_bot": -0.01261985625725159,
+   "coffre_par_an": 258.9591690015729,
+   "coffre_annees": [
+    -1053.158062918516,
+    -3923.1756796611044,
+    1097.236065147245,
+    4841.973635188227
+   ],
+   "coffre_trades": 72,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    19,
+    13,
+    1,
+    0,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "CL (MCL) si 6B a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 4.004331277288609,
+   "coffre_t": -0.5461647210669374,
+   "coffre_corr_bot": -0.06083849900227608,
+   "coffre_par_an": -899.5153276737578,
+   "coffre_annees": [
+    2144.6777712704825,
+    -661.8040137011611,
+    456.4325855061264,
+    -5283.932779703669
+   ],
+   "coffre_trades": 30,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    3,
+    18,
+    4,
+    4,
+    1,
+    2,
+    0,
+    0,
+    0
+   ],
+   "desc": "6M (6M) plus bas des 15 clotures, sortie apres 3 s., filtre 50, achats et ventes",
+   "t": 3.6061794485201957,
+   "coffre_t": 0.9321519228055601,
+   "coffre_corr_bot": 0.003417371183090567,
+   "coffre_par_an": 437.62187290848834,
+   "coffre_annees": [
+    -578.8107344632717,
+    1807.999999999996,
+    1189.0000000000016,
+    -791.0000000000056
+   ],
+   "coffre_trades": 15,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    3,
+    1,
+    4,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si NQ a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.549371654334089,
+   "coffre_t": 1.0350467363211957,
+   "coffre_corr_bot": 0.08575240192709395,
+   "coffre_par_an": 740.0143315157156,
+   "coffre_annees": [
+    2006.1460285323674,
+    -29.084803809247305,
+    -88.00000000000958,
+    862.5000000000091
+   ],
+   "coffre_trades": 18,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    19,
+    27,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0
+   ],
+   "desc": "CL (MCL) si PL a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse seule) : contrer 2 s.",
+   "t": 3.5160410215393965,
+   "coffre_t": 0.046372577014863574,
+   "coffre_corr_bot": 0.065337965490582,
+   "coffre_par_an": 33.4715078626015,
+   "coffre_annees": [
+    2000.2882259364362,
+    190.47457085775443,
+    -684.0413079040925,
+    -1382.2659219565355
+   ],
+   "coffre_trades": 78,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    14,
+    36,
+    4,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "6A (M6A) si HE a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.4732442467170563,
+   "coffre_t": -2.1789631669528395,
+   "coffre_corr_bot": -0.08434300817442929,
+   "coffre_par_an": -431.471101143298,
+   "coffre_annees": [
+    -460.1361197840185,
+    -470.0543060927971,
+    -628.5807132556167,
+    -45.54799488054336
+   ],
+   "coffre_trades": 60,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    0,
+    30,
+    4,
+    1,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si ZW a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.438137967998514,
+   "coffre_t": 1.164100574565241,
+   "coffre_corr_bot": 0.11467448243303464,
+   "coffre_par_an": 1143.5381157042086,
+   "coffre_annees": [
+    1961.2420140426357,
+    52.11080683423927,
+    1463.600650066104,
+    775.0116656238627
+   ],
+   "coffre_trades": 21,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    9,
+    15,
+    9,
+    0,
+    1,
+    1,
+    1,
+    1,
+    0
+   ],
+   "desc": "6C (6C) si ZB a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : contrer 2 s.",
+   "t": 3.4328377237921863,
+   "coffre_t": 0.7798000357024077,
+   "coffre_corr_bot": -0.07391596204437914,
+   "coffre_par_an": 881.2973005060687,
+   "coffre_annees": [
+    288.53795776327115,
+    2410.2055498458835,
+    -1009.7768913528729,
+    1587.9205685619188
+   ],
+   "coffre_trades": 102,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1001,
+   "row": [
+    7,
+    15,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "6C (6C) calendrier : changement de mois, seances -5 a -4 (0 = 1re du mois), vente",
+   "t": 3.3938871795467422,
+   "coffre_t": 0.35648926706562417,
+   "coffre_corr_bot": -0.019567019941643678,
+   "coffre_par_an": 224.56776947706874,
+   "coffre_annees": [
+    71.0000000000212,
+    -243.99999999994822,
+    841.0000000000146,
+    166.99999999996538
+   ],
+   "coffre_trades": 45,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    26,
+    5,
+    3,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "HG (MHG) si ZT a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.9227160318744656,
+   "coffre_t": 0.46343096127830674,
+   "coffre_corr_bot": 0.020499649339812357,
+   "coffre_par_an": 447.4234134079345,
+   "coffre_annees": [
+    858.2691704596459,
+    909.114711934141,
+    301.5000000000059,
+    -405.25000000000676
+   ],
+   "coffre_trades": 58,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    1,
+    2,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "NQ (MNQ) si RTY a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.8395716343518287,
+   "coffre_t": -1.3388957669363015,
+   "coffre_corr_bot": 0.3086772106956981,
+   "coffre_par_an": -4218.658509988959,
+   "coffre_annees": [
+    32.52259881372555,
+    -4972.408213605094,
+    -8263.308815671402,
+    -2482.8493150120507
+   ],
+   "coffre_trades": 150,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    1,
+    4,
+    3,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "NQ (MNQ) si NKD a bouge de >= 0 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.5970754255189226,
+   "coffre_t": 0.3270645679658471,
+   "coffre_corr_bot": -0.11100815470852832,
+   "coffre_par_an": 1475.2567599013855,
+   "coffre_annees": [
+    -1388.8224003384694,
+    -5501.69117318321,
+    8385.338057336623,
+    3990.5548178818717
+   ],
+   "coffre_trades": 67,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    0,
+    8,
+    4,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si TN a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.522829142030234,
+   "coffre_t": 0.20157103849649036,
+   "coffre_corr_bot": 0.17985582789387802,
+   "coffre_par_an": 258.07540962141434,
+   "coffre_annees": [
+    2591.893494897954,
+    1007.0656274647299,
+    -1562.3692064290944,
+    -1076.9999999999968
+   ],
+   "coffre_trades": 14,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    24,
+    25,
+    1,
+    2,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "GC (MGC) si SI a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.4776077905665925,
+   "coffre_t": 1.201600730327323,
+   "coffre_corr_bot": 0.1760447124859128,
+   "coffre_par_an": 844.7513340448224,
+   "coffre_annees": [
+    6.000000000001449,
+    0.0,
+    343.99999999999534,
+    2790.9999999999977
+   ],
+   "coffre_trades": 12,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    19,
+    14,
+    1,
+    1,
+    0,
+    2,
+    0,
+    0
+   ],
+   "desc": "CL (MCL) si 6A a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : suivre 1 s.",
+   "t": 3.4774463426669424,
+   "coffre_t": -1.246357903543605,
+   "coffre_corr_bot": -0.08237509876861468,
+   "coffre_par_an": -679.8958602736261,
+   "coffre_annees": [
+    -385.122162926315,
+    -56.90331753554594,
+    373.00000000000244,
+    -2458.9999999999973
+   ],
+   "coffre_trades": 77,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    14,
+    37,
+    2,
+    1,
+    1,
+    1,
+    0,
+    0
+   ],
+   "desc": "6A (M6A) si GF a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse seule) : contrer 1 s.",
+   "t": 3.4742858129653706,
+   "coffre_t": -1.2717230242254804,
+   "coffre_corr_bot": -0.03212292746025933,
+   "coffre_par_an": -168.78539555293008,
+   "coffre_annees": [
+    -240.69796540087856,
+    -131.4398510242094,
+    -132.5045429406668,
+    -122.94460743224343
+   ],
+   "coffre_trades": 76,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    3,
+    11,
+    0,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si 6E a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.4632986569028246,
+   "coffre_t": 0.37054154880597046,
+   "coffre_corr_bot": 0.16974886892017768,
+   "coffre_par_an": 414.3092717162106,
+   "coffre_annees": [
+    1242.2019538184545,
+    2080.328249887006,
+    -836.2231650514489,
+    -945.7999450108019
+   ],
+   "coffre_trades": 62,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    15,
+    7,
+    0,
+    2,
+    1,
+    1,
+    2,
+    0
+   ],
+   "desc": "6C (6C) si ZN a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : contrer 5 s.",
+   "t": 3.453029046802398,
+   "coffre_t": -0.4684845573388944,
+   "coffre_corr_bot": -0.10107501624864901,
+   "coffre_par_an": -313.6410309030535,
+   "coffre_annees": [
+    -508.1175763244281,
+    -337.0000000000108,
+    -1299.9999999999827,
+    978.9205685618787
+   ],
+   "coffre_trades": 16,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1002,
+   "row": [
+    9,
+    0,
+    5,
+    4,
+    1,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "ES (MES) si ZT a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.4245487913999804,
+   "coffre_t": 0.39343306849173715,
+   "coffre_corr_bot": 0.11835891483910449,
+   "coffre_par_an": 339.2418789738863,
+   "coffre_annees": [
+    -929.9036676477298,
+    1007.9999999999984,
+    -24.74999999998886,
+    1208.041130340306
+   ],
+   "coffre_trades": 30,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    1,
+    15,
+    1,
+    20,
+    3,
+    6,
+    2,
+    0,
+    0
+   ],
+   "desc": "6C (6C) RSI(3) < 20 (vente > 80), sortie apres 5 s., filtre 200, achats et ventes",
+   "t": 4.545594040906133,
+   "coffre_t": -1.028566465101412,
+   "coffre_corr_bot": -0.026991071641507002,
+   "coffre_par_an": -1099.6749330473724,
+   "coffre_annees": [
+    -729.8706835927237,
+    -247.0000000000286,
+    -328.0000000000329,
+    -2784.000000000026
+   ],
+   "coffre_trades": 32,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    38,
+    32,
+    2,
+    1,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "BTC (MBT) si ZM a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.8790725736169973,
+   "coffre_t": -1.7178047090139699,
+   "coffre_corr_bot": -0.01898899815895016,
+   "coffre_par_an": -2190.93375920968,
+   "coffre_annees": [
+    318.3826597489511,
+    -5681.259043742725,
+    -3931.6824131372273,
+    1148.1106527680197
+   ],
+   "coffre_trades": 72,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    3,
+    5,
+    0,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si ZT a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.872283619594678,
+   "coffre_t": 0.13577766819179055,
+   "coffre_corr_bot": 0.18551857699890953,
+   "coffre_par_an": 151.05162438549743,
+   "coffre_annees": [
+    2299.4449432517986,
+    1330.2745436499874,
+    -1914.9776325282069,
+    -1153.0935525909945
+   ],
+   "coffre_trades": 53,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    3,
+    38,
+    4,
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "desc": "YM (MYM) si BTC a bouge de >= 0 e.-t. sur 20 s. jusqu'a la veille (hausse seule) : suivre 1 s.",
+   "t": 3.8241076575027924,
+   "coffre_t": 1.3302715195277575,
+   "coffre_corr_bot": 0.2220477127866896,
+   "coffre_par_an": 1498.9391430484116,
+   "coffre_annees": [
+    2739.060509207334,
+    -1439.4314106449074,
+    3437.3293449843145,
+    836.4779732642112
+   ],
+   "coffre_trades": 52,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    1,
+    3,
+    1,
+    30,
+    1,
+    6,
+    0,
+    0,
+    0
+   ],
+   "desc": "YM (MYM) RSI(3) < 30 (vente > 70), sortie apres 5 s., filtre 50, achats seuls",
+   "t": 3.7068749492157815,
+   "coffre_t": 2.1654230670584953,
+   "coffre_corr_bot": 0.1413049733676584,
+   "coffre_par_an": 1624.7153578904163,
+   "coffre_annees": [
+    151.50000000000506,
+    1689.5685893550926,
+    1094.3293449843345,
+    3105.7063924197732
+   ],
+   "coffre_trades": 37,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    4,
+    3,
+    1,
+    1,
+    0,
+    4,
+    1,
+    0,
+    0
+   ],
+   "desc": "YM (MYM) mouvement du jour >= 1.5 e.-t. (hausse ou baisse), contrer 10 s., filtre 50",
+   "t": 3.698723572264733,
+   "coffre_t": 0.04920067557893781,
+   "coffre_corr_bot": 0.20251396097931726,
+   "coffre_par_an": 42.83195823000288,
+   "coffre_annees": [
+    -1500.9999999999973,
+    -822.9462937629711,
+    2510.9999999999905,
+    -27.793607580226023
+   ],
+   "coffre_trades": 22,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    11,
+    12,
+    1,
+    2,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "6E (M6E) si 6J a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.627034809167122,
+   "coffre_t": 1.4260340539728213,
+   "coffre_corr_bot": 0.037708974948724286,
+   "coffre_par_an": 318.9836142317122,
+   "coffre_annees": [
+    422.7457546738458,
+    208.9999999999846,
+    893.6250000000034,
+    -339.3086652487764
+   ],
+   "coffre_trades": 25,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    0,
+    28,
+    0,
+    2,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si PA a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.625523688220543,
+   "coffre_t": 1.298616037967897,
+   "coffre_corr_bot": 0.3435868787126399,
+   "coffre_par_an": 1439.952889100267,
+   "coffre_annees": [
+    421.50000000000324,
+    2715.7500000000095,
+    2020.4999999999914,
+    196.3605439958278
+   ],
+   "coffre_trades": 14,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    9,
+    0,
+    14,
+    1,
+    1,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si 6A a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.6042425220622656,
+   "coffre_t": 0.7914441424888125,
+   "coffre_corr_bot": 0.31392690902491793,
+   "coffre_par_an": 1342.2780235472437,
+   "coffre_annees": [
+    1828.899520903367,
+    994.7399363109434,
+    1899.2499999999911,
+    268.0411303403318
+   ],
+   "coffre_trades": 57,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1003,
+   "row": [
+    7,
+    38,
+    1,
+    18,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "BTC (MBT) calendrier : changement de mois, seances -3 a -1 (0 = 1re du mois), vente",
+   "t": 3.5369528500485456,
+   "coffre_t": 0.686576825948154,
+   "coffre_corr_bot": -0.009837197351128476,
+   "coffre_par_an": 334.8916181923024,
+   "coffre_annees": [
+    -402.8005849126327,
+    -232.77361110105954,
+    874.1319569728888,
+    1006.6543273193241
+   ],
+   "coffre_trades": 45,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    3,
+    14,
+    1,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si 6A a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.867532430590113,
+   "coffre_t": 0.6540732345860575,
+   "coffre_corr_bot": 0.09845887315206144,
+   "coffre_par_an": 551.094621212268,
+   "coffre_annees": [
+    1733.757010566667,
+    1517.9279368143048,
+    -1459.2752401642438,
+    256.7000549892049
+   ],
+   "coffre_trades": 54,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    15,
+    2,
+    3,
+    0,
+    0,
+    2,
+    0,
+    0
+   ],
+   "desc": "6C (6C) si RTY a bouge de >= 0 e.-t. sur 10 s. jusqu'a la veille (baisse seule) : suivre 1 s.",
+   "t": 3.7195744942095708,
+   "coffre_t": 0.608123740784109,
+   "coffre_corr_bot": -0.04188172638049559,
+   "coffre_par_an": 841.9005636509057,
+   "coffre_annees": [
+    -745.0975731806186,
+    3281.205339940684,
+    -2786.5408769043224,
+    3380.8332218144897
+   ],
+   "coffre_trades": 76,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    1,
+    4,
+    2,
+    0,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) si NKD a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.6839013244468264,
+   "coffre_t": 0.9075351576295261,
+   "coffre_corr_bot": 0.42833348709397157,
+   "coffre_par_an": 2979.9831104564387,
+   "coffre_annees": [
+    4850.522598813726,
+    2443.0257892298164,
+    -2642.2571496286832,
+    6429.042787369593
+   ],
+   "coffre_trades": 99,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    26,
+    20,
+    4,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "HG (MHG) si BZ a bouge de >= 0 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.619645828387751,
+   "coffre_t": -1.4876653366609223,
+   "coffre_corr_bot": 0.008881425947420954,
+   "coffre_par_an": -2650.7877636105413,
+   "coffre_annees": [
+    -1725.13655198134,
+    -482.0230024317109,
+    -9253.62428662575,
+    1604.4817199948423
+   ],
+   "coffre_trades": 53,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    3,
+    1,
+    0,
+    2,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si NQ a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.5814312222841864,
+   "coffre_t": 1.1991280836203222,
+   "coffre_corr_bot": 0.0555597885150855,
+   "coffre_par_an": 509.56884833488647,
+   "coffre_annees": [
+    157.49999999999974,
+    -82.99999999999642,
+    959.5000000000048,
+    860.7063924197889
+   ],
+   "coffre_trades": 17,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    0,
+    17,
+    3,
+    1,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "ES (MES) si 6N a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.5338249770682144,
+   "coffre_t": 0.2770539674050913,
+   "coffre_corr_bot": 0.27439975318284027,
+   "coffre_par_an": 326.3957276671936,
+   "coffre_annees": [
+    -563.0000000000095,
+    -245.49999999999682,
+    1336.9999999999882,
+    685.122209619703
+   ],
+   "coffre_trades": 48,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    24,
+    26,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "GC (MGC) si HG a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.4950421376522214,
+   "coffre_t": 0.17494155027951352,
+   "coffre_corr_bot": 0.15936185857467405,
+   "coffre_par_an": 446.0913893647984,
+   "coffre_annees": [
+    -1892.093768904993,
+    843.9999999999973,
+    3586.774847614526,
+    -879.9999999999402
+   ],
+   "coffre_trades": 153,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    11,
+    4,
+    0,
+    2,
+    0,
+    2,
+    1,
+    0
+   ],
+   "desc": "6E (M6E) si NKD a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : suivre 2 s.",
+   "t": 3.417459554920239,
+   "coffre_t": 0.01838372614636132,
+   "coffre_corr_bot": 0.04673480188644528,
+   "coffre_par_an": 2.017075773744511,
+   "coffre_annees": [
+    1.000000000000199,
+    156.12499999999307,
+    29.749999999996852,
+    -179.37499999999554
+   ],
+   "coffre_trades": 25,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    15,
+    11,
+    4,
+    1,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6C (6C) si 6E a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.3969849793769455,
+   "coffre_t": 0.7607625600822592,
+   "coffre_corr_bot": -0.018271308191033724,
+   "coffre_par_an": 756.111425741796,
+   "coffre_annees": [
+    735.9024268194951,
+    2382.9826241135147,
+    -1478.0000000000048,
+    1170.529258273592
+   ],
+   "coffre_trades": 18,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1004,
+   "row": [
+    9,
+    38,
+    27,
+    4,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "BTC (MBT) si PL a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.3407104527060176,
+   "coffre_t": 0.5336145714164485,
+   "coffre_corr_bot": 0.056794816656659426,
+   "coffre_par_an": 419.3882734624402,
+   "coffre_annees": [
+    242.542992662833,
+    974.9151041452551,
+    86.43737377108931,
+    255.49664146172128
+   ],
+   "coffre_trades": 53,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    1,
+    21,
+    0,
+    2,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "NQ (MNQ) si HO a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.9119445644774276,
+   "coffre_t": 1.1646358310070406,
+   "coffre_corr_bot": 0.32933230170172895,
+   "coffre_par_an": 2452.799667339233,
+   "coffre_annees": [
+    2471.999999999999,
+    2494.1320964161164,
+    2806.9999999999927,
+    1347.000000000012
+   ],
+   "coffre_trades": 17,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    0,
+    19,
+    1,
+    0,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si CL a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.801288277302148,
+   "coffre_t": -0.46794659795812293,
+   "coffre_corr_bot": 0.22455603181762152,
+   "coffre_par_an": -1036.6402397953464,
+   "coffre_annees": [
+    -6265.233801244833,
+    811.5351156804593,
+    -1107.322464422837,
+    2706.5294647164237
+   ],
+   "coffre_trades": 33,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    11,
+    30,
+    1,
+    2,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6E (M6E) si ZW a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.66094161711916,
+   "coffre_t": -1.1046249589914703,
+   "coffre_corr_bot": 0.0002737903643396569,
+   "coffre_par_an": -168.08269443519552,
+   "coffre_annees": [
+    -145.72414557848845,
+    133.87499999999883,
+    -613.1249999999952,
+    0.0
+   ],
+   "coffre_trades": 14,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    1,
+    26,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) si HG a bouge de >= 0 e.-t. sur 1 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.6571047738633657,
+   "coffre_t": -1.8236362735072098,
+   "coffre_corr_bot": 0.016823150753825927,
+   "coffre_par_an": -8203.66232037976,
+   "coffre_annees": [
+    3955.502069995182,
+    -10117.24340756108,
+    -13428.50040199864,
+    -10913.058237403035
+   ],
+   "coffre_trades": 501,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    3,
+    12,
+    2,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si 6J a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.5942644403308557,
+   "coffre_t": 1.1521028288668869,
+   "coffre_corr_bot": 0.2192409893150359,
+   "coffre_par_an": 1127.436401291204,
+   "coffre_annees": [
+    1846.3890179657017,
+    892.4279368143041,
+    858.500000000008,
+    594.7779182749814
+   ],
+   "coffre_trades": 29,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    7,
+    1,
+    1,
+    25,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) calendrier : changement de mois, seances -2 a -1 (0 = 1re du mois), achat",
+   "t": 3.518935985823203,
+   "coffre_t": 0.6259307508424655,
+   "coffre_corr_bot": 0.16200502947746764,
+   "coffre_par_an": 860.0811099252945,
+   "coffre_annees": [
+    2354.0000000000014,
+    -2344.999999999989,
+    -1913.499999999996,
+    5102.499999999986
+   ],
+   "coffre_trades": 44,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    1,
+    1,
+    2,
+    25,
+    2,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) RSI(4) < 25 (vente > 75), sortie clot. > moy. 5, filtre 100, achats seuls",
+   "t": 3.439397991232456,
+   "coffre_t": 1.0878791660592502,
+   "coffre_corr_bot": 0.4894498809973141,
+   "coffre_par_an": 1850.7995712844936,
+   "coffre_annees": [
+    863.5000000000063,
+    1241.499999999995,
+    560.2428503713112,
+    4216.499999999999
+   ],
+   "coffre_trades": 25,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    1,
+    29,
+    0,
+    2,
+    1,
+    2,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) si ZC a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 1 s.",
+   "t": 3.427881566741105,
+   "coffre_t": -0.9556071564800377,
+   "coffre_corr_bot": 0.08769707584053794,
+   "coffre_par_an": -693.6383579513296,
+   "coffre_annees": [
+    1217.9999999999964,
+    -848.9999999999955,
+    -1471.8752867463302,
+    -1476.248290239368
+   ],
+   "coffre_trades": 26,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    1,
+    1,
+    0,
+    5,
+    0,
+    3,
+    0,
+    0,
+    0
+   ],
+   "desc": "NQ (MNQ) RSI(2) < 5 (vente > 95), sortie apres 1 s., sans filtre, achats seuls",
+   "t": 3.3464027438552866,
+   "coffre_t": 2.6865564044462755,
+   "coffre_corr_bot": 0.32748603028232454,
+   "coffre_par_an": 3201.3681963713934,
+   "coffre_annees": [
+    836.4999999999937,
+    2917.499999999995,
+    1795.0000000000048,
+    6354.499999999988
+   ],
+   "coffre_trades": 24,
+   "palier": "retenue"
+  },
+  {
+   "graine": 1005,
+   "row": [
+    9,
+    11,
+    15,
+    1,
+    2,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "6E (M6E) si 6C a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.3062687663317,
+   "coffre_t": 0.6569370563543436,
+   "coffre_corr_bot": -0.0022706820894605145,
+   "coffre_par_an": 67.57318017309596,
+   "coffre_annees": [
+    179.50424532614673,
+    24.37500000000575,
+    147.12500000000037,
+    -99.74999999999842
+   ],
+   "coffre_trades": 35,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    2,
+    16,
+    2,
+    0,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "RTY (M2K) si 6S a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 4.476794852795212,
+   "coffre_t": 0.7077969670368728,
+   "coffre_corr_bot": -5.653215220315941e-05,
+   "coffre_par_an": 847.4133301386294,
+   "coffre_annees": [
+    -836.2899894970865,
+    2732.6203608159494,
+    -605.2630139281566,
+    1859.8306201485598
+   ],
+   "coffre_trades": 124,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    11,
+    1,
+    3,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "6E (M6E) si NQ a bouge de >= 0 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.7948264584082607,
+   "coffre_t": 0.9826602390849661,
+   "coffre_corr_bot": 0.040840119947722714,
+   "coffre_par_an": 496.1553355043351,
+   "coffre_annees": [
+    -848.6712972440965,
+    988.0741230359281,
+    1403.0203337419323,
+    302.40838557560886
+   ],
+   "coffre_trades": 137,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    0,
+    31,
+    2,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si ZS a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.6729371880552946,
+   "coffre_t": 0.204364189777243,
+   "coffre_corr_bot": 0.24117643622407486,
+   "coffre_par_an": 317.02387968587385,
+   "coffre_annees": [
+    2520.8383463948926,
+    -1349.4936340660888,
+    634.2500000000025,
+    -626.8194136555379
+   ],
+   "coffre_trades": 41,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    24,
+    16,
+    3,
+    2,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "GC (MGC) si 6S a bouge de >= 2 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.6684732997767764,
+   "coffre_t": 0.5583788387981458,
+   "coffre_corr_bot": -0.07044819805132989,
+   "coffre_par_an": 972.244924267486,
+   "coffre_annees": [
+    -624.4953990701289,
+    1730.9493418969646,
+    -2593.99999999999,
+    5102.599604945513
+   ],
+   "coffre_trades": 11,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    3,
+    36,
+    2,
+    1,
+    1,
+    2,
+    1,
+    0
+   ],
+   "desc": "YM (MYM) si HE a bouge de >= 1 e.-t. sur 5 s. jusqu'a la veille (baisse seule) : contrer 2 s.",
+   "t": 3.661930942259672,
+   "coffre_t": 1.1315384776818422,
+   "coffre_corr_bot": 0.2306642137194242,
+   "coffre_par_an": 997.2660013078653,
+   "coffre_annees": [
+    998.8890179656916,
+    1725.5148831180686,
+    695.5000000000017,
+    288.1843656839746
+   ],
+   "coffre_trades": 51,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    3,
+    19,
+    0,
+    2,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si CL a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 3.5225302496760715,
+   "coffre_t": 0.9933221373892365,
+   "coffre_corr_bot": 0.3482390349022886,
+   "coffre_par_an": 813.734488572987,
+   "coffre_annees": [
+    958.1714912416155,
+    741.0000000000066,
+    117.5000000000002,
+    1208.9999999999989
+   ],
+   "coffre_trades": 24,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    11,
+    1,
+    1,
+    0,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "6E (M6E) si NQ a bouge de >= 0 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 3.5048425222518738,
+   "coffre_t": 1.1601700649640048,
+   "coffre_corr_bot": 0.005576926278147361,
+   "coffre_par_an": 585.8224833644474,
+   "coffre_annees": [
+    417.91825783179524,
+    650.683903194307,
+    1638.270333741946,
+    -528.6357213057993
+   ],
+   "coffre_trades": 29,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    0,
+    4,
+    4,
+    0,
+    0,
+    0,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si NKD a bouge de >= 0 e.-t. sur 20 s. jusqu'a la veille (hausse ou baisse) : suivre 5 s.",
+   "t": 3.49342154841528,
+   "coffre_t": 1.051096885222217,
+   "coffre_corr_bot": 0.04254726834586752,
+   "coffre_par_an": 2326.9364553860537,
+   "coffre_annees": [
+    731.7458532556363,
+    3549.6864979880397,
+    5317.237822586783,
+    -946.5294647164176
+   ],
+   "coffre_trades": 32,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    15,
+    14,
+    3,
+    1,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6C (6C) si 6A a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.482691598997263,
+   "coffre_t": 0.42011276290061056,
+   "coffre_corr_bot": -0.03855021921242898,
+   "coffre_par_an": 444.97204980008075,
+   "coffre_annees": [
+    1724.6555340877208,
+    1131.942987281715,
+    -2451.000000000026,
+    1248.9205685618435
+   ],
+   "coffre_trades": 27,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1006,
+   "row": [
+    9,
+    2,
+    16,
+    2,
+    0,
+    1,
+    2,
+    1,
+    0
+   ],
+   "desc": "RTY (M2K) si 6S a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (baisse seule) : contrer 2 s.",
+   "t": 3.4389511021944106,
+   "coffre_t": 1.1267638805885203,
+   "coffre_corr_bot": 0.1483493507406605,
+   "coffre_par_an": 1101.699180177594,
+   "coffre_annees": [
+    570.6463368480803,
+    2369.9101035350895,
+    231.0102879857607,
+    924.8306201485536
+   ],
+   "coffre_trades": 71,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    18,
+    12,
+    2,
+    0,
+    1,
+    0,
+    2,
+    0
+   ],
+   "desc": "6M (6M) si 6J a bouge de >= 0 e.-t. sur 5 s. jusqu'a la veille (hausse ou baisse) : contrer 5 s.",
+   "t": 4.069318324604561,
+   "coffre_t": -0.9970665200011357,
+   "coffre_corr_bot": -0.04305912394872639,
+   "coffre_par_an": -1512.3299919187907,
+   "coffre_annees": [
+    669.1116849989385,
+    -2409.4802148123854,
+    -2295.104200167756,
+    -1587.7542637803228
+   ],
+   "coffre_trades": 47,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    3,
+    25,
+    1,
+    1,
+    1,
+    2,
+    2,
+    0
+   ],
+   "desc": "YM (MYM) si SI a bouge de >= 1 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : contrer 5 s.",
+   "t": 4.000091895489726,
+   "coffre_t": 0.980795478741397,
+   "coffre_corr_bot": 0.30197672843876755,
+   "coffre_par_an": 993.8355977242715,
+   "coffre_annees": [
+    1577.333961217475,
+    766.0148831180783,
+    1215.9999999999864,
+    135.98431069478806
+   ],
+   "coffre_trades": 54,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    13,
+    5,
+    0,
+    2,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6B (M6B) si ZT a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.6928210445707976,
+   "coffre_t": -1.622523148339257,
+   "coffre_corr_bot": -0.051289229297141636,
+   "coffre_par_an": -158.8772966299432,
+   "coffre_annees": [
+    -198.37500000000048,
+    -269.7380366285927,
+    -242.25,
+    119.61689796884447
+   ],
+   "coffre_trades": 20,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    0,
+    8,
+    3,
+    1,
+    0,
+    1,
+    2,
+    0
+   ],
+   "desc": "ES (MES) si TN a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (hausse seule) : suivre 5 s.",
+   "t": 3.6120808458697105,
+   "coffre_t": 1.3078301399973382,
+   "coffre_corr_bot": 0.24302946822988378,
+   "coffre_par_an": 1780.9009667658213,
+   "coffre_annees": [
+    3565.135508940596,
+    1615.1764342989513,
+    1065.7801435047961,
+    375.7500000000015
+   ],
+   "coffre_trades": 27,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    19,
+    15,
+    1,
+    2,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "CL (MCL) si 6C a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.5881314591325237,
+   "coffre_t": 0.3759793202340268,
+   "coffre_corr_bot": -0.03991364243493564,
+   "coffre_par_an": 117.8342189362362,
+   "coffre_annees": [
+    1031.137552155771,
+    -1072.0000000000034,
+    19.000000000000156,
+    459.9999999999993
+   ],
+   "coffre_trades": 13,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    11,
+    0,
+    0,
+    2,
+    0,
+    2,
+    2,
+    0
+   ],
+   "desc": "6E (M6E) si ES a bouge de >= 2 e.-t. sur 1 s. jusqu'a la veille (baisse seule) : suivre 5 s.",
+   "t": 3.5810805212468884,
+   "coffre_t": -2.396587488879398,
+   "coffre_corr_bot": -0.019489067169497526,
+   "coffre_par_an": -513.6932077909236,
+   "coffre_annees": [
+    55.25000000000193,
+    38.37499999999145,
+    -1180.019754893002,
+    -823.6470534407034
+   ],
+   "coffre_trades": 21,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    24,
+    19,
+    0,
+    1,
+    1,
+    0,
+    1,
+    0
+   ],
+   "desc": "GC (MGC) si CL a bouge de >= 1 e.-t. sur 1 s. jusqu'a la veille (hausse ou baisse) : contrer 2 s.",
+   "t": 3.4288394149534125,
+   "coffre_t": 0.2952762423404581,
+   "coffre_corr_bot": 0.024311379589410598,
+   "coffre_par_an": 1004.2543157779423,
+   "coffre_annees": [
+    759.093768905025,
+    1349.6354413238266,
+    5060.74377960309,
+    -3435.4003950544384
+   ],
+   "coffre_trades": 173,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    7,
+    0,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "desc": "ES (MES) calendrier : semaine apres l'echeance des options, achat",
+   "t": 3.3503391249741585,
+   "coffre_t": 1.1174321118348929,
+   "coffre_corr_bot": 0.11078376088488487,
+   "coffre_par_an": 1038.794023479192,
+   "coffre_annees": [
+    -345.25000000000665,
+    2191.0000000000105,
+    3497.250000000006,
+    -1480.5
+   ],
+   "coffre_trades": 45,
+   "palier": "rejetee"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    24,
+    19,
+    3,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "desc": "GC (MGC) si CL a bouge de >= 1 e.-t. sur 10 s. jusqu'a la veille (hausse ou baisse) : contrer 1 s.",
+   "t": 3.347357064880833,
+   "coffre_t": 1.512378565000001,
+   "coffre_corr_bot": -0.05837162393620628,
+   "coffre_par_an": 3662.265327441436,
+   "coffre_annees": [
+    713.9999999999912,
+    113.23258655803937,
+    11668.0,
+    1122.0000000000084
+   ],
+   "coffre_trades": 86,
+   "palier": "interessante"
+  },
+  {
+   "graine": 1007,
+   "row": [
+    9,
+    2,
+    28,
+    1,
+    2,
+    0,
+    0,
+    1,
+    0
+   ],
+   "desc": "RTY (M2K) si PA a bouge de >= 2 e.-t. sur 2 s. jusqu'a la veille (hausse ou baisse) : suivre 2 s.",
+   "t": 3.3092826709744285,
+   "coffre_t": -0.8573097209551718,
+   "coffre_corr_bot": -0.2716174315746747,
+   "coffre_par_an": -432.32657417289755,
+   "coffre_annees": [
+    -1181.0000000000043,
+    525.0000000000008,
+    -397.5000000000066,
+    -554.0000000000095
+   ],
+   "coffre_trades": 36,
+   "palier": "rejetee"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+Machine 4 : strategies du palier interessante ajoutees au bot (zone + RSI(2), 1 MNQ)
+
+source | gain par an | corr. quotidienne avec le bot (2023-2026) | Trail 2011-2022 : reussis / perdus / score | Trail 2023-2026 : idem | S2F + plafond 500 $ : recu en 12 mois / au moins un retrait
+bot seul | +0 $ | +nan | 31.2 / 1.4 / +29.8 | 68.7 / 23.5 / +45.2 | +1,826 $ / 83%
++ ZF (ZF) calendrier : changement de mois, seances -5 a -1 (0 = 1re du mois), achat | +1,520 $ | +0.00 | 42.3 / 11.7 / +30.6 | 78.3 / 13.3 / +65.1 | +1,768 $ / 69%
+  -> score Trail +30.6 contre +29.8 (2011-2022), +65.1 contre +45.2 (2023-2026)
++ YM (MYM) si NG a bouge de >= 1 e.-t. sur 20 s. jusqu'a la veille (baisse seule) : contrer 2 s. | +885 $ | +0.14 | 46.6 / 1.2 / +45.3 | 69.9 / 25.9 / +44.0 | +2,001 $ / 80%
+  -> score Trail +45.3 contre +29.8 (2011-2022), +44.0 contre +45.2 (2023-2026)

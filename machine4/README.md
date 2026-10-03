@@ -141,3 +141,84 @@ famille 9 : **de l'ordre de 360 000 stratégies réelles**, et autant sur chacun
 - `bot_quotidien.csv` : gain de chaque séance du bot seul (zone + RSI(2), 1 MNQ), calculé par
   `protection/piste6.py gains_du_bot`.
 - Résultats : `exploration4.txt`, `candidates4.json`, `coffre4.txt`.
+
+## Résultats (3 octobre 2026) : aucune retenue ; 2 intéressantes, autant que le hasard
+
+`machine4.py exploration` → `exploration4.txt`, `candidates4.json` ; `machine4.py coffre` → `coffre4.txt`,
+`coffre4.json` ; `avec_bot.py` → `avec_bot.txt`. Tests : `test_machine4.py`, 7 contrôles passés (aucun
+regard vers le futur, trade à la main, décalage de la famille croisée, bruit fidèle, échéances, calendrier,
+chaque famille prend des positions).
+
+Précisions apparues en codant, avant tout résultat :
+- **Marchés tradables.** La règle des 400 $ en garde **16** : ES, NQ, RTY, YM, ZT, ZF, 6E, 6B, 6A, 6C, 6M,
+  CL, GC, HG, BTC et ETH. ZN est juste au-dessus (401 $). Il y a donc **232 736 stratégies**, et non
+  ≈ 360 000.
+- **Signal contraire.** Un signal de sens contraire pendant qu'une position est tenue est ignoré jusqu'à
+  la sortie.
+- **Gains du bot.** Ils commencent le 5 janvier 2012 (260 séances de préparation). La corrélation avec
+  le bot est donc mesurée sur 2012-2022.
+
+### Exploration 2011-2022 : le bruit fait mieux que les vraies données
+
+| Seuil | Éligibles réelles au-dessus | Sur bruit (moyenne des 8) | Part attendue de fausses pistes |
+|---|---|---|---|
+| t ≥ 2 | 1 220 | 1 696 | > 100 % |
+| t ≥ 2,5 | 169 | 386 | > 100 % |
+| t ≥ 3 | 33 | 71 | > 100 % |
+| t ≥ 3,5 | 6 | 12 | > 100 % |
+| t ≥ 4 | 0 | 1,6 | — |
+
+- La meilleure stratégie réelle (t 3,86) fait **moins bien que la meilleure de chacun des 8 bruits**
+  (3,87 à 4,67).
+- Aucune famille ne se détache nettement. L'IBS a un peu plus d'éligibles que sur bruit (1 899 contre
+  1 431), mais sa meilleure (6C) échoue au coffre.
+
+### Coffre 2023 - septembre 2026 (ouvert une fois)
+
+| Candidate | t exploration | t coffre | $/an au coffre | Palier |
+|---|---|---|---|---|
+| 6E si les porcs (HE) ont bougé sur 5 s., suivre 1 s. | 3,86 | +0,37 | +185 | rejetée |
+| 6C IBS < 0,15, 5 séances, achats et ventes | 3,55 | −0,11 | −194 | rejetée |
+| **ZF : achat les 5 dernières séances du mois** | 3,51 | **+1,31** | **+1 238** | **intéressante** |
+| 6C RSI(3), ventes seules | 3,36 | −0,06 | −23 | rejetée |
+| **MYM contre une baisse du gaz (NG) sur 20 s.** | 3,28 | **+1,39** | **+960** | **intéressante** |
+| 6E si HE a baissé sur 20 s., suivre 2 s. | 3,24 | −1,47 | −348 | rejetée |
+| M6B si NKD a bougé de 2 e.-t. | 3,22 | +0,55 | +44 | rejetée |
+| M6A contre le palladium sur 2 s. | 3,21 | +0,34 | +114 | rejetée |
+| MHG suit 6N sur 2 s. | 3,20 | +0,02 | +38 | rejetée |
+| ZT contre le fioul (HO) sur 20 s. | 3,14 | +0,81 | +993 | rejetée |
+
+- **Aucune retenue.** Aucune n'a t ≥ 2,58 au coffre, et toutes ont plus de 100 % de fausses pistes
+  attendues à l'exploration.
+- **2 intéressantes sur 10.** Les 80 placebos (règles choisies sur du bruit) passent ce palier **26 % du
+  temps**, soit 2,6 sur 10 sans aucune information. Le palier baissé laisse donc passer autant de
+  stratégies que le hasard.
+
+### Les deux intéressantes ajoutées au bot (`avec_bot.txt`, descriptif)
+
+| | Trail 2011-2022 : réussis / perdus / score | Trail 2023-2026 | S2F + plafond 500 $ : reçu en 12 mois / retrait |
+|---|---|---|---|
+| Bot seul | 31,2 / 1,4 / +29,8 | 68,7 / 23,5 / +45,2 | +1 826 $ / 83 % |
+| + ZF fin de mois (1 ZF) | 42,3 / 11,7 / +30,6 | 78,3 / 13,3 / **+65,1** | +1 768 $ / 69 % |
+| + MYM contre le gaz | 46,6 / 1,2 / +45,3 | 69,9 / 25,9 / +44,0 | +2 001 $ / 80 % |
+
+- **ZF fin de mois** fait mieux sur 2023-2026, une période que la machine n'a pas vue pour cette règle.
+  Mais elle fait perdre plus de comptes sur 2011-2022 (11,7 % contre 1,4 %) et donne un retrait moins
+  souvent sur S2F.
+- **MYM contre le gaz** ne fait mieux que sur 2011-2022, la période où elle a été choisie.
+
+**Pour information** (décidé après le coffre, ce n'est pas un essai : `fin_de_mois_information.txt`) :
+l'achat des 5 dernières séances du mois apparaît **sur toute la courbe des taux** en 2011-2022 (ZT
+t 2,37, ZF 3,51, ZN 3,08, TN 2,39, ZB 2,56, UB 2,30). C'est cohérent avec l'allongement de duration des
+indices obligataires en fin de mois. Sur 2023-2026, il est positif partout mais faible (t 0,4 à 1,3),
+et 2023 est négative partout. Ces marchés jouent un seul et même pari, donc ce n'est pas une
+confirmation indépendante.
+
+### Conclusion
+
+Même avec la barre baissée, la machine ne trouve rien qui se distingue du hasard. Le seul candidat qui
+ait un sens économique et qui aide le challenge sur 2023-2026 est **l'achat d'un ZF les 5 dernières
+séances du mois** : 12 trades par an, environ +1 200 $ par an au coffre, non corrélé au bot. Il n'est
+**pas prouvé**. Selon la règle, il va au **suivi en argent virtuel**. Comme la règle est entièrement
+mécanique, ce suivi peut se faire sur les données postérieures au 25 septembre 2026 sans rien changer
+au robot.
