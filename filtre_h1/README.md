@@ -173,3 +173,27 @@ pas encore combien de mois Rithmic garde.
   - avant 150 trades, le script publie un point d'étape descriptif, sans décision. Il se relance quand de nouveaux
     mois sont exportés, avec les mêmes règles.
 - **Script** : `filtre_h1/test_rithmic.py`.
+
+## Ce que le filtre apporterait au bot : scénario (3 octobre 2026, descriptif, pas un test)
+
+Question de l'utilisateur : que rapporterait concrètement le filtre s'il était aussi bon sur toutes les
+années ? `scenario.py` → `scenario.txt`.
+
+**Méthode.** Le vrai delta n'existe pas avant 2026. On simule donc, pour chaque trade de zone de 2011 à
+2026, un signal corrélé à son résultat. La corrélation est calée sur l'effet mesuré en avril - septembre
+2026 : écart gardés − écartés de 0,43 écart-type par trade, soit ρ = 0,24. On écarte les 20 % de trades
+au signal le plus défavorable, 20 tirages par scénario, avec la même simulation de challenge que
+`protection/piste6.py`.
+
+| Scénario | $ par séance (2012-2026 / 2023-2026) | Trail 2011-2022 : réussis / perdus / séances pour réussir | Trail 2023-2026 : idem | S2F, 12 mois : reçu / retrait |
+|---|---|---|---|---|
+| Sans filtre | +10,7 / +22,6 | 31,2 / 1,4 / 162 | 68,7 / 23,5 / 108 | +1 826 $ / 83 % |
+| Filtre aussi bon qu'en 2026 | +14,9 / +29,9 | 38,9 / 1,4 / 146 | 82,9 / 10,8 / 92 | +2 312 $ / 91 % |
+| Filtre deux fois moins bon | +12,6 / +26,0 | 33,2 / 1,8 / 151 | 78,8 / 12,8 / 102 | +1 956 $ / 85 % |
+| Filtre inutile (20 % des trades écartés au hasard) | +9,8 / +20,6 | 25,5 / 2,8 / 150 | 69,2 / 20,8 / 117 | +1 455 $ / 70 % |
+
+- Un bon filtre augmente le gain du bot d'environ 30 % et divise par deux les comptes perdus sur
+  2023-2026.
+- Un filtre inutile coûte environ 10 % du gain et fait baisser la part de comptes S2F qui obtiennent un
+  retrait (83 % → 70 %).
+- Le test sur Rithmic décide donc si le filtre reste dans le bot 3 en 1 ou s'il en sort.

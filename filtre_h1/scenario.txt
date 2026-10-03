@@ -1,0 +1,8 @@
+Effet mesure en avril - septembre 2026 : 20% des trades ecartes, ecart gardes - ecartes de 0.43 ecart-type par trade -> correlation du signal avec le resultat rho = 0.24
+3562 trades de zone du 2011-01-03 au 2026-09-25 ; 20 tirages par scenario
+
+scenario | $ par seance du bot (2012-2026 / 2023-2026) | Trail 2011-2022 : reussis / perdus / seances pour reussir (mediane) | Trail 2023-2026 : idem | S2F + 12 mois : recu / au moins un retrait
+sans filtre (bot actuel sans le delta) | +10.7 $ / +22.6 $ | 31.2 / 1.4 / 162 | 68.7 / 23.5 / 108 | +1,826 $ / 83 %
+filtre aussi bon qu'en 2026 | +14.9 $ / +29.9 $ | 38.9 / 1.4 / 146 | 82.9 / 10.8 / 92 | +2,312 $ / 91 %
+filtre deux fois moins bon | +12.6 $ / +26.0 $ | 33.2 / 1.8 / 151 | 78.8 / 12.8 / 102 | +1,956 $ / 85 %
+filtre inutile (le bot ecarte 20 % des trades au hasard) | +9.8 $ / +20.6 $ | 25.5 / 2.8 / 150 | 69.2 / 20.8 / 117 | +1,455 $ / 70 %
