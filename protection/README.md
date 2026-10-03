@@ -162,3 +162,19 @@ tout calcul de cette variante.
   l'achat du challenge augmente, sans que la part des comptes Pro perdus dépasse 40 %.
 - Descriptif : la même chose si un jour qualifiant est simplement un jour avec au moins un trade (au lieu de
   +200 $), car les sources ne sont pas d'accord sur ce point.
+
+## Piste 4 : plafond du jour à 500 $ sur le compte financé (fixée le 3 octobre 2026, avant le calcul)
+
+**Constat (piste 2)** : sur le compte Pro, c'est la règle des 30 % qui bloque les retraits. Par exemple, un compte
+financé de février 2026 arrive à +3 700 $ en septembre sans pouvoir retirer : son meilleur jour (+2 090 $ le
+11 juin) demande près de 7 000 $ de gain avant un retrait.
+
+**Variante (déduite des chiffres de la règle, pas des données)** :
+- un premier retrait demande un solde de +1 500 $ au moins (coussin de 1 000 $ + retrait de 500 $) ;
+- à +1 667 $, 30 % font 500 $ ;
+- donc sur le compte Pro, dès que le gain du jour atteint +500 $ (par rapport à la clôture de la veille), le bot
+  ferme tout et ne trade plus de la journée. Le RSI(2) reprend à sa décision suivante si sa règle est toujours en
+  position. Exécution au niveau de déclenchement, 1 tick de glissement en plus.
+- Challenge : inchangé (1 MNQ, sans plafond).
+- Retenue si, sur les challenges de 2023 - septembre 2025, le montant moyen reçu dans les 12 mois après l'achat
+  augmente, sans que la part des comptes Pro perdus dépasse 40 %. Les départs de 2025 sont publiés à part.
