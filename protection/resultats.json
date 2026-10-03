@@ -1,0 +1,987 @@
+{
+ "Phidias Premium": {
+  "A": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 19.8,
+    "perdus": 3.4,
+    "pas_finis": 76.7,
+    "score": 16.4,
+    "seances_mediane": 177
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 65.1,
+    "perdus": 27.1,
+    "pas_finis": 7.8,
+    "score": 38.0,
+    "seances_mediane": 158
+   }
+  },
+  "B": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 19.8,
+    "perdus": 3.4,
+    "pas_finis": 76.7,
+    "score": 16.4,
+    "seances_mediane": 177
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 52.4,
+    "perdus": 22.9,
+    "pas_finis": 24.7,
+    "score": 29.5,
+    "seances_mediane": 153
+   }
+  },
+  "C": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 23.1,
+    "perdus": 0.0,
+    "pas_finis": 76.9,
+    "score": 23.1,
+    "seances_mediane": 176
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 33.7,
+    "perdus": 21.7,
+    "pas_finis": 44.6,
+    "score": 12.0,
+    "seances_mediane": 139
+   }
+  },
+  "B+C": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 23.1,
+    "perdus": 0.0,
+    "pas_finis": 76.9,
+    "score": 23.1,
+    "seances_mediane": 176
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 33.7,
+    "perdus": 13.9,
+    "pas_finis": 52.4,
+    "score": 19.9,
+    "seances_mediane": 139
+   }
+  },
+  "retenu": "A"
+ },
+ "DayTraders Trail": {
+  "A": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 31.2,
+    "perdus": 1.4,
+    "pas_finis": 67.4,
+    "score": 29.8,
+    "seances_mediane": 162
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 68.7,
+    "perdus": 23.5,
+    "pas_finis": 7.8,
+    "score": 45.2,
+    "seances_mediane": 109
+   }
+  },
+  "B": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 26.7,
+    "perdus": 4.5,
+    "pas_finis": 68.8,
+    "score": 22.3,
+    "seances_mediane": 154
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 66.3,
+    "perdus": 14.5,
+    "pas_finis": 19.3,
+    "score": 51.8,
+    "seances_mediane": 106
+   }
+  },
+  "C": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 30.0,
+    "perdus": 0.0,
+    "pas_finis": 70.0,
+    "score": 30.0,
+    "seances_mediane": 157
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 48.2,
+    "perdus": 25.9,
+    "pas_finis": 25.9,
+    "score": 22.3,
+    "seances_mediane": 159
+   }
+  },
+  "B+C": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 28.7,
+    "perdus": 1.2,
+    "pas_finis": 70.0,
+    "score": 27.5,
+    "seances_mediane": 161
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 31.3,
+    "perdus": 25.9,
+    "pas_finis": 42.8,
+    "score": 5.4,
+    "seances_mediane": 103
+   }
+  },
+  "D": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 31.2,
+    "perdus": 1.4,
+    "pas_finis": 67.4,
+    "score": 29.8,
+    "seances_mediane": 152
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 62.0,
+    "perdus": 33.7,
+    "pas_finis": 4.2,
+    "score": 28.3,
+    "seances_mediane": 106
+   }
+  },
+  "B+C+D": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 28.9,
+    "perdus": 1.2,
+    "pas_finis": 69.8,
+    "score": 27.7,
+    "seances_mediane": 160
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 34.9,
+    "perdus": 26.5,
+    "pas_finis": 38.6,
+    "score": 8.4,
+    "seances_mediane": 105
+   }
+  },
+  "retenu": "A"
+ },
+ "DayTraders EOD": {
+  "A": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 25.7,
+    "perdus": 7.1,
+    "pas_finis": 67.2,
+    "score": 18.6,
+    "seances_mediane": 151
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 60.8,
+    "perdus": 34.9,
+    "pas_finis": 4.2,
+    "score": 25.9,
+    "seances_mediane": 104
+   }
+  },
+  "B": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 25.5,
+    "perdus": 4.9,
+    "pas_finis": 69.6,
+    "score": 20.6,
+    "seances_mediane": 151
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 56.6,
+    "perdus": 25.9,
+    "pas_finis": 17.5,
+    "score": 30.7,
+    "seances_mediane": 105
+   }
+  },
+  "C": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 27.3,
+    "perdus": 2.6,
+    "pas_finis": 70.0,
+    "score": 24.7,
+    "seances_mediane": 163
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 34.3,
+    "perdus": 60.8,
+    "pas_finis": 4.8,
+    "score": -26.5,
+    "seances_mediane": 109
+   }
+  },
+  "B+C": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 27.1,
+    "perdus": 2.6,
+    "pas_finis": 70.2,
+    "score": 24.5,
+    "seances_mediane": 164
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 27.7,
+    "perdus": 29.5,
+    "pas_finis": 42.8,
+    "score": -1.8,
+    "seances_mediane": 100
+   }
+  },
+  "D": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 25.7,
+    "perdus": 7.1,
+    "pas_finis": 67.2,
+    "score": 18.6,
+    "seances_mediane": 151
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 59.6,
+    "perdus": 36.1,
+    "pas_finis": 4.2,
+    "score": 23.5,
+    "seances_mediane": 105
+   }
+  },
+  "B+C+D": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 27.3,
+    "perdus": 2.6,
+    "pas_finis": 70.0,
+    "score": 24.7,
+    "seances_mediane": 162
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 31.9,
+    "perdus": 29.5,
+    "pas_finis": 38.6,
+    "score": 2.4,
+    "seances_mediane": 101
+   }
+  },
+  "retenu": "A"
+ },
+ "DayTraders EOD (bloquee a 50 000, descriptif)": {
+  "A": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 27.1,
+    "perdus": 5.5,
+    "pas_finis": 67.4,
+    "score": 21.7,
+    "seances_mediane": 163
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 61.4,
+    "perdus": 33.7,
+    "pas_finis": 4.8,
+    "score": 27.7,
+    "seances_mediane": 104
+   }
+  },
+  "B": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 25.5,
+    "perdus": 4.9,
+    "pas_finis": 69.6,
+    "score": 20.6,
+    "seances_mediane": 151
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 57.8,
+    "perdus": 22.9,
+    "pas_finis": 19.3,
+    "score": 34.9,
+    "seances_mediane": 106
+   }
+  },
+  "C": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 28.9,
+    "perdus": 1.0,
+    "pas_finis": 70.0,
+    "score": 27.9,
+    "seances_mediane": 161
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 39.8,
+    "perdus": 42.8,
+    "pas_finis": 17.5,
+    "score": -3.0,
+    "seances_mediane": 127
+   }
+  },
+  "B+C": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 28.7,
+    "perdus": 1.2,
+    "pas_finis": 70.0,
+    "score": 27.5,
+    "seances_mediane": 161
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 30.7,
+    "perdus": 27.1,
+    "pas_finis": 42.2,
+    "score": 3.6,
+    "seances_mediane": 106
+   }
+  },
+  "D": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 27.1,
+    "perdus": 5.5,
+    "pas_finis": 67.4,
+    "score": 21.7,
+    "seances_mediane": 163
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 60.8,
+    "perdus": 34.9,
+    "pas_finis": 4.2,
+    "score": 25.9,
+    "seances_mediane": 105
+   }
+  },
+  "B+C+D": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 28.9,
+    "perdus": 1.2,
+    "pas_finis": 69.8,
+    "score": 27.7,
+    "seances_mediane": 160
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 34.9,
+    "perdus": 27.7,
+    "pas_finis": 37.3,
+    "score": 7.2,
+    "seances_mediane": 107
+   }
+  }
+ },
+ "2026": {
+  "Phidias Premium A": {
+   "premiers": {
+    "2026-04-01": [
+     1,
+     "2026-08-04"
+    ],
+    "2026-05-01": [
+     1,
+     "2026-08-04"
+    ],
+    "2026-06-01": [
+     1,
+     "2026-09-23"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 29.6,
+    "perdus": 0.0,
+    "pas_finis": 70.4,
+    "score": 29.6,
+    "seances_mediane": 85
+   }
+  },
+  "Phidias Premium B": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "Phidias Premium C": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "Phidias Premium B+C": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders Trail A": {
+   "premiers": {
+    "2026-04-01": [
+     1,
+     "2026-09-22"
+    ],
+    "2026-05-01": [
+     1,
+     "2026-08-04"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 26.9,
+    "perdus": 26.9,
+    "pas_finis": 46.3,
+    "score": 0.0,
+    "seances_mediane": 99
+   }
+  },
+  "DayTraders Trail B": {
+   "premiers": {
+    "2026-04-01": [
+     1,
+     "2026-09-22"
+    ],
+    "2026-05-01": [
+     1,
+     "2026-08-04"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 26.9,
+    "perdus": 0.0,
+    "pas_finis": 73.1,
+    "score": 26.9,
+    "seances_mediane": 99
+   }
+  },
+  "DayTraders Trail C": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders Trail B+C": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders Trail D": {
+   "premiers": {
+    "2026-04-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-05-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-06-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-07-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 70.4,
+    "pas_finis": 29.6,
+    "score": -70.4,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders Trail B+C+D": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders EOD A": {
+   "premiers": {
+    "2026-04-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-05-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-06-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-07-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 70.4,
+    "pas_finis": 29.6,
+    "score": -70.4,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders EOD B": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders EOD C": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders EOD B+C": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders EOD D": {
+   "premiers": {
+    "2026-04-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-05-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-06-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-07-01": [
+     -1,
+     "2026-07-29"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 70.4,
+    "pas_finis": 29.6,
+    "score": -70.4,
+    "seances_mediane": null
+   }
+  },
+  "DayTraders EOD B+C+D": {
+   "premiers": {
+    "2026-04-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-05-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-06-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-07-01": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-08-03": [
+     0,
+     "2026-09-25"
+    ],
+    "2026-09-01": [
+     0,
+     "2026-09-25"
+    ]
+   },
+   "chaque_seance": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  }
+ }
+}

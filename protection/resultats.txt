@@ -1,0 +1,59 @@
+Protections du bot 3 en 1, minute par minute ; 4041 seances du 2011-01-03 au 2026-09-25 ; trades de zone 2026 sans decision du filtre : 0
+
+controle : avril - 25 septembre 2026, vrai delta, sans protection : +4,366.0 $ (rejeu journalier : +4 366 $)
+controle : 2023 - 25 septembre 2026, zone non filtree + RSI(2) : +21,767.0 $
+
+=== Phidias Premium ===
+protection | 2011-2022 : reussis / perdus / pas finis / score / seances mediane | 2023-2026 : idem
+A      |  19.8 /   3.4 /  76.7 /  +16.4 / 177 |  65.1 /  27.1 /   7.8 /  +38.0 / 158
+B      |  19.8 /   3.4 /  76.7 /  +16.4 / 177 |  52.4 /  22.9 /  24.7 /  +29.5 / 153
+C      |  23.1 /   0.0 /  76.9 /  +23.1 / 176 |  33.7 /  21.7 /  44.6 /  +12.0 / 139
+B+C    |  23.1 /   0.0 /  76.9 /  +23.1 / 176 |  33.7 /  13.9 /  52.4 /  +19.9 / 139
+-> choix sur 2011-2022 : C ; verification 2023-2026 : non ; RETENU : A
+
+=== DayTraders Trail ===
+protection | 2011-2022 : reussis / perdus / pas finis / score / seances mediane | 2023-2026 : idem
+A      |  31.2 /   1.4 /  67.4 /  +29.8 / 162 |  68.7 /  23.5 /   7.8 /  +45.2 / 109
+B      |  26.7 /   4.5 /  68.8 /  +22.3 / 154 |  66.3 /  14.5 /  19.3 /  +51.8 / 106
+C      |  30.0 /   0.0 /  70.0 /  +30.0 / 157 |  48.2 /  25.9 /  25.9 /  +22.3 / 159
+B+C    |  28.7 /   1.2 /  70.0 /  +27.5 / 161 |  31.3 /  25.9 /  42.8 /   +5.4 / 103
+D      |  31.2 /   1.4 /  67.4 /  +29.8 / 152 |  62.0 /  33.7 /   4.2 /  +28.3 / 106
+B+C+D  |  28.9 /   1.2 /  69.8 /  +27.7 / 160 |  34.9 /  26.5 /  38.6 /   +8.4 / 105
+-> choix sur 2011-2022 : A ; verification 2023-2026 : oui ; RETENU : A
+
+=== DayTraders EOD ===
+protection | 2011-2022 : reussis / perdus / pas finis / score / seances mediane | 2023-2026 : idem
+A      |  25.7 /   7.1 /  67.2 /  +18.6 / 151 |  60.8 /  34.9 /   4.2 /  +25.9 / 104
+B      |  25.5 /   4.9 /  69.6 /  +20.6 / 151 |  56.6 /  25.9 /  17.5 /  +30.7 / 105
+C      |  27.3 /   2.6 /  70.0 /  +24.7 / 163 |  34.3 /  60.8 /   4.8 /  -26.5 / 109
+B+C    |  27.1 /   2.6 /  70.2 /  +24.5 / 164 |  27.7 /  29.5 /  42.8 /   -1.8 / 100
+D      |  25.7 /   7.1 /  67.2 /  +18.6 / 151 |  59.6 /  36.1 /   4.2 /  +23.5 / 105
+B+C+D  |  27.3 /   2.6 /  70.0 /  +24.7 / 162 |  31.9 /  29.5 /  38.6 /   +2.4 / 101
+-> choix sur 2011-2022 : C ; verification 2023-2026 : non ; RETENU : A
+
+=== DayTraders EOD (bloquee a 50 000, descriptif) ===
+protection | 2011-2022 : reussis / perdus / pas finis / score / seances mediane | 2023-2026 : idem
+A      |  27.1 /   5.5 /  67.4 /  +21.7 / 163 |  61.4 /  33.7 /   4.8 /  +27.7 / 104
+B      |  25.5 /   4.9 /  69.6 /  +20.6 / 151 |  57.8 /  22.9 /  19.3 /  +34.9 / 106
+C      |  28.9 /   1.0 /  70.0 /  +27.9 / 161 |  39.8 /  42.8 /  17.5 /   -3.0 / 127
+B+C    |  28.7 /   1.2 /  70.0 /  +27.5 / 161 |  30.7 /  27.1 /  42.2 /   +3.6 / 106
+D      |  27.1 /   5.5 /  67.4 /  +21.7 / 163 |  60.8 /  34.9 /   4.2 /  +25.9 / 105
+B+C+D  |  28.9 /   1.2 /  69.8 /  +27.7 / 160 |  34.9 /  27.7 /  37.3 /   +7.2 / 107
+
+=== Avril - 25 septembre 2026, vrai delta (descriptif) ===
+Phidias Premium A | 1er du mois : 01/04 reussi 04/08 ; 01/05 reussi 04/08 ; 01/06 reussi 23/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 29.6 %, perdus 0.0 %
+Phidias Premium B | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %
+Phidias Premium C | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %
+Phidias Premium B+C | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %
+DayTraders Trail A | 1er du mois : 01/04 reussi 22/09 ; 01/05 reussi 04/08 ; 01/06 en cours 25/09 ; 01/07 PERDU 29/07 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 26.9 %, perdus 26.9 %
+DayTraders Trail B | 1er du mois : 01/04 reussi 22/09 ; 01/05 reussi 04/08 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 26.9 %, perdus 0.0 %
+DayTraders Trail C | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %
+DayTraders Trail B+C | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %
+DayTraders Trail D | 1er du mois : 01/04 PERDU 29/07 ; 01/05 PERDU 29/07 ; 01/06 PERDU 29/07 ; 01/07 PERDU 29/07 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 70.4 %
+DayTraders Trail B+C+D | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %
+DayTraders EOD A | 1er du mois : 01/04 PERDU 29/07 ; 01/05 PERDU 29/07 ; 01/06 PERDU 29/07 ; 01/07 PERDU 29/07 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 70.4 %
+DayTraders EOD B | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %
+DayTraders EOD C | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %
+DayTraders EOD B+C | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %
+DayTraders EOD D | 1er du mois : 01/04 PERDU 29/07 ; 01/05 PERDU 29/07 ; 01/06 PERDU 29/07 ; 01/07 PERDU 29/07 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 70.4 %
+DayTraders EOD B+C+D | 1er du mois : 01/04 en cours 25/09 ; 01/05 en cours 25/09 ; 01/06 en cours 25/09 ; 01/07 en cours 25/09 ; 03/08 en cours 25/09 ; 01/09 en cours 25/09 | chaque seance (108) : reussis 0.0 %, perdus 0.0 %

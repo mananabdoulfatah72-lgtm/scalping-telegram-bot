@@ -71,3 +71,51 @@ descriptif.
 - Publié dans tous les cas : réussis, perdus, pas finis, séances médianes jusqu'à la réussite, pour chaque compte
   et chaque protection. Avril - septembre 2026 avec le vrai delta (départ le 1er de chaque mois et à chaque
   séance), à titre descriptif.
+
+## Résultat (3 octobre 2026) : `resultats.txt`
+
+**Contrôle** : sans compte et sans protection, avril - 25 septembre 2026 avec le vrai delta, le moteur redonne
+exactement +4 366,0 $, comme le rejeu à la journée.
+
+Score = % réussis − % perdus, challenges suivis jusqu'à 252 séances.
+
+| Compte | Protection | 2011 - 2022 : réussis / perdus / score | 2023 - 2026 : réussis / perdus / score |
+|---|---|---|---|
+| Phidias Premium | **A** | 19,8 / 3,4 / +16,4 | **65,1 / 27,1 / +38,0** |
+| | B | 19,8 / 3,4 / +16,4 | 52,4 / 22,9 / +29,5 |
+| | C | 23,1 / 0,0 / +23,1 | 33,7 / 21,7 / +12,0 |
+| | B + C | 23,1 / 0,0 / +23,1 | 33,7 / 13,9 / +19,9 |
+| DayTraders Trail | **A** | 31,2 / 1,4 / +29,8 | **68,7 / 23,5 / +45,2** |
+| | B | 26,7 / 4,5 / +22,3 | 66,3 / 14,5 / +51,8 |
+| | C | 30,0 / 0,0 / +30,0 | 48,2 / 25,9 / +22,3 |
+| | B + C | 28,7 / 1,2 / +27,5 | 31,3 / 25,9 / +5,4 |
+| | D | 31,2 / 1,4 / +29,8 | 62,0 / 33,7 / +28,3 |
+| | B + C + D | 28,9 / 1,2 / +27,7 | 34,9 / 26,5 / +8,4 |
+| DayTraders EOD | **A** | 25,7 / 7,1 / +18,6 | **60,8 / 34,9 / +25,9** |
+| | B | 25,5 / 4,9 / +20,6 | 56,6 / 25,9 / +30,7 |
+| | C | 27,3 / 2,6 / +24,7 | 34,3 / 60,8 / −26,5 |
+| | B + C | 27,1 / 2,6 / +24,5 | 27,7 / 29,5 / −1,8 |
+
+**Décision selon la règle fixée : aucune protection n'est retenue, pour aucun compte.**
+- Phidias et EOD : le stop du RSI(2) (C) gagne sur 2011 - 2022, mais s'effondre sur 2023 - 2026. Il est refusé à la
+  vérification.
+- Trail : rien ne bat A de 3 points sur 2011 - 2022.
+
+**Lecture.**
+- Le gain du RSI(2) vient justement des trades qui baissent d'abord puis rebondissent. Le couper pendant la
+  baisse supprime le rebond :
+  - en 2026, le stop C coupe le trade de juin (5 au 11 juin) et celui de juillet (24 au 30 juillet) avant leur
+    rebond ;
+  - avec n'importe laquelle des protections, aucun départ d'avril à septembre 2026 ne valide avant le 25 septembre.
+- Le coupe-circuit B évite des pertes sur 2023 - 2026 chez DayTraders (Trail : 14,5 % perdus au lieu de 23,5 %).
+  Mais il fait moins bien que A sur 2011 - 2022. La règle ne le retient donc pas. On peut le suivre en virtuel,
+  sans l'adopter.
+- 2011 - 2022 : à 1 MNQ, le NQ valait 2 000 à 16 000 points, les gains en dollars étaient bien plus petits.
+  70 % des challenges n'y sont pas finis en 252 séances, ce qui laisse peu d'information pour choisir.
+- **Sur 2023 - 2026 (zone non filtrée + RSI(2), sans protection), DayTraders Trail fait au moins aussi bien que
+  Phidias** :
+  - Trail : 68,7 % réussis, 23,5 % perdus, médiane de 109 séances ;
+  - Phidias : 65,1 % réussis, 27,1 % perdus, médiane de 158 séances.
+  Le moins bon résultat de DayTraders sur avril - septembre 2026 tient à une seule période de six mois (la règle
+  des 50 % après le 11 juin, puis le 29 juillet avant le blocage de la limite).
+- Avec le compte EOD de DayTraders, la limite de 1 250 $ par jour fait perdre plus souvent (34,9 %).
