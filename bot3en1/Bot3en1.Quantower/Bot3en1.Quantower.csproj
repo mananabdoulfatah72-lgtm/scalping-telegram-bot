@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Strategie Quantower. Compilee sur le PC de l'utilisateur par installer.ps1, contre la bibliotheque de Quantower
+       (TradingPlatform.BusinessLayer.dll, livree avec Quantower ; le chemin est passe par QuantowerBin). -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Bot3en1</AssemblyName>
+    <RootNamespace>Bot3en1</RootNamespace>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <QuantowerBin Condition="'$(QuantowerBin)' == ''">C:\Quantower\TradingPlatform\bin</QuantowerBin>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Bot3en1.Core\*.cs" />
+    <Reference Include="TradingPlatform.BusinessLayer">
+      <HintPath>$(QuantowerBin)\TradingPlatform.BusinessLayer.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

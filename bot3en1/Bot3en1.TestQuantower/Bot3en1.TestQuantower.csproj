@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Test hors Quantower : l'adaptateur compile contre une imitation minimale de l'API Quantower (Stubs.cs) et joue
+       des journees reelles, transaction par transaction, pour comparer ses decisions au rejeu verifie. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Bot3en1.Core\*.cs" />
+    <Compile Include="..\Bot3en1.Quantower\Bot3en1Strategy.cs" />
+  </ItemGroup>
+</Project>
