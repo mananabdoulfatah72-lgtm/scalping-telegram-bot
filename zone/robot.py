@@ -360,6 +360,12 @@ def rsi2(jours, O, H, L, C, P, ech):
     masque = np.arange(N)[None, :] < dd[:, None]
     Hx = np.where(masque, H[lig], -np.inf).max(axis=1)
     Lx = np.where(masque, L[lig], np.inf).min(axis=1)
+    # creux d'une position tenue d'une decision a la suivante : aussi la fin de la seance precedente apres sa decision
+    # (15 h 50 - 16 h) et les seances sautees entre les deux (revue du 3 octobre 2026 : une baisse apres 15 h 50 n'etait
+    # vue nulle part, le 29 juillet 2026 par exemple). La nuit n'est pas dans les barres.
+    for i in range(1, len(lig)):
+        a, b = lig[i - 1], lig[i]
+        Lx[i] = min(Lx[i], np.nanmin(L[a, dd[i - 1]:]), np.nanmin(L[a + 1:b]) if b > a + 1 else np.inf)
     seg = np.cumsum(ech)[lig]
     roule = np.r_[seg[1:] != seg[:-1], False]               # la seance suivante est sur un autre contrat
     n = len(idx)
@@ -481,7 +487,11 @@ def filtre_delta(trades, derniere_date):
         try:
             cout = float(client.metadata.get_cost(**args))
             if cout > PLAFOND_FENETRE or depense + cout > BUDGET_FILTRE_MOIS:
-                ligne.update(cout=0.0, garde="", statut=f"non mesure : budget (deja {depense:.2f} $ ce mois, fenetre {cout:.3f} $)")
+                # pas enregistre : il reste a mesurer (revue du 3 octobre 2026 : enregistre sans decision, le bot 3 en 1
+                # le prenait comme garde, et il n'etait jamais remesure)
+                print(f"Filtre delta {date} {heure} : hors budget (deja {depense:.2f} $ ce mois, fenetre {cout:.3f} $),"
+                      " mesure plus tard")
+                continue
             else:
                 df = client.timeseries.get_range(**args).to_df()
                 depense += cout
@@ -676,13 +686,64 @@ def une_journee(etat, x, date, fixe=None):
     return ligne
 
 
-def jouer_combine(d, trades, filtre):
+def valeur_combine(minutes, trades, garde):
+    """Bot 3 en 1 minute par minute, pour 1 MNQ par source : par seance, gain des trades de zone gardes, gain total
+    (solde de fin de seance, position du RSI(2) comptee a la derniere cloture) et pire moment de la seance par rapport au
+    solde de la veille. garde : {(date, heure de decision): "oui"/"non"} ; un trade sans "oui" n'est pas pris
+    (jouer_combine ne joue une seance que si tous ses trades ont leur decision). Revue du 3 octobre 2026 : remplace
+    l'approximation du creux (pire de la zone seule, ou min(0, gain des trades gardes), plus creux du RSI(2) jusqu'a
+    15 h 50), qui donnait 414 $ de marge le 29 juillet 2026 au lieu de 50 $."""
+    jours, O, H, L, C, P, V, ech = tableaux(minutes)
+    r, _ = rsi2(jours, O, H, L, C, P, ech)
+    O, H, L, C = (pd.DataFrame(a).bfill(axis=1).to_numpy() for a in (O, H, L, C))   # minutes avant la 1re transaction
+    dec, voulu = {}, {}
+    if r is not None:
+        derniere = N - 1 - np.argmax(P[:, ::-1], axis=1)
+        for j, x in r.iterrows():
+            i = int(np.searchsorted(jours, j))
+            dec[i], voulu[i] = int(derniere[i] - 9), int(x["pos_rsi2"])
+    cote = (1.0 / PT + 0.25) * PT                           # $ par ordre du RSI(2) : 1 $ + 1 tick
+    cash, rp, re, veille, out = 0.0, 0, 0.0, 0.0, {}
+    for i, j in enumerate(jours):
+        date = str(pd.Timestamp(j).date())
+        entrees = {}
+        for texte in trades.get(j, []):
+            x = MOTIF_ZONE.match(texte)
+            if x:
+                me = int(x.group(2)) * 60 + int(x.group(3)) - 570
+                ms = min(int(x.group(5)) * 60 + int(x.group(6)) - 570, N - 1)
+                if garde.get((date, f"{(570 + me) // 60}h{(570 + me) % 60:02d}")) == "oui":
+                    entrees[me] = (ms, 1 if x.group(1) == "achat" else -1)
+        zp, ze, fin_z, zone, pire = 0, 0.0, -1, 0.0, 0.0
+        for t in range(N):
+            if dec.get(i) == t and voulu[i] != rp:          # RSI(2) : ordre a l'ouverture de la minute de decision
+                if rp:
+                    cash += (O[i, t] - re) * PT - cote
+                    rp = 0
+                else:
+                    cash -= cote
+                    rp, re = 1, O[i, t]
+            n = zp + rp
+            a = cash - PT * (zp * ze + rp * re)              # valeur du compte = a + PT * n * prix
+            bas = a + PT * n * (L[i, t] if n > 0 else H[i, t]) if n else a
+            pire = min(pire, bas - veille)
+            if zp and t == fin_z:                            # zone : sortie puis entree a la cloture de la minute
+                g = (zp * (C[i, t] - ze) - COUT) * PT
+                cash, zone, zp = cash + g, zone + g, 0
+            if t in entrees and not zp:
+                (fin_z, zp), ze = entrees[t], C[i, t]
+        eod = cash + rp * (C[i, N - 1] - re) * PT
+        out[pd.Timestamp(j)] = (zone, eod - veille, min(pire, eod - veille, 0.0))
+        veille = eod
+    return pd.DataFrame.from_dict(out, orient="index", columns=["zone", "total", "pire"])
+
+
+def jouer_combine(d, trades, filtre, minutes):
     """Bot 3 en 1 : zone de bruit filtree par le delta des 30 minutes (H1) + RSI(2), TAILLE_COMBINE MNQ chacun, sur son
     propre challenge 50K virtuel depuis DEBUT_COMBINE. Le delta est TOUJOURS le vrai (transactions Databento,
     filtre_delta.csv) : une seance dont un trade de zone n'est pas encore mesure attend, et les suivantes aussi (le compte
     se joue dans l'ordre). Quand Databento revient, filtre_delta mesure les trades en retard et le bot rattrape tout seul.
-    Les jours ou le filtre ecarte des trades, le creux du jour est approche par min(0, gain des trades gardes).
-    Renvoie (etat, lignes jouees, seances en attente)."""
+    Gain et creux du jour minute par minute (valeur_combine). Renvoie (etat, lignes jouees, seances en attente)."""
     if ETAT_C.exists():
         etat = json.loads(ETAT_C.read_text())
     else:
@@ -694,13 +755,14 @@ def jouer_combine(d, trades, filtre):
         mesures = {(str(r["date"]), str(r["heure"])): r for r in filtre.to_dict("records")}
     jours = [j for j in d.index if j > pd.Timestamp(etat["derniere_date"]) and str(j.date()) >= DEBUT_COMBINE]
     lignes, attente = [], 0
+    vc = valeur_combine(minutes, trades, {k: str(r.get("garde")) for k, r in mesures.items()}) if jours else None
     for k, j in enumerate(jours):
         date, x = str(j.date()), d.loc[j]
         zt = trades_zone_du_jour(trades.get(j, []))
         gain, ecartes, forces, complet = 0.0, 0, 0, True
         for m, sens, g in zt:
             r = mesures.get((date, f"{(570 + m) // 60}h{(570 + m) % 60:02d}"))
-            if r is None:
+            if r is None or str(r.get("garde")) not in ("oui", "non"):     # pas de decision du vrai delta : on attend
                 complet = False
                 break
             if str(r.get("garde")) == "non":
@@ -710,8 +772,11 @@ def jouer_combine(d, trades, filtre):
         if not complet:
             attente = len(jours) - k
             break
-        y = {"gain": gain, "pire": float(x["pire"]) if not ecartes else min(0.0, gain), "risque1": float(x["risque1"]),
-             "rebond": 0.0, "gain_rsi2": float(x.get("gain_rsi2", 0.0)), "pire_rsi2": float(x.get("pire_rsi2", 0.0)),
+        v = vc.loc[j] if j in vc.index else pd.Series({"zone": gain, "total": gain, "pire": min(0.0, gain)})
+        assert abs(v["zone"] - gain) < 0.01, (date, v["zone"], gain)
+        # une_journee additionne zone + RSI(2) : la valeur exacte du jour est mise en entier dans la zone pour le creux
+        y = {"gain": float(v["zone"]), "pire": float(v["pire"]), "risque1": float(x["risque1"]), "rebond": 0.0,
+             "gain_rsi2": float(v["total"] - v["zone"]), "pire_rsi2": 0.0,
              "risque_rsi2": float(x.get("risque_rsi2", RISQUE_RSI2_REF)), "pos_rsi2": int(x.get("pos_rsi2", 0))}
         ligne = une_journee(etat, y, date, fixe=TAILLE_COMBINE)
         ligne.update(trades_zone=len(zt), trades_ecartes=ecartes, non_mesures=forces)
@@ -978,7 +1043,7 @@ def main():
         lignes.append(une_journee(etat, x, str(date.date())))
         etat["derniere_date"] = str(date.date())
     filtre, filtre_neuf, filtre_attente = filtre_delta(trades, etat["derniere_date"])
-    etat_c, lignes_c, attente_c = jouer_combine(d, trades, filtre)
+    etat_c, lignes_c, attente_c = jouer_combine(d, trades, filtre, minutes)
     niv = niveaux(minutes, risque_demain)
     f_niv = DOSSIER / "niveaux.json"
     ancien_niv = json.loads(f_niv.read_text()) if f_niv.exists() else None

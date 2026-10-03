@@ -331,8 +331,14 @@ Demande de l'utilisateur : réunir les trois idées dans un seul bot et le lance
 - Pourquoi pas d'approximation : rejouée d'avril à septembre 2026, l'approximation par le mouvement du prix
   sur 30 minutes (P4 de `filtre_h1/`) n'écarte que 12 des 20 trades écartés par le vrai delta. Elle rate ceux
   des 27 et 28 juillet, et le challenge à 1 MNQ est perdu le 29 juillet (avec le vrai delta : réussi).
-- Les jours où le filtre écarte des trades, le pire moment du jour est approché par min(0, gain des trades
-  gardés).
+- Gain et pire moment de chaque séance calculés minute par minute (`valeur_combine`) : trades de zone gardés et
+  position du RSI(2) ensemble, solde du jour avec le RSI(2) compté à la dernière clôture. Revue du 3 octobre
+  2026 : l'ancienne approximation (pire moment de la zone seule, ou min(0, gain des trades gardés), plus le creux
+  du RSI(2) jusqu'à 15 h 50 seulement) annonçait 414 $ de marge le 29 juillet 2026 au lieu de 50 $.
+- Un trade que le budget Databento empêche de mesurer n'est plus enregistré : il reste à mesurer et la séance
+  attend. Avant la revue, il était compté comme gardé et jamais remesuré.
+- Compte principal (zone + RSI(2)) : le creux du RSI(2) compte aussi la fin de la séance précédente après
+  15 h 50 et les séances sautées. Rejoué sur avril - septembre 2026 : mêmes événements qu'avant la correction.
 - Vérifié hors ligne sur septembre 2026 : même résultat que l'analyse (+1 003 $ jusqu'au 25 septembre).
 - Rejeu d'avril à septembre 2026, 1 MNQ chacun (mois où le filtre a été trouvé, donc flatteur) : challenge
   réussi le 4 août pour un départ en avril ou en mai, le 23 septembre pour un départ en juin. Marge la plus
