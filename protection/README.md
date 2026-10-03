@@ -227,3 +227,45 @@ lieu de 249 $). **Pas retenue.**
 - Sur les départs de 2025, il fait mieux sur les deux tableaux (77 % de comptes avec retrait, 7 % de perdus).
 - C'est à l'utilisateur de choisir s'il accepte ce compromis : il reçoit plus d'argent, mais doit plus souvent
   racheter un challenge après avoir retiré.
+
+## Piste 5 : choisir le compte qui va au bot (règles fixées le 3 octobre 2026, avant le calcul)
+
+**Pourquoi.** L'utilisateur refuse le bilan précédent : un seul challenge, des retraits rapides, zéro
+intervention, les trois stratégies. Les autres marchés ont déjà été testés et rejetés (`zone_multi/` ; RSI(2) sur
+ES échoué de peu dans `tournoi8/`). On garde donc le bot tel quel (1 MNQ par source) et on cherche le compte
+DayTraders dont les règles lui vont le mieux. Ce n'est pas un réglage de la stratégie : seules les règles du compte
+changent.
+
+**Comptes comparés** (règles relevées par recherche le 3 octobre 2026, à confirmer avec le support) :
+1. **Trail 50K puis Pro** : le résultat de la piste 2, en référence.
+2. **S2L Core 50K** (229 $) : une évaluation, puis un vrai compte de courtage.
+   - Évaluation : objectif +3 000 $ ; limite de perte = plus haut atteint en temps réel − 2 000 $, bloquée à
+     50 000 $ ; au moins 8 jours à +200 $ ; meilleur jour ≤ 25 % du gain.
+   - Compte réel : même limite, bloquée à 50 000 $ dès que le compte a atteint 52 000 $. Pas de règle de
+     régularité. À chaque clôture, si le solde dépasse 52 500 $, tout ce qui dépasse 52 000 $ est retiré ; le
+     trader en reçoit 80 %.
+3. **S2F 50K** (570 $, environ 57 $ avec une réduction) : financé tout de suite, sans évaluation.
+   - Limite de perte = plus haut solde de fin de journée − 2 500 $, bloquée à 50 000 $.
+   - Limite par jour de 1 250 $ sous la clôture de la veille. Elle est « douce » : le bot ferme tout et ne trade
+     plus de la journée, le compte continue.
+   - Retrait possible si toutes ces conditions sont réunies :
+     - au moins 10 jours à +200 $ depuis le dernier retrait ;
+     - meilleur jour ≤ 20 % du gain depuis le dernier retrait ;
+     - gain depuis le dernier retrait d'au moins 3 500 $ (premier retrait), puis 3 000 $, puis 2 500 $ ;
+   - montant : min(2 000 $, solde − 51 000 $), 100 % pour le trader.
+   - Ces règles de retrait sont les moins sûres : le S2F n'est montré qu'à titre **descriptif**.
+
+**Variantes déduites des chiffres des règles, pas des données** :
+- S2L, évaluation avec un plafond du jour à 750 $ (25 % de l'objectif de 3 000 $), puis le compte réel sans
+  plafond.
+- S2F avec un plafond du jour à 500 $ (20 % du retrait de 2 500 $).
+
+**Mesures**, sur les challenges de 2023 - septembre 2025 (un départ sur deux, 12 mois de suivi complets), et sur
+ceux de 2025 à part :
+- part des challenges réussis ;
+- part avec au moins un retrait dans les 12 mois qui suivent l'achat, et argent reçu en moyenne sur ces 12 mois ;
+- délai médian jusqu'au premier retrait, depuis l'achat ;
+- part des comptes financés ou réels perdus.
+
+**Ce qui est publié** : tout, pour que l'utilisateur choisisse. Aucune variante n'est « retenue », c'est une
+comparaison de comptes. Le prix de chaque compte est retiré de l'argent reçu (Trail 75 $, S2L 229 $, S2F 57 $).
