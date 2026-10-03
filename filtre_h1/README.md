@@ -148,3 +148,28 @@ ressemble pas au vrai.
 delta du contrat NQ. Le filtre H1 reste confirmé seulement sur avril - octobre 2026 (coffre t = 2,34, 5 trades
 écartés). Pour le tester sur des années, il faut le vrai côté agresseur des transactions NQ : Databento (compte
 à débloquer), ou l'historique tick par tick de la plateforme de l'utilisateur quand il aura un compte.
+
+## Version Rithmic : les transactions exportées de Quantower (règles fixées le 3 octobre 2026, avant toute donnée)
+
+Databento étant bloqué, on prend les transactions du NQ que Rithmic fournit dans Quantower. Chaque transaction
+y porte son côté agresseur. L'utilisateur les exporte avec la stratégie « Export transactions NQ »
+(`bot3en1/Bot3en1.Quantower/ExportTransactions.cs`), installée par le même `installer.bat` que le bot. On ne sait
+pas encore combien de mois Rithmic garde.
+
+- **Données** : pour chaque minute de 9 h 30 à 16 h (heure de New York), le volume acheteur agressif, le volume
+  vendeur agressif et le volume sans côté. Un fichier CSV par contrat exporté.
+- **Validation de la source** :
+  - sur les séances aussi présentes dans `orderflow/` (Databento, avril - octobre 2026), le signe du delta des
+    30 minutes de chaque trade de zone doit être le même que celui de Databento dans **au moins 95 %** des cas ;
+  - sinon la source est refusée et le test n'est que descriptif.
+- **Échantillon du test** : les trades de zone (robot V1, mêmes barres que le backtest) des séances mesurées,
+  **en dehors du 1er avril - 2 octobre 2026** (déjà utilisé pour trouver et confirmer le filtre).
+- **Règle** : exactement celle du filtre H1 : gardé si le signe du delta des 30 minutes est celui du trade (delta
+  nul : écarté). Une fenêtre dont plus de 10 % du volume n'a pas de côté connu est exclue.
+- **Décision** :
+  - elle est prise une seule fois, quand **150 trades** au moins sont mesurés (environ un an de séances) ;
+  - le filtre est confirmé si les trades gardés battent les trades écartés avec un **t ≥ 2** (Welch), et si la
+    zone filtrée gagne plus que la zone seule ;
+  - avant 150 trades, le script publie un point d'étape descriptif, sans décision. Il se relance quand de nouveaux
+    mois sont exportés, avec les mêmes règles.
+- **Script** : `filtre_h1/test_rithmic.py`.
