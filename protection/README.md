@@ -149,3 +149,16 @@ RSI(2), qui peut baisser plusieurs jours avant de rebondir.
 - Sources des règles (sites d'avis et pages d'aide citées par les moteurs de recherche ; le site de DayTraders
   est bloqué depuis cet environnement) : 8 jours, 30 %, 2 000 $, 500 $, coussin de 1 000 $, 100 %. Ces règles
   sont à vérifier avant l'achat.
+
+## Piste 3 : 2 MNQ sur le compte financé une fois la limite bloquée (fixée le 3 octobre 2026, avant le calcul)
+
+Fixée après avoir vu que la phase financée rapporte peu à 1 MNQ (résultat de la piste 2 ci-dessous), mais avant
+tout calcul de cette variante.
+- Challenge Trail 50K : inchangé, 1 MNQ par source.
+- Compte Pro : 1 MNQ par source tant que la limite n'est pas bloquée. Dès que le compte a atteint +2 500 $ (limite
+  bloquée à 50 000 $), 2 MNQ par source pour chaque nouveau trade (le RSI(2) passe à 2 MNQ à sa prochaine entrée).
+- Mêmes règles de retrait que la piste 2.
+- Jugée sur les challenges de 2023 - septembre 2025 : retenue si le montant moyen reçu dans les 12 mois après
+  l'achat du challenge augmente, sans que la part des comptes Pro perdus dépasse 40 %.
+- Descriptif : la même chose si un jour qualifiant est simplement un jour avec au moins un trade (au lieu de
+  +200 $), car les sources ne sont pas d'accord sur ce point.
