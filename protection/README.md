@@ -119,3 +119,33 @@ Score = % réussis − % perdus, challenges suivis jusqu'à 252 séances.
   Le moins bon résultat de DayTraders sur avril - septembre 2026 tient à une seule période de six mois (la règle
   des 50 % après le 11 juin, puis le 29 juillet avant le blocage de la limite).
 - Avec le compte EOD de DayTraders, la limite de 1 250 $ par jour fait perdre plus souvent (34,9 %).
+
+## Piste 2 : « zone d'abord », et la phase financée (règles fixées le 3 octobre 2026, avant le calcul)
+
+**Pourquoi.** L'utilisateur ne veut pas payer deux challenges dans l'année. Chez DayTraders Trail, la limite de
+perte monte avec le plus haut du compte jusqu'à ce que le compte atteigne +2 500 $. Ensuite, elle reste bloquée
+à 50 000 $ (le « coussin »). Les comptes perdus le sont surtout avant ce blocage, souvent pendant un trade du
+RSI(2), qui peut baisser plusieurs jours avant de rebondir.
+
+**Variante Z (une seule, fixée avant le calcul) :**
+- la zone (filtrée quand le vrai delta existe) trade dès le premier jour ;
+- le RSI(2) n'ouvre une position qu'une fois le compte monté à +2 500 $ au-dessus du départ, valeur mesurée à
+  la décision de 15 h 50. Une fois ce niveau atteint, le RSI(2) reste autorisé jusqu'à la fin du challenge.
+- Comptes, départs et jugement : exactement ceux de la section précédente. Choix sur 2011 - 2022 (score + 3 points
+  au moins), vérification sur 2023 - 2026 (au moins aussi bien que A).
+- Publié aussi : les départs de 2025 à part (l'année la plus proche d'aujourd'hui), avec un suivi complet de 252
+  séances.
+
+**Phase financée DayTraders (compte Pro, après un challenge Trail 50K réussi), rejouée sans rien changer au bot :**
+- part le lendemain de la réussite, à 50 000 $ ;
+- limite de perte : plus haut atteint en temps réel − 2 500 $, bloquée à 50 000 $ ;
+- retrait possible à la clôture si toutes ces conditions sont réunies :
+  - au moins 8 jours qualifiants depuis le dernier retrait (jour qualifiant : +200 $ ou plus) ;
+  - meilleur jour ≤ 30 % du gain depuis le dernier retrait ;
+  - solde ≥ 51 000 $ + 500 $ ;
+- montant du retrait : min(2 000 $, solde − 51 000 $), 100 % pour le trader ;
+- le compte est suivi 252 séances au plus après la réussite. Publié : part des comptes qui font au moins un
+  retrait, montant total reçu, séances jusqu'au premier retrait, part des comptes perdus.
+- Sources des règles (sites d'avis et pages d'aide citées par les moteurs de recherche ; le site de DayTraders
+  est bloqué depuis cet environnement) : 8 jours, 30 %, 2 000 $, 500 $, coussin de 1 000 $, 100 %. Ces règles
+  sont à vérifier avant l'achat.
