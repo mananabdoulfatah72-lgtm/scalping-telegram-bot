@@ -1,0 +1,6 @@
+Piste 4 : compte Pro DayTraders avec plafond du jour a 500 $, challenges Trail 50K (un depart sur deux, 12 mois de suivi)
+2023 - sept. 2025 | sans plafond (piste 2) : challenges 309, reussis 83% ; compte Pro sur 252 seances : perdu 29%, au moins un retrait 55%, recu moyen 957 $, 1er retrait apres 131 seances ; 12 mois apres l'achat : recu moyen 249 $ par challenge, au moins un retrait 18%
+2023 - sept. 2025 | plafond 500 $ : challenges 309, reussis 83% ; compte Pro sur 252 seances : perdu 45%, au moins un retrait 97%, recu moyen 2,830 $, 1er retrait apres 86 seances ; 12 mois apres l'achat : recu moyen 1,081 $ par challenge, au moins un retrait 58%
+2025 | sans plafond (piste 2) : challenges 87, reussis 49% ; compte Pro sur 252 seances : perdu 51%, au moins un retrait 0%, recu moyen 0 $, 1er retrait apres nan seances ; 12 mois apres l'achat : recu moyen 0 $ par challenge, au moins un retrait 0%
+2025 | plafond 500 $ : challenges 87, reussis 49% ; compte Pro sur 252 seances : perdu 7%, au moins un retrait 77%, recu moyen 1,637 $, 1er retrait apres 83 seances ; 12 mois apres l'achat : recu moyen 546 $ par challenge, au moins un retrait 25%
+-> plafond 500 $ : PAS RETENU (recu sur 12 mois 249 -> 1,081 $, comptes Pro perdus 45%, seuil 40 %)

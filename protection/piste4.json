@@ -1,0 +1,38 @@
+{
+ "2023 - sept. 2025 | sans plafond (piste 2)": {
+  "reussis": 0.8349514563106796,
+  "perdu_pro": 0.2868217054263566,
+  "retrait": 0.5503875968992248,
+  "recu_moyen": 957.3003875968992,
+  "premier_retrait_seances": 131.0,
+  "recu_12_mois": 249.13754045307442,
+  "retrait_12_mois": 0.18446601941747573
+ },
+ "2023 - sept. 2025 | plafond 500 $": {
+  "reussis": 0.8349514563106796,
+  "perdu_pro": 0.44573643410852715,
+  "retrait": 0.9651162790697675,
+  "recu_moyen": 2830.294573643411,
+  "premier_retrait_seances": 86.0,
+  "recu_12_mois": 1081.322006472492,
+  "retrait_12_mois": 0.5760517799352751
+ },
+ "2025 | sans plafond (piste 2)": {
+  "reussis": 0.4942528735632184,
+  "perdu_pro": 0.5116279069767442,
+  "retrait": 0.0,
+  "recu_moyen": 0.0,
+  "premier_retrait_seances": null,
+  "recu_12_mois": 0.0,
+  "retrait_12_mois": 0.0
+ },
+ "2025 | plafond 500 $": {
+  "reussis": 0.4942528735632184,
+  "perdu_pro": 0.06976744186046512,
+  "retrait": 0.7674418604651163,
+  "recu_moyen": 1637.4651162790697,
+  "premier_retrait_seances": 83.0,
+  "recu_12_mois": 545.7873563218391,
+  "retrait_12_mois": 0.25287356321839083
+ }
+}

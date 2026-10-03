@@ -178,3 +178,52 @@ financé de février 2026 arrive à +3 700 $ en septembre sans pouvoir retirer :
 - Challenge : inchangé (1 MNQ, sans plafond).
 - Retenue si, sur les challenges de 2023 - septembre 2025, le montant moyen reçu dans les 12 mois après l'achat
   augmente, sans que la part des comptes Pro perdus dépasse 40 %. Les départs de 2025 sont publiés à part.
+
+## Résultats des pistes 2, 3 et 4 (3 octobre 2026) : `piste2.txt`, `piste3.txt`, `piste4.txt`
+
+**Contrôle** : la variante sans seuil redonne les issues de la protection A sur les 660 départs (660/660). Après
+l'ajout de la taille (piste 3) et du plafond (piste 4), la piste 2 redonne exactement les mêmes résultats.
+
+**Piste 2, variante Z (zone d'abord)** : moins bonne partout, **pas retenue**.
+
+| | 2011 - 2022 : score A / Z | 2023 - 2026 : score A / Z | Départs 2025 : réussis A / Z |
+|---|---|---|---|
+| Phidias Premium | +16,4 / +12,3 | +38,0 / +10,8 | 52 % / 18 % |
+| DayTraders Trail | +29,8 / +17,0 | +45,2 / +21,7 | 49 % / 29 % |
+| DayTraders EOD | +18,6 / +17,0 | +25,9 / +0,6 | 18 % / 0 % |
+
+Sans le RSI(2) au début, le compte monte trop lentement et la zone seule finit par le perdre.
+
+**Phase financée DayTraders (compte Pro), bot tel quel, 1 MNQ** :
+- Challenges de 2023 - septembre 2025 : 83 % réussis. Ensuite, sur un an de compte Pro :
+  - 55 % font au moins un retrait, 29 % sont perdus ;
+  - 957 $ reçus en moyenne ;
+  - premier retrait après 131 séances (médiane).
+- Sur les 12 mois qui suivent l'achat du challenge : **249 $ reçus en moyenne par challenge acheté**, et un
+  retrait au moins dans 18 % des cas seulement.
+- Départs de 2025 : 49 % réussis, puis **aucun retrait**, et 51 % des comptes Pro perdus.
+- Ce qui bloque, c'est la règle des 30 %. Un grand jour du RSI(2), comme le 11 juin 2026 (+2 090 $), empêche tout
+  retrait pendant des mois. La définition du jour qualifiant (+200 $ ou tout jour) ne change rien.
+
+**Piste 3 (2 MNQ après le blocage)** : plus de comptes Pro perdus (53 %) et moins d'argent sur 12 mois (152 $ au
+lieu de 249 $). **Pas retenue.**
+
+**Piste 4 (plafond du jour à 500 $ sur le compte Pro)** :
+
+| | Sans plafond | Plafond 500 $ |
+|---|---|---|
+| 2023 - sept. 2025 : comptes Pro avec au moins un retrait | 55 % | **97 %** |
+| reçu moyen par compte Pro (un an) | 957 $ | **2 830 $** |
+| premier retrait (médiane) | 131 séances | **86 séances** |
+| comptes Pro perdus (un an) | 29 % | 45 % |
+| **reçu dans les 12 mois après l'achat, par challenge** | 249 $ | **1 081 $** |
+| Départs 2025 : comptes Pro avec au moins un retrait | 0 % | 77 % |
+| Départs 2025 : comptes Pro perdus | 51 % | 7 % |
+| Départs 2025 : reçu dans les 12 mois, par challenge | 0 $ | 546 $ |
+
+- **Selon la règle fixée, le plafond n'est pas retenu** : 45 % de comptes Pro perdus dépassent le seuil de 40 %.
+- Il rapporte pourtant 4 fois plus dans l'année. La plupart des comptes Pro perdus avec le plafond l'ont été
+  **après** des retraits.
+- Sur les départs de 2025, il fait mieux sur les deux tableaux (77 % de comptes avec retrait, 7 % de perdus).
+- C'est à l'utilisateur de choisir s'il accepte ce compromis : il reçoit plus d'argent, mais doit plus souvent
+  racheter un challenge après avoir retiré.

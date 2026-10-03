@@ -1,0 +1,66 @@
+{
+ "2023 - sept. 2025 | 1 MNQ (piste 2)": {
+  "reussis": 0.8349514563106796,
+  "perdu_pro": 0.2868217054263566,
+  "retrait": 0.5503875968992248,
+  "recu_moyen": 957.3003875968992,
+  "recu_12_mois": 249.13754045307442,
+  "retrait_12_mois": 0.18446601941747573
+ },
+ "2023 - sept. 2025 | 2 MNQ apres blocage": {
+  "reussis": 0.8349514563106796,
+  "perdu_pro": 0.5348837209302325,
+  "retrait": 0.47674418604651164,
+  "recu_moyen": 833.2693798449612,
+  "recu_12_mois": 152.05016181229774,
+  "retrait_12_mois": 0.13592233009708737
+ },
+ "2023 - sept. 2025 | 1 MNQ, tout jour qualifie (descriptif)": {
+  "reussis": 0.8349514563106796,
+  "perdu_pro": 0.2868217054263566,
+  "retrait": 0.5503875968992248,
+  "recu_moyen": 957.3003875968992,
+  "recu_12_mois": 249.13754045307442,
+  "retrait_12_mois": 0.18446601941747573
+ },
+ "2023 - sept. 2025 | 2 MNQ, tout jour qualifie (descriptif)": {
+  "reussis": 0.8349514563106796,
+  "perdu_pro": 0.5348837209302325,
+  "retrait": 0.47674418604651164,
+  "recu_moyen": 833.2693798449612,
+  "recu_12_mois": 152.05016181229774,
+  "retrait_12_mois": 0.13592233009708737
+ },
+ "2025 | 1 MNQ (piste 2)": {
+  "reussis": 0.4942528735632184,
+  "perdu_pro": 0.5116279069767442,
+  "retrait": 0.0,
+  "recu_moyen": 0.0,
+  "recu_12_mois": 0.0,
+  "retrait_12_mois": 0.0
+ },
+ "2025 | 2 MNQ apres blocage": {
+  "reussis": 0.4942528735632184,
+  "perdu_pro": 1.0,
+  "retrait": 0.0,
+  "recu_moyen": 0.0,
+  "recu_12_mois": 0.0,
+  "retrait_12_mois": 0.0
+ },
+ "2025 | 1 MNQ, tout jour qualifie (descriptif)": {
+  "reussis": 0.4942528735632184,
+  "perdu_pro": 0.5116279069767442,
+  "retrait": 0.0,
+  "recu_moyen": 0.0,
+  "recu_12_mois": 0.0,
+  "retrait_12_mois": 0.0
+ },
+ "2025 | 2 MNQ, tout jour qualifie (descriptif)": {
+  "reussis": 0.4942528735632184,
+  "perdu_pro": 1.0,
+  "retrait": 0.0,
+  "recu_moyen": 0.0,
+  "recu_12_mois": 0.0,
+  "retrait_12_mois": 0.0
+ }
+}
