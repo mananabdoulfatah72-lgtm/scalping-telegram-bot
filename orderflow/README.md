@@ -208,3 +208,28 @@ du coffre, le filtre est confirmé si l'écart de gain par trade (gardés − é
 - **Prudence** : la confirmation repose sur 5 trades écartés dans le coffre, et 20 en tout. L'effet réel est
   probablement plus petit que celui mesuré. Le filtre doit être suivi en virtuel avec la zone avant
   d'être utilisé en vrai.
+
+## Le filtre H1 avec d'autres durées de delta (3 octobre 2026, descriptif)
+
+Question de l'utilisateur : le filtre marche-t-il sur toutes les durées ? Mêmes 97 trades de zone (avril -
+25 septembre 2026), même règle (gardé si le delta va dans le sens du trade), seule la durée change. C'est
+**descriptif** : la durée de 30 minutes avait été fixée avant le coffre, et les autres durées réutilisent les
+mêmes trades et les mêmes mois.
+
+| Durée du delta | Gardés | Écartés | Points gardés | Points écartés | t | Zone filtrée (1 MNQ) |
+|---|---|---|---|---|---|---|
+| 5 min | 56 | 41 | +25,3 | −7,3 | 1,14 | +2 836 $ |
+| 10 min | 58 | 39 | +17,7 | +2,4 | 0,53 | +2 052 $ |
+| 15 min | 66 | 31 | +28,6 | −24,7 | 2,15 | +3 772 $ |
+| 20 min | 72 | 25 | +20,9 | −15,5 | 1,52 | +3 015 $ |
+| **30 min** | 77 | 20 | +24,9 | −39,7 | **2,56** | **+3 830 $** |
+| 45 min | 74 | 23 | +23,6 | −27,2 | 1,98 | +3 494 $ |
+| 60 min | 77 | 20 | +22,7 | −31,4 | 2,14 | +3 499 $ |
+| 90 min | 74 | 23 | +22,4 | −23,5 | 1,82 | +3 322 $ |
+
+Zone seule : +2 241 $.
+- De 15 à 90 minutes, l'effet va dans le même sens et garde une taille voisine. Le choix de 30 minutes n'est
+  donc pas un réglage fragile.
+- Sur 5 et 10 minutes, l'effet est faible.
+- Limite : ce sont les mêmes 6 mois et les mêmes trades. Ces durées se recoupent et ne confirment pas le filtre
+  sur d'autres périodes. Ce test-là n'a toujours pas été fait, faute de vraies données d'avant avril 2026.
