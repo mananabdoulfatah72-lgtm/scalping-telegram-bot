@@ -9,6 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Bot3en1.Core\*.cs" />
-    <Compile Include="..\Bot3en1.Quantower\Bot3en1Strategy.cs" />
+    <Compile Include="..\Bot3en1.Quantower\*.cs" />
   </ItemGroup>
 </Project>
