@@ -1,6 +1,6 @@
 # Robot version 7 : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-10-01**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
+Mis a jour le **2026-10-02**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
 
 Regle : chaque fin de mois, les 5 actions technologie au meilleur rendement de 6 mois a 1 mois, 10 % du compte chacune, 50 % non investis.
 
@@ -8,22 +8,22 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **50,540 $** |
-| Gain depuis le depart | +540 $ (+1.1%) |
+| Solde virtuel | **50,749 $** |
+| Gain depuis le depart | +749 $ (+1.5%) |
 | Baisse depuis le plus haut | 0.0% |
 | Dernier reequilibrage | 2026-09-30 |
-| Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | en cours depuis le 2026-09-30 : +553 $ sur +5 000 $ (perdu a -5 000 $, ou -2 500 $ en un jour) |
+| Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | en cours depuis le 2026-09-30 : +762 $ sur +5 000 $ (perdu a -5 000 $, ou -2 500 $ en un jour) |
 
 ## Positions
 
 | Action | Montant | Part du compte |
 |---|---|---|
-| LRCX | 5,175 $ | 10.2% |
-| MU | 5,150 $ | 10.2% |
-| NOW | 5,139 $ | 10.2% |
-| CSCO | 5,051 $ | 10.0% |
-| AMD | 5,031 $ | 10.0% |
-| Non investi | 24,994 $ | 49.5% |
+| LRCX | 5,288 $ | 10.4% |
+| CSCO | 5,231 $ | 10.3% |
+| AMD | 5,180 $ | 10.2% |
+| MU | 5,045 $ | 9.9% |
+| NOW | 5,013 $ | 9.9% |
+| Non investi | 24,994 $ | 49.2% |
 
 ## Derniers ordres (2026-09-30, a la cloture, avant 12 $ de frais)
 
@@ -37,6 +37,7 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-10-02 | +209 $ | 50,749 $ |
 | 2026-10-01 | +553 $ | 50,540 $ |
 | 2026-09-30 | -12 $ | 49,988 $ |
 | 2026-09-29 | +0 $ | 50,000 $ |
