@@ -1,11 +1,11 @@
 # Robot multi-marches : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-10-01**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
+Mis a jour le **2026-10-02**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
 
 | Compte | Solde | Gain | Etat |
 |---|---|---|---|
-| Melange 50/50 (tendance + achat permanent) | 49,715 $ | -285 $ | ⚪ Trop tot pour juger |
-| Tendance seule | 50,111 $ | +111 $ | ⚪ Trop tot pour juger |
+| Melange 50/50 (tendance + achat permanent) | 49,925 $ | -75 $ | 🟡 Dans la zone normale |
+| Tendance seule | 50,347 $ | +347 $ | 🟡 Dans la zone normale |
 
 La zone bleue de chaque graphique montre ou tombaient 8 resultats sur 10 dans l'historique 2007-2026, au meme risque. Tant que la ligne reste dedans, le compte se comporte comme prevu. Des semaines negatives sont normales : il faut plusieurs mois pour juger.
 
@@ -13,31 +13,33 @@ La zone bleue de chaque graphique montre ou tombaient 8 resultats sur 10 dans l'
 
 Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, environ +9 %/an en moyenne, pire baisse -19 %, 3 annees sur 4 positives.
 
-**⚪ Trop tot pour juger : le compte vient de demarrer.**
+**🟡 Dans la zone normale : se comporte comme sur les 20 ans d'historique.**
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **49,715 $** (depart 50 000 $) |
-| Gain depuis le depart | -285 $ (-0.6%) |
-| Baisse depuis le plus haut | -0.6% |
-| Zone normale a ce stade (8 cas sur 10) | de -910 $ a +1,064 $ (moyenne +77 $) |
-| Challenge Phidias 50K virtuel | en cours : -285 $ sur +4 000 $, marge restante 2,215 $ |
+| Solde virtuel | **49,925 $** (depart 50 000 $) |
+| Gain depuis le depart | -75 $ (-0.1%) |
+| Baisse depuis le plus haut | -0.1% |
+| Zone normale a ce stade (8 cas sur 10) | de -976 $ a +1,156 $ (moyenne +90 $) |
+| Challenge Phidias 50K virtuel | en cours : -75 $ sur +4 000 $, marge restante 2,425 $ |
 
 ![Gain du compte et zone normale](courbe_melange.svg)
 
 | Contrat | Marche | Sens | Nombre |
 |---|---|---|---|
-| MET | Ether | Achat | 10 |
-| MCD | Dollar canadien | Achat | 4 |
-| 30Y | Taux 30 ans | Achat | 2 |
-| MES | S&P 500 | Achat | 1 |
-| 10Y | Taux 10 ans | Achat | 1 |
-| M6A | Dollar australien | Vente | 1 |
+| MET | Ether | Vente | 3 |
+| 10Y | Taux 10 ans | Achat | 2 |
+| M2K | Russell 2000 | Achat | 1 |
+| 30Y | Taux 30 ans | Achat | 1 |
+| M6A | Dollar australien | Achat | 1 |
+| MCD | Dollar canadien | Achat | 1 |
+| MBT | Bitcoin | Achat | 1 |
 
 <details><summary>10 derniers jours</summary>
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-10-02 | +285 $ | 49,925 $ |
 | 2026-10-01 | -14 $ | 49,715 $ |
 | 2026-09-30 | -37 $ | 49,728 $ |
 | 2026-09-29 | +15 $ | 49,765 $ |
@@ -52,31 +54,34 @@ Journal complet : [journal_melange.csv](journal_melange.csv)
 
 Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, environ +7 %/an en moyenne, pire baisse -23 %, 13 annees sur 20 positives.
 
-**⚪ Trop tot pour juger : le compte vient de demarrer.**
+**🟡 Dans la zone normale : se comporte comme sur les 20 ans d'historique.**
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **50,111 $** (depart 50 000 $) |
-| Gain depuis le depart | +111 $ (+0.2%) |
-| Baisse depuis le plus haut | -0.5% |
-| Zone normale a ce stade (8 cas sur 10) | de -932 $ a +1,043 $ (moyenne +55 $) |
-| Challenge Phidias 50K virtuel | en cours : +111 $ sur +4 000 $, marge restante 2,263 $ |
+| Solde virtuel | **50,347 $** (depart 50 000 $) |
+| Gain depuis le depart | +347 $ (+0.7%) |
+| Baisse depuis le plus haut | 0.0% |
+| Zone normale a ce stade (8 cas sur 10) | de -1,002 $ a +1,131 $ (moyenne +65 $) |
+| Challenge Phidias 50K virtuel | en cours : +347 $ sur +4 000 $, marge restante 2,500 $ |
 
 ![Gain du compte et zone normale](courbe.svg)
 
 | Contrat | Marche | Sens | Nombre |
 |---|---|---|---|
-| MET | Ether | Achat | 5 |
-| 10Y | Taux 10 ans | Achat | 4 |
+| MET | Ether | Achat | 7 |
+| 10Y | Taux 10 ans | Achat | 5 |
 | M2K | Russell 2000 | Achat | 1 |
 | 2YY | Taux 2 ans | Achat | 1 |
-| M6B | Livre sterling | Vente | 1 |
+| M6E | Euro | Vente | 1 |
+| M6A | Dollar australien | Vente | 1 |
+| MCD | Dollar canadien | Vente | 1 |
 | MSF | Franc suisse | Vente | 1 |
 
 <details><summary>10 derniers jours</summary>
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-10-02 | +259 $ | 50,347 $ |
 | 2026-10-01 | -237 $ | 50,111 $ |
 | 2026-09-30 | +27 $ | 50,347 $ |
 | 2026-09-29 | +28 $ | 50,320 $ |
