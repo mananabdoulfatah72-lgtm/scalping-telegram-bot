@@ -336,6 +336,9 @@ Demande de l'utilisateur : réunir les trois idées dans un seul bot et le lance
 - Vérifié hors ligne sur septembre 2026 : même résultat que l'analyse (+1 003 $ jusqu'au 25 septembre).
 - Rejeu d'avril à septembre 2026, 1 MNQ chacun (mois où le filtre a été trouvé, donc flatteur) : challenge
   réussi le 4 août pour un départ en avril ou en mai, le 23 septembre pour un départ en juin. Marge la plus
-  basse : 414 $, le 29 juillet 2026 (3 jours de baisse sur un trade du RSI(2)). À 2 MNQ, ce même 29 juillet
-  fait perdre le compte.
+  basse : **50 $**, le 29 juillet 2026 à 15 h 59 (3 jours de baisse sur un trade du RSI(2)). Corrigé le
+  3 octobre 2026 : le premier rejeu, à la journée, valorisait le RSI(2) à 15 h 50 et annonçait 414 $ ; rejoué
+  minute par minute, avec la limite surveillée en temps réel comme chez Phidias, la baisse continue jusqu'à
+  16 h. Les mouvements de la nuit ne sont pas dans les données : le compte a pu être perdu. À 2 MNQ, ce même
+  29 juillet fait perdre le compte.
 - Telegram, `TABLEAU_DE_BORD.md` et la page montrent son solde, sa marge et ses séances en attente.

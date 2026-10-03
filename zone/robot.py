@@ -800,7 +800,8 @@ def tableau(etat, journal, trades_du_jour, niv=None, filtre=None, combine=None):
                    "Demande de l'utilisateur du 2 octobre 2026 : la zone de bruit ne garde que les trades dont le delta des 30"
                    " minutes va dans leur sens, plus le RSI(2), 1 MNQ chacun, taille fixe. Rejeu d'avril a septembre 2026 (mois ou le"
                    " filtre a ete trouve, donc flatteur) : challenge reussi en 3 a 4 mois selon le mois de depart, marge la plus"
-                   " basse 414 $ le 29 juillet 2026. Le bot n'utilise que le vrai delta (transactions Databento) : sans lui, il se met"
+                   " basse 50 $ le 29 juillet 2026 a 15 h 59 (rejeu minute par minute du 3 octobre 2026 ; le premier rejeu, a la"
+                   " journee, disait 414 $). Le bot n'utilise que le vrai delta (transactions Databento) : sans lui, il se met"
                    " en pause et rattrape quand les donnees reviennent. Une approximation par le prix aurait fait perdre le challenge"
                    " le 29 juillet.", ""]
         if len(jc):
