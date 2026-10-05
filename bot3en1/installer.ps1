@@ -29,20 +29,46 @@ $plateformes = @(foreach ($r in $racines) {
     }
 }) | Sort-Object Bin -Unique
 if (-not $plateformes) { throw "Bibliotheque introuvable. Lance Quantower ou Optimus Flow une fois, puis relance ce script." }
-# 2. Kit .NET 8 (pour compiler), installe une seule fois
-if (-not (Get-Command dotnet -ErrorAction SilentlyContinue) -or -not ((dotnet --list-sdks) -match "^8\.")) {
-    Write-Host "Installation du kit .NET 8 (une seule fois)..."
-    winget install --id Microsoft.DotNet.SDK.8 --silent --accept-package-agreements --accept-source-agreements
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+# 2. Kit .NET de la bonne version (Quantower et Optimus Flow recents sont en .NET 10), installe une seule fois
+function Assurer-Kit([int]$v) {
+    $ok = $false
+    if (Get-Command dotnet -ErrorAction SilentlyContinue) { $ok = [bool]((dotnet --list-sdks) -match "^$v\.") }
+    if (-not $ok) {
+        Write-Host "Installation du kit .NET $v (une seule fois, quelques minutes)..."
+        winget install --id "Microsoft.DotNet.SDK.$v" --silent --accept-package-agreements --accept-source-agreements | Out-Host
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+    }
 }
-# 3. Pour chaque plateforme : compilation contre sa bibliotheque, copie dans ses strategies
+$projet = "$PSScriptRoot\Bot3en1.Quantower\Bot3en1.Quantower.csproj"
+# 3. Pour chaque plateforme : compilation contre sa bibliotheque et sa version de .NET, copie dans ses strategies
 foreach ($p in $plateformes) {
     Write-Host "Plateforme trouvee : $($p.Base)"
-    dotnet build "$PSScriptRoot\Bot3en1.Quantower\Bot3en1.Quantower.csproj" -c Release --no-incremental -p:QuantowerBin="$($p.Bin)" -nologo | Out-Host   # Out-Host : la sortie va aussi dans le journal
-    if ($LASTEXITCODE -ne 0) { throw "La compilation a echoue : envoie la fenetre a Claude." }
+    $tfm = "net8.0"
+    $cfg = Get-ChildItem -Path $p.Bin -Filter "*.runtimeconfig.json" -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($cfg) {
+        try { $t = (Get-Content $cfg.FullName -Raw | ConvertFrom-Json).runtimeOptions.tfm; if ($t -match '^net\d+\.\d+$') { $tfm = $t } } catch { }
+    }
+    $code = 1
+    for ($essai = 0; $essai -lt 2 -and $code -ne 0; $essai++) {
+        if ($essai -eq 1) {
+            # la bibliotheque demande une version plus recente de .NET (erreur CS1705) : on la lit dans l'erreur
+            $v = [regex]::Matches(($sortie -join "`n"), "System\.Runtime, Version=(\d+)\.0\.0\.0") | ForEach-Object { [int]$_.Groups[1].Value }
+            $max = ($v | Measure-Object -Maximum).Maximum
+            if (-not $max -or "net$max.0" -eq $tfm) { break }
+            $tfm = "net$max.0"
+            Write-Host "La plateforme demande $tfm : nouvel essai"
+        }
+        Write-Host "Version de .NET utilisee : $tfm"
+        Assurer-Kit ([int]($tfm -replace '^net(\d+)\..*$', '$1'))
+        Remove-Item -Recurse -Force "$PSScriptRoot\Bot3en1.Quantower\obj", "$PSScriptRoot\Bot3en1.Quantower\bin" -ErrorAction SilentlyContinue
+        dotnet restore $projet -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" | Out-Host
+        dotnet build $projet -c Release --no-restore -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" -nologo | Tee-Object -Variable sortie | Out-Host
+        $code = $LASTEXITCODE
+    }
+    if ($code -ne 0) { throw "La compilation a echoue : envoie le fichier installation_bot3en1.txt a Claude." }
     $dest = Join-Path $p.Base "Settings\Scripts\Strategies\Bot3en1"
     New-Item -ItemType Directory -Force -Path $dest | Out-Null
-    Copy-Item "$PSScriptRoot\Bot3en1.Quantower\bin\Release\net8.0\Bot3en1.dll" $dest -Force
+    Copy-Item "$PSScriptRoot\Bot3en1.Quantower\bin\Release\$tfm\Bot3en1.dll" $dest -Force
     Write-Host "Installe dans $dest" -ForegroundColor Green
 }
 New-Item -ItemType Directory -Force -Path "C:\Bot3en1" | Out-Null
