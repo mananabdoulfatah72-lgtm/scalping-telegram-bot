@@ -2,6 +2,10 @@
 # sous Windows. Lance par installer.bat (double-clic, ou glisser le dossier de la plateforme sur installer.bat).
 param([string]$Dossier = "")
 $ErrorActionPreference = "Stop"
+# tout ce qui s'affiche est aussi ecrit sur le bureau, pour pouvoir l'envoyer meme si la fenetre se ferme
+$journal = Join-Path ([Environment]::GetFolderPath("Desktop")) "installation_bot3en1.txt"
+try { Start-Transcript -Path $journal -Force | Out-Null } catch { }
+try {
 Write-Host "Bot 3 en 1 : installation dans Quantower / Optimus Flow" -ForegroundColor Cyan
 # 1. Plateformes installees et leur bibliotheque
 $noms = @("Quantower", "Optimus Flow", "OptimusFlow")
@@ -33,7 +37,7 @@ if (-not (Get-Command dotnet -ErrorAction SilentlyContinue) -or -not ((dotnet --
 # 3. Pour chaque plateforme : compilation contre sa bibliotheque, copie dans ses strategies
 foreach ($p in $plateformes) {
     Write-Host "Plateforme trouvee : $($p.Base)"
-    dotnet build "$PSScriptRoot\Bot3en1.Quantower\Bot3en1.Quantower.csproj" -c Release --no-incremental -p:QuantowerBin="$($p.Bin)" -nologo
+    dotnet build "$PSScriptRoot\Bot3en1.Quantower\Bot3en1.Quantower.csproj" -c Release --no-incremental -p:QuantowerBin="$($p.Bin)" -nologo | Out-Host   # Out-Host : la sortie va aussi dans le journal
     if ($LASTEXITCODE -ne 0) { throw "La compilation a echoue : envoie la fenetre a Claude." }
     $dest = Join-Path $p.Base "Settings\Scripts\Strategies\Bot3en1"
     New-Item -ItemType Directory -Force -Path $dest | Out-Null
@@ -42,3 +46,13 @@ foreach ($p in $plateformes) {
 }
 New-Item -ItemType Directory -Force -Path "C:\Bot3en1" | Out-Null
 Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1 ou Export transactions NQ (voir le guide)."
+Write-Host "INSTALLATION TERMINEE" -ForegroundColor Green
+}
+catch {
+    Write-Host ""
+    Write-Host "ERREUR : $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "Envoie a Claude le fichier installation_bot3en1.txt qui est sur ton bureau." -ForegroundColor Yellow
+}
+finally {
+    try { Stop-Transcript | Out-Null } catch { }
+}
