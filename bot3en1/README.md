@@ -19,7 +19,7 @@ Taille : 1 MNQ par source. La position nette sur MNQ est la somme des deux (zone
 | `Bot3en1.Quantower/` | L'adaptateur Quantower : lit les transactions du NQ, construit les minutes, appelle le moteur, aligne la position sur MNQ, envoie les messages Telegram. |
 | `Bot3en1.Replay/` | Rejeu de vérification sur des barres historiques. |
 | `Bot3en1.TestQuantower/` | Joue l'adaptateur, transaction par transaction, contre une imitation de Quantower. |
-| `installer.bat`, `installer.ps1` | Installation sur le PC (double-clic). |
+| `installer.bat`, `installer.ps1` | Installation sur le PC (double-clic) : dans Quantower et/ou Optimus Flow (une version de Quantower, gratuite avec la démo Optimus Futures). Si la plateforme n'est pas trouvée, glisser son dossier sur `installer.bat` ou coller son chemin quand le script le demande. |
 
 ## Vérifications faites (3 octobre 2026)
 
