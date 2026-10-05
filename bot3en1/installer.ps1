@@ -10,8 +10,9 @@ Write-Host "Bot 3 en 1 : installation dans Quantower / Optimus Flow" -Foreground
 # 1. Plateformes installees et leur bibliotheque
 $noms = @("Quantower", "Optimus Flow", "OptimusFlow")
 $lieux = @("C:\", "D:\", $env:USERPROFILE, $env:LOCALAPPDATA, $env:ProgramFiles, ${env:ProgramFiles(x86)},
-           "$env:USERPROFILE\Desktop", "$env:USERPROFILE\Documents") | Where-Object { $_ }
-$racines = @(foreach ($l in $lieux) { foreach ($n in $noms) { Join-Path $l $n } })
+           "$env:USERPROFILE\Desktop", "$env:USERPROFILE\Documents") | Where-Object { $_ -and (Test-Path $_) }
+# pas de Join-Path ici : il plante si un lecteur (ex. D:) n'existe pas
+$racines = @(foreach ($l in $lieux) { foreach ($n in $noms) { $l.TrimEnd('\') + '\' + $n } })
 if ($Dossier) { $racines = @($Dossier.Trim('"')) + $racines }
 $racines = @($racines | Where-Object { Test-Path $_ } | Select-Object -Unique)
 if ($racines.Count -eq 0) {
