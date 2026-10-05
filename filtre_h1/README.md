@@ -173,6 +173,11 @@ pas encore combien de mois Rithmic garde.
   - avant 150 trades, le script publie un point d'étape descriptif, sans décision. Il se relance quand de nouveaux
     mois sont exportés, avec les mêmes règles.
 - **Script** : `filtre_h1/test_rithmic.py`.
+- **Changement de source (5 octobre 2026, avant toute donnée)** : l'accès Rithmic a échoué (essai gratuit non activé ;
+  les identifiants de la démo Optimus Futures sont en fait pour Ironbeam/Certigo, dans Optimus Flow seulement). La
+  source devient les transactions **Ironbeam** exportées d'**Optimus Flow** (une version de Quantower) avec le même
+  outil. Toutes les règles ci-dessus restent identiques, à commencer par la validation à 95 % contre Databento : c'est
+  elle qui dit si cette source donne le bon côté agresseur.
 
 ## Ce que le filtre apporterait au bot : scénario (3 octobre 2026, descriptif, pas un test)
 
