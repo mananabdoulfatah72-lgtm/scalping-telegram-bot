@@ -1,0 +1,4 @@
+Ironbeam contre Databento : 10 seances communes (2026-09-18 - 2026-10-01), 3900 minutes
+- volume Databento / Ironbeam : 1.030
+- delta d'une minute : correlation 0.993, meme signe 99.6%
+- delta des 30 minutes (celui du filtre), a chaque minute : 3605 fenetres, meme signe 99.0%, correlation 0.992

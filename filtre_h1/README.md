@@ -202,3 +202,15 @@ au signal le plus défavorable, 20 tirages par scénario, avec la même simulati
 - Un filtre inutile coûte environ 10 % du gain et fait baisser la part de comptes S2F qui obtiennent un
   retrait (83 % → 70 %).
 - Le test sur Rithmic décide donc si le filtre reste dans le bot 3 en 1 ou s'il en sort.
+
+### Premier export Ironbeam (6 octobre 2026) : `resultat_rithmic.txt`, `validation_ironbeam.txt`
+
+- Contrat NQ.Z26, 12 séances (18 septembre - 5 octobre 2026), côté agresseur connu pour 100 % du volume.
+- **Validation fixée à l'avance : passée.** Même signe du delta des 30 minutes que Databento sur 8 trades de zone
+  sur 8 (seuil 95 %). La source est acceptée.
+- **Contrôle descriptif, plus large** : minute par minute, sur les 10 séances communes avec Databento, le delta
+  d'Ironbeam a une corrélation de 0,99 avec celui de Databento, et le delta des 30 minutes a le même signe dans
+  99 % des 3 605 fenêtres. Les deux sources disent la même chose.
+- **Test : point d'étape seulement** (1 trade mesuré hors d'avril - octobre 2026, sur 150 nécessaires). L'historique
+  d'Ironbeam pour ce contrat commence le 18 septembre. Il faut maintenant savoir si Optimus Flow donne les contrats
+  expirés (NQU6, NQM6, NQH6, NQZ5).
