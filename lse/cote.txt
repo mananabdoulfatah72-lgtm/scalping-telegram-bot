@@ -1,0 +1,18 @@
+London Strategic Edge : choix du cote agresseur (NQ.F) contre Databento
+Etalonnage :
+  2026-09-29 - 2026-09-30 : 962917 ticks, 765020 de 9 h 30 a 16 h
+- T : meme signe sur 30 min 73.8% de 720 fenetres ; correlation du delta d'une minute 0.949
+- V : meme signe sur 30 min 49.3% de 720 fenetres ; correlation du delta d'une minute -0.155
+- VL : meme signe sur 30 min 49.3% de 720 fenetres ; correlation du delta d'une minute -0.155
+- VA : meme signe sur 30 min 49.3% de 720 fenetres ; correlation du delta d'une minute -0.153
+- VA1 : meme signe sur 30 min 49.3% de 720 fenetres ; correlation du delta d'une minute -0.148
+Regle retenue a l'etalonnage : T
+Validation :
+  2026-09-22 - 2026-09-23 : 816546 ticks, 693549 de 9 h 30 a 16 h
+  2026-09-24 - 2026-09-25 : 930828 ticks, 781106 de 9 h 30 a 16 h
+- T : meme signe sur 30 min 85.1% de 1430 fenetres ; correlation 0.927
+  (pour information : V 40.9%)
+  (pour information : VL 40.9%)
+  (pour information : VA 40.9%)
+  (pour information : VA1 40.9%)
+-> source REFUSEE (seuil 95%) avec la regle T
