@@ -30,8 +30,8 @@ namespace TradingPlatform.BusinessLayer
         public Func<HistoryRequestParameters, HistoricalData> Histoire;
         public HistoricalData GetHistory(HistoryRequestParameters p) => Histoire != null ? Histoire(p) : throw new Exception("pas d'historique dans le test");
     }
-    public class HistoryAggregationTick { public HistoryAggregationTick(int n) { } }
-    public class HistoryRequestParameters { public Symbol Symbol; public DateTime FromTime, ToTime; public object Aggregation; public HistoryType HistoryType; }
+    public class HistoryAggregationTick { public HistoryAggregationTick(HistoryType type) { } }   // comme Quantower 1.146
+    public class HistoryRequestParameters { public Symbol Symbol; public DateTime FromTime, ToTime; public object Aggregation; }
     public interface IHistoryItem { }
     public class HistoryItemLast : IHistoryItem { public DateTime TimeLeft; public double Price, Volume; public AggressorFlag AggressorFlag; }
     public class HistoricalData

@@ -157,7 +157,7 @@ namespace Bot3en1
                 var ticks = SymboleNQ.GetHistory(new HistoryRequestParameters
                 {
                     Symbol = SymboleNQ, FromTime = debutUtc, ToTime = finUtc,
-                    Aggregation = new HistoryAggregationTick(1), HistoryType = HistoryType.Last
+                    Aggregation = new HistoryAggregationTick(HistoryType.Last)   // Quantower 1.146 : le type d'historique est dans l'agregation
                 });
                 for (int i = 0; i < ticks.Count; i++)
                     if (ticks[i, SeekOriginHistory.Begin] is HistoryItemLast t)

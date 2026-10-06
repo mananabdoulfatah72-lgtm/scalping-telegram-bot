@@ -58,7 +58,7 @@ namespace Bot3en1
                         h = SymboleNQ.GetHistory(new HistoryRequestParameters
                         {
                             Symbol = SymboleNQ, FromTime = debutUtc, ToTime = finUtc,
-                            Aggregation = new HistoryAggregationTick(1), HistoryType = HistoryType.Last
+                            Aggregation = new HistoryAggregationTick(HistoryType.Last)   // Quantower 1.146 : le type d'historique est dans l'agregation
                         });
                     }
                     catch (Exception e) { Log($"{j:yyyy-MM-dd} : pas d'historique ({e.Message})", StrategyLoggingLevel.Error); vides++; continue; }
