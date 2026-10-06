@@ -2,9 +2,9 @@
   "comptes": {
     "melange": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-10-02",
-      "solde": 49925.243615816384,
-      "plus_haut": 50000.0,
+      "derniere_date": "2026-10-05",
+      "solde": 50276.00947498293,
+      "plus_haut": 50276.00947498293,
       "positions": {
         "Russell 2000": 1.0,
         "Taux 10 ans": -2.0,
@@ -16,15 +16,15 @@
       },
       "phidias": {
         "etat": "en cours",
-        "plus_haut": 50000.0,
+        "plus_haut": 50276.00947498293,
         "date": null
       }
     },
     "tendance": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-10-02",
-      "solde": 50347.445537844884,
-      "plus_haut": 50347.445537844884,
+      "derniere_date": "2026-10-05",
+      "solde": 50643.19587302805,
+      "plus_haut": 50643.19587302805,
       "positions": {
         "Russell 2000": 1.0,
         "Taux 2 ans": -1.0,
@@ -37,7 +37,7 @@
       },
       "phidias": {
         "etat": "en cours",
-        "plus_haut": 50347.445537844884,
+        "plus_haut": 50643.19587302805,
         "date": null
       }
     }
