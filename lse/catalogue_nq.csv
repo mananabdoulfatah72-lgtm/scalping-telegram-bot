@@ -1,0 +1,31 @@
+dataset,symbol,name,ticks,first_tick,last_tick,years,last_value,change_pct,change_1y,unit,source,category,frequency,country,country_name,live
+stocks,IONQ,"IonQ, Inc.",118676148,2021-10-01 08:03:58.718362,2026-10-05 23:59:52.695204,5.0,42.95,-2.19,-41.0,,,,,US,United States,1
+futures,NQ.F,Nasdaq 100 Futures,109027945,2025-09-19 00:00:00.052952,2026-10-06 04:32:32.542826,1.0,31349.5,0.65,25.1,,,,,US,United States,1
+stocks,CNQ,Canadian Natural Resources Limited,88641083,2003-09-10 13:32:04.029000,2026-10-05 20:56:35.998875,23.1,48.33,0.17,51.8,,,,,CA,Canada,1
+index,NAS100/USD,NASDAQ 100,44719183,2023-02-15 14:30:15.000000,2026-10-06 04:32:56.827990,3.6,31137.5,0.02,24.4,,,,,US,United States,1
+index,NASCOMP/USD,NASDAQ Composite,19617532,2023-02-15 14:30:15.000000,2026-06-30 21:15:59.000000,3.4,26213.72,1.52,28.7,,,,,US,United States,0
+stocks,SNDX,"Syndax Pharmaceuticals, Inc.",13365024,2016-03-03 15:51:51.051568,2026-10-05 23:11:40.860996,10.6,17.58,-0.17,12.5,,,,,US,United States,1
+options,IONQ,"IonQ, Inc. options",7758751,2021-10-01 13:38:54.330000,2026-10-05 19:59:59.571508,5.0,42.95,-2.19,-41.0,,,,,US,United States,1
+options,CNQ,Canadian Natural Resources Limited options,700876,2014-06-02 13:40:57.584000,2026-10-05 19:59:55.928168,12.4,48.33,0.17,51.8,,,,,CA,Canada,1
+options,SNDX,"Syndax Pharmaceuticals, Inc. options",102822,2017-06-05 19:42:10.879000,2026-10-05 19:48:42.556825,9.3,17.58,-0.17,12.5,,,,,US,United States,1
+corporate_bonds,INASOKJPPD,"Hinduja Leyland Finance Ltd 9.15% fixed coupon bond, India",1697,2026-06-24 00:00:00.000000,2026-09-23 00:00:00.000000,0.2,97.3854,-0.04,-1.7,price,,Corporate bond,daily,IN,India,0
+economics,huccindx,HU Consumer Confidence,403,1993-02-01 00:00:00.000000,2026-08-01 00:00:00.000000,33.5,-3.7,-331.25,-87.1,points,GKI Economic Research Co.,Consumer Confidence,monthly,HU,Hungary,0
+economics,hubcindx,HU Business Confidence,368,1996-01-01 00:00:00.000000,2026-08-01 00:00:00.000000,30.6,-9.1,71.7,-32.1,points,GKI Economic Research Co.,Business Confidence,monthly,HU,Hungary,0
+economics,swedenasyapp,SE Asylum Applications,222,2008-01-01 00:00:00.000000,2026-06-01 00:00:00.000000,18.4,250.0,4.17,-39.0,persons,EUROSTAT,Asylum Applications,monthly,SE,Sweden,0
+economics,netherlanasyapp,NL Asylum Applications,222,2008-01-01 00:00:00.000000,2026-06-01 00:00:00.000000,18.4,1785.0,-16.2,-10.1,persons,EUROSTAT,Asylum Applications,monthly,NL,Netherlands,0
+economics,europeanasyapp,EU Asylum Applications,219,2008-01-01 00:00:00.000000,2026-03-01 00:00:00.000000,18.2,47155.0,1.4,-18.7,persons,EUROSTAT,Asylum Applications,monthly,EU,Europe,0
+economics,spainasyapp,ES Asylum Applications,198,2010-01-01 00:00:00.000000,2026-06-01 00:00:00.000000,16.4,2850.0,-64.13,-77.5,persons,EUROSTAT,Asylum Applications,monthly,ES,Spain,0
+economics,isgdpnqq,IL GDP Growth Rate,184,1980-06-01 00:00:00.000000,2026-03-01 00:00:00.000000,45.8,-0.8,-214.29,-157.1,percent,"Central Bureau of Statistics, Israel",GDP Growth Rate,quarterly,IL,Israel,0
+economics,degdpnqq,DK GDP Growth Rate,141,1991-06-01 00:00:00.000000,2026-06-01 00:00:00.000000,35.0,0.3,-80.0,-82.4,percent,Statistics Denmark,GDP Growth Rate,quarterly,DK,Denmark,0
+economics,gnqtemp,GQ Temperature,124,1901-01-01 00:00:00.000000,2024-01-01 00:00:00.000000,123.1,25.03,1.09,1.1,celsius,Worldbank,Temperature,yearly,GQ,Equatorial Guinea,0
+economics,gnqprec,GQ Precipitation,124,1901-01-01 00:00:00.000000,2024-01-01 00:00:00.000000,123.1,2178.92,-1.23,-1.2,mm,Worldbank,Precipitation,yearly,GQ,Equatorial Guinea,0
+economics,inqggdpy,IN GDP Growth Rate,119,1996-09-01 00:00:00.000000,2026-03-01 00:00:00.000000,29.5,1.9,5.56,5.6,percent,OECD,GDP Growth Rate,quarterly,IN,India,0
+economics,chinasocsecratforemp,CN Social Security Rate For Employees,22,2005-01-01 00:00:00.000000,2026-01-01 00:00:00.000000,21.0,10.5,0.0,0.0,percent,State Administration of Taxation,Social Security Rate For Employees,yearly,CN,China,0
+economics,chinasocsecratforcom,CN Social Security Rate For Companies,22,2005-01-01 00:00:00.000000,2026-01-01 00:00:00.000000,21.0,28.2,0.0,0.0,percent,State Administration of Taxation,Social Security Rate For Companies,yearly,CN,China,0
+economics,chinasocsecrat,CN Social Security Rate,22,2005-01-01 00:00:00.000000,2026-01-01 00:00:00.000000,21.0,38.7,0.0,0.0,percent,State Administration of Taxation,Social Security Rate,yearly,CN,China,0
+economics,argentinasocsecratfo,AR Social Security Rate For Companies,21,2006-01-01 00:00:00.000000,2026-01-01 00:00:00.000000,20.0,26.4,29.41,29.4,percent,Federal Administration of Public Revenue (AFIP),Social Security Rate For Companies,yearly,AR,Argentina,0
+economics,argentinasocsecratfc,AR Social Security Rate For Employees,21,2006-01-01 00:00:00.000000,2026-01-01 00:00:00.000000,20.0,17.0,0.0,0.0,percent,Federal Administration of Public Revenue (AFIP),Social Security Rate For Employees,yearly,AR,Argentina,0
+economics,argentinasocsecrat,AR Social Security Rate,21,2006-01-01 00:00:00.000000,2026-01-01 00:00:00.000000,20.0,43.4,16.04,16.0,percent,Federal Administration of Public Revenue (AFIP),Social Security Rate,yearly,AR,Argentina,0
+economics,chinaserpmi,CN Services PMI,14,2025-07-01 00:00:00.000000,2026-08-01 00:00:00.000000,1.1,51.4,1.98,-3.0,points,S&P Global,Services PMI,monthly,CN,China,0
+economics,guyanasaltaxrat,GY Sales Tax Rate,13,2014-01-01 00:00:00.000000,2026-01-01 00:00:00.000000,12.0,14.0,0.0,0.0,percent,Ministry of Finance,Sales Tax Rate,yearly,GY,Guyana,0
+economics,ghanasaltaxrat,GH Sales Tax Rate,13,2014-01-01 00:00:00.000000,2026-01-01 00:00:00.000000,12.0,15.0,0.0,0.0,percent,Ghana Revenue Authority,Sales Tax Rate,yearly,GH,Ghana,0
