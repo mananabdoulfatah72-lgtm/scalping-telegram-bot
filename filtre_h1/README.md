@@ -243,3 +243,18 @@ Première exploration (`lse/resultats.txt`) :
   2 octobre 2026 ;
 - le test du filtre suit exactement les règles de la version Rithmic ci-dessus : décision unique à 150 trades,
   t ≥ 2 et zone filtrée meilleure que la zone seule ; avant 150 trades, point d'étape descriptif.
+
+### Résultat : source London Strategic Edge refusée (6 octobre 2026, `lse/cote.txt`)
+
+| Règle | Étalonnage (29-30 sept.) : même signe sur 30 min | Corrélation du delta d'une minute |
+|---|---|---|
+| **T (tick)** | **73,8 %** | 0,949 |
+| V, VL, VA, VA1 (prix vendeur) | 49,3 % | −0,15 |
+
+- **Validation (22-25 septembre) avec la règle du tick** : même signe que Databento dans **85,1 %** des 1 430
+  fenêtres de 30 minutes, sous le seuil de 95 %. **La source est refusée.**
+- Le prix vendeur fourni ne sert à rien (accord du niveau du hasard). La règle du tick suit bien le delta minute par
+  minute (corrélation 0,93 à 0,95), mais elle se trompe trop souvent sur le **signe du cumul de 30 minutes**, qui est
+  un petit nombre. C'est justement ce que lit le filtre.
+- Un delta juste à 85 % ressemble à l'approximation par le prix déjà testée sur 15 ans (t = 1,62, non confirmé) :
+  un test descriptif avec cette source n'apprendrait presque rien de plus. Il n'est pas lancé.
