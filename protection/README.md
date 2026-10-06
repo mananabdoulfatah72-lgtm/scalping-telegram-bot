@@ -354,3 +354,18 @@ Trail puis Pro +174 $).
   an).
 - **La veille de la Fed** rapporte peu (+113 $ par an) et fait perdre un peu plus de challenges.
 - Aucune des trois n'améliore le bot. Le bot reste à trois stratégies.
+
+## Piste 7 : le mélange 50/50 comme 4e source (règles fixées le 6 octobre 2026, avant le calcul)
+
+**Demande de l'utilisateur** : ajouter au bot la tendance seule et le mélange, parce que leurs comptes virtuels sont
+positifs depuis le 25 septembre. La tendance seule a déjà été jugée et refusée (piste 6). Le mélange ne l'a pas été.
+
+**Candidates (fixées maintenant)** :
+- **M100** : le mélange exactement comme le robot virtuel (`tendance/systeme.py positions_melange` : moitié
+  tendance, moitié achat permanent, même risque dans chacune ; mêmes 19 marchés, contrats micro entiers optimisés
+  pour 50 000 $, risque visé 12 %/an, rééquilibrage le vendredi, 3,25 $ par contrat échangé) ;
+- **M30** : le même, à l'échelle 0,3 de la grille.
+
+**Entrée dans le compte et jugement** : exactement ceux de la piste 6 (gain ajouté à la clôture de chaque séance ;
+retenue si le score Trail 2011 - 2022 dépasse celui du bot seul d'au moins 3 points et si le score 2023 - 2026 n'est
+pas plus bas ; S2F et corrélation publiés à titre descriptif). Script : `piste7.py`.
