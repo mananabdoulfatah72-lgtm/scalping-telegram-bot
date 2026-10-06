@@ -214,3 +214,32 @@ au signal le plus défavorable, 20 tirages par scénario, avec la même simulati
 - **Test : point d'étape seulement** (1 trade mesuré hors d'avril - octobre 2026, sur 150 nécessaires). L'historique
   d'Ironbeam pour ce contrat commence le 18 septembre. Il faut maintenant savoir si Optimus Flow donne les contrats
   expirés (NQU6, NQM6, NQH6, NQZ5).
+
+## Source London Strategic Edge (règles fixées le 6 octobre 2026, avant de calculer le côté agresseur)
+
+Première exploration (`lse/resultats.txt`) :
+- le coffre gratuit de London Strategic Edge a les ticks du NQ (« NQ.F ») depuis le **19 septembre 2025**, avec
+  prix, volume et prix vendeur (pas de prix acheteur, pas de côté agresseur) ;
+- le volume est celui du CME : 0,993 fois celui de Databento sur les 29 et 30 septembre 2026 ;
+- un côté déduit par la seule règle du tick ne suffit pas : le delta des 30 minutes n'a le même signe que celui de
+  Databento que dans 72 % des fenêtres.
+
+**Choix du côté agresseur, décidé avant de le calculer** :
+- **Candidates** :
+  - T : règle du tick ;
+  - V : prix vendeur du tick précédent (achat si le prix l'atteint ou le dépasse, sinon vente) ;
+  - VL : même chose, avec la règle du tick si le prix est strictement entre le prix vendeur précédent moins 1 tick
+    et ce prix vendeur ;
+  - VA : prix vendeur affiché avec le tick lui-même, au lieu du précédent ;
+  - VA1 : achat si le prix est au plus 1 tick sous le prix vendeur affiché, vente sinon.
+- **Étalonnage** : les 29 et 30 septembre 2026. On garde la candidate dont le delta des 30 minutes a le plus souvent
+  le même signe que celui de Databento.
+- **Validation** : sur d'autres séances, du 22 au 25 septembre 2026. La source est acceptée si la candidate retenue a
+  le même signe que Databento dans **au moins 95 %** des fenêtres de 30 minutes, comme Rithmic et Ironbeam.
+- Ce choix ne regarde que l'accord avec Databento, jamais le gain des trades de zone.
+
+**Si la source est acceptée** :
+- les ticks des fenêtres des trades de zone sont téléchargés du 19 septembre 2025 au 31 mars 2026, et après le
+  2 octobre 2026 ;
+- le test du filtre suit exactement les règles de la version Rithmic ci-dessus : décision unique à 150 trades,
+  t ≥ 2 et zone filtrée meilleure que la zone seule ; avant 150 trades, point d'étape descriptif.
