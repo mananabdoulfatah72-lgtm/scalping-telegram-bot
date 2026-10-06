@@ -82,3 +82,25 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
 - Le PC (ou un serveur loué) doit rester allumé et connecté du lundi au vendredi, de 15 h 30 à 22 h 15 (heure de
   Paris).
 - Ne pas trader MNQ à la main sur le même compte : le bot réalignerait la position.
+
+## Essai sur le compte d'essai Optimus Flow / Ironbeam (critères fixés le 6 octobre 2026, avant le premier lancement)
+
+But : vérifier que le bot **trade correctement** sur une vraie plateforme. Ce n'est pas un test de rentabilité :
+sur une dizaine de séances, le gain dépend surtout du hasard (environ ±1 000 $ pour un gain attendu d'environ
++250 $).
+
+Période : du 7 au 16 octobre 2026, soit environ 8 séances, jusqu'à la fin de la démo. Le bot tourne de 15 h 30 à
+22 h 05, heure de Paris.
+
+**Feu vert pour un vrai compte** si tout ceci est vrai :
+1. au moins 6 séances jouées sans erreur ni arrêt imprévu ;
+2. chaque signal de zone (heure, sens, gardé ou écarté) et chaque décision du RSI(2) sont les mêmes que ceux du
+   robot virtuel (`zone/robot.py` sur main) pour la même séance. Toute différence doit être expliquée et corrigée ;
+3. jamais plus de 1 MNQ par source, et aucune position de zone après 16 h (New York) ;
+4. glissement moyen d'au plus 1 tick par ordre sur MNQ ;
+5. le delta noté par le bot à chaque signal a le même signe que celui de l'export Ironbeam pour la même minute.
+
+**Pas de feu vert** si une différence n'est pas expliquée, si la taille est fausse ou si une sortie est manquée :
+correction, puis nouvel essai.
+
+Le gain ou la perte de ces séances n'entre pas dans la décision.
