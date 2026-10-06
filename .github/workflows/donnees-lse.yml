@@ -1,0 +1,44 @@
+name: Donnees London Strategic Edge (NQ, test du filtre delta)
+
+# Cle API lue uniquement dans le secret du depot LSE_API_KEY.
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - lse/explorer.py
+      - lse/lancer.txt
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  explorer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Explorer
+        env:
+          LSE_API_KEY: ${{ secrets.LSE_API_KEY }}
+        run: |
+          pip install -q "lse-data[frames]" pandas numpy pyarrow
+          python3 lse/explorer.py
+      - name: Enregistrer sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lse/resultats.txt lse/catalogue_nq.csv 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees : exploration London Strategic Edge (NQ)"
+          for essai in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 10
+          done
+          exit 1
