@@ -369,3 +369,18 @@ positifs depuis le 25 septembre. La tendance seule a déjà été jugée et refu
 **Entrée dans le compte et jugement** : exactement ceux de la piste 6 (gain ajouté à la clôture de chaque séance ;
 retenue si le score Trail 2011 - 2022 dépasse celui du bot seul d'au moins 3 points et si le score 2023 - 2026 n'est
 pas plus bas ; S2F et corrélation publiés à titre descriptif). Script : `piste7.py`.
+
+### Résultat de la piste 7 (6 octobre 2026) : `piste7.txt`
+
+| Ajout au bot | Gain moyen par an | Corrélation avec le bot | Pire jour | Trail 2011 - 2022 : réussis / perdus | Trail 2023 - 2026 : réussis / perdus | S2F + plafond : reçu en 12 mois / retrait | Décision |
+|---|---|---|---|---|---|---|---|
+| aucun (bot seul) | – | – | – | 31,2 % / 1,4 % | 68,7 % / 23,5 % | +1 826 $ / 83 % | – |
+| M100 : mélange du robot | +3 617 $ | +0,11 | **−2 739 $** | 44,7 % / **55,3 %** | 30,1 % / **65,1 %** | +500 $ / 28 % | refusée |
+| M30 : mélange à 0,3 | −532 $ | +0,10 | −974 $ | 29,4 % / 18,4 % | 60,2 % / 31,3 % | +1 037 $ / 55 % | refusée |
+
+- **Le mélange rapporte beaucoup sur 15 ans** (+3 617 $ par an à la taille du robot), mais il est fait pour un grand
+  compte : un seul jour peut coûter 2 739 $, plus que la limite de 2 500 $. Ajouté au bot, il fait perdre plus d'un
+  challenge sur deux, et les retraits S2F tombent de 83 % à 28 % des comptes.
+- **Plus petit**, les contrats entiers lui font perdre son avantage (−532 $ par an).
+- Ses années récentes : 2023 −4 248 $, 2024 −2 608 $, 2025 +7 064 $, 2026 +551 $.
+- Comme la tendance seule (piste 6), le mélange reste un compte virtuel à part. Le bot reste à trois stratégies.
