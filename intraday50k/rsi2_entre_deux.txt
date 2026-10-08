@@ -1,0 +1,31 @@
+RSI(2) entre deux clotures, NQ 1 MNQ, du 2012-03-06 au 2026-09-25
+
+controle des donnees : seances 4041 ; nuits avec barres 4040 ; dont premiere barre a 18 h : 3966
+jours tenus par la variante : 484 ; dont sans barre de nuit (achat a 9 h 30) : 0
+toute la periode : original t +3.05, +19,498 $ ; entre deux clotures t +2.29, +14,802 $ (76% de l'original) ; t des $ quotidiens : +2.58 / +1.86
+2023 - sept. 2026 : original t +1.94, +11,098 $ ; entre deux clotures t +1.24, +8,000 $ (72% de l'original) ; t des $ quotidiens : +1.80 / +1.19
+2011-2022 : original t +2.40, +8,400 $ ; entre deux clotures t +1.93, +6,802 $ (81% de l'original) ; t des $ quotidiens : +1.93 / +1.59
+
+-> UTILISABLE (t >= 2 : oui ; au moins la moitie des dollars : oui ; positif sur 2023 - sept. 2026 : oui)
+
+D'ou vient le gain de la variante (points, jours tenus) : nuit 18 h -> 9 h 30 | seance 9 h 30 -> sortie
+  toute la periode : +9,286 pt | -1,158 pt ; frais 726 pt
+
+Annee par annee ($ pour 1 MNQ) : annee | original | entre deux clotures | jours tenus
+2012 | +482 | +409 | 46
+2013 | +674 | +532 | 27
+2014 | +646 | +628 | 36
+2015 | +51 | +27 | 42
+2016 | -369 | -702 | 33
+2017 | +883 | +655 | 38
+2018 | -214 | -710 | 33
+2019 | +1,563 | +1,857 | 22
+2020 | +716 | +1,048 | 26
+2021 | +5,510 | +4,292 | 35
+2022 | -1,544 | -1,234 | 11
+2023 | +1,512 | +387 | 36
+2024 | +3,362 | +2,624 | 37
+2025 | +3,408 | +520 | 33
+2026 | +2,816 | +4,468 | 29
+
+Pires jours de la variante ($, 1 MNQ) : 2025-11-20 -1,660 ; 2025-02-27 -1,284 ; 2026-07-29 -1,257 ; 2026-06-10 -1,140 ; 2025-03-03 -1,068

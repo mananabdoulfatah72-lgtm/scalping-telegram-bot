@@ -1,0 +1,54 @@
+Comptes 50K intraday, bot a 1 MNQ par source ; 4041 seances du 2011-01-03 au 2026-09-25 ; departs : 1 seance sur 5, RSI(2) a plat
+
+bot Z sans compte : +5.5 $ par seance (2012-2026), +11.1 $ (2023-2026) ; pire seance -705 $ ; mois positifs 54%
+bot Z+R sans compte : +9.4 $ par seance (2012-2026), +19.4 $ (2023-2026) ; pire seance -1,460 $ ; mois positifs 58%
+
+compte | bot | 2011-2022 : reussis / perdus / pas finis / seances (mediane) | 2023-2026 : idem | departs 2025 : reussis / perdus
+Bulenox option 1 (suivi en direct) | Z | 18.0 / 0.0 / 82.0 / 203 | 54.8 / 29.5 / 15.7 / 148 | 22.2 / 77.8
+Bulenox option 1 (suivi en direct) | Z+R | 30.0 / 1.6 / 68.4 / 170 | 65.1 / 30.7 / 4.2 / 101 | 17.8 / 82.2
+Bulenox option 2 (fin de journee) | Z | 18.0 / 0.0 / 82.0 / 203 | 54.8 / 19.9 / 25.3 / 148 | 22.2 / 73.3
+Bulenox option 2 (fin de journee) | Z+R | 30.0 / 1.6 / 68.4 / 170 | 67.5 / 28.3 / 4.2 / 103 | 24.4 / 75.6
+Tradeify Growth | Z | 18.0 / 0.0 / 82.0 / 203 | 54.8 / 29.5 / 15.7 / 148 | 22.2 / 77.8
+Tradeify Growth | Z+R | 26.1 / 5.5 / 68.4 / 169 | 66.9 / 28.9 / 4.2 / 101 | 22.2 / 77.8
+Tradeify Select | Z | 18.0 / 0.0 / 82.0 / 203 | 33.1 / 33.7 / 33.1 / 196 | 0.0 / 93.3
+Tradeify Select | Z+R | 26.1 / 5.5 / 68.4 / 169 | 53.0 / 33.7 / 13.3 / 117 | 4.4 / 84.4
+Lucid Flex | Z | 18.0 / 0.0 / 82.0 / 203 | 42.8 / 33.7 / 23.5 / 167 | 0.0 / 93.3
+Lucid Flex | Z+R | 26.1 / 5.5 / 68.4 / 169 | 57.8 / 31.9 / 10.2 / 110 | 11.1 / 77.8
+Topstep | Z | 18.0 / 0.0 / 82.0 / 203 | 42.8 / 33.7 / 23.5 / 167 | 0.0 / 93.3
+Topstep | Z+R | 26.5 / 5.1 / 68.4 / 169 | 61.4 / 30.1 / 8.4 / 105 | 6.7 / 82.2
+Apex EOD (descriptif) | Z | 0.0 / 0.0 / 100.0 / None | 2.4 / 0.6 / 97.0 / 12 | 8.9 / 0.0
+Apex EOD (descriptif) | Z+R | 0.0 / 0.6 / 99.4 / None | 4.2 / 6.0 / 89.8 / 13 | 8.9 / 15.6
+
+Descriptif : zone filtree par un delta simule (rho = 0.24, 20 tirages, 20 % ecartes) ; reussis / perdus en moyenne
+compte | bot | 2023-2026 | departs 2025
+Bulenox option 1 (suivi en direct) | Z | 73.7 / 15.1 | 40.9 / 52.4
+Bulenox option 1 (suivi en direct) | Z+R | 76.6 / 19.2 | 53.6 / 46.4
+Bulenox option 2 (fin de journee) | Z | 76.0 / 10.0 | 49.0 / 37.0
+Bulenox option 2 (fin de journee) | Z+R | 77.7 / 18.1 | 56.6 / 43.5
+Tradeify Growth | Z | 70.6 / 19.5 | 30.9 / 66.3
+Tradeify Growth | Z+R | 75.1 / 20.7 | 49.1 / 50.9
+Tradeify Select | Z | 57.3 / 19.6 | 4.9 / 67.0
+Tradeify Select | Z+R | 68.2 / 21.4 | 41.7 / 53.0
+Lucid Flex | Z | 62.7 / 19.6 | 9.1 / 67.0
+Lucid Flex | Z+R | 73.7 / 21.1 | 46.7 / 52.1
+Topstep | Z | 62.7 / 19.5 | 9.1 / 67.0
+Topstep | Z+R | 74.9 / 20.1 | 49.0 / 50.1
+Apex EOD (descriptif) | Z | 2.5 / 0.1 | 8.9 / 0.0
+Apex EOD (descriptif) | Z+R | 4.1 / 6.4 | 8.9 / 15.6
+
+Descriptif : avril - 25 septembre 2026, vrai delta, un depart par seance (108 departs) ; reussis / perdus / pas finis (jusqu'au 25 septembre)
+compte | bot | resultat
+Bulenox option 1 (suivi en direct) | Z | 43.5 / 0.0 / 56.5
+Bulenox option 1 (suivi en direct) | Z+R | 43.5 / 26.9 / 29.6
+Bulenox option 2 (fin de journee) | Z | 43.5 / 0.0 / 56.5
+Bulenox option 2 (fin de journee) | Z+R | 43.5 / 26.9 / 29.6
+Tradeify Growth | Z | 43.5 / 0.0 / 56.5
+Tradeify Growth | Z+R | 43.5 / 26.9 / 29.6
+Tradeify Select | Z | 13.9 / 0.0 / 86.1
+Tradeify Select | Z+R | 13.9 / 26.9 / 59.3
+Lucid Flex | Z | 43.5 / 0.0 / 56.5
+Lucid Flex | Z+R | 43.5 / 26.9 / 29.6
+Topstep | Z | 43.5 / 0.0 / 56.5
+Topstep | Z+R | 43.5 / 26.9 / 29.6
+Apex EOD (descriptif) | Z | 0.0 / 0.0 / 100.0
+Apex EOD (descriptif) | Z+R | 13.9 / 15.7 / 70.4

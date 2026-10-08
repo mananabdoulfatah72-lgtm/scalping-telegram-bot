@@ -99,3 +99,45 @@ par bot :
 
 La phase financée (retraits) n'est simulée qu'ensuite, pour les deux ou trois comptes en tête, avec des règles de
 retrait relevées séparément.
+
+## Résultats de la partie 1 (8 octobre 2026) : `rsi2_entre_deux.txt`
+
+Contrôles (`test_intraday50k.py`) : barres de nuit bien rattachées, prix des barres d'une heure identiques aux minutes,
+original identique au robot (+11 098,5 $ sur 2023 - 2026), jours recalculés à la main.
+
+| RSI(2), 1 MNQ | Original (garde la nuit et le week-end) | Entre deux clôtures |
+|---|---|---|
+| 2012 - sept. 2026 | +19 498 $ (t 3,05) | **+14 802 $ (t 2,29), 76 % gardés** |
+| 2023 - sept. 2026 | +11 098 $ (t 1,94) | +8 000 $ (t 1,24), 72 % gardés |
+| 2011 - 2022 | +8 400 $ (t 2,40) | +6 802 $ (t 1,93) |
+
+- **Utilisable selon la règle fixée** : t ≥ 2, plus de la moitié des dollars, positif sur 2023 - 2026.
+- Tout le gain vient de la nuit : +9 286 points de 18 h à 9 h 30, −1 158 points en séance, 726 points de frais.
+- Le t calculé sur les dollars par jour (et non sur les rendements, comme la règle) est de 1,86 : l'avantage est
+  réel mais pas énorme. Années faibles : 2023 (+387 $) et 2025 (+520 $) ; 2026 meilleure que l'original.
+
+## Phase financée des trois comptes en tête (règles fixées le 8 octobre 2026, avant le calcul)
+
+Classement de la partie 2 sur le score 2011-2022 (bot Z + R) : Bulenox (options 1 et 2 à égalité ; l'option 2 fait
+mieux sur 2023 - 2026), Topstep, puis Tradeify Growth, Select et Lucid à égalité (Growth gardé : règles de retrait
+connues, paiement unique). Règles relevées le 8 octobre 2026 (sites d'avis, à confirmer) :
+
+| | Bulenox Master (option 2) | Topstep Express (chemin Standard) | Tradeify Growth financé |
+|---|---|---|---|
+| Perte max | 2 500 $ fin de journée, bloquée à 50 100 $ | 2 000 $ fin de journée, bloquée à 50 000 $ | 2 000 $ fin de journée, bloquée à 50 100 $ |
+| Limite du jour (douce) | 1 100 $ | 1 000 $ | 1 250 $ |
+| Jours par cycle | 10 jours avec au moins un trade | 5 jours à +150 $ ou plus | 5 jours à +150 $ ou plus |
+| Régularité | meilleur jour ≤ 40 % du gain du cycle | aucune | meilleur jour ≤ 35 % du gain du cycle |
+| Montant | ≤ 1 500 $ pour les 3 premiers, solde gardé ≥ 52 600 $ | ≤ 50 % du gain du compte, ≤ 2 000 $ | ≤ 1 500 / 2 000 / 2 500 / 3 000 $, solde gardé ≥ 53 000 $ |
+| Minimum | 1 000 $ | 125 $ | 500 $ (non trouvé : hypothèse) |
+| Part du trader | 100 % (10 000 premiers $) | 90 % | 90 % |
+| Après | compte réel après 3 retraits : la simulation s'arrête là | — | — |
+| Coût | abonnement mensuel pendant le challenge + 148 $ d'activation | 49 $/mois pendant le challenge + 149 $ d'activation | 145 $ une fois, pas d'activation |
+
+- Le compte financé démarre la séance qui suit la réussite, à 50 000 $. Le bot continue sans changement (1 MNQ).
+- Lecture prudente quand les sources hésitent : 10 jours de trading à chaque cycle chez Bulenox, solde gardé à
+  53 000 $ après un retrait chez Tradeify.
+- Mesures, pour les achats de 2023 - septembre 2025 (12 mois de suivi complets), de 2025 à part et de 2011-2022 :
+  part des achats avec au moins un retrait dans les 12 mois, argent reçu en moyenne (après la part de la firme),
+  délai du premier retrait, comptes financés perdus, et coût moyen (mois d'abonnement compris).
+- Bots Z et Z + R, et le filtre delta simulé à titre descriptif. Rien n'est « retenu » : c'est une comparaison.

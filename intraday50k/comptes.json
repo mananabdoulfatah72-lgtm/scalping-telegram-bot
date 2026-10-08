@@ -1,0 +1,632 @@
+{
+ "Bulenox option 1 (suivi en direct)": {
+  "Z": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 18.0,
+    "perdus": 0.0,
+    "pas_finis": 82.0,
+    "score": 18.0,
+    "seances_mediane": 203
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 54.8,
+    "perdus": 29.5,
+    "pas_finis": 15.7,
+    "score": 25.3,
+    "seances_mediane": 148
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 22.2,
+    "perdus": 77.8,
+    "pas_finis": 0.0,
+    "score": -55.6,
+    "seances_mediane": 31
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     73.735,
+     15.13
+    ],
+    "2025": [
+     40.895,
+     52.435
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 0.0,
+    "pas_finis": 56.5,
+    "score": 43.5,
+    "seances_mediane": 97
+   }
+  },
+  "Z+R": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 30.0,
+    "perdus": 1.6,
+    "pas_finis": 68.4,
+    "score": 28.3,
+    "seances_mediane": 170
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 65.1,
+    "perdus": 30.7,
+    "pas_finis": 4.2,
+    "score": 34.3,
+    "seances_mediane": 101
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 17.8,
+    "perdus": 82.2,
+    "pas_finis": 0.0,
+    "score": -64.4,
+    "seances_mediane": 22
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     76.59,
+     19.2
+    ],
+    "2025": [
+     53.55499999999999,
+     46.44500000000001
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 26.9,
+    "pas_finis": 29.6,
+    "score": 16.7,
+    "seances_mediane": 26
+   }
+  }
+ },
+ "Bulenox option 2 (fin de journee)": {
+  "Z": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 18.0,
+    "perdus": 0.0,
+    "pas_finis": 82.0,
+    "score": 18.0,
+    "seances_mediane": 203
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 54.8,
+    "perdus": 19.9,
+    "pas_finis": 25.3,
+    "score": 34.9,
+    "seances_mediane": 148
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 22.2,
+    "perdus": 73.3,
+    "pas_finis": 4.4,
+    "score": -51.1,
+    "seances_mediane": 31
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     75.95500000000001,
+     10.034999999999998
+    ],
+    "2025": [
+     49.0,
+     36.995
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 0.0,
+    "pas_finis": 56.5,
+    "score": 43.5,
+    "seances_mediane": 97
+   }
+  },
+  "Z+R": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 30.0,
+    "perdus": 1.6,
+    "pas_finis": 68.4,
+    "score": 28.3,
+    "seances_mediane": 170
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 67.5,
+    "perdus": 28.3,
+    "pas_finis": 4.2,
+    "score": 39.2,
+    "seances_mediane": 103
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 24.4,
+    "perdus": 75.6,
+    "pas_finis": 0.0,
+    "score": -51.1,
+    "seances_mediane": 29
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     77.71000000000001,
+     18.084999999999997
+    ],
+    "2025": [
+     56.55000000000001,
+     43.45
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 26.9,
+    "pas_finis": 29.6,
+    "score": 16.7,
+    "seances_mediane": 26
+   }
+  }
+ },
+ "Tradeify Growth": {
+  "Z": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 18.0,
+    "perdus": 0.0,
+    "pas_finis": 82.0,
+    "score": 18.0,
+    "seances_mediane": 203
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 54.8,
+    "perdus": 29.5,
+    "pas_finis": 15.7,
+    "score": 25.3,
+    "seances_mediane": 148
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 22.2,
+    "perdus": 77.8,
+    "pas_finis": 0.0,
+    "score": -55.6,
+    "seances_mediane": 31
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     70.58,
+     19.47
+    ],
+    "2025": [
+     30.884999999999998,
+     66.33999999999999
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 0.0,
+    "pas_finis": 56.5,
+    "score": 43.5,
+    "seances_mediane": 97
+   }
+  },
+  "Z+R": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 26.1,
+    "perdus": 5.5,
+    "pas_finis": 68.4,
+    "score": 20.6,
+    "seances_mediane": 169
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 66.9,
+    "perdus": 28.9,
+    "pas_finis": 4.2,
+    "score": 38.0,
+    "seances_mediane": 101
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 22.2,
+    "perdus": 77.8,
+    "pas_finis": 0.0,
+    "score": -55.6,
+    "seances_mediane": 27
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     75.06,
+     20.740000000000002
+    ],
+    "2025": [
+     49.11,
+     50.89
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 26.9,
+    "pas_finis": 29.6,
+    "score": 16.7,
+    "seances_mediane": 26
+   }
+  }
+ },
+ "Tradeify Select": {
+  "Z": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 18.0,
+    "perdus": 0.0,
+    "pas_finis": 82.0,
+    "score": 18.0,
+    "seances_mediane": 203
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 33.1,
+    "perdus": 33.7,
+    "pas_finis": 33.1,
+    "score": -0.6,
+    "seances_mediane": 196
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 0.0,
+    "perdus": 93.3,
+    "pas_finis": 6.7,
+    "score": -93.3,
+    "seances_mediane": null
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     57.315,
+     19.65
+    ],
+    "2025": [
+     4.885,
+     67.00499999999998
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 13.9,
+    "perdus": 0.0,
+    "pas_finis": 86.1,
+    "score": 13.9,
+    "seances_mediane": 115
+   }
+  },
+  "Z+R": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 26.1,
+    "perdus": 5.5,
+    "pas_finis": 68.4,
+    "score": 20.6,
+    "seances_mediane": 169
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 53.0,
+    "perdus": 33.7,
+    "pas_finis": 13.3,
+    "score": 19.3,
+    "seances_mediane": 117
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 4.4,
+    "perdus": 84.4,
+    "pas_finis": 11.1,
+    "score": -80.0,
+    "seances_mediane": 114
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     68.20500000000001,
+     21.43
+    ],
+    "2025": [
+     41.660000000000004,
+     53.004999999999995
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 13.9,
+    "perdus": 26.9,
+    "pas_finis": 59.3,
+    "score": -13.0,
+    "seances_mediane": 115
+   }
+  }
+ },
+ "Lucid Flex": {
+  "Z": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 18.0,
+    "perdus": 0.0,
+    "pas_finis": 82.0,
+    "score": 18.0,
+    "seances_mediane": 203
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 42.8,
+    "perdus": 33.7,
+    "pas_finis": 23.5,
+    "score": 9.0,
+    "seances_mediane": 167
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 0.0,
+    "perdus": 93.3,
+    "pas_finis": 6.7,
+    "score": -93.3,
+    "seances_mediane": null
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     62.68499999999999,
+     19.65
+    ],
+    "2025": [
+     9.115,
+     67.00499999999998
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 0.0,
+    "pas_finis": 56.5,
+    "score": 43.5,
+    "seances_mediane": 98
+   }
+  },
+  "Z+R": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 26.1,
+    "perdus": 5.5,
+    "pas_finis": 68.4,
+    "score": 20.6,
+    "seances_mediane": 169
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 57.8,
+    "perdus": 31.9,
+    "pas_finis": 10.2,
+    "score": 25.9,
+    "seances_mediane": 110
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 11.1,
+    "perdus": 77.8,
+    "pas_finis": 11.1,
+    "score": -66.7,
+    "seances_mediane": 80
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     73.74000000000001,
+     21.130000000000003
+    ],
+    "2025": [
+     46.665,
+     52.11500000000001
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 26.9,
+    "pas_finis": 29.6,
+    "score": 16.7,
+    "seances_mediane": 76
+   }
+  }
+ },
+ "Topstep": {
+  "Z": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 18.0,
+    "perdus": 0.0,
+    "pas_finis": 82.0,
+    "score": 18.0,
+    "seances_mediane": 203
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 42.8,
+    "perdus": 33.7,
+    "pas_finis": 23.5,
+    "score": 9.0,
+    "seances_mediane": 167
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 0.0,
+    "perdus": 93.3,
+    "pas_finis": 6.7,
+    "score": -93.3,
+    "seances_mediane": null
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     62.714999999999996,
+     19.5
+    ],
+    "2025": [
+     9.115,
+     67.00499999999998
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 0.0,
+    "pas_finis": 56.5,
+    "score": 43.5,
+    "seances_mediane": 98
+   }
+  },
+  "Z+R": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 26.5,
+    "perdus": 5.1,
+    "pas_finis": 68.4,
+    "score": 21.5,
+    "seances_mediane": 169
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 61.4,
+    "perdus": 30.1,
+    "pas_finis": 8.4,
+    "score": 31.3,
+    "seances_mediane": 105
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 6.7,
+    "perdus": 82.2,
+    "pas_finis": 11.1,
+    "score": -75.6,
+    "seances_mediane": 75
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     74.94,
+     20.08
+    ],
+    "2025": [
+     49.0,
+     50.11
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 43.5,
+    "perdus": 26.9,
+    "pas_finis": 29.6,
+    "score": 16.7,
+    "seances_mediane": 76
+   }
+  }
+ },
+ "Apex EOD (descriptif)": {
+  "Z": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 2.4,
+    "perdus": 0.6,
+    "pas_finis": 97.0,
+    "score": 1.8,
+    "seances_mediane": 12
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 8.9,
+    "perdus": 0.0,
+    "pas_finis": 91.1,
+    "score": 8.9,
+    "seances_mediane": 12
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     2.55,
+     0.06
+    ],
+    "2025": [
+     8.900000000000002,
+     0.0
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 0.0,
+    "perdus": 0.0,
+    "pas_finis": 100.0,
+    "score": 0.0,
+    "seances_mediane": null
+   }
+  },
+  "Z+R": {
+   "2011-2022": {
+    "departs": 494,
+    "reussis": 0.0,
+    "perdus": 0.6,
+    "pas_finis": 99.4,
+    "score": -0.6,
+    "seances_mediane": null
+   },
+   "2023-2026": {
+    "departs": 166,
+    "reussis": 4.2,
+    "perdus": 6.0,
+    "pas_finis": 89.8,
+    "score": -1.8,
+    "seances_mediane": 13
+   },
+   "2025": {
+    "departs": 45,
+    "reussis": 8.9,
+    "perdus": 15.6,
+    "pas_finis": 75.6,
+    "score": -6.7,
+    "seances_mediane": 12
+   },
+   "filtre_simule": {
+    "2023-2026": [
+     4.11,
+     6.359999999999999
+    ],
+    "2025": [
+     8.900000000000002,
+     15.600000000000003
+    ]
+   },
+   "2026_vrai_delta": {
+    "departs": 108,
+    "reussis": 13.9,
+    "perdus": 15.7,
+    "pas_finis": 70.4,
+    "score": -1.9,
+    "seances_mediane": 12
+   }
+  }
+ }
+}
