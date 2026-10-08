@@ -18,19 +18,19 @@ Voyant VERT (fourchette normale) : -28 $ pour 1 MNQ apres 8 seance(s) ; le backt
 
 ## Pour la seance du 2026-10-08 (a utiliser en direct)
 
-Cloture de la veille (16 h New York) : **31,395.25**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
+Cloture de la veille (16 h New York) : **31,396.25**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
 
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
 | 10h00 | 16h00 | 0.281% | 1.00281 | 0.99719 |
-| 10h30 | 16h30 | 0.427% | 1.00427 | 0.99573 |
+| 10h30 | 16h30 | 0.428% | 1.00428 | 0.99572 |
 | 11h00 | 17h00 | 0.409% | 1.00409 | 0.99591 |
 | 11h30 | 17h30 | 0.460% | 1.00460 | 0.99540 |
 | 12h00 | 18h00 | 0.478% | 1.00478 | 0.99522 |
 | 12h30 | 18h30 | 0.488% | 1.00488 | 0.99512 |
 | 13h00 | 19h00 | 0.560% | 1.00560 | 0.99440 |
-| 13h30 | 19h30 | 0.529% | 1.00529 | 0.99471 |
-| 14h00 | 20h00 | 0.492% | 1.00492 | 0.99508 |
+| 13h30 | 19h30 | 0.530% | 1.00530 | 0.99470 |
+| 14h00 | 20h00 | 0.493% | 1.00493 | 0.99507 |
 | 14h30 | 20h30 | 0.525% | 1.00525 | 0.99475 |
 | 15h00 | 21h00 | 0.515% | 1.00515 | 0.99485 |
 | 15h30 | 21h30 | 0.537% | 1.00537 | 0.99463 |
