@@ -1,0 +1,51 @@
+name: Donnees sessions 24 h (Dukascopy, 5 minutes)
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - sessions24/telecharger.sh
+      - sessions24/preparer.py
+      - .github/workflows/donnees-sessions.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        inst: [usatechidxusd, usa500idxusd, usa30idxusd, eurusd, gbpusd, usdjpy, audusd, xauusd, lightcmdusd]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger les prix minute
+        run: bash sessions24/telecharger.sh ${{ matrix.inst }}
+      - name: Barres de 5 minutes
+        run: |
+          pip install pandas
+          python3 sessions24/preparer.py ${{ matrix.inst }}
+      - name: Enregistrer sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sessions24/donnees/${{ matrix.inst }}_5m.csv.gz
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees sessions 24 h : ${{ matrix.inst }} (5 minutes)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 15))
+          done
+          exit 1
