@@ -141,3 +141,49 @@ connues, paiement unique). Règles relevées le 8 octobre 2026 (sites d'avis, à
   part des achats avec au moins un retrait dans les 12 mois, argent reçu en moyenne (après la part de la firme),
   délai du premier retrait, comptes financés perdus, et coût moyen (mois d'abonnement compris).
 - Bots Z et Z + R, et le filtre delta simulé à titre descriptif. Rien n'est « retenu » : c'est une comparaison.
+
+## Résultats de la partie 2 (8 octobre 2026) : `comptes.txt`, `financee.txt`
+
+Contrôles : le moteur redonne exactement la zone de `protection/` (+10 668,5 $ sur 2023 - 2026 sans limite), la
+somme des séances pour zone + RSI(2), et la partie 1 pour le RSI(2) seul ; la phase financée redonne les issues du
+challenge du moteur (309/309).
+
+**Bots sans compte** : zone seule +5,5 $ par séance (2012-2026), +11,1 $ (2023-2026) ; zone + RSI(2) entre deux
+clôtures +9,4 $ et +19,4 $.
+
+**Challenges** (bot Z + R, sans filtre ; réussis / perdus) :
+
+| Compte 50K | 2011-2022 | 2023 - 2026 | Achats de 2025 | Avec le filtre simulé, 2023 - 2026 |
+|---|---|---|---|---|
+| Bulenox option 2 (fin de journée) | 30 / 2 % | 68 / 28 % | 24 / 76 % | 78 / 18 % |
+| Bulenox option 1 (suivi en direct) | 30 / 2 % | 65 / 31 % | 18 / 82 % | 77 / 19 % |
+| Tradeify Growth | 26 / 6 % | 67 / 29 % | 22 / 78 % | 75 / 21 % |
+| Topstep | 27 / 5 % | 61 / 30 % | 7 / 82 % | 75 / 20 % |
+| Lucid Flex | 26 / 6 % | 58 / 32 % | 11 / 78 % | 74 / 21 % |
+| Tradeify Select | 26 / 6 % | 53 / 34 % | 4 / 84 % | 68 / 21 % |
+| Apex EOD (30 jours) | 0 / 1 % | 4 / 6 % | 9 / 16 % | 4 / 6 % |
+
+- Le RSI(2) entre deux clôtures aide partout (zone seule : 43 à 55 % de réussis sur 2023 - 2026).
+- La perte calculée en fin de journée fait mieux que la perte suivie en direct (Bulenox : 20 % de perdus au lieu de
+  30 % pour la zone seule).
+- Les règles de régularité du challenge (Select 40 %, Lucid et Topstep 50 %) coûtent des réussites.
+- Apex : le bot est trop lent pour 30 jours.
+- Comme chez DayTraders, les achats de 2025 sont mauvais partout.
+
+**Phase financée** (achats de 2023 - septembre 2025, 12 mois ; bot Z + R) :
+
+| Compte | Challenge réussi | Au moins un retrait | Reçu moyen (part du trader) | Coût moyen | Reçu − coût |
+|---|---|---|---|---|---|
+| Topstep | 67 % | **55 %** | +547 $ | 395 $ | **+152 $** |
+| Topstep, filtre simulé | 83 % | 62 % | +1 030 $ | 392 $ | +638 $ |
+| Bulenox option 2 | 71 % | 2 % | +21 $ | 1 109 $ (abonnement à 175 $/mois) | −1 088 $ |
+| Tradeify Growth | 71 % | 2 % | +12 $ | 145 $ | −133 $ |
+
+- Chez Bulenox et Tradeify, presque aucun retrait en 12 mois : le bot met 5 à 7 mois à réussir, puis les règles de
+  retrait (régularité de 40 % ou 35 %, 10 jours de trading, solde à garder) bloquent les quelques mois qui restent.
+- Topstep (chemin Standard : 5 jours à +150 $, pas de régularité, la moitié du gain jusqu'à 2 000 $) est le seul
+  compte intraday qui paie, mais peu : le premier retrait arrive vers 160 séances (7 à 8 mois), et 47 % des
+  comptes financés sont perdus.
+- Achats de 2025 chez Topstep : 6 % de réussis, aucun retrait.
+- Pour comparaison (`protection/piste5.txt`) : DayTraders S2F avec plafond de 500 $, mêmes achats, 83 % de retraits
+  et +1 826 $ reçus en moyenne (≈ +1 541 $ au prix réel de 342 $).

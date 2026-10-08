@@ -1,0 +1,272 @@
+{
+ "Bulenox option 2 (fin de journee) | Z | sans filtre | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.6699029126213593,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": 0.3140096618357488,
+  "cout": 1475.925566343042
+ },
+ "Bulenox option 2 (fin de journee) | Z | sans filtre | 2025": {
+  "achats": 87,
+  "reussi": 0.2988505747126437,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": 1.0,
+  "cout": 874.9770114942529
+ },
+ "Bulenox option 2 (fin de journee) | Z | sans filtre | 2011-2022": {
+  "achats": 494,
+  "reussi": 0.18016194331983806,
+  "retrait": 0.0020242914979757085,
+  "recu": 2.284412955465587,
+  "premier": 205.0,
+  "perdu_f": 0.0,
+  "cout": 2029.5991902834007
+ },
+ "Bulenox option 2 (fin de journee) | Z | filtre simule (descriptif) | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.843042071197411,
+  "retrait": 0.009870550161812298,
+  "recu": 11.224110032362459,
+  "premier": 216.0,
+  "perdu_f": 0.08426103646833014,
+  "cout": 1391.2265372168285
+ },
+ "Bulenox option 2 (fin de journee) | Z | filtre simule (descriptif) | 2025": {
+  "achats": 87,
+  "reussi": 0.4747126436781609,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": 0.4406779661016949,
+  "cout": 1263.0735632183907
+ },
+ "Bulenox option 2 (fin de journee) | Z+R | sans filtre | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.7087378640776699,
+  "retrait": 0.019417475728155338,
+  "recu": 21.13430420711974,
+  "premier": 247.0,
+  "perdu_f": 0.3926940639269406,
+  "cout": 1109.0194174757282
+ },
+ "Bulenox option 2 (fin de journee) | Z+R | sans filtre | 2025": {
+  "achats": 87,
+  "reussi": 0.20689655172413793,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": 1.0,
+  "cout": 732.6321839080459
+ },
+ "Bulenox option 2 (fin de journee) | Z+R | sans filtre | 2011-2022": {
+  "achats": 494,
+  "reussi": 0.29959514170040485,
+  "retrait": 0.006072874493927126,
+  "recu": 6.381578947368421,
+  "premier": 189.0,
+  "perdu_f": 0.18243243243243243,
+  "cout": 1912.65991902834
+ },
+ "Bulenox option 2 (fin de journee) | Z+R | filtre simule (descriptif) | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.8423948220064725,
+  "retrait": 0.2644012944983819,
+  "recu": 337.8489482200647,
+  "premier": 214.5,
+  "perdu_f": 0.3962735305416827,
+  "cout": 1049.2294498381877
+ },
+ "Bulenox option 2 (fin de journee) | Z+R | filtre simule (descriptif) | 2025": {
+  "achats": 87,
+  "reussi": 0.5482758620689655,
+  "retrait": 0.11839080459770115,
+  "recu": 169.00028735632185,
+  "premier": 220.5,
+  "perdu_f": 0.6194968553459119,
+  "cout": 819.6649425287357
+ },
+ "Topstep | Z | sans filtre | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.49838187702265374,
+  "retrait": 0.22653721682847897,
+  "recu": 112.58828883495146,
+  "premier": 188.5,
+  "perdu_f": 0.16883116883116883,
+  "cout": 511.13592233009706
+ },
+ "Topstep | Z | sans filtre | 2025": {
+  "achats": 87,
+  "reussi": 0.0,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": null,
+  "cout": 323.28735632183907
+ },
+ "Topstep | Z | sans filtre | 2011-2022": {
+  "achats": 494,
+  "reussi": 0.18016194331983806,
+  "retrait": 0.1194331983805668,
+  "recu": 128.75058514676113,
+  "premier": 188.0,
+  "perdu_f": 0.0,
+  "cout": 587.665991902834
+ },
+ "Topstep | Z | filtre simule (descriptif) | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.7014563106796117,
+  "retrait": 0.6093851132686084,
+  "recu": 680.6998998786407,
+  "premier": 181.0,
+  "perdu_f": 0.12964244521337948,
+  "cout": 479.684142394822
+ },
+ "Topstep | Z | filtre simule (descriptif) | 2025": {
+  "achats": 87,
+  "reussi": 0.059770114942528735,
+  "retrait": 0.014367816091954023,
+  "recu": 5.503577586206897,
+  "premier": 225.0,
+  "perdu_f": 0.25,
+  "cout": 401.63793103448273
+ },
+ "Topstep | Z+R | sans filtre | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.6699029126213593,
+  "retrait": 0.5501618122977346,
+  "recu": 547.4027002427185,
+  "premier": 160.5,
+  "perdu_f": 0.46859903381642515,
+  "cout": 394.9255663430421
+ },
+ "Topstep | Z+R | sans filtre | 2025": {
+  "achats": 87,
+  "reussi": 0.05747126436781609,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": 1.0,
+  "cout": 256.37931034482756
+ },
+ "Topstep | Z+R | sans filtre | 2011-2022": {
+  "achats": 494,
+  "reussi": 0.2651821862348178,
+  "retrait": 0.145748987854251,
+  "recu": 134.01608046558704,
+  "premier": 180.5,
+  "perdu_f": 0.42748091603053434,
+  "cout": 554.6072874493927
+ },
+ "Topstep | Z+R | filtre simule (descriptif) | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.8271844660194175,
+  "retrait": 0.6190938511326861,
+  "recu": 1029.650135770631,
+  "premier": 144.0,
+  "perdu_f": 0.5350156494522692,
+  "cout": 392.3302588996764
+ },
+ "Topstep | Z+R | filtre simule (descriptif) | 2025": {
+  "achats": 87,
+  "reussi": 0.521264367816092,
+  "retrait": 0.13045977011494253,
+  "recu": 221.28240840517245,
+  "premier": 184.0,
+  "perdu_f": 0.824696802646086,
+  "cout": 327.3149425287356
+ },
+ "Tradeify Growth | Z | sans filtre | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.6699029126213593,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": 0.32367149758454106,
+  "cout": 145.0
+ },
+ "Tradeify Growth | Z | sans filtre | 2025": {
+  "achats": 87,
+  "reussi": 0.2988505747126437,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": 1.0,
+  "cout": 145.0
+ },
+ "Tradeify Growth | Z | sans filtre | 2011-2022": {
+  "achats": 494,
+  "reussi": 0.18016194331983806,
+  "retrait": 0.004048582995951417,
+  "recu": 2.0523279352226718,
+  "premier": 222.0,
+  "perdu_f": 0.0,
+  "cout": 145.0
+ },
+ "Tradeify Growth | Z | filtre simule (descriptif) | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.7998381877022653,
+  "retrait": 0.01116504854368932,
+  "recu": 6.163543689320388,
+  "premier": 215.0,
+  "perdu_f": 0.12886910782925348,
+  "cout": 145.0
+ },
+ "Tradeify Growth | Z | filtre simule (descriptif) | 2025": {
+  "achats": 87,
+  "reussi": 0.34655172413793106,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": 0.8192371475953566,
+  "cout": 145.0
+ },
+ "Tradeify Growth | Z+R | sans filtre | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.7087378640776699,
+  "retrait": 0.019417475728155338,
+  "recu": 12.030582524271846,
+  "premier": 247.0,
+  "perdu_f": 0.3926940639269406,
+  "cout": 145.0
+ },
+ "Tradeify Growth | Z+R | sans filtre | 2025": {
+  "achats": 87,
+  "reussi": 0.20689655172413793,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "premier": null,
+  "perdu_f": 1.0,
+  "cout": 145.0
+ },
+ "Tradeify Growth | Z+R | sans filtre | 2011-2022": {
+  "achats": 494,
+  "reussi": 0.2611336032388664,
+  "retrait": 0.010121457489878543,
+  "recu": 5.616801619433198,
+  "premier": 199.0,
+  "perdu_f": 0.3023255813953488,
+  "cout": 145.0
+ },
+ "Tradeify Growth | Z+R | filtre simule (descriptif) | 2023 - sept. 2025": {
+  "achats": 309,
+  "reussi": 0.8233009708737864,
+  "retrait": 0.23349514563106796,
+  "recu": 177.61361650485438,
+  "premier": 213.0,
+  "perdu_f": 0.38875786163522014,
+  "cout": 145.0
+ },
+ "Tradeify Growth | Z+R | filtre simule (descriptif) | 2025": {
+  "achats": 87,
+  "reussi": 0.5063218390804598,
+  "retrait": 0.03333333333333333,
+  "recu": 42.32974137931034,
+  "premier": 209.0,
+  "perdu_f": 0.735527809307605,
+  "cout": 145.0
+ }
+}

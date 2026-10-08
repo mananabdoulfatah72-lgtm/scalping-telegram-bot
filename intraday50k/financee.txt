@@ -1,0 +1,33 @@
+Controle : issues du challenge de financee.py = moteur.py sur 309 departs : 309/309
+
+compte | bot | zone | achats | challenge reussi | au moins un retrait en 12 mois | recu moyen en 12 mois (part du trader) | 1er retrait (mediane, seances apres l'achat) | compte finance perdu | cout moyen
+Bulenox option 2 (fin de journee) | Z | sans filtre | 2023 - sept. 2025 | 67% | 0% | +0 $ | - | 31% | 1,476 $
+Bulenox option 2 (fin de journee) | Z | sans filtre | 2025 | 30% | 0% | +0 $ | - | 100% | 875 $
+Bulenox option 2 (fin de journee) | Z | sans filtre | 2011-2022 | 18% | 0% | +2 $ | 205 | 0% | 2,030 $
+Bulenox option 2 (fin de journee) | Z | filtre simule (descriptif) | 2023 - sept. 2025 | 84% | 1% | +11 $ | 216 | 8% | 1,391 $
+Bulenox option 2 (fin de journee) | Z | filtre simule (descriptif) | 2025 | 47% | 0% | +0 $ | - | 44% | 1,263 $
+Bulenox option 2 (fin de journee) | Z+R | sans filtre | 2023 - sept. 2025 | 71% | 2% | +21 $ | 247 | 39% | 1,109 $
+Bulenox option 2 (fin de journee) | Z+R | sans filtre | 2025 | 21% | 0% | +0 $ | - | 100% | 733 $
+Bulenox option 2 (fin de journee) | Z+R | sans filtre | 2011-2022 | 30% | 1% | +6 $ | 189 | 18% | 1,913 $
+Bulenox option 2 (fin de journee) | Z+R | filtre simule (descriptif) | 2023 - sept. 2025 | 84% | 26% | +338 $ | 214 | 40% | 1,049 $
+Bulenox option 2 (fin de journee) | Z+R | filtre simule (descriptif) | 2025 | 55% | 12% | +169 $ | 220 | 62% | 820 $
+Topstep | Z | sans filtre | 2023 - sept. 2025 | 50% | 23% | +113 $ | 188 | 17% | 511 $
+Topstep | Z | sans filtre | 2025 | 0% | 0% | +0 $ | - | - | 323 $
+Topstep | Z | sans filtre | 2011-2022 | 18% | 12% | +129 $ | 188 | 0% | 588 $
+Topstep | Z | filtre simule (descriptif) | 2023 - sept. 2025 | 70% | 61% | +681 $ | 181 | 13% | 480 $
+Topstep | Z | filtre simule (descriptif) | 2025 | 6% | 1% | +6 $ | 225 | 25% | 402 $
+Topstep | Z+R | sans filtre | 2023 - sept. 2025 | 67% | 55% | +547 $ | 160 | 47% | 395 $
+Topstep | Z+R | sans filtre | 2025 | 6% | 0% | +0 $ | - | 100% | 256 $
+Topstep | Z+R | sans filtre | 2011-2022 | 27% | 15% | +134 $ | 180 | 43% | 555 $
+Topstep | Z+R | filtre simule (descriptif) | 2023 - sept. 2025 | 83% | 62% | +1,030 $ | 144 | 54% | 392 $
+Topstep | Z+R | filtre simule (descriptif) | 2025 | 52% | 13% | +221 $ | 184 | 82% | 327 $
+Tradeify Growth | Z | sans filtre | 2023 - sept. 2025 | 67% | 0% | +0 $ | - | 32% | 145 $
+Tradeify Growth | Z | sans filtre | 2025 | 30% | 0% | +0 $ | - | 100% | 145 $
+Tradeify Growth | Z | sans filtre | 2011-2022 | 18% | 0% | +2 $ | 222 | 0% | 145 $
+Tradeify Growth | Z | filtre simule (descriptif) | 2023 - sept. 2025 | 80% | 1% | +6 $ | 215 | 13% | 145 $
+Tradeify Growth | Z | filtre simule (descriptif) | 2025 | 35% | 0% | +0 $ | - | 82% | 145 $
+Tradeify Growth | Z+R | sans filtre | 2023 - sept. 2025 | 71% | 2% | +12 $ | 247 | 39% | 145 $
+Tradeify Growth | Z+R | sans filtre | 2025 | 21% | 0% | +0 $ | - | 100% | 145 $
+Tradeify Growth | Z+R | sans filtre | 2011-2022 | 26% | 1% | +6 $ | 199 | 30% | 145 $
+Tradeify Growth | Z+R | filtre simule (descriptif) | 2023 - sept. 2025 | 82% | 23% | +178 $ | 213 | 39% | 145 $
+Tradeify Growth | Z+R | filtre simule (descriptif) | 2025 | 51% | 3% | +42 $ | 209 | 74% | 145 $
