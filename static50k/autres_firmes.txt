@@ -1,0 +1,14 @@
+Comptes intraday (financee.py) sur les 124 departs de verification de static50k (2023 - sept. 2025), 12 mois apres l'achat
+compte | bot | prix | achats | challenge reussi | au moins un retrait | retraits moyens (part du trader) | argent net moyen | net >= 580 $
+Bulenox option 2 (fin de journee) | Z | aujourd hui | 124 | 59% | 23% | 531 $ | -310 $ | 20%
+Bulenox option 2 (fin de journee) | Z | epoque | 124 | 67% | 0% | 0 $ | -1,476 $ | 0%
+Bulenox option 2 (fin de journee) | Z+R | aujourd hui | 124 | 60% | 35% | 585 $ | -47 $ | 23%
+Bulenox option 2 (fin de journee) | Z+R | epoque | 124 | 72% | 2% | 18 $ | -1,088 $ | 0%
+Topstep | Z | aujourd hui | 124 | 55% | 43% | 868 $ | +594 $ | 23%
+Topstep | Z | epoque | 124 | 52% | 23% | 120 $ | -392 $ | 1%
+Topstep | Z+R | aujourd hui | 124 | 48% | 25% | 379 $ | +162 $ | 17%
+Topstep | Z+R | epoque | 124 | 68% | 55% | 540 $ | +144 $ | 27%
+Tradeify Growth | Z | aujourd hui | 124 | 55% | 19% | 323 $ | +178 $ | 11%
+Tradeify Growth | Z | epoque | 124 | 67% | 0% | 0 $ | -145 $ | 0%
+Tradeify Growth | Z+R | aujourd hui | 124 | 43% | 9% | 188 $ | +43 $ | 9%
+Tradeify Growth | Z+R | epoque | 124 | 72% | 2% | 10 $ | -135 $ | 0%

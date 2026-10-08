@@ -14,7 +14,8 @@ SEUIL_PRO, GARDE_PRO, MAX_RET = 2600.0, 2000.0, 2000.0
 VARIANTES = {"E0": 0, "E1": 1, "E2": 2, "E3": 3, "E4": 4, "E5": 5, "E6": 6}
 
 # colonnes du resultat
-ISSUE, FIN_EVAL, PRO_PERDU, FIN_PRO, RECU1, RECU2, NRET1, PREMIER, INACTIF, SUIVI, PIRE = range(11)
+ISSUE, FIN_EVAL, PRO_PERDU, FIN_PRO, RECU1, RECU2, NRET1, PREMIER, INACTIF = range(9)
+NCOL = 9
 
 
 @njit(cache=True)
@@ -47,17 +48,43 @@ def _zone_taille(variante, coussin):
 
 
 @njit(cache=True)
+def _sortie_rsi(rq, ri):
+    """Frais et glissement d'une sortie forcee du RSI(2)."""
+    return rq * ((ORDRE_NQ + TICK_NQ) if ri == 0 else (ORDRE_ES + TICK_ES))
+
+
+@njit(cache=True)
+def _heure(cash, rq, re, ri, ptN, ptE, AO, AH, AL, BO, BH, BL, p, b, plancher, cap):
+    """Une barre d'une heure (seul le RSI(2) peut etre en position) : d'abord le plancher sur le plus bas (prudent : si la
+    barre touche le plancher et le plafond, le compte est perdu), puis le plafond du jour (cap > 0 : niveau a atteindre).
+    Renvoie (perdu, cash, rq, plafond touche)."""
+    if rq == 0:
+        return False, cash, rq, False
+    if ri == 0:
+        a, o, h, l = cash - ptN * rq * re, AO[p, b], AH[p, b], AL[p, b]
+        k = ptN * rq
+    else:
+        a, o, h, l = cash - ptE * rq * re, BO[p, b], BH[p, b], BL[p, b]
+        k = ptE * rq
+    if a + k * l <= plancher:
+        return True, a + k * l, rq, False
+    if cap > 0.0 and a + k * h >= cap:
+        x = cap if a + k * o < cap else a + k * o
+        return False, x - _sortie_rsi(rq, ri), 0, True
+    return False, cash, rq, False
+
+
+@njit(cache=True)
 def parcours(debut, h1, h2, variante, plafond_pro, pessimiste, avec_nuit, ptN, ptE, perte, objectif, trace,
              O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde, dec, voulu,
              EO, EH, EL, EC, roule_es, AO, AH, AL, AC, BO, BH, BL, BC, na, npost):
     """Un achat a la seance `debut` (RSI(2) a plat). Suivi jusqu'a h2 seances. Renvoie un tableau (voir colonnes).
     perte, objectif : ceux de l'evaluation (controles : tres grands = sans compte). trace[s - 1] : valeur de fin de
     journee de la s-ieme seance (avant un retrait), pour les controles."""
-    res = np.zeros(11)
-    res[ISSUE], res[FIN_EVAL], res[PREMIER], res[PIRE] = 0.0, -1.0, -1.0, 1e18
+    res = np.zeros(NCOL)
+    res[FIN_EVAL], res[PREMIER] = -1.0, -1.0
     nj = O.shape[0]
     fin = min(nj, debut + h2)
-    res[SUIVI] = fin - debut
     phase = 0                       # 0 evaluation, 1 compte Pro
     cash = 0.0
     zp, ze, actif = 0, 0.0, -1      # zone : contrats signes, prix d'entree, trade en cours
@@ -71,27 +98,17 @@ def parcours(debut, h1, h2, variante, plafond_pro, pessimiste, avec_nuit, ptN, p
     sans_qualif, inactif = 0, False
     for d in range(debut, fin):
         s = d - debut + 1                   # seances jouees depuis l'achat
+        cap = veille + plafond_pro if (phase == 1 and plafond_pro > 0.0) else 0.0
         # ======================= barres de la nuit (de 18 h la veille a 8 h) : journee de trading d
         arret = False
         if avec_nuit == 1 and d > debut:
             p = d - 1
             for b in range(npost[p], na[p]):
-                nq = rq if ri == 0 else 0
-                ne = rq if ri == 1 else 0
-                a = cash - ptN * nq * re - ptE * ne * re
-                ouv = a + ptN * nq * AO[p, b] + ptE * ne * BO[p, b]
-                haut = a + ptN * nq * AH[p, b] + ptE * ne * BH[p, b]
-                bas = a + ptN * nq * AL[p, b] + ptE * ne * BL[p, b]
-                if phase == 1 and plafond_pro > 0.0 and rq > 0 and haut >= veille + plafond_pro:
-                    x = veille + plafond_pro if ouv < veille + plafond_pro else ouv
-                    cash = x - rq * ((ORDRE_NQ + TICK_NQ) if ri == 0 else (ORDRE_ES + TICK_ES))
-                    rq = 0
-                    arret = True
-                    bas = cash
-                if bas - plancher < res[PIRE]:
-                    res[PIRE] = bas - plancher
-                if bas <= plancher:
+                perdu, cash, rq, touche = _heure(cash, rq, re, ri, ptN, ptE, AO, AH, AL, BO, BH, BL, p, b, plancher,
+                                                 0.0 if arret else cap)
+                if perdu:
                     return _perdu(res, phase, s, inactif)
+                arret = arret or touche
         # ======================= seance : minutes de 9 h 30 a la derniere minute
         k = z_deb[d]
         dmin = der[d]
@@ -128,19 +145,18 @@ def parcours(debut, h1, h2, variante, plafond_pro, pessimiste, avec_nuit, ptN, p
                 haut_n, bas_n = H[d, t], L[d, t]
             else:
                 haut_n, bas_n = L[d, t], H[d, t]
-            haut = a + ptN * n_nq * haut_n + ptE * ne * EH[d, t]
-            bas = a + ptN * n_nq * bas_n + ptE * ne * EL[d, t]
-            if phase == 1 and plafond_pro > 0.0 and (zp != 0 or rq > 0) and haut >= veille + plafond_pro:
-                x = veille + plafond_pro if ouv < veille + plafond_pro else ouv
-                cash = x - abs(zp) * (FRAIS_ZONE + TICK_NQ) - rq * ((ORDRE_NQ + TICK_NQ) if ri == 0 else (ORDRE_ES + TICK_ES))
-                zp, rq, arret = 0, 0, True
-                if actif >= 0:
-                    actif = -2
-                bas = cash
-            if bas - plancher < res[PIRE]:
-                res[PIRE] = bas - plancher
-            if bas <= plancher:
+            bas = a + ptN * n_nq * bas_n + ptE * ne * EL[d, t]       # pires points additionnes (prudent)
+            if n_nq != 0 and ne > 0:
+                # deux contrats : on ne sait pas si leurs meilleurs points sont au meme moment -> ouverture ou cloture
+                haut = max(ouv, a + ptN * n_nq * C[d, t] + ptE * ne * EC[d, t])
+            else:
+                haut = a + ptN * n_nq * haut_n + ptE * ne * EH[d, t]
+            if bas <= plancher:                                       # le plancher d'abord (prudent)
                 return _perdu(res, phase, s, inactif)
+            if cap > 0.0 and not arret and (zp != 0 or rq > 0) and haut >= cap:
+                x = cap if ouv < cap else ouv
+                cash = x - abs(zp) * (FRAIS_ZONE + TICK_NQ) - _sortie_rsi(rq, ri)
+                zp, rq, arret, actif = 0, 0, True, -1
             # zone : sortie puis entree a la cloture de la minute
             if actif >= 0 and z_ms[actif] == t:
                 cash += zp * (C[d, t] - ze) * ptN - abs(zp) * FRAIS_ZONE
@@ -162,22 +178,11 @@ def parcours(debut, h1, h2, variante, plafond_pro, pessimiste, avec_nuit, ptN, p
         pn, pe = C[d, dmin], EC[d, dmin]
         if avec_nuit == 1:
             for b in range(npost[d]):
-                nq = rq if ri == 0 else 0
-                ne = rq if ri == 1 else 0
-                a = cash - ptN * nq * re - ptE * ne * re
-                ouv = a + ptN * nq * AO[d, b] + ptE * ne * BO[d, b]
-                haut = a + ptN * nq * AH[d, b] + ptE * ne * BH[d, b]
-                bas = a + ptN * nq * AL[d, b] + ptE * ne * BL[d, b]
-                if phase == 1 and plafond_pro > 0.0 and rq > 0 and haut >= veille + plafond_pro:
-                    x = veille + plafond_pro if ouv < veille + plafond_pro else ouv
-                    cash = x - rq * ((ORDRE_NQ + TICK_NQ) if ri == 0 else (ORDRE_ES + TICK_ES))
-                    rq = 0
-                    arret = True
-                    bas = cash
-                if bas - plancher < res[PIRE]:
-                    res[PIRE] = bas - plancher
-                if bas <= plancher:
+                perdu, cash, rq, touche = _heure(cash, rq, re, ri, ptN, ptE, AO, AH, AL, BO, BH, BL, d, b, plancher,
+                                                 0.0 if arret else cap)
+                if perdu:
                     return _perdu(res, phase, s, inactif)
+                arret = arret or touche
                 pn, pe = AC[d, b], BC[d, b]
         eod = cash + (rq * (pn - re) * ptN if ri == 0 else rq * (pe - re) * ptE)
         if s <= trace.shape[0]:
@@ -201,7 +206,7 @@ def parcours(debut, h1, h2, variante, plafond_pro, pessimiste, avec_nuit, ptN, p
                 bloque = veut == 1
                 sans_qualif = 0
         else:
-            if sans_qualif >= 21:
+            if sans_qualif >= 21 and s <= h1:
                 inactif = True
             gain = eod - base
             if eod >= SEUIL_PRO and qualif >= 8 and meilleur <= 0.3 * gain:

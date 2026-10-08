@@ -168,3 +168,97 @@ coussin a grandi. Aucune n'a été choisie en regardant un résultat.
 3. Un trade du RSI(2) sur MES et un retrait du compte Pro recalculés à la main.
 4. Changer les prix après une date ne change rien avant cette date (pas de regard vers le futur).
 5. Un facteur de prix de 1 redonne exactement le calcul au prix de l'époque.
+
+## Correction après la revue de code (8 octobre 2026, avant la publication des résultats)
+
+Une revue de code indépendante (`/code-review`, niveau élevé) a relevé, après un premier calcul :
+1. **Plafond et plancher dans la même barre** : le moteur prenait le plafond de +500 $ avant de regarder le plancher.
+   C'était favorable aux variantes « P500 ». Corrigé dans le sens prudent : si une minute ou une heure touche les deux,
+   le compte est perdu.
+2. **Plafond avec deux contrats** (zone sur MNQ, RSI(2) sur MES) : le moteur additionnait les deux meilleurs points,
+   qui ne sont pas forcément au même moment. Corrigé : avec deux contrats, le plafond n'est pris que si la valeur à
+   l'ouverture ou à la clôture de la minute l'atteint.
+3. Règle d'activité comptée au-delà de 12 mois ; nombre d'achats affiché ×20 dans les scénarios du filtre ; contrôle
+   du total du RSI(2) annoncé mais pas vérifié ; code en double. Tout est corrigé.
+
+Deux contrôles synthétiques ont été ajoutés (plafond et plancher dans la même minute ; plafond avec deux contrats). Ils
+échouent avec l'ancien moteur et passent avec le nouveau. Le calcul a été refait en entier. Premier calcul, pour mémoire :
+E0 P500 retenue, +898 $ par achat sur 2012-2021 et +771 $ en vérification. Après correction : +875 $ et +690 $. **La
+décision ne change pas.**
+
+## Résultats (8 octobre 2026) : `static.txt`, `lecture.txt`, `autres_firmes.txt`
+
+Contrôles (`test_static.py`, 9 sur 9) :
+- zone seule +10 668,5 $ et RSI(2) d'origine +11 098,5 $ (2023 - septembre 2026), identiques à `protection/` ;
+- valeur de fin de journée juste sur les 828 séances à plat et sur les 135 séances en position ;
+- évaluation identique à `budget30.py` sur les 166 départs, sans la nuit ;
+- trade sur MES et retraits recalculés à la main ;
+- pas de regard vers le futur ;
+- facteur de prix exact ;
+- plancher avant plafond.
+
+### La décision (règles fixées avant le calcul)
+
+| Variante (au niveau d'aujourd'hui, 12 mois après l'achat) | Choix 2012-2021 : argent net moyen par achat | Vérification 2023 - sept. 2025 | Évaluation réussie / perdue (vérification) | Achats à +580 $ nets ou plus (vérification) |
+|---|---|---|---|---|
+| **E0 P500 : le bot tel quel + plafond du jour de 500 $ sur le compte Pro** | **+875 $** | **+690 $** | 48 % / 52 % | 20 % |
+| E0 P0 : le bot tel quel | +290 $ | +227 $ | 48 % / 52 % | 12 % |
+| E1 P500 : zone seule, plafond 500 $ | +587 $ | +395 $ | 52 % / 42 % | 11 % |
+| E4 P500 : RSI(2) sur MES | +751 $ | +977 $ | 63 % / 31 % | 28 % |
+| E5 P500 : MES puis MNQ | +709 $ | +1 033 $ | 66 % / 31 % | 31 % |
+| E2 P500 : RSI(2) dès 2 000 $ de coussin | +506 $ | +1 082 $ | 69 % / 31 % | 26 % |
+
+- **Retenue : E0 P500, validée** (+690 $ en vérification, contre +227 $ pour le bot tel quel).
+- **Le RSI(2) reste** : E0 P500 bat la zone seule (E1 P500) sur les deux périodes (+875 / +690 $ contre +587 / +395 $).
+- Ce qui change dans le bot : **rien pendant l'évaluation**. Sur le compte Pro, dès que la journée gagne 500 $, tout
+  est fermé jusqu'à 18 h. C'est la règle des 30 % qui bloque les retraits sans ce plafond, comme dans `protection/`
+  piste 4.
+- Sur 2023 - 2025, les variantes qui prennent moins de risque au début (E2, E4, E5) ont fait mieux qu'E0 P500. Elles
+  avaient fait moins bien sur 2012-2021, et la règle choisit sur 2012-2021 : elles ne sont pas retenues.
+
+### Ce qu'il faut savoir avant d'y croire (descriptif)
+
+- **La médiane est de −30 $** dans toutes les variantes : la plupart des achats perdent leur prix (évaluation perdue
+  ou pas encore réussie). La moyenne positive vient d'une minorité d'achats qui paient beaucoup : pour E0 P500, 20 à
+  25 % des achats rapportent au moins 580 $ nets en 12 mois. Parmi les achats qui retirent, la médiane reçue est de
+  4 000 $ (2012-2021) et 2 500 $ (vérification), de 500 $ à 6 000 $ environ.
+- **Ça dépend beaucoup de l'année** (`lecture.txt`, E0 P500, par année d'achat) :
+  - années où presque tout est perdu : 2014 (+7 $), 2015 et 2016 (−36 $, 87 à 95 % d'évaluations perdues),
+    **2025 (−60 $ : 77 % perdues, aucun retrait)** ;
+  - bonnes années : +1 300 à +2 400 $ par achat (2013, 2018, 2021, 2023).
+- **Avril - septembre 2026 avec le vrai delta** : 15 % d'évaluations réussies, 38 % perdues, 47 % en cours au
+  25 septembre. Pas un bon début.
+- **Programme « un Static par mois pendant 12 mois »** (360 $ d'achats) :
+  - commencé en 2012-2020 : total net médian +10 055 $, mais 23 % des programmes perdent de l'argent ;
+  - commencé en 2023 - septembre 2024 : médiane +8 230 $, 10 % perdants.
+
+  Les comptes achetés le même mois font les mêmes trades : ils réussissent ou sautent ensemble.
+- **Compte Pro pessimiste** (plancher qui remonte après un retrait) : E0 P500 tombe à +341 $ / +295 $. **La règle du
+  plancher après un retrait est donc à demander au support de DayTraders avant d'acheter.**
+- **Prix de l'époque** (le NQ valait beaucoup moins) : E0 P500 fait +24 $ / +196 $. Les dollars gagnés suivent le prix
+  du NQ.
+- **Filtre delta simulé**, E0 P500 :
+
+  | Scénario | Choix 2012-2021 | Vérification |
+  |---|---|---|
+  | aussi bon qu'en 2026 | +1 402 $ | +1 206 $ |
+  | deux fois moins bon | +1 027 $ | +831 $ |
+  | inutile | +647 $ | +472 $ |
+
+  Le filtre ne peut être jugé que sur des données réelles : c'est le rôle de la démo.
+- **24 mois après l'achat** : E0 P500 fait +2 882 $ (2012-2021) et +2 698 $ par achat (2023 - 2024, 78 achats).
+- **Règle d'activité** : environ 14 % des achats ont un compte Pro qui passe 21 séances sans un jour à +200 $. Si
+  DayTraders applique strictement cette règle, ces comptes seraient en danger.
+
+### Les autres firmes, au même niveau de prix (`autres_firmes.txt`, mêmes 124 départs de vérification)
+
+| Compte (12 mois) | Argent net moyen par achat | Achats à +580 $ nets ou plus |
+|---|---|---|
+| DayTraders Static, E0 P500 | +690 $ | 20 % |
+| Topstep, zone seule | +594 $ | 23 % |
+| Topstep, zone + RSI(2) entre deux clôtures | +162 $ | 17 % |
+| Tradeify Growth, zone seule | +178 $ | 11 % |
+| Bulenox option 2, zone + RSI(2) | −47 $ | 23 % |
+
+Topstep avec la zone seule arrive près du Static, mais il coûte 49 $ par mois plus 149 $ d'activation, contre 30 $
+une fois plus 130 $ d'activation. Le Static reste le compte le moins cher pour ce bot.

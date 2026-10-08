@@ -1,0 +1,56 @@
+Lecture (descriptive, ecrite apres les resultats) : au niveau d'aujourd'hui, 12 mois apres chaque achat
+
+=== E0 P500 : par annee d'achat (achats | argent net moyen | evaluation reussie / perdue | au moins un retrait | net >= 580 $)
+2012 | 42 | +735 $ | 62% / 38% | 29% | 24%
+2013 | 45 | +1,316 $ | 76% / 24% | 53% | 51%
+2014 | 43 | +7 $ | 7% / 93% | 7% | 2%
+2015 | 43 | -36 $ | 5% / 95% | 0% | 0%
+2016 | 45 | -36 $ | 13% / 87% | 2% | 0%
+2017 | 44 | +1,070 $ | 55% / 45% | 39% | 27%
+2018 | 44 | +1,434 $ | 45% / 55% | 32% | 32%
+2019 | 48 | +1,239 $ | 33% / 67% | 27% | 25%
+2020 | 46 | +517 $ | 30% / 70% | 13% | 13%
+2021 | 45 | +2,417 $ | 58% / 42% | 47% | 47%
+2022 | 49 | +452 $ | 45% / 55% | 24% | 14%
+2023 | 44 | +1,337 $ | 50% / 50% | 34% | 32%
+2024 | 45 | +642 $ | 64% / 36% | 31% | 24%
+2025 | 35 | -60 $ | 23% / 77% | 0% | 0%
+programme 12 achats (1 par mois, 360 $ d'achats), programmes commences en 2012-2020 (400) : total net median +10,055 $, 10 % les plus mauvais <= -360 $, 10 % les meilleurs >= +20,490 $, programmes perdants 23% ; comptes a +580 $ par programme : mediane 3 sur 12
+programme 12 achats (1 par mois, 360 $ d'achats), programmes commences en 2023 - sept. 2024 (77) : total net median +8,230 $, 10 % les plus mauvais <= +964 $, 10 % les meilleurs >= +12,912 $, programmes perdants 10% ; comptes a +580 $ par programme : mediane 3 sur 12
+
+=== E0 P0 : par annee d'achat (achats | argent net moyen | evaluation reussie / perdue | au moins un retrait | net >= 580 $)
+2012 | 42 | +199 $ | 62% / 38% | 14% | 14%
+2013 | 45 | +905 $ | 76% / 24% | 47% | 47%
+2014 | 43 | -39 $ | 7% / 93% | 0% | 0%
+2015 | 43 | -36 $ | 5% / 95% | 0% | 0%
+2016 | 45 | +175 $ | 13% / 87% | 11% | 11%
+2017 | 44 | +763 $ | 55% / 45% | 39% | 39%
+2018 | 44 | +138 $ | 45% / 55% | 11% | 11%
+2019 | 48 | -73 $ | 33% / 67% | 0% | 0%
+2020 | 46 | +191 $ | 30% / 70% | 13% | 13%
+2021 | 45 | +673 $ | 58% / 42% | 24% | 24%
+2022 | 49 | +401 $ | 45% / 55% | 20% | 20%
+2023 | 44 | +530 $ | 50% / 50% | 20% | 20%
+2024 | 45 | +153 $ | 64% / 36% | 13% | 13%
+2025 | 35 | -60 $ | 23% / 77% | 0% | 0%
+programme 12 achats (1 par mois, 360 $ d'achats), programmes commences en 2012-2020 (400) : total net median +1,315 $, 10 % les plus mauvais <= -750 $, 10 % les meilleurs >= +10,360 $, programmes perdants 33% ; comptes a +580 $ par programme : mediane 1 sur 12
+programme 12 achats (1 par mois, 360 $ d'achats), programmes commences en 2023 - sept. 2024 (77) : total net median +990 $, 10 % les plus mauvais <= -880 $, 10 % les meilleurs >= +5,616 $, programmes perdants 18% ; comptes a +580 $ par programme : mediane 1 sur 12
+
+=== E1 P500 : par annee d'achat (achats | argent net moyen | evaluation reussie / perdue | au moins un retrait | net >= 580 $)
+2012 | 42 | +12 $ | 60% / 40% | 17% | 7%
+2013 | 45 | -52 $ | 51% / 44% | 9% | 0%
+2014 | 43 | -33 $ | 2% / 95% | 0% | 0%
+2015 | 43 | -42 $ | 9% / 77% | 0% | 0%
+2016 | 45 | -30 $ | 0% / 100% | 0% | 0%
+2017 | 44 | +1,588 $ | 75% / 25% | 61% | 57%
+2018 | 44 | +3,034 $ | 82% / 14% | 70% | 68%
+2019 | 48 | +804 $ | 40% / 50% | 31% | 31%
+2020 | 46 | +492 $ | 59% / 41% | 17% | 13%
+2021 | 45 | +65 $ | 38% / 62% | 4% | 4%
+2022 | 49 | +1,429 $ | 63% / 37% | 45% | 35%
+2023 | 44 | +1,241 $ | 89% / 11% | 50% | 32%
+2024 | 45 | -102 $ | 56% / 38% | 0% | 0%
+2025 | 35 | -30 $ | 0% / 86% | 0% | 0%
+programme 12 achats (1 par mois, 360 $ d'achats), programmes commences en 2012-2020 (400) : total net median +55 $, 10 % les plus mauvais <= -880 $, 10 % les meilleurs >= +28,100 $, programmes perdants 50% ; comptes a +580 $ par programme : mediane 0 sur 12
+programme 12 achats (1 par mois, 360 $ d'achats), programmes commences en 2023 - sept. 2024 (77) : total net median -880 $, 10 % les plus mauvais <= -1,270 $, 10 % les meilleurs >= +7,158 $, programmes perdants 78% ; comptes a +580 $ par programme : mediane 0 sur 12
+

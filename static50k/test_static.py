@@ -46,8 +46,30 @@ def test_gains(D, b):
             plat[d] = tenu == 0
         ok = plat[d0:]
         assert np.allclose(tr0[ok], cum[ok]), np.abs(tr0[ok] - cum[ok]).max()
-    print(f"ok : zone seule {tr[-1]:+,.1f} $ (2023 - sept. 2026) ; zone + RSI(2) = zone + RSI(2) d'origine sur les "
-          f"{ok.sum()} seances a plat, avec et sans les barres de nuit")
+        # total du RSI(2) d'origine (+11 098,5 $) a la derniere seance a plat
+        k = np.where(ok)[0][-1]
+        rsi_total = R["gain_o"].to_numpy()[d0:d0 + k + 1].sum()
+        assert abs((tr0[k] - tr[k]) - rsi_total) < 1e-6 and abs(rsi_total - 11098.5) < 1e-6, (tr0[k] - tr[k], rsi_total)
+        # jours tenus : RSI(2) = realise jusque-la + (prix de fin de journee - prix d'entree) x 2 $ - 1 ordre
+        der, dec, voulu = D["derniere"], D["dec"], D["voulu"]
+        realise, entree, tenu, nt = 0.0, 0.0, 0, 0
+        for i, d in enumerate(range(d0, len(j))):
+            if dec[d] >= 0 and voulu[d] != tenu:
+                px = D["O"][d, dec[d]]
+                if tenu == 1:
+                    realise += (px - entree) * 2.0 - M.ORDRE_NQ
+                else:
+                    realise -= M.ORDRE_NQ
+                    entree = px
+                tenu = voulu[d]
+            if tenu == 1:
+                fin_j = D["AC"][d, D["npost"][d] - 1] if (nuit == 1 and D["npost"][d] > 0) else D["C"][d, der[d]]
+                attendu = realise + (fin_j - entree) * 2.0
+                assert abs((tr0[i] - tr[i]) - attendu) < 1e-6, (j[d], tr0[i] - tr[i], attendu)
+                nt += 1
+    print(f"ok : zone seule {tr[-1]:+,.1f} $ (2023 - sept. 2026) ; RSI(2) d'origine {rsi_total:+,.1f} $ ; zone + RSI(2) ="
+          f" zone + RSI(2) d'origine sur les {ok.sum()} seances a plat et sur les {nt} seances en position (valeur de fin de"
+          f" journee), avec et sans les barres de nuit")
 
 
 def test_budget30(D, b):
@@ -159,6 +181,51 @@ def test_pessimiste():
     print("ok : compte Pro pessimiste perdu par un creux que le compte normal supporte")
 
 
+def marche_trois_jours():
+    """Seances 0 et 1 : un achat de zone a +300 $ (evaluation reussie a la 2e seance, objectif 300 $). Seance 2 : compte
+    Pro, un trade de zone de la minute 10 a la minute 20, prix plats sauf ce que chaque test change."""
+    b = list(marche_synthetique(3, 151.5))
+    for i in range(4):
+        b[i] = b[i].copy()
+    for i in (13, 14, 15, 16):
+        b[i] = b[i].copy()
+    for i in (0, 1, 2, 3, 13, 14, 15, 16):
+        b[i][2] = 1000.0                                # seance 2 plate (NQ et ES)
+    b[9] = b[9].copy()
+    b[11], b[12] = b[11].copy(), b[12].copy()
+    return b
+
+
+def test_plancher_avant_plafond():
+    """Une minute du compte Pro touche a la fois le plafond (+600 $ au plus haut) et le plancher (-1 200 $ au plus bas) :
+    on ne sait pas dans quel ordre, donc le compte est perdu (prudent)."""
+    b = marche_trois_jours()
+    b[1][2, 15] = 1000.0 + 300.0
+    b[2][2, 15] = 1000.0 - 600.0
+    r = M.parcours(0, 3, 3, 1, 500.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(3), *b)
+    assert r[M.ISSUE] == 1 and r[M.PRO_PERDU] == 1 and r[M.FIN_PRO] == 3, r
+    b[2][2, 15] = 1000.0 - 400.0                        # creux de -800 $ seulement : plafond pris
+    tr = np.zeros(3)
+    r = M.parcours(0, 3, 3, 1, 500.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, tr, *b)
+    assert r[M.PRO_PERDU] == 0 and abs(tr[2] - (500.0 - M.FRAIS_ZONE - M.TICK_NQ)) < 1e-9, (r, tr)
+    print("ok : plafond et plancher dans la meme minute -> compte perdu ; plancher pas touche -> plafond pris")
+
+
+def test_plafond_deux_contrats():
+    """Zone vendeuse sur MNQ et RSI(2) acheteur sur MES (E4) : le plus bas du NQ (+600 $) et le plus haut de l'ES (+500 $)
+    ne sont pas forcement au meme moment ; les clotures sont plates. Le plafond de 500 $ ne doit pas etre pris."""
+    b = marche_trois_jours()
+    b[9][2] = -1                                        # zone vendeuse la seance 2
+    b[11][2], b[12][2] = 5, 1                           # RSI(2) : achat a la minute 5 de la seance 2
+    b[2][2, 15] = 1000.0 - 300.0                        # plus bas du NQ
+    b[14][2, 15] = 1000.0 + 100.0                       # plus haut de l'ES
+    tr = np.zeros(3)
+    r = M.parcours(0, 3, 3, 4, 500.0, 0, 0, 2.0, 5.0, 1000.0, 300.0, tr, *b)
+    attendu = -M.ORDRE_ES - M.FRAIS_ZONE                # rien ne bouge en cloture : frais seulement
+    assert r[M.ISSUE] == 1 and abs(tr[2] - attendu) < 1e-9, (r, tr)
+    print(f"ok : plafond pas pris sur la somme de deux meilleurs points (fin de journee {tr[2]:+.2f} $)")
+
+
 def test_futur(D, b):
     """4. Changer les prix apres une date ne change aucune valeur de fin de journee avant cette date."""
     j = D["jours"]
@@ -206,6 +273,8 @@ if __name__ == "__main__":
     b = U.base(D)
     test_retraits()
     test_pessimiste()
+    test_plancher_avant_plafond()
+    test_plafond_deux_contrats()
     test_gains(D, b)
     test_budget30(D, b)
     test_mes(D, b)

@@ -19,9 +19,23 @@ def base(D, garde=None):
 
 
 def clotures(D):
+    """Cloture de chaque seance (NQ, ES), calculee une fois et gardee dans D."""
+    if "clotures" not in D:
+        nj = len(D["jours"])
+        der = D["derniere"]
+        D["clotures"] = (D["C"][np.arange(nj), der], D["EC"][np.arange(nj), der])
+    return D["clotures"]
+
+
+def departs(D, pas=5):
+    """Departs possibles : une seance sur `pas` parmi celles ou le RSI(2) est a plat, apres 260 seances d'historique."""
     nj = len(D["jours"])
-    der = D["derniere"]
-    return D["C"][np.arange(nj), der], D["EC"][np.arange(nj), der]
+    return [d for d in range(260, nj) if D["ouvert"][d] == 0][::pas]
+
+
+def facteur(cl, d):
+    """Niveau d'aujourd'hui : derniere cloture des donnees / cloture de la seance qui precede le depart d."""
+    return cl[-1] / cl[d - 1]
 
 
 def facteurs(D, d, niveau):
@@ -30,7 +44,7 @@ def facteurs(D, d, niveau):
     if not niveau:
         return 1.0, 1.0
     cn, ce = clotures(D)
-    return cn[-1] / cn[d - 1], ce[-1] / ce[d - 1]
+    return facteur(cn, d), facteur(ce, d)
 
 
 def achat(D, b, d, variante, plafond=0.0, pessimiste=0, nuit=1, niveau=True, h1=252, h2=504, perte=M.PERTE,

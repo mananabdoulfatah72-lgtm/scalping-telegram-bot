@@ -21,7 +21,6 @@ H1, H2 = 252, 504
 VAR = list(M.VARIANTES)
 CAPS = {"P0": 0.0, "P500": 500.0}
 CANDIDATES = [(v, c) for v in VAR for c in CAPS]
-AVEC_RSI = [v for v in VAR if v != "E1"]
 TIRAGES = 20
 
 
@@ -97,16 +96,17 @@ def main():
     D = DN.charger()
     j, nj = D["jours"], len(D["jours"])
     b0 = U.base(D)
-    possibles = [d for d in range(260, nj) if D["ouvert"][d] == 0]
-    departs = possibles[::5]
+    possibles = U.departs(D, 1)
+    departs = U.departs(D)
     G = {"choix 2012-2021": [d for d in departs if pd.Timestamp("2012-01-01") <= j[d] <= pd.Timestamp("2021-12-31")],
          "verification 2023 - sept. 2025": [d for d in departs if j[d] >= pd.Timestamp("2023-01-01") and d + H1 <= nj],
          "2022 (descriptif)": [d for d in departs if j[d].year == 2022],
          "2025 (descriptif)": [d for d in departs if j[d].year == 2025 and d + H1 <= nj]}
     tous = sorted(set(sum(G.values(), [])))
+    cn, ce = U.clotures(D)
     L = [f"DayTraders Static 50K puis Pro Static ; {nj} seances du {j[0].date()} au {j[-1].date()} ; departs : 1 seance"
          f" sur 5, RSI(2) a plat ; prix {PRIX:.0f} $, activation {ACTIVATION:.0f} $ ; NQ au depart ramene a "
-         f"{U.clotures(D)[0][-1]:,.0f} points, ES a {U.clotures(D)[1][-1]:,.0f}",
+         f"{cn[-1]:,.0f} points, ES a {ce[-1]:,.0f}",
          "Groupes : " + " ; ".join(f"{k} : {len(v)} achats" for k, v in G.items()), ""]
     res = {}
     # ------------------------------------------------------------------ 14 candidates, niveau d'aujourd'hui
@@ -115,9 +115,9 @@ def main():
         out = lancer(D, b0, tous, v, c)
         R[(v, c)] = dict(zip(tous, out))
         print(f"{v} {c} ({time.time() - t0:.0f} s)", flush=True)
-    def groupe(vc, g, h=H1, RR=R):
+    def groupe(vc, g, h=H1):
         dd = G[g] if h == H1 else [d for d in G[g] if d + H2 <= nj]
-        return mesures(np.array([RR[vc][d] for d in dd]), h)
+        return mesures(np.array([R[vc][d] for d in dd]), h)
     for g in G:
         L += [f"=== {g}, au niveau d'aujourd'hui, 12 mois apres l'achat", ENTETE]
         for vc in CANDIDATES:
@@ -165,20 +165,22 @@ def main():
             x = mesures(out)
             res[f"{vc[0]} {vc[1]} | {g} | pessimiste"] = x
             L.append(ligne(f"{vc[0]} {vc[1]} | {g}", x))
-    L += ["", f"Regle d'activite (descriptif) : part des achats dont le compte Pro passe 21 seances sans un jour a +200 $"]
+    L += ["", "Regle d'activite (descriptif) : part des achats dont le compte Pro passe 21 seances sans un jour a +200 $"
+              " dans les 12 mois"]
     for vc in suivies:
         L.append(f"{vc[0]} {vc[1]} : " + " ; ".join(f"{g} {res[f'{vc[0]} {vc[1]} | {g} | 12 mois']['inactif']:.0%}"
                                                     for g in (gc, gv)))
     # ------------------------------------------------------------------ filtre delta simule (descriptif)
     rho = rho_2026()
     L += ["", f"=== Filtre delta simule (descriptif, comme filtre_h1/scenario.py ; rho mesure en 2026 = {rho:.2f}, "
-              f"{TIRAGES} tirages), 12 mois", ENTETE]
+              f"{TIRAGES} tirages par achat), 12 mois", ENTETE]
     for nom, r in (("aussi bon qu'en 2026", rho), ("deux fois moins bon", rho / 2), ("inutile", 0.0)):
         bases = [U.base(D, g) for g in gardes_simules(D, r)]
         for vc in sorted({choisie, ("E0", "P0")}):
             for g in (gc, gv):
                 out = np.vstack([lancer(D, bb, G[g], vc[0], vc[1], h2=H1) for bb in bases])
                 x = mesures(out)
+                x["achats"] = len(G[g])                 # achats distincts (chacun joue TIRAGES fois)
                 res[f"{vc[0]} {vc[1]} | {g} | filtre {nom}"] = x
                 L.append(ligne(f"{vc[0]} {vc[1]} | {g} | filtre {nom}", x))
                 print(f"filtre {nom} {vc} {g} ({time.time() - t0:.0f} s)", flush=True)
