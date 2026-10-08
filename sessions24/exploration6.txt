@@ -1,0 +1,371 @@
+Machine 5 vague 2, exploration 2012 - 2022 (G9 : 2013 - 2022) : 368 strategies, 352 testables ; survivantes : 9
+
+strategie | t | p placebo | BH 10 % | sous-periodes (pb) | jours | pb par jour | $ pour 1 contrat | survivante
+G1 fin de mois apres fixing S&P 1 jour(s) audusd | +3.42 | 0.000 | oui | +132.1 / +189.1 / +262.6 | 116 | +5.03 | +4,494 | OUI
+G1 fin de mois avant fixing S&P 1 jour(s) gbpusd | +3.04 | 0.000 | oui | +392.6 / +442.8 / +33.1 | 116 | +7.49 | +7,778 | OUI
+G1 fin de mois apres fixing S&P 2 jour(s) audusd | +2.98 | 0.000 | oui | +112.8 / +273.8 / +268.7 | 234 | +2.80 | +5,103 | OUI
+G4 gotobi 07:00-09:55 usdjpy | +2.81 | 0.000 | oui | +396.9 / +395.6 / +530.2 | 785 | +1.69 | +15,342 | OUI
+G1 fin de mois avant fixing S&P 2 jour(s) gbpusd | +2.42 | 0.006 | non | +381.3 / +374.9 / +64.2 | 234 | +3.51 | +7,290 | 
+G1 fin de mois avant fixing S&P 2 jour(s) audusd | +2.42 | 0.004 | non | +359.6 / +356.0 / +90.9 | 233 | +3.46 | +6,332 | 
+G11 ecart du week-end comblement sortie lundi 09:30 grand audusd | +2.31 | 0.002 | oui | +470.6 / +823.1 / +572.0 | 271 | +6.88 | +13,817 | OUI
+G11 ecart du week-end comblement sortie lundi 09:30 tout eurusd | +2.18 | 0.002 | oui | +1439.2 / -70.1 / +406.9 | 560 | +3.17 | +26,939 | OUI
+G11 ecart du week-end comblement sortie lundi 03:00 tout eurusd | +2.13 | 0.000 | oui | +1102.9 / -105.8 / +56.2 | 559 | +1.88 | +15,893 | OUI
+G11 ecart du week-end comblement sortie lundi 03:00 grand audusd | +2.08 | 0.000 | oui | +116.5 / +616.2 / +519.5 | 271 | +4.62 | +8,719 | OUI
+G11 ecart du week-end comblement sortie lundi 03:00 grand eurusd | +2.05 | 0.000 | oui | +732.7 / +31.3 / +16.2 | 273 | +2.86 | +11,237 | OUI
+G1 fin de mois avant fixing S&P 1 jour(s) audusd | +2.04 | 0.032 | non | +357.3 / +132.6 / +91.9 | 116 | +5.02 | +4,570 | 
+G3 fin de trimestre apres fixing S&P audusd | non testable (37 jours)
+G9 Fed reaction 14:00-14:05 continuation sortie 15:55 xauusd | +1.96 | 0.014 | non | +933.2 / +440.6 / -229.4 | 79 | +14.49 | +1,290 | 
+G4 gotobi 09:55-12:00 usdjpy | +1.91 | 0.000 | oui | +231.4 / +576.2 / +256.9 | 787 | +1.35 | +12,261 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:55 eurusd | +1.90 | 0.014 | non | +515.9 / +164.0 / -54.1 | 79 | +7.92 | +9,020 | 
+G3 fin de trimestre avant fixing S&P gbpusd | non testable (37 jours)
+G11 ecart du week-end comblement sortie lundi 09:30 grand eurusd | +1.71 | 0.012 | non | +1009.6 / -235.3 / +206.3 | 274 | +3.58 | +14,662 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:55 audusd | +1.58 | 0.038 | non | +467.8 / +225.7 / -12.7 | 77 | +8.84 | +5,687 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:00 audusd | +1.57 | 0.024 | non | +341.3 / +258.8 / -0.3 | 77 | +7.79 | +4,750 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:55 gbpusd | +1.45 | 0.020 | non | +397.6 / +71.5 / -1.4 | 79 | +5.92 | +4,421 | 
+G11 ecart du week-end comblement sortie lundi 09:30 tout audusd | +1.43 | 0.012 | non | -149.2 / +1130.8 / +514.7 | 560 | +2.67 | +9,425 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:55 usdjpy | +1.41 | 0.026 | non | +380.9 / +115.6 / -47.3 | 79 | +5.69 | +4,801 | 
+G1 fin de mois apres fixing S&P 1 jour(s) eurusd | +1.38 | 0.026 | non | +73.8 / +12.9 / +133.3 | 116 | +1.90 | +3,248 | 
+G3 fin de trimestre avant fixing S&P audusd | non testable (37 jours)
+G9 Fed reaction 14:00-14:15 continuation sortie 15:55 audusd | +1.36 | 0.061 | non | +324.9 / +231.8 / +14.4 | 78 | +7.32 | +4,768 | 
+G4 gotobi 09:55-11:00 usdjpy | +1.33 | 0.000 | oui | -190.7 / +284.6 / +358.6 | 787 | +0.58 | +4,986 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:00 eurusd | +1.31 | 0.040 | non | +252.7 / +197.8 / -78.1 | 79 | +4.71 | +5,216 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:00 gbpusd | +1.23 | 0.035 | non | +234.1 / +138.5 / -35.5 | 79 | +4.27 | +3,146 | 
+G3 fin de trimestre apres fixing S&P usdjpy | non testable (37 jours)
+G9 Fed reaction 14:00-14:15 retournement sortie 15:00 usatechidxusd | +1.16 | 0.060 | non | -306.5 / +153.8 / +810.7 | 79 | +8.33 | +1,847 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:00 usdjpy | +1.16 | 0.045 | non | +260.5 / +37.9 / +5.7 | 79 | +3.85 | +3,194 | 
+G1 fin de mois apres fixing S&P 1 jour(s) gbpusd | +1.11 | 0.072 | non | +27.2 / +74.3 / +121.0 | 116 | +1.92 | +1,864 | 
+G10 echeance options 9:30-12:00 continuation usatechidxusd | +1.04 | 0.110 | non | +182.2 / -174.9 / +568.0 | 108 | +5.33 | +1,309 | 
+G12 vendredi 12:00-15:55 continuation usatechidxusd | +1.04 | 0.016 | non | -426.6 / +254.3 / +1492.5 | 491 | +2.69 | +4,344 | 
+G8 choc 10 h retournement sortie 11:00 audusd | +0.97 | 0.015 | non | +441.6 / +148.1 / -183.8 | 338 | +1.20 | +3,500 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 90 eurusd | +0.96 | 0.046 | non | -28.7 / +112.9 / +523.0 | 332 | +1.83 | +9,799 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:55 xauusd | +0.95 | 0.099 | non | +459.0 / +240.8 / -210.2 | 79 | +6.20 | +466 | 
+G11 ecart du week-end comblement sortie lundi 03:00 tout audusd | +0.94 | 0.029 | non | -481.9 / +851.0 / +344.9 | 559 | +1.28 | +3,171 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:55 usatechidxusd | +0.91 | 0.122 | non | -294.9 / +244.6 / +671.6 | 73 | +8.51 | +1,749 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 90 audusd | +0.89 | 0.061 | non | -159.9 / +23.9 / +773.6 | 313 | +2.04 | +4,109 | 
+G11 ecart du week-end comblement sortie lundi 09:30 grand xauusd | +0.89 | 0.099 | non | -680.8 / +38.9 / +1795.5 | 253 | +4.56 | +2,346 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:00 xauusd | +0.82 | 0.105 | non | +610.4 / +151.1 / -366.8 | 79 | +5.00 | +287 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:00 audusd | +0.78 | 0.141 | non | +132.7 / +209.8 / -50.2 | 78 | +3.75 | +2,330 | 
+G11 ecart du week-end comblement sortie lundi 09:30 tout xauusd | +0.77 | 0.078 | non | -215.9 / +717.5 / +735.7 | 512 | +2.42 | +1,784 | 
+G1 fin de mois apres fixing S&P 1 jour(s) usdjpy | +0.73 | 0.032 | non | +105.4 / +37.5 / -52.9 | 116 | +0.78 | +1,312 | 
+G3 fin de trimestre avant fixing S&P eurusd | non testable (37 jours)
+G9 Fed reaction 14:00-14:15 continuation sortie 15:55 usdjpy | +0.70 | 0.146 | non | +213.7 / +154.9 / -166.0 | 79 | +2.56 | +2,276 | 
+G1 fin de mois apres fixing S&P 2 jour(s) gbpusd | +0.64 | 0.086 | non | -19.1 / +27.9 / +144.5 | 234 | +0.66 | +1,138 | 
+G10 echeance options 9:30-12:00 continuation usa500idxusd | +0.60 | 0.114 | non | -40.4 / +17.8 / +294.3 | 107 | +2.54 | +593 | 
+G8 choc 10 h retournement sortie 11:00 usatechidxusd | +0.56 | 0.076 | non | +209.4 / -16.9 / +387.9 | 328 | +1.77 | +1,134 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 80 audusd | +0.56 | 0.062 | non | -330.2 / +12.3 / +809.7 | 597 | +0.82 | +2,806 | 
+G4 gotobi 09:55-12:00 audusd | +0.52 | 0.084 | non | -88.9 / +76.4 / +355.4 | 787 | +0.44 | +2,248 | 
+G11 ecart du week-end comblement sortie lundi 03:00 grand usdjpy | +0.52 | 0.094 | non | +195.7 / -275.1 / +358.6 | 280 | +1.00 | +2,276 | 
+G11 ecart du week-end comblement sortie lundi 03:00 grand xauusd | +0.48 | 0.131 | non | -565.3 / +75.3 / +880.1 | 252 | +1.55 | +821 | 
+G8 choc 10 h retournement sortie 11:00 usa500idxusd | +0.43 | 0.020 | non | +275.2 / -242.6 / +295.5 | 321 | +1.02 | +443 | 
+G8 choc 10 h continuation sortie 12:00 gbpusd | +0.35 | 0.102 | non | -191.9 / -285.0 / +666.8 | 329 | +0.58 | +569 | 
+G4 gotobi 08:00-09:55 usdjpy | +0.33 | 0.000 | oui | -76.4 / +271.9 / -56.3 | 787 | +0.18 | +1,402 | 
+G8 choc 10 h continuation sortie 12:00 eurusd | +0.31 | 0.064 | non | +10.4 / -238.7 / +360.2 | 320 | +0.41 | +1,723 | 
+G11 ecart du week-end comblement sortie lundi 03:00 tout xauusd | +0.28 | 0.097 | non | -353.4 / +338.8 / +301.2 | 511 | +0.56 | +321 | 
+G3 fin de trimestre avant fixing sans usdjpy | non testable (43 jours)
+G11 ecart du week-end comblement sortie lundi 03:00 grand usatechidxusd | +0.27 | 0.165 | non | -266.4 / -122.1 / +666.8 | 268 | +1.04 | +1,003 | 
+G8 choc 10 h retournement sortie 12:00 usatechidxusd | +0.21 | 0.148 | non | -473.4 / +67.1 / +669.7 | 327 | +0.81 | +1,300 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 90 eurusd | +0.21 | 0.091 | non | -60.3 / +123.1 / +28.9 | 332 | +0.28 | +2,209 | 
+G11 ecart du week-end comblement sortie lundi 03:00 tout usdjpy | +0.21 | 0.075 | non | -341.7 / -359.4 / +842.2 | 559 | +0.25 | +745 | 
+G2 debut de mois 08:00-12:00 S&P usdjpy | +0.20 | 0.216 | non | +78.4 / -48.0 / +10.9 | 104 | +0.40 | +382 | 
+G11 ecart du week-end comblement sortie lundi 09:30 tout usdjpy | +0.20 | 0.152 | non | -485.0 / +167.7 / +515.0 | 559 | +0.35 | +3,500 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:55 lightcmdusd | +0.19 | 0.271 | non | +671.0 / -63.6 / -467.1 | 76 | +1.85 | +130 | 
+G6 petrole EIA sortie 14:30 continuation grand | +0.18 | 0.285 | non | -209.3 / -158.5 / +857.5 | 273 | +1.79 | +879 | 
+G1 fin de mois avant fixing S&P 2 jour(s) eurusd | +0.17 | 0.168 | non | +170.4 / +54.6 / -172.9 | 234 | +0.22 | +863 | 
+G1 fin de mois apres fixing S&P 2 jour(s) eurusd | +0.14 | 0.190 | non | +18.3 / -60.7 / +71.7 | 234 | +0.13 | +460 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:00 usatechidxusd | +0.12 | 0.321 | non | -125.2 / -317.1 / +518.3 | 79 | +0.96 | +724 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:00 xauusd | +0.12 | 0.346 | non | -51.3 / -237.3 / +339.6 | 79 | +0.65 | +259 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:00 lightcmdusd | +0.09 | 0.257 | non | +614.6 / -56.3 / -505.1 | 76 | +0.70 | -15 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 80 usatechidxusd | +0.08 | 0.172 | non | -1540.4 / +511.5 / +1182.2 | 613 | +0.25 | +1,562 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:55 lightcmdusd | +0.08 | 0.314 | non | +176.4 / +210.9 / -334.2 | 78 | +0.68 | -107 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:55 gbpusd | +0.07 | 0.316 | non | +50.7 / +241.1 / -268.9 | 79 | +0.29 | +307 | 
+G2 debut de mois 15:00-16:00 sans audusd | +0.06 | 0.176 | non | -52.3 / +53.9 / +13.1 | 123 | +0.12 | +233 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:00 usa500idxusd | +0.03 | 0.250 | non | -322.7 / -318.7 / +655.3 | 79 | +0.18 | +526 | 
+G3 fin de trimestre apres fixing S&P gbpusd | non testable (37 jours)
+G7 choc 8 h 30 retournement sortie 11:00 centile 90 gbpusd | +0.01 | 0.190 | non | -158.7 / -429.2 / +595.5 | 334 | +0.02 | -601 | 
+G4 gotobi 09:55-11:00 audusd | -0.00 | 0.040 | non | -94.4 / +13.1 / +80.2 | 787 | -0.00 | -268 | 
+G11 ecart du week-end continuation sortie lundi 09:30 grand gbpusd | -0.00 | 0.232 | non | -427.7 / +929.6 / -505.0 | 290 | -0.01 | -233 | 
+G10 echeance options 9:30-11:00 continuation usatechidxusd | -0.02 | 0.486 | non | -123.4 / +108.1 / -0.2 | 108 | -0.14 | -73 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:55 eurusd | -0.06 | 0.359 | non | +165.2 / +107.0 / -292.0 | 79 | -0.25 | -45 | 
+G1 fin de mois avant fixing S&P 1 jour(s) eurusd | -0.07 | 0.290 | non | +134.9 / +28.9 / -181.0 | 116 | -0.15 | -29 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 80 lightcmdusd | -0.09 | 0.328 | non | -218.2 / -923.4 / +717.2 | 598 | -0.71 | +63 | 
+G6 petrole EIA sortie 12:00 retournement toujours | -0.10 | 0.243 | non | -953.6 / +846.1 / -169.7 | 557 | -0.50 | -1,058 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 90 lightcmdusd | -0.12 | 0.342 | non | -910.4 / +183.4 / +448.4 | 319 | -0.87 | -1,659 | 
+G11 ecart du week-end continuation sortie lundi 09:30 grand usa500idxusd | -0.12 | 0.272 | non | -394.6 / -457.6 / +680.1 | 259 | -0.66 | +107 | 
+G6 petrole EIA sortie 11:00 retournement toujours | -0.13 | 0.178 | non | -1078.3 / +8.0 / +805.3 | 557 | -0.48 | -922 | 
+G8 choc 10 h retournement sortie 12:00 audusd | -0.13 | 0.199 | non | +36.9 / +215.1 / -318.8 | 338 | -0.20 | -378 | 
+G3 fin de trimestre apres fixing S&P eurusd | non testable (37 jours)
+G6 petrole EIA sortie 11:00 retournement grand | -0.15 | 0.331 | non | -758.4 / -474.1 / +951.4 | 276 | -1.02 | -433 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:55 usatechidxusd | -0.15 | 0.448 | non | -78.8 / -13.4 / -12.5 | 73 | -1.44 | -168 | 
+G8 choc 10 h retournement sortie 12:00 usdjpy | -0.15 | 0.160 | non | -13.8 / -192.9 / +145.7 | 342 | -0.18 | -1,160 | 
+G8 choc 10 h retournement sortie 12:00 usa500idxusd | -0.16 | 0.143 | non | -30.0 / -256.5 / +133.1 | 321 | -0.48 | -140 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 90 xauusd | -0.16 | 0.226 | non | -185.6 / -92.9 / +164.4 | 321 | -0.36 | +113 | 
+G10 echeance options 9:30-11:00 retournement usa500idxusd | -0.17 | 0.292 | non | -49.4 / +8.8 / -57.9 | 108 | -0.91 | -137 | 
+G11 ecart du week-end comblement sortie lundi 09:30 grand usdjpy | -0.18 | 0.367 | non | -181.8 / +65.8 / -29.2 | 280 | -0.52 | -1,574 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:00 gbpusd | -0.19 | 0.387 | non | +18.8 / +220.6 / -289.2 | 79 | -0.63 | -299 | 
+G6 petrole EIA sortie 12:00 continuation grand | -0.23 | 0.376 | non | -184.5 / -71.3 / -230.7 | 276 | -1.76 | -262 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:00 eurusd | -0.23 | 0.420 | non | -38.5 / -196.8 / +173.2 | 79 | -0.79 | -1,059 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 90 audusd | -0.23 | 0.217 | non | +48.0 / -128.2 / -24.0 | 313 | -0.33 | -134 | 
+G11 ecart du week-end comblement sortie lundi 03:00 tout usatechidxusd | -0.24 | 0.233 | non | -343.7 / -118.4 / +188.9 | 451 | -0.61 | -121 | 
+G12 vendredi 14:00-15:55 continuation usatechidxusd | -0.25 | 0.121 | non | -75.0 / -15.7 / -155.2 | 491 | -0.50 | +213 | 
+G11 ecart du week-end comblement sortie lundi 03:00 grand usa500idxusd | -0.25 | 0.236 | non | -314.2 / -255.5 / +343.9 | 258 | -0.88 | -186 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 80 eurusd | -0.26 | 0.186 | non | -441.8 / -26.3 / +261.6 | 584 | -0.35 | -1,607 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 90 lightcmdusd | -0.29 | 0.476 | non | +82.0 / -1361.7 / +143.8 | 319 | -3.56 | +1,116 | 
+G4 gotobi 09:00-09:55 usdjpy | -0.30 | 0.016 | non | -247.8 / +325.0 / -189.7 | 787 | -0.14 | -1,941 | 
+G12 vendredi 12:00-15:55 continuation usa500idxusd | -0.30 | 0.064 | non | -810.6 / -217.1 / +713.8 | 490 | -0.64 | +644 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:55 usa500idxusd | -0.31 | 0.424 | non | -517.4 / -192.7 / +536.6 | 73 | -2.38 | +362 | 
+G8 choc 10 h continuation sortie 12:00 lightcmdusd | -0.31 | 0.425 | non | -857.0 / +634.9 / -628.3 | 329 | -2.58 | -1,361 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 90 usatechidxusd | -0.32 | 0.404 | non | -1146.5 / -201.7 / +865.3 | 328 | -1.47 | -283 | 
+G6 petrole EIA sortie 14:30 continuation toujours | -0.35 | 0.409 | non | +1353.7 / -3428.1 / +792.7 | 553 | -2.32 | +361 | 
+G11 ecart du week-end continuation sortie lundi 09:30 tout gbpusd | -0.35 | 0.307 | non | -904.9 / +656.5 / -61.8 | 563 | -0.55 | -3,670 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:55 usa500idxusd | -0.37 | 0.485 | non | -60.3 / +20.0 / -179.1 | 72 | -3.05 | -366 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 90 lightcmdusd | -0.37 | 0.524 | non | -994.0 / +513.7 / -935.8 | 319 | -4.44 | -2,792 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 80 xauusd | -0.39 | 0.342 | non | -128.1 / -164.0 / -304.2 | 604 | -0.99 | -1,003 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:55 usatechidxusd | -0.40 | 0.552 | non | -116.4 / -138.2 / -34.3 | 73 | -3.96 | -270 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:00 usdjpy | -0.40 | 0.446 | non | -6.5 / +38.0 / -131.9 | 79 | -1.27 | -1,179 | 
+G8 choc 10 h retournement sortie 11:00 usdjpy | -0.40 | 0.138 | non | +184.3 / -170.2 / -146.0 | 342 | -0.39 | -1,767 | 
+G11 ecart du week-end comblement sortie lundi 09:30 tout usatechidxusd | -0.40 | 0.346 | non | +33.6 / +173.2 / -840.6 | 453 | -1.40 | -1,516 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:00 usa500idxusd | -0.41 | 0.427 | non | -132.1 / -443.4 / +367.9 | 78 | -2.66 | -40 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:00 lightcmdusd | -0.42 | 0.444 | non | +120.4 / +48.5 / -419.4 | 78 | -3.21 | -432 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 90 xauusd | -0.45 | 0.452 | non | -190.2 / -143.5 / -206.4 | 321 | -1.68 | -731 | 
+G2 debut de mois 08:00-12:00 sans eurusd | -0.47 | 0.206 | non | -48.6 / +100.1 / -157.8 | 123 | -0.87 | -1,641 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 80 usdjpy | -0.47 | 0.241 | non | -621.9 / -208.9 / +466.0 | 626 | -0.58 | -5,740 | 
+G2 debut de mois 08:00-12:00 S&P audusd | -0.48 | 0.424 | non | -50.6 / +30.2 / -91.3 | 104 | -1.07 | -841 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 90 usa500idxusd | -0.48 | 0.290 | non | -1199.3 / +68.9 / +573.4 | 317 | -1.76 | -613 | 
+G11 ecart du week-end continuation sortie lundi 09:30 tout usa500idxusd | -0.50 | 0.306 | non | -931.0 / -1174.4 / +1295.9 | 436 | -1.86 | -248 | 
+G8 choc 10 h retournement sortie 11:00 lightcmdusd | -0.51 | 0.440 | non | -367.1 / -1249.1 / +585.9 | 329 | -3.13 | -412 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:55 usa500idxusd | -0.52 | 0.515 | non | -159.8 / -236.5 / +88.9 | 72 | -4.27 | -282 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 90 usdjpy | -0.52 | 0.257 | non | +98.8 / +15.4 / -331.4 | 324 | -0.67 | -1,401 | 
+G11 ecart du week-end continuation sortie lundi 09:30 grand usatechidxusd | -0.54 | 0.502 | non | -645.5 / -230.4 / +133.3 | 269 | -2.76 | -287 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:00 usdjpy | -0.55 | 0.554 | non | -65.5 / -134.0 / +62.9 | 79 | -1.73 | -1,499 | 
+G8 choc 10 h retournement sortie 12:00 xauusd | -0.55 | 0.419 | non | -347.5 / +60.6 / -213.7 | 321 | -1.56 | -999 | 
+G1 fin de mois apres fixing S&P 2 jour(s) usdjpy | -0.56 | 0.128 | non | +58.7 / -85.5 / -62.5 | 234 | -0.38 | -787 | 
+G11 ecart du week-end comblement sortie lundi 09:30 grand usatechidxusd | -0.56 | 0.498 | non | -142.9 / -297.7 / -319.5 | 269 | -2.83 | -1,327 | 
+G12 vendredi 12:00-15:55 retournement usdjpy | -0.57 | 0.037 | non | -134.2 / +63.3 / -140.4 | 553 | -0.38 | -2,652 | 
+G8 choc 10 h retournement sortie 11:00 xauusd | -0.59 | 0.395 | non | -260.0 / -20.5 / -177.4 | 321 | -1.43 | -836 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 90 xauusd | -0.62 | 0.548 | non | -273.8 / -324.5 / -145.6 | 321 | -2.32 | -1,129 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:00 lightcmdusd | -0.62 | 0.556 | non | -312.4 / -296.5 / +235.4 | 78 | -4.79 | +19 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 90 usdjpy | -0.63 | 0.438 | non | -551.3 / -52.0 / +202.4 | 324 | -1.24 | -6,148 | 
+G8 choc 10 h continuation sortie 11:00 gbpusd | -0.64 | 0.274 | non | -210.8 / -362.1 / +326.0 | 329 | -0.75 | -2,699 | 
+G8 choc 10 h retournement sortie 12:00 lightcmdusd | -0.64 | 0.575 | non | -111.0 / -1546.9 / -123.7 | 329 | -5.42 | -384 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:00 eurusd | -0.65 | 0.580 | non | -33.5 / +100.8 / -242.2 | 79 | -2.21 | -2,411 | 
+G12 vendredi 12:00-15:55 continuation audusd | -0.65 | 0.076 | non | -77.1 / -271.4 / +86.3 | 552 | -0.48 | -1,509 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:55 usa500idxusd | -0.66 | 0.577 | non | +285.5 / -23.8 / -626.8 | 73 | -5.00 | -1,019 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 80 audusd | -0.69 | 0.165 | non | -244.6 / -46.2 / -84.4 | 597 | -0.63 | -2,330 | 
+G2 debut de mois 08:00-12:00 sans audusd | -0.70 | 0.502 | non | -160.3 / -75.3 / +52.5 | 123 | -1.49 | -1,319 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:00 usa500idxusd | -0.70 | 0.573 | non | -88.0 / +214.7 / -475.3 | 78 | -4.47 | -662 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:55 eurusd | -0.70 | 0.641 | non | -237.2 / -203.0 / +223.0 | 79 | -2.75 | -3,425 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:00 gbpusd | -0.70 | 0.613 | non | -90.8 / -316.6 / +220.2 | 79 | -2.37 | -1,767 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 90 gbpusd | -0.71 | 0.239 | non | -65.3 / -61.1 / -124.5 | 334 | -0.75 | -2,182 | 
+G11 ecart du week-end continuation sortie lundi 03:00 grand gbpusd | -0.71 | 0.366 | non | -160.1 / -34.3 / -91.6 | 289 | -0.99 | -2,605 | 
+G9 Fed reaction 14:00-14:05 continuation sortie 15:00 usatechidxusd | -0.79 | 0.679 | non | -70.1 / +157.7 / -574.1 | 79 | -6.16 | -1,198 | 
+G10 echeance options 9:30-11:00 retournement usatechidxusd | -0.79 | 0.510 | non | -181.0 / -320.4 / -78.9 | 108 | -5.37 | -575 | 
+G2 debut de mois 08:00-12:00 sans usdjpy | -0.80 | 0.428 | non | -241.8 / -74.6 / +136.8 | 123 | -1.46 | -2,071 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 80 lightcmdusd | -0.80 | 0.477 | non | -2035.9 / -644.9 / +536.7 | 598 | -3.59 | -2,779 | 
+G8 choc 10 h continuation sortie 11:00 lightcmdusd | -0.80 | 0.560 | non | -600.9 / +337.1 / -1337.9 | 329 | -4.87 | -1,333 | 
+G2 debut de mois 15:00-16:00 sans usdjpy | -0.81 | 0.510 | non | -158.1 / +8.2 / -44.3 | 123 | -1.58 | -2,105 | 
+G12 vendredi 14:00-15:55 continuation usa500idxusd | -0.81 | 0.076 | non | -381.8 / -364.0 / +63.6 | 488 | -1.40 | -347 | 
+G6 petrole EIA sortie 12:00 retournement grand | -0.83 | 0.624 | non | -615.5 / -720.7 / -385.3 | 276 | -6.24 | -1,232 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 80 gbpusd | -0.84 | 0.360 | non | -335.3 / -1066.9 / +755.9 | 607 | -1.06 | -6,650 | 
+G1 fin de mois avant fixing sans 1 jour(s) eurusd | -0.85 | 0.500 | non | +168.5 / -225.3 / -182.4 | 130 | -1.84 | -3,203 | 
+G6 petrole EIA sortie 14:30 retournement toujours | -0.85 | 0.591 | non | -2953.7 / +1836.1 / -2024.7 | 553 | -5.68 | -3,377 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:55 gbpusd | -0.85 | 0.684 | non | -122.7 / -337.1 / +199.9 | 79 | -3.29 | -2,373 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:00 xauusd | -0.85 | 0.654 | non | -44.7 / +109.3 / -431.6 | 79 | -4.65 | -713 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 90 usatechidxusd | -0.86 | 0.596 | non | +198.7 / -363.3 / -1140.9 | 328 | -3.98 | -1,685 | 
+G8 choc 10 h continuation sortie 12:00 xauusd | -0.86 | 0.581 | non | -140.5 / -532.6 / -110.3 | 321 | -2.44 | -860 | 
+G13 fin de mois indice 1 jour(s) 15:30-15:55 usatechidxusd | -0.87 | 0.278 | non | -274.1 / -159.6 / +142.5 | 110 | -2.65 | -16 | 
+G12 vendredi 12:00-15:55 continuation xauusd | -0.87 | 0.313 | non | -832.8 / +194.0 / -8.4 | 502 | -1.29 | -818 | 
+G11 ecart du week-end continuation sortie lundi 09:30 grand usdjpy | -0.88 | 0.633 | non | -109.2 / -365.8 / -219.8 | 280 | -2.48 | -8,197 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 90 usdjpy | -0.90 | 0.562 | non | +215.3 / -290.0 / -496.4 | 324 | -1.76 | -5,136 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 90 usatechidxusd | -0.93 | 0.440 | non | -92.3 / -196.8 / -468.9 | 327 | -2.32 | -1,437 | 
+G2 debut de mois 08:00-12:00 S&P gbpusd | -0.94 | 0.720 | non | +5.9 / +45.1 / -347.9 | 104 | -2.85 | -2,296 | 
+G8 choc 10 h continuation sortie 11:00 eurusd | -0.94 | 0.326 | non | -174.1 / -401.8 / +249.9 | 320 | -1.02 | -4,912 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 80 lightcmdusd | -0.94 | 0.672 | non | -1581.8 / -692.6 / -2085.2 | 598 | -7.29 | -3,260 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 90 lightcmdusd | -0.94 | 0.658 | non | -1.6 / -1031.4 / -1240.4 | 319 | -7.13 | -17 | 
+G6 petrole EIA sortie 14:30 retournement grand | -0.98 | 0.715 | non | -582.7 / -617.5 / -1473.5 | 273 | -9.79 | -2,358 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 80 lightcmdusd | -0.98 | 0.523 | non | +235.9 / -971.1 / -1904.7 | 598 | -4.41 | -417 | 
+G3 fin de trimestre apres fixing sans audusd | non testable (44 jours)
+G9 Fed reaction 14:00-14:15 retournement sortie 15:55 lightcmdusd | -1.02 | 0.686 | non | -368.4 / -458.9 / +150.2 | 78 | -8.68 | -305 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:55 lightcmdusd | -1.04 | 0.729 | non | -855.0 / -176.4 / +283.1 | 76 | -9.85 | -531 | 
+G6 petrole EIA sortie 11:00 continuation grand | -1.05 | 0.669 | non | -41.6 / -317.9 / -1567.4 | 276 | -6.98 | -1,060 | 
+G1 fin de mois avant fixing sans 1 jour(s) usdjpy | -1.06 | 0.328 | non | +15.0 / -204.0 / -46.8 | 129 | -1.83 | -2,556 | 
+G3 fin de trimestre avant fixing sans audusd | non testable (44 jours)
+G7 choc 8 h 30 retournement sortie 09:30 centile 80 eurusd | -1.07 | 0.269 | non | -320.5 / +59.0 / -308.8 | 584 | -0.98 | -7,326 | 
+G8 choc 10 h continuation sortie 11:00 xauusd | -1.07 | 0.605 | non | -228.0 / -451.5 / -146.6 | 321 | -2.57 | -1,024 | 
+G3 fin de trimestre apres fixing sans gbpusd | non testable (44 jours)
+G11 ecart du week-end continuation sortie lundi 09:30 tout usatechidxusd | -1.08 | 0.654 | non | -1081.8 / -1126.1 / +481.2 | 453 | -3.81 | -1,202 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:00 lightcmdusd | -1.11 | 0.743 | non | -798.6 / -183.7 / +321.1 | 76 | -8.70 | -385 | 
+G2 debut de mois 15:00-16:00 sans eurusd | -1.15 | 0.460 | non | -128.9 / -42.8 / -65.3 | 123 | -1.93 | -3,250 | 
+G11 ecart du week-end comblement sortie lundi 03:00 tout usa500idxusd | -1.16 | 0.339 | non | -300.5 / -406.1 / -442.0 | 434 | -2.65 | -1,899 | 
+G4 gotobi 09:55-12:00 eurusd | -1.17 | 0.774 | non | -61.7 / -397.0 / +29.7 | 787 | -0.55 | -6,228 | 
+G13 fin de mois indice 2 jour(s) 15:30-15:55 usatechidxusd | -1.17 | 0.216 | non | -455.5 / -328.4 / +280.5 | 220 | -2.29 | +33 | 
+G3 fin de trimestre apres fixing sans eurusd | non testable (44 jours)
+G7 choc 8 h 30 retournement sortie 11:00 centile 80 xauusd | -1.20 | 0.658 | non | -727.9 / -712.0 / -379.8 | 604 | -3.01 | -2,518 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 80 usa500idxusd | -1.23 | 0.385 | non | -517.6 / -934.2 / -353.3 | 581 | -3.11 | -1,580 | 
+G11 ecart du week-end comblement sortie lundi 09:30 grand usa500idxusd | -1.23 | 0.728 | non | -536.2 / -248.0 / -1028.2 | 259 | -7.00 | -2,438 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 90 usatechidxusd | -1.24 | 0.560 | non | -847.0 / -368.2 / +193.4 | 327 | -3.12 | -525 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 80 xauusd | -1.24 | 0.444 | non | -337.2 / -291.6 / -463.0 | 604 | -1.81 | -1,717 | 
+G10 echeance options 9:30-11:00 continuation usa500idxusd | -1.24 | 0.736 | non | -306.9 / -314.8 / -94.4 | 108 | -6.63 | -835 | 
+G2 debut de mois 08:00-12:00 S&P eurusd | -1.28 | 0.792 | non | -3.9 / -57.2 / -195.4 | 104 | -2.47 | -3,515 | 
+G3 fin de trimestre avant fixing sans eurusd | non testable (44 jours)
+G9 Fed reaction 14:00-14:15 continuation sortie 15:00 usa500idxusd | -1.28 | 0.750 | non | +90.8 / +89.8 / -762.9 | 79 | -7.37 | -1,237 | 
+G11 ecart du week-end comblement sortie lundi 09:30 grand gbpusd | -1.29 | 0.768 | non | +139.7 / -1265.6 / +259.0 | 290 | -2.99 | -7,352 | 
+G13 fin de mois indice 2 jour(s) 15:00-15:55 usatechidxusd | -1.34 | 0.552 | non | -364.9 / -568.4 / +185.0 | 220 | -3.40 | -153 | 
+G12 vendredi 12:00-15:55 retournement gbpusd | -1.38 | 0.190 | non | -301.7 / -36.7 / -163.2 | 552 | -0.91 | -4,361 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:00 audusd | -1.40 | 0.859 | non | -204.7 / -302.8 / -18.8 | 78 | -6.75 | -4,144 | 
+G11 ecart du week-end continuation sortie lundi 03:00 tout gbpusd | -1.41 | 0.403 | non | -547.9 / -76.9 / -109.5 | 562 | -1.31 | -6,841 | 
+G1 fin de mois avant fixing sans 2 jour(s) usdjpy | -1.42 | 0.190 | non | +36.2 / -302.0 / -118.3 | 261 | -1.47 | -4,239 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 80 gbpusd | -1.43 | 0.292 | non | -86.4 / -429.2 / -143.1 | 607 | -1.09 | -5,800 | 
+G11 ecart du week-end comblement sortie lundi 03:00 grand gbpusd | -1.43 | 0.634 | non | -127.9 / -298.7 / -154.4 | 289 | -2.01 | -4,956 | 
+G11 ecart du week-end comblement sortie lundi 09:30 tout usa500idxusd | -1.43 | 0.694 | non | -168.7 / -165.4 / -1984.8 | 436 | -5.32 | -3,676 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:00 xauusd | -1.47 | 0.895 | non | -706.4 / -279.1 / +274.8 | 79 | -9.00 | -741 | 
+G13 fin de mois indice 1 jour(s) 15:30-15:55 usa500idxusd | -1.48 | 0.370 | non | -228.7 / -263.6 / +57.8 | 110 | -3.95 | -396 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:55 usatechidxusd | -1.50 | 0.878 | non | +99.7 / -396.3 / -718.4 | 73 | -13.90 | -2,187 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 80 xauusd | -1.51 | 0.556 | non | -518.8 / -584.4 / -221.0 | 604 | -2.19 | -1,803 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:55 usdjpy | -1.52 | 0.854 | non | -285.7 / -250.9 / +97.0 | 79 | -5.56 | -4,953 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 80 gbpusd | -1.53 | 0.640 | non | -309.7 / +409.9 / -1274.9 | 607 | -1.94 | -9,305 | 
+G11 ecart du week-end comblement sortie lundi 09:30 tout gbpusd | -1.53 | 0.693 | non | +286.9 / -1271.5 / -394.2 | 563 | -2.45 | -11,176 | 
+G13 fin de mois indice 1 jour(s) 15:00-15:55 usatechidxusd | -1.55 | 0.728 | non | -197.1 / -270.2 / -99.9 | 110 | -5.16 | -489 | 
+G5 or fixing 15:00 apres 60 min | -1.56 | 0.059 | non | -1001.1 / -588.4 / -953.2 | 2835 | -0.90 | -3,735 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:55 xauusd | -1.56 | 0.901 | non | -555.0 / -368.8 / +118.2 | 79 | -10.20 | -920 | 
+G6 petrole EIA sortie 12:00 continuation toujours | -1.57 | 0.757 | non | -654.4 / -2462.1 / -1062.3 | 557 | -7.50 | -1,977 | 
+G3 fin de trimestre apres fixing sans usdjpy | non testable (44 jours)
+G7 choc 8 h 30 retournement sortie 11:00 centile 90 usa500idxusd | -1.60 | 0.711 | non | +49.1 / -886.9 / -1029.9 | 317 | -5.89 | -2,240 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 90 xauusd | -1.61 | 0.774 | non | -278.4 / -375.1 / -516.4 | 321 | -3.64 | -1,973 | 
+G4 gotobi 09:55-12:00 gbpusd | -1.63 | 0.518 | non | -125.4 / -953.4 / -124.2 | 787 | -1.53 | -10,744 | 
+G5 or fixing 15:00 avant 60 min | -1.64 | 0.013 | non | -715.1 / -805.7 / -1101.5 | 2834 | -0.93 | -3,629 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 80 usatechidxusd | -1.64 | 0.431 | non | -1333.3 / -625.8 / +408.8 | 611 | -2.54 | -790 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 90 usa500idxusd | -1.64 | 0.503 | non | -612.0 / -744.1 / +157.9 | 314 | -3.82 | -1,225 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 90 usa500idxusd | -1.65 | 0.497 | non | -519.4 / -65.5 / -614.5 | 314 | -3.82 | -1,601 | 
+G1 fin de mois avant fixing sans 2 jour(s) eurusd | -1.66 | 0.650 | non | +130.0 / -326.8 / -346.5 | 262 | -2.07 | -7,274 | 
+G12 vendredi 12:00-15:55 retournement eurusd | -1.66 | 0.236 | non | +117.9 / -442.0 / -258.8 | 552 | -1.06 | -8,185 | 
+G11 ecart du week-end continuation sortie lundi 09:30 grand xauusd | -1.67 | 0.901 | non | +368.8 / -434.9 / -2099.5 | 253 | -8.56 | -3,816 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 90 gbpusd | -1.68 | 0.810 | non | -183.3 / +63.2 / -889.5 | 334 | -3.02 | -8,150 | 
+G8 choc 10 h continuation sortie 12:00 usatechidxusd | -1.69 | 0.852 | non | -529.2 / -663.6 / -913.8 | 327 | -6.44 | -3,262 | 
+G12 vendredi 14:00-15:55 continuation xauusd | -1.73 | 0.329 | non | -863.5 / +213.4 / -165.3 | 502 | -1.62 | -1,083 | 
+G11 ecart du week-end continuation sortie lundi 03:00 grand usatechidxusd | -1.73 | 0.835 | non | -529.2 / -406.1 / -845.5 | 268 | -6.64 | -2,611 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 80 usdjpy | -1.74 | 0.508 | non | -316.3 / -699.1 / +104.8 | 626 | -1.45 | -11,659 | 
+G11 ecart du week-end continuation sortie lundi 03:00 grand xauusd | -1.74 | 0.869 | non | +253.3 / -467.3 / -1184.1 | 252 | -5.55 | -2,286 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 80 usa500idxusd | -1.79 | 0.615 | non | -1597.2 / -533.6 / -493.4 | 581 | -4.52 | -3,649 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 90 usdjpy | -1.81 | 0.743 | non | -434.8 / -357.4 / +37.4 | 324 | -2.33 | -9,883 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 90 audusd | -1.81 | 0.783 | non | -381.0 / -195.8 / -258.0 | 313 | -2.67 | -7,272 | 
+G8 choc 10 h continuation sortie 12:00 audusd | -1.81 | 0.801 | non | -396.9 / -557.1 / +6.8 | 338 | -2.80 | -7,606 | 
+G11 ecart du week-end comblement sortie lundi 03:00 tout gbpusd | -1.82 | 0.597 | non | -70.1 / -535.1 / -346.5 | 562 | -1.69 | -7,982 | 
+G11 ecart du week-end continuation sortie lundi 03:00 tout usatechidxusd | -1.82 | 0.767 | non | -711.8 / -830.4 / -540.8 | 451 | -4.62 | -2,585 | 
+G12 vendredi 12:00-15:55 retournement xauusd | -1.83 | 0.687 | non | +88.8 / -942.0 / -507.6 | 502 | -2.71 | -2,100 | 
+G8 choc 10 h retournement sortie 11:00 eurusd | -1.84 | 0.674 | non | -146.9 / +44.8 / -531.9 | 320 | -1.98 | -9,150 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 80 usdjpy | -1.85 | 0.492 | non | -343.7 / +33.1 / -656.8 | 626 | -1.55 | -10,218 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 80 usatechidxusd | -1.87 | 0.828 | non | -312.2 / -1612.9 / -1655.1 | 613 | -5.84 | -5,240 | 
+G9 Fed reaction 14:00-14:15 continuation sortie 15:00 usatechidxusd | -1.90 | 0.940 | non | +111.4 / -313.3 / -866.5 | 79 | -13.52 | -2,321 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 80 eurusd | -1.92 | 0.814 | non | -164.2 / -615.7 / -765.6 | 584 | -2.65 | -24,107 | 
+G9 Fed reaction 14:00-14:15 retournement sortie 15:55 audusd | -1.92 | 0.939 | non | -396.9 / -324.8 / -83.4 | 78 | -10.32 | -6,582 | 
+G2 debut de mois 15:00-16:00 S&P usdjpy | -1.93 | 0.634 | non | +10.3 / -240.0 / -198.8 | 104 | -4.12 | -5,390 | 
+G8 choc 10 h retournement sortie 11:00 gbpusd | -1.93 | 0.726 | non | -119.2 / -3.9 / -617.0 | 329 | -2.25 | -5,912 | 
+G11 ecart du week-end continuation sortie lundi 09:30 tout usdjpy | -1.93 | 0.848 | non | -124.0 / -782.7 / -968.0 | 559 | -3.35 | -23,142 | 
+G7 choc 8 h 30 retournement sortie 11:00 centile 80 usdjpy | -1.94 | 0.759 | non | -38.1 / -457.1 / -1018.0 | 626 | -2.42 | -16,137 | 
+G11 ecart du week-end continuation sortie lundi 03:00 grand usa500idxusd | -1.95 | 0.764 | non | -629.3 / -450.1 / -679.1 | 258 | -6.82 | -2,136 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 80 usatechidxusd | -1.97 | 0.570 | non | -504.1 / -475.6 / -881.6 | 611 | -3.05 | -2,876 | 
+G4 gotobi 09:00-09:55 audusd | -1.99 | 0.774 | non | -621.9 / -73.9 / -160.6 | 787 | -1.09 | -6,636 | 
+G11 ecart du week-end continuation sortie lundi 03:00 tout usa500idxusd | -1.99 | 0.660 | non | -811.9 / -927.3 / -233.8 | 434 | -4.55 | -2,007 | 
+G5 or fixing 15:00 avant 30 min | -2.03 | 0.004 | non | -1237.7 / -507.9 / -792.8 | 2836 | -0.90 | -3,403 | 
+G6 petrole EIA sortie 11:00 continuation toujours | -2.03 | 0.822 | non | -529.7 / -1624.0 / -2037.3 | 557 | -7.52 | -2,114 | 
+G11 ecart du week-end continuation sortie lundi 09:30 tout xauusd | -2.04 | 0.922 | non | -520.1 / -1453.5 / -1311.7 | 512 | -6.42 | -4,800 | 
+G1 fin de mois avant fixing sans 1 jour(s) audusd | -2.06 | 0.884 | non | -512.9 / -324.0 / +220.2 | 130 | -4.74 | -5,412 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:00 usdjpy | -2.06 | 0.955 | non | -332.5 / -133.9 / -74.7 | 79 | -6.85 | -5,871 | 
+G11 ecart du week-end continuation sortie lundi 03:00 grand usdjpy | -2.07 | 0.906 | non | -486.7 / -24.9 / -607.6 | 280 | -4.00 | -12,047 | 
+G5 or fixing 15:00 apres 30 min | -2.10 | 0.042 | non | -102.2 / -1408.6 / -1019.8 | 2835 | -0.89 | -3,651 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:00 gbpusd | -2.10 | 0.965 | non | -306.1 / -234.5 / -33.5 | 79 | -7.27 | -5,211 | 
+G2 debut de mois 15:00-16:00 sans gbpusd | -2.12 | 0.900 | non | -290.3 / -3.5 / -95.6 | 123 | -3.17 | -3,718 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:55 audusd | -2.12 | 0.962 | non | -536.8 / -318.7 / -56.3 | 77 | -11.84 | -7,473 | 
+G10 echeance options 9:30-12:00 retournement usatechidxusd | -2.12 | 0.898 | non | -486.9 / -37.5 / -647.1 | 108 | -10.85 | -1,957 | 
+G13 fin de mois indice 1 jour(s) 15:00-15:55 usa500idxusd | -2.13 | 0.748 | non | -161.5 / -293.7 / -242.9 | 110 | -6.35 | -873 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 90 gbpusd | -2.14 | 0.761 | non | -276.7 / -304.9 / -169.5 | 334 | -2.25 | -6,569 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:00 eurusd | -2.15 | 0.960 | non | -324.7 / -293.8 / +9.1 | 79 | -7.71 | -8,686 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:55 usdjpy | -2.15 | 0.974 | non | -452.9 / -211.6 / -21.7 | 79 | -8.69 | -7,479 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:55 gbpusd | -2.18 | 0.980 | non | -469.6 / -167.5 / -67.6 | 79 | -8.92 | -6,486 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:00 audusd | -2.18 | 0.976 | non | -410.3 / -351.8 / -68.7 | 77 | -10.79 | -6,536 | 
+G8 choc 10 h retournement sortie 12:00 gbpusd | -2.19 | 0.898 | non | -138.1 / -81.0 / -957.8 | 329 | -3.58 | -9,180 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 90 audusd | -2.19 | 0.939 | non | -173.1 / -347.9 / -1055.6 | 313 | -5.04 | -11,515 | 
+G3 fin de trimestre avant fixing sans gbpusd | non testable (44 jours)
+G7 choc 8 h 30 continuation sortie 09:30 centile 80 eurusd | -2.21 | 0.731 | non | -285.5 / -701.0 / -195.2 | 584 | -2.02 | -18,389 | 
+G3 fin de trimestre avant fixing S&P usdjpy | non testable (37 jours)
+G11 ecart du week-end continuation sortie lundi 03:00 tout xauusd | -2.25 | 0.903 | non | -382.6 / -1070.8 / -877.2 | 511 | -4.56 | -3,332 | 
+G4 gotobi 07:00-09:55 audusd | -2.26 | 0.898 | non | -143.9 / -460.3 / -779.8 | 784 | -1.77 | -8,456 | 
+G5 or fixing 15:00 les deux 60 min | -2.27 | 0.017 | non | -1716.2 / -1394.1 / -2054.7 | 2835 | -1.82 | -7,364 | 
+G13 fin de mois indice 2 jour(s) 15:00-15:55 usa500idxusd | -2.29 | 0.668 | non | -614.1 / -524.1 / +11.4 | 220 | -5.12 | -1,028 | 
+G8 choc 10 h continuation sortie 11:00 usatechidxusd | -2.32 | 0.924 | non | -1211.9 / -579.5 / -636.2 | 328 | -7.40 | -3,102 | 
+G8 choc 10 h continuation sortie 12:00 usdjpy | -2.33 | 0.840 | non | -361.2 / -158.1 / -445.7 | 342 | -2.82 | -10,790 | 
+G1 fin de mois avant fixing sans 2 jour(s) audusd | -2.34 | 0.850 | non | -559.8 / -421.0 / +161.0 | 261 | -3.14 | -6,974 | 
+G8 choc 10 h continuation sortie 12:00 usa500idxusd | -2.35 | 0.857 | non | -1159.5 / -574.4 / -585.3 | 321 | -7.23 | -2,749 | 
+G10 echeance options 9:30-12:00 retournement usa500idxusd | -2.38 | 0.918 | non | -316.0 / -316.8 / -446.6 | 107 | -10.09 | -1,556 | 
+G2 debut de mois 08:00-12:00 sans gbpusd | -2.47 | 0.956 | non | -352.6 / -366.6 / -123.3 | 123 | -6.85 | -7,484 | 
+G1 fin de mois avant fixing S&P 2 jour(s) usdjpy | -2.49 | 0.850 | non | -208.5 / -312.8 / -115.4 | 234 | -2.72 | -7,478 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:55 xauusd | -2.50 | 0.986 | non | -1029.2 / -568.6 / +137.4 | 79 | -18.49 | -1,744 | 
+G13 fin de mois indice 2 jour(s) 15:30-15:55 usa500idxusd | -2.50 | 0.488 | non | -562.6 / -522.0 / +126.5 | 220 | -4.36 | -885 | 
+G7 choc 8 h 30 retournement sortie 09:30 centile 80 usa500idxusd | -2.52 | 0.439 | non | -680.7 / -524.2 / -833.5 | 577 | -3.53 | -2,619 | 
+G2 debut de mois 15:00-16:00 S&P eurusd | -2.53 | 0.956 | non | -97.4 / -151.9 / -230.3 | 104 | -4.61 | -7,269 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 80 gbpusd | -2.53 | 0.708 | non | -558.6 / -227.8 / -375.9 | 607 | -1.91 | -10,155 | 
+G12 vendredi 14:00-15:55 retournement xauusd | -2.53 | 0.671 | non | +119.5 / -961.4 / -350.7 | 502 | -2.38 | -1,835 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 90 eurusd | -2.54 | 0.954 | non | -334.3 / -460.9 / -808.0 | 332 | -4.83 | -24,451 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 90 eurusd | -2.55 | 0.909 | non | -302.7 / -471.1 / -313.9 | 332 | -3.28 | -16,861 | 
+G7 choc 8 h 30 continuation sortie 11:00 centile 80 audusd | -2.59 | 0.938 | non | -311.8 / -621.3 / -1349.7 | 597 | -3.82 | -16,932 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 80 audusd | -2.60 | 0.835 | non | -397.4 / -562.8 / -455.6 | 597 | -2.37 | -11,796 | 
+G8 choc 10 h retournement sortie 12:00 eurusd | -2.61 | 0.936 | non | -331.4 / -118.3 / -642.2 | 320 | -3.41 | -15,785 | 
+G9 Fed reaction 14:00-14:05 retournement sortie 15:55 eurusd | -2.62 | 0.986 | non | -587.9 / -260.0 / -14.9 | 79 | -10.92 | -12,490 | 
+G11 ecart du week-end continuation sortie lundi 03:00 tout usdjpy | -2.68 | 0.925 | non | -267.3 / -255.6 / -1295.2 | 559 | -3.25 | -20,387 | 
+G4 gotobi 09:55-11:00 gbpusd | -2.69 | 0.038 | non | -228.0 / -408.1 / -34.9 | 787 | -0.85 | -6,120 | 
+G8 choc 10 h continuation sortie 11:00 usdjpy | -2.70 | 0.862 | non | -559.3 / -180.8 / -154.0 | 342 | -2.61 | -10,183 | 
+G12 vendredi 14:00-15:55 retournement usatechidxusd | -2.70 | 0.879 | non | -1597.0 / -907.1 / -149.2 | 491 | -5.40 | -3,159 | 
+G12 vendredi 14:00-15:55 retournement usdjpy | -2.72 | 0.214 | non | -279.8 / -166.7 / -204.6 | 553 | -1.18 | -8,001 | 
+G12 vendredi 14:00-15:55 continuation audusd | -2.76 | 0.408 | non | -261.1 / -530.9 / +26.5 | 551 | -1.39 | -5,556 | 
+G1 fin de mois apres fixing sans 1 jour(s) gbpusd | -2.80 | 0.984 | non | -131.4 / -423.9 / -29.3 | 130 | -4.50 | -5,155 | 
+G2 debut de mois 15:00-16:00 S&P audusd | -2.82 | 0.986 | non | -140.4 / -204.4 / -308.1 | 104 | -6.28 | -5,103 | 
+G4 gotobi 08:00-09:55 audusd | -2.86 | 0.890 | non | -588.7 / -416.0 / -448.9 | 787 | -1.85 | -10,190 | 
+G7 choc 8 h 30 continuation sortie 09:30 centile 80 usa500idxusd | -2.90 | 0.561 | non | -1403.9 / -935.2 / -13.2 | 577 | -4.08 | -2,574 | 
+G5 or fixing 15:00 les deux 30 min | -2.96 | 0.017 | non | -1339.9 / -1916.4 / -1812.7 | 2836 | -1.79 | -7,054 | 
+G11 ecart du week-end continuation sortie lundi 09:30 tout audusd | -3.03 | 0.988 | non | -468.8 / -1739.8 / -967.7 | 560 | -5.67 | -22,785 | 
+G12 vendredi 12:00-15:55 continuation eurusd | -3.05 | 0.764 | non | -735.9 / -167.0 / -170.2 | 552 | -1.94 | -16,253 | 
+G1 fin de mois apres fixing sans 2 jour(s) gbpusd | -3.09 | 0.968 | non | -164.3 / -516.8 / -87.8 | 262 | -2.93 | -6,763 | 
+G11 ecart du week-end continuation sortie lundi 03:00 tout audusd | -3.14 | 0.971 | non | -136.1 / -1457.0 / -797.9 | 559 | -4.28 | -16,511 | 
+G11 ecart du week-end continuation sortie lundi 09:30 grand eurusd | -3.15 | 0.988 | non | -1306.6 / -58.7 / -437.3 | 274 | -6.58 | -26,690 | 
+G12 vendredi 12:00-15:55 continuation gbpusd | -3.17 | 0.810 | non | -316.3 / -572.3 / -265.8 | 552 | -2.09 | -10,225 | 
+G12 vendredi 14:00-15:55 retournement audusd | -3.21 | 0.592 | non | -356.9 / -75.1 / -455.5 | 551 | -1.61 | -7,630 | 
+G4 gotobi 09:55-11:00 eurusd | -3.24 | 0.384 | non | -262.1 / -382.8 / -32.6 | 787 | -0.86 | -10,032 | 
+G12 vendredi 14:00-15:55 retournement gbpusd | -3.30 | 0.281 | non | -279.9 / -127.4 / -301.0 | 553 | -1.28 | -6,143 | 
+G11 ecart du week-end continuation sortie lundi 09:30 grand audusd | -3.32 | 0.998 | non | -752.6 / -1129.1 / -797.0 | 271 | -9.88 | -20,197 | 
+G12 vendredi 12:00-15:55 retournement usatechidxusd | -3.34 | 0.985 | non | -1245.8 / -1176.8 / -1796.4 | 491 | -8.59 | -7,290 | 
+G1 fin de mois apres fixing sans 2 jour(s) eurusd | -3.35 | 0.984 | non | -303.3 / -247.3 / -155.0 | 262 | -2.69 | -10,553 | 
+G12 vendredi 12:00-15:55 retournement usa500idxusd | -3.36 | 0.937 | non | -1142.6 / -1102.6 / -1295.8 | 490 | -7.23 | -5,054 | 
+G1 fin de mois apres fixing sans 1 jour(s) eurusd | -3.37 | 0.994 | non | -206.3 / -278.2 / -74.6 | 130 | -4.30 | -8,305 | 
+G8 choc 10 h continuation sortie 11:00 audusd | -3.38 | 0.985 | non | -801.6 / -490.1 / -128.2 | 338 | -4.20 | -11,484 | 
+G1 fin de mois avant fixing sans 1 jour(s) gbpusd | -3.40 | 0.996 | non | -327.1 / -591.9 / -133.9 | 130 | -8.10 | -9,080 | 
+G11 ecart du week-end continuation sortie lundi 03:00 grand audusd | -3.44 | 1.000 | non | -398.5 / -922.2 / -744.5 | 271 | -7.62 | -15,099 | 
+G2 debut de mois 15:00-16:00 S&P gbpusd | -3.46 | 1.000 | non | -40.3 / -230.7 / -315.4 | 104 | -5.64 | -4,814 | 
+G12 vendredi 12:00-15:55 retournement audusd | -3.46 | 0.924 | non | -540.9 / -337.6 / -515.3 | 552 | -2.52 | -11,697 | 
+G1 fin de mois avant fixing sans 2 jour(s) gbpusd | -3.52 | 0.992 | non | -355.9 / -567.2 / -348.4 | 262 | -4.85 | -10,887 | 
+G1 fin de mois apres fixing sans 1 jour(s) audusd | -3.52 | 0.992 | non | -317.4 / -351.1 / +3.2 | 130 | -5.12 | -5,620 | 
+G12 vendredi 14:00-15:55 retournement eurusd | -3.52 | 0.440 | non | -37.5 / -475.3 / -275.6 | 553 | -1.43 | -11,279 | 
+G1 fin de mois apres fixing sans 1 jour(s) usdjpy | -3.60 | 0.960 | non | -265.8 / -210.0 / +8.0 | 130 | -3.60 | -5,877 | 
+G1 fin de mois apres fixing sans 2 jour(s) usdjpy | -3.60 | 0.900 | non | -431.7 / -156.9 / -15.8 | 262 | -2.31 | -7,705 | 
+G5 or fixing 10:30 avant 60 min | -3.60 | 0.192 | non | +674.8 / -2521.6 / -1264.4 | 2833 | -1.10 | -4,547 | 
+G8 choc 10 h continuation sortie 11:00 usa500idxusd | -3.63 | 0.979 | non | -1464.8 / -588.3 / -747.7 | 321 | -8.72 | -3,332 | 
+G12 vendredi 14:00-15:55 retournement usa500idxusd | -3.74 | 0.925 | non | -1545.5 / -956.0 / -646.0 | 488 | -6.45 | -4,045 | 
+G12 vendredi 12:00-15:55 continuation usdjpy | -3.88 | 0.963 | non | -483.8 / -672.3 / -291.6 | 553 | -2.62 | -16,789 | 
+G12 vendredi 14:00-15:55 continuation eurusd | -3.89 | 0.560 | non | -580.5 / -133.7 / -156.4 | 553 | -1.57 | -13,194 | 
+G4 gotobi 08:00-09:55 gbpusd | -4.09 | 0.954 | non | -400.1 / -549.7 / -560.9 | 786 | -1.92 | -12,635 | 
+G11 ecart du week-end continuation sortie lundi 03:00 grand eurusd | -4.19 | 1.000 | non | -1029.7 / -322.3 / -247.2 | 273 | -5.86 | -23,223 | 
+G1 fin de mois avant fixing S&P 1 jour(s) usdjpy | -4.21 | 1.000 | non | -194.2 / -354.7 / -306.3 | 116 | -7.37 | -9,810 | 
+G12 vendredi 14:00-15:55 continuation usdjpy | -4.22 | 0.786 | non | -338.2 / -442.3 / -227.4 | 553 | -1.82 | -11,440 | 
+G11 ecart du week-end continuation sortie lundi 09:30 tout eurusd | -4.24 | 0.998 | non | -2057.2 / -538.9 / -859.9 | 560 | -6.17 | -51,688 | 
+G4 gotobi 07:00-09:55 gbpusd | -4.25 | 0.668 | non | -322.7 / -921.8 / -875.4 | 781 | -2.71 | -17,277 | 
+G1 fin de mois apres fixing sans 2 jour(s) audusd | -4.31 | 0.998 | non | -435.3 / -521.1 / -67.3 | 262 | -3.91 | -8,389 | 
+G12 vendredi 14:00-15:55 continuation gbpusd | -4.43 | 0.719 | non | -338.1 / -481.6 / -131.0 | 553 | -1.72 | -8,468 | 
+G4 gotobi 07:00-09:55 eurusd | -4.59 | 0.518 | non | -59.6 / -800.5 / -640.9 | 785 | -1.91 | -21,119 | 
+G4 gotobi 08:00-09:55 eurusd | -4.79 | 0.998 | non | -188.1 / -642.6 / -449.7 | 787 | -1.63 | -18,398 | 
+G5 or fixing 10:30 apres 60 min | -5.47 | 0.439 | non | -1025.6 / -1344.5 / -2058.0 | 2832 | -1.56 | -6,968 | 
+G11 ecart du week-end continuation sortie lundi 03:00 tout eurusd | -5.52 | 1.000 | non | -1720.9 / -500.2 / -509.2 | 559 | -4.88 | -40,600 | 
+G5 or fixing 10:30 avant 30 min | -5.60 | 0.172 | non | -152.7 / -2103.6 / -1029.7 | 2832 | -1.16 | -4,696 | 
+G4 gotobi 09:00-09:55 gbpusd | -6.07 | 1.000 | non | -426.1 / -569.9 / -462.6 | 787 | -1.85 | -12,540 | 
+G4 gotobi 09:00-09:55 eurusd | -6.28 | 1.000 | non | -352.6 / -537.5 / -418.4 | 787 | -1.66 | -19,063 | 
+G5 or fixing 10:30 les deux 60 min | -6.44 | 0.234 | non | -350.8 / -3866.1 / -3322.4 | 2833 | -2.66 | -11,515 | 
+G5 or fixing 10:30 apres 30 min | -8.01 | 0.444 | non | -1863.1 / -1641.7 / -1344.1 | 2832 | -1.71 | -7,243 | 
+G5 or fixing 10:30 les deux 30 min | -9.46 | 0.238 | non | -2015.8 / -3745.3 / -2373.7 | 2832 | -2.87 | -11,940 | 

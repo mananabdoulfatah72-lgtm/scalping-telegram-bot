@@ -1,0 +1,6994 @@
+[
+ {
+  "t": -0.85,
+  "jours": 130,
+  "trades": 130,
+  "pb_par_jour": -1.84,
+  "dollars_1_contrat": -3203.0,
+  "sous_periodes": [
+   168.5,
+   -225.3,
+   -182.4
+  ],
+  "nom": "G1 fin de mois avant fixing sans 1 jour(s) eurusd",
+  "famille": "G1",
+  "p": 0.5,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.66,
+  "jours": 262,
+  "trades": 262,
+  "pb_par_jour": -2.07,
+  "dollars_1_contrat": -7274.0,
+  "sous_periodes": [
+   130.0,
+   -326.8,
+   -346.5
+  ],
+  "nom": "G1 fin de mois avant fixing sans 2 jour(s) eurusd",
+  "famille": "G1",
+  "p": 0.65,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.07,
+  "jours": 116,
+  "trades": 116,
+  "pb_par_jour": -0.15,
+  "dollars_1_contrat": -29.0,
+  "sous_periodes": [
+   134.9,
+   28.9,
+   -181.0
+  ],
+  "nom": "G1 fin de mois avant fixing S&P 1 jour(s) eurusd",
+  "famille": "G1",
+  "p": 0.29,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.17,
+  "jours": 234,
+  "trades": 234,
+  "pb_par_jour": 0.22,
+  "dollars_1_contrat": 863.0,
+  "sous_periodes": [
+   170.4,
+   54.6,
+   -172.9
+  ],
+  "nom": "G1 fin de mois avant fixing S&P 2 jour(s) eurusd",
+  "famille": "G1",
+  "p": 0.168,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.37,
+  "jours": 130,
+  "trades": 130,
+  "pb_par_jour": -4.3,
+  "dollars_1_contrat": -8305.0,
+  "sous_periodes": [
+   -206.3,
+   -278.2,
+   -74.6
+  ],
+  "nom": "G1 fin de mois apres fixing sans 1 jour(s) eurusd",
+  "famille": "G1",
+  "p": 0.994,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.35,
+  "jours": 262,
+  "trades": 262,
+  "pb_par_jour": -2.69,
+  "dollars_1_contrat": -10553.0,
+  "sous_periodes": [
+   -303.3,
+   -247.3,
+   -155.0
+  ],
+  "nom": "G1 fin de mois apres fixing sans 2 jour(s) eurusd",
+  "famille": "G1",
+  "p": 0.984,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.38,
+  "jours": 116,
+  "trades": 116,
+  "pb_par_jour": 1.9,
+  "dollars_1_contrat": 3248.0,
+  "sous_periodes": [
+   73.8,
+   12.9,
+   133.3
+  ],
+  "nom": "G1 fin de mois apres fixing S&P 1 jour(s) eurusd",
+  "famille": "G1",
+  "p": 0.026,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.14,
+  "jours": 234,
+  "trades": 234,
+  "pb_par_jour": 0.13,
+  "dollars_1_contrat": 460.0,
+  "sous_periodes": [
+   18.3,
+   -60.7,
+   71.7
+  ],
+  "nom": "G1 fin de mois apres fixing S&P 2 jour(s) eurusd",
+  "famille": "G1",
+  "p": 0.19,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.47,
+  "jours": 123,
+  "trades": 123,
+  "pb_par_jour": -0.87,
+  "dollars_1_contrat": -1641.0,
+  "sous_periodes": [
+   -48.6,
+   100.1,
+   -157.8
+  ],
+  "nom": "G2 debut de mois 08:00-12:00 sans eurusd",
+  "famille": "G2",
+  "p": 0.206,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.28,
+  "jours": 104,
+  "trades": 104,
+  "pb_par_jour": -2.47,
+  "dollars_1_contrat": -3515.0,
+  "sous_periodes": [
+   -3.9,
+   -57.2,
+   -195.4
+  ],
+  "nom": "G2 debut de mois 08:00-12:00 S&P eurusd",
+  "famille": "G2",
+  "p": 0.792,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.15,
+  "jours": 123,
+  "trades": 123,
+  "pb_par_jour": -1.93,
+  "dollars_1_contrat": -3250.0,
+  "sous_periodes": [
+   -128.9,
+   -42.8,
+   -65.3
+  ],
+  "nom": "G2 debut de mois 15:00-16:00 sans eurusd",
+  "famille": "G2",
+  "p": 0.46,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.53,
+  "jours": 104,
+  "trades": 104,
+  "pb_par_jour": -4.61,
+  "dollars_1_contrat": -7269.0,
+  "sous_periodes": [
+   -97.4,
+   -151.9,
+   -230.3
+  ],
+  "nom": "G2 debut de mois 15:00-16:00 S&P eurusd",
+  "famille": "G2",
+  "p": 0.956,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.28,
+  "jours": 44,
+  "trades": 44,
+  "pb_par_jour": -3.7,
+  "dollars_1_contrat": -2156.0,
+  "sous_periodes": [
+   126.2,
+   -138.9,
+   -150.2
+  ],
+  "nom": "G3 fin de trimestre avant fixing sans eurusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.71,
+  "jours": 37,
+  "trades": 37,
+  "pb_par_jour": 2.33,
+  "dollars_1_contrat": 1348.0,
+  "sous_periodes": [
+   81.4,
+   19.9,
+   -15.3
+  ],
+  "nom": "G3 fin de trimestre avant fixing S&P eurusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.19,
+  "jours": 44,
+  "trades": 44,
+  "pb_par_jour": -2.82,
+  "dollars_1_contrat": -1845.0,
+  "sous_periodes": [
+   -40.9,
+   -79.7,
+   -3.6
+  ],
+  "nom": "G3 fin de trimestre apres fixing sans eurusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.15,
+  "jours": 37,
+  "trades": 37,
+  "pb_par_jour": -0.41,
+  "dollars_1_contrat": -201.0,
+  "sous_periodes": [
+   3.9,
+   -76.8,
+   57.8
+  ],
+  "nom": "G3 fin de trimestre apres fixing S&P eurusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.59,
+  "jours": 785,
+  "trades": 785,
+  "pb_par_jour": -1.91,
+  "dollars_1_contrat": -21119.0,
+  "sous_periodes": [
+   -59.6,
+   -800.5,
+   -640.9
+  ],
+  "nom": "G4 gotobi 07:00-09:55 eurusd",
+  "famille": "G4",
+  "p": 0.518,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.79,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -1.63,
+  "dollars_1_contrat": -18398.0,
+  "sous_periodes": [
+   -188.1,
+   -642.6,
+   -449.7
+  ],
+  "nom": "G4 gotobi 08:00-09:55 eurusd",
+  "famille": "G4",
+  "p": 0.998,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.28,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -1.66,
+  "dollars_1_contrat": -19063.0,
+  "sous_periodes": [
+   -352.6,
+   -537.5,
+   -418.4
+  ],
+  "nom": "G4 gotobi 09:00-09:55 eurusd",
+  "famille": "G4",
+  "p": 1.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.24,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -0.86,
+  "dollars_1_contrat": -10032.0,
+  "sous_periodes": [
+   -262.1,
+   -382.8,
+   -32.6
+  ],
+  "nom": "G4 gotobi 09:55-11:00 eurusd",
+  "famille": "G4",
+  "p": 0.384,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.17,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -0.55,
+  "dollars_1_contrat": -6228.0,
+  "sous_periodes": [
+   -61.7,
+   -397.0,
+   29.7
+  ],
+  "nom": "G4 gotobi 09:55-12:00 eurusd",
+  "famille": "G4",
+  "p": 0.774,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.4,
+  "jours": 130,
+  "trades": 130,
+  "pb_par_jour": -8.1,
+  "dollars_1_contrat": -9080.0,
+  "sous_periodes": [
+   -327.1,
+   -591.9,
+   -133.9
+  ],
+  "nom": "G1 fin de mois avant fixing sans 1 jour(s) gbpusd",
+  "famille": "G1",
+  "p": 0.996,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.52,
+  "jours": 262,
+  "trades": 262,
+  "pb_par_jour": -4.85,
+  "dollars_1_contrat": -10887.0,
+  "sous_periodes": [
+   -355.9,
+   -567.2,
+   -348.4
+  ],
+  "nom": "G1 fin de mois avant fixing sans 2 jour(s) gbpusd",
+  "famille": "G1",
+  "p": 0.992,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 3.04,
+  "jours": 116,
+  "trades": 116,
+  "pb_par_jour": 7.49,
+  "dollars_1_contrat": 7778.0,
+  "sous_periodes": [
+   392.6,
+   442.8,
+   33.1
+  ],
+  "nom": "G1 fin de mois avant fixing S&P 1 jour(s) gbpusd",
+  "famille": "G1",
+  "p": 0.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": true,
+  "survivante": true
+ },
+ {
+  "t": 2.42,
+  "jours": 234,
+  "trades": 234,
+  "pb_par_jour": 3.51,
+  "dollars_1_contrat": 7290.0,
+  "sous_periodes": [
+   381.3,
+   374.9,
+   64.2
+  ],
+  "nom": "G1 fin de mois avant fixing S&P 2 jour(s) gbpusd",
+  "famille": "G1",
+  "p": 0.006,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.8,
+  "jours": 130,
+  "trades": 130,
+  "pb_par_jour": -4.5,
+  "dollars_1_contrat": -5155.0,
+  "sous_periodes": [
+   -131.4,
+   -423.9,
+   -29.3
+  ],
+  "nom": "G1 fin de mois apres fixing sans 1 jour(s) gbpusd",
+  "famille": "G1",
+  "p": 0.984,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.09,
+  "jours": 262,
+  "trades": 262,
+  "pb_par_jour": -2.93,
+  "dollars_1_contrat": -6763.0,
+  "sous_periodes": [
+   -164.3,
+   -516.8,
+   -87.8
+  ],
+  "nom": "G1 fin de mois apres fixing sans 2 jour(s) gbpusd",
+  "famille": "G1",
+  "p": 0.968,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.11,
+  "jours": 116,
+  "trades": 116,
+  "pb_par_jour": 1.92,
+  "dollars_1_contrat": 1864.0,
+  "sous_periodes": [
+   27.2,
+   74.3,
+   121.0
+  ],
+  "nom": "G1 fin de mois apres fixing S&P 1 jour(s) gbpusd",
+  "famille": "G1",
+  "p": 0.072,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.64,
+  "jours": 234,
+  "trades": 234,
+  "pb_par_jour": 0.66,
+  "dollars_1_contrat": 1138.0,
+  "sous_periodes": [
+   -19.1,
+   27.9,
+   144.5
+  ],
+  "nom": "G1 fin de mois apres fixing S&P 2 jour(s) gbpusd",
+  "famille": "G1",
+  "p": 0.086,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.47,
+  "jours": 123,
+  "trades": 123,
+  "pb_par_jour": -6.85,
+  "dollars_1_contrat": -7484.0,
+  "sous_periodes": [
+   -352.6,
+   -366.6,
+   -123.3
+  ],
+  "nom": "G2 debut de mois 08:00-12:00 sans gbpusd",
+  "famille": "G2",
+  "p": 0.956,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.94,
+  "jours": 104,
+  "trades": 104,
+  "pb_par_jour": -2.85,
+  "dollars_1_contrat": -2296.0,
+  "sous_periodes": [
+   5.9,
+   45.1,
+   -347.9
+  ],
+  "nom": "G2 debut de mois 08:00-12:00 S&P gbpusd",
+  "famille": "G2",
+  "p": 0.72,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.12,
+  "jours": 123,
+  "trades": 123,
+  "pb_par_jour": -3.17,
+  "dollars_1_contrat": -3718.0,
+  "sous_periodes": [
+   -290.3,
+   -3.5,
+   -95.6
+  ],
+  "nom": "G2 debut de mois 15:00-16:00 sans gbpusd",
+  "famille": "G2",
+  "p": 0.9,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.46,
+  "jours": 104,
+  "trades": 104,
+  "pb_par_jour": -5.64,
+  "dollars_1_contrat": -4814.0,
+  "sous_periodes": [
+   -40.3,
+   -230.7,
+   -315.4
+  ],
+  "nom": "G2 debut de mois 15:00-16:00 S&P gbpusd",
+  "famille": "G2",
+  "p": 1.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.21,
+  "jours": 44,
+  "trades": 44,
+  "pb_par_jour": -7.68,
+  "dollars_1_contrat": -2926.0,
+  "sous_periodes": [
+   -70.0,
+   -126.6,
+   -141.3
+  ],
+  "nom": "G3 fin de trimestre avant fixing sans gbpusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.89,
+  "jours": 37,
+  "trades": 37,
+  "pb_par_jour": 7.39,
+  "dollars_1_contrat": 2505.0,
+  "sous_periodes": [
+   126.9,
+   97.9,
+   48.6
+  ],
+  "nom": "G3 fin de trimestre avant fixing S&P gbpusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.08,
+  "jours": 44,
+  "trades": 44,
+  "pb_par_jour": -4.19,
+  "dollars_1_contrat": -1605.0,
+  "sous_periodes": [
+   -25.8,
+   -168.1,
+   9.4
+  ],
+  "nom": "G3 fin de trimestre apres fixing sans gbpusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.01,
+  "jours": 37,
+  "trades": 37,
+  "pb_par_jour": 0.03,
+  "dollars_1_contrat": -33.0,
+  "sous_periodes": [
+   14.2,
+   -42.7,
+   29.5
+  ],
+  "nom": "G3 fin de trimestre apres fixing S&P gbpusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.25,
+  "jours": 781,
+  "trades": 781,
+  "pb_par_jour": -2.71,
+  "dollars_1_contrat": -17277.0,
+  "sous_periodes": [
+   -322.7,
+   -921.8,
+   -875.4
+  ],
+  "nom": "G4 gotobi 07:00-09:55 gbpusd",
+  "famille": "G4",
+  "p": 0.668,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.09,
+  "jours": 786,
+  "trades": 786,
+  "pb_par_jour": -1.92,
+  "dollars_1_contrat": -12635.0,
+  "sous_periodes": [
+   -400.1,
+   -549.7,
+   -560.9
+  ],
+  "nom": "G4 gotobi 08:00-09:55 gbpusd",
+  "famille": "G4",
+  "p": 0.954,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.07,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -1.85,
+  "dollars_1_contrat": -12540.0,
+  "sous_periodes": [
+   -426.1,
+   -569.9,
+   -462.6
+  ],
+  "nom": "G4 gotobi 09:00-09:55 gbpusd",
+  "famille": "G4",
+  "p": 1.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.69,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -0.85,
+  "dollars_1_contrat": -6120.0,
+  "sous_periodes": [
+   -228.0,
+   -408.1,
+   -34.9
+  ],
+  "nom": "G4 gotobi 09:55-11:00 gbpusd",
+  "famille": "G4",
+  "p": 0.038,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.63,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -1.53,
+  "dollars_1_contrat": -10744.0,
+  "sous_periodes": [
+   -125.4,
+   -953.4,
+   -124.2
+  ],
+  "nom": "G4 gotobi 09:55-12:00 gbpusd",
+  "famille": "G4",
+  "p": 0.518,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.06,
+  "jours": 129,
+  "trades": 129,
+  "pb_par_jour": -1.83,
+  "dollars_1_contrat": -2556.0,
+  "sous_periodes": [
+   15.0,
+   -204.0,
+   -46.8
+  ],
+  "nom": "G1 fin de mois avant fixing sans 1 jour(s) usdjpy",
+  "famille": "G1",
+  "p": 0.328,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.42,
+  "jours": 261,
+  "trades": 261,
+  "pb_par_jour": -1.47,
+  "dollars_1_contrat": -4239.0,
+  "sous_periodes": [
+   36.2,
+   -302.0,
+   -118.3
+  ],
+  "nom": "G1 fin de mois avant fixing sans 2 jour(s) usdjpy",
+  "famille": "G1",
+  "p": 0.19,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.21,
+  "jours": 116,
+  "trades": 116,
+  "pb_par_jour": -7.37,
+  "dollars_1_contrat": -9810.0,
+  "sous_periodes": [
+   -194.2,
+   -354.7,
+   -306.3
+  ],
+  "nom": "G1 fin de mois avant fixing S&P 1 jour(s) usdjpy",
+  "famille": "G1",
+  "p": 1.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.49,
+  "jours": 234,
+  "trades": 234,
+  "pb_par_jour": -2.72,
+  "dollars_1_contrat": -7478.0,
+  "sous_periodes": [
+   -208.5,
+   -312.8,
+   -115.4
+  ],
+  "nom": "G1 fin de mois avant fixing S&P 2 jour(s) usdjpy",
+  "famille": "G1",
+  "p": 0.85,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.6,
+  "jours": 130,
+  "trades": 130,
+  "pb_par_jour": -3.6,
+  "dollars_1_contrat": -5877.0,
+  "sous_periodes": [
+   -265.8,
+   -210.0,
+   8.0
+  ],
+  "nom": "G1 fin de mois apres fixing sans 1 jour(s) usdjpy",
+  "famille": "G1",
+  "p": 0.96,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.6,
+  "jours": 262,
+  "trades": 262,
+  "pb_par_jour": -2.31,
+  "dollars_1_contrat": -7705.0,
+  "sous_periodes": [
+   -431.7,
+   -156.9,
+   -15.8
+  ],
+  "nom": "G1 fin de mois apres fixing sans 2 jour(s) usdjpy",
+  "famille": "G1",
+  "p": 0.9,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.73,
+  "jours": 116,
+  "trades": 116,
+  "pb_par_jour": 0.78,
+  "dollars_1_contrat": 1312.0,
+  "sous_periodes": [
+   105.4,
+   37.5,
+   -52.9
+  ],
+  "nom": "G1 fin de mois apres fixing S&P 1 jour(s) usdjpy",
+  "famille": "G1",
+  "p": 0.032,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.56,
+  "jours": 234,
+  "trades": 234,
+  "pb_par_jour": -0.38,
+  "dollars_1_contrat": -787.0,
+  "sous_periodes": [
+   58.7,
+   -85.5,
+   -62.5
+  ],
+  "nom": "G1 fin de mois apres fixing S&P 2 jour(s) usdjpy",
+  "famille": "G1",
+  "p": 0.128,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.8,
+  "jours": 123,
+  "trades": 123,
+  "pb_par_jour": -1.46,
+  "dollars_1_contrat": -2071.0,
+  "sous_periodes": [
+   -241.8,
+   -74.6,
+   136.8
+  ],
+  "nom": "G2 debut de mois 08:00-12:00 sans usdjpy",
+  "famille": "G2",
+  "p": 0.428,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.2,
+  "jours": 104,
+  "trades": 104,
+  "pb_par_jour": 0.4,
+  "dollars_1_contrat": 382.0,
+  "sous_periodes": [
+   78.4,
+   -48.0,
+   10.9
+  ],
+  "nom": "G2 debut de mois 08:00-12:00 S&P usdjpy",
+  "famille": "G2",
+  "p": 0.216,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.81,
+  "jours": 123,
+  "trades": 123,
+  "pb_par_jour": -1.58,
+  "dollars_1_contrat": -2105.0,
+  "sous_periodes": [
+   -158.1,
+   8.2,
+   -44.3
+  ],
+  "nom": "G2 debut de mois 15:00-16:00 sans usdjpy",
+  "famille": "G2",
+  "p": 0.51,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.93,
+  "jours": 104,
+  "trades": 104,
+  "pb_par_jour": -4.12,
+  "dollars_1_contrat": -5390.0,
+  "sous_periodes": [
+   10.3,
+   -240.0,
+   -198.8
+  ],
+  "nom": "G2 debut de mois 15:00-16:00 S&P usdjpy",
+  "famille": "G2",
+  "p": 0.634,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.27,
+  "jours": 43,
+  "trades": 43,
+  "pb_par_jour": 0.71,
+  "dollars_1_contrat": 540.0,
+  "sous_periodes": [
+   87.3,
+   -35.7,
+   -21.0
+  ],
+  "nom": "G3 fin de trimestre avant fixing sans usdjpy",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.22,
+  "jours": 37,
+  "trades": 37,
+  "pb_par_jour": -5.82,
+  "dollars_1_contrat": -2652.0,
+  "sous_periodes": [
+   -41.8,
+   -124.8,
+   -48.9
+  ],
+  "nom": "G3 fin de trimestre avant fixing S&P usdjpy",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.59,
+  "jours": 44,
+  "trades": 44,
+  "pb_par_jour": -2.62,
+  "dollars_1_contrat": -1647.0,
+  "sous_periodes": [
+   -87.2,
+   -67.4,
+   39.3
+  ],
+  "nom": "G3 fin de trimestre apres fixing sans usdjpy",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.21,
+  "jours": 37,
+  "trades": 37,
+  "pb_par_jour": 2.2,
+  "dollars_1_contrat": 947.0,
+  "sous_periodes": [
+   37.2,
+   1.5,
+   42.5
+  ],
+  "nom": "G3 fin de trimestre apres fixing S&P usdjpy",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 2.81,
+  "jours": 785,
+  "trades": 785,
+  "pb_par_jour": 1.69,
+  "dollars_1_contrat": 15342.0,
+  "sous_periodes": [
+   396.9,
+   395.6,
+   530.2
+  ],
+  "nom": "G4 gotobi 07:00-09:55 usdjpy",
+  "famille": "G4",
+  "p": 0.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": true,
+  "survivante": true
+ },
+ {
+  "t": 0.33,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": 0.18,
+  "dollars_1_contrat": 1402.0,
+  "sous_periodes": [
+   -76.4,
+   271.9,
+   -56.3
+  ],
+  "nom": "G4 gotobi 08:00-09:55 usdjpy",
+  "famille": "G4",
+  "p": 0.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -0.3,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -0.14,
+  "dollars_1_contrat": -1941.0,
+  "sous_periodes": [
+   -247.8,
+   325.0,
+   -189.7
+  ],
+  "nom": "G4 gotobi 09:00-09:55 usdjpy",
+  "famille": "G4",
+  "p": 0.016,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.33,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": 0.58,
+  "dollars_1_contrat": 4986.0,
+  "sous_periodes": [
+   -190.7,
+   284.6,
+   358.6
+  ],
+  "nom": "G4 gotobi 09:55-11:00 usdjpy",
+  "famille": "G4",
+  "p": 0.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": 1.91,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": 1.35,
+  "dollars_1_contrat": 12261.0,
+  "sous_periodes": [
+   231.4,
+   576.2,
+   256.9
+  ],
+  "nom": "G4 gotobi 09:55-12:00 usdjpy",
+  "famille": "G4",
+  "p": 0.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -2.06,
+  "jours": 130,
+  "trades": 130,
+  "pb_par_jour": -4.74,
+  "dollars_1_contrat": -5412.0,
+  "sous_periodes": [
+   -512.9,
+   -324.0,
+   220.2
+  ],
+  "nom": "G1 fin de mois avant fixing sans 1 jour(s) audusd",
+  "famille": "G1",
+  "p": 0.884,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.34,
+  "jours": 261,
+  "trades": 261,
+  "pb_par_jour": -3.14,
+  "dollars_1_contrat": -6974.0,
+  "sous_periodes": [
+   -559.8,
+   -421.0,
+   161.0
+  ],
+  "nom": "G1 fin de mois avant fixing sans 2 jour(s) audusd",
+  "famille": "G1",
+  "p": 0.85,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 2.04,
+  "jours": 116,
+  "trades": 116,
+  "pb_par_jour": 5.02,
+  "dollars_1_contrat": 4570.0,
+  "sous_periodes": [
+   357.3,
+   132.6,
+   91.9
+  ],
+  "nom": "G1 fin de mois avant fixing S&P 1 jour(s) audusd",
+  "famille": "G1",
+  "p": 0.032,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 2.42,
+  "jours": 233,
+  "trades": 233,
+  "pb_par_jour": 3.46,
+  "dollars_1_contrat": 6332.0,
+  "sous_periodes": [
+   359.6,
+   356.0,
+   90.9
+  ],
+  "nom": "G1 fin de mois avant fixing S&P 2 jour(s) audusd",
+  "famille": "G1",
+  "p": 0.004,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.52,
+  "jours": 130,
+  "trades": 130,
+  "pb_par_jour": -5.12,
+  "dollars_1_contrat": -5620.0,
+  "sous_periodes": [
+   -317.4,
+   -351.1,
+   3.2
+  ],
+  "nom": "G1 fin de mois apres fixing sans 1 jour(s) audusd",
+  "famille": "G1",
+  "p": 0.992,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.31,
+  "jours": 262,
+  "trades": 262,
+  "pb_par_jour": -3.91,
+  "dollars_1_contrat": -8389.0,
+  "sous_periodes": [
+   -435.3,
+   -521.1,
+   -67.3
+  ],
+  "nom": "G1 fin de mois apres fixing sans 2 jour(s) audusd",
+  "famille": "G1",
+  "p": 0.998,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 3.42,
+  "jours": 116,
+  "trades": 116,
+  "pb_par_jour": 5.03,
+  "dollars_1_contrat": 4494.0,
+  "sous_periodes": [
+   132.1,
+   189.1,
+   262.6
+  ],
+  "nom": "G1 fin de mois apres fixing S&P 1 jour(s) audusd",
+  "famille": "G1",
+  "p": 0.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": true,
+  "survivante": true
+ },
+ {
+  "t": 2.98,
+  "jours": 234,
+  "trades": 234,
+  "pb_par_jour": 2.8,
+  "dollars_1_contrat": 5103.0,
+  "sous_periodes": [
+   112.8,
+   273.8,
+   268.7
+  ],
+  "nom": "G1 fin de mois apres fixing S&P 2 jour(s) audusd",
+  "famille": "G1",
+  "p": 0.0,
+  "placebos": 500,
+  "testable": true,
+  "bh": true,
+  "survivante": true
+ },
+ {
+  "t": -0.7,
+  "jours": 123,
+  "trades": 123,
+  "pb_par_jour": -1.49,
+  "dollars_1_contrat": -1319.0,
+  "sous_periodes": [
+   -160.3,
+   -75.3,
+   52.5
+  ],
+  "nom": "G2 debut de mois 08:00-12:00 sans audusd",
+  "famille": "G2",
+  "p": 0.502,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.48,
+  "jours": 104,
+  "trades": 104,
+  "pb_par_jour": -1.07,
+  "dollars_1_contrat": -841.0,
+  "sous_periodes": [
+   -50.6,
+   30.2,
+   -91.3
+  ],
+  "nom": "G2 debut de mois 08:00-12:00 S&P audusd",
+  "famille": "G2",
+  "p": 0.424,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.06,
+  "jours": 123,
+  "trades": 123,
+  "pb_par_jour": 0.12,
+  "dollars_1_contrat": 233.0,
+  "sous_periodes": [
+   -52.3,
+   53.9,
+   13.1
+  ],
+  "nom": "G2 debut de mois 15:00-16:00 sans audusd",
+  "famille": "G2",
+  "p": 0.176,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.82,
+  "jours": 104,
+  "trades": 104,
+  "pb_par_jour": -6.28,
+  "dollars_1_contrat": -5103.0,
+  "sous_periodes": [
+   -140.4,
+   -204.4,
+   -308.1
+  ],
+  "nom": "G2 debut de mois 15:00-16:00 S&P audusd",
+  "famille": "G2",
+  "p": 0.986,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.07,
+  "jours": 44,
+  "trades": 44,
+  "pb_par_jour": -4.06,
+  "dollars_1_contrat": -1643.0,
+  "sous_periodes": [
+   -109.8,
+   -66.3,
+   -2.3
+  ],
+  "nom": "G3 fin de trimestre avant fixing sans audusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.38,
+  "jours": 37,
+  "trades": 37,
+  "pb_par_jour": 5.92,
+  "dollars_1_contrat": 1750.0,
+  "sous_periodes": [
+   103.7,
+   31.0,
+   84.4
+  ],
+  "nom": "G3 fin de trimestre avant fixing S&P audusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.01,
+  "jours": 44,
+  "trades": 44,
+  "pb_par_jour": -2.43,
+  "dollars_1_contrat": -1039.0,
+  "sous_periodes": [
+   -83.6,
+   -68.3,
+   45.0
+  ],
+  "nom": "G3 fin de trimestre apres fixing sans audusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 2.03,
+  "jours": 37,
+  "trades": 37,
+  "pb_par_jour": 5.04,
+  "dollars_1_contrat": 1413.0,
+  "sous_periodes": [
+   33.0,
+   46.2,
+   107.3
+  ],
+  "nom": "G3 fin de trimestre apres fixing S&P audusd",
+  "famille": "G3",
+  "p": null,
+  "placebos": 0,
+  "testable": false,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.26,
+  "jours": 784,
+  "trades": 784,
+  "pb_par_jour": -1.77,
+  "dollars_1_contrat": -8456.0,
+  "sous_periodes": [
+   -143.9,
+   -460.3,
+   -779.8
+  ],
+  "nom": "G4 gotobi 07:00-09:55 audusd",
+  "famille": "G4",
+  "p": 0.898,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.86,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -1.85,
+  "dollars_1_contrat": -10190.0,
+  "sous_periodes": [
+   -588.7,
+   -416.0,
+   -448.9
+  ],
+  "nom": "G4 gotobi 08:00-09:55 audusd",
+  "famille": "G4",
+  "p": 0.89,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.99,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -1.09,
+  "dollars_1_contrat": -6636.0,
+  "sous_periodes": [
+   -621.9,
+   -73.9,
+   -160.6
+  ],
+  "nom": "G4 gotobi 09:00-09:55 audusd",
+  "famille": "G4",
+  "p": 0.774,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.0,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": -0.0,
+  "dollars_1_contrat": -268.0,
+  "sous_periodes": [
+   -94.4,
+   13.1,
+   80.2
+  ],
+  "nom": "G4 gotobi 09:55-11:00 audusd",
+  "famille": "G4",
+  "p": 0.04,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.52,
+  "jours": 787,
+  "trades": 787,
+  "pb_par_jour": 0.44,
+  "dollars_1_contrat": 2248.0,
+  "sous_periodes": [
+   -88.9,
+   76.4,
+   355.4
+  ],
+  "nom": "G4 gotobi 09:55-12:00 audusd",
+  "famille": "G4",
+  "p": 0.084,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.6,
+  "jours": 2832,
+  "trades": 2832,
+  "pb_par_jour": -1.16,
+  "dollars_1_contrat": -4696.0,
+  "sous_periodes": [
+   -152.7,
+   -2103.6,
+   -1029.7
+  ],
+  "nom": "G5 or fixing 10:30 avant 30 min",
+  "famille": "G5",
+  "p": 0.17154811715481172,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.6,
+  "jours": 2833,
+  "trades": 2833,
+  "pb_par_jour": -1.1,
+  "dollars_1_contrat": -4547.0,
+  "sous_periodes": [
+   674.8,
+   -2521.6,
+   -1264.4
+  ],
+  "nom": "G5 or fixing 10:30 avant 60 min",
+  "famille": "G5",
+  "p": 0.19246861924686193,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -8.01,
+  "jours": 2832,
+  "trades": 2832,
+  "pb_par_jour": -1.71,
+  "dollars_1_contrat": -7243.0,
+  "sous_periodes": [
+   -1863.1,
+   -1641.7,
+   -1344.1
+  ],
+  "nom": "G5 or fixing 10:30 apres 30 min",
+  "famille": "G5",
+  "p": 0.4435146443514644,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.47,
+  "jours": 2832,
+  "trades": 2832,
+  "pb_par_jour": -1.56,
+  "dollars_1_contrat": -6968.0,
+  "sous_periodes": [
+   -1025.6,
+   -1344.5,
+   -2058.0
+  ],
+  "nom": "G5 or fixing 10:30 apres 60 min",
+  "famille": "G5",
+  "p": 0.4393305439330544,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -9.46,
+  "jours": 2832,
+  "trades": 5664,
+  "pb_par_jour": -2.87,
+  "dollars_1_contrat": -11940.0,
+  "sous_periodes": [
+   -2015.8,
+   -3745.3,
+   -2373.7
+  ],
+  "nom": "G5 or fixing 10:30 les deux 30 min",
+  "famille": "G5",
+  "p": 0.2384937238493724,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.44,
+  "jours": 2833,
+  "trades": 5665,
+  "pb_par_jour": -2.66,
+  "dollars_1_contrat": -11515.0,
+  "sous_periodes": [
+   -350.8,
+   -3866.1,
+   -3322.4
+  ],
+  "nom": "G5 or fixing 10:30 les deux 60 min",
+  "famille": "G5",
+  "p": 0.23430962343096234,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.03,
+  "jours": 2836,
+  "trades": 2836,
+  "pb_par_jour": -0.9,
+  "dollars_1_contrat": -3403.0,
+  "sous_periodes": [
+   -1237.7,
+   -507.9,
+   -792.8
+  ],
+  "nom": "G5 or fixing 15:00 avant 30 min",
+  "famille": "G5",
+  "p": 0.0041841004184100415,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.64,
+  "jours": 2834,
+  "trades": 2834,
+  "pb_par_jour": -0.93,
+  "dollars_1_contrat": -3629.0,
+  "sous_periodes": [
+   -715.1,
+   -805.7,
+   -1101.5
+  ],
+  "nom": "G5 or fixing 15:00 avant 60 min",
+  "famille": "G5",
+  "p": 0.012552301255230125,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.1,
+  "jours": 2835,
+  "trades": 2835,
+  "pb_par_jour": -0.89,
+  "dollars_1_contrat": -3651.0,
+  "sous_periodes": [
+   -102.2,
+   -1408.6,
+   -1019.8
+  ],
+  "nom": "G5 or fixing 15:00 apres 30 min",
+  "famille": "G5",
+  "p": 0.04184100418410042,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.56,
+  "jours": 2835,
+  "trades": 2835,
+  "pb_par_jour": -0.9,
+  "dollars_1_contrat": -3735.0,
+  "sous_periodes": [
+   -1001.1,
+   -588.4,
+   -953.2
+  ],
+  "nom": "G5 or fixing 15:00 apres 60 min",
+  "famille": "G5",
+  "p": 0.058577405857740586,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.96,
+  "jours": 2836,
+  "trades": 5671,
+  "pb_par_jour": -1.79,
+  "dollars_1_contrat": -7054.0,
+  "sous_periodes": [
+   -1339.9,
+   -1916.4,
+   -1812.7
+  ],
+  "nom": "G5 or fixing 15:00 les deux 30 min",
+  "famille": "G5",
+  "p": 0.016736401673640166,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.27,
+  "jours": 2835,
+  "trades": 5669,
+  "pb_par_jour": -1.82,
+  "dollars_1_contrat": -7364.0,
+  "sous_periodes": [
+   -1716.2,
+   -1394.1,
+   -2054.7
+  ],
+  "nom": "G5 or fixing 15:00 les deux 60 min",
+  "famille": "G5",
+  "p": 0.016736401673640166,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.03,
+  "jours": 557,
+  "trades": 557,
+  "pb_par_jour": -7.52,
+  "dollars_1_contrat": -2114.0,
+  "sous_periodes": [
+   -529.7,
+   -1624.0,
+   -2037.3
+  ],
+  "nom": "G6 petrole EIA sortie 11:00 continuation toujours",
+  "famille": "G6",
+  "p": 0.822,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.05,
+  "jours": 276,
+  "trades": 276,
+  "pb_par_jour": -6.98,
+  "dollars_1_contrat": -1060.0,
+  "sous_periodes": [
+   -41.6,
+   -317.9,
+   -1567.4
+  ],
+  "nom": "G6 petrole EIA sortie 11:00 continuation grand",
+  "famille": "G6",
+  "p": 0.669,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.13,
+  "jours": 557,
+  "trades": 557,
+  "pb_par_jour": -0.48,
+  "dollars_1_contrat": -922.0,
+  "sous_periodes": [
+   -1078.3,
+   8.0,
+   805.3
+  ],
+  "nom": "G6 petrole EIA sortie 11:00 retournement toujours",
+  "famille": "G6",
+  "p": 0.178,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.15,
+  "jours": 276,
+  "trades": 276,
+  "pb_par_jour": -1.02,
+  "dollars_1_contrat": -433.0,
+  "sous_periodes": [
+   -758.4,
+   -474.1,
+   951.4
+  ],
+  "nom": "G6 petrole EIA sortie 11:00 retournement grand",
+  "famille": "G6",
+  "p": 0.331,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.57,
+  "jours": 557,
+  "trades": 557,
+  "pb_par_jour": -7.5,
+  "dollars_1_contrat": -1977.0,
+  "sous_periodes": [
+   -654.4,
+   -2462.1,
+   -1062.3
+  ],
+  "nom": "G6 petrole EIA sortie 12:00 continuation toujours",
+  "famille": "G6",
+  "p": 0.757,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.23,
+  "jours": 276,
+  "trades": 276,
+  "pb_par_jour": -1.76,
+  "dollars_1_contrat": -262.0,
+  "sous_periodes": [
+   -184.5,
+   -71.3,
+   -230.7
+  ],
+  "nom": "G6 petrole EIA sortie 12:00 continuation grand",
+  "famille": "G6",
+  "p": 0.376,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.1,
+  "jours": 557,
+  "trades": 557,
+  "pb_par_jour": -0.5,
+  "dollars_1_contrat": -1058.0,
+  "sous_periodes": [
+   -953.6,
+   846.1,
+   -169.7
+  ],
+  "nom": "G6 petrole EIA sortie 12:00 retournement toujours",
+  "famille": "G6",
+  "p": 0.243,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.83,
+  "jours": 276,
+  "trades": 276,
+  "pb_par_jour": -6.24,
+  "dollars_1_contrat": -1232.0,
+  "sous_periodes": [
+   -615.5,
+   -720.7,
+   -385.3
+  ],
+  "nom": "G6 petrole EIA sortie 12:00 retournement grand",
+  "famille": "G6",
+  "p": 0.624,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.35,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -2.32,
+  "dollars_1_contrat": 361.0,
+  "sous_periodes": [
+   1353.7,
+   -3428.1,
+   792.7
+  ],
+  "nom": "G6 petrole EIA sortie 14:30 continuation toujours",
+  "famille": "G6",
+  "p": 0.409,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.18,
+  "jours": 273,
+  "trades": 273,
+  "pb_par_jour": 1.79,
+  "dollars_1_contrat": 879.0,
+  "sous_periodes": [
+   -209.3,
+   -158.5,
+   857.5
+  ],
+  "nom": "G6 petrole EIA sortie 14:30 continuation grand",
+  "famille": "G6",
+  "p": 0.285,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.85,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -5.68,
+  "dollars_1_contrat": -3377.0,
+  "sous_periodes": [
+   -2953.7,
+   1836.1,
+   -2024.7
+  ],
+  "nom": "G6 petrole EIA sortie 14:30 retournement toujours",
+  "famille": "G6",
+  "p": 0.591,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.98,
+  "jours": 273,
+  "trades": 273,
+  "pb_par_jour": -9.79,
+  "dollars_1_contrat": -2358.0,
+  "sous_periodes": [
+   -582.7,
+   -617.5,
+   -1473.5
+  ],
+  "nom": "G6 petrole EIA sortie 14:30 retournement grand",
+  "famille": "G6",
+  "p": 0.715,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.64,
+  "jours": 611,
+  "trades": 611,
+  "pb_par_jour": -2.54,
+  "dollars_1_contrat": -790.0,
+  "sous_periodes": [
+   -1333.3,
+   -625.8,
+   408.8
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 80 usatechidxusd",
+  "famille": "G7",
+  "p": 0.431,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.24,
+  "jours": 327,
+  "trades": 327,
+  "pb_par_jour": -3.12,
+  "dollars_1_contrat": -525.0,
+  "sous_periodes": [
+   -847.0,
+   -368.2,
+   193.4
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 90 usatechidxusd",
+  "famille": "G7",
+  "p": 0.56,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.08,
+  "jours": 613,
+  "trades": 613,
+  "pb_par_jour": 0.25,
+  "dollars_1_contrat": 1562.0,
+  "sous_periodes": [
+   -1540.4,
+   511.5,
+   1182.2
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 80 usatechidxusd",
+  "famille": "G7",
+  "p": 0.172,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.32,
+  "jours": 328,
+  "trades": 328,
+  "pb_par_jour": -1.47,
+  "dollars_1_contrat": -283.0,
+  "sous_periodes": [
+   -1146.5,
+   -201.7,
+   865.3
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 90 usatechidxusd",
+  "famille": "G7",
+  "p": 0.404,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.32,
+  "jours": 328,
+  "trades": 328,
+  "pb_par_jour": -7.4,
+  "dollars_1_contrat": -3102.0,
+  "sous_periodes": [
+   -1211.9,
+   -579.5,
+   -636.2
+  ],
+  "nom": "G8 choc 10 h continuation sortie 11:00 usatechidxusd",
+  "famille": "G8",
+  "p": 0.924,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.69,
+  "jours": 327,
+  "trades": 327,
+  "pb_par_jour": -6.44,
+  "dollars_1_contrat": -3262.0,
+  "sous_periodes": [
+   -529.2,
+   -663.6,
+   -913.8
+  ],
+  "nom": "G8 choc 10 h continuation sortie 12:00 usatechidxusd",
+  "famille": "G8",
+  "p": 0.852,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.79,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -6.16,
+  "dollars_1_contrat": -1198.0,
+  "sous_periodes": [
+   -70.1,
+   157.7,
+   -574.1
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:00 usatechidxusd",
+  "famille": "G9",
+  "p": 0.679,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.15,
+  "jours": 73,
+  "trades": 73,
+  "pb_par_jour": -1.44,
+  "dollars_1_contrat": -168.0,
+  "sous_periodes": [
+   -78.8,
+   -13.4,
+   -12.5
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:55 usatechidxusd",
+  "famille": "G9",
+  "p": 0.448,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.9,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -13.52,
+  "dollars_1_contrat": -2321.0,
+  "sous_periodes": [
+   111.4,
+   -313.3,
+   -866.5
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:00 usatechidxusd",
+  "famille": "G9",
+  "p": 0.94,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.5,
+  "jours": 73,
+  "trades": 73,
+  "pb_par_jour": -13.9,
+  "dollars_1_contrat": -2187.0,
+  "sous_periodes": [
+   99.7,
+   -396.3,
+   -718.4
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:55 usatechidxusd",
+  "famille": "G9",
+  "p": 0.878,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.97,
+  "jours": 611,
+  "trades": 611,
+  "pb_par_jour": -3.05,
+  "dollars_1_contrat": -2876.0,
+  "sous_periodes": [
+   -504.1,
+   -475.6,
+   -881.6
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 80 usatechidxusd",
+  "famille": "G7",
+  "p": 0.57,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.93,
+  "jours": 327,
+  "trades": 327,
+  "pb_par_jour": -2.32,
+  "dollars_1_contrat": -1437.0,
+  "sous_periodes": [
+   -92.3,
+   -196.8,
+   -468.9
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 90 usatechidxusd",
+  "famille": "G7",
+  "p": 0.44,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.87,
+  "jours": 613,
+  "trades": 613,
+  "pb_par_jour": -5.84,
+  "dollars_1_contrat": -5240.0,
+  "sous_periodes": [
+   -312.2,
+   -1612.9,
+   -1655.1
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 80 usatechidxusd",
+  "famille": "G7",
+  "p": 0.828,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.86,
+  "jours": 328,
+  "trades": 328,
+  "pb_par_jour": -3.98,
+  "dollars_1_contrat": -1685.0,
+  "sous_periodes": [
+   198.7,
+   -363.3,
+   -1140.9
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 90 usatechidxusd",
+  "famille": "G7",
+  "p": 0.596,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.56,
+  "jours": 328,
+  "trades": 328,
+  "pb_par_jour": 1.77,
+  "dollars_1_contrat": 1134.0,
+  "sous_periodes": [
+   209.4,
+   -16.9,
+   387.9
+  ],
+  "nom": "G8 choc 10 h retournement sortie 11:00 usatechidxusd",
+  "famille": "G8",
+  "p": 0.076,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.21,
+  "jours": 327,
+  "trades": 327,
+  "pb_par_jour": 0.81,
+  "dollars_1_contrat": 1300.0,
+  "sous_periodes": [
+   -473.4,
+   67.1,
+   669.7
+  ],
+  "nom": "G8 choc 10 h retournement sortie 12:00 usatechidxusd",
+  "famille": "G8",
+  "p": 0.148,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.12,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 0.96,
+  "dollars_1_contrat": 724.0,
+  "sous_periodes": [
+   -125.2,
+   -317.1,
+   518.3
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:00 usatechidxusd",
+  "famille": "G9",
+  "p": 0.321,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.4,
+  "jours": 73,
+  "trades": 73,
+  "pb_par_jour": -3.96,
+  "dollars_1_contrat": -270.0,
+  "sous_periodes": [
+   -116.4,
+   -138.2,
+   -34.3
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:55 usatechidxusd",
+  "famille": "G9",
+  "p": 0.552,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.16,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 8.33,
+  "dollars_1_contrat": 1847.0,
+  "sous_periodes": [
+   -306.5,
+   153.8,
+   810.7
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:00 usatechidxusd",
+  "famille": "G9",
+  "p": 0.06,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.91,
+  "jours": 73,
+  "trades": 73,
+  "pb_par_jour": 8.51,
+  "dollars_1_contrat": 1749.0,
+  "sous_periodes": [
+   -294.9,
+   244.6,
+   671.6
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:55 usatechidxusd",
+  "famille": "G9",
+  "p": 0.122,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.9,
+  "jours": 577,
+  "trades": 577,
+  "pb_par_jour": -4.08,
+  "dollars_1_contrat": -2574.0,
+  "sous_periodes": [
+   -1403.9,
+   -935.2,
+   -13.2
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 80 usa500idxusd",
+  "famille": "G7",
+  "p": 0.561,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.64,
+  "jours": 314,
+  "trades": 314,
+  "pb_par_jour": -3.82,
+  "dollars_1_contrat": -1225.0,
+  "sous_periodes": [
+   -612.0,
+   -744.1,
+   157.9
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 90 usa500idxusd",
+  "famille": "G7",
+  "p": 0.503,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.79,
+  "jours": 581,
+  "trades": 581,
+  "pb_par_jour": -4.52,
+  "dollars_1_contrat": -3649.0,
+  "sous_periodes": [
+   -1597.2,
+   -533.6,
+   -493.4
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 80 usa500idxusd",
+  "famille": "G7",
+  "p": 0.615,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.48,
+  "jours": 317,
+  "trades": 317,
+  "pb_par_jour": -1.76,
+  "dollars_1_contrat": -613.0,
+  "sous_periodes": [
+   -1199.3,
+   68.9,
+   573.4
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 90 usa500idxusd",
+  "famille": "G7",
+  "p": 0.29,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.63,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -8.72,
+  "dollars_1_contrat": -3332.0,
+  "sous_periodes": [
+   -1464.8,
+   -588.3,
+   -747.7
+  ],
+  "nom": "G8 choc 10 h continuation sortie 11:00 usa500idxusd",
+  "famille": "G8",
+  "p": 0.979,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.35,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -7.23,
+  "dollars_1_contrat": -2749.0,
+  "sous_periodes": [
+   -1159.5,
+   -574.4,
+   -585.3
+  ],
+  "nom": "G8 choc 10 h continuation sortie 12:00 usa500idxusd",
+  "famille": "G8",
+  "p": 0.857,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.7,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": -4.47,
+  "dollars_1_contrat": -662.0,
+  "sous_periodes": [
+   -88.0,
+   214.7,
+   -475.3
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:00 usa500idxusd",
+  "famille": "G9",
+  "p": 0.573,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.37,
+  "jours": 72,
+  "trades": 72,
+  "pb_par_jour": -3.05,
+  "dollars_1_contrat": -366.0,
+  "sous_periodes": [
+   -60.3,
+   20.0,
+   -179.1
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:55 usa500idxusd",
+  "famille": "G9",
+  "p": 0.485,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.28,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -7.37,
+  "dollars_1_contrat": -1237.0,
+  "sous_periodes": [
+   90.8,
+   89.8,
+   -762.9
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:00 usa500idxusd",
+  "famille": "G9",
+  "p": 0.75,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.66,
+  "jours": 73,
+  "trades": 73,
+  "pb_par_jour": -5.0,
+  "dollars_1_contrat": -1019.0,
+  "sous_periodes": [
+   285.5,
+   -23.8,
+   -626.8
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:55 usa500idxusd",
+  "famille": "G9",
+  "p": 0.577,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.52,
+  "jours": 577,
+  "trades": 577,
+  "pb_par_jour": -3.53,
+  "dollars_1_contrat": -2619.0,
+  "sous_periodes": [
+   -680.7,
+   -524.2,
+   -833.5
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 80 usa500idxusd",
+  "famille": "G7",
+  "p": 0.439,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.65,
+  "jours": 314,
+  "trades": 314,
+  "pb_par_jour": -3.82,
+  "dollars_1_contrat": -1601.0,
+  "sous_periodes": [
+   -519.4,
+   -65.5,
+   -614.5
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 90 usa500idxusd",
+  "famille": "G7",
+  "p": 0.497,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.23,
+  "jours": 581,
+  "trades": 581,
+  "pb_par_jour": -3.11,
+  "dollars_1_contrat": -1580.0,
+  "sous_periodes": [
+   -517.6,
+   -934.2,
+   -353.3
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 80 usa500idxusd",
+  "famille": "G7",
+  "p": 0.385,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.6,
+  "jours": 317,
+  "trades": 317,
+  "pb_par_jour": -5.89,
+  "dollars_1_contrat": -2240.0,
+  "sous_periodes": [
+   49.1,
+   -886.9,
+   -1029.9
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 90 usa500idxusd",
+  "famille": "G7",
+  "p": 0.711,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.43,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": 1.02,
+  "dollars_1_contrat": 443.0,
+  "sous_periodes": [
+   275.2,
+   -242.6,
+   295.5
+  ],
+  "nom": "G8 choc 10 h retournement sortie 11:00 usa500idxusd",
+  "famille": "G8",
+  "p": 0.02,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.16,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -0.48,
+  "dollars_1_contrat": -140.0,
+  "sous_periodes": [
+   -30.0,
+   -256.5,
+   133.1
+  ],
+  "nom": "G8 choc 10 h retournement sortie 12:00 usa500idxusd",
+  "famille": "G8",
+  "p": 0.143,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.41,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": -2.66,
+  "dollars_1_contrat": -40.0,
+  "sous_periodes": [
+   -132.1,
+   -443.4,
+   367.9
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:00 usa500idxusd",
+  "famille": "G9",
+  "p": 0.427,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.52,
+  "jours": 72,
+  "trades": 72,
+  "pb_par_jour": -4.27,
+  "dollars_1_contrat": -282.0,
+  "sous_periodes": [
+   -159.8,
+   -236.5,
+   88.9
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:55 usa500idxusd",
+  "famille": "G9",
+  "p": 0.515,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.03,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 0.18,
+  "dollars_1_contrat": 526.0,
+  "sous_periodes": [
+   -322.7,
+   -318.7,
+   655.3
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:00 usa500idxusd",
+  "famille": "G9",
+  "p": 0.25,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.31,
+  "jours": 73,
+  "trades": 73,
+  "pb_par_jour": -2.38,
+  "dollars_1_contrat": 362.0,
+  "sous_periodes": [
+   -517.4,
+   -192.7,
+   536.6
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:55 usa500idxusd",
+  "famille": "G9",
+  "p": 0.424,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.21,
+  "jours": 584,
+  "trades": 584,
+  "pb_par_jour": -2.02,
+  "dollars_1_contrat": -18389.0,
+  "sous_periodes": [
+   -285.5,
+   -701.0,
+   -195.2
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 80 eurusd",
+  "famille": "G7",
+  "p": 0.731,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.55,
+  "jours": 332,
+  "trades": 332,
+  "pb_par_jour": -3.28,
+  "dollars_1_contrat": -16861.0,
+  "sous_periodes": [
+   -302.7,
+   -471.1,
+   -313.9
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 90 eurusd",
+  "famille": "G7",
+  "p": 0.909,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.92,
+  "jours": 584,
+  "trades": 584,
+  "pb_par_jour": -2.65,
+  "dollars_1_contrat": -24107.0,
+  "sous_periodes": [
+   -164.2,
+   -615.7,
+   -765.6
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 80 eurusd",
+  "famille": "G7",
+  "p": 0.814,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.54,
+  "jours": 332,
+  "trades": 332,
+  "pb_par_jour": -4.83,
+  "dollars_1_contrat": -24451.0,
+  "sous_periodes": [
+   -334.3,
+   -460.9,
+   -808.0
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 90 eurusd",
+  "famille": "G7",
+  "p": 0.954,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.94,
+  "jours": 320,
+  "trades": 320,
+  "pb_par_jour": -1.02,
+  "dollars_1_contrat": -4912.0,
+  "sous_periodes": [
+   -174.1,
+   -401.8,
+   249.9
+  ],
+  "nom": "G8 choc 10 h continuation sortie 11:00 eurusd",
+  "famille": "G8",
+  "p": 0.326,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.31,
+  "jours": 320,
+  "trades": 320,
+  "pb_par_jour": 0.41,
+  "dollars_1_contrat": 1723.0,
+  "sous_periodes": [
+   10.4,
+   -238.7,
+   360.2
+  ],
+  "nom": "G8 choc 10 h continuation sortie 12:00 eurusd",
+  "famille": "G8",
+  "p": 0.064,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.31,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 4.71,
+  "dollars_1_contrat": 5216.0,
+  "sous_periodes": [
+   252.7,
+   197.8,
+   -78.1
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:00 eurusd",
+  "famille": "G9",
+  "p": 0.04,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.9,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 7.92,
+  "dollars_1_contrat": 9020.0,
+  "sous_periodes": [
+   515.9,
+   164.0,
+   -54.1
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:55 eurusd",
+  "famille": "G9",
+  "p": 0.014,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.65,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -2.21,
+  "dollars_1_contrat": -2411.0,
+  "sous_periodes": [
+   -33.5,
+   100.8,
+   -242.2
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:00 eurusd",
+  "famille": "G9",
+  "p": 0.58,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.06,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -0.25,
+  "dollars_1_contrat": -45.0,
+  "sous_periodes": [
+   165.2,
+   107.0,
+   -292.0
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:55 eurusd",
+  "famille": "G9",
+  "p": 0.359,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.07,
+  "jours": 584,
+  "trades": 584,
+  "pb_par_jour": -0.98,
+  "dollars_1_contrat": -7326.0,
+  "sous_periodes": [
+   -320.5,
+   59.0,
+   -308.8
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 80 eurusd",
+  "famille": "G7",
+  "p": 0.269,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.21,
+  "jours": 332,
+  "trades": 332,
+  "pb_par_jour": 0.28,
+  "dollars_1_contrat": 2209.0,
+  "sous_periodes": [
+   -60.3,
+   123.1,
+   28.9
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 90 eurusd",
+  "famille": "G7",
+  "p": 0.091,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.26,
+  "jours": 584,
+  "trades": 584,
+  "pb_par_jour": -0.35,
+  "dollars_1_contrat": -1607.0,
+  "sous_periodes": [
+   -441.8,
+   -26.3,
+   261.6
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 80 eurusd",
+  "famille": "G7",
+  "p": 0.186,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.96,
+  "jours": 332,
+  "trades": 332,
+  "pb_par_jour": 1.83,
+  "dollars_1_contrat": 9799.0,
+  "sous_periodes": [
+   -28.7,
+   112.9,
+   523.0
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 90 eurusd",
+  "famille": "G7",
+  "p": 0.046,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.84,
+  "jours": 320,
+  "trades": 320,
+  "pb_par_jour": -1.98,
+  "dollars_1_contrat": -9150.0,
+  "sous_periodes": [
+   -146.9,
+   44.8,
+   -531.9
+  ],
+  "nom": "G8 choc 10 h retournement sortie 11:00 eurusd",
+  "famille": "G8",
+  "p": 0.674,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.61,
+  "jours": 320,
+  "trades": 320,
+  "pb_par_jour": -3.41,
+  "dollars_1_contrat": -15785.0,
+  "sous_periodes": [
+   -331.4,
+   -118.3,
+   -642.2
+  ],
+  "nom": "G8 choc 10 h retournement sortie 12:00 eurusd",
+  "famille": "G8",
+  "p": 0.936,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.15,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -7.71,
+  "dollars_1_contrat": -8686.0,
+  "sous_periodes": [
+   -324.7,
+   -293.8,
+   9.1
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:00 eurusd",
+  "famille": "G9",
+  "p": 0.96,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.62,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -10.92,
+  "dollars_1_contrat": -12490.0,
+  "sous_periodes": [
+   -587.9,
+   -260.0,
+   -14.9
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:55 eurusd",
+  "famille": "G9",
+  "p": 0.986,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.23,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -0.79,
+  "dollars_1_contrat": -1059.0,
+  "sous_periodes": [
+   -38.5,
+   -196.8,
+   173.2
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:00 eurusd",
+  "famille": "G9",
+  "p": 0.42,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.7,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -2.75,
+  "dollars_1_contrat": -3425.0,
+  "sous_periodes": [
+   -237.2,
+   -203.0,
+   223.0
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:55 eurusd",
+  "famille": "G9",
+  "p": 0.641,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.53,
+  "jours": 607,
+  "trades": 607,
+  "pb_par_jour": -1.91,
+  "dollars_1_contrat": -10155.0,
+  "sous_periodes": [
+   -558.6,
+   -227.8,
+   -375.9
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 80 gbpusd",
+  "famille": "G7",
+  "p": 0.708,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.14,
+  "jours": 334,
+  "trades": 334,
+  "pb_par_jour": -2.25,
+  "dollars_1_contrat": -6569.0,
+  "sous_periodes": [
+   -276.7,
+   -304.9,
+   -169.5
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 90 gbpusd",
+  "famille": "G7",
+  "p": 0.761,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.53,
+  "jours": 607,
+  "trades": 607,
+  "pb_par_jour": -1.94,
+  "dollars_1_contrat": -9305.0,
+  "sous_periodes": [
+   -309.7,
+   409.9,
+   -1274.9
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 80 gbpusd",
+  "famille": "G7",
+  "p": 0.64,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.68,
+  "jours": 334,
+  "trades": 334,
+  "pb_par_jour": -3.02,
+  "dollars_1_contrat": -8150.0,
+  "sous_periodes": [
+   -183.3,
+   63.2,
+   -889.5
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 90 gbpusd",
+  "famille": "G7",
+  "p": 0.81,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.64,
+  "jours": 329,
+  "trades": 329,
+  "pb_par_jour": -0.75,
+  "dollars_1_contrat": -2699.0,
+  "sous_periodes": [
+   -210.8,
+   -362.1,
+   326.0
+  ],
+  "nom": "G8 choc 10 h continuation sortie 11:00 gbpusd",
+  "famille": "G8",
+  "p": 0.274,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.35,
+  "jours": 329,
+  "trades": 329,
+  "pb_par_jour": 0.58,
+  "dollars_1_contrat": 569.0,
+  "sous_periodes": [
+   -191.9,
+   -285.0,
+   666.8
+  ],
+  "nom": "G8 choc 10 h continuation sortie 12:00 gbpusd",
+  "famille": "G8",
+  "p": 0.102,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.23,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 4.27,
+  "dollars_1_contrat": 3146.0,
+  "sous_periodes": [
+   234.1,
+   138.5,
+   -35.5
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:00 gbpusd",
+  "famille": "G9",
+  "p": 0.035,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.45,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 5.92,
+  "dollars_1_contrat": 4421.0,
+  "sous_periodes": [
+   397.6,
+   71.5,
+   -1.4
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:55 gbpusd",
+  "famille": "G9",
+  "p": 0.02,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.19,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -0.63,
+  "dollars_1_contrat": -299.0,
+  "sous_periodes": [
+   18.8,
+   220.6,
+   -289.2
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:00 gbpusd",
+  "famille": "G9",
+  "p": 0.387,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.07,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 0.29,
+  "dollars_1_contrat": 307.0,
+  "sous_periodes": [
+   50.7,
+   241.1,
+   -268.9
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:55 gbpusd",
+  "famille": "G9",
+  "p": 0.316,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.43,
+  "jours": 607,
+  "trades": 607,
+  "pb_par_jour": -1.09,
+  "dollars_1_contrat": -5800.0,
+  "sous_periodes": [
+   -86.4,
+   -429.2,
+   -143.1
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 80 gbpusd",
+  "famille": "G7",
+  "p": 0.292,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.71,
+  "jours": 334,
+  "trades": 334,
+  "pb_par_jour": -0.75,
+  "dollars_1_contrat": -2182.0,
+  "sous_periodes": [
+   -65.3,
+   -61.1,
+   -124.5
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 90 gbpusd",
+  "famille": "G7",
+  "p": 0.239,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.84,
+  "jours": 607,
+  "trades": 607,
+  "pb_par_jour": -1.06,
+  "dollars_1_contrat": -6650.0,
+  "sous_periodes": [
+   -335.3,
+   -1066.9,
+   755.9
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 80 gbpusd",
+  "famille": "G7",
+  "p": 0.36,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.01,
+  "jours": 334,
+  "trades": 334,
+  "pb_par_jour": 0.02,
+  "dollars_1_contrat": -601.0,
+  "sous_periodes": [
+   -158.7,
+   -429.2,
+   595.5
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 90 gbpusd",
+  "famille": "G7",
+  "p": 0.19,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.93,
+  "jours": 329,
+  "trades": 329,
+  "pb_par_jour": -2.25,
+  "dollars_1_contrat": -5912.0,
+  "sous_periodes": [
+   -119.2,
+   -3.9,
+   -617.0
+  ],
+  "nom": "G8 choc 10 h retournement sortie 11:00 gbpusd",
+  "famille": "G8",
+  "p": 0.726,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.19,
+  "jours": 329,
+  "trades": 329,
+  "pb_par_jour": -3.58,
+  "dollars_1_contrat": -9180.0,
+  "sous_periodes": [
+   -138.1,
+   -81.0,
+   -957.8
+  ],
+  "nom": "G8 choc 10 h retournement sortie 12:00 gbpusd",
+  "famille": "G8",
+  "p": 0.898,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.1,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -7.27,
+  "dollars_1_contrat": -5211.0,
+  "sous_periodes": [
+   -306.1,
+   -234.5,
+   -33.5
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:00 gbpusd",
+  "famille": "G9",
+  "p": 0.965,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.18,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -8.92,
+  "dollars_1_contrat": -6486.0,
+  "sous_periodes": [
+   -469.6,
+   -167.5,
+   -67.6
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:55 gbpusd",
+  "famille": "G9",
+  "p": 0.98,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.7,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -2.37,
+  "dollars_1_contrat": -1767.0,
+  "sous_periodes": [
+   -90.8,
+   -316.6,
+   220.2
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:00 gbpusd",
+  "famille": "G9",
+  "p": 0.613,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.85,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -3.29,
+  "dollars_1_contrat": -2373.0,
+  "sous_periodes": [
+   -122.7,
+   -337.1,
+   199.9
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:55 gbpusd",
+  "famille": "G9",
+  "p": 0.684,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.74,
+  "jours": 626,
+  "trades": 626,
+  "pb_par_jour": -1.45,
+  "dollars_1_contrat": -11659.0,
+  "sous_periodes": [
+   -316.3,
+   -699.1,
+   104.8
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 80 usdjpy",
+  "famille": "G7",
+  "p": 0.508,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.81,
+  "jours": 324,
+  "trades": 324,
+  "pb_par_jour": -2.33,
+  "dollars_1_contrat": -9883.0,
+  "sous_periodes": [
+   -434.8,
+   -357.4,
+   37.4
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 90 usdjpy",
+  "famille": "G7",
+  "p": 0.743,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.47,
+  "jours": 626,
+  "trades": 626,
+  "pb_par_jour": -0.58,
+  "dollars_1_contrat": -5740.0,
+  "sous_periodes": [
+   -621.9,
+   -208.9,
+   466.0
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 80 usdjpy",
+  "famille": "G7",
+  "p": 0.241,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.63,
+  "jours": 324,
+  "trades": 324,
+  "pb_par_jour": -1.24,
+  "dollars_1_contrat": -6148.0,
+  "sous_periodes": [
+   -551.3,
+   -52.0,
+   202.4
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 90 usdjpy",
+  "famille": "G7",
+  "p": 0.438,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.7,
+  "jours": 342,
+  "trades": 342,
+  "pb_par_jour": -2.61,
+  "dollars_1_contrat": -10183.0,
+  "sous_periodes": [
+   -559.3,
+   -180.8,
+   -154.0
+  ],
+  "nom": "G8 choc 10 h continuation sortie 11:00 usdjpy",
+  "famille": "G8",
+  "p": 0.862,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.33,
+  "jours": 342,
+  "trades": 342,
+  "pb_par_jour": -2.82,
+  "dollars_1_contrat": -10790.0,
+  "sous_periodes": [
+   -361.2,
+   -158.1,
+   -445.7
+  ],
+  "nom": "G8 choc 10 h continuation sortie 12:00 usdjpy",
+  "famille": "G8",
+  "p": 0.84,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.16,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 3.85,
+  "dollars_1_contrat": 3194.0,
+  "sous_periodes": [
+   260.5,
+   37.9,
+   5.7
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:00 usdjpy",
+  "famille": "G9",
+  "p": 0.045,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.41,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 5.69,
+  "dollars_1_contrat": 4801.0,
+  "sous_periodes": [
+   380.9,
+   115.6,
+   -47.3
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:55 usdjpy",
+  "famille": "G9",
+  "p": 0.026,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.4,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -1.27,
+  "dollars_1_contrat": -1179.0,
+  "sous_periodes": [
+   -6.5,
+   38.0,
+   -131.9
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:00 usdjpy",
+  "famille": "G9",
+  "p": 0.446,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.7,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 2.56,
+  "dollars_1_contrat": 2276.0,
+  "sous_periodes": [
+   213.7,
+   154.9,
+   -166.0
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:55 usdjpy",
+  "famille": "G9",
+  "p": 0.146,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.85,
+  "jours": 626,
+  "trades": 626,
+  "pb_par_jour": -1.55,
+  "dollars_1_contrat": -10218.0,
+  "sous_periodes": [
+   -343.7,
+   33.1,
+   -656.8
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 80 usdjpy",
+  "famille": "G7",
+  "p": 0.492,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.52,
+  "jours": 324,
+  "trades": 324,
+  "pb_par_jour": -0.67,
+  "dollars_1_contrat": -1401.0,
+  "sous_periodes": [
+   98.8,
+   15.4,
+   -331.4
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 90 usdjpy",
+  "famille": "G7",
+  "p": 0.257,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.94,
+  "jours": 626,
+  "trades": 626,
+  "pb_par_jour": -2.42,
+  "dollars_1_contrat": -16137.0,
+  "sous_periodes": [
+   -38.1,
+   -457.1,
+   -1018.0
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 80 usdjpy",
+  "famille": "G7",
+  "p": 0.759,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.9,
+  "jours": 324,
+  "trades": 324,
+  "pb_par_jour": -1.76,
+  "dollars_1_contrat": -5136.0,
+  "sous_periodes": [
+   215.3,
+   -290.0,
+   -496.4
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 90 usdjpy",
+  "famille": "G7",
+  "p": 0.562,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.4,
+  "jours": 342,
+  "trades": 342,
+  "pb_par_jour": -0.39,
+  "dollars_1_contrat": -1767.0,
+  "sous_periodes": [
+   184.3,
+   -170.2,
+   -146.0
+  ],
+  "nom": "G8 choc 10 h retournement sortie 11:00 usdjpy",
+  "famille": "G8",
+  "p": 0.138,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.15,
+  "jours": 342,
+  "trades": 342,
+  "pb_par_jour": -0.18,
+  "dollars_1_contrat": -1160.0,
+  "sous_periodes": [
+   -13.8,
+   -192.9,
+   145.7
+  ],
+  "nom": "G8 choc 10 h retournement sortie 12:00 usdjpy",
+  "famille": "G8",
+  "p": 0.16,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.06,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -6.85,
+  "dollars_1_contrat": -5871.0,
+  "sous_periodes": [
+   -332.5,
+   -133.9,
+   -74.7
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:00 usdjpy",
+  "famille": "G9",
+  "p": 0.955,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.15,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -8.69,
+  "dollars_1_contrat": -7479.0,
+  "sous_periodes": [
+   -452.9,
+   -211.6,
+   -21.7
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:55 usdjpy",
+  "famille": "G9",
+  "p": 0.974,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.55,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -1.73,
+  "dollars_1_contrat": -1499.0,
+  "sous_periodes": [
+   -65.5,
+   -134.0,
+   62.9
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:00 usdjpy",
+  "famille": "G9",
+  "p": 0.554,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.52,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -5.56,
+  "dollars_1_contrat": -4953.0,
+  "sous_periodes": [
+   -285.7,
+   -250.9,
+   97.0
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:55 usdjpy",
+  "famille": "G9",
+  "p": 0.854,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.6,
+  "jours": 597,
+  "trades": 597,
+  "pb_par_jour": -2.37,
+  "dollars_1_contrat": -11796.0,
+  "sous_periodes": [
+   -397.4,
+   -562.8,
+   -455.6
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 80 audusd",
+  "famille": "G7",
+  "p": 0.835,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.81,
+  "jours": 313,
+  "trades": 313,
+  "pb_par_jour": -2.67,
+  "dollars_1_contrat": -7272.0,
+  "sous_periodes": [
+   -381.0,
+   -195.8,
+   -258.0
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 90 audusd",
+  "famille": "G7",
+  "p": 0.783,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.59,
+  "jours": 597,
+  "trades": 597,
+  "pb_par_jour": -3.82,
+  "dollars_1_contrat": -16932.0,
+  "sous_periodes": [
+   -311.8,
+   -621.3,
+   -1349.7
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 80 audusd",
+  "famille": "G7",
+  "p": 0.938,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.19,
+  "jours": 313,
+  "trades": 313,
+  "pb_par_jour": -5.04,
+  "dollars_1_contrat": -11515.0,
+  "sous_periodes": [
+   -173.1,
+   -347.9,
+   -1055.6
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 90 audusd",
+  "famille": "G7",
+  "p": 0.939,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.38,
+  "jours": 338,
+  "trades": 338,
+  "pb_par_jour": -4.2,
+  "dollars_1_contrat": -11484.0,
+  "sous_periodes": [
+   -801.6,
+   -490.1,
+   -128.2
+  ],
+  "nom": "G8 choc 10 h continuation sortie 11:00 audusd",
+  "famille": "G8",
+  "p": 0.985,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.81,
+  "jours": 338,
+  "trades": 338,
+  "pb_par_jour": -2.8,
+  "dollars_1_contrat": -7606.0,
+  "sous_periodes": [
+   -396.9,
+   -557.1,
+   6.8
+  ],
+  "nom": "G8 choc 10 h continuation sortie 12:00 audusd",
+  "famille": "G8",
+  "p": 0.801,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.57,
+  "jours": 77,
+  "trades": 77,
+  "pb_par_jour": 7.79,
+  "dollars_1_contrat": 4750.0,
+  "sous_periodes": [
+   341.3,
+   258.8,
+   -0.3
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:00 audusd",
+  "famille": "G9",
+  "p": 0.024,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.58,
+  "jours": 77,
+  "trades": 77,
+  "pb_par_jour": 8.84,
+  "dollars_1_contrat": 5687.0,
+  "sous_periodes": [
+   467.8,
+   225.7,
+   -12.7
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:55 audusd",
+  "famille": "G9",
+  "p": 0.038,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.78,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": 3.75,
+  "dollars_1_contrat": 2330.0,
+  "sous_periodes": [
+   132.7,
+   209.8,
+   -50.2
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:00 audusd",
+  "famille": "G9",
+  "p": 0.141,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.36,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": 7.32,
+  "dollars_1_contrat": 4768.0,
+  "sous_periodes": [
+   324.9,
+   231.8,
+   14.4
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:55 audusd",
+  "famille": "G9",
+  "p": 0.061,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.69,
+  "jours": 597,
+  "trades": 597,
+  "pb_par_jour": -0.63,
+  "dollars_1_contrat": -2330.0,
+  "sous_periodes": [
+   -244.6,
+   -46.2,
+   -84.4
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 80 audusd",
+  "famille": "G7",
+  "p": 0.165,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.23,
+  "jours": 313,
+  "trades": 313,
+  "pb_par_jour": -0.33,
+  "dollars_1_contrat": -134.0,
+  "sous_periodes": [
+   48.0,
+   -128.2,
+   -24.0
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 90 audusd",
+  "famille": "G7",
+  "p": 0.217,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.56,
+  "jours": 597,
+  "trades": 597,
+  "pb_par_jour": 0.82,
+  "dollars_1_contrat": 2806.0,
+  "sous_periodes": [
+   -330.2,
+   12.3,
+   809.7
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 80 audusd",
+  "famille": "G7",
+  "p": 0.062,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.89,
+  "jours": 313,
+  "trades": 313,
+  "pb_par_jour": 2.04,
+  "dollars_1_contrat": 4109.0,
+  "sous_periodes": [
+   -159.9,
+   23.9,
+   773.6
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 90 audusd",
+  "famille": "G7",
+  "p": 0.061,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.97,
+  "jours": 338,
+  "trades": 338,
+  "pb_par_jour": 1.2,
+  "dollars_1_contrat": 3500.0,
+  "sous_periodes": [
+   441.6,
+   148.1,
+   -183.8
+  ],
+  "nom": "G8 choc 10 h retournement sortie 11:00 audusd",
+  "famille": "G8",
+  "p": 0.015,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.13,
+  "jours": 338,
+  "trades": 338,
+  "pb_par_jour": -0.2,
+  "dollars_1_contrat": -378.0,
+  "sous_periodes": [
+   36.9,
+   215.1,
+   -318.8
+  ],
+  "nom": "G8 choc 10 h retournement sortie 12:00 audusd",
+  "famille": "G8",
+  "p": 0.199,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.18,
+  "jours": 77,
+  "trades": 77,
+  "pb_par_jour": -10.79,
+  "dollars_1_contrat": -6536.0,
+  "sous_periodes": [
+   -410.3,
+   -351.8,
+   -68.7
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:00 audusd",
+  "famille": "G9",
+  "p": 0.976,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.12,
+  "jours": 77,
+  "trades": 77,
+  "pb_par_jour": -11.84,
+  "dollars_1_contrat": -7473.0,
+  "sous_periodes": [
+   -536.8,
+   -318.7,
+   -56.3
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:55 audusd",
+  "famille": "G9",
+  "p": 0.962,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.4,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": -6.75,
+  "dollars_1_contrat": -4144.0,
+  "sous_periodes": [
+   -204.7,
+   -302.8,
+   -18.8
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:00 audusd",
+  "famille": "G9",
+  "p": 0.859,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.92,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": -10.32,
+  "dollars_1_contrat": -6582.0,
+  "sous_periodes": [
+   -396.9,
+   -324.8,
+   -83.4
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:55 audusd",
+  "famille": "G9",
+  "p": 0.939,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.51,
+  "jours": 604,
+  "trades": 604,
+  "pb_par_jour": -2.19,
+  "dollars_1_contrat": -1803.0,
+  "sous_periodes": [
+   -518.8,
+   -584.4,
+   -221.0
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 80 xauusd",
+  "famille": "G7",
+  "p": 0.556,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.16,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -0.36,
+  "dollars_1_contrat": 113.0,
+  "sous_periodes": [
+   -185.6,
+   -92.9,
+   164.4
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 90 xauusd",
+  "famille": "G7",
+  "p": 0.226,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.39,
+  "jours": 604,
+  "trades": 604,
+  "pb_par_jour": -0.99,
+  "dollars_1_contrat": -1003.0,
+  "sous_periodes": [
+   -128.1,
+   -164.0,
+   -304.2
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 80 xauusd",
+  "famille": "G7",
+  "p": 0.342,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.45,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -1.68,
+  "dollars_1_contrat": -731.0,
+  "sous_periodes": [
+   -190.2,
+   -143.5,
+   -206.4
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 90 xauusd",
+  "famille": "G7",
+  "p": 0.452,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.07,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -2.57,
+  "dollars_1_contrat": -1024.0,
+  "sous_periodes": [
+   -228.0,
+   -451.5,
+   -146.6
+  ],
+  "nom": "G8 choc 10 h continuation sortie 11:00 xauusd",
+  "famille": "G8",
+  "p": 0.605,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.86,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -2.44,
+  "dollars_1_contrat": -860.0,
+  "sous_periodes": [
+   -140.5,
+   -532.6,
+   -110.3
+  ],
+  "nom": "G8 choc 10 h continuation sortie 12:00 xauusd",
+  "famille": "G8",
+  "p": 0.581,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.82,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 5.0,
+  "dollars_1_contrat": 287.0,
+  "sous_periodes": [
+   610.4,
+   151.1,
+   -366.8
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:00 xauusd",
+  "famille": "G9",
+  "p": 0.105,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.96,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 14.49,
+  "dollars_1_contrat": 1290.0,
+  "sous_periodes": [
+   933.2,
+   440.6,
+   -229.4
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:55 xauusd",
+  "famille": "G9",
+  "p": 0.014,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.85,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -4.65,
+  "dollars_1_contrat": -713.0,
+  "sous_periodes": [
+   -44.7,
+   109.3,
+   -431.6
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:00 xauusd",
+  "famille": "G9",
+  "p": 0.654,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.95,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 6.2,
+  "dollars_1_contrat": 466.0,
+  "sous_periodes": [
+   459.0,
+   240.8,
+   -210.2
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:55 xauusd",
+  "famille": "G9",
+  "p": 0.099,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.24,
+  "jours": 604,
+  "trades": 604,
+  "pb_par_jour": -1.81,
+  "dollars_1_contrat": -1717.0,
+  "sous_periodes": [
+   -337.2,
+   -291.6,
+   -463.0
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 80 xauusd",
+  "famille": "G7",
+  "p": 0.444,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.61,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -3.64,
+  "dollars_1_contrat": -1973.0,
+  "sous_periodes": [
+   -278.4,
+   -375.1,
+   -516.4
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 90 xauusd",
+  "famille": "G7",
+  "p": 0.774,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.2,
+  "jours": 604,
+  "trades": 604,
+  "pb_par_jour": -3.01,
+  "dollars_1_contrat": -2518.0,
+  "sous_periodes": [
+   -727.9,
+   -712.0,
+   -379.8
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 80 xauusd",
+  "famille": "G7",
+  "p": 0.658,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.62,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -2.32,
+  "dollars_1_contrat": -1129.0,
+  "sous_periodes": [
+   -273.8,
+   -324.5,
+   -145.6
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 90 xauusd",
+  "famille": "G7",
+  "p": 0.548,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.59,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -1.43,
+  "dollars_1_contrat": -836.0,
+  "sous_periodes": [
+   -260.0,
+   -20.5,
+   -177.4
+  ],
+  "nom": "G8 choc 10 h retournement sortie 11:00 xauusd",
+  "famille": "G8",
+  "p": 0.395,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.55,
+  "jours": 321,
+  "trades": 321,
+  "pb_par_jour": -1.56,
+  "dollars_1_contrat": -999.0,
+  "sous_periodes": [
+   -347.5,
+   60.6,
+   -213.7
+  ],
+  "nom": "G8 choc 10 h retournement sortie 12:00 xauusd",
+  "famille": "G8",
+  "p": 0.419,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.47,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -9.0,
+  "dollars_1_contrat": -741.0,
+  "sous_periodes": [
+   -706.4,
+   -279.1,
+   274.8
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:00 xauusd",
+  "famille": "G9",
+  "p": 0.895,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.5,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -18.49,
+  "dollars_1_contrat": -1744.0,
+  "sous_periodes": [
+   -1029.2,
+   -568.6,
+   137.4
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:55 xauusd",
+  "famille": "G9",
+  "p": 0.986,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.12,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": 0.65,
+  "dollars_1_contrat": 259.0,
+  "sous_periodes": [
+   -51.3,
+   -237.3,
+   339.6
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:00 xauusd",
+  "famille": "G9",
+  "p": 0.346,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.56,
+  "jours": 79,
+  "trades": 79,
+  "pb_par_jour": -10.2,
+  "dollars_1_contrat": -920.0,
+  "sous_periodes": [
+   -555.0,
+   -368.8,
+   118.2
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:55 xauusd",
+  "famille": "G9",
+  "p": 0.901,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.8,
+  "jours": 598,
+  "trades": 598,
+  "pb_par_jour": -3.59,
+  "dollars_1_contrat": -2779.0,
+  "sous_periodes": [
+   -2035.9,
+   -644.9,
+   536.7
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 80 lightcmdusd",
+  "famille": "G7",
+  "p": 0.477,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.12,
+  "jours": 319,
+  "trades": 319,
+  "pb_par_jour": -0.87,
+  "dollars_1_contrat": -1659.0,
+  "sous_periodes": [
+   -910.4,
+   183.4,
+   448.4
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 09:30 centile 90 lightcmdusd",
+  "famille": "G7",
+  "p": 0.342,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.94,
+  "jours": 598,
+  "trades": 598,
+  "pb_par_jour": -7.29,
+  "dollars_1_contrat": -3260.0,
+  "sous_periodes": [
+   -1581.8,
+   -692.6,
+   -2085.2
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 80 lightcmdusd",
+  "famille": "G7",
+  "p": 0.672,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.37,
+  "jours": 319,
+  "trades": 319,
+  "pb_par_jour": -4.44,
+  "dollars_1_contrat": -2792.0,
+  "sous_periodes": [
+   -994.0,
+   513.7,
+   -935.8
+  ],
+  "nom": "G7 choc 8 h 30 continuation sortie 11:00 centile 90 lightcmdusd",
+  "famille": "G7",
+  "p": 0.524,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.8,
+  "jours": 329,
+  "trades": 329,
+  "pb_par_jour": -4.87,
+  "dollars_1_contrat": -1333.0,
+  "sous_periodes": [
+   -600.9,
+   337.1,
+   -1337.9
+  ],
+  "nom": "G8 choc 10 h continuation sortie 11:00 lightcmdusd",
+  "famille": "G8",
+  "p": 0.56,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.31,
+  "jours": 329,
+  "trades": 329,
+  "pb_par_jour": -2.58,
+  "dollars_1_contrat": -1361.0,
+  "sous_periodes": [
+   -857.0,
+   634.9,
+   -628.3
+  ],
+  "nom": "G8 choc 10 h continuation sortie 12:00 lightcmdusd",
+  "famille": "G8",
+  "p": 0.425,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.09,
+  "jours": 76,
+  "trades": 76,
+  "pb_par_jour": 0.7,
+  "dollars_1_contrat": -15.0,
+  "sous_periodes": [
+   614.6,
+   -56.3,
+   -505.1
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:00 lightcmdusd",
+  "famille": "G9",
+  "p": 0.257,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.19,
+  "jours": 76,
+  "trades": 76,
+  "pb_par_jour": 1.85,
+  "dollars_1_contrat": 130.0,
+  "sous_periodes": [
+   671.0,
+   -63.6,
+   -467.1
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 continuation sortie 15:55 lightcmdusd",
+  "famille": "G9",
+  "p": 0.271,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.42,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": -3.21,
+  "dollars_1_contrat": -432.0,
+  "sous_periodes": [
+   120.4,
+   48.5,
+   -419.4
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:00 lightcmdusd",
+  "famille": "G9",
+  "p": 0.444,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.08,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": 0.68,
+  "dollars_1_contrat": -107.0,
+  "sous_periodes": [
+   176.4,
+   210.9,
+   -334.2
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 continuation sortie 15:55 lightcmdusd",
+  "famille": "G9",
+  "p": 0.314,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.98,
+  "jours": 598,
+  "trades": 598,
+  "pb_par_jour": -4.41,
+  "dollars_1_contrat": -417.0,
+  "sous_periodes": [
+   235.9,
+   -971.1,
+   -1904.7
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 80 lightcmdusd",
+  "famille": "G7",
+  "p": 0.523,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.94,
+  "jours": 319,
+  "trades": 319,
+  "pb_par_jour": -7.13,
+  "dollars_1_contrat": -17.0,
+  "sous_periodes": [
+   -1.6,
+   -1031.4,
+   -1240.4
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 09:30 centile 90 lightcmdusd",
+  "famille": "G7",
+  "p": 0.658,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.09,
+  "jours": 598,
+  "trades": 598,
+  "pb_par_jour": -0.71,
+  "dollars_1_contrat": 63.0,
+  "sous_periodes": [
+   -218.2,
+   -923.4,
+   717.2
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 80 lightcmdusd",
+  "famille": "G7",
+  "p": 0.328,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.29,
+  "jours": 319,
+  "trades": 319,
+  "pb_par_jour": -3.56,
+  "dollars_1_contrat": 1116.0,
+  "sous_periodes": [
+   82.0,
+   -1361.7,
+   143.8
+  ],
+  "nom": "G7 choc 8 h 30 retournement sortie 11:00 centile 90 lightcmdusd",
+  "famille": "G7",
+  "p": 0.476,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.51,
+  "jours": 329,
+  "trades": 329,
+  "pb_par_jour": -3.13,
+  "dollars_1_contrat": -412.0,
+  "sous_periodes": [
+   -367.1,
+   -1249.1,
+   585.9
+  ],
+  "nom": "G8 choc 10 h retournement sortie 11:00 lightcmdusd",
+  "famille": "G8",
+  "p": 0.44,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.64,
+  "jours": 329,
+  "trades": 329,
+  "pb_par_jour": -5.42,
+  "dollars_1_contrat": -384.0,
+  "sous_periodes": [
+   -111.0,
+   -1546.9,
+   -123.7
+  ],
+  "nom": "G8 choc 10 h retournement sortie 12:00 lightcmdusd",
+  "famille": "G8",
+  "p": 0.575,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.11,
+  "jours": 76,
+  "trades": 76,
+  "pb_par_jour": -8.7,
+  "dollars_1_contrat": -385.0,
+  "sous_periodes": [
+   -798.6,
+   -183.7,
+   321.1
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:00 lightcmdusd",
+  "famille": "G9",
+  "p": 0.743,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.04,
+  "jours": 76,
+  "trades": 76,
+  "pb_par_jour": -9.85,
+  "dollars_1_contrat": -531.0,
+  "sous_periodes": [
+   -855.0,
+   -176.4,
+   283.1
+  ],
+  "nom": "G9 Fed reaction 14:00-14:05 retournement sortie 15:55 lightcmdusd",
+  "famille": "G9",
+  "p": 0.729,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.62,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": -4.79,
+  "dollars_1_contrat": 19.0,
+  "sous_periodes": [
+   -312.4,
+   -296.5,
+   235.4
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:00 lightcmdusd",
+  "famille": "G9",
+  "p": 0.556,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.02,
+  "jours": 78,
+  "trades": 78,
+  "pb_par_jour": -8.68,
+  "dollars_1_contrat": -305.0,
+  "sous_periodes": [
+   -368.4,
+   -458.9,
+   150.2
+  ],
+  "nom": "G9 Fed reaction 14:00-14:15 retournement sortie 15:55 lightcmdusd",
+  "famille": "G9",
+  "p": 0.686,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.79,
+  "jours": 108,
+  "trades": 108,
+  "pb_par_jour": -5.37,
+  "dollars_1_contrat": -575.0,
+  "sous_periodes": [
+   -181.0,
+   -320.4,
+   -78.9
+  ],
+  "nom": "G10 echeance options 9:30-11:00 retournement usatechidxusd",
+  "famille": "G10",
+  "p": 0.51,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.02,
+  "jours": 108,
+  "trades": 108,
+  "pb_par_jour": -0.14,
+  "dollars_1_contrat": -73.0,
+  "sous_periodes": [
+   -123.4,
+   108.1,
+   -0.2
+  ],
+  "nom": "G10 echeance options 9:30-11:00 continuation usatechidxusd",
+  "famille": "G10",
+  "p": 0.486,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.12,
+  "jours": 108,
+  "trades": 108,
+  "pb_par_jour": -10.85,
+  "dollars_1_contrat": -1957.0,
+  "sous_periodes": [
+   -486.9,
+   -37.5,
+   -647.1
+  ],
+  "nom": "G10 echeance options 9:30-12:00 retournement usatechidxusd",
+  "famille": "G10",
+  "p": 0.898,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.04,
+  "jours": 108,
+  "trades": 108,
+  "pb_par_jour": 5.33,
+  "dollars_1_contrat": 1309.0,
+  "sous_periodes": [
+   182.2,
+   -174.9,
+   568.0
+  ],
+  "nom": "G10 echeance options 9:30-12:00 continuation usatechidxusd",
+  "famille": "G10",
+  "p": 0.11,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.55,
+  "jours": 110,
+  "trades": 110,
+  "pb_par_jour": -5.16,
+  "dollars_1_contrat": -489.0,
+  "sous_periodes": [
+   -197.1,
+   -270.2,
+   -99.9
+  ],
+  "nom": "G13 fin de mois indice 1 jour(s) 15:00-15:55 usatechidxusd",
+  "famille": "G13",
+  "p": 0.728,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.87,
+  "jours": 110,
+  "trades": 110,
+  "pb_par_jour": -2.65,
+  "dollars_1_contrat": -16.0,
+  "sous_periodes": [
+   -274.1,
+   -159.6,
+   142.5
+  ],
+  "nom": "G13 fin de mois indice 1 jour(s) 15:30-15:55 usatechidxusd",
+  "famille": "G13",
+  "p": 0.278,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.34,
+  "jours": 220,
+  "trades": 220,
+  "pb_par_jour": -3.4,
+  "dollars_1_contrat": -153.0,
+  "sous_periodes": [
+   -364.9,
+   -568.4,
+   185.0
+  ],
+  "nom": "G13 fin de mois indice 2 jour(s) 15:00-15:55 usatechidxusd",
+  "famille": "G13",
+  "p": 0.552,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.17,
+  "jours": 220,
+  "trades": 220,
+  "pb_par_jour": -2.29,
+  "dollars_1_contrat": 33.0,
+  "sous_periodes": [
+   -455.5,
+   -328.4,
+   280.5
+  ],
+  "nom": "G13 fin de mois indice 2 jour(s) 15:30-15:55 usatechidxusd",
+  "famille": "G13",
+  "p": 0.216,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.17,
+  "jours": 108,
+  "trades": 108,
+  "pb_par_jour": -0.91,
+  "dollars_1_contrat": -137.0,
+  "sous_periodes": [
+   -49.4,
+   8.8,
+   -57.9
+  ],
+  "nom": "G10 echeance options 9:30-11:00 retournement usa500idxusd",
+  "famille": "G10",
+  "p": 0.292,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.24,
+  "jours": 108,
+  "trades": 108,
+  "pb_par_jour": -6.63,
+  "dollars_1_contrat": -835.0,
+  "sous_periodes": [
+   -306.9,
+   -314.8,
+   -94.4
+  ],
+  "nom": "G10 echeance options 9:30-11:00 continuation usa500idxusd",
+  "famille": "G10",
+  "p": 0.736,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.38,
+  "jours": 107,
+  "trades": 107,
+  "pb_par_jour": -10.09,
+  "dollars_1_contrat": -1556.0,
+  "sous_periodes": [
+   -316.0,
+   -316.8,
+   -446.6
+  ],
+  "nom": "G10 echeance options 9:30-12:00 retournement usa500idxusd",
+  "famille": "G10",
+  "p": 0.918,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.6,
+  "jours": 107,
+  "trades": 107,
+  "pb_par_jour": 2.54,
+  "dollars_1_contrat": 593.0,
+  "sous_periodes": [
+   -40.4,
+   17.8,
+   294.3
+  ],
+  "nom": "G10 echeance options 9:30-12:00 continuation usa500idxusd",
+  "famille": "G10",
+  "p": 0.114,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.13,
+  "jours": 110,
+  "trades": 110,
+  "pb_par_jour": -6.35,
+  "dollars_1_contrat": -873.0,
+  "sous_periodes": [
+   -161.5,
+   -293.7,
+   -242.9
+  ],
+  "nom": "G13 fin de mois indice 1 jour(s) 15:00-15:55 usa500idxusd",
+  "famille": "G13",
+  "p": 0.748,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.48,
+  "jours": 110,
+  "trades": 110,
+  "pb_par_jour": -3.95,
+  "dollars_1_contrat": -396.0,
+  "sous_periodes": [
+   -228.7,
+   -263.6,
+   57.8
+  ],
+  "nom": "G13 fin de mois indice 1 jour(s) 15:30-15:55 usa500idxusd",
+  "famille": "G13",
+  "p": 0.37,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.29,
+  "jours": 220,
+  "trades": 220,
+  "pb_par_jour": -5.12,
+  "dollars_1_contrat": -1028.0,
+  "sous_periodes": [
+   -614.1,
+   -524.1,
+   11.4
+  ],
+  "nom": "G13 fin de mois indice 2 jour(s) 15:00-15:55 usa500idxusd",
+  "famille": "G13",
+  "p": 0.668,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.5,
+  "jours": 220,
+  "trades": 220,
+  "pb_par_jour": -4.36,
+  "dollars_1_contrat": -885.0,
+  "sous_periodes": [
+   -562.6,
+   -522.0,
+   126.5
+  ],
+  "nom": "G13 fin de mois indice 2 jour(s) 15:30-15:55 usa500idxusd",
+  "famille": "G13",
+  "p": 0.488,
+  "placebos": 500,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 2.13,
+  "jours": 559,
+  "trades": 559,
+  "pb_par_jour": 1.88,
+  "dollars_1_contrat": 15893.0,
+  "sous_periodes": [
+   1102.9,
+   -105.8,
+   56.2
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 tout eurusd",
+  "famille": "G11",
+  "p": 0.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": true
+ },
+ {
+  "t": 2.05,
+  "jours": 273,
+  "trades": 273,
+  "pb_par_jour": 2.86,
+  "dollars_1_contrat": 11237.0,
+  "sous_periodes": [
+   732.7,
+   31.3,
+   16.2
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 grand eurusd",
+  "famille": "G11",
+  "p": 0.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": true
+ },
+ {
+  "t": 2.18,
+  "jours": 560,
+  "trades": 560,
+  "pb_par_jour": 3.17,
+  "dollars_1_contrat": 26939.0,
+  "sous_periodes": [
+   1439.2,
+   -70.1,
+   406.9
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 tout eurusd",
+  "famille": "G11",
+  "p": 0.002,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": true
+ },
+ {
+  "t": 1.71,
+  "jours": 274,
+  "trades": 274,
+  "pb_par_jour": 3.58,
+  "dollars_1_contrat": 14662.0,
+  "sous_periodes": [
+   1009.6,
+   -235.3,
+   206.3
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 grand eurusd",
+  "famille": "G11",
+  "p": 0.012,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.52,
+  "jours": 559,
+  "trades": 559,
+  "pb_par_jour": -4.88,
+  "dollars_1_contrat": -40600.0,
+  "sous_periodes": [
+   -1720.9,
+   -500.2,
+   -509.2
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 tout eurusd",
+  "famille": "G11",
+  "p": 1.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.19,
+  "jours": 273,
+  "trades": 273,
+  "pb_par_jour": -5.86,
+  "dollars_1_contrat": -23223.0,
+  "sous_periodes": [
+   -1029.7,
+   -322.3,
+   -247.2
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 grand eurusd",
+  "famille": "G11",
+  "p": 1.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.24,
+  "jours": 560,
+  "trades": 560,
+  "pb_par_jour": -6.17,
+  "dollars_1_contrat": -51688.0,
+  "sous_periodes": [
+   -2057.2,
+   -538.9,
+   -859.9
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 tout eurusd",
+  "famille": "G11",
+  "p": 0.998,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.15,
+  "jours": 274,
+  "trades": 274,
+  "pb_par_jour": -6.58,
+  "dollars_1_contrat": -26690.0,
+  "sous_periodes": [
+   -1306.6,
+   -58.7,
+   -437.3
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 grand eurusd",
+  "famille": "G11",
+  "p": 0.988,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.66,
+  "jours": 552,
+  "trades": 552,
+  "pb_par_jour": -1.06,
+  "dollars_1_contrat": -8185.0,
+  "sous_periodes": [
+   117.9,
+   -442.0,
+   -258.8
+  ],
+  "nom": "G12 vendredi 12:00-15:55 retournement eurusd",
+  "famille": "G12",
+  "p": 0.236,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.52,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -1.43,
+  "dollars_1_contrat": -11279.0,
+  "sous_periodes": [
+   -37.5,
+   -475.3,
+   -275.6
+  ],
+  "nom": "G12 vendredi 14:00-15:55 retournement eurusd",
+  "famille": "G12",
+  "p": 0.44,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.05,
+  "jours": 552,
+  "trades": 552,
+  "pb_par_jour": -1.94,
+  "dollars_1_contrat": -16253.0,
+  "sous_periodes": [
+   -735.9,
+   -167.0,
+   -170.2
+  ],
+  "nom": "G12 vendredi 12:00-15:55 continuation eurusd",
+  "famille": "G12",
+  "p": 0.764,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.89,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -1.57,
+  "dollars_1_contrat": -13194.0,
+  "sous_periodes": [
+   -580.5,
+   -133.7,
+   -156.4
+  ],
+  "nom": "G12 vendredi 14:00-15:55 continuation eurusd",
+  "famille": "G12",
+  "p": 0.56,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.82,
+  "jours": 562,
+  "trades": 562,
+  "pb_par_jour": -1.69,
+  "dollars_1_contrat": -7982.0,
+  "sous_periodes": [
+   -70.1,
+   -535.1,
+   -346.5
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 tout gbpusd",
+  "famille": "G11",
+  "p": 0.597,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.43,
+  "jours": 289,
+  "trades": 289,
+  "pb_par_jour": -2.01,
+  "dollars_1_contrat": -4956.0,
+  "sous_periodes": [
+   -127.9,
+   -298.7,
+   -154.4
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 grand gbpusd",
+  "famille": "G11",
+  "p": 0.634,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.53,
+  "jours": 563,
+  "trades": 563,
+  "pb_par_jour": -2.45,
+  "dollars_1_contrat": -11176.0,
+  "sous_periodes": [
+   286.9,
+   -1271.5,
+   -394.2
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 tout gbpusd",
+  "famille": "G11",
+  "p": 0.693,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.29,
+  "jours": 290,
+  "trades": 290,
+  "pb_par_jour": -2.99,
+  "dollars_1_contrat": -7352.0,
+  "sous_periodes": [
+   139.7,
+   -1265.6,
+   259.0
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 grand gbpusd",
+  "famille": "G11",
+  "p": 0.768,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.41,
+  "jours": 562,
+  "trades": 562,
+  "pb_par_jour": -1.31,
+  "dollars_1_contrat": -6841.0,
+  "sous_periodes": [
+   -547.9,
+   -76.9,
+   -109.5
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 tout gbpusd",
+  "famille": "G11",
+  "p": 0.403,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.71,
+  "jours": 289,
+  "trades": 289,
+  "pb_par_jour": -0.99,
+  "dollars_1_contrat": -2605.0,
+  "sous_periodes": [
+   -160.1,
+   -34.3,
+   -91.6
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 grand gbpusd",
+  "famille": "G11",
+  "p": 0.366,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.35,
+  "jours": 563,
+  "trades": 563,
+  "pb_par_jour": -0.55,
+  "dollars_1_contrat": -3670.0,
+  "sous_periodes": [
+   -904.9,
+   656.5,
+   -61.8
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 tout gbpusd",
+  "famille": "G11",
+  "p": 0.307,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.0,
+  "jours": 290,
+  "trades": 290,
+  "pb_par_jour": -0.01,
+  "dollars_1_contrat": -233.0,
+  "sous_periodes": [
+   -427.7,
+   929.6,
+   -505.0
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 grand gbpusd",
+  "famille": "G11",
+  "p": 0.232,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.38,
+  "jours": 552,
+  "trades": 552,
+  "pb_par_jour": -0.91,
+  "dollars_1_contrat": -4361.0,
+  "sous_periodes": [
+   -301.7,
+   -36.7,
+   -163.2
+  ],
+  "nom": "G12 vendredi 12:00-15:55 retournement gbpusd",
+  "famille": "G12",
+  "p": 0.19,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.3,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -1.28,
+  "dollars_1_contrat": -6143.0,
+  "sous_periodes": [
+   -279.9,
+   -127.4,
+   -301.0
+  ],
+  "nom": "G12 vendredi 14:00-15:55 retournement gbpusd",
+  "famille": "G12",
+  "p": 0.281,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.17,
+  "jours": 552,
+  "trades": 552,
+  "pb_par_jour": -2.09,
+  "dollars_1_contrat": -10225.0,
+  "sous_periodes": [
+   -316.3,
+   -572.3,
+   -265.8
+  ],
+  "nom": "G12 vendredi 12:00-15:55 continuation gbpusd",
+  "famille": "G12",
+  "p": 0.81,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.43,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -1.72,
+  "dollars_1_contrat": -8468.0,
+  "sous_periodes": [
+   -338.1,
+   -481.6,
+   -131.0
+  ],
+  "nom": "G12 vendredi 14:00-15:55 continuation gbpusd",
+  "famille": "G12",
+  "p": 0.719,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.21,
+  "jours": 559,
+  "trades": 559,
+  "pb_par_jour": 0.25,
+  "dollars_1_contrat": 745.0,
+  "sous_periodes": [
+   -341.7,
+   -359.4,
+   842.2
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 tout usdjpy",
+  "famille": "G11",
+  "p": 0.075,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.52,
+  "jours": 280,
+  "trades": 280,
+  "pb_par_jour": 1.0,
+  "dollars_1_contrat": 2276.0,
+  "sous_periodes": [
+   195.7,
+   -275.1,
+   358.6
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 grand usdjpy",
+  "famille": "G11",
+  "p": 0.094,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.2,
+  "jours": 559,
+  "trades": 559,
+  "pb_par_jour": 0.35,
+  "dollars_1_contrat": 3500.0,
+  "sous_periodes": [
+   -485.0,
+   167.7,
+   515.0
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 tout usdjpy",
+  "famille": "G11",
+  "p": 0.152,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.18,
+  "jours": 280,
+  "trades": 280,
+  "pb_par_jour": -0.52,
+  "dollars_1_contrat": -1574.0,
+  "sous_periodes": [
+   -181.8,
+   65.8,
+   -29.2
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 grand usdjpy",
+  "famille": "G11",
+  "p": 0.367,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.68,
+  "jours": 559,
+  "trades": 559,
+  "pb_par_jour": -3.25,
+  "dollars_1_contrat": -20387.0,
+  "sous_periodes": [
+   -267.3,
+   -255.6,
+   -1295.2
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 tout usdjpy",
+  "famille": "G11",
+  "p": 0.925,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.07,
+  "jours": 280,
+  "trades": 280,
+  "pb_par_jour": -4.0,
+  "dollars_1_contrat": -12047.0,
+  "sous_periodes": [
+   -486.7,
+   -24.9,
+   -607.6
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 grand usdjpy",
+  "famille": "G11",
+  "p": 0.906,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.93,
+  "jours": 559,
+  "trades": 559,
+  "pb_par_jour": -3.35,
+  "dollars_1_contrat": -23142.0,
+  "sous_periodes": [
+   -124.0,
+   -782.7,
+   -968.0
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 tout usdjpy",
+  "famille": "G11",
+  "p": 0.848,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.88,
+  "jours": 280,
+  "trades": 280,
+  "pb_par_jour": -2.48,
+  "dollars_1_contrat": -8197.0,
+  "sous_periodes": [
+   -109.2,
+   -365.8,
+   -219.8
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 grand usdjpy",
+  "famille": "G11",
+  "p": 0.633,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.57,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -0.38,
+  "dollars_1_contrat": -2652.0,
+  "sous_periodes": [
+   -134.2,
+   63.3,
+   -140.4
+  ],
+  "nom": "G12 vendredi 12:00-15:55 retournement usdjpy",
+  "famille": "G12",
+  "p": 0.037,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.72,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -1.18,
+  "dollars_1_contrat": -8001.0,
+  "sous_periodes": [
+   -279.8,
+   -166.7,
+   -204.6
+  ],
+  "nom": "G12 vendredi 14:00-15:55 retournement usdjpy",
+  "famille": "G12",
+  "p": 0.214,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.88,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -2.62,
+  "dollars_1_contrat": -16789.0,
+  "sous_periodes": [
+   -483.8,
+   -672.3,
+   -291.6
+  ],
+  "nom": "G12 vendredi 12:00-15:55 continuation usdjpy",
+  "famille": "G12",
+  "p": 0.963,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.22,
+  "jours": 553,
+  "trades": 553,
+  "pb_par_jour": -1.82,
+  "dollars_1_contrat": -11440.0,
+  "sous_periodes": [
+   -338.2,
+   -442.3,
+   -227.4
+  ],
+  "nom": "G12 vendredi 14:00-15:55 continuation usdjpy",
+  "famille": "G12",
+  "p": 0.786,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.94,
+  "jours": 559,
+  "trades": 559,
+  "pb_par_jour": 1.28,
+  "dollars_1_contrat": 3171.0,
+  "sous_periodes": [
+   -481.9,
+   851.0,
+   344.9
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 tout audusd",
+  "famille": "G11",
+  "p": 0.029,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 2.08,
+  "jours": 271,
+  "trades": 271,
+  "pb_par_jour": 4.62,
+  "dollars_1_contrat": 8719.0,
+  "sous_periodes": [
+   116.5,
+   616.2,
+   519.5
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 grand audusd",
+  "famille": "G11",
+  "p": 0.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": true
+ },
+ {
+  "t": 1.43,
+  "jours": 560,
+  "trades": 560,
+  "pb_par_jour": 2.67,
+  "dollars_1_contrat": 9425.0,
+  "sous_periodes": [
+   -149.2,
+   1130.8,
+   514.7
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 tout audusd",
+  "famille": "G11",
+  "p": 0.012,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 2.31,
+  "jours": 271,
+  "trades": 271,
+  "pb_par_jour": 6.88,
+  "dollars_1_contrat": 13817.0,
+  "sous_periodes": [
+   470.6,
+   823.1,
+   572.0
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 grand audusd",
+  "famille": "G11",
+  "p": 0.002,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": true
+ },
+ {
+  "t": -3.14,
+  "jours": 559,
+  "trades": 559,
+  "pb_par_jour": -4.28,
+  "dollars_1_contrat": -16511.0,
+  "sous_periodes": [
+   -136.1,
+   -1457.0,
+   -797.9
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 tout audusd",
+  "famille": "G11",
+  "p": 0.971,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.44,
+  "jours": 271,
+  "trades": 271,
+  "pb_par_jour": -7.62,
+  "dollars_1_contrat": -15099.0,
+  "sous_periodes": [
+   -398.5,
+   -922.2,
+   -744.5
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 grand audusd",
+  "famille": "G11",
+  "p": 1.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.03,
+  "jours": 560,
+  "trades": 560,
+  "pb_par_jour": -5.67,
+  "dollars_1_contrat": -22785.0,
+  "sous_periodes": [
+   -468.8,
+   -1739.8,
+   -967.7
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 tout audusd",
+  "famille": "G11",
+  "p": 0.988,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.32,
+  "jours": 271,
+  "trades": 271,
+  "pb_par_jour": -9.88,
+  "dollars_1_contrat": -20197.0,
+  "sous_periodes": [
+   -752.6,
+   -1129.1,
+   -797.0
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 grand audusd",
+  "famille": "G11",
+  "p": 0.998,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.46,
+  "jours": 552,
+  "trades": 552,
+  "pb_par_jour": -2.52,
+  "dollars_1_contrat": -11697.0,
+  "sous_periodes": [
+   -540.9,
+   -337.6,
+   -515.3
+  ],
+  "nom": "G12 vendredi 12:00-15:55 retournement audusd",
+  "famille": "G12",
+  "p": 0.924,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.21,
+  "jours": 551,
+  "trades": 551,
+  "pb_par_jour": -1.61,
+  "dollars_1_contrat": -7630.0,
+  "sous_periodes": [
+   -356.9,
+   -75.1,
+   -455.5
+  ],
+  "nom": "G12 vendredi 14:00-15:55 retournement audusd",
+  "famille": "G12",
+  "p": 0.592,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.65,
+  "jours": 552,
+  "trades": 552,
+  "pb_par_jour": -0.48,
+  "dollars_1_contrat": -1509.0,
+  "sous_periodes": [
+   -77.1,
+   -271.4,
+   86.3
+  ],
+  "nom": "G12 vendredi 12:00-15:55 continuation audusd",
+  "famille": "G12",
+  "p": 0.076,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.76,
+  "jours": 551,
+  "trades": 551,
+  "pb_par_jour": -1.39,
+  "dollars_1_contrat": -5556.0,
+  "sous_periodes": [
+   -261.1,
+   -530.9,
+   26.5
+  ],
+  "nom": "G12 vendredi 14:00-15:55 continuation audusd",
+  "famille": "G12",
+  "p": 0.408,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.28,
+  "jours": 511,
+  "trades": 511,
+  "pb_par_jour": 0.56,
+  "dollars_1_contrat": 321.0,
+  "sous_periodes": [
+   -353.4,
+   338.8,
+   301.2
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 tout xauusd",
+  "famille": "G11",
+  "p": 0.097,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.48,
+  "jours": 252,
+  "trades": 252,
+  "pb_par_jour": 1.55,
+  "dollars_1_contrat": 821.0,
+  "sous_periodes": [
+   -565.3,
+   75.3,
+   880.1
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 grand xauusd",
+  "famille": "G11",
+  "p": 0.131,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.77,
+  "jours": 512,
+  "trades": 512,
+  "pb_par_jour": 2.42,
+  "dollars_1_contrat": 1784.0,
+  "sous_periodes": [
+   -215.9,
+   717.5,
+   735.7
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 tout xauusd",
+  "famille": "G11",
+  "p": 0.078,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.89,
+  "jours": 253,
+  "trades": 253,
+  "pb_par_jour": 4.56,
+  "dollars_1_contrat": 2346.0,
+  "sous_periodes": [
+   -680.8,
+   38.9,
+   1795.5
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 grand xauusd",
+  "famille": "G11",
+  "p": 0.099,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.25,
+  "jours": 511,
+  "trades": 511,
+  "pb_par_jour": -4.56,
+  "dollars_1_contrat": -3332.0,
+  "sous_periodes": [
+   -382.6,
+   -1070.8,
+   -877.2
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 tout xauusd",
+  "famille": "G11",
+  "p": 0.903,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.74,
+  "jours": 252,
+  "trades": 252,
+  "pb_par_jour": -5.55,
+  "dollars_1_contrat": -2286.0,
+  "sous_periodes": [
+   253.3,
+   -467.3,
+   -1184.1
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 grand xauusd",
+  "famille": "G11",
+  "p": 0.869,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.04,
+  "jours": 512,
+  "trades": 512,
+  "pb_par_jour": -6.42,
+  "dollars_1_contrat": -4800.0,
+  "sous_periodes": [
+   -520.1,
+   -1453.5,
+   -1311.7
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 tout xauusd",
+  "famille": "G11",
+  "p": 0.922,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.67,
+  "jours": 253,
+  "trades": 253,
+  "pb_par_jour": -8.56,
+  "dollars_1_contrat": -3816.0,
+  "sous_periodes": [
+   368.8,
+   -434.9,
+   -2099.5
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 grand xauusd",
+  "famille": "G11",
+  "p": 0.901,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.83,
+  "jours": 502,
+  "trades": 502,
+  "pb_par_jour": -2.71,
+  "dollars_1_contrat": -2100.0,
+  "sous_periodes": [
+   88.8,
+   -942.0,
+   -507.6
+  ],
+  "nom": "G12 vendredi 12:00-15:55 retournement xauusd",
+  "famille": "G12",
+  "p": 0.687,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.53,
+  "jours": 502,
+  "trades": 502,
+  "pb_par_jour": -2.38,
+  "dollars_1_contrat": -1835.0,
+  "sous_periodes": [
+   119.5,
+   -961.4,
+   -350.7
+  ],
+  "nom": "G12 vendredi 14:00-15:55 retournement xauusd",
+  "famille": "G12",
+  "p": 0.671,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.87,
+  "jours": 502,
+  "trades": 502,
+  "pb_par_jour": -1.29,
+  "dollars_1_contrat": -818.0,
+  "sous_periodes": [
+   -832.8,
+   194.0,
+   -8.4
+  ],
+  "nom": "G12 vendredi 12:00-15:55 continuation xauusd",
+  "famille": "G12",
+  "p": 0.313,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.73,
+  "jours": 502,
+  "trades": 502,
+  "pb_par_jour": -1.62,
+  "dollars_1_contrat": -1083.0,
+  "sous_periodes": [
+   -863.5,
+   213.4,
+   -165.3
+  ],
+  "nom": "G12 vendredi 14:00-15:55 continuation xauusd",
+  "famille": "G12",
+  "p": 0.329,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.24,
+  "jours": 451,
+  "trades": 451,
+  "pb_par_jour": -0.61,
+  "dollars_1_contrat": -121.0,
+  "sous_periodes": [
+   -343.7,
+   -118.4,
+   188.9
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 tout usatechidxusd",
+  "famille": "G11",
+  "p": 0.233,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.27,
+  "jours": 268,
+  "trades": 268,
+  "pb_par_jour": 1.04,
+  "dollars_1_contrat": 1003.0,
+  "sous_periodes": [
+   -266.4,
+   -122.1,
+   666.8
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 grand usatechidxusd",
+  "famille": "G11",
+  "p": 0.165,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.4,
+  "jours": 453,
+  "trades": 453,
+  "pb_par_jour": -1.4,
+  "dollars_1_contrat": -1516.0,
+  "sous_periodes": [
+   33.6,
+   173.2,
+   -840.6
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 tout usatechidxusd",
+  "famille": "G11",
+  "p": 0.346,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.56,
+  "jours": 269,
+  "trades": 269,
+  "pb_par_jour": -2.83,
+  "dollars_1_contrat": -1327.0,
+  "sous_periodes": [
+   -142.9,
+   -297.7,
+   -319.5
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 grand usatechidxusd",
+  "famille": "G11",
+  "p": 0.498,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.82,
+  "jours": 451,
+  "trades": 451,
+  "pb_par_jour": -4.62,
+  "dollars_1_contrat": -2585.0,
+  "sous_periodes": [
+   -711.8,
+   -830.4,
+   -540.8
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 tout usatechidxusd",
+  "famille": "G11",
+  "p": 0.767,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.73,
+  "jours": 268,
+  "trades": 268,
+  "pb_par_jour": -6.64,
+  "dollars_1_contrat": -2611.0,
+  "sous_periodes": [
+   -529.2,
+   -406.1,
+   -845.5
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 grand usatechidxusd",
+  "famille": "G11",
+  "p": 0.835,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.08,
+  "jours": 453,
+  "trades": 453,
+  "pb_par_jour": -3.81,
+  "dollars_1_contrat": -1202.0,
+  "sous_periodes": [
+   -1081.8,
+   -1126.1,
+   481.2
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 tout usatechidxusd",
+  "famille": "G11",
+  "p": 0.654,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.54,
+  "jours": 269,
+  "trades": 269,
+  "pb_par_jour": -2.76,
+  "dollars_1_contrat": -287.0,
+  "sous_periodes": [
+   -645.5,
+   -230.4,
+   133.3
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 grand usatechidxusd",
+  "famille": "G11",
+  "p": 0.502,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.34,
+  "jours": 491,
+  "trades": 491,
+  "pb_par_jour": -8.59,
+  "dollars_1_contrat": -7290.0,
+  "sous_periodes": [
+   -1245.8,
+   -1176.8,
+   -1796.4
+  ],
+  "nom": "G12 vendredi 12:00-15:55 retournement usatechidxusd",
+  "famille": "G12",
+  "p": 0.985,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.7,
+  "jours": 491,
+  "trades": 491,
+  "pb_par_jour": -5.4,
+  "dollars_1_contrat": -3159.0,
+  "sous_periodes": [
+   -1597.0,
+   -907.1,
+   -149.2
+  ],
+  "nom": "G12 vendredi 14:00-15:55 retournement usatechidxusd",
+  "famille": "G12",
+  "p": 0.879,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.04,
+  "jours": 491,
+  "trades": 491,
+  "pb_par_jour": 2.69,
+  "dollars_1_contrat": 4344.0,
+  "sous_periodes": [
+   -426.6,
+   254.3,
+   1492.5
+  ],
+  "nom": "G12 vendredi 12:00-15:55 continuation usatechidxusd",
+  "famille": "G12",
+  "p": 0.016,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.25,
+  "jours": 491,
+  "trades": 491,
+  "pb_par_jour": -0.5,
+  "dollars_1_contrat": 213.0,
+  "sous_periodes": [
+   -75.0,
+   -15.7,
+   -155.2
+  ],
+  "nom": "G12 vendredi 14:00-15:55 continuation usatechidxusd",
+  "famille": "G12",
+  "p": 0.121,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.16,
+  "jours": 434,
+  "trades": 434,
+  "pb_par_jour": -2.65,
+  "dollars_1_contrat": -1899.0,
+  "sous_periodes": [
+   -300.5,
+   -406.1,
+   -442.0
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 tout usa500idxusd",
+  "famille": "G11",
+  "p": 0.339,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.25,
+  "jours": 258,
+  "trades": 258,
+  "pb_par_jour": -0.88,
+  "dollars_1_contrat": -186.0,
+  "sous_periodes": [
+   -314.2,
+   -255.5,
+   343.9
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 03:00 grand usa500idxusd",
+  "famille": "G11",
+  "p": 0.236,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.43,
+  "jours": 436,
+  "trades": 436,
+  "pb_par_jour": -5.32,
+  "dollars_1_contrat": -3676.0,
+  "sous_periodes": [
+   -168.7,
+   -165.4,
+   -1984.8
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 tout usa500idxusd",
+  "famille": "G11",
+  "p": 0.694,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.23,
+  "jours": 259,
+  "trades": 259,
+  "pb_par_jour": -7.0,
+  "dollars_1_contrat": -2438.0,
+  "sous_periodes": [
+   -536.2,
+   -248.0,
+   -1028.2
+  ],
+  "nom": "G11 ecart du week-end comblement sortie lundi 09:30 grand usa500idxusd",
+  "famille": "G11",
+  "p": 0.728,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.99,
+  "jours": 434,
+  "trades": 434,
+  "pb_par_jour": -4.55,
+  "dollars_1_contrat": -2007.0,
+  "sous_periodes": [
+   -811.9,
+   -927.3,
+   -233.8
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 tout usa500idxusd",
+  "famille": "G11",
+  "p": 0.66,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.95,
+  "jours": 258,
+  "trades": 258,
+  "pb_par_jour": -6.82,
+  "dollars_1_contrat": -2136.0,
+  "sous_periodes": [
+   -629.3,
+   -450.1,
+   -679.1
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 03:00 grand usa500idxusd",
+  "famille": "G11",
+  "p": 0.764,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.5,
+  "jours": 436,
+  "trades": 436,
+  "pb_par_jour": -1.86,
+  "dollars_1_contrat": -248.0,
+  "sous_periodes": [
+   -931.0,
+   -1174.4,
+   1295.9
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 tout usa500idxusd",
+  "famille": "G11",
+  "p": 0.306,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.12,
+  "jours": 259,
+  "trades": 259,
+  "pb_par_jour": -0.66,
+  "dollars_1_contrat": 107.0,
+  "sous_periodes": [
+   -394.6,
+   -457.6,
+   680.1
+  ],
+  "nom": "G11 ecart du week-end continuation sortie lundi 09:30 grand usa500idxusd",
+  "famille": "G11",
+  "p": 0.272,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.36,
+  "jours": 490,
+  "trades": 490,
+  "pb_par_jour": -7.23,
+  "dollars_1_contrat": -5054.0,
+  "sous_periodes": [
+   -1142.6,
+   -1102.6,
+   -1295.8
+  ],
+  "nom": "G12 vendredi 12:00-15:55 retournement usa500idxusd",
+  "famille": "G12",
+  "p": 0.937,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.74,
+  "jours": 488,
+  "trades": 488,
+  "pb_par_jour": -6.45,
+  "dollars_1_contrat": -4045.0,
+  "sous_periodes": [
+   -1545.5,
+   -956.0,
+   -646.0
+  ],
+  "nom": "G12 vendredi 14:00-15:55 retournement usa500idxusd",
+  "famille": "G12",
+  "p": 0.925,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.3,
+  "jours": 490,
+  "trades": 490,
+  "pb_par_jour": -0.64,
+  "dollars_1_contrat": 644.0,
+  "sous_periodes": [
+   -810.6,
+   -217.1,
+   713.8
+  ],
+  "nom": "G12 vendredi 12:00-15:55 continuation usa500idxusd",
+  "famille": "G12",
+  "p": 0.064,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.81,
+  "jours": 488,
+  "trades": 488,
+  "pb_par_jour": -1.4,
+  "dollars_1_contrat": -347.0,
+  "sous_periodes": [
+   -381.8,
+   -364.0,
+   63.6
+  ],
+  "nom": "G12 vendredi 14:00-15:55 continuation usa500idxusd",
+  "famille": "G12",
+  "p": 0.076,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ }
+]
