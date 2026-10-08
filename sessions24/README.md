@@ -171,3 +171,35 @@ américains, Fed, pétrole, écart du week-end, fins de mois), où les frais pè
 - puis les challenges contre le RSI(2) entre deux clôtures ;
 - moins de 200 jours de trades = « non testable », sauf les familles rares par nature (G1 à G6, G9, G10, G13 : au
   moins 60 trades).
+
+## Résultats de la vague 2 (9 octobre 2026) : `exploration6.txt`, `coffre6.txt`
+
+**Exploration 2012 - 2022** : 352 stratégies testables (16 non testables : fins de trimestre, trop rares) ;
+**9 survivantes** (t ≥ 2 après frais, placebo, 2 sous-périodes sur 3, Benjamini-Hochberg) : fin de mois au fixing de
+Londres selon le S&P (livre avant, dollar australien après), gotobi 7 h → 9 h 55 (yen), comblement de l'écart du
+week-end (euro et dollar australien, 5 variantes).
+
+**Coffre 2023 - 2026, ouvert une fois** (seuil t 2,54, 3 années positives sur 4) : **2 passent**, toutes deux sur la
+même règle — **combler un grand écart du week-end sur le dollar australien** :
+
+| Variante | t 2023 - 2026 | 2023 / 2024 / 2025 / 2026 (pb) |
+|---|---|---|
+| sortie lundi 3 h (New York) | 2,58 | −108 / +431 / +143 / +394 |
+| sortie lundi 9 h 30 | 2,92 | −251 / +523 / +275 / +707 |
+
+Échouent au coffre : les fins de mois (t 0,8 à 1,2), le gotobi (t 0,59), l'écart du week-end sur l'euro (t −0,6 à 1,2).
+
+## Avant d'y croire : réalisme de l'écart du week-end sur le dollar australien (fixé avant le calcul)
+
+Les données sont celles du **comptant**, qui rouvre vers 17 h (New York) le dimanche. Le contrat **6A de la CME rouvre
+à 18 h**, avec peu de liquidité. Mesures descriptives, sur 2012-2022 et 2023-2026, des deux variantes qui passent :
+1. **entrée à 18 h** (première barre à partir de 18 h, écart toujours mesuré contre le vendredi) au lieu de la première
+   cotation du comptant ;
+2. **frais de 3 pb et 5 pb** par aller-retour au lieu de 1,5 ;
+3. **règle de décision** : l'écart du week-end n'entre dans le bot que si, avec l'entrée à 18 h et 3 pb de frais, il
+   reste t ≥ 2 sur 2012-2022 et un gain positif sur 2023 - 2026. Sinon il est déclaré non tradable sur la CME.
+
+**Taille dans les challenges** (fixée maintenant, avant tout calcul de challenge) : nombre de contrats 6A = écart-type
+en dollars d'un trade du RSI(2) entre deux clôtures (1 MNQ) divisé par celui d'un trade d'écart (1 contrat 6A),
+mesurés sur 2012-2022, arrondi, entre 1 et 5. Puis comparaison avec le RSI(2) entre deux clôtures chez Topstep et
+DayTraders S2F, achats de 2023 - 2025, gain net sur 12 mois (comme prévu dans la règle de la vague 1).

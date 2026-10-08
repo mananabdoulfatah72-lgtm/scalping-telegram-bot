@@ -1,0 +1,11 @@
+Machine 5 vague 2, coffre 2023 - 2026 ouvert une fois : 9 survivante(s), seuil t 2.54
+
+G1 fin de mois avant fixing S&P 1 jour(s) gbpusd : t +1.18 ; 2023-2026 (pb) [7.4, -27.5, 115.8, 47.5] -> echoue
+G4 gotobi 07:00-09:55 usdjpy : t +0.59 ; 2023-2026 (pb) [-55.9, 114.9, -106.3, 209.2] -> echoue
+G1 fin de mois apres fixing S&P 1 jour(s) audusd : t +0.90 ; 2023-2026 (pb) [-16.4, 85.6, -11.7, 6.5] -> echoue
+G1 fin de mois apres fixing S&P 2 jour(s) audusd : t +0.82 ; 2023-2026 (pb) [38.5, 91.8, -28.3, -9.0] -> echoue
+G11 ecart du week-end comblement sortie lundi 03:00 tout eurusd : t +0.61 ; 2023-2026 (pb) [-88.2, -15.5, 87.2, 206.0] -> echoue
+G11 ecart du week-end comblement sortie lundi 03:00 grand eurusd : t +1.19 ; 2023-2026 (pb) [-18.8, 48.0, 180.7, 57.9] -> echoue
+G11 ecart du week-end comblement sortie lundi 09:30 tout eurusd : t -0.61 ; 2023-2026 (pb) [-107.8, -302.2, -130.7, 267.2] -> echoue
+G11 ecart du week-end comblement sortie lundi 03:00 grand audusd : t +2.58 ; 2023-2026 (pb) [-107.5, 430.8, 143.0, 393.9] -> PASSE
+G11 ecart du week-end comblement sortie lundi 09:30 grand audusd : t +2.92 ; 2023-2026 (pb) [-251.3, 523.4, 274.9, 706.8] -> PASSE
