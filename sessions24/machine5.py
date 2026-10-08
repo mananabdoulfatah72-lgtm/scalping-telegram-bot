@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Machine 5 (README.md) : 176 strategies de sessions (Asie, Londres, New York) sur 9 marches, barres de 5 minutes
-Dukascopy en UTC. Exploration 2012-2022 avec placebos, coffre 2023 - 2026 une seule fois pour les survivantes.
+"""Machine 5 (README.md) : 158 strategies de sessions (Asie, Londres, New York) sur 8 marches, barres de 5 minutes
+HistData en UTC (Dukascopy refuse GitHub ; Dow Jones absent de HistData). Exploration 2012-2022 avec placebos, coffre 2023 - 2026 une seule fois pour les survivantes.
 Lancer depuis ce dossier : python3 machine5.py exploration | coffre"""
 import json
 import sys
@@ -23,7 +23,6 @@ GRAINE = 5
 MARCHES = {
     "usatechidxusd": ("Nasdaq 100", 1.5, "pt", 2.0),
     "usa500idxusd": ("S&P 500", 0.9, "pt", 5.0),
-    "usa30idxusd": ("Dow Jones", 3.0, "pt", 0.5),
     "eurusd": ("Euro", 1.5, "pb", 125000.0),
     "gbpusd": ("Livre", 1.5, "pb", 62500.0),
     "usdjpy": ("Yen", 1.5, "pb", None),
@@ -31,7 +30,7 @@ MARCHES = {
     "xauusd": ("Or", 2.0, "pb", 10.0),
     "lightcmdusd": ("Petrole WTI", 4.0, "pb", 100.0),
 }
-INDICES = ["usatechidxusd", "usa500idxusd", "usa30idxusd"]
+INDICES = ["usatechidxusd", "usa500idxusd"]                   # Dow Jones retire : absent de HistData (README.md)
 DEVISES = ["eurusd", "gbpusd", "usdjpy", "audusd"]
 TOKYO, LONDRES, NY, FRANCFORT = "Asia/Tokyo", "Europe/London", "America/New_York", "Europe/Berlin"
 SESSIONS = {"Tokyo": (TOKYO, "09:00", "15:00"), "Londres": (LONDRES, "08:00", "16:30"), "New York": (NY, "09:30", "16:00")}
@@ -78,6 +77,25 @@ class Marche:
         if self.code == "usdjpy":
             return 12_500_000.0 / prix
         return self.dollar * prix
+
+
+def marche_databento(code):
+    """Indices pour F2 si HistData ne couvre pas la nuit (README.md) : barres d'une heure Databento (nuit/donnees/,
+    NQ et ES, heure de New York) placees sur la grille de 5 minutes a l'heure de leur debut."""
+    f = {"usatechidxusd": "nasdaq100", "usa500idxusd": "sp500"}[code]
+    h = pd.read_csv(ICI.parent / "nuit" / "donnees" / f"{f}_1h.csv.gz")
+    t = pd.to_datetime(h["t"]).dt.tz_localize(NY, nonexistent="shift_forward", ambiguous="NaT").dt.tz_convert("UTC")
+    ok = t.notna()
+    d = pd.DataFrame({"t": t[ok].dt.strftime("%Y-%m-%d %H:%M"), "o": h["o"][ok], "h": h["h"][ok], "l": h["l"][ok],
+                      "c": h["c"][ok]})
+    return Marche(code, d)
+
+
+def couvre_nuit(M):
+    """Part des jours de semaine 2012-2022 ou il existe une barre a 8 h (heure de Francfort)."""
+    j = jours_locaux(FRANCFORT, DEBUT, FIN_EXPLO)
+    i = M.indice(heure_utc(j, FRANCFORT, "08:00"))
+    return float(np.mean([k >= 0 and np.isfinite(M.O[k]) for k in i]))
 
 
 def jours_locaux(fz, debut, fin):
@@ -167,7 +185,7 @@ def cassures(O, H, L, C, debut_f, fin_f, fin_s, nb):
     return sens, pe, ps, bs
 
 
-# ------------------------------------------------------------------ les 176 strategies
+# ------------------------------------------------------------------ les 158 strategies
 def strategies():
     """Liste des strategies : dict(nom, famille, marche, genre, ...)."""
     S = []
@@ -361,27 +379,43 @@ def benjamini_hochberg(p, q=0.10):
 
 def exploration():
     S = strategies()
-    assert len(S) == 176, len(S)
+    assert len(S) == 158, len(S)
     marches = {c: Marche(c) for c in MARCHES}
+    nuit = {c: couvre_nuit(marches[c]) for c in INDICES}
+    f2 = {c: (marche_databento(c) if nuit[c] < 0.5 else marches[c]) for c in INDICES}
     lignes, res = [], []
     for s in S:
-        M = marches[s["marche"]]
+        M = f2[s["marche"]] if s["famille"] == "F2" else marches[s["marche"]]
         d = jouer(s, M, DEBUT, FIN_EXPLO)
         b = bilan(d, M)
-        p, npl = placebo(s, M, d)
-        b.update(nom=s["nom"], famille=s["famille"], p=p, placebos=npl)
+        b.update(nom=s["nom"], famille=s["famille"])
+        if b["jours"] < 200:
+            b.update(p=None, placebos=0, testable=False)
+            print(f"{s['nom']} : NON TESTABLE ({b['jours']} jours)", flush=True)
+        else:
+            p, npl = placebo(s, M, d)
+            b.update(p=p, placebos=npl, testable=True)
+            print(f"{s['nom']} : t {b['t']:+.2f}, p {p:.3f}, {b['jours']} jours", flush=True)
         res.append(b)
-        print(f"{s['nom']} : t {b['t']:+.2f}, p {p:.3f}, {b['jours']} jours", flush=True)
-    bh = benjamini_hochberg([r["p"] for r in res])
+    jug = [r for r in res if r["testable"]]
+    bh = benjamini_hochberg([r["p"] for r in jug])
     surv = []
-    for r, g in zip(res, bh):
+    for r in res:
+        r["bh"], r["survivante"] = False, False
+    for r, g in zip(jug, bh):
         r["bh"] = bool(g)
         r["survivante"] = bool(r["t"] >= 2 and r["p"] <= 0.05 and sum(x > 0 for x in r["sous_periodes"]) >= 2 and g)
         if r["survivante"]:
             surv.append(r["nom"])
-    L = [f"Machine 5, exploration {DEBUT[:4]} - {FIN_EXPLO[:4]} : {len(S)} strategies ; survivantes : {len(surv)}", "",
+    L = [f"Machine 5, exploration {DEBUT[:4]} - {FIN_EXPLO[:4]} : {len(S)} strategies, {len(jug)} testables ;"
+         f" survivantes : {len(surv)}",
+         "couverture de la nuit (barre a 8 h, heure de Francfort) : " + " ; ".join(f"{c} {v:.0%}" for c, v in nuit.items())
+         + " -> F2 sur " + ", ".join(f"{c} {'Databento (1 h)' if nuit[c] < 0.5 else 'HistData'}" for c in INDICES), "",
          "strategie | t | p placebo | BH 10 % | sous-periodes (pb) | jours | $ pour 1 contrat | survivante"]
     for r in sorted(res, key=lambda x: -x["t"]):
+        if not r["testable"]:
+            L.append(f"{r['nom']} | non testable ({r['jours']} jours) | | | | | |")
+            continue
         L.append(f"{r['nom']} | {r['t']:+.2f} | {r['p']:.3f} | {'oui' if r['bh'] else 'non'} | "
                  f"{' / '.join(f'{x:+.1f}' for x in r['sous_periodes'])} | {r['jours']} | {r['dollars_1_contrat']:+,.0f} |"
                  f" {'OUI' if r['survivante'] else ''}")
@@ -402,6 +436,8 @@ def coffre():
     for nom in surv:
         s = S[nom]
         M = marches.setdefault(s["marche"], Marche(s["marche"]))
+        if s["famille"] == "F2" and couvre_nuit(M) < 0.5:
+            M = marche_databento(s["marche"])
         d = jouer(s, M, DEBUT_COFFRE, "2026-12-31")
         j = par_jour(d)
         ans = [round(float(j[j.index.year == y].sum()) * 1e4, 1) for y in (2023, 2024, 2025, 2026)]

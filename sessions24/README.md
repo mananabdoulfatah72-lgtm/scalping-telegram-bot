@@ -75,3 +75,19 @@ l'ouverture des barres de 5 minutes, jamais avec une donnée future.
 Avec 176 essais, environ 9 dépasseront t = 2 par hasard. C'est pour cela que le placebo, le seuil de Benjamini-
 Hochberg et le coffre sont obligatoires. Si rien ne passe, la conclusion sera « rien de fiable », et le RSI(2) entre
 deux clôtures reste la meilleure source connue.
+
+## Changement de source de données (8 octobre 2026, avant tout calcul)
+
+- **Dukascopy refuse maintenant les téléchargements depuis GitHub** (réponse 202, vérifiée par un essai court).
+  Les données viennent donc de **HistData** (prix minute gratuits, même nature : cotations CFD et change), en heure de
+  l'Est sans changement d'heure (UTC − 5 h toute l'année), converties en UTC puis en barres de 5 minutes
+  (`telecharger_histdata.py`). Correspondance : Nasdaq = NSXUSD, S&P 500 = SPXUSD, pétrole = WTIUSD, les autres sous
+  leur nom.
+- **HistData n'a pas le Dow Jones** : ses 18 stratégies sont retirées (F2 : 6, F3 : 4, F4 : 2, F5 : 6). Il en reste
+  **158**. Les seuils (placebos, Benjamini-Hochberg, Bonferroni au coffre) se calculent sur ce nombre.
+- Règles fixées maintenant, avant d'ouvrir les fichiers :
+  - si un marché ne couvre pas les heures dont une stratégie a besoin (par exemple les indices la nuit), la stratégie
+    est déclarée **« non testable »** si elle a moins de 200 jours de trades sur 2012-2022, et elle n'est pas jugée ;
+  - pour F2 seulement (ouverture de Francfort sur les indices), si HistData ne couvre pas la nuit, on utilise les
+    barres d'une heure de Databento déjà dans le projet (`nuit/donnees/`, NQ et ES, 24 h sur 24) : les fenêtres de F2
+    tombent sur des heures pleines.

@@ -92,9 +92,9 @@ def test_pas_de_futur():
 def test_nombre():
     S = M5.strategies()
     f = pd.Series([s["famille"] for s in S]).value_counts().to_dict()
-    assert len(S) == 176 and f == {"F5": 54, "F3": 48, "F1": 36, "F2": 18, "F4": 18, "F6": 2}, f
-    assert len({s["nom"] for s in S}) == 176
-    print("ok : 176 strategies (F1 36, F2 18, F3 48, F4 18, F5 54, F6 2)")
+    assert len(S) == 158 and f == {"F5": 48, "F3": 44, "F1": 36, "F2": 12, "F4": 16, "F6": 2}, f
+    assert len({s["nom"] for s in S}) == 158
+    print("ok : 158 strategies (F1 36, F2 12, F3 44, F4 16, F5 48, F6 2 ; Dow Jones retire)")
 
 
 if __name__ == "__main__":
