@@ -45,25 +45,32 @@ def test_fed(nq):
 def test_reequilibrage(nq, es):
     """W3 / W4 : recalcul a la main de l'ecart ES - ZN d'un mois, et fenetre des 5 dernieres seances."""
     d = pd.DatetimeIndex(nq["date"])
-    ec = V.es_aligne(nq, es)
+    ec = V.indice_es(nq, es)
     zv, zj = V.zn(nq["date"], V.FIN_EXPLORATION), V.zn(nq["date"], V.FIN_EXPLORATION, False)
-    f = pd.read_csv(V.R / "fonds/donnees/futures_1d.csv.gz")
-    z = f[f["symbole"] == "ZN.v.0"].set_index("date")["c"]
     a = int(np.flatnonzero(d == "2019-05-31")[0])           # derniere seance de mai 2019
     b = int(np.flatnonzero(d == "2019-06-28")[0])           # derniere seance de juin 2019
     dec = b - 4
     assert d[dec] == pd.Timestamp("2019-06-24")
-    zn_veille = z[z.index < "2019-06-24"].iloc[-1]
-    zn_base = z[z.index <= "2019-05-31"].iloc[-1]
-    assert zv[dec] == zn_veille and zj[a] == zn_base
-    e_main = (ec[dec] / ec[a] - 1) - (zn_veille / zn_base - 1)
+    # a la main : rendements jour par jour, sans le saut d'echeance de juin (ES et ZN changent de contrat ce mois-la)
+    e1 = es.set_index("date")
+    x = e1.loc["2019-05-31":"2019-06-24"]
+    r_es = np.prod([c1 / c0 for c0, c1, k0, k1 in zip(x["C"][:-1], x["C"][1:], x["contrat"][:-1], x["contrat"][1:]) if k0 == k1])
+    assert x["contrat"].nunique() == 2                      # le changement d'echeance de l'ES tombe dans la fenetre
+    f = pd.read_csv(V.R / "fonds/donnees/futures_1d.csv.gz")
+    z = f[(f["symbole"] == "ZN.v.0") & (f["date"] >= "2019-05-31") & (f["date"] < "2019-06-24")].sort_values("date")
+    r_zn = np.prod([c1 / c0 for c0, c1, k0, k1 in zip(z["c"][:-1].to_numpy(), z["c"][1:].to_numpy(),
+                                                       z["contrat"][:-1].to_numpy(), z["contrat"][1:].to_numpy()) if k0 == k1])
+    e_main = (r_es - 1) - (r_zn - 1)
+    e_moteur = V.ecart_mois(ec, zv, zj, a, dec)
+    assert abs(e_main - e_moteur) < 1e-12, (e_main, e_moteur)
     for sens in (1, -1):
         pos = V.reequilibrage(nq, ec, zv, zj, sens)
         assert set(np.unique(pos)) <= {0, sens}
         fen = pos[dec:b]
         assert (fen == 0).all() or (fen == sens).all()
         assert pos[b] == 0 and pos[dec - 1] == 0
-    print(f"ok : W3 / W4 ecart ES - ZN de juin 2019 a la main ({e_main:+.4f}), fenetre du 24 au 28 juin")
+    print(f"ok : W3 / W4 ecart ES - ZN de juin 2019 a la main, sans les sauts d'echeance ({e_main:+.4f} = moteur),"
+          f" fenetre du 24 au 28 juin")
 
 
 def test_pas_de_futur(nq, es, p):

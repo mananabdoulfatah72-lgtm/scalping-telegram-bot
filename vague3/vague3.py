@@ -5,6 +5,7 @@ exploration3.csv et survivants3.json. Lancer depuis ce dossier : python3 vague3.
 Le coffre (2023-2026) est lu seulement par coffre3.py."""
 import json
 import sys
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -35,14 +36,38 @@ def troisiemes_vendredis(annees):
     return pd.DatetimeIndex(out)
 
 
-def zn(dates, jusqu_au, veille=True):
-    """Cloture du ZN (contrat le plus echange) de la derniere seance strictement avant chaque date (veille=True), ou de
-    la derniere seance jusqu'a la date comprise (veille=False)."""
+@lru_cache(maxsize=4)
+def _zn(jusqu_au):
+    """ZN (contrat le plus echange) : indice de rendement cumule, chaine jour par jour sur un meme contrat (un jour de
+    changement de contrat compte pour 0 : pas d'ecart de prix entre deux echeances)."""
     f = pd.read_csv(R / "fonds/donnees/futures_1d.csv.gz")
-    z = f[(f["symbole"] == "ZN.v.0") & (f["date"] <= jusqu_au)]
-    z = z.assign(date=pd.to_datetime(z["date"])).set_index("date")["c"].sort_index()
+    z = f[(f["symbole"] == "ZN.v.0") & (f["date"] <= jusqu_au)].sort_values("date")
+    c, k = z["c"].to_numpy(), z["contrat"].to_numpy()
+    r = np.r_[0.0, np.where(k[1:] == k[:-1], c[1:] / c[:-1] - 1, 0.0)]
+    return pd.Series(np.cumprod(1 + r), index=pd.to_datetime(z["date"]))
+
+
+def zn(dates, jusqu_au, veille=True):
+    """Indice du ZN (_zn) de la derniere seance strictement avant chaque date (veille=True), ou de la derniere seance
+    jusqu'a la date comprise (veille=False)."""
+    z = _zn(jusqu_au)
     i = np.searchsorted(z.index.values, pd.DatetimeIndex(dates).values, side="left" if veille else "right") - 1
     return np.where(i >= 0, z.to_numpy()[np.maximum(i, 0)], np.nan)
+
+
+def indice_es(s, es):
+    """ES : indice de rendement cumule des clotures de 15 h 49, chaine seance par seance sur un meme contrat (aux dates de
+    s ; un changement de contrat compte pour 0)."""
+    e = es.set_index("date")
+    c = e["C"].to_numpy()
+    k = e["contrat"].to_numpy()
+    r = np.r_[0.0, np.where(k[1:] == k[:-1], c[1:] / c[:-1] - 1, 0.0)]
+    return pd.Series(np.cumprod(1 + r), index=e.index).reindex(pd.DatetimeIndex(s["date"])).to_numpy()
+
+
+def ecart_mois(es_i, zv, zj, a, dec):
+    """Ecart de rendement ES - ZN depuis la fin du mois d'avant (seance a) jusqu'a la decision (seance dec)."""
+    return (es_i[dec] / es_i[a] - 1) - (zv[dec] / zj[a] - 1)
 
 
 # ----------------------------------------------------------------------------- positions (signe : +1 achat, -1 vente)
@@ -91,8 +116,9 @@ def w2_fed(s):
 
 def reequilibrage(s, es, zv, zj, sens):
     """W3 (sens +1) / W4 (sens -1) : fenetre des 5 dernieres seances du mois ; ecart de rendement ES - ZN depuis la fin du
-    mois d'avant, mesure a la 5e seance avant la fin, compare aux 60 mois d'avant (au moins 36). zv : ZN de la veille de
-    chaque seance (a la decision) ; zj : ZN du jour (base : fin du mois d'avant, connue a la decision)."""
+    mois d'avant, mesure a la 5e seance avant la fin, compare aux 60 mois d'avant (au moins 36). es : indice de l'ES
+    (indice_es) ; zv : indice du ZN de la veille de chaque seance (a la decision) ; zj : indice du ZN du jour (base : fin
+    du mois d'avant, connue a la decision). Indices chaines sur un meme contrat : pas de saut d'echeance."""
     d = pd.DatetimeIndex(s["date"])
     roule = T8.echeances(s)
     mois = d.to_period("M")
@@ -103,7 +129,7 @@ def reequilibrage(s, es, zv, zj, sens):
         dec = b - 4                                                            # 5e seance avant la fin du mois
         if dec <= a:
             continue
-        e = (es[dec] / es[a] - 1) - (zv[dec] / zj[a] - 1)
+        e = ecart_mois(es, zv, zj, a, dec)
         if np.isnan(e):
             continue
         hist = np.array(ecarts[-60:])
@@ -182,7 +208,7 @@ def journal_paire(p, pos):
     var = np.r_[0.0, Pn[1:] / Pn[:-1] - 1] - np.r_[0.0, Pe[1:] / Pe[:-1] - 1]
     chg = np.abs(pos.astype(float) - avant)
     rend = avant * var - chg * (p.attrs["cote_nq"] / Pn + p.attrs["cote_es"] / Pe)
-    dol = rend * Pn * 2.0                                       # notionnel d'un MNQ
+    dol = rend * np.r_[Pn[0], Pn[:-1]] * 2.0                    # notionnel d'un MNQ au debut de la periode
     entrees, sorties = trades_de(pos)
     tr = np.array([dol[a:b + 1].sum() for a, b in zip(entrees, sorties)])
     return rend, dol, tr, entrees, sorties
@@ -226,7 +252,7 @@ def positions(k, s, es, p, jusqu_au):
     if k == 1:
         return w2_fed(s)
     if k in (2, 3):
-        return reequilibrage(s, es_aligne(s, es), zn(s["date"], jusqu_au), zn(s["date"], jusqu_au, False),
+        return reequilibrage(s, indice_es(s, es), zn(s["date"], jusqu_au), zn(s["date"], jusqu_au, False),
                              1 if k == 2 else -1)
     if k == 4:
         return w5_rsi_vendeur(s)

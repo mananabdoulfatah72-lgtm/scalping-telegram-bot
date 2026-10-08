@@ -150,6 +150,14 @@ namespace Bot3en1
         /// <summary>Plafond deja atteint dans cette journee de trading (redemarrage du bot) : plus de trade jusqu'a 18 h.</summary>
         public void ArreterJusqua18h() { Arret = true; }
 
+        /// <summary>Redemarrage au cours d'une journee de trading : gain deja realise, reference du RSI(2) et plafond, tels
+        /// que le bot les avait enregistres (etat.json).</summary>
+        public void RestaurerJournee(double realise, double refRsi, bool arret)
+        {
+            RealiseJour = realise; Arret = arret;
+            if (Rsi != 0 && refRsi > 0) RefRsi = refRsi;
+        }
+
         double Vwap(int m) => cumV > 0 ? cumTv / cumV : cumT / (m + 1);
 
         double Delta(int m)

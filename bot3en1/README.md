@@ -55,15 +55,24 @@ dotnet run -c Release --project Bot3en1.TestPlafond
 - **Maintenant, il fait ce que `static50k/` a simulé :**
   - le gain du jour est compté depuis le début de la journée de trading de la firme (18 h la veille). Un RSI(2) gardé
     la nuit compte à partir du dernier prix avant la pause de 17 h ;
-  - le plafond est vérifié en séance à chaque fin de minute, et hors séance (16 h - 9 h 30) à chaque transaction
-    du NQ ;
-  - une fois le plafond atteint, plus rien jusqu'à 18 h, même si le bot redémarre (`etat.json`).
+  - le plafond est vérifié en séance à chaque fin de minute, et hors séance (après la fin de la séance, et avant
+    9 h 30) à chaque transaction du NQ ;
+  - une fois le plafond atteint, plus rien jusqu'à 18 h ;
+  - en cas de redémarrage dans la journée, le bot reprend le gain déjà réalisé, la référence du RSI(2) et le plafond
+    atteint (`etat.json`).
+- **Revue de code indépendante, puis corrections :**
+  - le gain du jour et la référence étaient perdus au redémarrage ;
+  - pendant 2 secondes à 16 h, le plafond de nuit pouvait partir avant la fermeture de la zone ;
+  - la nuit, le plafond n'était vérifié qu'une fois par demi-seconde ;
+  - une transaction de 18 h pouvait arriver avant le changement de journée.
 - **Vérifié :**
-  - `Bot3en1.TestPlafond` : 13 contrôles sur 13 ;
+  - `Bot3en1.TestPlafond` : 15 contrôles sur 15 ;
   - avec le plafond à 0, les deux rejeux (+21 767,0 $ et +4 366,0 $) et le test de l'adaptateur (164 ordres, +4 370,0 $,
     position finale à plat, aucune erreur) sont identiques à avant la correction ;
   - avec `PLAFOND=500` et une transaction chaque soir à 19 h, l'adaptateur passe par 18 h et par le plafond hors séance
     sans erreur : 14 plafonds atteints d'avril à septembre 2026, 160 ordres, position finale à plat.
+- **Limite des tests.** Le rejeu et le test de l'adaptateur n'ont que les minutes de 9 h 30 à 16 h. Leur référence
+  pour le RSI(2) est donc la clôture de 16 h, alors qu'en direct c'est le dernier prix avant 17 h.
 
 Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par seconde regroupés par minute).
 

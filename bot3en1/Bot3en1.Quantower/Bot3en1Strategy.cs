@@ -40,6 +40,8 @@ namespace Bot3en1
         double dernierPrix, prixAvantPause;          // dernier prix du NQ, et dernier prix avant la pause de 17 h
         DateTime journeeTrading;                     // journee de trading de la firme (de 18 h la veille a 17 h)
         bool fermerHorsSeance;                       // plafond atteint la nuit : aligner la position meme hors seance
+        bool plafondANoter;                          // plafond atteint dans une transaction de nuit : message et etat au prochain tic
+        bool etatASauver;                            // nouvelle journee de trading : etat a enregistrer au prochain tic
         bool alerteSilence;
         static readonly HttpClient http = new HttpClient { Timeout = TimeSpan.FromSeconds(20) };
 
@@ -127,11 +129,28 @@ namespace Bot3en1
             bot.ContratSuivant = (j, c) => Calendrier.Contrat(Calendrier.SeanceSuivante(j));
             var etat = LireEtat();
             if (etat != null && etat.RsiTenu) bot.RestaurerRsi(true, etat.EntreeRsi);
-            // journee de trading en cours : reference du RSI(2) = derniere cloture connue (le prix de 17 h n'est pas connu
-            // au demarrage) ; plafond deja atteint aujourd'hui (fichier d'etat) : plus de trade jusqu'a 18 h
+            // journee de trading en cours (de 18 h la veille a 17 h) :
+            // - meme journee que le fichier d'etat : gain deja realise, reference du RSI(2) et plafond repris tels quels ;
+            // - sinon, nouvelle journee : reference du RSI(2) = dernier prix avant 17 h enregistre, a defaut la derniere
+            //   cloture de l'historique.
             journeeTrading = JourneeTrading(HeureNY());
-            bot.NouvelleJournee(bot.Historique.Count > 0 ? bot.Historique[^1].Cloture : 0);
-            if (etat?.PlafondJournee == journeeTrading.ToString("yyyy-MM-dd")) bot.ArreterJusqua18h();
+            string jt = journeeTrading.ToString("yyyy-MM-dd");
+            if (etat != null && etat.PrixAvantPause > 0) prixAvantPause = etat.PrixAvantPause;
+            if (etat?.JourneeTrading == jt)
+                bot.RestaurerJournee(etat.RealiseJour, etat.RefRsi, etat.PlafondJournee == jt);
+            else
+                bot.NouvelleJournee(prixAvantPause > 0 ? prixAvantPause : (bot.Historique.Count > 0 ? bot.Historique[^1].Cloture : 0));
+        }
+
+        /// <summary>18 h (New York) : nouvelle journee de trading de la firme (gain du jour remis a zero, plafond leve, RSI(2)
+        /// compte depuis le dernier prix avant 17 h). Appelee par l'horloge et par chaque transaction.</summary>
+        void PasserJournee(DateTime ny)
+        {
+            var jt = JourneeTrading(ny);
+            if (jt == journeeTrading || ny.TimeOfDay < TimeSpan.FromHours(18)) return;
+            journeeTrading = jt;
+            bot?.NouvelleJournee(prixAvantPause > 0 ? prixAvantPause : dernierPrix);
+            etatASauver = true;
         }
 
         /// <summary>Journee de trading de la firme : de 18 h (New York) la veille a 17 h ; designee par le jour ou elle finit.</summary>
@@ -188,6 +207,11 @@ namespace Bot3en1
                 dernierTick = Maintenant();
                 dernierPrix = last.Price;
                 if (t.TimeOfDay < TimeSpan.FromHours(17)) prixAvantPause = last.Price;
+                PasserJournee(t);                        // une transaction de 18 h peut arriver avant le tic de l'horloge
+                // hors seance (apres la fin de la seance, ou avant 9 h 30) : plafond du jour verifie a chaque transaction
+                bool horsSeance = seanceFinie || t.Date != jour || Minute(t) < 0;
+                if (horsSeance && PlafondJour > 0 && bot != null && bot.VerifierPlafondHorsSeance(last.Price))
+                    fermerHorsSeance = plafondANoter = true;
                 if (t.Date == jour) Ajouter(t, last.Price, last.Size, last.AggressorFlag);
             }
         }
@@ -216,22 +240,13 @@ namespace Bot3en1
                         VerifierEcheance();
                         DemarrerSeance(maintenant);
                     }
-                    // 18 h : nouvelle journee de trading (gain du jour remis a zero, plafond leve)
-                    var jt = JourneeTrading(maintenant);
-                    if (jt != journeeTrading && maintenant.TimeOfDay >= TimeSpan.FromHours(18))
+                    PasserJournee(maintenant);
+                    if (etatASauver) { etatASauver = false; SauverEtat(); }
+                    // plafond du jour atteint hors seance (verifie a chaque transaction, voir SurTransaction)
+                    if (plafondANoter)
                     {
-                        journeeTrading = jt;
-                        bot?.NouvelleJournee(prixAvantPause > 0 ? prixAvantPause : dernierPrix);
-                        SauverEtat();
-                    }
-                    // hors seance (16 h - 9 h 30) : plafond du jour sur le RSI(2) garde la nuit
-                    int mh = Minute(maintenant);
-                    bool horsSeance = seanceFinie || mh < 0 || mh > derniereMinute;
-                    if (horsSeance && bot != null && PlafondJour > 0 && (Maintenant() - dernierTick).TotalMinutes < 1
-                        && bot.VerifierPlafondHorsSeance(dernierPrix))
-                    {
-                        fermerHorsSeance = true;
-                        Dire($"plafond du jour atteint hors seance ({PlafondJour:F0} $) : RSI(2) ferme, plus de trade jusqu'a 18 h");
+                        plafondANoter = false;
+                        Dire($"plafond du jour atteint hors seance ({PlafondJour:F0} $) a {dernierPrix:F2} : RSI(2) ferme, plus de trade jusqu'a 18 h");
                         SauverEtat();
                     }
                     if (fermerHorsSeance && bot != null)
@@ -263,11 +278,10 @@ namespace Bot3en1
 
         void FermerMinute(int m, bool executer)
         {
-            foreach (var s in bot.MinuteFermee(m, barres[m]))
-            {
+            var signaux = bot.MinuteFermee(m, barres[m]);
+            foreach (var s in signaux)
                 if (executer) Dire(s.Texte);
-                if (executer && s.Source == "plafond") SauverEtat();
-            }
+            if (executer && signaux.Count > 0) SauverEtat();            // gain du jour realise : garde en cas de redemarrage
             // decision du RSI(2) a l'ouverture de sa minute (15 h 50), des que la minute d'avant est fermee
             if (m == bot.MinuteDecisionRsi - 1 && !decisionRsiFaite)
             {
@@ -336,6 +350,10 @@ namespace Bot3en1
             public bool RsiTenu { get; set; }
             public double EntreeRsi { get; set; }
             public string PlafondJournee { get; set; }      // journee de trading ou le plafond du jour a ete atteint
+            public string JourneeTrading { get; set; }      // journee de trading de l'enregistrement (de 18 h la veille a 17 h)
+            public double RealiseJour { get; set; }         // gain deja realise dans cette journee de trading
+            public double RefRsi { get; set; }              // reference du RSI(2) pour le gain du jour
+            public double PrixAvantPause { get; set; }      // dernier prix du NQ avant 17 h
         }
 
         Etat LireEtat()
@@ -348,7 +366,9 @@ namespace Bot3en1
         {
             if (bot == null) return;
             var e = new Etat { Jour = jour.ToString("yyyy-MM-dd"), RsiTenu = bot.Rsi == 1, EntreeRsi = bot.EntreeRsi,
-                               PlafondJournee = bot.Arret ? journeeTrading.ToString("yyyy-MM-dd") : null };
+                               PlafondJournee = bot.Arret ? journeeTrading.ToString("yyyy-MM-dd") : null,
+                               JourneeTrading = journeeTrading.ToString("yyyy-MM-dd"), RealiseJour = bot.RealiseJour,
+                               RefRsi = bot.RefRsi, PrixAvantPause = prixAvantPause };
             File.WriteAllText(Path.Combine(Dossier, "etat.json"), JsonSerializer.Serialize(e));
         }
 

@@ -5,13 +5,13 @@ NQ | W1 semaine de l'echeance des options | -0.03 | -0.01 | 8.7% | +2.54 | 159 |
 ES | W1 semaine de l'echeance des options | +0.19 | +0.06 | 16.7% | +2.49 | 154 | 22% | -1,586 | -5,624 | +0.07 | (descriptif)
 NQ | W2 semaines paires du cycle de la Fed | +2.04 | +0.59 | 68.6% | +2.79 | 323 | 52% | +9,096 | -5,088 | +0.30 | elimine
 ES | W2 semaines paires du cycle de la Fed | +1.35 | +0.39 | 42.2% | +2.66 | 324 | 51% | +4,986 | -4,705 | +0.29 | (descriptif)
-NQ | W3 reequilibrage de fin de mois, achat | +1.85 | +0.53 | 91.8% | +2.10 | 20 | 3% | +4,782 | -1,578 | +0.06 | elimine
-ES | W3 reequilibrage de fin de mois, achat | +1.99 | +0.57 | 94.3% | +2.08 | 20 | 3% | +3,465 | -926 | +0.06 | (descriptif)
-NQ | W4 reequilibrage de fin de mois, vente | -0.43 | -0.13 | 57.3% | +1.01 | 22 | 3% | -404 | -3,406 | -0.08 | elimine
-ES | W4 reequilibrage de fin de mois, vente | -0.63 | -0.18 | 49.5% | +1.03 | 22 | 3% | -445 | -1,829 | -0.07 | (descriptif)
+NQ | W3 reequilibrage de fin de mois, achat | +1.59 | +0.46 | 87.9% | +2.10 | 20 | 3% | +4,170 | -1,578 | +0.06 | elimine
+ES | W3 reequilibrage de fin de mois, achat | +1.76 | +0.51 | 91.0% | +2.08 | 20 | 3% | +3,010 | -926 | +0.06 | (descriptif)
+NQ | W4 reequilibrage de fin de mois, vente | -0.44 | -0.13 | 57.2% | +1.00 | 24 | 3% | -440 | -3,452 | -0.09 | elimine
+ES | W4 reequilibrage de fin de mois, vente | -0.70 | -0.20 | 48.0% | +0.97 | 24 | 3% | -520 | -1,911 | -0.08 | (descriptif)
 NQ | W5 RSI(2) vendeur | +0.70 | +0.20 | 93.3% | +0.86 | 23 | 3% | +2,895 | -2,291 | -0.00 | elimine
 ES | W5 RSI(2) vendeur | +0.65 | +0.19 | 92.1% | +0.85 | 25 | 3% | +1,721 | -1,352 | -0.00 | (descriptif)
-NQ | W6 ecart NQ / ES | +0.72 | +0.21 | 76.5% | +1.38 | 164 | 37% | +2,363 | -2,367 | +0.23 | elimine
+NQ | W6 ecart NQ / ES | +0.72 | +0.21 | 76.5% | +1.38 | 164 | 37% | +1,343 | -2,522 | +0.23 | elimine
 NQ | W7 novembre - avril | +1.62 | +0.47 | 24.7% | +3.23 | 37 | 48% | +5,344 | -9,596 | +0.27 | elimine
 ES | W7 novembre - avril | +2.06 | +0.60 | 55.6% | +3.14 | 37 | 48% | +8,342 | -5,044 | +0.24 | (descriptif)
 

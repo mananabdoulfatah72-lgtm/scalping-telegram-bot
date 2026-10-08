@@ -61,6 +61,14 @@ class Program
         b4.ArreterJusqua18h();
         Verifier(b4.Arret, "redemarrage : arret jusqu'a 18 h retabli");
 
+        // 7. redemarrage en cours de journee : gain deja realise (+400 $) et reference du RSI(2) repris
+        var b5 = Nouveau(500);
+        b5.RestaurerRsi(true, 100);
+        b5.RestaurerJournee(400, 200, false);
+        Verifier(Proche(b5.ValeurJour(240), 480), "redemarrage : +400 $ realises + 40 points du RSI(2) depuis sa reference = +480 $");
+        Verifier(!b5.VerifierPlafondHorsSeance(240) && b5.VerifierPlafondHorsSeance(250),
+                 "redemarrage : le plafond tient compte du gain deja realise (+500 $ atteint a 250)");
+
         Console.WriteLine(echecs == 0 ? "tous les controles passent" : $"{echecs} echec(s)");
         return echecs == 0 ? 0 : 1;
     }
