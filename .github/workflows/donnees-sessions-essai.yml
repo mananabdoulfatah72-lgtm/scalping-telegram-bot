@@ -1,0 +1,22 @@
+name: Donnees sessions 24 h (essai court)
+
+on:
+  push:
+    branches: [claude/keen-babbage-r686cl]
+    paths:
+      - sessions24/essai.sh
+      - .github/workflows/donnees-sessions-essai.yml
+
+jobs:
+  essai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Essai
+        run: bash sessions24/essai.sh
