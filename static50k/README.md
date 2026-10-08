@@ -146,6 +146,19 @@ coussin a grandi. Aucune n'a été choisie en regardant un résultat.
   rejoué au niveau d'aujourd'hui, avec les mêmes départs de vérification. On mesure l'argent net en 12 mois de la même
   façon (retraits − coûts).
 
+## Précisions écrites pendant le codage, avant tout résultat
+
+- **Entrée du RSI(2)** : à chaque décision où la règle veut la position et où le bot est à plat, il entre si la
+  condition de sa variante est remplie à ce moment-là (coussin, taille, instrument). Il peut donc entrer à une
+  décision plus tardive du même signal, si le coussin a grandi entre-temps. C'est ce que fait déjà le moteur de
+  `protection/`. Exceptions : au départ du compte Pro, et juste après un plafond du jour, le RSI(2) attend la décision
+  suivante (Pro : un nouveau signal d'achat).
+- **Changement d'échéance de l'ES** : il ne tombe pas toujours le même jour que celui du NQ (12 fois sur 63 depuis
+  2011). Sur MES, le RSI(2) est donc aussi fermé à la décision qui précède un changement d'échéance de l'ES, et il
+  n'entre pas ce jour-là.
+- **Barres d'une heure** : on garde celles du même contrat que la séance (barres de 16 h et 17 h) ou que la séance
+  suivante (nuit). Une heure absente ne bouge pas le compte.
+
 ## Contrôles avant d'y croire (`test_static.py`)
 
 1. Au prix de l'époque, sans plancher, le moteur redonne le gain de la zone et du RSI(2) d'origine (+10 668,5 $ et
