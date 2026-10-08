@@ -44,7 +44,12 @@ class Marche:
     def __init__(self, code, d=None):
         self.code = code
         if d is None:
-            d = pd.read_csv(DONNEES / f"{code}_5m.csv.gz")
+            f = DONNEES / f"{code}_5m.csv.gz"
+            if f.exists():
+                d = pd.read_csv(f)
+            else:                                                   # une annee par fichier (sessions24/annees/)
+                d = pd.concat([pd.read_csv(x) for x in sorted((ICI / "annees").glob(f"{code}_*_5m.csv.gz"))])
+                d = d.drop_duplicates("t", keep="last").sort_values("t")
         t = pd.to_datetime(d["t"], utc=True)
         self.t0 = pd.Timestamp(DEBUT, tz="UTC")
         fin = t.max().floor("D") + pd.Timedelta(days=1)
