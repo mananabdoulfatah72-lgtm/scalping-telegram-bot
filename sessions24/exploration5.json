@@ -1,0 +1,2846 @@
+[
+ {
+  "t": -6.96,
+  "jours": 2845,
+  "rend_moyen_pb": -1.02,
+  "dollars_1_contrat": -42489.0,
+  "sous_periodes": [
+   -946.2,
+   -1537.2,
+   -429.8
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 avant eurusd",
+  "famille": "F1",
+  "p": 0.5146443514644351,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.46,
+  "jours": 2851,
+  "rend_moyen_pb": -0.88,
+  "dollars_1_contrat": -37175.0,
+  "sous_periodes": [
+   -966.0,
+   -944.5,
+   -607.4
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 apres eurusd",
+  "famille": "F1",
+  "p": 0.35564853556485354,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -9.02,
+  "jours": 2851,
+  "rend_moyen_pb": -1.9,
+  "dollars_1_contrat": -79664.0,
+  "sous_periodes": [
+   -1912.2,
+   -2481.7,
+   -1037.2
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 les deux eurusd",
+  "famille": "F1",
+  "p": 0.3179916317991632,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.46,
+  "jours": 2850,
+  "rend_moyen_pb": -0.33,
+  "dollars_1_contrat": -13486.0,
+  "sous_periodes": [
+   349.3,
+   -829.2,
+   -471.4
+  ],
+  "nom": "F1 fixing BCE 14 h 15 avant eurusd",
+  "famille": "F1",
+  "p": 0.0,
+  "placebos": 239,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -3.02,
+  "jours": 2850,
+  "rend_moyen_pb": -1.11,
+  "dollars_1_contrat": -47344.0,
+  "sous_periodes": [
+   -945.4,
+   -1386.4,
+   -841.1
+  ],
+  "nom": "F1 fixing BCE 14 h 15 apres eurusd",
+  "famille": "F1",
+  "p": 0.0,
+  "placebos": 239,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -3.33,
+  "jours": 2850,
+  "rend_moyen_pb": -1.45,
+  "dollars_1_contrat": -60830.0,
+  "sous_periodes": [
+   -596.0,
+   -2215.6,
+   -1312.5
+  ],
+  "nom": "F1 fixing BCE 14 h 15 les deux eurusd",
+  "famille": "F1",
+  "p": 0.0,
+  "placebos": 239,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -4.11,
+  "jours": 2850,
+  "rend_moyen_pb": -1.26,
+  "dollars_1_contrat": -51352.0,
+  "sous_periodes": [
+   -1319.1,
+   -1346.4,
+   -924.3
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h avant eurusd",
+  "famille": "F1",
+  "p": 0.0502092050209205,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.58,
+  "jours": 2850,
+  "rend_moyen_pb": -0.98,
+  "dollars_1_contrat": -41367.0,
+  "sous_periodes": [
+   -673.7,
+   -1261.7,
+   -864.6
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h apres eurusd",
+  "famille": "F1",
+  "p": 0.04602510460251046,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.83,
+  "jours": 2850,
+  "rend_moyen_pb": -2.24,
+  "dollars_1_contrat": -92719.0,
+  "sous_periodes": [
+   -1992.8,
+   -2608.1,
+   -1788.9
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h les deux eurusd",
+  "famille": "F1",
+  "p": 0.04184100418410042,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.39,
+  "jours": 2845,
+  "rend_moyen_pb": -0.98,
+  "dollars_1_contrat": -24637.0,
+  "sous_periodes": [
+   -973.8,
+   -1444.8,
+   -372.7
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 avant gbpusd",
+  "famille": "F1",
+  "p": 0.47280334728033474,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -7.0,
+  "jours": 2851,
+  "rend_moyen_pb": -1.07,
+  "dollars_1_contrat": -26456.0,
+  "sous_periodes": [
+   -966.2,
+   -1494.6,
+   -593.9
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 apres gbpusd",
+  "famille": "F1",
+  "p": 0.5983263598326359,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -9.34,
+  "jours": 2851,
+  "rend_moyen_pb": -2.05,
+  "dollars_1_contrat": -51093.0,
+  "sous_periodes": [
+   -1940.0,
+   -2939.4,
+   -966.6
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 les deux gbpusd",
+  "famille": "F1",
+  "p": 0.5690376569037657,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.22,
+  "jours": 2850,
+  "rend_moyen_pb": -1.25,
+  "dollars_1_contrat": -30224.0,
+  "sous_periodes": [
+   -885.6,
+   -1565.4,
+   -1106.5
+  ],
+  "nom": "F1 fixing BCE 14 h 15 avant gbpusd",
+  "famille": "F1",
+  "p": 0.19246861924686193,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.48,
+  "jours": 2850,
+  "rend_moyen_pb": -1.74,
+  "dollars_1_contrat": -43576.0,
+  "sous_periodes": [
+   -1423.0,
+   -2434.3,
+   -1103.1
+  ],
+  "nom": "F1 fixing BCE 14 h 15 apres gbpusd",
+  "famille": "F1",
+  "p": 0.15481171548117154,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -7.4,
+  "jours": 2850,
+  "rend_moyen_pb": -2.99,
+  "dollars_1_contrat": -73800.0,
+  "sous_periodes": [
+   -2308.6,
+   -3999.7,
+   -2209.6
+  ],
+  "nom": "F1 fixing BCE 14 h 15 les deux gbpusd",
+  "famille": "F1",
+  "p": 0.16317991631799164,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.56,
+  "jours": 2849,
+  "rend_moyen_pb": -1.53,
+  "dollars_1_contrat": -36520.0,
+  "sous_periodes": [
+   -1050.8,
+   -2408.0,
+   -902.9
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h avant gbpusd",
+  "famille": "F1",
+  "p": 0.1506276150627615,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.85,
+  "jours": 2850,
+  "rend_moyen_pb": -1.2,
+  "dollars_1_contrat": -30262.0,
+  "sous_periodes": [
+   -1033.6,
+   -1855.0,
+   -521.7
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h apres gbpusd",
+  "famille": "F1",
+  "p": 0.04184100418410042,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.33,
+  "jours": 2850,
+  "rend_moyen_pb": -2.73,
+  "dollars_1_contrat": -66781.0,
+  "sous_periodes": [
+   -2084.4,
+   -4263.0,
+   -1424.5
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h les deux gbpusd",
+  "famille": "F1",
+  "p": 0.0502092050209205,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.18,
+  "jours": 2846,
+  "rend_moyen_pb": -0.78,
+  "dollars_1_contrat": -27563.0,
+  "sous_periodes": [
+   -833.5,
+   -886.9,
+   -504.6
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 avant usdjpy",
+  "famille": "F1",
+  "p": 0.02092050209205021,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.68,
+  "jours": 2852,
+  "rend_moyen_pb": -0.15,
+  "dollars_1_contrat": -5024.0,
+  "sous_periodes": [
+   -518.9,
+   -52.2,
+   148.2
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 apres usdjpy",
+  "famille": "F1",
+  "p": 0.0,
+  "placebos": 239,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -2.81,
+  "jours": 2852,
+  "rend_moyen_pb": -0.93,
+  "dollars_1_contrat": -32587.0,
+  "sous_periodes": [
+   -1352.4,
+   -939.1,
+   -356.3
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 les deux usdjpy",
+  "famille": "F1",
+  "p": 0.0,
+  "placebos": 239,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -4.86,
+  "jours": 2850,
+  "rend_moyen_pb": -0.96,
+  "dollars_1_contrat": -29988.0,
+  "sous_periodes": [
+   -511.4,
+   -1405.4,
+   -810.7
+  ],
+  "nom": "F1 fixing BCE 14 h 15 avant usdjpy",
+  "famille": "F1",
+  "p": 0.04184100418410042,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.18,
+  "jours": 2850,
+  "rend_moyen_pb": -1.77,
+  "dollars_1_contrat": -60572.0,
+  "sous_periodes": [
+   -1808.8,
+   -2055.4,
+   -1189.2
+  ],
+  "nom": "F1 fixing BCE 14 h 15 apres usdjpy",
+  "famille": "F1",
+  "p": 0.10460251046025104,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.97,
+  "jours": 2850,
+  "rend_moyen_pb": -2.73,
+  "dollars_1_contrat": -90560.0,
+  "sous_periodes": [
+   -2320.2,
+   -3460.8,
+   -1999.9
+  ],
+  "nom": "F1 fixing BCE 14 h 15 les deux usdjpy",
+  "famille": "F1",
+  "p": 0.0041841004184100415,
+  "placebos": 239,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -6.92,
+  "jours": 2849,
+  "rend_moyen_pb": -2.0,
+  "dollars_1_contrat": -69122.0,
+  "sous_periodes": [
+   -2185.9,
+   -2985.6,
+   -520.3
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h avant usdjpy",
+  "famille": "F1",
+  "p": 0.41422594142259417,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -7.1,
+  "jours": 2850,
+  "rend_moyen_pb": -1.59,
+  "dollars_1_contrat": -55696.0,
+  "sous_periodes": [
+   -1750.0,
+   -1959.4,
+   -813.1
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h apres usdjpy",
+  "famille": "F1",
+  "p": 0.37656903765690375,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -9.84,
+  "jours": 2850,
+  "rend_moyen_pb": -3.58,
+  "dollars_1_contrat": -124818.0,
+  "sous_periodes": [
+   -3935.9,
+   -4945.0,
+   -1333.4
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h les deux usdjpy",
+  "famille": "F1",
+  "p": 0.39330543933054396,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.93,
+  "jours": 2845,
+  "rend_moyen_pb": -0.29,
+  "dollars_1_contrat": -6210.0,
+  "sous_periodes": [
+   -1061.7,
+   -765.7,
+   1010.3
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 avant audusd",
+  "famille": "F1",
+  "p": 0.0,
+  "placebos": 239,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -2.3,
+  "jours": 2851,
+  "rend_moyen_pb": -0.75,
+  "dollars_1_contrat": -16998.0,
+  "sous_periodes": [
+   -761.3,
+   -1120.9,
+   -243.9
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 apres audusd",
+  "famille": "F1",
+  "p": 0.0,
+  "placebos": 239,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -2.2,
+  "jours": 2851,
+  "rend_moyen_pb": -1.03,
+  "dollars_1_contrat": -23208.0,
+  "sous_periodes": [
+   -1823.0,
+   -1886.6,
+   766.3
+  ],
+  "nom": "F1 fixing Tokyo 9 h 55 les deux audusd",
+  "famille": "F1",
+  "p": 0.0,
+  "placebos": 239,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -5.16,
+  "jours": 2850,
+  "rend_moyen_pb": -1.21,
+  "dollars_1_contrat": -26580.0,
+  "sous_periodes": [
+   -774.1,
+   -1395.6,
+   -1270.8
+  ],
+  "nom": "F1 fixing BCE 14 h 15 avant audusd",
+  "famille": "F1",
+  "p": 0.28870292887029286,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.5,
+  "jours": 2850,
+  "rend_moyen_pb": -2.05,
+  "dollars_1_contrat": -47998.0,
+  "sous_periodes": [
+   -3106.0,
+   -1847.9,
+   -883.6
+  ],
+  "nom": "F1 fixing BCE 14 h 15 apres audusd",
+  "famille": "F1",
+  "p": 0.36401673640167365,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -7.24,
+  "jours": 2850,
+  "rend_moyen_pb": -3.26,
+  "dollars_1_contrat": -74579.0,
+  "sous_periodes": [
+   -3880.0,
+   -3243.5,
+   -2154.4
+  ],
+  "nom": "F1 fixing BCE 14 h 15 les deux audusd",
+  "famille": "F1",
+  "p": 0.2301255230125523,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.6,
+  "jours": 2849,
+  "rend_moyen_pb": -1.66,
+  "dollars_1_contrat": -37187.0,
+  "sous_periodes": [
+   -1826.4,
+   -1673.7,
+   -1215.7
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h avant audusd",
+  "famille": "F1",
+  "p": 0.20920502092050208,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.26,
+  "jours": 2850,
+  "rend_moyen_pb": -1.65,
+  "dollars_1_contrat": -37761.0,
+  "sous_periodes": [
+   -1733.7,
+   -1847.6,
+   -1128.6
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h apres audusd",
+  "famille": "F1",
+  "p": 0.5648535564853556,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -7.19,
+  "jours": 2850,
+  "rend_moyen_pb": -3.31,
+  "dollars_1_contrat": -74948.0,
+  "sous_periodes": [
+   -3560.1,
+   -3521.3,
+   -2344.3
+  ],
+  "nom": "F1 fixing WM/Reuters 16 h les deux audusd",
+  "famille": "F1",
+  "p": 0.2384937238493724,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.59,
+  "jours": 2821,
+  "rend_moyen_pb": -1.53,
+  "dollars_1_contrat": -3963.0,
+  "sous_periodes": [
+   -2932.5,
+   -1608.9,
+   219.0
+  ],
+  "nom": "F2 Europe 08:00-09:00 usatechidxusd",
+  "famille": "F2",
+  "p": 0.3682008368200837,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.66,
+  "jours": 1185,
+  "rend_moyen_pb": -1.32,
+  "dollars_1_contrat": -1158.0,
+  "sous_periodes": [
+   -1114.8,
+   -508.3,
+   58.0
+  ],
+  "nom": "F2 Europe 08:00-09:00 apres baisse de NY usatechidxusd",
+  "famille": "F2",
+  "p": 0.27615062761506276,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -7.05,
+  "jours": 2821,
+  "rend_moyen_pb": -3.05,
+  "dollars_1_contrat": -8764.0,
+  "sous_periodes": [
+   -4527.5,
+   -3318.3,
+   -762.4
+  ],
+  "nom": "F2 Europe 09:00-10:00 usatechidxusd",
+  "famille": "F2",
+  "p": 0.5983263598326359,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.23,
+  "jours": 1186,
+  "rend_moyen_pb": -2.89,
+  "dollars_1_contrat": -2375.0,
+  "sous_periodes": [
+   -2094.2,
+   -1915.2,
+   576.8
+  ],
+  "nom": "F2 Europe 09:00-10:00 apres baisse de NY usatechidxusd",
+  "famille": "F2",
+  "p": 0.502092050209205,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.18,
+  "jours": 2818,
+  "rend_moyen_pb": -1.71,
+  "dollars_1_contrat": -4279.0,
+  "sous_periodes": [
+   -2872.2,
+   -2333.7,
+   387.8
+  ],
+  "nom": "F2 Europe 08:00-10:00 usatechidxusd",
+  "famille": "F2",
+  "p": 0.3807531380753138,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.62,
+  "jours": 1185,
+  "rend_moyen_pb": -1.33,
+  "dollars_1_contrat": 12.0,
+  "sous_periodes": [
+   -1264.1,
+   -1332.5,
+   1017.4
+  ],
+  "nom": "F2 Europe 08:00-10:00 apres baisse de NY usatechidxusd",
+  "famille": "F2",
+  "p": 0.30962343096234307,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -9.22,
+  "jours": 2810,
+  "rend_moyen_pb": -2.72,
+  "dollars_1_contrat": -9139.0,
+  "sous_periodes": [
+   -3843.7,
+   -2878.9,
+   -909.1
+  ],
+  "nom": "F2 Europe 08:00-09:00 usa500idxusd",
+  "famille": "F2",
+  "p": 0.5523012552301255,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.61,
+  "jours": 1188,
+  "rend_moyen_pb": -2.37,
+  "dollars_1_contrat": -3394.0,
+  "sous_periodes": [
+   -1220.9,
+   -1120.5,
+   -472.0
+  ],
+  "nom": "F2 Europe 08:00-09:00 apres baisse de NY usa500idxusd",
+  "famille": "F2",
+  "p": 0.3472803347280335,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -9.95,
+  "jours": 2812,
+  "rend_moyen_pb": -3.82,
+  "dollars_1_contrat": -12547.0,
+  "sous_periodes": [
+   -5190.5,
+   -3750.5,
+   -1813.6
+  ],
+  "nom": "F2 Europe 09:00-10:00 usa500idxusd",
+  "famille": "F2",
+  "p": 0.5815899581589958,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.73,
+  "jours": 1188,
+  "rend_moyen_pb": -3.45,
+  "dollars_1_contrat": -4529.0,
+  "sous_periodes": [
+   -1951.8,
+   -1944.7,
+   -198.1
+  ],
+  "nom": "F2 Europe 09:00-10:00 apres baisse de NY usa500idxusd",
+  "famille": "F2",
+  "p": 0.401673640167364,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.41,
+  "jours": 2803,
+  "rend_moyen_pb": -2.6,
+  "dollars_1_contrat": -8821.0,
+  "sous_periodes": [
+   -3576.8,
+   -2945.9,
+   -774.0
+  ],
+  "nom": "F2 Europe 08:00-10:00 usa500idxusd",
+  "famille": "F2",
+  "p": 0.42677824267782427,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.61,
+  "jours": 1185,
+  "rend_moyen_pb": -1.9,
+  "dollars_1_contrat": -2544.0,
+  "sous_periodes": [
+   -851.4,
+   -1467.0,
+   66.2
+  ],
+  "nom": "F2 Europe 08:00-10:00 apres baisse de NY usa500idxusd",
+  "famille": "F2",
+  "p": 0.21338912133891214,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.3,
+  "jours": 2782,
+  "rend_moyen_pb": -2.19,
+  "dollars_1_contrat": -6842.0,
+  "sous_periodes": [
+   -3597.5,
+   -946.8,
+   -1544.3
+  ],
+  "nom": "F3 cassure Tokyo 30 min usatechidxusd",
+  "famille": "F3",
+  "p": 0.074,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.45,
+  "jours": 2681,
+  "rend_moyen_pb": -2.31,
+  "dollars_1_contrat": -7336.0,
+  "sous_periodes": [
+   -3345.7,
+   -1490.6,
+   -1362.5
+  ],
+  "nom": "F3 cassure Tokyo 60 min usatechidxusd",
+  "famille": "F3",
+  "p": 0.135,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.55,
+  "jours": 2811,
+  "rend_moyen_pb": -2.62,
+  "dollars_1_contrat": -5094.0,
+  "sous_periodes": [
+   -4630.2,
+   -1801.7,
+   -945.9
+  ],
+  "nom": "F3 cassure Londres 30 min usatechidxusd",
+  "famille": "F3",
+  "p": 0.391,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.84,
+  "jours": 2808,
+  "rend_moyen_pb": -3.14,
+  "dollars_1_contrat": -6526.0,
+  "sous_periodes": [
+   -4964.8,
+   -2621.5,
+   -1231.5
+  ],
+  "nom": "F3 cassure Londres 60 min usatechidxusd",
+  "famille": "F3",
+  "p": 0.57,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -7.67,
+  "jours": 2644,
+  "rend_moyen_pb": -3.56,
+  "dollars_1_contrat": -11707.0,
+  "sous_periodes": [
+   -4337.5,
+   -2975.3,
+   -2112.5
+  ],
+  "nom": "F3 cassure Tokyo 30 min usa500idxusd",
+  "famille": "F3",
+  "p": 0.286,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.24,
+  "jours": 2314,
+  "rend_moyen_pb": -3.34,
+  "dollars_1_contrat": -10424.0,
+  "sous_periodes": [
+   -2976.8,
+   -2208.0,
+   -2545.1
+  ],
+  "nom": "F3 cassure Tokyo 60 min usa500idxusd",
+  "famille": "F3",
+  "p": 0.221,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.89,
+  "jours": 2803,
+  "rend_moyen_pb": -3.31,
+  "dollars_1_contrat": -7260.0,
+  "sous_periodes": [
+   -6714.6,
+   -2534.0,
+   -33.2
+  ],
+  "nom": "F3 cassure Londres 30 min usa500idxusd",
+  "famille": "F3",
+  "p": 0.262,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.02,
+  "jours": 2783,
+  "rend_moyen_pb": -3.68,
+  "dollars_1_contrat": -8165.0,
+  "sous_periodes": [
+   -6849.9,
+   -3669.3,
+   272.6
+  ],
+  "nom": "F3 cassure Londres 60 min usa500idxusd",
+  "famille": "F3",
+  "p": 0.405,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -9.5,
+  "jours": 2813,
+  "rend_moyen_pb": -2.09,
+  "dollars_1_contrat": -86922.0,
+  "sous_periodes": [
+   -2244.8,
+   -2079.6,
+   -1568.6
+  ],
+  "nom": "F3 cassure Tokyo 30 min eurusd",
+  "famille": "F3",
+  "p": 0.997,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -8.28,
+  "jours": 2710,
+  "rend_moyen_pb": -1.85,
+  "dollars_1_contrat": -73675.0,
+  "sous_periodes": [
+   -1525.6,
+   -1937.7,
+   -1553.4
+  ],
+  "nom": "F3 cassure Tokyo 60 min eurusd",
+  "famille": "F3",
+  "p": 0.942,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.32,
+  "jours": 2839,
+  "rend_moyen_pb": -1.16,
+  "dollars_1_contrat": -45192.0,
+  "sous_periodes": [
+   -235.2,
+   -661.2,
+   -2391.9
+  ],
+  "nom": "F3 cassure Londres 30 min eurusd",
+  "famille": "F3",
+  "p": 0.23,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.18,
+  "jours": 2821,
+  "rend_moyen_pb": -1.12,
+  "dollars_1_contrat": -44617.0,
+  "sous_periodes": [
+   -376.4,
+   -927.9,
+   -1868.5
+  ],
+  "nom": "F3 cassure Londres 60 min eurusd",
+  "famille": "F3",
+  "p": 0.229,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.39,
+  "jours": 2802,
+  "rend_moyen_pb": -1.71,
+  "dollars_1_contrat": -71079.0,
+  "sous_periodes": [
+   -1793.4,
+   -2421.5,
+   -568.8
+  ],
+  "nom": "F3 cassure New York 30 min eurusd",
+  "famille": "F3",
+  "p": 0.699,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.34,
+  "jours": 2607,
+  "rend_moyen_pb": -2.07,
+  "dollars_1_contrat": -77968.0,
+  "sous_periodes": [
+   -1860.0,
+   -2210.0,
+   -1320.5
+  ],
+  "nom": "F3 cassure New York 60 min eurusd",
+  "famille": "F3",
+  "p": 0.923,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -8.19,
+  "jours": 2828,
+  "rend_moyen_pb": -2.43,
+  "dollars_1_contrat": -60106.0,
+  "sous_periodes": [
+   -2611.7,
+   -2218.7,
+   -2053.8
+  ],
+  "nom": "F3 cassure Tokyo 30 min gbpusd",
+  "famille": "F3",
+  "p": 1.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -7.95,
+  "jours": 2739,
+  "rend_moyen_pb": -2.12,
+  "dollars_1_contrat": -49619.0,
+  "sous_periodes": [
+   -1710.5,
+   -1960.8,
+   -2142.0
+  ],
+  "nom": "F3 cassure Tokyo 60 min gbpusd",
+  "famille": "F3",
+  "p": 0.994,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.14,
+  "jours": 2843,
+  "rend_moyen_pb": -0.08,
+  "dollars_1_contrat": -5030.0,
+  "sous_periodes": [
+   -1108.7,
+   663.6,
+   217.7
+  ],
+  "nom": "F3 cassure Londres 30 min gbpusd",
+  "famille": "F3",
+  "p": 0.013,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.43,
+  "jours": 2829,
+  "rend_moyen_pb": 0.27,
+  "dollars_1_contrat": 4021.0,
+  "sous_periodes": [
+   346.7,
+   -467.0,
+   875.4
+  ],
+  "nom": "F3 cassure Londres 60 min gbpusd",
+  "famille": "F3",
+  "p": 0.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -5.13,
+  "jours": 2813,
+  "rend_moyen_pb": -2.16,
+  "dollars_1_contrat": -54457.0,
+  "sous_periodes": [
+   -2497.7,
+   -2600.2,
+   -966.0
+  ],
+  "nom": "F3 cassure New York 30 min gbpusd",
+  "famille": "F3",
+  "p": 0.937,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.47,
+  "jours": 2652,
+  "rend_moyen_pb": -2.24,
+  "dollars_1_contrat": -53105.0,
+  "sous_periodes": [
+   -2519.2,
+   -1903.1,
+   -1513.7
+  ],
+  "nom": "F3 cassure New York 60 min gbpusd",
+  "famille": "F3",
+  "p": 0.959,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.97,
+  "jours": 2801,
+  "rend_moyen_pb": -0.99,
+  "dollars_1_contrat": -30435.0,
+  "sous_periodes": [
+   -764.7,
+   -1749.4,
+   -256.9
+  ],
+  "nom": "F3 cassure Tokyo 30 min usdjpy",
+  "famille": "F3",
+  "p": 0.073,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.35,
+  "jours": 2605,
+  "rend_moyen_pb": -1.17,
+  "dollars_1_contrat": -33201.0,
+  "sous_periodes": [
+   -442.1,
+   -1874.8,
+   -720.3
+  ],
+  "nom": "F3 cassure Tokyo 60 min usdjpy",
+  "famille": "F3",
+  "p": 0.189,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.89,
+  "jours": 2841,
+  "rend_moyen_pb": -0.43,
+  "dollars_1_contrat": -16451.0,
+  "sous_periodes": [
+   -1041.1,
+   -1270.4,
+   1100.7
+  ],
+  "nom": "F3 cassure Londres 30 min usdjpy",
+  "famille": "F3",
+  "p": 0.01,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -1.69,
+  "jours": 2815,
+  "rend_moyen_pb": -0.82,
+  "dollars_1_contrat": -28495.0,
+  "sous_periodes": [
+   -1676.4,
+   -1634.0,
+   1014.8
+  ],
+  "nom": "F3 cassure Londres 60 min usdjpy",
+  "famille": "F3",
+  "p": 0.087,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.91,
+  "jours": 2789,
+  "rend_moyen_pb": -1.92,
+  "dollars_1_contrat": -64358.0,
+  "sous_periodes": [
+   -2075.5,
+   -2147.4,
+   -1131.9
+  ],
+  "nom": "F3 cassure New York 30 min usdjpy",
+  "famille": "F3",
+  "p": 0.847,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.2,
+  "jours": 2582,
+  "rend_moyen_pb": -1.76,
+  "dollars_1_contrat": -53521.0,
+  "sous_periodes": [
+   -1969.0,
+   -1224.7,
+   -1360.5
+  ],
+  "nom": "F3 cassure New York 60 min usdjpy",
+  "famille": "F3",
+  "p": 0.73,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -7.51,
+  "jours": 2838,
+  "rend_moyen_pb": -2.99,
+  "dollars_1_contrat": -66956.0,
+  "sous_periodes": [
+   -2970.8,
+   -3154.8,
+   -2351.5
+  ],
+  "nom": "F3 cassure Tokyo 30 min audusd",
+  "famille": "F3",
+  "p": 1.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.45,
+  "jours": 2720,
+  "rend_moyen_pb": -2.27,
+  "dollars_1_contrat": -47639.0,
+  "sous_periodes": [
+   -1244.8,
+   -2936.2,
+   -1995.8
+  ],
+  "nom": "F3 cassure Tokyo 60 min audusd",
+  "famille": "F3",
+  "p": 0.967,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.45,
+  "jours": 2844,
+  "rend_moyen_pb": -1.37,
+  "dollars_1_contrat": -33821.0,
+  "sous_periodes": [
+   -1531.5,
+   -1896.4,
+   -481.3
+  ],
+  "nom": "F3 cassure Londres 30 min audusd",
+  "famille": "F3",
+  "p": 0.42,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.34,
+  "jours": 2831,
+  "rend_moyen_pb": -1.38,
+  "dollars_1_contrat": -33836.0,
+  "sous_periodes": [
+   -2543.0,
+   -1614.3,
+   255.4
+  ],
+  "nom": "F3 cassure Londres 60 min audusd",
+  "famille": "F3",
+  "p": 0.403,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.11,
+  "jours": 2810,
+  "rend_moyen_pb": -1.92,
+  "dollars_1_contrat": -42679.0,
+  "sous_periodes": [
+   -2524.7,
+   -1992.7,
+   -865.3
+  ],
+  "nom": "F3 cassure New York 30 min audusd",
+  "famille": "F3",
+  "p": 0.822,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.81,
+  "jours": 2653,
+  "rend_moyen_pb": -1.81,
+  "dollars_1_contrat": -37371.0,
+  "sous_periodes": [
+   -2213.6,
+   -1403.5,
+   -1193.4
+  ],
+  "nom": "F3 cassure New York 60 min audusd",
+  "famille": "F3",
+  "p": 0.739,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.48,
+  "jours": 2809,
+  "rend_moyen_pb": -2.06,
+  "dollars_1_contrat": -8382.0,
+  "sous_periodes": [
+   -1979.7,
+   -1859.6,
+   -1937.5
+  ],
+  "nom": "F3 cassure Tokyo 30 min xauusd",
+  "famille": "F3",
+  "p": 0.576,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.14,
+  "jours": 2751,
+  "rend_moyen_pb": -1.46,
+  "dollars_1_contrat": -5938.0,
+  "sous_periodes": [
+   -1504.9,
+   -1054.0,
+   -1462.1
+  ],
+  "nom": "F3 cassure Tokyo 60 min xauusd",
+  "famille": "F3",
+  "p": 0.133,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.92,
+  "jours": 2830,
+  "rend_moyen_pb": 0.84,
+  "dollars_1_contrat": 2715.0,
+  "sous_periodes": [
+   2672.3,
+   678.7,
+   -986.0
+  ],
+  "nom": "F3 cassure Londres 30 min xauusd",
+  "famille": "F3",
+  "p": 0.002,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -0.2,
+  "jours": 2817,
+  "rend_moyen_pb": -0.19,
+  "dollars_1_contrat": -1092.0,
+  "sous_periodes": [
+   464.6,
+   -171.8,
+   -820.7
+  ],
+  "nom": "F3 cassure Londres 60 min xauusd",
+  "famille": "F3",
+  "p": 0.021,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.37,
+  "jours": 2674,
+  "rend_moyen_pb": -0.31,
+  "dollars_1_contrat": -1011.0,
+  "sous_periodes": [
+   -172.9,
+   -324.7,
+   -321.4
+  ],
+  "nom": "F3 cassure New York 30 min xauusd",
+  "famille": "F3",
+  "p": 0.02,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.1,
+  "jours": 2408,
+  "rend_moyen_pb": -0.89,
+  "dollars_1_contrat": -3592.0,
+  "sous_periodes": [
+   -862.4,
+   252.6,
+   -1542.3
+  ],
+  "nom": "F3 cassure New York 60 min xauusd",
+  "famille": "F3",
+  "p": 0.079,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.83,
+  "jours": 2761,
+  "rend_moyen_pb": -3.46,
+  "dollars_1_contrat": -8154.0,
+  "sous_periodes": [
+   -3436.6,
+   -2904.8,
+   -3201.9
+  ],
+  "nom": "F3 cassure Tokyo 30 min lightcmdusd",
+  "famille": "F3",
+  "p": 0.34,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.11,
+  "jours": 2602,
+  "rend_moyen_pb": -2.61,
+  "dollars_1_contrat": -7070.0,
+  "sous_periodes": [
+   -2285.0,
+   -3729.2,
+   -765.3
+  ],
+  "nom": "F3 cassure Tokyo 60 min lightcmdusd",
+  "famille": "F3",
+  "p": 0.144,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.7,
+  "jours": 2826,
+  "rend_moyen_pb": 1.76,
+  "dollars_1_contrat": 988.0,
+  "sous_periodes": [
+   -2007.7,
+   -255.1,
+   7230.5
+  ],
+  "nom": "F3 cassure Londres 30 min lightcmdusd",
+  "famille": "F3",
+  "p": 0.011,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": 0.78,
+  "jours": 2821,
+  "rend_moyen_pb": 2.12,
+  "dollars_1_contrat": 874.0,
+  "sous_periodes": [
+   -2787.6,
+   2357.9,
+   6397.2
+  ],
+  "nom": "F3 cassure Londres 60 min lightcmdusd",
+  "famille": "F3",
+  "p": 0.011,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -1.14,
+  "jours": 2738,
+  "rend_moyen_pb": -2.67,
+  "dollars_1_contrat": -3580.0,
+  "sous_periodes": [
+   -949.0,
+   -1957.8,
+   -4414.1
+  ],
+  "nom": "F3 cassure New York 30 min lightcmdusd",
+  "famille": "F3",
+  "p": 0.293,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.75,
+  "jours": 2609,
+  "rend_moyen_pb": -1.73,
+  "dollars_1_contrat": -928.0,
+  "sous_periodes": [
+   339.1,
+   389.3,
+   -5248.6
+  ],
+  "nom": "F3 cassure New York 60 min lightcmdusd",
+  "famille": "F3",
+  "p": 0.176,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.53,
+  "jours": 2422,
+  "rend_moyen_pb": -2.48,
+  "dollars_1_contrat": -5987.0,
+  "sous_periodes": [
+   -3268.2,
+   -2059.1,
+   -667.7
+  ],
+  "nom": "F4 Asie -> Londres sortie 12:00 usatechidxusd",
+  "famille": "F4",
+  "p": 0.245,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.65,
+  "jours": 2773,
+  "rend_moyen_pb": -4.53,
+  "dollars_1_contrat": -17117.0,
+  "sous_periodes": [
+   -5114.2,
+   -2595.5,
+   -4859.9
+  ],
+  "nom": "F4 Asie -> Londres sortie 16:30 usatechidxusd",
+  "famille": "F4",
+  "p": 0.904,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.41,
+  "jours": 2252,
+  "rend_moyen_pb": -3.78,
+  "dollars_1_contrat": -10269.0,
+  "sous_periodes": [
+   -3867.4,
+   -2942.8,
+   -1693.9
+  ],
+  "nom": "F4 Asie -> Londres sortie 12:00 usa500idxusd",
+  "famille": "F4",
+  "p": 0.486,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.91,
+  "jours": 2567,
+  "rend_moyen_pb": -5.34,
+  "dollars_1_contrat": -16868.0,
+  "sous_periodes": [
+   -5006.9,
+   -4469.0,
+   -4236.2
+  ],
+  "nom": "F4 Asie -> Londres sortie 16:30 usa500idxusd",
+  "famille": "F4",
+  "p": 0.922,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.61,
+  "jours": 2672,
+  "rend_moyen_pb": -1.85,
+  "dollars_1_contrat": -73326.0,
+  "sous_periodes": [
+   -1678.4,
+   -2433.2,
+   -819.1
+  ],
+  "nom": "F4 Asie -> Londres sortie 12:00 eurusd",
+  "famille": "F4",
+  "p": 0.8,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.45,
+  "jours": 2819,
+  "rend_moyen_pb": -1.45,
+  "dollars_1_contrat": -60254.0,
+  "sous_periodes": [
+   -880.8,
+   -2927.1,
+   -287.5
+  ],
+  "nom": "F4 Asie -> Londres sortie 16:30 eurusd",
+  "famille": "F4",
+  "p": 0.46,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.73,
+  "jours": 2724,
+  "rend_moyen_pb": -1.72,
+  "dollars_1_contrat": -43042.0,
+  "sous_periodes": [
+   -2394.1,
+   -883.0,
+   -1419.8
+  ],
+  "nom": "F4 Asie -> Londres sortie 12:00 gbpusd",
+  "famille": "F4",
+  "p": 0.703,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.56,
+  "jours": 2813,
+  "rend_moyen_pb": -0.37,
+  "dollars_1_contrat": -12241.0,
+  "sous_periodes": [
+   -1732.0,
+   712.8,
+   -28.2
+  ],
+  "nom": "F4 Asie -> Londres sortie 16:30 gbpusd",
+  "famille": "F4",
+  "p": 0.05,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.03,
+  "jours": 2077,
+  "rend_moyen_pb": -0.45,
+  "dollars_1_contrat": -10052.0,
+  "sous_periodes": [
+   798.6,
+   -1710.3,
+   -17.8
+  ],
+  "nom": "F4 Asie -> Londres sortie 12:00 usdjpy",
+  "famille": "F4",
+  "p": 0.007,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": 1.21,
+  "jours": 2603,
+  "rend_moyen_pb": 0.74,
+  "dollars_1_contrat": 25692.0,
+  "sous_periodes": [
+   1880.2,
+   -1283.0,
+   1337.9
+  ],
+  "nom": "F4 Asie -> Londres sortie 16:30 usdjpy",
+  "famille": "F4",
+  "p": 0.0,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -2.22,
+  "jours": 2204,
+  "rend_moyen_pb": -1.11,
+  "dollars_1_contrat": -20531.0,
+  "sous_periodes": [
+   -629.2,
+   -2011.2,
+   185.0
+  ],
+  "nom": "F4 Asie -> Londres sortie 12:00 audusd",
+  "famille": "F4",
+  "p": 0.204,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.7,
+  "jours": 2630,
+  "rend_moyen_pb": -1.25,
+  "dollars_1_contrat": -27900.0,
+  "sous_periodes": [
+   -1459.1,
+   -1494.6,
+   -329.4
+  ],
+  "nom": "F4 Asie -> Londres sortie 16:30 audusd",
+  "famille": "F4",
+  "p": 0.367,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.17,
+  "jours": 2332,
+  "rend_moyen_pb": -0.76,
+  "dollars_1_contrat": -2486.0,
+  "sous_periodes": [
+   540.1,
+   -2027.4,
+   -287.5
+  ],
+  "nom": "F4 Asie -> Londres sortie 12:00 xauusd",
+  "famille": "F4",
+  "p": 0.022,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 1.06,
+  "jours": 2721,
+  "rend_moyen_pb": 1.2,
+  "dollars_1_contrat": 4780.0,
+  "sous_periodes": [
+   3316.6,
+   -908.9,
+   848.8
+  ],
+  "nom": "F4 Asie -> Londres sortie 16:30 xauusd",
+  "famille": "F4",
+  "p": 0.001,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -3.2,
+  "jours": 2593,
+  "rend_moyen_pb": -5.95,
+  "dollars_1_contrat": -10068.0,
+  "sous_periodes": [
+   -7244.7,
+   -8487.6,
+   294.9
+  ],
+  "nom": "F4 Asie -> Londres sortie 12:00 lightcmdusd",
+  "famille": "F4",
+  "p": 0.854,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.36,
+  "jours": 2790,
+  "rend_moyen_pb": -1.12,
+  "dollars_1_contrat": -4524.0,
+  "sous_periodes": [
+   -5847.0,
+   -6864.2,
+   9582.9
+  ],
+  "nom": "F4 Asie -> Londres sortie 16:30 lightcmdusd",
+  "famille": "F4",
+  "p": 0.181,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.73,
+  "jours": 2773,
+  "rend_moyen_pb": -1.14,
+  "dollars_1_contrat": -6310.0,
+  "sous_periodes": [
+   -846.6,
+   -1250.3,
+   -1058.6
+  ],
+  "nom": "F5 Tokyo -> Londres continuation usatechidxusd",
+  "famille": "F5",
+  "p": 0.134,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.91,
+  "jours": 2773,
+  "rend_moyen_pb": -4.57,
+  "dollars_1_contrat": -10328.0,
+  "sous_periodes": [
+   -7966.5,
+   -3861.9,
+   -844.9
+  ],
+  "nom": "F5 Tokyo -> Londres retournement usatechidxusd",
+  "famille": "F5",
+  "p": 0.865,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.46,
+  "jours": 2637,
+  "rend_moyen_pb": -2.83,
+  "dollars_1_contrat": -9619.0,
+  "sous_periodes": [
+   -2098.3,
+   -4427.5,
+   -950.0
+  ],
+  "nom": "F5 Londres -> New York continuation usatechidxusd",
+  "famille": "F5",
+  "p": 0.462,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.53,
+  "jours": 2637,
+  "rend_moyen_pb": -2.96,
+  "dollars_1_contrat": -6203.0,
+  "sous_periodes": [
+   -6579.9,
+   -459.4,
+   -773.6
+  ],
+  "nom": "F5 Londres -> New York retournement usatechidxusd",
+  "famille": "F5",
+  "p": 0.538,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.71,
+  "jours": 2613,
+  "rend_moyen_pb": -2.71,
+  "dollars_1_contrat": -7152.0,
+  "sous_periodes": [
+   -3128.3,
+   -3508.6,
+   -433.1
+  ],
+  "nom": "F5 New York -> Tokyo continuation usatechidxusd",
+  "famille": "F5",
+  "p": 0.415,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.25,
+  "jours": 2613,
+  "rend_moyen_pb": -3.1,
+  "dollars_1_contrat": -8526.0,
+  "sous_periodes": [
+   -5518.9,
+   -1316.3,
+   -1271.0
+  ],
+  "nom": "F5 New York -> Tokyo retournement usatechidxusd",
+  "famille": "F5",
+  "p": 0.584,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.35,
+  "jours": 2651,
+  "rend_moyen_pb": -3.03,
+  "dollars_1_contrat": -10821.0,
+  "sous_periodes": [
+   -3560.9,
+   -2888.5,
+   -1592.3
+  ],
+  "nom": "F5 Tokyo -> Londres continuation usa500idxusd",
+  "famille": "F5",
+  "p": 0.273,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.57,
+  "jours": 2651,
+  "rend_moyen_pb": -4.6,
+  "dollars_1_contrat": -13038.0,
+  "sous_periodes": [
+   -6025.5,
+   -4122.4,
+   -2056.1
+  ],
+  "nom": "F5 Tokyo -> Londres retournement usa500idxusd",
+  "famille": "F5",
+  "p": 0.727,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.08,
+  "jours": 2616,
+  "rend_moyen_pb": -3.14,
+  "dollars_1_contrat": -11342.0,
+  "sous_periodes": [
+   -2136.2,
+   -3154.4,
+   -2935.5
+  ],
+  "nom": "F5 Londres -> New York continuation usa500idxusd",
+  "famille": "F5",
+  "p": 0.324,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.06,
+  "jours": 2616,
+  "rend_moyen_pb": -4.63,
+  "dollars_1_contrat": -12202.0,
+  "sous_periodes": [
+   -7971.6,
+   -3760.7,
+   -378.0
+  ],
+  "nom": "F5 Londres -> New York retournement usa500idxusd",
+  "famille": "F5",
+  "p": 0.675,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.36,
+  "jours": 2517,
+  "rend_moyen_pb": -4.19,
+  "dollars_1_contrat": -11667.0,
+  "sous_periodes": [
+   -4303.0,
+   -5477.1,
+   -768.7
+  ],
+  "nom": "F5 New York -> Tokyo continuation usa500idxusd",
+  "famille": "F5",
+  "p": 0.676,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.37,
+  "jours": 2517,
+  "rend_moyen_pb": -3.53,
+  "dollars_1_contrat": -10986.0,
+  "sous_periodes": [
+   -5206.7,
+   -1172.7,
+   -2515.9
+  ],
+  "nom": "F5 New York -> Tokyo retournement usa500idxusd",
+  "famille": "F5",
+  "p": 0.324,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.97,
+  "jours": 2830,
+  "rend_moyen_pb": -0.73,
+  "dollars_1_contrat": -30857.0,
+  "sous_periodes": [
+   770.5,
+   -1912.3,
+   -928.8
+  ],
+  "nom": "F5 Tokyo -> Londres continuation eurusd",
+  "famille": "F5",
+  "p": 0.16,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.0,
+  "jours": 2830,
+  "rend_moyen_pb": -2.27,
+  "dollars_1_contrat": -94212.0,
+  "sous_periodes": [
+   -3845.5,
+   -1171.7,
+   -1402.2
+  ],
+  "nom": "F5 Tokyo -> Londres retournement eurusd",
+  "famille": "F5",
+  "p": 0.84,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.43,
+  "jours": 2826,
+  "rend_moyen_pb": -1.92,
+  "dollars_1_contrat": -80426.0,
+  "sous_periodes": [
+   -2252.2,
+   -1162.5,
+   -2004.6
+  ],
+  "nom": "F5 Londres -> New York continuation eurusd",
+  "famille": "F5",
+  "p": 0.743,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.93,
+  "jours": 2826,
+  "rend_moyen_pb": -1.08,
+  "dollars_1_contrat": -44489.0,
+  "sous_periodes": [
+   -837.8,
+   -1927.5,
+   -293.4
+  ],
+  "nom": "F5 Londres -> New York retournement eurusd",
+  "famille": "F5",
+  "p": 0.257,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -6.44,
+  "jours": 2811,
+  "rend_moyen_pb": -1.94,
+  "dollars_1_contrat": -80052.0,
+  "sous_periodes": [
+   -1912.5,
+   -1580.6,
+   -1970.2
+  ],
+  "nom": "F5 New York -> Tokyo continuation eurusd",
+  "famille": "F5",
+  "p": 0.927,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.5,
+  "jours": 2811,
+  "rend_moyen_pb": -1.06,
+  "dollars_1_contrat": -44227.0,
+  "sous_periodes": [
+   -1168.5,
+   -1494.4,
+   -306.8
+  ],
+  "nom": "F5 New York -> Tokyo retournement eurusd",
+  "famille": "F5",
+  "p": 0.073,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.02,
+  "jours": 2841,
+  "rend_moyen_pb": -1.72,
+  "dollars_1_contrat": -46461.0,
+  "sous_periodes": [
+   -2472.5,
+   -2543.1,
+   120.3
+  ],
+  "nom": "F5 Tokyo -> Londres continuation gbpusd",
+  "famille": "F5",
+  "p": 0.587,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.5,
+  "jours": 2841,
+  "rend_moyen_pb": -1.28,
+  "dollars_1_contrat": -28471.0,
+  "sous_periodes": [
+   -620.5,
+   -555.9,
+   -2451.3
+  ],
+  "nom": "F5 Tokyo -> Londres retournement gbpusd",
+  "famille": "F5",
+  "p": 0.413,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.98,
+  "jours": 2820,
+  "rend_moyen_pb": -0.57,
+  "dollars_1_contrat": -12919.0,
+  "sous_periodes": [
+   170.8,
+   -1601.1,
+   -170.2
+  ],
+  "nom": "F5 Londres -> New York continuation gbpusd",
+  "famille": "F5",
+  "p": 0.044,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.2,
+  "jours": 2820,
+  "rend_moyen_pb": -2.43,
+  "dollars_1_contrat": -61485.0,
+  "sous_periodes": [
+   -3254.8,
+   -1482.9,
+   -2121.8
+  ],
+  "nom": "F5 Londres -> New York retournement gbpusd",
+  "famille": "F5",
+  "p": 0.956,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -5.06,
+  "jours": 2809,
+  "rend_moyen_pb": -1.81,
+  "dollars_1_contrat": -44156.0,
+  "sous_periodes": [
+   -1475.6,
+   -2315.6,
+   -1297.7
+  ],
+  "nom": "F5 New York -> Tokyo continuation gbpusd",
+  "famille": "F5",
+  "p": 0.788,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.32,
+  "jours": 2809,
+  "rend_moyen_pb": -1.19,
+  "dollars_1_contrat": -29972.0,
+  "sous_periodes": [
+   -1602.4,
+   -750.4,
+   -985.3
+  ],
+  "nom": "F5 New York -> Tokyo retournement gbpusd",
+  "famille": "F5",
+  "p": 0.212,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.52,
+  "jours": 2843,
+  "rend_moyen_pb": 0.36,
+  "dollars_1_contrat": 13403.0,
+  "sous_periodes": [
+   1307.8,
+   899.9,
+   -1178.6
+  ],
+  "nom": "F5 Tokyo -> Londres continuation usdjpy",
+  "famille": "F5",
+  "p": 0.007,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -4.79,
+  "jours": 2843,
+  "rend_moyen_pb": -3.36,
+  "dollars_1_contrat": -113276.0,
+  "sous_periodes": [
+   -4406.8,
+   -3998.9,
+   -1152.4
+  ],
+  "nom": "F5 Tokyo -> Londres retournement usdjpy",
+  "famille": "F5",
+  "p": 0.993,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.13,
+  "jours": 2820,
+  "rend_moyen_pb": -1.2,
+  "dollars_1_contrat": -35566.0,
+  "sous_periodes": [
+   -1115.7,
+   -958.0,
+   -1304.5
+  ],
+  "nom": "F5 Londres -> New York continuation usdjpy",
+  "famille": "F5",
+  "p": 0.291,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.2,
+  "jours": 2820,
+  "rend_moyen_pb": -1.8,
+  "dollars_1_contrat": -63514.0,
+  "sous_periodes": [
+   -1965.3,
+   -2129.0,
+   -987.5
+  ],
+  "nom": "F5 Londres -> New York retournement usdjpy",
+  "famille": "F5",
+  "p": 0.709,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -4.85,
+  "jours": 2811,
+  "rend_moyen_pb": -2.46,
+  "dollars_1_contrat": -83425.0,
+  "sous_periodes": [
+   -2617.6,
+   -2936.8,
+   -1353.5
+  ],
+  "nom": "F5 New York -> Tokyo continuation usdjpy",
+  "famille": "F5",
+  "p": 0.981,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.07,
+  "jours": 2811,
+  "rend_moyen_pb": -0.54,
+  "dollars_1_contrat": -15337.0,
+  "sous_periodes": [
+   -457.4,
+   -138.2,
+   -929.5
+  ],
+  "nom": "F5 New York -> Tokyo retournement usdjpy",
+  "famille": "F5",
+  "p": 0.019,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.57,
+  "jours": 2842,
+  "rend_moyen_pb": -1.3,
+  "dollars_1_contrat": -30489.0,
+  "sous_periodes": [
+   -1509.6,
+   -187.2,
+   -2001.6
+  ],
+  "nom": "F5 Tokyo -> Londres continuation audusd",
+  "famille": "F5",
+  "p": 0.421,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.05,
+  "jours": 2842,
+  "rend_moyen_pb": -1.7,
+  "dollars_1_contrat": -37317.0,
+  "sous_periodes": [
+   -1589.4,
+   -2914.8,
+   -323.4
+  ],
+  "nom": "F5 Tokyo -> Londres retournement audusd",
+  "famille": "F5",
+  "p": 0.579,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.42,
+  "jours": 2821,
+  "rend_moyen_pb": -1.64,
+  "dollars_1_contrat": -38845.0,
+  "sous_periodes": [
+   -2428.1,
+   -1320.5,
+   -882.6
+  ],
+  "nom": "F5 Londres -> New York continuation audusd",
+  "famille": "F5",
+  "p": 0.572,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.0,
+  "jours": 2821,
+  "rend_moyen_pb": -1.36,
+  "dollars_1_contrat": -28511.0,
+  "sous_periodes": [
+   -661.9,
+   -1760.5,
+   -1409.4
+  ],
+  "nom": "F5 Londres -> New York retournement audusd",
+  "famille": "F5",
+  "p": 0.428,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.26,
+  "jours": 2808,
+  "rend_moyen_pb": -1.36,
+  "dollars_1_contrat": -26589.0,
+  "sous_periodes": [
+   9.9,
+   -2490.5,
+   -1344.6
+  ],
+  "nom": "F5 New York -> Tokyo continuation audusd",
+  "famille": "F5",
+  "p": 0.418,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.72,
+  "jours": 2808,
+  "rend_moyen_pb": -1.64,
+  "dollars_1_contrat": -40429.0,
+  "sous_periodes": [
+   -3078.9,
+   -584.5,
+   -935.4
+  ],
+  "nom": "F5 New York -> Tokyo retournement audusd",
+  "famille": "F5",
+  "p": 0.582,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.83,
+  "jours": 2827,
+  "rend_moyen_pb": -1.12,
+  "dollars_1_contrat": -4687.0,
+  "sous_periodes": [
+   -3006.2,
+   -237.8,
+   86.3
+  ],
+  "nom": "F5 Tokyo -> Londres continuation xauusd",
+  "famille": "F5",
+  "p": 0.281,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.14,
+  "jours": 2827,
+  "rend_moyen_pb": -2.88,
+  "dollars_1_contrat": -11817.0,
+  "sous_periodes": [
+   -1101.8,
+   -3870.2,
+   -3178.3
+  ],
+  "nom": "F5 Tokyo -> Londres retournement xauusd",
+  "famille": "F5",
+  "p": 0.719,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.21,
+  "jours": 2681,
+  "rend_moyen_pb": -1.41,
+  "dollars_1_contrat": -5190.0,
+  "sous_periodes": [
+   -916.9,
+   -3434.7,
+   560.3
+  ],
+  "nom": "F5 Londres -> New York continuation xauusd",
+  "famille": "F5",
+  "p": 0.301,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.21,
+  "jours": 2681,
+  "rend_moyen_pb": -2.59,
+  "dollars_1_contrat": -10418.0,
+  "sous_periodes": [
+   -3079.1,
+   -489.3,
+   -3364.3
+  ],
+  "nom": "F5 Londres -> New York retournement xauusd",
+  "famille": "F5",
+  "p": 0.699,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.2,
+  "jours": 2655,
+  "rend_moyen_pb": -1.44,
+  "dollars_1_contrat": -5587.0,
+  "sous_periodes": [
+   715.3,
+   -2794.0,
+   -1748.1
+  ],
+  "nom": "F5 New York -> Tokyo continuation xauusd",
+  "famille": "F5",
+  "p": 0.201,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.9,
+  "jours": 2655,
+  "rend_moyen_pb": -2.56,
+  "dollars_1_contrat": -9871.0,
+  "sous_periodes": [
+   -4687.3,
+   -1082.0,
+   -1023.9
+  ],
+  "nom": "F5 New York -> Tokyo retournement xauusd",
+  "famille": "F5",
+  "p": 0.799,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.05,
+  "jours": 2751,
+  "rend_moyen_pb": -4.07,
+  "dollars_1_contrat": -5763.0,
+  "sous_periodes": [
+   -10915.8,
+   -5223.8,
+   4943.0
+  ],
+  "nom": "F5 Tokyo -> Londres continuation lightcmdusd",
+  "famille": "F5",
+  "p": 0.506,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.01,
+  "jours": 2751,
+  "rend_moyen_pb": -3.93,
+  "dollars_1_contrat": -9281.0,
+  "sous_periodes": [
+   2947.8,
+   -2656.2,
+   -11103.0
+  ],
+  "nom": "F5 Tokyo -> Londres retournement lightcmdusd",
+  "famille": "F5",
+  "p": 0.494,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.77,
+  "jours": 2636,
+  "rend_moyen_pb": -2.48,
+  "dollars_1_contrat": -8515.0,
+  "sous_periodes": [
+   2599.4,
+   -6671.3,
+   -2458.4
+  ],
+  "nom": "F5 Londres -> New York continuation lightcmdusd",
+  "famille": "F5",
+  "p": 0.318,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.71,
+  "jours": 2636,
+  "rend_moyen_pb": -5.52,
+  "dollars_1_contrat": -5961.0,
+  "sous_periodes": [
+   -10511.4,
+   -936.7,
+   -3109.6
+  ],
+  "nom": "F5 Londres -> New York retournement lightcmdusd",
+  "famille": "F5",
+  "p": 0.682,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": 0.02,
+  "jours": 2588,
+  "rend_moyen_pb": 0.03,
+  "dollars_1_contrat": -2042.0,
+  "sous_periodes": [
+   -4189.5,
+   409.7,
+   3854.6
+  ],
+  "nom": "F5 New York -> Tokyo continuation lightcmdusd",
+  "famille": "F5",
+  "p": 0.009,
+  "placebos": 1000,
+  "testable": true,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -4.71,
+  "jours": 2588,
+  "rend_moyen_pb": -8.03,
+  "dollars_1_contrat": -12140.0,
+  "sous_periodes": [
+   -3506.5,
+   -7889.7,
+   -9382.6
+  ],
+  "nom": "F5 New York -> Tokyo retournement lightcmdusd",
+  "famille": "F5",
+  "p": 0.991,
+  "placebos": 1000,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.79,
+  "jours": 2817,
+  "rend_moyen_pb": -0.89,
+  "dollars_1_contrat": -4565.0,
+  "sous_periodes": [
+   -5255.0,
+   2316.1,
+   439.9
+  ],
+  "nom": "F6 or achat hors New York (18 h - 8 h 20)",
+  "famille": "F6",
+  "p": 0.3891213389121339,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.43,
+  "jours": 2780,
+  "rend_moyen_pb": -1.75,
+  "dollars_1_contrat": -6848.0,
+  "sous_periodes": [
+   -1590.8,
+   -1525.8,
+   -1746.3
+  ],
+  "nom": "F6 or vente heures COMEX (8 h 20 - 13 h 30)",
+  "famille": "F6",
+  "p": 0.3514644351464435,
+  "placebos": 239,
+  "testable": true,
+  "bh": false,
+  "survivante": false
+ }
+]

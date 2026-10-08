@@ -101,3 +101,31 @@ deux clôtures reste la meilleure source connue.
   en hiver sur tous les marchés, et la corrélation avec le NQ est de 1,000 en été et 0,999 en hiver.
 - Le pétrole (WTIUSD) s'arrête au 1er décembre 2023 chez HistData : ses stratégies ne pourront pas être jugées au
   coffre sur 4 années ; une survivante du pétrole serait déclarée « coffre incomplet ».
+
+## Résultats de l'exploration 2012 - 2022 (9 octobre 2026) : `exploration5.txt`
+
+**Aucune survivante sur 158 stratégies (toutes testables). Le coffre 2023 - 2026 n'est pas ouvert : il reste vierge.**
+
+- Aucune stratégie n'atteint t = 2 après frais. Les meilleures :
+
+| Stratégie | Avant frais, par jour | Frais | Après frais |
+|---|---|---|---|
+| F4 fourchette d'Asie cassée à Londres, yen, sortie 16 h 30 | +2,24 pb (t 3,64) | 1,50 pb | t 1,21 |
+| F4 fourchette d'Asie cassée à Londres, or, sortie 16 h 30 | +3,20 pb (t 2,82) | 2,00 pb | t 1,06 |
+| F3 cassure des 30 premières minutes de Londres, or | +2,84 pb (t 3,14) | 2,00 pb | t 0,92 |
+| F3 cassure des 60 premières minutes de Londres, livre | +1,77 pb (t 2,88) | 1,50 pb | t 0,43 |
+| F5 Tokyo → Londres, continuation, yen | +1,86 pb (t 2,65) | 1,50 pb | t 0,52 |
+
+- **Des phénomènes existent avant frais**, surtout autour de l'ouverture de Londres (cassure de la fourchette
+  d'Asie, cassure du début de séance, sur le yen, l'or et la livre). Les placebos le confirment : le sens choisi par
+  ces règles bat le hasard (p ≤ 0,01). Mais **ils sont deux à trois fois plus petits que les frais** d'un contrat de
+  futures (commission + 1 tick) : il ne reste presque rien après frais.
+- **Fixings de change** (F1, Krohn, Mueller, Whelan 2024) : le dollar monte bien avant le fixing de Tokyo (yen :
+  +0,72 pb avant frais, t 2,92), mais c'est la moitié des frais. Avant le fixing de Londres, l'effet est quasi nul
+  sur l'euro et la livre. Toutes les variantes perdent après frais (t de −0,7 à −4,9).
+- **Ouverture de Francfort** (F2) : le Nasdaq monte de 8 h à 10 h (+1,17 pb par jour avant frais, t 2,18), moins que
+  les frais d'un MNQ sur ces années (2,88 pb).
+- **D'une session à l'autre** (F5) et **l'or selon l'heure** (F6) : rien.
+
+**Conclusion selon la règle fixée** : aucune source ne remplace le RSI(2). Le RSI(2) entre deux clôtures
+(`intraday50k/`) reste la meilleure source connue pour un compte intraday.

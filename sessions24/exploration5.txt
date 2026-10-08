@@ -1,0 +1,162 @@
+Machine 5, exploration 2012 - 2022 : 158 strategies, 158 testables ; survivantes : 0
+couverture de la nuit (barre a 8 h, heure de Francfort) : usatechidxusd 98% ; usa500idxusd 98% -> F2 sur usatechidxusd HistData, usa500idxusd HistData
+
+strategie | t | p placebo | BH 10 % | sous-periodes (pb) | jours | $ pour 1 contrat | survivante
+F4 Asie -> Londres sortie 16:30 usdjpy | +1.21 | 0.000 | oui | +1880.2 / -1283.0 / +1337.9 | 2603 | +25,692 | 
+F4 Asie -> Londres sortie 16:30 xauusd | +1.06 | 0.001 | oui | +3316.6 / -908.9 / +848.8 | 2721 | +4,780 | 
+F3 cassure Londres 30 min xauusd | +0.92 | 0.002 | oui | +2672.3 / +678.7 / -986.0 | 2830 | +2,715 | 
+F3 cassure Londres 60 min lightcmdusd | +0.78 | 0.011 | oui | -2787.6 / +2357.9 / +6397.2 | 2821 | +874 | 
+F3 cassure Londres 30 min lightcmdusd | +0.70 | 0.011 | oui | -2007.7 / -255.1 / +7230.5 | 2826 | +988 | 
+F5 Tokyo -> Londres continuation usdjpy | +0.52 | 0.007 | oui | +1307.8 / +899.9 / -1178.6 | 2843 | +13,403 | 
+F3 cassure Londres 60 min gbpusd | +0.43 | 0.000 | oui | +346.7 / -467.0 / +875.4 | 2829 | +4,021 | 
+F5 New York -> Tokyo continuation lightcmdusd | +0.02 | 0.009 | oui | -4189.5 / +409.7 / +3854.6 | 2588 | -2,042 | 
+F3 cassure Londres 30 min gbpusd | -0.14 | 0.013 | non | -1108.7 / +663.6 / +217.7 | 2843 | -5,030 | 
+F3 cassure Londres 60 min xauusd | -0.20 | 0.021 | non | +464.6 / -171.8 / -820.7 | 2817 | -1,092 | 
+F4 Asie -> Londres sortie 16:30 lightcmdusd | -0.36 | 0.181 | non | -5847.0 / -6864.2 / +9582.9 | 2790 | -4,524 | 
+F3 cassure New York 30 min xauusd | -0.37 | 0.020 | non | -172.9 / -324.7 / -321.4 | 2674 | -1,011 | 
+F4 Asie -> Londres sortie 16:30 gbpusd | -0.56 | 0.050 | non | -1732.0 / +712.8 / -28.2 | 2813 | -12,241 | 
+F1 fixing Tokyo 9 h 55 apres usdjpy | -0.68 | 0.000 | oui | -518.9 / -52.2 / +148.2 | 2852 | -5,024 | 
+F5 Tokyo -> Londres continuation usatechidxusd | -0.73 | 0.134 | non | -846.6 / -1250.3 / -1058.6 | 2773 | -6,310 | 
+F3 cassure New York 60 min lightcmdusd | -0.75 | 0.176 | non | +339.1 / +389.3 / -5248.6 | 2609 | -928 | 
+F5 Londres -> New York continuation lightcmdusd | -0.77 | 0.318 | non | +2599.4 / -6671.3 / -2458.4 | 2636 | -8,515 | 
+F6 or achat hors New York (18 h - 8 h 20) | -0.79 | 0.389 | non | -5255.0 / +2316.1 / +439.9 | 2817 | -4,565 | 
+F5 Tokyo -> Londres continuation xauusd | -0.83 | 0.281 | non | -3006.2 / -237.8 / +86.3 | 2827 | -4,687 | 
+F3 cassure Londres 30 min usdjpy | -0.89 | 0.010 | oui | -1041.1 / -1270.4 / +1100.7 | 2841 | -16,451 | 
+F1 fixing Tokyo 9 h 55 avant audusd | -0.93 | 0.000 | oui | -1061.7 / -765.7 / +1010.3 | 2845 | -6,210 | 
+F5 Tokyo -> Londres continuation eurusd | -0.97 | 0.160 | non | +770.5 / -1912.3 / -928.8 | 2830 | -30,857 | 
+F5 Londres -> New York continuation gbpusd | -0.98 | 0.044 | non | +170.8 / -1601.1 / -170.2 | 2820 | -12,919 | 
+F5 Tokyo -> Londres retournement lightcmdusd | -1.01 | 0.494 | non | +2947.8 / -2656.2 / -11103.0 | 2751 | -9,281 | 
+F4 Asie -> Londres sortie 12:00 usdjpy | -1.03 | 0.007 | oui | +798.6 / -1710.3 / -17.8 | 2077 | -10,052 | 
+F5 Tokyo -> Londres continuation lightcmdusd | -1.05 | 0.506 | non | -10915.8 / -5223.8 / +4943.0 | 2751 | -5,763 | 
+F5 New York -> Tokyo retournement usdjpy | -1.07 | 0.019 | non | -457.4 / -138.2 / -929.5 | 2811 | -15,337 | 
+F3 cassure New York 60 min xauusd | -1.10 | 0.079 | non | -862.4 / +252.6 / -1542.3 | 2408 | -3,592 | 
+F3 cassure New York 30 min lightcmdusd | -1.14 | 0.293 | non | -949.0 / -1957.8 / -4414.1 | 2738 | -3,580 | 
+F4 Asie -> Londres sortie 12:00 xauusd | -1.17 | 0.022 | non | +540.1 / -2027.4 / -287.5 | 2332 | -2,486 | 
+F5 Londres -> New York continuation xauusd | -1.21 | 0.301 | non | -916.9 / -3434.7 / +560.3 | 2681 | -5,190 | 
+F6 or vente heures COMEX (8 h 20 - 13 h 30) | -1.43 | 0.351 | non | -1590.8 / -1525.8 / -1746.3 | 2780 | -6,848 | 
+F1 fixing BCE 14 h 15 avant eurusd | -1.46 | 0.000 | oui | +349.3 / -829.2 / -471.4 | 2850 | -13,486 | 
+F5 Londres -> New York continuation usatechidxusd | -1.46 | 0.462 | non | -2098.3 / -4427.5 / -950.0 | 2637 | -9,619 | 
+F5 Tokyo -> Londres retournement gbpusd | -1.50 | 0.413 | non | -620.5 / -555.9 / -2451.3 | 2841 | -28,471 | 
+F5 Londres -> New York retournement usatechidxusd | -1.53 | 0.538 | non | -6579.9 / -459.4 / -773.6 | 2637 | -6,203 | 
+F5 Tokyo -> Londres continuation audusd | -1.57 | 0.421 | non | -1509.6 / -187.2 / -2001.6 | 2842 | -30,489 | 
+F2 Europe 08:00-10:00 apres baisse de NY usatechidxusd | -1.62 | 0.310 | non | -1264.1 / -1332.5 / +1017.4 | 1185 | +12 | 
+F3 cassure Londres 60 min usdjpy | -1.69 | 0.087 | non | -1676.4 / -1634.0 / +1014.8 | 2815 | -28,495 | 
+F4 Asie -> Londres sortie 16:30 audusd | -1.70 | 0.367 | non | -1459.1 / -1494.6 / -329.4 | 2630 | -27,900 | 
+F5 Londres -> New York retournement lightcmdusd | -1.71 | 0.682 | non | -10511.4 / -936.7 / -3109.6 | 2636 | -5,961 | 
+F5 Londres -> New York retournement eurusd | -1.93 | 0.257 | non | -837.8 / -1927.5 / -293.4 | 2826 | -44,489 | 
+F5 Londres -> New York retournement audusd | -2.00 | 0.428 | non | -661.9 / -1760.5 / -1409.4 | 2821 | -28,511 | 
+F5 Tokyo -> Londres continuation gbpusd | -2.02 | 0.587 | non | -2472.5 / -2543.1 / +120.3 | 2841 | -46,461 | 
+F5 Tokyo -> Londres retournement audusd | -2.05 | 0.579 | non | -1589.4 / -2914.8 / -323.4 | 2842 | -37,317 | 
+F5 Londres -> New York continuation usa500idxusd | -2.08 | 0.324 | non | -2136.2 / -3154.4 / -2935.5 | 2616 | -11,342 | 
+F3 cassure Tokyo 60 min lightcmdusd | -2.11 | 0.144 | non | -2285.0 / -3729.2 / -765.3 | 2602 | -7,070 | 
+F5 Londres -> New York continuation usdjpy | -2.13 | 0.291 | non | -1115.7 / -958.0 / -1304.5 | 2820 | -35,566 | 
+F5 Tokyo -> Londres retournement xauusd | -2.14 | 0.719 | non | -1101.8 / -3870.2 / -3178.3 | 2827 | -11,817 | 
+F3 cassure Londres 60 min eurusd | -2.18 | 0.229 | non | -376.4 / -927.9 / -1868.5 | 2821 | -44,617 | 
+F1 fixing Tokyo 9 h 55 les deux audusd | -2.20 | 0.000 | oui | -1823.0 / -1886.6 / +766.3 | 2851 | -23,208 | 
+F5 New York -> Tokyo continuation xauusd | -2.20 | 0.201 | non | +715.3 / -2794.0 / -1748.1 | 2655 | -5,587 | 
+F5 Londres -> New York retournement xauusd | -2.21 | 0.699 | non | -3079.1 / -489.3 / -3364.3 | 2681 | -10,418 | 
+F4 Asie -> Londres sortie 12:00 audusd | -2.22 | 0.204 | non | -629.2 / -2011.2 / +185.0 | 2204 | -20,531 | 
+F5 New York -> Tokyo continuation audusd | -2.26 | 0.418 | non | +9.9 / -2490.5 / -1344.6 | 2808 | -26,589 | 
+F1 fixing Tokyo 9 h 55 apres audusd | -2.30 | 0.000 | oui | -761.3 / -1120.9 / -243.9 | 2851 | -16,998 | 
+F3 cassure Londres 30 min eurusd | -2.32 | 0.230 | non | -235.2 / -661.2 / -2391.9 | 2839 | -45,192 | 
+F3 cassure Londres 60 min audusd | -2.34 | 0.403 | non | -2543.0 / -1614.3 / +255.4 | 2831 | -33,836 | 
+F5 Tokyo -> Londres continuation usa500idxusd | -2.35 | 0.273 | non | -3560.9 / -2888.5 / -1592.3 | 2651 | -10,821 | 
+F5 Londres -> New York continuation audusd | -2.42 | 0.572 | non | -2428.1 / -1320.5 / -882.6 | 2821 | -38,845 | 
+F3 cassure Londres 30 min audusd | -2.45 | 0.420 | non | -1531.5 / -1896.4 / -481.3 | 2844 | -33,821 | 
+F4 Asie -> Londres sortie 16:30 eurusd | -2.45 | 0.460 | non | -880.8 / -2927.1 / -287.5 | 2819 | -60,254 | 
+F3 cassure Londres 30 min usatechidxusd | -2.55 | 0.391 | non | -4630.2 / -1801.7 / -945.9 | 2811 | -5,094 | 
+F2 Europe 08:00-10:00 apres baisse de NY usa500idxusd | -2.61 | 0.213 | non | -851.4 / -1467.0 / +66.2 | 1185 | -2,544 | 
+F2 Europe 08:00-09:00 apres baisse de NY usatechidxusd | -2.66 | 0.276 | non | -1114.8 / -508.3 / +58.0 | 1185 | -1,158 | 
+F5 New York -> Tokyo retournement audusd | -2.72 | 0.582 | non | -3078.9 / -584.5 / -935.4 | 2808 | -40,429 | 
+F1 fixing Tokyo 9 h 55 les deux usdjpy | -2.81 | 0.000 | oui | -1352.4 / -939.1 / -356.3 | 2852 | -32,587 | 
+F3 cassure Tokyo 30 min lightcmdusd | -2.83 | 0.340 | non | -3436.6 / -2904.8 / -3201.9 | 2761 | -8,154 | 
+F3 cassure Londres 60 min usatechidxusd | -2.84 | 0.570 | non | -4964.8 / -2621.5 / -1231.5 | 2808 | -6,526 | 
+F5 Tokyo -> Londres retournement usatechidxusd | -2.91 | 0.865 | non | -7966.5 / -3861.9 / -844.9 | 2773 | -10,328 | 
+F3 cassure Tokyo 30 min usdjpy | -2.97 | 0.073 | non | -764.7 / -1749.4 / -256.9 | 2801 | -30,435 | 
+F5 Tokyo -> Londres retournement eurusd | -3.00 | 0.840 | non | -3845.5 / -1171.7 / -1402.2 | 2830 | -94,212 | 
+F1 fixing BCE 14 h 15 apres eurusd | -3.02 | 0.000 | oui | -945.4 / -1386.4 / -841.1 | 2850 | -47,344 | 
+F5 Londres -> New York retournement usa500idxusd | -3.06 | 0.675 | non | -7971.6 / -3760.7 / -378.0 | 2616 | -12,202 | 
+F3 cassure Tokyo 60 min xauusd | -3.14 | 0.133 | non | -1504.9 / -1054.0 / -1462.1 | 2751 | -5,938 | 
+F1 fixing Tokyo 9 h 55 avant usdjpy | -3.18 | 0.021 | non | -833.5 / -886.9 / -504.6 | 2846 | -27,563 | 
+F2 Europe 08:00-10:00 usatechidxusd | -3.18 | 0.381 | non | -2872.2 / -2333.7 / +387.8 | 2818 | -4,279 | 
+F4 Asie -> Londres sortie 12:00 lightcmdusd | -3.20 | 0.854 | non | -7244.7 / -8487.6 / +294.9 | 2593 | -10,068 | 
+F5 Londres -> New York retournement usdjpy | -3.20 | 0.709 | non | -1965.3 / -2129.0 / -987.5 | 2820 | -63,514 | 
+F5 New York -> Tokyo retournement gbpusd | -3.32 | 0.212 | non | -1602.4 / -750.4 / -985.3 | 2809 | -29,972 | 
+F1 fixing BCE 14 h 15 les deux eurusd | -3.33 | 0.000 | oui | -596.0 / -2215.6 / -1312.5 | 2850 | -60,830 | 
+F3 cassure Tokyo 60 min usdjpy | -3.35 | 0.189 | non | -442.1 / -1874.8 / -720.3 | 2605 | -33,201 | 
+F5 Londres -> New York continuation eurusd | -3.43 | 0.743 | non | -2252.2 / -1162.5 / -2004.6 | 2826 | -80,426 | 
+F5 New York -> Tokyo retournement eurusd | -3.50 | 0.073 | non | -1168.5 / -1494.4 / -306.8 | 2811 | -44,227 | 
+F4 Asie -> Londres sortie 12:00 usatechidxusd | -3.53 | 0.245 | non | -3268.2 / -2059.1 / -667.7 | 2422 | -5,987 | 
+F5 Tokyo -> Londres retournement usa500idxusd | -3.57 | 0.727 | non | -6025.5 / -4122.4 / -2056.1 | 2651 | -13,038 | 
+F4 Asie -> Londres sortie 16:30 usatechidxusd | -3.65 | 0.904 | non | -5114.2 / -2595.5 / -4859.9 | 2773 | -17,117 | 
+F5 New York -> Tokyo continuation usatechidxusd | -3.71 | 0.415 | non | -3128.3 / -3508.6 / -433.1 | 2613 | -7,152 | 
+F4 Asie -> Londres sortie 12:00 gbpusd | -3.73 | 0.703 | non | -2394.1 / -883.0 / -1419.8 | 2724 | -43,042 | 
+F3 cassure New York 60 min audusd | -3.81 | 0.739 | non | -2213.6 / -1403.5 / -1193.4 | 2653 | -37,371 | 
+F3 cassure Londres 30 min usa500idxusd | -3.89 | 0.262 | non | -6714.6 / -2534.0 / -33.2 | 2803 | -7,260 | 
+F5 New York -> Tokyo retournement xauusd | -3.90 | 0.799 | non | -4687.3 / -1082.0 / -1023.9 | 2655 | -9,871 | 
+F3 cassure Londres 60 min usa500idxusd | -4.02 | 0.405 | non | -6849.9 / -3669.3 / +272.6 | 2783 | -8,165 | 
+F1 fixing WM/Reuters 16 h avant eurusd | -4.11 | 0.050 | non | -1319.1 / -1346.4 / -924.3 | 2850 | -51,352 | 
+F3 cassure New York 30 min audusd | -4.11 | 0.822 | non | -2524.7 / -1992.7 / -865.3 | 2810 | -42,679 | 
+F3 cassure New York 60 min usdjpy | -4.20 | 0.730 | non | -1969.0 / -1224.7 / -1360.5 | 2582 | -53,521 | 
+F5 Londres -> New York retournement gbpusd | -4.20 | 0.956 | non | -3254.8 / -1482.9 / -2121.8 | 2820 | -61,485 | 
+F2 Europe 09:00-10:00 apres baisse de NY usatechidxusd | -4.23 | 0.502 | non | -2094.2 / -1915.2 / +576.8 | 1186 | -2,375 | 
+F5 New York -> Tokyo retournement usatechidxusd | -4.25 | 0.584 | non | -5518.9 / -1316.3 / -1271.0 | 2613 | -8,526 | 
+F3 cassure Tokyo 30 min usatechidxusd | -4.30 | 0.074 | non | -3597.5 / -946.8 / -1544.3 | 2782 | -6,842 | 
+F3 cassure New York 30 min eurusd | -4.39 | 0.699 | non | -1793.4 / -2421.5 / -568.8 | 2802 | -71,079 | 
+F3 cassure Tokyo 60 min usatechidxusd | -4.45 | 0.135 | non | -3345.7 / -1490.6 / -1362.5 | 2681 | -7,336 | 
+F3 cassure Tokyo 30 min xauusd | -4.48 | 0.576 | non | -1979.7 / -1859.6 / -1937.5 | 2809 | -8,382 | 
+F1 fixing WM/Reuters 16 h avant gbpusd | -4.56 | 0.151 | non | -1050.8 / -2408.0 / -902.9 | 2849 | -36,520 | 
+F1 fixing WM/Reuters 16 h apres eurusd | -4.58 | 0.046 | non | -673.7 / -1261.7 / -864.6 | 2850 | -41,367 | 
+F2 Europe 08:00-09:00 usatechidxusd | -4.59 | 0.368 | non | -2932.5 / -1608.9 / +219.0 | 2821 | -3,963 | 
+F1 fixing WM/Reuters 16 h avant audusd | -4.60 | 0.209 | non | -1826.4 / -1673.7 / -1215.7 | 2849 | -37,187 | 
+F4 Asie -> Londres sortie 12:00 eurusd | -4.61 | 0.800 | non | -1678.4 / -2433.2 / -819.1 | 2672 | -73,326 | 
+F5 New York -> Tokyo retournement lightcmdusd | -4.71 | 0.991 | non | -3506.5 / -7889.7 / -9382.6 | 2588 | -12,140 | 
+F5 Tokyo -> Londres retournement usdjpy | -4.79 | 0.993 | non | -4406.8 / -3998.9 / -1152.4 | 2843 | -113,276 | 
+F1 fixing WM/Reuters 16 h apres gbpusd | -4.85 | 0.042 | non | -1033.6 / -1855.0 / -521.7 | 2850 | -30,262 | 
+F5 New York -> Tokyo continuation usdjpy | -4.85 | 0.981 | non | -2617.6 / -2936.8 / -1353.5 | 2811 | -83,425 | 
+F1 fixing BCE 14 h 15 avant usdjpy | -4.86 | 0.042 | non | -511.4 / -1405.4 / -810.7 | 2850 | -29,988 | 
+F3 cassure New York 30 min usdjpy | -4.91 | 0.847 | non | -2075.5 / -2147.4 / -1131.9 | 2789 | -64,358 | 
+F4 Asie -> Londres sortie 16:30 usa500idxusd | -4.91 | 0.922 | non | -5006.9 / -4469.0 / -4236.2 | 2567 | -16,868 | 
+F5 New York -> Tokyo continuation gbpusd | -5.06 | 0.788 | non | -1475.6 / -2315.6 / -1297.7 | 2809 | -44,156 | 
+F3 cassure New York 30 min gbpusd | -5.13 | 0.937 | non | -2497.7 / -2600.2 / -966.0 | 2813 | -54,457 | 
+F1 fixing BCE 14 h 15 avant audusd | -5.16 | 0.289 | non | -774.1 / -1395.6 / -1270.8 | 2850 | -26,580 | 
+F1 fixing BCE 14 h 15 apres usdjpy | -5.18 | 0.105 | non | -1808.8 / -2055.4 / -1189.2 | 2850 | -60,572 | 
+F1 fixing BCE 14 h 15 avant gbpusd | -5.22 | 0.192 | non | -885.6 / -1565.4 / -1106.5 | 2850 | -30,224 | 
+F3 cassure New York 60 min eurusd | -5.34 | 0.923 | non | -1860.0 / -2210.0 / -1320.5 | 2607 | -77,968 | 
+F5 New York -> Tokyo retournement usa500idxusd | -5.37 | 0.324 | non | -5206.7 / -1172.7 / -2515.9 | 2517 | -10,986 | 
+F2 Europe 08:00-10:00 usa500idxusd | -5.41 | 0.427 | non | -3576.8 / -2945.9 / -774.0 | 2803 | -8,821 | 
+F4 Asie -> Londres sortie 12:00 usa500idxusd | -5.41 | 0.486 | non | -3867.4 / -2942.8 / -1693.9 | 2252 | -10,269 | 
+F3 cassure Tokyo 60 min audusd | -5.45 | 0.967 | non | -1244.8 / -2936.2 / -1995.8 | 2720 | -47,639 | 
+F3 cassure New York 60 min gbpusd | -5.47 | 0.959 | non | -2519.2 / -1903.1 / -1513.7 | 2652 | -53,105 | 
+F1 fixing BCE 14 h 15 apres gbpusd | -5.48 | 0.155 | non | -1423.0 / -2434.3 / -1103.1 | 2850 | -43,576 | 
+F1 fixing BCE 14 h 15 apres audusd | -5.50 | 0.364 | non | -3106.0 / -1847.9 / -883.6 | 2850 | -47,998 | 
+F2 Europe 08:00-09:00 apres baisse de NY usa500idxusd | -5.61 | 0.347 | non | -1220.9 / -1120.5 / -472.0 | 1188 | -3,394 | 
+F2 Europe 09:00-10:00 apres baisse de NY usa500idxusd | -5.73 | 0.402 | non | -1951.8 / -1944.7 / -198.1 | 1188 | -4,529 | 
+F1 fixing WM/Reuters 16 h les deux eurusd | -5.83 | 0.042 | non | -1992.8 / -2608.1 / -1788.9 | 2850 | -92,719 | 
+F3 cassure Tokyo 60 min usa500idxusd | -6.24 | 0.221 | non | -2976.8 / -2208.0 / -2545.1 | 2314 | -10,424 | 
+F1 fixing WM/Reuters 16 h apres audusd | -6.26 | 0.565 | non | -1733.7 / -1847.6 / -1128.6 | 2850 | -37,761 | 
+F1 fixing WM/Reuters 16 h les deux gbpusd | -6.33 | 0.050 | non | -2084.4 / -4263.0 / -1424.5 | 2850 | -66,781 | 
+F5 New York -> Tokyo continuation usa500idxusd | -6.36 | 0.676 | non | -4303.0 / -5477.1 / -768.7 | 2517 | -11,667 | 
+F1 fixing Tokyo 9 h 55 avant gbpusd | -6.39 | 0.473 | non | -973.8 / -1444.8 / -372.7 | 2845 | -24,637 | 
+F5 New York -> Tokyo continuation eurusd | -6.44 | 0.927 | non | -1912.5 / -1580.6 / -1970.2 | 2811 | -80,052 | 
+F1 fixing Tokyo 9 h 55 apres eurusd | -6.46 | 0.356 | non | -966.0 / -944.5 / -607.4 | 2851 | -37,175 | 
+F1 fixing WM/Reuters 16 h avant usdjpy | -6.92 | 0.414 | non | -2185.9 / -2985.6 / -520.3 | 2849 | -69,122 | 
+F1 fixing Tokyo 9 h 55 avant eurusd | -6.96 | 0.515 | non | -946.2 / -1537.2 / -429.8 | 2845 | -42,489 | 
+F1 fixing BCE 14 h 15 les deux usdjpy | -6.97 | 0.004 | oui | -2320.2 / -3460.8 / -1999.9 | 2850 | -90,560 | 
+F1 fixing Tokyo 9 h 55 apres gbpusd | -7.00 | 0.598 | non | -966.2 / -1494.6 / -593.9 | 2851 | -26,456 | 
+F2 Europe 09:00-10:00 usatechidxusd | -7.05 | 0.598 | non | -4527.5 / -3318.3 / -762.4 | 2821 | -8,764 | 
+F1 fixing WM/Reuters 16 h apres usdjpy | -7.10 | 0.377 | non | -1750.0 / -1959.4 / -813.1 | 2850 | -55,696 | 
+F1 fixing WM/Reuters 16 h les deux audusd | -7.19 | 0.238 | non | -3560.1 / -3521.3 / -2344.3 | 2850 | -74,948 | 
+F1 fixing BCE 14 h 15 les deux audusd | -7.24 | 0.230 | non | -3880.0 / -3243.5 / -2154.4 | 2850 | -74,579 | 
+F1 fixing BCE 14 h 15 les deux gbpusd | -7.40 | 0.163 | non | -2308.6 / -3999.7 / -2209.6 | 2850 | -73,800 | 
+F3 cassure Tokyo 30 min audusd | -7.51 | 1.000 | non | -2970.8 / -3154.8 / -2351.5 | 2838 | -66,956 | 
+F3 cassure Tokyo 30 min usa500idxusd | -7.67 | 0.286 | non | -4337.5 / -2975.3 / -2112.5 | 2644 | -11,707 | 
+F3 cassure Tokyo 60 min gbpusd | -7.95 | 0.994 | non | -1710.5 / -1960.8 / -2142.0 | 2739 | -49,619 | 
+F3 cassure Tokyo 30 min gbpusd | -8.19 | 1.000 | non | -2611.7 / -2218.7 / -2053.8 | 2828 | -60,106 | 
+F3 cassure Tokyo 60 min eurusd | -8.28 | 0.942 | non | -1525.6 / -1937.7 / -1553.4 | 2710 | -73,675 | 
+F1 fixing Tokyo 9 h 55 les deux eurusd | -9.02 | 0.318 | non | -1912.2 / -2481.7 / -1037.2 | 2851 | -79,664 | 
+F2 Europe 08:00-09:00 usa500idxusd | -9.22 | 0.552 | non | -3843.7 / -2878.9 / -909.1 | 2810 | -9,139 | 
+F1 fixing Tokyo 9 h 55 les deux gbpusd | -9.34 | 0.569 | non | -1940.0 / -2939.4 / -966.6 | 2851 | -51,093 | 
+F3 cassure Tokyo 30 min eurusd | -9.50 | 0.997 | non | -2244.8 / -2079.6 / -1568.6 | 2813 | -86,922 | 
+F1 fixing WM/Reuters 16 h les deux usdjpy | -9.84 | 0.393 | non | -3935.9 / -4945.0 / -1333.4 | 2850 | -124,818 | 
+F2 Europe 09:00-10:00 usa500idxusd | -9.95 | 0.582 | non | -5190.5 / -3750.5 / -1813.6 | 2812 | -12,547 | 
