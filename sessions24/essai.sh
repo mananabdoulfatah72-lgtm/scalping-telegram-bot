@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
-# Essai court : ou et sous quel nom dukascopy-node ecrit ses fichiers (resultats en annotations GitHub).
+# Essai court : la source HistData (prix minute gratuits) repond-elle depuis GitHub ? (resultats en annotations)
 set -u
-mkdir -p brut
-npm install -g dukascopy-node@latest >/dev/null 2>&1
-echo "::warning::version $(npm ls -g dukascopy-node 2>/dev/null | grep dukascopy | tr -d ' ')"
-dukascopy-node -i eurusd -from 2013-01-02 -to 2013-01-04 -t m1 -f csv -dir brut -fn eurusd_2013 -bs 5 -bp 1000 -r 10 -rp 5000 -re -ch > sortie.txt 2>&1
-echo "::warning::code $? ; sortie : $(tail -c 600 sortie.txt | tr '\n' ' ')"
-echo "::warning::fichiers : $(find . -name '*.csv' -newer sessions24/essai.sh 2>/dev/null | grep -v node_modules | head -20 | tr '\n' ' ')"
-f=$(find . -name '*.csv' -newer sessions24/essai.sh 2>/dev/null | grep -v node_modules | head -1)
-[ -n "$f" ] && echo "::warning::debut de $f : $(head -c 300 "$f" | tr '\n' ' ')"
-dukascopy-node --help > aide.txt 2>&1
-echo "::warning::aide : $(grep -iE 'file-name|directory|-fn|-dir' aide.txt | tr '\n' ' ' | head -c 800)"
+pip install histdata pandas >/dev/null 2>&1
+python3 - <<'PY'
+import glob, os, traceback, zipfile
+from histdata import download_hist_data as dl
+from histdata.api import Platform as P, TimeFrame as TF
+for paire, an, mois in (("eurusd", "2013", None), ("nsxusd", "2013", None), ("wtiusd", "2013", None), ("eurusd", "2026", "9")):
+    try:
+        f = dl(year=an, month=mois, pair=paire, platform=P.GENERIC_ASCII, time_frame=TF.ONE_MINUTE)
+        z = zipfile.ZipFile(f)
+        noms = z.namelist()
+        tete = z.read([n for n in noms if n.endswith(".csv")][0])[:200].decode(errors="replace").replace("\n", " | ")
+        print(f"::warning::{paire} {an} {mois} OK : {f} {os.path.getsize(f)} octets {noms} -- {tete}")
+    except Exception as e:
+        print(f"::warning::{paire} {an} {mois} ECHEC : {type(e).__name__} {str(e)[:300]}")
+PY
