@@ -19,6 +19,7 @@ Taille : 1 MNQ par source. La position nette sur MNQ est la somme des deux (zone
 | `Bot3en1.Quantower/` | L'adaptateur Quantower : lit les transactions du NQ, construit les minutes, appelle le moteur, aligne la position sur MNQ, envoie les messages Telegram. |
 | `Bot3en1.Replay/` | Rejeu de vérification sur des barres historiques. |
 | `Bot3en1.TestQuantower/` | Joue l'adaptateur, transaction par transaction, contre une imitation de Quantower. |
+| `Bot3en1.TestPlafond/` | Contrôles du plafond du jour (système Static) sur le moteur seul, avec des prix fabriqués. |
 | `installer.bat`, `installer.ps1` | Installation sur le PC (double-clic) : dans Quantower et/ou Optimus Flow (une version de Quantower, gratuite avec la démo Optimus Futures). Si la plateforme n'est pas trouvée, glisser son dossier sur `installer.bat` ou coller son chemin quand le script le demande. |
 
 ## Vérifications faites (3 octobre 2026)
@@ -44,7 +45,25 @@ Relancer les vérifications (avec le kit .NET 8) :
 dotnet run -c Release --project Bot3en1.Replay -- <nasdaq100_1min.csv.gz> <agresseurs.csv.gz> 2026-04-01 2026-09-25
 SANS_FILTRE=1 dotnet run -c Release --project Bot3en1.Replay -- <nasdaq100_1min.csv.gz> - 2023-01-03 2026-09-25
 dotnet run -c Release --project Bot3en1.TestQuantower -- <dossier avec nq_1min.csv.gz> <nq_1min.csv.gz> <agresseurs.csv.gz> 2026-04-01 2026-09-25
+PLAFOND=500 dotnet run -c Release --project Bot3en1.TestQuantower -- <memes arguments>
+dotnet run -c Release --project Bot3en1.TestPlafond
 ```
+
+**Plafond du jour corrigé pour le système Static (8 octobre 2026)** :
+- **Le défaut.** Le plafond comptait le gain d'un RSI(2) gardé depuis plusieurs jours à partir de son prix
+  d'achat, et non depuis la veille. Il ne regardait pas non plus la nuit.
+- **Maintenant, il fait ce que `static50k/` a simulé :**
+  - le gain du jour est compté depuis le début de la journée de trading de la firme (18 h la veille). Un RSI(2) gardé
+    la nuit compte à partir du dernier prix avant la pause de 17 h ;
+  - le plafond est vérifié en séance à chaque fin de minute, et hors séance (16 h - 9 h 30) à chaque transaction
+    du NQ ;
+  - une fois le plafond atteint, plus rien jusqu'à 18 h, même si le bot redémarre (`etat.json`).
+- **Vérifié :**
+  - `Bot3en1.TestPlafond` : 13 contrôles sur 13 ;
+  - avec le plafond à 0, les deux rejeux (+21 767,0 $ et +4 366,0 $) et le test de l'adaptateur (164 ordres, +4 370,0 $,
+    position finale à plat, aucune erreur) sont identiques à avant la correction ;
+  - avec `PLAFOND=500` et une transaction chaque soir à 19 h, l'adaptateur passe par 18 h et par le plafond hors séance
+    sans erreur : 14 plafonds atteints d'avril à septembre 2026, 160 ordres, position finale à plat.
 
 Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par seconde regroupés par minute).
 
@@ -70,8 +89,12 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
 - **Messages :** chaque ordre et chaque alerte vont dans `C:\Bot3en1\journal.txt`, et sur Telegram si le jeton et le
   numéro de conversation sont remplis (ils restent sur le PC, jamais dans le dépôt).
 - **Plafond du jour** (réglage, 0 par défaut) :
-  - c'est la piste 4 de `protection/`, à n'activer que sur le compte financé, si l'utilisateur la choisit (500 $) ;
-  - le bot la vérifie à chaque fin de minute (le backtest la vérifiait à l'intérieur de la minute).
+  - c'est le système retenu par `static50k/` :
+    - **0 pendant l'évaluation Static et sur la démo** ;
+    - **500 sur le compte Pro** (après la réussite) ;
+  - en séance, le bot vérifie le plafond à chaque fin de minute. Le backtest le vérifiait à l'intérieur de la minute.
+  - hors séance, il le vérifie à chaque transaction du NQ, **si le PC est allumé**. PC éteint la nuit : le RSI(2) reste
+    ouvert, et le plafond n'est vérifié qu'au retour.
 
 ## Limites connues
 

@@ -10,6 +10,8 @@ using TradingPlatform.BusinessLayer;
 // Joue l'adaptateur Quantower sur des journees reelles : chaque minute devient 4 transactions (ouverture, plus haut avec
 // les achats agressifs, plus bas avec les ventes agressives, cloture), l'horloge avance minute par minute, les ordres sont
 // remplis tout de suite. Usage : test <dossier avec nq_1min.csv.gz> <minutes.csv.gz> <agresseurs.csv.gz> <debut> <fin>
+// PLAFOND=500 : plafond du jour active ; une transaction est alors emise chaque soir a 19 h (au prix d'ouverture de la
+// seance suivante) pour faire passer l'adaptateur par 18 h et par le plafond hors seance.
 class Program
 {
     static int Main(string[] a)
@@ -33,7 +35,8 @@ class Program
         var strat = new Bot3en1Strategy
         {
             Compte = new Account(), SymboleNQ = new Symbol { Name = Nom(jours[0], "NQ") }, SymboleMNQ = new Symbol { Name = Nom(jours[0], "MNQ") },
-            Dossier = dossier, AdresseHistorique = "http://127.0.0.1:9/absent"
+            Dossier = dossier, AdresseHistorique = "http://127.0.0.1:9/absent",
+            PlafondJour = double.Parse(Environment.GetEnvironmentVariable("PLAFOND") ?? "0", inv)
         };
         var tic = typeof(Bot3en1Strategy).GetMethod("Tic", BindingFlags.NonPublic | BindingFlags.Instance);
         horloge.DateTimeUtcNow = Utc(jours[0].AddHours(9).AddMinutes(29));
@@ -64,24 +67,46 @@ class Program
             }
             horloge.DateTimeUtcNow = Utc(j.AddHours(16).AddSeconds(30));
             tic.Invoke(strat, null);
+            int i = jours.IndexOf(j);
+            if (strat.PlafondJour > 0 && i + 1 < jours.Count && seances[jours[i + 1]].b[0].Presente)
+            {
+                var soir = j.AddHours(19);
+                horloge.DateTimeUtcNow = Utc(soir);
+                strat.SymboleNQ.Emettre(new Last { Time = Utc(soir), Price = seances[jours[i + 1]].b[0].O, Size = 1, AggressorFlag = AggressorFlag.None });
+                horloge.DateTimeUtcNow = Utc(soir.AddSeconds(1));
+                tic.Invoke(strat, null);
+                horloge.DateTimeUtcNow = Utc(soir.AddSeconds(20));
+                tic.Invoke(strat, null);
+            }
         }
         var bot = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
-        double zone = 0, rsi = 0, eZ = 0, eR = 0; int sZ = 0, nZ = 0, nE = 0, nR = 0;
+        double zone = 0, rsi = 0, eZ = 0, eR = 0; int sZ = 0, nZ = 0, nE = 0, nR = 0, nP = 0;
+        bool zOuv = false, rOuv = false;
         foreach (var s in bot.Journal)
         {
-            if (s.Source == "rsi2") { if (s.Texte.Contains("achat")) { eR = s.PrixReference; rsi -= 1.5; nR++; } else rsi += (s.PrixReference - eR) * 2 - 1.5; }
+            if (s.Source == "rsi2")
+            {
+                if (s.Texte.Contains("achat")) { eR = s.PrixReference; rsi -= 1.5; nR++; rOuv = true; }
+                else { rsi += (s.PrixReference - eR) * 2 - 1.5; rOuv = false; }
+            }
             else if (s.Source == "zone-ecarte") nE++;
             else if (s.Source == "zone")
             {
-                if (s.Texte.StartsWith("sortie")) zone += (sZ * (s.PrixReference - eZ) - 1.5) * 2;
-                else { sZ = s.Texte.StartsWith("achat") ? 1 : -1; eZ = s.PrixReference; nZ++; }
+                if (s.Texte.StartsWith("sortie")) { zone += (sZ * (s.PrixReference - eZ) - 1.5) * 2; zOuv = false; }
+                else { sZ = s.Texte.StartsWith("achat") ? 1 : -1; eZ = s.PrixReference; nZ++; zOuv = true; }
+            }
+            else if (s.Source == "plafond")                        // tout ferme au prix du declenchement
+            {
+                nP++;
+                if (zOuv) { zone += (sZ * (s.PrixReference - eZ) - 1.5) * 2; zOuv = false; }
+                if (rOuv) { rsi += (s.PrixReference - eR) * 2 - 1.5; rOuv = false; }
             }
         }
         File.WriteAllLines(Path.Combine(dossier, "test_journal.txt"), bot.Journal.Select(s => s.Texte));
         File.WriteAllLines(Path.Combine(dossier, "test_ordres.txt"), Core.Instance.Ordres);
         File.WriteAllLines(Path.Combine(dossier, "test_logs.txt"), strat.Logs);
         Console.WriteLine($"Zone : {nZ} trades gardes, {nE} ecartes, {zone:+0.0;-0.0} $ ; RSI(2) : {nR} entrees, {rsi:+0.0;-0.0} $ ;"
-                          + $" total {zone + rsi:+0.0;-0.0} $ ; ordres envoyes {Core.Instance.Ordres.Count} ; position finale {strat_pos()}");
+                          + $" total {zone + rsi:+0.0;-0.0} $ ; plafonds {nP} ; ordres envoyes {Core.Instance.Ordres.Count} ; position finale {strat_pos()}");
         int strat_pos() { var p = Core.Instance.Liste.FirstOrDefault(); return p == null ? 0 : (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity; }
         Console.WriteLine($"erreurs : {strat.Logs.Count(l => l.StartsWith("[Error]"))}");
         foreach (var l in strat.Logs.Where(l => l.StartsWith("[Error]")).Take(5)) Console.WriteLine("  " + l);

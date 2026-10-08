@@ -58,6 +58,8 @@ namespace Bot3en1
         {
             bool complete = b[0].Presente && b[Moteur.N - 1].Presente && b.Count(x => x.Presente) >= 370;
             int der = Array.FindLastIndex(b, x => x.Presente);
+            // journee de trading : sans les barres de la nuit, la reference est la cloture de la seance d'avant
+            bot.NouvelleJournee(bot.Historique.Count > 0 ? bot.Historique[^1].Cloture : 0);
             bot.DebutSeance(j, contrat, der);
             bot.ZoneAutorisee = complete;
             bool rsiOk = RsiOk(j, b);

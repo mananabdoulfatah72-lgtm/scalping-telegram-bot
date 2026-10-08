@@ -59,7 +59,7 @@ namespace Bot3en1
     {
         public const int N = 390, PAS = 30, NMOMENTS = 12, JOURS_MOYENNE = 14, FENETRE_DELTA = 30;
         public int Taille = 1;                       // MNQ par source
-        public double PlafondJour = 0;               // 0 : pas de plafond (piste 4 de protection/, au choix de l'utilisateur)
+        public double PlafondJour = 0;               // 0 : pas de plafond. Systeme Static (static50k/) : 500 $ sur le compte Pro
         public bool FiltreDelta = true;
         public bool ZoneAutorisee = true;            // le rejeu le met a faux pour une seance incomplete (le robot ne la trade pas)
 
@@ -85,8 +85,11 @@ namespace Bot3en1
         public bool RsiAttendSignal { get; set; }    // au demarrage au milieu d'un trade : on attend un nouveau signal
         public double EntreeZone { get; private set; }
         public double EntreeRsi { get; private set; }
-        public bool Arret { get; private set; }      // plafond du jour atteint : plus de trade aujourd'hui
-        public double RealiseJour { get; private set; }
+        /// <summary>Prix a partir duquel le RSI(2) compte dans le gain de la journee de trading : dernier prix avant la
+        /// pause de 17 h la veille, ou prix d'achat s'il a ete achete dans la journee.</summary>
+        public double RefRsi { get; private set; }
+        public bool Arret { get; private set; }      // plafond du jour atteint : plus de trade jusqu'a 18 h
+        public double RealiseJour { get; private set; }   // gain realise de la journee de trading (depuis 18 h la veille)
         public readonly List<Signal> Journal = new List<Signal>();
 
         public Moteur(List<Resume> historique) { Historique = historique; }
@@ -106,7 +109,7 @@ namespace Bot3en1
             Jour = jour.Date; Contrat = contrat;
             for (int i = 0; i < N; i++) barres[i] = new Barre();
             cumTv = cumV = cumT = 0; nPresentes = 0;
-            ZoneVirtuelle = 0; ZoneTenue = 0; Arret = false; RealiseJour = 0;
+            ZoneVirtuelle = 0; ZoneTenue = 0;          // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
             // veille : cloture de la derniere seance complete du meme contrat, sans changement de contrat entre les deux
             Veille = double.NaN;
             for (int i = Historique.Count - 1; i >= 0; i--)
@@ -121,6 +124,31 @@ namespace Bot3en1
             ZoneActive = assez && !double.IsNaN(Veille) && !Calendrier.JourCourt(jour) && !Calendrier.JourFerme(jour);
             MinuteDecisionRsi = Calendrier.Ferie(jour) ? -1 : derniereMinute - 9;
         }
+
+        /// <summary>Debut d'une journee de trading de la firme (18 h, New York, la veille de la seance) : le gain du jour
+        /// repart de zero, le plafond est leve, et un RSI(2) garde la nuit compte a partir de prixReference (dernier prix
+        /// avant la pause de 17 h). Comme static50k/ : le gain du jour est mesure depuis la fin de la journee d'avant.</summary>
+        public void NouvelleJournee(double prixReference)
+        {
+            RealiseJour = 0; Arret = false;
+            if (Rsi != 0 && prixReference > 0) RefRsi = prixReference;
+        }
+
+        /// <summary>Plafond du jour hors de la seance (16 h - 17 h, puis la nuit) : seul le RSI(2) peut etre en position.
+        /// Renvoie vrai si le plafond vient d'etre atteint (le RSI(2) est ferme, plus rien jusqu'a 18 h).</summary>
+        public bool VerifierPlafondHorsSeance(double prix)
+        {
+            if (PlafondJour <= 0 || Arret || Rsi == 0 || prix <= 0 || ValeurJour(prix) < PlafondJour) return false;
+            Arret = true;
+            RealiseJour += Taille * ((prix - RefRsi) * 2 - 1.5);
+            Rsi = 0;
+            Journal.Add(new Signal { Minute = -1, Source = "plafond", PrixReference = prix,
+                                     Texte = $"plafond du jour atteint hors seance a {prix:F2} : RSI(2) ferme jusqu'a 18 h" });
+            return true;
+        }
+
+        /// <summary>Plafond deja atteint dans cette journee de trading (redemarrage du bot) : plus de trade jusqu'a 18 h.</summary>
+        public void ArreterJusqua18h() { Arret = true; }
 
         double Vwap(int m) => cumV > 0 ? cumTv / cumV : cumT / (m + 1);
 
@@ -155,7 +183,7 @@ namespace Bot3en1
             {
                 Arret = true;
                 if (ZoneTenue != 0) { RealiseJour += Taille * (ZoneTenue * (b.C - EntreeZone) - 1.5) * 2; ZoneTenue = 0; }
-                if (Rsi != 0) { RealiseJour += Taille * ((b.C - EntreeRsi) * 2 - 1.5); Rsi = 0; }
+                if (Rsi != 0) { RealiseJour += Taille * ((b.C - RefRsi) * 2 - 1.5); Rsi = 0; }
                 sortie.Add(new Signal { Minute = m, Source = "plafond", Texte = $"plafond du jour atteint : tout ferme", PrixReference = b.C });
             }
             Journal.AddRange(sortie);
@@ -168,7 +196,8 @@ namespace Bot3en1
             return Historique.Count > 0 ? Historique[^1].Cloture : 0;
         }
 
-        double ValeurJour(double prix) => RealiseJour + Taille * 2 * (ZoneTenue * (prix - EntreeZone) + Rsi * (prix - EntreeRsi));
+        /// <summary>Gain de la journee de trading au prix donne (realise + positions ouvertes, depuis 18 h la veille).</summary>
+        public double ValeurJour(double prix) => RealiseJour + Taille * 2 * (ZoneTenue * (prix - EntreeZone) + Rsi * (prix - RefRsi));
 
         void Zone(int m, int k, double p, List<Signal> s)
         {
@@ -229,8 +258,8 @@ namespace Bot3en1
             string h = Heure(MinuteDecisionRsi);
             if (voulu != Rsi)
             {
-                if (voulu == 1) { EntreeRsi = prixOuverture; RealiseJour -= Taille * 1.5; }
-                else RealiseJour += Taille * ((prixOuverture - EntreeRsi) * 2 - 1.5);
+                if (voulu == 1) { EntreeRsi = RefRsi = prixOuverture; RealiseJour -= Taille * 1.5; }
+                else RealiseJour += Taille * ((prixOuverture - RefRsi) * 2 - 1.5);
                 Rsi = voulu;
                 s.Add(new Signal { Minute = MinuteDecisionRsi, Source = "rsi2", PrixReference = prixOuverture,
                     Texte = $"RSI(2) : {(voulu == 1 ? "achat" : "vente")} {h} a {prixOuverture:F2} (cloture {cx:F2}, RSI {rsi:F1},"
@@ -292,7 +321,7 @@ namespace Bot3en1
         /// <summary>Reprend la position du RSI(2) enregistree par le bot (fichier d'etat) apres un redemarrage.</summary>
         public void RestaurerRsi(bool tenue, double entree)
         {
-            Rsi = tenue ? 1 : 0; EntreeRsi = entree;
+            Rsi = tenue ? 1 : 0; EntreeRsi = RefRsi = entree;      // RefRsi : remplace par NouvelleJournee
             if (tenue) RsiAttendSignal = false;
         }
 
