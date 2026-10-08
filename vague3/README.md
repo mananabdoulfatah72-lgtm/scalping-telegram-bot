@@ -73,3 +73,30 @@ Paramètres des sources, sans aucun réglage.
    - corrélation quotidienne avec le RSI(2) et avec la zone.
 5. Les 7 essais sont inscrits dans `fonds/essais.csv`. Aucune source, aucun paramètre ni aucun marché ne sera ajouté
    ou changé après avoir vu les résultats.
+
+## Résultat de l'exploration 2011-2022 (8 octobre 2026) : aucun survivant (`exploration3.txt`)
+
+Contrôles (`test_vague3.py`, 5 sur 5) :
+- fenêtres d'octobre et d'avril 2022 (Vendredi saint) ;
+- semaines du cycle de la Fed autour de l'annonce du 21 septembre 2022 ;
+- écart ES - ZN de juin 2019 recalculé à la main ;
+- journal d'une vente ;
+- pas de regard vers le futur.
+
+| Source (NQ) | t | Bat le hasard | Trades | $ pour 1 MNQ | Verdict |
+|---|---|---|---|---|---|
+| W1 semaine de l'échéance des options | −0,03 | 8,7 % | 159 | −3 274 | éliminée |
+| W2 semaines paires du cycle de la Fed | **2,04** | 68,6 % | 323 | +9 096 | éliminée : le hasard fait aussi bien (c'est la hausse du marché) |
+| W3 rééquilibrage de fin de mois, achat | 1,85 | **91,8 %** | 20 | +4 782 | éliminée de peu (t < 2, hasard < 95 %) |
+| W4 rééquilibrage de fin de mois, vente | −0,43 | 57,3 % | 22 | −404 | éliminée |
+| W5 RSI(2) vendeur | 0,70 | 93,3 % | 23 | +2 895 | éliminée |
+| W6 écart NQ / ES | 0,72 | 76,5 % | 164 | +2 363 | éliminée |
+| W7 novembre - avril | 1,62 | 24,7 % | 37 | +5 344 | éliminée (le hasard fait mieux) |
+
+- **Aucune source ne survit. Le coffre 2023 - 2026 n'est pas ouvert**, et rien n'entre dans le système Static. Les
+  corrélations avec la zone, prévues pour les survivants, ne sont donc pas calculées.
+- Les sources qui « gagnent » (W2, W7) sont surtout en position quand le Nasdaq monte : des dates tirées au hasard,
+  avec les mêmes durées, font aussi bien.
+- W3 (acheter les derniers jours du mois quand les actions ont fait moins bien que les obligations) est la plus proche.
+  C'est l'effet décrit par l'article, mais avec seulement 20 trades en 9 ans, l'échantillon est trop petit pour
+  conclure.
