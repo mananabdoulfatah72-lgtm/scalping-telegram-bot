@@ -1,11 +1,10 @@
-name: Donnees sessions 24 h (Dukascopy, 5 minutes)
+name: Donnees sessions 24 h (HistData, 5 minutes)
 
 on:
   push:
     branches: [claude/keen-babbage-r686cl]
     paths:
-      - sessions24/telecharger.sh
-      - sessions24/preparer.py
+      - sessions24/telecharger_histdata.py
       - .github/workflows/donnees-sessions.yml
   workflow_dispatch:
 
@@ -15,38 +14,28 @@ permissions:
 jobs:
   telecharger:
     runs-on: ubuntu-latest
-    timeout-minutes: 340
-    strategy:
-      fail-fast: false
-      max-parallel: 9
-      matrix:
-        inst: [usatechidxusd, usa500idxusd, usa30idxusd, eurusd, gbpusd, usdjpy, audusd, xauusd, lightcmdusd]
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
       - name: Outils
-        run: pip install pandas
-      - name: Telecharger et convertir annee par annee
-        timeout-minutes: 320
+        run: pip install pandas histdata
+      - name: Telecharger et convertir
         continue-on-error: true
-        run: bash sessions24/telecharger.sh ${{ matrix.inst }}
-      - name: Enregistrer les annees preparees sur la branche
+        run: python3 sessions24/telecharger_histdata.py
+      - name: Enregistrer sur la branche
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          ls sessions24/annees/ 2>/dev/null || { echo "::error::${{ matrix.inst }} : aucune annee preparee"; exit 1; }
-          git add sessions24/annees/${{ matrix.inst }}_*_5m.csv.gz
-          git diff --cached --quiet && exit 0
-          git commit -m "Donnees sessions 24 h : ${{ matrix.inst }} (5 minutes, par annee)"
-          for i in 1 2 3 4 5 6; do
+          git add sessions24/annees/*_5m.csv.gz
+          git diff --cached --quiet && { echo "::error::aucune annee preparee"; exit 1; }
+          git commit -m "Donnees sessions 24 h : HistData, barres de 5 minutes par annee"
+          for i in 1 2 3 4 5; do
             git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
             sleep $((i * 20))
           done
