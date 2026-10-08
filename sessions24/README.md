@@ -129,3 +129,45 @@ deux clôtures reste la meilleure source connue.
 
 **Conclusion selon la règle fixée** : aucune source ne remplace le RSI(2). Le RSI(2) entre deux clôtures
 (`intraday50k/`) reste la meilleure source connue pour un compte intraday.
+
+# Vague 2 (règles fixées le 9 octobre 2026, avant tout calcul)
+
+Demande de l'utilisateur : une deuxième vague, avec deux fois plus de phénomènes et de variantes que la première.
+Mêmes données (HistData, 8 marchés, barres de 5 minutes en UTC), mêmes frais, même tri. **13 familles, 368
+stratégies.** Toutes les heures sont dans le fuseau du phénomène ; « jour ouvré » = lundi à vendredi (jours fériés non
+modélisés, ce qui ajoute un peu de bruit sans regard vers le futur).
+
+Leçon de la vague 1 retenue avant de choisir : les petits effets quotidiens (1 à 3 pb) sont mangés par les frais
+(1,5 à 2 pb). Cette vague cherche donc surtout des **événements qui font bouger les prix plus fort** (chiffres
+américains, Fed, pétrole, écart du week-end, fins de mois), où les frais pèsent moins.
+
+| # | Famille | Règle | Source | Nombre |
+|---|---|---|---|---|
+| G1 | Fin de mois au fixing de Londres | Dernier jour ouvré du mois (ou les 2 derniers). Avant : 15 h → 16 h (Londres) ; après : 16 h → 17 h. Sans condition : le dollar monte avant, baisse après. Selon le S&P : si le S&P a monté depuis le début du mois (à 15 h, Londres), le dollar baisse avant le fixing (les étrangers vendent du dollar pour couvrir leurs actions américaines) et remonte après ; l'inverse s'il a baissé. Euro, livre, yen, dollar australien | Melvin, Prins (2015) ; Krohn, Mueller, Whelan (2024) | 4 × 2 fenêtres × 2 conditions × 2 jeux de jours = 32 |
+| G2 | Début de mois | Premier jour ouvré. 8 h → 12 h ou 15 h → 16 h (Londres). Sans condition : le dollar baisse. Selon le S&P du mois précédent : sens inverse de G1 (retour des flux) | idem | 4 × 2 × 2 = 16 |
+| G3 | Fin de trimestre | G1 sur les seuls derniers jours de mars, juin, septembre, décembre (dernier jour seulement) | idem | 4 × 2 × 2 = 16 |
+| G4 | Jours « gotobi » du yen | Les 5, 10, 15, 20, 25 et dernier jour du mois (veille ouvrée si week-end). Avant le fixing de Tokyo (7 h, 8 h ou 9 h → 9 h 55, heure de Tokyo) : le dollar monte ; après (9 h 55 → 11 h ou 12 h) : il baisse. Sur les 4 devises | Bessho, Ito, Yamada (Gotobi anomaly) ; Ito, Yamada (2017) | 4 × 5 = 20 |
+| G5 | Fixings de l'or (LBMA) | 10 h 30 et 15 h (Londres). Avant (30 ou 60 min) : vente de l'or ; après (30 ou 60 min) : achat ; ou les deux | Caminschi, Heaney (2014) ; Abrantes-Metz, Metz (2014) | 2 × 6 = 12 |
+| G6 | Stocks de pétrole (EIA) | Mercredi 10 h 30 (New York) : sens de 10 h 30 → 10 h 35 ; trade de 10 h 35 à 11 h, 12 h ou 14 h 30 ; continuation ou retournement ; toujours, ou seulement si le mouvement dépasse sa médiane des 26 mercredis d'avant. Pétrole | réaction aux annonces de stocks (Bjursell, Gentle, Wang) | 3 × 2 × 2 = 12 |
+| G7 | Choc des chiffres de 8 h 30 | Chaque jour ouvré : mouvement de 8 h 30 → 8 h 35 (New York). Si sa taille dépasse le 80e (ou 90e) centile des 60 jours ouvrés d'avant (même heure) : trade de 8 h 35 à 9 h 30 ou 11 h, continuation ou retournement. 8 marchés | dérive ou retour après annonce (Andersen et al. 2003) | 8 × 2 × 2 × 2 = 64 |
+| G8 | Choc de 10 h | Même règle à 10 h → 10 h 05 (ISM, confiance…), 90e centile, sortie 11 h ou 12 h | idem | 8 × 2 × 2 = 32 |
+| G9 | Annonces de la Fed | Jours d'annonce programmée du FOMC (`fonds/fomc.py`), 14 h (New York), **2013 - 2026 seulement** (avant 2013, l'heure variait). Réaction 14 h → 14 h 05 ou → 14 h 15 ; trade jusqu'à 15 h ou 15 h 55, continuation ou retournement. 8 marchés | Lucca, Moench (2015) ; littérature sur la réaction aux annonces | 8 × 2 × 2 × 2 = 64 |
+| G10 | Échéance mensuelle des options | 3e vendredi. Mouvement de 9 h 30 → 11 h (ou → 12 h) ; trade jusqu'à 15 h 55, retournement ou continuation. Nasdaq et S&P | Ni, Pearson, Poteshman (2005) | 2 × 2 × 2 = 8 |
+| G11 | Écart du week-end | À la première barre après la pause du week-end : écart avec la dernière cotation du vendredi avant 17 h (New York). Comblement ou continuation ; sortie lundi 3 h ou 9 h 30 (New York) ; tout écart, ou seulement s'il dépasse sa médiane des 26 semaines d'avant. 7 marchés (sans le pétrole) | « weekend gap » (pratique), test exploratoire | 7 × 2 × 2 × 2 = 56 |
+| G12 | Vendredi après-midi | Mouvement de la semaine (vendredi 16 h de la semaine d'avant → vendredi 12 h ou 14 h). Trade jusqu'à 15 h 55 : retournement (on ferme ses positions avant le week-end) ou continuation. 7 marchés | test exploratoire | 7 × 2 × 2 = 28 |
+| G13 | Dernière heure de fin de mois (indices) | Dernier jour ouvré (ou les 2 derniers) : 15 h → 15 h 55 ou 15 h 30 → 15 h 55 (New York), à l'inverse du mouvement de l'indice depuis le début du mois (rééquilibrage des fonds) | Harvey, Mazzoleni, Melone (2025) | 2 × 2 × 2 = 8 |
+
+**Placebos** :
+- familles de calendrier (G1, G2, G3, G4, G10, G13) : la même règle sur des jours ouvrés tirés au hasard hors des
+  jours de l'événement, en même nombre, 500 tirages ;
+- G5 (tous les jours) : la même fenêtre à toutes les autres heures, comme F1 ;
+- familles de réaction (G6, G7, G8, G9, G11, G12) : 1 000 tirages du sens de chaque trade au hasard.
+
+**Tri** : comme la vague 1 :
+- t ≥ 2 après frais, placebo battu à 95 %, positive dans au moins 2 des 3 sous-périodes ;
+- Benjamini-Hochberg à 10 % sur les 368 ;
+- exploration 2012-2022 (G9 : 2013-2022, sous-périodes 2013-2015, 2016-2019, 2020-2022) ;
+- coffre 2023 - 2026 une seule fois, Bonferroni, 3 années positives sur 4 (pétrole : coffre incomplet) ;
+- puis les challenges contre le RSI(2) entre deux clôtures ;
+- moins de 200 jours de trades = « non testable », sauf les familles rares par nature (G1 à G6, G9, G10, G13 : au
+  moins 60 trades).
