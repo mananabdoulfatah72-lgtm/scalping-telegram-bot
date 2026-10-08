@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Telecharge les prix minute gratuits de HistData (2012 - 2026), les passe en UTC (HistData : heure de l'Est SANS
-changement d'heure, soit UTC - 5 h toute l'annee) et ecrit des barres de 5 minutes par annee :
+"""Telecharge les prix minute gratuits de HistData (2012 - 2026), les passe en UTC et ecrit des barres de 5 minutes par annee :
 sessions24/annees/<code>_<annee>_5m.csv.gz (memes codes que la machine 5). Lance par donnees-sessions.yml.
+Attention : malgre la documentation de HistData (« EST sans changement d'heure »), les horodatages suivent l'heure de
+New York avec l'heure d'ete (verifie, README.md).
 Dukascopy refuse les telechargements depuis GitHub depuis octobre 2026 (reponse 202)."""
 import io
 import zipfile
@@ -22,7 +23,9 @@ def lire(f):
     nom = [n for n in z.namelist() if n.endswith(".csv")][0]
     d = pd.read_csv(io.BytesIO(z.read(nom)), sep=";", header=None, names=["t", "o", "h", "l", "c", "v"],
                     dtype={"t": str})
-    t = pd.to_datetime(d["t"], format="%Y%m%d %H%M%S") + pd.Timedelta(hours=5)       # UTC
+    t = pd.to_datetime(d["t"], format="%Y%m%d %H%M%S").dt.tz_localize(            # HistData : heure de New York
+        "America/New_York", ambiguous="NaT", nonexistent="NaT").dt.tz_convert("UTC").dt.tz_localize(None)  # avec l'heure d'ete
+    d, t = d[t.notna()], t[t.notna()]
     return pd.DataFrame({"o": d["o"].to_numpy(), "h": d["h"].to_numpy(), "l": d["l"].to_numpy(),
                          "c": d["c"].to_numpy()}, index=pd.DatetimeIndex(t))
 

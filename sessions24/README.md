@@ -91,3 +91,13 @@ deux clôtures reste la meilleure source connue.
   - pour F2 seulement (ouverture de Francfort sur les indices), si HistData ne couvre pas la nuit, on utilise les
     barres d'une heure de Databento déjà dans le projet (`nuit/donnees/`, NQ et ES, 24 h sur 24) : les fenêtres de F2
     tombent sur des heures pleines.
+- **Correction de l'heure (avant tout calcul)** : malgré sa documentation (« EST sans changement d'heure »), HistData
+  suit l'heure de New York **avec** l'heure d'été. Vérifié de deux façons :
+  - le pic de volatilité des chiffres de l'emploi américains (8 h 30 à New York) tombait à 13 h 30 UTC en été au lieu
+    de 12 h 30 ;
+  - le Nasdaq de HistData contre le NQ de Databento : corrélation 0,75 en été avec l'ancienne conversion.
+
+  Après correction (`recaler.py`, puis `telecharger_histdata.py` corrigé), le pic tombe à 12 h 30 en été et 13 h 30
+  en hiver sur tous les marchés, et la corrélation avec le NQ est de 1,000 en été et 0,999 en hiver.
+- Le pétrole (WTIUSD) s'arrête au 1er décembre 2023 chez HistData : ses stratégies ne pourront pas être jugées au
+  coffre sur 4 années ; une survivante du pétrole serait déclarée « coffre incomplet ».
