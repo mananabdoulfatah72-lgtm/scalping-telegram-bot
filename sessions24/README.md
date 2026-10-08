@@ -203,3 +203,19 @@ Les données sont celles du **comptant**, qui rouvre vers 17 h (New York) le dim
 en dollars d'un trade du RSI(2) entre deux clôtures (1 MNQ) divisé par celui d'un trade d'écart (1 contrat 6A),
 mesurés sur 2012-2022, arrondi, entre 1 et 5. Puis comparaison avec le RSI(2) entre deux clôtures chez Topstep et
 DayTraders S2F, achats de 2023 - 2025, gain net sur 12 mois (comme prévu dans la règle de la vague 1).
+
+### Résultat du test de réalisme (9 octobre 2026) : `realisme6.txt`
+
+| Sortie lundi | Entrée | 1,5 pb | 3 pb | 5 pb |
+|---|---|---|---|---|
+| 3 h | première cotation du comptant (dimanche ~17 h) | t 2,08 / coffre +860 pb | t 1,41 / +710 | t 0,51 / +510 |
+| 3 h | **18 h (réouverture du 6A)** | t −0,49 / −174 pb | t −1,23 / −314 | t −2,21 / −500 |
+| 9 h 30 | première cotation du comptant | t 2,31 / +1 254 pb | t 1,81 / +1 111 | t 1,14 / +921 |
+| 9 h 30 | **18 h (réouverture du 6A)** | t 0,71 / +114 pb | t 0,19 / −16 | t −0,51 / −190 |
+
+(t sur 2012-2022 ; somme sur 2023 - 2026.)
+
+**Non tradable sur la CME selon la règle fixée.** Tout l'avantage se fait pendant la première heure du comptant
+(dimanche 17 h → 18 h), avant la réouverture du contrat 6A. À 18 h, l'écart est déjà comblé. De plus, les premières
+cotations du comptant le dimanche sont très larges : une partie de « l'écart » est sans doute un effet de cotation
+plutôt qu'un vrai prix. **La vague 2 ne donne donc aucune source utilisable** pour un compte de futures.
