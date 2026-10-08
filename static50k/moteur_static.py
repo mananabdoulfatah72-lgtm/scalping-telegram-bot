@@ -75,12 +75,13 @@ def _heure(cash, rq, re, ri, ptN, ptE, AO, AH, AL, BO, BH, BL, p, b, plancher, c
 
 
 @njit(cache=True)
-def parcours(debut, h1, h2, variante, plafond_pro, pessimiste, avec_nuit, ptN, ptE, perte, objectif, trace,
+def parcours(debut, h1, h2, variante, plafond_pro, pessimiste, avec_nuit, ptN, ptE, perte, objectif, trace, retraits,
              O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde, dec, voulu,
              EO, EH, EL, EC, roule_es, AO, AH, AL, AC, BO, BH, BL, BC, na, npost):
     """Un achat a la seance `debut` (RSI(2) a plat). Suivi jusqu'a h2 seances. Renvoie un tableau (voir colonnes).
     perte, objectif : ceux de l'evaluation (controles : tres grands = sans compte). trace[s - 1] : valeur de fin de
-    journee de la s-ieme seance (avant un retrait), pour les controles."""
+    journee de la s-ieme seance (avant un retrait), pour les controles. retraits[s - 1] : retrait recu a la fin de la
+    s-ieme seance (tableau vide : non enregistre)."""
     res = np.zeros(NCOL)
     res[FIN_EVAL], res[PREMIER] = -1.0, -1.0
     nj = O.shape[0]
@@ -218,6 +219,8 @@ def parcours(debut, h1, h2, variante, plafond_pro, pessimiste, avec_nuit, ptN, p
                         res[RECU1] += x
                         res[NRET1] += 1
                     res[RECU2] += x
+                    if s <= retraits.shape[0]:
+                        retraits[s - 1] = x
                     if res[PREMIER] < 0:
                         res[PREMIER] = s
                     base, meilleur, qualif = veille, -1e18, 0

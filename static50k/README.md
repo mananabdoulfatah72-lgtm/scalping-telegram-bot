@@ -262,3 +262,63 @@ Contrôles (`test_static.py`, 9 sur 9) :
 
 Topstep avec la zone seule arrive près du Static, mais il coûte 49 $ par mois plus 149 $ d'activation, contre 30 $
 une fois plus 130 $ d'activation. Le Static reste le compte le moins cher pour ce bot.
+
+## Combien par mois ? (demande du 8 octobre 2026 : sans les frais d'activation ; descriptif, écrit après les résultats)
+
+`par_mois.py` → `par_mois.txt`. Système retenu (E0 P500), au niveau d'aujourd'hui, **sans les 130 $ d'activation**.
+Un Static acheté le premier jour possible de chaque mois depuis 2012, chaque compte suivi 24 mois au plus.
+
+Contrôles :
+- la somme des retraits datés redonne le total du moteur ;
+- les retraits relevés séance par séance sont vérifiés à la main (`test_static.py`) ;
+- `static.txt` est inchangé.
+
+**Un compte Pro qui tourne** rapporte en moyenne **518 $ par mois** :
+
+| Scénario | Retrait moyen par mois |
+|---|---|
+| sans filtre | 518 $ |
+| filtre aussi bon qu'en 2026 (simulé) | 616 $ |
+| filtre inutile (simulé) | 430 $ |
+
+- La médiane par compte est de 533 $ par mois ; un compte sur deux est entre 178 $ et 645 $.
+- 74 % des retraits sont de 2 000 $, le maximum par demande.
+- 39 % de ces comptes sont perdus dans les 24 mois.
+
+**Un Static acheté** (retraits moyens, sans filtre ; achats 2012-2021 / 2023 - sept. 2024) :
+
+| Période après l'achat | Retrait moyen par mois |
+|---|---|
+| mois 1 à 3 | 6 / 8 $ |
+| mois 4 à 6 | 74 / 91 $ |
+| mois 7 à 12 | 138 / 125 $ |
+| mois 13 à 24 | 163 / 104 $ |
+
+Au total, environ 1 050 $ la première année et 2 300 à 3 000 $ sur deux ans.
+
+**Programme « un Static acheté chaque mois »** (30 $ par mois) :
+
+- **Montée en charge** : environ 250 $ par mois au 6e mois, 1 050 $ au 12e, 2 300 à 3 000 $ au 24e (en moyenne).
+- **Une fois lancé** (2014 - 2026, sans filtre) :
+  - moyenne **2 892 $ par mois**, mais **la moitié des mois à 0 $** ;
+  - la plus longue série sans rien : **23 mois** (mi-2015 à mi-2017) ;
+  - 5,7 comptes Pro en même temps en moyenne, 11 au plus.
+- **Par année** (moyenne par mois, sans filtre / filtre simulé aussi bon qu'en 2026 / filtre inutile) :
+
+  | Année | Sans filtre | Filtre aussi bon qu'en 2026 | Filtre inutile |
+  |---|---|---|---|
+  | 2016 | 0 $ | 0 $ | 0 $ |
+  | 2017 | 83 $ | 496 $ | 121 $ |
+  | 2018 | 8 083 $ | 7 438 $ | 3 408 $ |
+  | 2022 | 4 583 $ | 6 846 $ | 2 992 $ |
+  | 2023 | 5 417 $ | 8 625 $ | 3 033 $ |
+  | 2024 | 3 417 $ | 5 804 $ | 2 421 $ |
+  | 2025 | 1 417 $ | 2 925 $ | 1 412 $ |
+  | 2026 (9 mois) | 333 $ | 1 411 $ | 294 $ |
+
+- **Filtre simulé aussi bon qu'en 2026** :
+  - moyenne 4 285 $ par mois, 20 % de mois à 0 $ ;
+  - jusqu'à 18 comptes Pro en même temps, au-dessus de la limite de 15 de DayTraders.
+- **Filtre inutile** : moyenne 1 921 $ par mois.
+- Ces chiffres supposent que le plancher du compte Pro reste à 49 000 $ après un retrait. C'est la question à poser au
+  support : dans le cas pessimiste, l'argent reçu est à peu près divisé par deux (section « Ce qu'il faut savoir »).

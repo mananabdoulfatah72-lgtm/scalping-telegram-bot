@@ -48,9 +48,11 @@ def facteurs(D, d, niveau):
 
 
 def achat(D, b, d, variante, plafond=0.0, pessimiste=0, nuit=1, niveau=True, h1=252, h2=504, perte=M.PERTE,
-          objectif=M.OBJECTIF, trace=None):
+          objectif=M.OBJECTIF, trace=None, retraits=None):
     fn, fe = facteurs(D, d, niveau)
     if trace is None:
         trace = np.zeros(0)
+    if retraits is None:
+        retraits = np.zeros(0)
     return M.parcours(int(d), h1, h2, M.VARIANTES[variante] if isinstance(variante, str) else variante, plafond,
-                      pessimiste, nuit, 2.0 * fn, 5.0 * fe, perte, objectif, trace, *b)
+                      pessimiste, nuit, 2.0 * fn, 5.0 * fe, perte, objectif, trace, retraits, *b)

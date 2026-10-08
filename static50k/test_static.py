@@ -151,7 +151,9 @@ def test_retraits():
     -> retrait de 500 $ (garder 52 000 $) ; puis 4 600 $ a la 8e seance du cycle suivant -> 2 000 $ (le maximum)."""
     b = marche_synthetique(40, 151.5)
     tr = np.zeros(40)
-    r = M.parcours(0, 40, 40, 1, 0.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, tr, *b)
+    ret = np.zeros(40)
+    r = M.parcours(0, 40, 40, 1, 0.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, tr, ret, *b)
+    assert {int(k) + 1: v for k, v in zip(np.flatnonzero(ret), ret[ret > 0])} == {11: 500, 19: 2000, 27: 2000, 35: 2000}, ret
     assert r[M.ISSUE] == 1 and r[M.FIN_EVAL] == 2, r
     # Pro : seances 3, 4, ... ; valeur apres k seances = 300 k
     assert r[M.PREMIER] == 2 + 9, r[M.PREMIER]
@@ -160,11 +162,11 @@ def test_retraits():
     # cycle 4 : 3 000 + 2 400 = 5 400 a la seance 11 + 24 = 35 -> 2 000 ; seance 40 : pas encore (5 seances)
     assert r[M.RECU1] == 500 + 2000 + 2000 + 2000 and r[M.NRET1] == 4, (r[M.RECU1], r[M.NRET1])
     # plafond de 500 $ : le trade de +300 $ ne le touche pas ; plafond de 200 $ : chaque jour s'arrete a +200 $ - frais
-    r2 = M.parcours(0, 40, 40, 1, 200.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(40), *b)
+    r2 = M.parcours(0, 40, 40, 1, 200.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(40), np.zeros(0), *b)
     g = 200.0 - M.FRAIS_ZONE - M.TICK_NQ
     assert r2[M.ISSUE] == 1
     tr2 = np.zeros(40)
-    M.parcours(0, 40, 40, 1, 200.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, tr2, *b)
+    M.parcours(0, 40, 40, 1, 200.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, tr2, np.zeros(0), *b)
     assert abs(tr2[3] - tr2[2] - g) < 1e-9, (tr2[3] - tr2[2], g)
     print(f"ok : retraits a la main (500 $ a la 9e seance du compte Pro, puis 3 x 2 000 $) ; plafond du jour {g:+.2f} $")
 
@@ -175,8 +177,8 @@ def test_pessimiste():
     O, H, L, C = (x.copy() for x in b[:4])
     L[14, 15] = 0.0                    # 4e seance du cycle 2 (valeur 3 100 $) : creux de -2 000 $ pendant le trade
     b2 = (O, H, L, C) + b[4:]
-    r = M.parcours(0, 30, 30, 1, 0.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(30), *b2)
-    rp = M.parcours(0, 30, 30, 1, 0.0, 1, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(30), *b2)
+    r = M.parcours(0, 30, 30, 1, 0.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(30), np.zeros(0), *b2)
+    rp = M.parcours(0, 30, 30, 1, 0.0, 1, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(30), np.zeros(0), *b2)
     assert r[M.PRO_PERDU] == 0 and rp[M.PRO_PERDU] == 1 and rp[M.FIN_PRO] == 15, (r, rp)
     print("ok : compte Pro pessimiste perdu par un creux que le compte normal supporte")
 
@@ -202,11 +204,11 @@ def test_plancher_avant_plafond():
     b = marche_trois_jours()
     b[1][2, 15] = 1000.0 + 300.0
     b[2][2, 15] = 1000.0 - 600.0
-    r = M.parcours(0, 3, 3, 1, 500.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(3), *b)
+    r = M.parcours(0, 3, 3, 1, 500.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(3), np.zeros(0), *b)
     assert r[M.ISSUE] == 1 and r[M.PRO_PERDU] == 1 and r[M.FIN_PRO] == 3, r
     b[2][2, 15] = 1000.0 - 400.0                        # creux de -800 $ seulement : plafond pris
     tr = np.zeros(3)
-    r = M.parcours(0, 3, 3, 1, 500.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, tr, *b)
+    r = M.parcours(0, 3, 3, 1, 500.0, 0, 1, 2.0, 5.0, 1000.0, 300.0, tr, np.zeros(0), *b)
     assert r[M.PRO_PERDU] == 0 and abs(tr[2] - (500.0 - M.FRAIS_ZONE - M.TICK_NQ)) < 1e-9, (r, tr)
     print("ok : plafond et plancher dans la meme minute -> compte perdu ; plancher pas touche -> plafond pris")
 
@@ -220,7 +222,7 @@ def test_plafond_deux_contrats():
     b[2][2, 15] = 1000.0 - 300.0                        # plus bas du NQ
     b[14][2, 15] = 1000.0 + 100.0                       # plus haut de l'ES
     tr = np.zeros(3)
-    r = M.parcours(0, 3, 3, 4, 500.0, 0, 0, 2.0, 5.0, 1000.0, 300.0, tr, *b)
+    r = M.parcours(0, 3, 3, 4, 500.0, 0, 0, 2.0, 5.0, 1000.0, 300.0, tr, np.zeros(0), *b)
     attendu = -M.ORDRE_ES - M.FRAIS_ZONE                # rien ne bouge en cloture : frais seulement
     assert r[M.ISSUE] == 1 and abs(tr[2] - attendu) < 1e-9, (r, tr)
     print(f"ok : plafond pas pris sur la somme de deux meilleurs points (fin de journee {tr[2]:+.2f} $)")
@@ -263,7 +265,7 @@ def test_niveau(D, b):
         r2 = U.achat(D, tuple(b2), d, v, plafond=500.0, niveau=False)
         assert np.allclose(r1, r2), (v, r1, r2)
     r3 = U.achat(D, b, d, "E0", niveau=False)
-    r4 = M.parcours(d, 252, 504, 0, 0.0, 0, 1, 2.0, 5.0, M.PERTE, M.OBJECTIF, np.zeros(0), *b)
+    r4 = M.parcours(d, 252, 504, 0, 0.0, 0, 1, 2.0, 5.0, M.PERTE, M.OBJECTIF, np.zeros(0), np.zeros(0), *b)
     assert np.array_equal(r3, r4)
     print(f"ok : niveau d'aujourd'hui (facteurs NQ {fn:.2f}, ES {fe:.2f} en janvier 2019) = prix multiplies")
 
