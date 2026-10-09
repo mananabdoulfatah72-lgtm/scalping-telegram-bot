@@ -51,3 +51,27 @@ Un seul achat. Prix : ≈ 19,25 $ + 148 $ d'activation. Le compte réel arrive a
 
 - `test_vague11.py` : le plafond ferme au bon niveau, frais compris, et ne touche pas le challenge.
 - `vague8/test_vague8.py` : sans plafond, le moteur redonne exactement le moteur d'avant la vague 8.
+
+## Résultats (9 octobre 2026) : `vague11.txt`
+
+Un seul achat Bulenox 50K, achats suivis 24 mois :
+
+| Plafond du jour sur le Master | Retraits aux mois (1er / 2e / 3e) | Un retrait tous les | Master perdu en 12 mois | Net médian sur 24 mois |
+|---|---|---|---|---|
+| aucun, 2012-2021 | 9,7 / 13,9 / 17,1 | 3,3 mois | 25 % | +2 577 $ |
+| **500 $, 2012-2021** | 9,3 / 11,5 / **13,7** | **1,8 mois** | 22 % | **+3 606 $** |
+| aucun, 2023 - sept. 2024 | 8,9 / 12,8 / 17,0 | 3,5 mois | 9 % | +3 835 $ |
+| **500 $, 2023 - sept. 2024** | 8,2 / 10,6 / **13,0** | **1,9 mois** | 9 % | +3 744 $ |
+| 600 $, 2023 - sept. 2024 (pour information) | 7,5 / 10,2 / 12,7 | 2,0 mois | 5 % | +3 980 $ |
+
+**Verdict fixé à l'avance : choisi = plafond de 500 $, NON VALIDÉ.** En vérification, l'argent net sur 24 mois est
+presque le même (+3 744 $ contre +3 835 $), alors que la règle demandait au moins autant.
+
+**Ce que ce critère ne voit pas :** chez Bulenox, le compte passe en réel après 3 retraits, et la simulation s'arrête là.
+L'argent net sur 24 mois plafonne donc vers 3 × 1 400 $ dans les deux cas. La vraie différence est la **vitesse** :
+- le 3e retrait arrive **4 mois plus tôt** (mois 13 au lieu de 17) sur les deux périodes ;
+- un retrait arrive tous les **1,8 à 1,9 mois au lieu de 3,3 à 3,5** ;
+- le compte Master n'est pas perdu plus souvent (9 % contre 9 %, et 22 % contre 25 % sur 2012-2021).
+
+Ce critère de vitesse n'était pas celui fixé à l'avance : à lire comme un résultat descriptif, cohérent sur les deux
+périodes.

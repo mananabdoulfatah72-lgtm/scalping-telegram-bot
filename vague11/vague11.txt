@@ -1,0 +1,29 @@
+Vague 11 : Bulenox 50K, plafond de gain du jour sur le compte Master ; un seul achat ; filtre simule (10 tirages)
+
+=== achats 2012-2021 (achats suivis 24 mois)
+plafond aucun | challenge perdu 12%, valide au mois 4.2 | retraits aux mois 9.7 / 13.9 / 17.1 (3e atteint 67%), un tous les 3.3 mois | Master perdu en 12 mois 25% | net sur 24 mois (mediane) +2,577 $, achats perdants 31%
+plafond 400 $ | challenge perdu 12%, valide au mois 4.2 | retraits aux mois 9.7 / 12.0 / 14.2 (3e atteint 79%), un tous les 1.5 mois | Master perdu en 12 mois 18% | net sur 24 mois (mediane) +3,221 $, achats perdants 31%
+plafond 500 $ | challenge perdu 12%, valide au mois 4.2 | retraits aux mois 9.3 / 11.5 / 13.7 (3e atteint 71%), un tous les 1.8 mois | Master perdu en 12 mois 22% | net sur 24 mois (mediane) +3,606 $, achats perdants 34%
+plafond 600 $ | challenge perdu 12%, valide au mois 4.2 | retraits aux mois 9.4 / 11.7 / 13.8 (3e atteint 69%), un tous les 1.9 mois | Master perdu en 12 mois 24% | net sur 24 mois (mediane) +3,577 $, achats perdants 33%
+plafond 750 $ | challenge perdu 12%, valide au mois 4.2 | retraits aux mois 9.3 / 12.1 / 14.3 (3e atteint 65%), un tous les 2.2 mois | Master perdu en 12 mois 29% | net sur 24 mois (mediane) +2,703 $, achats perdants 37%
+plafond 1,000 $ | challenge perdu 12%, valide au mois 4.2 | retraits aux mois 9.3 / 12.4 / 15.3 (3e atteint 66%), un tous les 2.9 mois | Master perdu en 12 mois 28% | net sur 24 mois (mediane) +2,630 $, achats perdants 34%
+
+=== achats 2023 - mars 2026 (achats suivis 24 mois)
+plafond aucun | challenge perdu 0%, valide au mois 3.2 | retraits aux mois 8.9 / 12.8 / 17.0 (3e atteint 81%), un tous les 3.5 mois | Master perdu en 12 mois 9% | net sur 24 mois (mediane) +3,835 $, achats perdants 8%
+plafond 400 $ | challenge perdu 0%, valide au mois 3.2 | retraits aux mois 7.8 / 10.0 / 12.0 (3e atteint 87%), un tous les 1.4 mois | Master perdu en 12 mois 7% | net sur 24 mois (mediane) +3,274 $, achats perdants 8%
+plafond 500 $ | challenge perdu 0%, valide au mois 3.2 | retraits aux mois 8.2 / 10.6 / 13.0 (3e atteint 85%), un tous les 1.9 mois | Master perdu en 12 mois 9% | net sur 24 mois (mediane) +3,744 $, achats perdants 8%
+plafond 600 $ | challenge perdu 0%, valide au mois 3.2 | retraits aux mois 7.5 / 10.2 / 12.7 (3e atteint 90%), un tous les 2.0 mois | Master perdu en 12 mois 5% | net sur 24 mois (mediane) +3,980 $, achats perdants 6%
+plafond 750 $ | challenge perdu 0%, valide au mois 3.2 | retraits aux mois 8.7 / 11.2 / 14.2 (3e atteint 91%), un tous les 2.3 mois | Master perdu en 12 mois 4% | net sur 24 mois (mediane) +3,960 $, achats perdants 5%
+plafond 1,000 $ | challenge perdu 0%, valide au mois 3.2 | retraits aux mois 8.6 / 12.2 / 15.8 (3e atteint 89%), un tous les 3.2 mois | Master perdu en 12 mois 3% | net sur 24 mois (mediane) +3,931 $, achats perdants 5%
+
+=== achats 2025 - mars 2026 (challenge seulement)
+plafond aucun | challenge perdu 11%, valide au mois 8.8 | retraits aux mois 11.7 / 11.9 / nan (3e atteint 0%), un tous les 2.2 mois | Master perdu en 12 mois 23% | net sur 24 mois (mediane) +nan $, achats perdants nan%
+plafond 400 $ | challenge perdu 11%, valide au mois 8.8 | retraits aux mois 13.6 / 12.1 / nan (3e atteint 0%), un tous les 2.7 mois | Master perdu en 12 mois 15% | net sur 24 mois (mediane) +nan $, achats perdants nan%
+plafond 500 $ | challenge perdu 11%, valide au mois 8.8 | retraits aux mois 12.6 / 14.3 / nan (3e atteint 0%), un tous les 2.1 mois | Master perdu en 12 mois 15% | net sur 24 mois (mediane) +nan $, achats perdants nan%
+plafond 600 $ | challenge perdu 11%, valide au mois 8.8 | retraits aux mois 12.0 / 14.0 / nan (3e atteint 0%), un tous les 2.1 mois | Master perdu en 12 mois 15% | net sur 24 mois (mediane) +nan $, achats perdants nan%
+plafond 750 $ | challenge perdu 11%, valide au mois 8.8 | retraits aux mois 11.4 / 13.6 / 20.1 (3e atteint 1%), un tous les 1.8 mois | Master perdu en 12 mois 0% | net sur 24 mois (mediane) +nan $, achats perdants nan%
+plafond 1,000 $ | challenge perdu 11%, valide au mois 8.8 | retraits aux mois 11.4 / 11.9 / nan (3e atteint 0%), un tous les 2.8 mois | Master perdu en 12 mois 0% | net sur 24 mois (mediane) +nan $, achats perdants nan%
+
+=== Jugement
+Choix (2012-2021) : plafond 500 $ ; net +3,606 $ contre +2,577 $ sans plafond
+Verification (2023 - sept. 2024) : net +3,744 $ contre +3,835 $ ; Master perdu 9% contre 9% -> NON VALIDE
