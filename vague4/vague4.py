@@ -37,7 +37,8 @@ def jouer(D, b, dd, nc, rsi):
         r = M4.parcours4(d, rsi, 2.0 * fn, 5.0 * fe, ret, *b, *e, *f_)
         mois = np.ceil(r[1] / 21.0) if mensuel else 1.0
         cout = prix * mois + (activation if r[0] == 1 else 0.0)
-        rows.append((r[0], r[1], r[2], r[3], r[4] * part, r[4] * part - cout, ret * part))
+        vie = (r[6] - r[1]) / 21.0 if r[0] == 1 else 0.0          # mois de vie du compte finance dans les 12 mois
+        rows.append((r[0], r[1], r[2], r[3], r[4] * part, r[4] * part - cout, vie))
     return rows
 
 
@@ -46,14 +47,16 @@ def mesures(rows):
     net = np.array([x[5] for x in rows])
     recu = np.array([x[4] for x in rows])
     perdu = np.array([x[2] for x in rows])
+    vie = np.array([x[6] for x in rows])
     return {"achats": len(rows), "reussi": float((iss == 1).mean()), "retrait": float((recu > 0).mean()),
             "recu": float(recu.mean()), "net": float(net.mean()), "net_median": float(np.median(net)),
-            "finance_perdu": float(perdu[iss == 1].mean()) if (iss == 1).any() else 0.0}
+            "finance_perdu": float(perdu[iss == 1].mean()) if (iss == 1).any() else 0.0,
+            "par_mois_finance": float(recu.sum() / vie.sum()) if vie.sum() > 0 else 0.0}
 
 
 def ligne(nom, x):
     return (f"{nom} | {x['achats']} | {x['reussi']:.0%} | {x['retrait']:.0%} | {x['recu']:,.0f} $ | {x['net']:+,.0f} $"
-            f" (mediane {x['net_median']:+,.0f}) | {x['finance_perdu']:.0%}")
+            f" (mediane {x['net_median']:+,.0f}) | {x['finance_perdu']:.0%} | {x['par_mois_finance']:,.0f} $")
 
 
 def main():
@@ -67,7 +70,7 @@ def main():
     L = ["Vague 4, partie A : Topstep et Tradeify Growth, niveau d'aujourd'hui, 12 mois apres l'achat (prix, abonnements et"
          " activation deduits)", "",
          "compte | bot | achats | challenge reussi | au moins un retrait | retraits moyens | argent net moyen | compte"
-         " finance perdu"]
+         " finance perdu | retraits par mois d'un compte finance en vie"]
     res = {}
     for nc in COMPTES:
         for g, ds in G.items():
@@ -99,10 +102,10 @@ def main():
     rho = S.rho_2026()
     L += ["", f"=== Filtre delta simule (descriptif, rho {rho:.2f}, {TIRAGES} tirages), verification 2023 - sept. 2025"]
     for nom, rr in (("aussi bon qu'en 2026", rho), ("inutile", 0.0)):
-        gardes = S.gardes_simules(D, rr)[:TIRAGES]
+        bases = [D4.base(D, g) for g in S.gardes_simules(D, rr)[:TIRAGES]]
         for nc in COMPTES:
             for nb in sorted({"zone seule", retenues[nc]}):
-                rows = sum((jouer(D, D4.base(D, g), G["verification 2023 - sept. 2025"], nc, BOTS[nb]) for g in gardes), [])
+                rows = sum((jouer(D, bb, G["verification 2023 - sept. 2025"], nc, BOTS[nb]) for bb in bases), [])
                 x = mesures(rows)
                 x["achats"] = len(G["verification 2023 - sept. 2025"])
                 L.append(ligne(f"{nc} | {nb} | filtre {nom}", x))

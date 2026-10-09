@@ -3,6 +3,7 @@
 exploration 2016-2022 avec 1 000 tirages au hasard du sens de chaque trade. Le coffre (2023 - sept. 2026) n'est lu que
 pour les survivantes, une seule fois (coffre=True). Ecrit partie_b.txt."""
 import sys
+from functools import lru_cache
 
 import numpy as np
 import pandas as pd
@@ -16,10 +17,19 @@ SOURCES = {"B1 largeur a 10 h": 30, "B2 largeur a 11 h": 90, "B3 hausse etroite 
 N_HASARD = 1000
 
 
+@lru_cache(maxsize=1)
+def _grandes():
+    return pd.read_csv(D4.ICI / "donnees" / "grandes.csv.gz")
+
+
 def largeur(jours, minute):
+    return largeur_de(_grandes(), jours, minute)
+
+
+def largeur_de(g, jours, minute):
     """Part des grandes valeurs au-dessus de leur ouverture de 9 h 30, a la fin de la minute `minute` - 1 (colonne c{minute}),
     par seance ; NaN si moins de 8 valeurs connues."""
-    g = pd.read_csv(D4.ICI / "donnees" / "grandes.csv.gz")
+    g = g.copy()
     g["haut"] = (g[f"c{minute}"] > g["ouverture"]).astype(float)
     g.loc[g[f"c{minute}"].isna() | g["ouverture"].isna(), "haut"] = np.nan
     x = g.groupby("jour")["haut"].agg(["mean", "count"])
@@ -58,7 +68,7 @@ def t_stat(x):
     return float(x.mean() / s * np.sqrt(len(x))) if s > 0 else 0.0
 
 
-def evaluer(D, nom, debut, fin, graine=11):
+def evaluer(D, nom, debut, fin, graine=11, hasard=True):
     j = D["jours"]
     sens, me = signaux(D, nom)
     per = (j >= pd.Timestamp(debut)) & (j <= pd.Timestamp(fin))
@@ -66,11 +76,10 @@ def evaluer(D, nom, debut, fin, graine=11):
     r, dol, sp = r[per], dol[per], sens[per]
     t = t_stat(r)
     rng = np.random.default_rng(graine)
-    C = D["C"][per]
-    e, s = C[:, me], C[:, SORTIE]
-    brut = np.where(sp != 0, s / e - 1, 0.0)
-    frais = np.where(sp != 0, COUT / e, 0.0)
-    ts = np.array([t_stat(np.where(sp != 0, rng.choice([-1, 1], len(sp)) * brut - frais, 0.0)) for _ in range(N_HASARD)])
+    ts = np.zeros(1)
+    if hasard:                                  # meme trade, sens tire au hasard (rendements() avec un autre sens)
+        ts = np.array([t_stat(rendements(D, np.where(sens != 0, rng.choice([-1, 1], len(sens)), 0), me)[0][per])
+                       for _ in range(N_HASARD)])
     annees = pd.Series(dol, index=j[per]).groupby(j[per].year).sum()
     return {"t": t, "hasard": float((ts < t).mean()), "trades": int((sp != 0).sum()), "achats": int((sp == 1).sum()),
             "dollars": float(dol.sum()), "annees": annees}
@@ -94,7 +103,7 @@ def main(coffre=False):
         seuil = {1: 1.65, 2: 1.96, 3: 2.13}[len(surv)]
         L += ["", f"=== Coffre 2023 - sept. 2026 (t >= {seuil}, positif 3 annees sur 4)"]
         for nom in surv:
-            x = evaluer(D, nom, "2023-01-01", "2026-12-31")
+            x = evaluer(D, nom, "2023-01-01", "2026-12-31", hasard=False)
             pos = int((x["annees"] > 0).sum())
             L.append(f"{nom} | t {x['t']:+.2f} | annees positives {pos}/{len(x['annees'])} | {x['dollars']:+,.0f} $ -> "
                      + ("PASSE" if x["t"] >= seuil and pos >= 3 else "echoue"))

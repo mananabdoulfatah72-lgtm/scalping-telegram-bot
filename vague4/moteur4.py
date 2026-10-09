@@ -87,7 +87,7 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
             if hautv > pic_rt:
                 pic_rt = hautv
             plancher = min(pic_rt - perte, blocage)
-        if dll > 0.0 and (zp != 0 or rp != 0) and basv <= depart_jour - dll:
+        if dll > 0.0 and (nq != 0 or ne != 0) and basv <= depart_jour - dll:     # comme financee : position nette
             x = depart_jour - dll if ouv > depart_jour - dll else ouv
             cash = x - (FRAIS_ZONE if zp != 0 else 0.0) - (ordre if rp != 0 else 0.0) - TICK_NQ * abs(zp) - tick * rp
             zp, rp, arret = 0, 0, True
@@ -119,7 +119,8 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
               e_obj, e_perte, e_mode, e_bloc, e_dll, e_regul, e_jmin, f_perte, f_bloc, f_dll, f_jours, f_seuil, f_regul,
               f_min, plafonds, f_part, f_reserve, f_max):
     """Challenge puis compte finance, sur UN_AN seances apres l'achat (comme financee.parcours). Renvoie (issue du
-    challenge, seances du challenge, compte finance perdu, nombre de retraits, recu brut, seance du 1er retrait)."""
+    challenge, seances du challenge, compte finance perdu, nombre de retraits, recu brut, seance du 1er retrait, seances
+    jouees depuis l'achat a la fin du suivi ou a la perte du compte finance)."""
     nj = O.shape[0]
     fin = min(nj, debut + UN_AN)
     cash, veut, pic_rt, pic_eod, veille = 0.0, 0, 0.0, 0.0, 0.0
@@ -133,7 +134,7 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
                                                           z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH,
                                                           ENL, enn, ptN, ptE)
         if perdu:
-            return -1, d - debut + 1, False, 0, 0.0, -1
+            return -1, d - debut + 1, False, 0, 0.0, -1, d - debut + 1
         g = cash - veille
         veille = cash
         jours += 1
@@ -148,7 +149,7 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
             issue, n_ch = 1, d - debut
             break
     if issue != 1:
-        return 0, fin - debut, False, 0, 0.0, -1
+        return 0, fin - debut, False, 0, 0.0, -1, fin - debut
     cash, pic_eod, veille, base = 0.0, 0.0, 0.0, 0.0
     plancher = -f_perte
     meilleur, qual, n, recu, premier = -1e18, 0, 0, 0.0, -1
@@ -158,7 +159,7 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
                                                           dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn,
                                                           ptN, ptE)
         if perdu:
-            return 1, n_ch, True, n, recu, premier
+            return 1, n_ch, True, n, recu, premier, d - debut + 1
         g = cash - veille
         veille = cash
         if (f_seuil > 0.0 and g >= f_seuil) or (f_seuil == 0.0 and tr):
@@ -186,5 +187,5 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
                     premier = d - debut
                 base, meilleur, qual = cash, -1e18, 0
                 if f_max > 0 and n >= f_max:
-                    return 1, n_ch, False, n, recu, premier
-    return 1, n_ch, False, n, recu, premier
+                    return 1, n_ch, False, n, recu, premier, d - debut
+    return 1, n_ch, False, n, recu, premier, fin - debut

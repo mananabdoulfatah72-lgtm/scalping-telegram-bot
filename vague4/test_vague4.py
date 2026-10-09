@@ -32,14 +32,14 @@ def test_financee(D, b):
                      *zt[2:], D["dec"][s], D["voulu"][s], D["NO"][s] * fn, D["NH"][s] * fn, D["NL"][s] * fn, D["nn"][s])
                 x = F.parcours(0, r, *a, *e, *f_, K.P.FRAIS_ZONE, K.P.FRAIS_RSI)
                 y = M4.parcours4(d, r, 2.0 * fn, 5.0 * fe, np.zeros(0), *b, *e, *f_)
-                assert x[:4] == y[:4] and abs(x[4] - y[4]) < 1e-6 and x[5] == y[5], (nc, r, j[d], x, y)
+                assert tuple(x[:4]) == tuple(y[:4]) and abs(x[4] - y[4]) < 1e-6 and x[5] == y[5], (nc, r, j[d], x, y)
                 n += 1
     print(f"ok : moteur4 = financee.py sur {n} parcours (Topstep et Tradeify, sans RSI(2) et RSI(2) entre deux clotures)")
 
 
 def un_jour(D, b, d, rsi):
     """Une seance sans limite (perte et limite du jour infinies), RSI(2) voulu la veille. Renvoie le cash de fin."""
-    return M4.seance4(d, rsi, 1, 0.0, 0.0, -1e12, 0, 1e12, 1e12, 0.0, *b[:13], *b[13:17], *b[17:25], 2.0, 5.0)[1]
+    return M4.seance4(d, rsi, 1, 0.0, 0.0, -1e12, 0, 1e12, 1e12, 0.0, *b, 2.0, 5.0)[1]
 
 
 def test_a_la_main(D, b):
@@ -60,12 +60,39 @@ def test_a_la_main(D, b):
 
 
 def test_nuit_es(D):
-    """3. La nuit de l'ES suit la meme regle que celle du NQ : memes seances avec des barres a peu pres, prix proches."""
+    """3. La nuit de l'ES suit exactement la regle de commun.charger : appliquee au fichier du NQ, nuit() redonne la nuit du
+    NQ d'intraday50k a l'identique ; pour l'ES, barres presentes et ouverture de 18 h proche de la cloture d'avant."""
+    NO, NH, NL, nn = D4.nuit(D4.R0 / "nuit/donnees/nasdaq100_1h.csv.gz", D["jours"], D["contrat"])
+    assert np.array_equal(nn, D["nn"]) and np.allclose(NO, D["NO"], equal_nan=True) and np.allclose(NL, D["NL"], equal_nan=True)
     both = (D["nn"] > 0) & (D["enn"] > 0)
     assert both.mean() > 0.97, both.mean()
-    r = D["ENO"][both, 0] / D["EC"][np.flatnonzero(both) - 1, D["derniere"][np.flatnonzero(both) - 1]]
+    i = np.flatnonzero(both)
+    i = i[i > 0]
+    r = D["ENO"][i, 0] / D["EC"][i - 1, D["derniere"][i - 1]]
     assert np.nanmedian(np.abs(r - 1)) < 0.003, np.nanmedian(np.abs(r - 1))
-    print(f"ok : nuit de l'ES presente pour {both.mean():.1%} des seances, ouverture de 18 h proche de la cloture d'avant")
+    print(f"ok : nuit() redonne la nuit du NQ d'intraday50k ; nuit de l'ES presente pour {both.mean():.1%} des seances")
+
+
+def test_largeur(D):
+    """4. Partie B : la part des grandes valeurs au-dessus de leur ouverture, recalculee a la main un jour donne, et le sens
+    du signal ; la decision n'utilise que les prix connus a la minute de decision (couper les donnees apres ne change
+    rien)."""
+    import sources_b as B
+    g = pd.read_csv(D4.ICI / "donnees" / "grandes.csv.gz")
+    jour = "2020-03-17"
+    x = g[g["jour"] == jour]
+    main_ = float((x["c30"] > x["ouverture"]).mean())
+    d = int(np.flatnonzero(D["jours"] == pd.Timestamp(jour))[0])
+    assert abs(B.largeur(D["jours"], 30)[d] - main_) < 1e-12 and len(x) >= 8
+    sens, me = B.signaux(D, "B1 largeur a 10 h")
+    attendu = 1 if main_ >= 0.9 else (-1 if main_ <= 0.1 else 0)
+    assert sens[d] == (attendu if D["derniere"][d] == 389 else 0) and me == 29
+    # pas de futur : les colonnes apres la decision ne servent pas
+    g2 = g.copy()
+    for k in range(60, 391, 30):
+        g2[f"c{k}"] = np.nan if k > 30 else g2[f"c{k}"]
+    assert np.array_equal(B.largeur_de(g2, D["jours"], 30), B.largeur(D["jours"], 30), equal_nan=True)
+    print(f"ok : largeur du {jour} a 10 h = {main_:.0%} (a la main = moteur), sens {sens[d]:+d} ; pas de futur")
 
 
 if __name__ == "__main__":
@@ -74,3 +101,5 @@ if __name__ == "__main__":
     test_nuit_es(D)
     test_a_la_main(D, b)
     test_financee(D, b)
+    if (D4.ICI / "donnees" / "grandes.csv.gz").exists():
+        test_largeur(D)
