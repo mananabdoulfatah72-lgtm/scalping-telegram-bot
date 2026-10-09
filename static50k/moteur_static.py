@@ -14,6 +14,9 @@ OBJECTIF, PERTE = 3750.0, 1000.0
 SEUIL_PRO, GARDE_PRO, MAX_RET = 2600.0, 2000.0, 2000.0
 S2F_PERTE, S2F_DLL, S2F_JOURS, S2F_REGUL = 2500.0, 1250.0, 10, 0.2      # S2F 50K (README.md, « Le S2F »)
 S2F_SEUILS = (3500.0, 3000.0, 2500.0)
+# DayTraders S2L Core 50K (vague6/README.md) : evaluation puis compte live
+S2L_PERTE, S2L_DLL, S2L_OBJ, S2L_JOURS, S2L_REGUL = 2000.0, 1000.0, 3000.0, 8, 0.25
+S2L_GARDE, S2L_ATTENTE, S2L_MIN = 1000.0, 8, 500.0
 VARIANTES = {"E0": 0, "E1": 1, "E2": 2, "E3": 3, "E4": 4, "E5": 5, "E6": 6}
 
 # colonnes du resultat
@@ -106,7 +109,11 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
     journee de la s-ieme seance (avant un retrait), pour les controles. retraits[s - 1] : retrait recu a la fin de la
     s-ieme seance (tableau vide : non enregistre). regle : 0 Static puis Pro Static ; 1 idem, Pro pessimiste (plancher
     remonte apres un retrait) ; 2 S2F 50K (finance tout de suite : perte de 2 500 $ suivie en fin de journee, bloquee a
-    50 000 $ ; limite du jour douce de 1 250 $ ; retraits du S2F)."""
+    50 000 $ ; limite du jour douce de 1 250 $ ; retraits du S2F) ; 3 DayTraders S2L Core 50K (vague 6 : plancher a
+    2 000 $ sous le plus haut suivi en direct, arrete au solde de depart ; limite du jour douce de 1 000 $ ; evaluation a
+    +3 000 $, 8 jours a +200 $, 25 % ; compte live : retrait de tout ce qui depasse 1 000 $ + reserve a partir de la 8e
+    seance, regle d'activite seulement a l'evaluation ; perte et objectif ne servent pas) ; 4 S2L avec une limite du jour
+    definitive (compte perdu a -1 000 $ sous la fin de journee d'avant, descriptif)."""
     res = np.zeros(NCOL)
     res[FIN_EVAL], res[PREMIER] = -1.0, -1.0
     nj = O.shape[0]
@@ -124,6 +131,10 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
     veut = 0
     sans_qualif, inactif = 0, False
     pic_eod, nret = 0.0, 0
+    pic, n_live = 0.0, 0            # S2L : plus haut suivi en direct, seances du compte live
+    plancher_jour = -1e18           # S2L a limite du jour definitive (regle 4) : plancher du jour
+    if regle >= 3:
+        plancher = -S2L_PERTE
     if regle == 2:                          # S2F : pas d'evaluation
         phase = 1
         res[ISSUE], res[FIN_EVAL] = 1.0, 0.0
@@ -133,12 +144,20 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
         pz = kN[d]                          # zone : $ par point du jour
         m = m_eval if phase == 0 else (m_pro if veille - plancher >= seuil_m else 1)
         cap = veille + plafond_pro * m if (phase == 1 and plafond_pro > 0.0) else 0.0
-        lim = veille - S2F_DLL if regle == 2 else -1e18
+        lim = veille - S2F_DLL if regle == 2 else (veille - S2L_DLL if regle == 3 else -1e18)
+        if regle == 4:                      # limite du jour definitive : un plancher de plus pour la journee
+            plancher_jour = veille - S2L_DLL
+            plancher = max(min(pic - S2L_PERTE, 0.0), plancher_jour)
         # ======================= barres de la nuit (de 18 h la veille a 8 h) : journee de trading d
         arret = False
         if avec_nuit == 1 and d > debut:
             p = d - 1
             for b in range(npost[p], na[p]):
+                if regle >= 3 and rq > 0:                 # S2L : le plus haut de la barre d'abord (prudent)
+                    v = cash + rpt * rq * ((AH[p, b] if ri == 0 else BH[p, b]) - re)
+                    if v > pic:
+                        pic = v
+                        plancher = max(min(pic - S2L_PERTE, 0.0), plancher_jour)
                 perdu, cash, rq, touche = _heure(cash, rq, re, ri, rpt, AO, AH, AL, BO, BH, BL, p, b, plancher,
                                                  lim, 0.0 if arret else cap)
                 if perdu:
@@ -189,6 +208,9 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
                 haut = max(ouv, a + en * C[d, t] + rpt * ne * EC[d, t])
             else:
                 haut = a + en * haut_n + rpt * ne * EH[d, t]
+            if regle >= 3 and haut > pic:                            # S2L : plancher suivi en direct
+                pic = haut
+                plancher = max(min(pic - S2L_PERTE, 0.0), plancher_jour)
             # limite du jour douce (S2F) : du meme cote que le plancher, touchee la premiere si elle est au-dessus et que la
             # minute ouvre au-dessus du plancher (comme _heure)
             if not arret and (zp != 0 or rq > 0) and bas <= lim and lim > plancher and ouv > plancher:
@@ -223,6 +245,11 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
         pn, pe = C[d, dmin], EC[d, dmin]
         if avec_nuit == 1:
             for b in range(npost[d]):
+                if regle >= 3 and rq > 0:
+                    v = cash + rpt * rq * ((AH[d, b] if ri == 0 else BH[d, b]) - re)
+                    if v > pic:
+                        pic = v
+                        plancher = max(min(pic - S2L_PERTE, 0.0), plancher_jour)
                 perdu, cash, rq, touche = _heure(cash, rq, re, ri, rpt, AO, AH, AL, BO, BH, BL, d, b, plancher,
                                                  lim, 0.0 if arret else cap)
                 if perdu:
@@ -230,6 +257,9 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
                 arret = arret or touche
                 pn, pe = AC[d, b], BC[d, b]
         eod = cash + (rq * (pn - re) * rpt if ri == 0 else rq * (pe - re) * rpt)
+        if regle >= 3 and eod > pic:
+            pic = eod
+            plancher = max(min(pic - S2L_PERTE, 0.0), plancher_jour)
         if s <= trace.shape[0]:
             trace[s - 1] = eod
         g = eod - veille
@@ -241,17 +271,39 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
             sans_qualif = 0
         else:
             sans_qualif += 1
-        if activite == 1 and sans_qualif >= 21:
+        if activite == 1 and sans_qualif >= 21 and (regle < 3 or phase == 0):
             return _perdu(res, phase, s, True)
         if phase == 0:
-            if eod >= objectif and qualif >= 2 and meilleur <= 0.5 * eod:
+            if regle >= 3:
+                reussi = eod >= S2L_OBJ and qualif >= S2L_JOURS and meilleur <= S2L_REGUL * eod
+            else:
+                reussi = eod >= objectif and qualif >= 2 and meilleur <= 0.5 * eod
+            if reussi:
                 res[ISSUE], res[FIN_EVAL] = 1.0, s
                 phase = 1
                 cash, zp, rq, veille = 0.0, 0, 0, 0.0
-                plancher = -PERTE
+                plancher = -S2L_PERTE if regle >= 3 else -PERTE
+                pic, n_live = 0.0, 0
                 meilleur, qualif, base = -1e18, 0, 0.0
                 bloque = veut == 1
                 sans_qualif = 0
+        elif regle >= 3:
+            # S2L live : a partir de la 8e seance, retrait de tout ce qui depasse 1 000 $ + reserve (au moins 500 $)
+            n_live += 1
+            if n_live >= S2L_ATTENTE:
+                x = eod - S2L_GARDE - reserve
+                if x >= S2L_MIN:
+                    cash -= x
+                    veille = eod - x
+                    nret += 1
+                    if s <= h1:
+                        res[RECU1] += x
+                        res[NRET1] += 1
+                    res[RECU2] += x
+                    if s <= retraits.shape[0]:
+                        retraits[s - 1] = x
+                    if res[PREMIER] < 0:
+                        res[PREMIER] = s
         elif regle == 2:
             # S2F : plancher = plus haut solde de fin de journee - 2 500 $, bloque a 50 000 $ ; retrait apres 10 jours
             # a +200 $, gain du cycle >= 3 500 / 3 000 / 2 500 $, meilleur jour <= 20 % ; au plus 2 000 $, solde garde 51 000 $

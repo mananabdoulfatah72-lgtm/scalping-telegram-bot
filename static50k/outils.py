@@ -57,11 +57,13 @@ def facteurs(D, d, niveau):
 
 
 def achat(D, b, d, variante, plafond=0.0, pessimiste=0, nuit=1, niveau=True, h1=252, h2=504, perte=M.PERTE,
-          objectif=M.OBJECTIF, trace=None, retraits=None, s2f=False, leviers=(1, 1, 1e18, 0.0), activite=0):
+          objectif=M.OBJECTIF, trace=None, retraits=None, s2f=False, leviers=(1, 1, 1e18, 0.0), activite=0, s2l=False,
+          s2l_ferme=False):
     """Un achat : Static puis Pro Static (pessimiste=1 : Pro pessimiste), ou S2F 50K (s2f=True). leviers : (m_eval, m_pro,
     seuil_m, reserve) de la vague 5 (par defaut : aucun). niveau : True (niveau d'aujourd'hui, facteur fixe au depart),
     False (prix de l'epoque) ou "jour" (vague 5 : chaque trade au facteur de son jour d'entree). activite=1 : regle
-    d'activite appliquee (voir moteur_static._parcours)."""
+    d'activite appliquee (voir moteur_static._parcours). s2l=True : DayTraders S2L Core 50K (regle 3, vague 6) ;
+    s2l_ferme=True : idem avec une limite du jour definitive (regle 4)."""
     if niveau == "jour":
         fn, fe = facteurs_jour(D)
     else:
@@ -71,5 +73,6 @@ def achat(D, b, d, variante, plafond=0.0, pessimiste=0, nuit=1, niveau=True, h1=
     if retraits is None:
         retraits = np.zeros(0)
     return M.parcours(int(d), h1, h2, M.VARIANTES[variante] if isinstance(variante, str) else variante, plafond,
-                      2 if s2f else pessimiste, nuit, 2.0 * fn, 5.0 * fe, perte, objectif, trace, retraits, *b,
+                      4 if s2l_ferme else (3 if s2l else (2 if s2f else pessimiste)), nuit, 2.0 * fn, 5.0 * fe, perte, objectif, trace,
+                      retraits, *b,
                       *leviers, activite)
