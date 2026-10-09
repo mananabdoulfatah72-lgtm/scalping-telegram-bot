@@ -128,14 +128,13 @@ Contrôles : `test_vague5.py` 5 sur 5, `test_static.py` 10 sur 10, `test_vague4.
 
 **L'objectif de 500 $ par mois n'est pas atteint** : 444 $ en vérification.
 
-Ce qui aide, ce qui n'aide pas :
-- **Doubler la taille pendant le challenge aide partout.** Un challenge perdu coûte peu, et un challenge réussi plus vite
-  fait gagner des mois : Static +70 $ par mois sur le choix, Topstep +110 $.
-- **Doubler la taille sur le compte financé n'aide pas** (de −11 à +7 $) : les comptes sont perdus plus souvent.
-- **La réserve fait perdre** : de −40 à −255 $ par mois. Les retraits sont plafonnés, donc retirer moins ne se rattrape
-  pas.
-- **RSI(2) sur MES plutôt que MNQ (E4)** aide le Static (+29 $ sur le choix).
-- **Enlever A3 chez Topstep fait perdre** de 80 à 90 $ par mois.
+Ce qui aide, ce qui n'aide pas (effet de chaque levier, toutes les autres choses égales, sur la fenêtre de choix) :
+- **Doubler la taille pendant le challenge aide partout** : de +24 à +117 $ par mois. Un challenge perdu coûte peu, et
+  un challenge réussi plus vite fait gagner des mois.
+- **Doubler la taille sur le compte financé n'aide pas** : de −48 à +15 $. Les comptes sont perdus plus souvent.
+- **La réserve fait perdre** : de −15 à −255 $. Les retraits sont plafonnés, donc retirer moins ne se rattrape pas.
+- **RSI(2) sur MES plutôt que MNQ (E4)** aide le Static et le S2F : de +14 à +56 $.
+- **Enlever A3 chez Topstep fait perdre** : de −33 à −101 $.
 
 Descriptif, Static E4 challenge 2× (choix / vérification) :
 - sans filtre : +393 / +393 $ ;
