@@ -1,6 +1,3 @@
-choix 2012-2022 (54 s)
-verification 2023 - sept. 2026 (73 s)
-descriptif (82 s)
 Vague 6 : un seul compte a la fois, gains nets par mois du calendrier (retraits x part du trader - prix), chaque trade au niveau d'aujourd'hui de son jour d'entree, comptes gardes tant qu'ils vivent, regle d'activite de DayTraders ; filtre simule rho 0.24, 10 tirages ; 2x des 4,000 $ de coussin. Donnees jusqu'au 2026-09-25.
 
 === choix 2012-2022 | filtre aussi bon qu'en 2026 (simule) (classement du choix)
