@@ -170,30 +170,43 @@ Le coffre n'est pas ouvert. La largeur des 10 plus grosses valeurs n'apporte rie
 
 Demande de l'utilisateur du 9 octobre 2026, calculé après les résultats ci-dessus. Le bot retenu pour Topstep : la zone
 (1 MNQ) + A3 (RSI(2) de nuit seulement sur 1 MES), au niveau d'aujourd'hui. Le filtre delta est simulé (ρ 0,24,
-10 tirages), sauf la ligne « vrai filtre » (avril - septembre 2026 seulement). Contrôle 5 de `test_vague4.py` : la
-chaîne « un seul compte à la fois » est rejouée compte par compte.
+10 tirages), sauf la ligne « vrai filtre » (avril - septembre 2026 seulement, la période où il a été mesuré).
 
-**1. Le bot seul, sans compte ni limite (2023 - sept. 2026)**
+Contrôle 5 de `test_vague4.py` : la chaîne « un seul compte à la fois » est rejouée compte par compte. Une revue de code
+indépendante n'a trouvé aucune erreur de calcul. Elle a demandé de mieux montrer les limites, ce qui est fait :
+- pour le filtre simulé, la médiane, les mois perdants et le pire mois sont comptés sur tous les tirages ;
+- les mois d'avant le départ de chaque chaîne ne comptent plus ;
+- la limite de 24 mois est écrite, avec le chiffre sans elle ;
+- la vie médiane est arrêtée à 12 mois ;
+- le temps pour valider des achats récents est biaisé court.
+
+**1. Le bot seul, sans compte ni limite (2023 - 25 sept. 2026)**
 
 | | Par mois en moyenne | Mois perdants | Pire mois |
 |---|---|---|---|
 | zone + A3, sans filtre | +587 $ | 38 % | −2 050 $ |
-| zone + A3, filtre aussi bon qu'en 2026 | +835 $ | 31 % | −1 526 $ |
-| zone + A3, filtre inutile | +526 $ | 36 % | −1 657 $ |
+| zone + A3, filtre aussi bon qu'en 2026 | +835 $ | 29 % | −1 815 $ |
+| zone + A3, filtre inutile | +526 $ | 37 % | −2 235 $ |
 | avril - sept. 2026 : zone + A3 sans filtre / avec le vrai filtre | +708 $ / +996 $ | 2 sur 6 | −1 093 $ / −615 $ |
 
-**2. Un seul compte à la fois, racheté dès qu'il est perdu** (gains nets par mois du calendrier : retraits − abonnements
-− activation ; 20 dates de départ ; un compte encore en vie après 24 mois est racheté, ce qui est prudent)
+**2. Un seul compte à la fois, racheté dès qu'il est perdu**
+
+Gains nets par mois du calendrier : retraits − abonnements − activation.
+- Les 20 dates de départ se rejoignent vite en quelques chemins.
+- Un compte encore en vie après 24 mois est racheté, car le niveau des prix est figé à l'achat.
 
 | 2023 - sept. 2026 | Par mois en moyenne | Selon la date de départ | Mois positifs | 2023 | 2024 | 2025 | 2026 |
 |---|---|---|---|---|---|---|---|
-| zone + A3, sans filtre | **+143 $** | +106 à +179 $ | 24 % | +291 | +96 | +85 | +86 |
-| zone + A3, filtre aussi bon qu'en 2026 | **+411 $** | +158 à +630 $ | 38 % | +389 | +655 | +222 | +370 |
-| zone + A3, filtre inutile | +118 $ | −14 à +317 $ | 20 % | +176 | +142 | +35 | +118 |
+| zone + A3, sans filtre | **+141 $** | +114 à +183 $ | 24 % | +283 | +96 | +85 | +86 |
+| zone + A3, filtre aussi bon qu'en 2026 | **+410 $** | +169 à +660 $ | 38 % | +382 | +655 | +222 | +370 |
+| zone + A3, filtre inutile | +116 $ | −15 à +317 $ | 20 % | +169 | +142 | +35 | +118 |
 
-Sur 2012-2022 : +218 $ par mois sans filtre, +338 $ avec le filtre aussi bon qu'en 2026.
+Sur 2012-2022 :
+- **sans filtre** : +217 $ par mois (+237 $ sans la limite de 24 mois) ;
+- **filtre aussi bon qu'en 2026** : +337 $ par mois (+370 $ sans la limite). Sans la limite, la zone seule fait mieux
+  avec ce filtre (+436 $), car ses comptes financés vivent plus longtemps.
 
-**3. Un challenge acheté (achats 2023 - sept. 2025, 12 mois)**
+**3. Un challenge acheté (achats 2023 - sept. 2025, suivis 12 mois)**
 
 | | Sans filtre | Filtre aussi bon qu'en 2026 |
 |---|---|---|
@@ -202,14 +215,17 @@ Sur 2012-2022 : +218 $ par mois sans filtre, +338 $ avec le filtre aussi bon qu'
 | Temps pour valider : 1 sur 4 / la moitié / 3 sur 4 | 2,6 / 3,6 / 4,3 mois | 2,3 / 3,0 / 4,3 mois |
 | Validé en moins d'un mois | 0 % | 1 % |
 | Premier retrait (médiane) | 5 mois après l'achat | 4,5 mois |
-| Compte financé perdu dans l'année | 96 % (vie médiane 4,4 mois) | 54 % |
+| Compte financé perdu dans l'année | 96 % | 54 % |
 | Retraits par mois d'un compte financé en vie | 397 $ | 613 $ |
 | Argent net sur 12 mois : moyenne / médiane | +803 $ / −22 $ | +2 605 $ / +2 175 $ |
 | Achats qui perdent de l'argent | 50 % | 27 % |
 
-- **Achats de 2025** : sans filtre, 100 % touchent le seuil (au bout de 2 mois). Avec le filtre simulé : 27 % réussis,
-  en 8 mois en médiane.
-- **Achats d'avril - juin 2026** (60 achats qui se chevauchent, suivis 3 à 6 mois seulement) : zone + A3, 78 % réussis
-  sans filtre et 85 % avec le vrai filtre (en 2,1 mois en médiane) ; aucun n'a touché le seuil. La zone seule, sans
-  filtre : 0 % réussis, 87 % au seuil (juillet).
-- Le seuil de perte touché coûte l'abonnement payé (49 $ par mois), pas 2 000 $ : la perte du challenge est fictive.
+- **Achats de 2025** :
+  - sans filtre : 100 % touchent le seuil, au bout de 2 mois ;
+  - avec le filtre simulé : 27 % réussis, en 8 mois en médiane.
+- **Achats d'avril - juin 2026** : 60 achats qui se chevauchent, donc quelques issues indépendantes seulement, suivis
+  3 à 6 mois.
+  - Zone + A3 : 78 % réussis sans filtre, 85 % avec le vrai filtre (en 2,1 mois en médiane, biaisé court). Aucun n'a
+    touché le seuil.
+  - La zone seule, sans filtre : 0 % réussis, 87 % au seuil (en juillet).
+- Toucher le seuil de perte coûte l'abonnement payé (49 $ par mois), pas 2 000 $ : la perte du challenge est fictive.

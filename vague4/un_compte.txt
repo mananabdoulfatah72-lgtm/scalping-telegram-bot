@@ -1,12 +1,12 @@
-Un seul challenge Topstep 50K, niveau d'aujourd'hui (descriptif, ecrit apres les resultats). Filtre simule : rho 0.24, 10 tirages. Donnees jusqu'au 2026-09-25.
+Un seul challenge Topstep 50K, niveau d'aujourd'hui (descriptif, ecrit apres les resultats). Filtre simule : rho 0.24, 10 tirages. Donnees jusqu'au 2026-09-25 (septembre 2026 incomplet).
 
 === 1. Le bot seul, sans compte ni limite, 1 MNQ (+ 1 MES de nuit pour A3), 2023-01-03 - 2026-09-25
 zone seule, sans filtre : +455 $ par mois en moyenne ; mediane +535 $ ; mois perdants 38% ; pire mois -2,588 $ ; meilleur +5,291 $
 zone + A3, sans filtre : +587 $ par mois en moyenne ; mediane +518 $ ; mois perdants 38% ; pire mois -2,050 $ ; meilleur +5,291 $
-zone seule, filtre aussi bon qu'en 2026 (simule) : +703 $ par mois en moyenne ; mediane +734 $ ; mois perdants 29% ; pire mois -2,064 $ ; meilleur +6,393 $
-zone + A3, filtre aussi bon qu'en 2026 (simule) : +835 $ par mois en moyenne ; mediane +771 $ ; mois perdants 31% ; pire mois -1,526 $ ; meilleur +6,393 $
-zone seule, filtre inutile (simule) : +394 $ par mois en moyenne ; mediane +359 $ ; mois perdants 33% ; pire mois -2,195 $ ; meilleur +4,480 $
-zone + A3, filtre inutile (simule) : +526 $ par mois en moyenne ; mediane +412 $ ; mois perdants 36% ; pire mois -1,657 $ ; meilleur +4,480 $
+zone seule, filtre aussi bon qu'en 2026 (simule) : +703 $ par mois en moyenne ; mediane +691 $ ; mois perdants 29% ; pire mois -2,353 $ ; meilleur +7,479 $
+zone + A3, filtre aussi bon qu'en 2026 (simule) : +835 $ par mois en moyenne ; mediane +692 $ ; mois perdants 29% ; pire mois -1,815 $ ; meilleur +7,479 $
+zone seule, filtre inutile (simule) : +394 $ par mois en moyenne ; mediane +279 $ ; mois perdants 37% ; pire mois -2,437 $ ; meilleur +7,156 $
+zone + A3, filtre inutile (simule) : +526 $ par mois en moyenne ; mediane +339 $ ; mois perdants 37% ; pire mois -2,235 $ ; meilleur +7,156 $
 A3 seul (sans la zone) : +132 $ par mois en moyenne ; mediane +0 $ ; mois perdants 24% ; pire mois -742 $ ; meilleur +1,106 $
 --- vrai filtre delta, 2026-04-01 - 2026-09-25 (6 mois seulement)
 zone seule, sans filtre : +374 $ par mois en moyenne ; mediane +740 $ ; mois perdants 33% ; pire mois -1,984 $ ; meilleur +1,929 $ ; 04/26 -497, 05/26 +309, 06/26 +1,929, 07/26 -1,984, 08/26 +1,171, 09/26 +1,316
@@ -18,13 +18,13 @@ zone + A3, vrai filtre : +996 $ par mois en moyenne ; mediane +974 $ ; mois perd
 zone seule (124 achats)
   challenge : reussi 55% ; seuil de perte touche 45% (au bout de 2.3 mois en mediane) ; ni l'un ni l'autre en 12 mois 0%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.3 mois, la moitie en 3.9 mois, 3 sur 4 en 5.4 mois ; part des achats valides en moins d'1 mois 0%, 1-2 mois 7%, 2-3 mois 13%, 3-6 mois 25%, 6-12 mois 10%
-  au moins un retrait 43% (le 1er au bout de 4.6 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 96% (vie mediane 3.4 mois) ; retraits par mois d'un compte finance en vie 397 $
+  au moins un retrait 43% (le 1er au bout de 4.6 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 96% (vie mediane, arretee a 12 mois apres l'achat, 3.4 mois) ; retraits par mois d'un compte finance en vie 397 $
   argent net sur 12 mois : moyenne +594 $ (+50 $ par mois) ; mediane -98 $ ; achats perdants 63% ; pire -541 $
   retraits moyens par mois apres l'achat : mois 1-3 5 $ ; 4-6 111 $ ; 7-12 87 $
 zone + A3 (124 achats)
   challenge : reussi 65% ; seuil de perte touche 35% (au bout de 2.0 mois en mediane) ; ni l'un ni l'autre en 12 mois 0%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.6 mois, la moitie en 3.6 mois, 3 sur 4 en 4.3 mois ; part des achats valides en moins d'1 mois 0%, 1-2 mois 5%, 2-3 mois 19%, 3-6 mois 35%, 6-12 mois 6%
-  au moins un retrait 52% (le 1er au bout de 5.0 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 96% (vie mediane 4.4 mois) ; retraits par mois d'un compte finance en vie 397 $
+  au moins un retrait 52% (le 1er au bout de 5.0 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 96% (vie mediane, arretee a 12 mois apres l'achat, 4.4 mois) ; retraits par mois d'un compte finance en vie 397 $
   argent net sur 12 mois : moyenne +803 $ (+67 $ par mois) ; mediane -22 $ ; achats perdants 50% ; pire -541 $
   retraits moyens par mois apres l'achat : mois 1-3 6 $ ; 4-6 106 $ ; 7-12 124 $
 
@@ -32,13 +32,13 @@ zone + A3 (124 achats)
 zone seule (124 achats)
   challenge : reussi 65% ; seuil de perte touche 32% (au bout de 3.4 mois en mediane) ; ni l'un ni l'autre en 12 mois 3%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.3 mois, la moitie en 3.1 mois, 3 sur 4 en 4.4 mois ; part des achats valides en moins d'1 mois 0%, 1-2 mois 10%, 2-3 mois 20%, 3-6 mois 33%, 6-12 mois 3%
-  au moins un retrait 59% (le 1er au bout de 4.6 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 70% (vie mediane 5.6 mois) ; retraits par mois d'un compte finance en vie 529 $
+  au moins un retrait 59% (le 1er au bout de 4.6 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 70% (vie mediane, arretee a 12 mois apres l'achat, 5.6 mois) ; retraits par mois d'un compte finance en vie 529 $
   argent net sur 12 mois : moyenne +1,732 $ (+144 $ par mois) ; mediane +459 $ ; achats perdants 43% ; pire -588 $
   retraits moyens par mois apres l'achat : mois 1-3 10 $ ; 4-6 202 $ ; 7-12 233 $
 zone + A3 (124 achats)
   challenge : reussi 78% ; seuil de perte touche 20% (au bout de 3.0 mois en mediane) ; ni l'un ni l'autre en 12 mois 2%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.3 mois, la moitie en 3.0 mois, 3 sur 4 en 4.3 mois ; part des achats valides en moins d'1 mois 1%, 1-2 mois 11%, 2-3 mois 26%, 3-6 mois 32%, 6-12 mois 9%
-  au moins un retrait 75% (le 1er au bout de 4.5 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 54% (vie mediane 6.4 mois) ; retraits par mois d'un compte finance en vie 613 $
+  au moins un retrait 75% (le 1er au bout de 4.5 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 54% (vie mediane, arretee a 12 mois apres l'achat, 6.4 mois) ; retraits par mois d'un compte finance en vie 613 $
   argent net sur 12 mois : moyenne +2,605 $ (+217 $ par mois) ; mediane +2,175 $ ; achats perdants 27% ; pire -737 $
   retraits moyens par mois apres l'achat : mois 1-3 12 $ ; 4-6 240 $ ; 7-12 362 $
 
@@ -46,13 +46,13 @@ zone + A3 (124 achats)
 zone seule (124 achats)
   challenge : reussi 51% ; seuil de perte touche 47% (au bout de 3.3 mois en mediane) ; ni l'un ni l'autre en 12 mois 2%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.8 mois, la moitie en 3.8 mois, 3 sur 4 en 5.0 mois ; part des achats valides en moins d'1 mois 0%, 1-2 mois 4%, 2-3 mois 12%, 3-6 mois 28%, 6-12 mois 7%
-  au moins un retrait 40% (le 1er au bout de 5.2 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 82% (vie mediane 4.1 mois) ; retraits par mois d'un compte finance en vie 369 $
+  au moins un retrait 40% (le 1er au bout de 5.2 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 82% (vie mediane, arretee a 12 mois apres l'achat, 4.1 mois) ; retraits par mois d'un compte finance en vie 369 $
   argent net sur 12 mois : moyenne +610 $ (+51 $ par mois) ; mediane -147 $ ; achats perdants 66% ; pire -688 $
   retraits moyens par mois apres l'achat : mois 1-3 3 $ ; 4-6 95 $ ; 7-12 102 $
 zone + A3 (124 achats)
   challenge : reussi 63% ; seuil de perte touche 36% (au bout de 3.1 mois en mediane) ; ni l'un ni l'autre en 12 mois 1%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.8 mois, la moitie en 3.9 mois, 3 sur 4 en 5.3 mois ; part des achats valides en moins d'1 mois 0%, 1-2 mois 5%, 2-3 mois 14%, 3-6 mois 31%, 6-12 mois 12%
-  au moins un retrait 58% (le 1er au bout de 5.5 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 84% (vie mediane 4.1 mois) ; retraits par mois d'un compte finance en vie 381 $
+  au moins un retrait 58% (le 1er au bout de 5.5 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 84% (vie mediane, arretee a 12 mois apres l'achat, 4.1 mois) ; retraits par mois d'un compte finance en vie 381 $
   argent net sur 12 mois : moyenne +753 $ (+63 $ par mois) ; mediane -13 $ ; achats perdants 50% ; pire -737 $
   retraits moyens par mois apres l'achat : mois 1-3 4 $ ; 4-6 95 $ ; 7-12 129 $
 
@@ -60,13 +60,13 @@ zone + A3 (124 achats)
 zone seule (35 achats)
   challenge : reussi 0% ; seuil de perte touche 100% (au bout de 2.3 mois en mediane) ; ni l'un ni l'autre en 12 mois 0%
   temps pour valider (challenges reussis) : 1 sur 4 en -, la moitie en -, 3 sur 4 en - ; part des achats valides en moins d'1 mois 0%, 1-2 mois 0%, 2-3 mois 0%, 3-6 mois 0%, 6-12 mois 0%
-  au moins un retrait 0% (le 1er au bout de - apres l'achat, en mediane) ; compte finance perdu dans l'annee - (vie mediane -) ; retraits par mois d'un compte finance en vie 0 $
+  au moins un retrait 0% (le 1er au bout de - apres l'achat, en mediane) ; compte finance perdu dans l'annee - (vie mediane, arretee a 12 mois apres l'achat, -) ; retraits par mois d'un compte finance en vie 0 $
   argent net sur 12 mois : moyenne -141 $ (-12 $ par mois) ; mediane -147 $ ; achats perdants 100% ; pire -245 $
   retraits moyens par mois apres l'achat : mois 1-3 0 $ ; 4-6 0 $ ; 7-12 0 $
 zone + A3 (35 achats)
   challenge : reussi 0% ; seuil de perte touche 100% (au bout de 2.0 mois en mediane) ; ni l'un ni l'autre en 12 mois 0%
   temps pour valider (challenges reussis) : 1 sur 4 en -, la moitie en -, 3 sur 4 en - ; part des achats valides en moins d'1 mois 0%, 1-2 mois 0%, 2-3 mois 0%, 3-6 mois 0%, 6-12 mois 0%
-  au moins un retrait 0% (le 1er au bout de - apres l'achat, en mediane) ; compte finance perdu dans l'annee - (vie mediane -) ; retraits par mois d'un compte finance en vie 0 $
+  au moins un retrait 0% (le 1er au bout de - apres l'achat, en mediane) ; compte finance perdu dans l'annee - (vie mediane, arretee a 12 mois apres l'achat, -) ; retraits par mois d'un compte finance en vie 0 $
   argent net sur 12 mois : moyenne -129 $ (-11 $ par mois) ; mediane -147 $ ; achats perdants 100% ; pire -245 $
   retraits moyens par mois apres l'achat : mois 1-3 0 $ ; 4-6 0 $ ; 7-12 0 $
 
@@ -74,13 +74,13 @@ zone + A3 (35 achats)
 zone seule (35 achats)
   challenge : reussi 4% ; seuil de perte touche 88% (au bout de 3.8 mois en mediane) ; ni l'un ni l'autre en 12 mois 8%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.1 mois, la moitie en 2.3 mois, 3 sur 4 en 2.9 mois ; part des achats valides en moins d'1 mois 0%, 1-2 mois 1%, 2-3 mois 3%, 3-6 mois 0%, 6-12 mois 1%
-  au moins un retrait 1% (le 1er au bout de 8.5 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 93% (vie mediane 2.6 mois) ; retraits par mois d'un compte finance en vie 147 $
+  au moins un retrait 1% (le 1er au bout de 8.5 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 93% (vie mediane, arretee a 12 mois apres l'achat, 2.6 mois) ; retraits par mois d'un compte finance en vie 147 $
   argent net sur 12 mois : moyenne -233 $ (-19 $ par mois) ; mediane -196 $ ; achats perdants 99% ; pire -588 $
   retraits moyens par mois apres l'achat : mois 1-3 0 $ ; 4-6 2 $ ; 7-12 2 $
 zone + A3 (35 achats)
   challenge : reussi 27% ; seuil de perte touche 67% (au bout de 3.0 mois en mediane) ; ni l'un ni l'autre en 12 mois 6%
   temps pour valider (challenges reussis) : 1 sur 4 en 6.4 mois, la moitie en 7.9 mois, 3 sur 4 en 8.8 mois ; part des achats valides en moins d'1 mois 0%, 1-2 mois 0%, 2-3 mois 2%, 3-6 mois 3%, 6-12 mois 22%
-  au moins un retrait 23% (le 1er au bout de 9.3 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 21% (vie mediane 3.7 mois) ; retraits par mois d'un compte finance en vie 606 $
+  au moins un retrait 23% (le 1er au bout de 9.3 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 21% (vie mediane, arretee a 12 mois apres l'achat, 3.7 mois) ; retraits par mois d'un compte finance en vie 606 $
   argent net sur 12 mois : moyenne +305 $ (+25 $ par mois) ; mediane -147 $ ; achats perdants 79% ; pire -737 $
   retraits moyens par mois apres l'achat : mois 1-3 0 $ ; 4-6 0 $ ; 7-12 103 $
 
@@ -88,13 +88,13 @@ zone + A3 (35 achats)
 zone seule (35 achats)
   challenge : reussi 1% ; seuil de perte touche 95% (au bout de 3.0 mois en mediane) ; ni l'un ni l'autre en 12 mois 4%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.1 mois, la moitie en 2.1 mois, 3 sur 4 en 2.3 mois ; part des achats valides en moins d'1 mois 0%, 1-2 mois 0%, 2-3 mois 1%, 3-6 mois 0%, 6-12 mois 0%
-  au moins un retrait 0% (le 1er au bout de - apres l'achat, en mediane) ; compte finance perdu dans l'annee 100% (vie mediane 0.6 mois) ; retraits par mois d'un compte finance en vie 0 $
+  au moins un retrait 0% (le 1er au bout de - apres l'achat, en mediane) ; compte finance perdu dans l'annee 100% (vie mediane, arretee a 12 mois apres l'achat, 0.6 mois) ; retraits par mois d'un compte finance en vie 0 $
   argent net sur 12 mois : moyenne -199 $ (-17 $ par mois) ; mediane -196 $ ; achats perdants 100% ; pire -588 $
   retraits moyens par mois apres l'achat : mois 1-3 0 $ ; 4-6 0 $ ; 7-12 0 $
 zone + A3 (35 achats)
   challenge : reussi 4% ; seuil de perte touche 94% (au bout de 2.9 mois en mediane) ; ni l'un ni l'autre en 12 mois 2%
   temps pour valider (challenges reussis) : 1 sur 4 en 6.2 mois, la moitie en 8.4 mois, 3 sur 4 en 10.6 mois ; part des achats valides en moins d'1 mois 0%, 1-2 mois 0%, 2-3 mois 0%, 3-6 mois 1%, 6-12 mois 3%
-  au moins un retrait 2% (le 1er au bout de 8.4 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 54% (vie mediane 2.2 mois) ; retraits par mois d'un compte finance en vie 184 $
+  au moins un retrait 2% (le 1er au bout de 8.4 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 54% (vie mediane, arretee a 12 mois apres l'achat, 2.2 mois) ; retraits par mois d'un compte finance en vie 184 $
   argent net sur 12 mois : moyenne -191 $ (-16 $ par mois) ; mediane -147 $ ; achats perdants 99% ; pire -737 $
   retraits moyens par mois apres l'achat : mois 1-3 0 $ ; 4-6 0 $ ; 7-12 3 $
 
@@ -102,13 +102,13 @@ zone + A3 (35 achats)
 zone seule (445 achats)
   challenge : reussi 53% ; seuil de perte touche 47% (au bout de 3.5 mois en mediane) ; ni l'un ni l'autre en 12 mois 0%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.8 mois, la moitie en 4.0 mois, 3 sur 4 en 5.8 mois ; part des achats valides en moins d'1 mois 2%, 1-2 mois 5%, 2-3 mois 8%, 3-6 mois 26%, 6-12 mois 12%
-  au moins un retrait 36% (le 1er au bout de 6.2 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 74% (vie mediane 4.4 mois) ; retraits par mois d'un compte finance en vie 420 $
+  au moins un retrait 36% (le 1er au bout de 6.2 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 74% (vie mediane, arretee a 12 mois apres l'achat, 4.4 mois) ; retraits par mois d'un compte finance en vie 420 $
   argent net sur 12 mois : moyenne +638 $ (+53 $ par mois) ; mediane -147 $ ; achats perdants 69% ; pire -588 $
   retraits moyens par mois apres l'achat : mois 1-3 12 $ ; 4-6 54 $ ; 7-12 124 $
 zone + A3 (445 achats)
   challenge : reussi 60% ; seuil de perte touche 40% (au bout de 2.5 mois en mediane) ; ni l'un ni l'autre en 12 mois 0%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.4 mois, la moitie en 3.6 mois, 3 sur 4 en 5.0 mois ; part des achats valides en moins d'1 mois 3%, 1-2 mois 7%, 2-3 mois 11%, 3-6 mois 31%, 6-12 mois 8%
-  au moins un retrait 46% (le 1er au bout de 5.1 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 82% (vie mediane 3.7 mois) ; retraits par mois d'un compte finance en vie 468 $
+  au moins un retrait 46% (le 1er au bout de 5.1 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 82% (vie mediane, arretee a 12 mois apres l'achat, 3.7 mois) ; retraits par mois d'un compte finance en vie 468 $
   argent net sur 12 mois : moyenne +830 $ (+69 $ par mois) ; mediane -56 $ ; achats perdants 56% ; pire -590 $
   retraits moyens par mois apres l'achat : mois 1-3 16 $ ; 4-6 101 $ ; 7-12 127 $
 
@@ -116,13 +116,13 @@ zone + A3 (445 achats)
 zone seule (445 achats)
   challenge : reussi 79% ; seuil de perte touche 20% (au bout de 3.6 mois en mediane) ; ni l'un ni l'autre en 12 mois 2%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.8 mois, la moitie en 4.1 mois, 3 sur 4 en 5.8 mois ; part des achats valides en moins d'1 mois 3%, 1-2 mois 8%, 2-3 mois 12%, 3-6 mois 37%, 6-12 mois 19%
-  au moins un retrait 62% (le 1er au bout de 5.6 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 60% (vie mediane 5.0 mois) ; retraits par mois d'un compte finance en vie 515 $
+  au moins un retrait 62% (le 1er au bout de 5.6 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 60% (vie mediane, arretee a 12 mois apres l'achat, 5.0 mois) ; retraits par mois d'un compte finance en vie 515 $
   argent net sur 12 mois : moyenne +1,655 $ (+138 $ par mois) ; mediane +406 $ ; achats perdants 43% ; pire -737 $
   retraits moyens par mois apres l'achat : mois 1-3 21 $ ; 4-6 142 $ ; 7-12 255 $
 zone + A3 (445 achats)
   challenge : reussi 79% ; seuil de perte touche 20% (au bout de 2.6 mois en mediane) ; ni l'un ni l'autre en 12 mois 0%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.3 mois, la moitie en 3.5 mois, 3 sur 4 en 5.0 mois ; part des achats valides en moins d'1 mois 3%, 1-2 mois 10%, 2-3 mois 17%, 3-6 mois 37%, 6-12 mois 12%
-  au moins un retrait 69% (le 1er au bout de 5.0 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 66% (vie mediane 4.8 mois) ; retraits par mois d'un compte finance en vie 619 $
+  au moins un retrait 69% (le 1er au bout de 5.0 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 66% (vie mediane, arretee a 12 mois apres l'achat, 4.8 mois) ; retraits par mois d'un compte finance en vie 619 $
   argent net sur 12 mois : moyenne +2,154 $ (+180 $ par mois) ; mediane +948 $ ; achats perdants 34% ; pire -737 $
   retraits moyens par mois apres l'achat : mois 1-3 27 $ ; 4-6 204 $ ; 7-12 297 $
 
@@ -130,36 +130,36 @@ zone + A3 (445 achats)
 zone seule (445 achats)
   challenge : reussi 49% ; seuil de perte touche 49% (au bout de 4.0 mois en mediane) ; ni l'un ni l'autre en 12 mois 2%
   temps pour valider (challenges reussis) : 1 sur 4 en 3.0 mois, la moitie en 4.5 mois, 3 sur 4 en 6.6 mois ; part des achats valides en moins d'1 mois 1%, 1-2 mois 5%, 2-3 mois 6%, 3-6 mois 21%, 6-12 mois 16%
-  au moins un retrait 33% (le 1er au bout de 6.4 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 71% (vie mediane 3.3 mois) ; retraits par mois d'un compte finance en vie 336 $
+  au moins un retrait 33% (le 1er au bout de 6.4 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 71% (vie mediane, arretee a 12 mois apres l'achat, 3.3 mois) ; retraits par mois d'un compte finance en vie 336 $
   argent net sur 12 mois : moyenne +318 $ (+26 $ par mois) ; mediane -196 $ ; achats perdants 72% ; pire -737 $
   retraits moyens par mois apres l'achat : mois 1-3 8 $ ; 4-6 47 $ ; 7-12 80 $
 zone + A3 (445 achats)
   challenge : reussi 61% ; seuil de perte touche 38% (au bout de 2.8 mois en mediane) ; ni l'un ni l'autre en 12 mois 1%
   temps pour valider (challenges reussis) : 1 sur 4 en 2.7 mois, la moitie en 4.1 mois, 3 sur 4 en 5.8 mois ; part des achats valides en moins d'1 mois 2%, 1-2 mois 6%, 2-3 mois 10%, 3-6 mois 30%, 6-12 mois 14%
-  au moins un retrait 46% (le 1er au bout de 5.6 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 79% (vie mediane 3.2 mois) ; retraits par mois d'un compte finance en vie 385 $
+  au moins un retrait 46% (le 1er au bout de 5.6 mois apres l'achat, en mediane) ; compte finance perdu dans l'annee 79% (vie mediane, arretee a 12 mois apres l'achat, 3.2 mois) ; retraits par mois d'un compte finance en vie 385 $
   argent net sur 12 mois : moyenne +578 $ (+48 $ par mois) ; mediane -98 $ ; achats perdants 60% ; pire -737 $
   retraits moyens par mois apres l'achat : mois 1-3 11 $ ; 4-6 74 $ ; 7-12 106 $
 
-=== 3. Achats de chaque seance du 2026-04-01 au 2026-06-30 (60 achats, qui se chevauchent), suivis jusqu'au 2026-09-25 seulement (3 a 6 mois)
+=== 3. Achats de chaque seance du 2026-04-01 au 2026-06-30 (60 achats, qui se chevauchent : quelques issues independantes seulement), suivis jusqu'au 2026-09-25 seulement (3 a 6 mois) ; le temps pour valider ne compte que les challenges reussis avant cette date (biaise court)
 zone seule, sans filtre : reussi 0% ; seuil touche 87% ; pas fini 13% ; temps median pour valider -
-zone seule, vrai filtre : reussi 78% ; seuil touche 0% ; pas fini 22% ; temps median pour valider 4.7 mois
 zone + A3, sans filtre : reussi 78% ; seuil touche 0% ; pas fini 22% ; temps median pour valider 3.9 mois
+zone seule, vrai filtre : reussi 78% ; seuil touche 0% ; pas fini 22% ; temps median pour valider 4.7 mois
 zone + A3, vrai filtre : reussi 85% ; seuil touche 0% ; pas fini 15% ; temps median pour valider 2.1 mois
 
-=== 4. Un seul compte a la fois, rachete des qu'il est perdu, 2023-01-03 - 2026-09-25 (20 dates de depart, une seance sur cinq a partir du 2023-01-03) : gains nets par mois du calendrier (retraits - abonnements - activation)
-bot | scenario | moyenne par mois | mois median | mois > 0 | mois < 0 | challenges achetes par an | moyenne par mois selon le depart (min - max) | par annee : moyenne par mois
-zone seule | sans filtre | +93 $ | -49 $ | 16% | 70% | 2.2 | +51 a +148 $ | 2023 +384, 2024 +33, 2025 -32, 2026 -49
-zone + A3 | sans filtre | +143 $ | -49 $ | 24% | 59% | 2.4 | +106 a +179 $ | 2023 +291, 2024 +96, 2025 +85, 2026 +86
-zone seule | filtre aussi bon qu'en 2026 (simule) | +267 $ | -49 $ | 26% | 51% | 1.6 | +70 a +428 $ | 2023 +496, 2024 +335, 2025 +117, 2026 +72
-zone + A3 | filtre aussi bon qu'en 2026 (simule) | +411 $ | +0 $ | 38% | 42% | 1.2 | +158 a +630 $ | 2023 +389, 2024 +655, 2025 +222, 2026 +370
-zone seule | filtre inutile (simule) | +87 $ | -49 $ | 15% | 68% | 2.0 | -44 a +257 $ | 2023 +278, 2024 +76, 2025 -4, 2026 -30
-zone + A3 | filtre inutile (simule) | +118 $ | -49 $ | 20% | 63% | 1.9 | -14 a +317 $ | 2023 +176, 2024 +142, 2025 +35, 2026 +118
+=== 4. Un seul compte a la fois, rachete des qu'il est perdu (ou apres 24 mois s'il est encore en vie), 2023-01-03 - 2026-09-25 (20 dates de depart, une seance sur cinq a partir du 2023-01-03 ; elles se rejoignent en quelques chemins) : gains nets par mois du calendrier (retraits - abonnements - activation), comptes a partir du mois de depart de chaque chaine
+bot | scenario | moyenne par mois | mois median | mois > 0 | mois < 0 | challenges achetes par an | moyenne par mois selon le depart (min - max) | sans la limite de 24 mois : moyenne par mois | par annee : moyenne par mois
+zone seule | sans filtre | +91 $ | -49 $ | 16% | 70% | 2.3 | +54 a +152 $ | +91 $ | 2023 +377, 2024 +33, 2025 -32, 2026 -49
+zone + A3 | sans filtre | +141 $ | -49 $ | 24% | 59% | 2.6 | +114 a +183 $ | +141 $ | 2023 +283, 2024 +96, 2025 +85, 2026 +86
+zone seule | filtre aussi bon qu'en 2026 (simule) | +265 $ | -49 $ | 26% | 51% | 1.7 | +76 a +428 $ | +269 $ | 2023 +489, 2024 +335, 2025 +117, 2026 +72
+zone + A3 | filtre aussi bon qu'en 2026 (simule) | +410 $ | +0 $ | 38% | 42% | 1.3 | +169 a +660 $ | +416 $ | 2023 +382, 2024 +655, 2025 +222, 2026 +370
+zone seule | filtre inutile (simule) | +85 $ | -49 $ | 15% | 68% | 2.1 | -47 a +257 $ | +85 $ | 2023 +271, 2024 +76, 2025 -4, 2026 -30
+zone + A3 | filtre inutile (simule) | +116 $ | -49 $ | 20% | 63% | 2.0 | -15 a +317 $ | +116 $ | 2023 +169, 2024 +142, 2025 +35, 2026 +118
 
-=== 4. Un seul compte a la fois, rachete des qu'il est perdu, 2012-01-03 - 2022-12-30 (20 dates de depart, une seance sur cinq a partir du 2012-01-03) : gains nets par mois du calendrier (retraits - abonnements - activation)
-bot | scenario | moyenne par mois | mois median | mois > 0 | mois < 0 | challenges achetes par an | moyenne par mois selon le depart (min - max) | par annee : moyenne par mois
-zone seule | sans filtre | +157 $ | -49 $ | 21% | 67% | 2.2 | +140 a +165 $ | 2012 +140, 2013 -54, 2014 +62, 2015 -74, 2016 -53, 2017 -35, 2018 +952, 2019 +193, 2020 -4, 2021 +131, 2022 +470
-zone + A3 | sans filtre | +218 $ | -49 $ | 23% | 63% | 2.4 | +201 a +231 $ | 2012 +232, 2013 -2, 2014 +14, 2015 -74, 2016 -61, 2017 +61, 2018 +1,274, 2019 +263, 2020 +60, 2021 +150, 2022 +481
-zone seule | filtre aussi bon qu'en 2026 (simule) | +305 $ | +0 $ | 31% | 46% | 1.3 | +205 a +374 $ | 2012 +223, 2013 +88, 2014 +191, 2015 -39, 2016 +69, 2017 +133, 2018 +879, 2019 +445, 2020 +312, 2021 +235, 2022 +825
-zone + A3 | filtre aussi bon qu'en 2026 (simule) | +338 $ | +0 $ | 32% | 48% | 1.7 | +193 a +488 $ | 2012 +352, 2013 +209, 2014 +188, 2015 +54, 2016 -24, 2017 +264, 2018 +659, 2019 +544, 2020 +342, 2021 +282, 2022 +846
-zone seule | filtre inutile (simule) | +111 $ | -49 $ | 16% | 65% | 1.9 | +7 a +247 $ | 2012 +36, 2013 -3, 2014 +32, 2015 -58, 2016 -53, 2017 -24, 2018 +722, 2019 +160, 2020 +78, 2021 +34, 2022 +296
-zone + A3 | filtre inutile (simule) | +105 $ | -49 $ | 19% | 64% | 2.2 | +28 a +215 $ | 2012 +129, 2013 +74, 2014 +62, 2015 -19, 2016 -58, 2017 +74, 2018 +328, 2019 +175, 2020 +27, 2021 +81, 2022 +286
+=== 4. Un seul compte a la fois, rachete des qu'il est perdu (ou apres 24 mois s'il est encore en vie), 2012-01-03 - 2022-12-30 (20 dates de depart, une seance sur cinq a partir du 2012-01-03 ; elles se rejoignent en quelques chemins) : gains nets par mois du calendrier (retraits - abonnements - activation), comptes a partir du mois de depart de chaque chaine
+bot | scenario | moyenne par mois | mois median | mois > 0 | mois < 0 | challenges achetes par an | moyenne par mois selon le depart (min - max) | sans la limite de 24 mois : moyenne par mois | par annee : moyenne par mois
+zone seule | sans filtre | +156 $ | -49 $ | 21% | 67% | 2.3 | +144 a +168 $ | +156 $ | 2012 +133, 2013 -54, 2014 +62, 2015 -74, 2016 -53, 2017 -35, 2018 +952, 2019 +193, 2020 -4, 2021 +131, 2022 +470
+zone + A3 | sans filtre | +217 $ | -49 $ | 23% | 63% | 2.4 | +202 a +236 $ | +237 $ | 2012 +225, 2013 -2, 2014 +14, 2015 -74, 2016 -61, 2017 +61, 2018 +1,274, 2019 +263, 2020 +60, 2021 +150, 2022 +481
+zone seule | filtre aussi bon qu'en 2026 (simule) | +305 $ | +0 $ | 31% | 46% | 1.4 | +211 a +374 $ | +436 $ | 2012 +215, 2013 +88, 2014 +191, 2015 -39, 2016 +69, 2017 +133, 2018 +879, 2019 +445, 2020 +312, 2021 +235, 2022 +825
+zone + A3 | filtre aussi bon qu'en 2026 (simule) | +337 $ | +0 $ | 32% | 48% | 1.7 | +194 a +488 $ | +370 $ | 2012 +344, 2013 +209, 2014 +188, 2015 +54, 2016 -24, 2017 +264, 2018 +659, 2019 +544, 2020 +342, 2021 +282, 2022 +846
+zone seule | filtre inutile (simule) | +110 $ | -49 $ | 16% | 65% | 1.9 | +8 a +255 $ | +132 $ | 2012 +29, 2013 -3, 2014 +32, 2015 -58, 2016 -53, 2017 -24, 2018 +722, 2019 +160, 2020 +78, 2021 +34, 2022 +296
+zone + A3 | filtre inutile (simule) | +105 $ | -49 $ | 19% | 64% | 2.2 | +29 a +217 $ | +105 $ | 2012 +122, 2013 +74, 2014 +62, 2015 -19, 2016 -58, 2017 +74, 2018 +328, 2019 +175, 2020 +27, 2021 +81, 2022 +286

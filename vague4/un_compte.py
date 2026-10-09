@@ -74,7 +74,8 @@ def texte(nom, x):
             f" {x['tranches'][1]:.0%}, 2-3 mois {x['tranches'][2]:.0%}, 3-6 mois {x['tranches'][3]:.0%}, 6-12 mois"
             f" {x['tranches'][4]:.0%}",
             f"  au moins un retrait {x['retrait']:.0%} (le 1er au bout de {m(x['prem_med'])} apres l'achat, en mediane) ;"
-            f" compte finance perdu dans l'annee {pc(x['fin_perdu'])} (vie mediane {m(x['vie_med'])}) ; retraits par"
+            f" compte finance perdu dans l'annee {pc(x['fin_perdu'])} (vie mediane, arretee a 12 mois apres l'achat,"
+            f" {m(x['vie_med'])}) ; retraits par"
             f" mois d'un compte finance en vie {x['en_vie']:,.0f} $",
             f"  argent net sur 12 mois : moyenne {x['net']:+,.0f} $ ({x['net'] / 12:+,.0f} $ par mois) ; mediane"
             f" {x['net_med']:+,.0f} $ ; achats perdants {x['net_neg']:.0%} ; pire {x['net_pire']:+,.0f} $",
@@ -98,13 +99,16 @@ def mensuel(D, gains, d0):
 
 
 def ligne_mois(nom, s):
-    return (f"{nom} : {s.mean():+,.0f} $ par mois en moyenne ; mediane {s.median():+,.0f} $ ; mois perdants"
-            f" {(s < 0).mean():.0%} ; pire mois {s.min():+,.0f} $ ; meilleur {s.max():+,.0f} $")
+    """s : une serie par mois, ou plusieurs (une par tirage du filtre simule) ; tout est compte sur tous les tirages."""
+    v = np.ravel(np.asarray(s, float))
+    return (f"{nom} : {v.mean():+,.0f} $ par mois en moyenne ; mediane {np.median(v):+,.0f} $ ; mois perdants"
+            f" {(v < 0).mean():.0%} ; pire mois {v.min():+,.0f} $ ; meilleur {v.max():+,.0f} $")
 
 
-def chaine(D, b, rsi, d, w1):
+def chaine(D, b, rsi, d, w1, limite=H2):
     """Un seul compte a la fois, de d a w1 : challenge achete (seance ou le RSI(2) est a plat), rachete des qu'il est perdu
-    (challenge ou compte finance) ; un compte encore en vie apres H2 seances est rachete (prudent). Renvoie les flux de
+    (challenge ou compte finance) ; un compte encore en vie apres limite seances est rachete (le niveau des prix est fige
+    a l'achat : au-dela de 24 mois il ne serait plus celui d'aujourd'hui ; limite=None : pas de limite). Renvoie les flux de
     chaque seance (retraits recus, part comprise, moins abonnements et activation) et le nombre de challenges achetes."""
     e, f_ = CP.COMPTES[NC][:7], F.FINANCES[NC]["f"]
     prix, mensuel, activation = F.FINANCES[NC]["prix"]
@@ -116,7 +120,7 @@ def chaine(D, b, rsi, d, w1):
         if d >= w1:
             return flux, n
         fn, fe = D4.facteurs(D, d)
-        h = min(H2, w1 - d)
+        h = w1 - d if limite is None else min(limite, w1 - d)
         ret = np.zeros(h)
         r = M4.parcours4(d, rsi, 2.0 * fn, 5.0 * fe, ret, *b, *e, *f_, h)
         for k in range(int(np.ceil(r[1] / MOIS)) if mensuel else 1):
@@ -138,16 +142,14 @@ def main():
     assert len(gs["filtre inutile (simule)"]) == TIRAGES, "static.TIRAGES < TIRAGES"
     scen = {"sans filtre": [D4.base(D)]} | {k: [D4.base(D, g) for g in v] for k, v in gs.items()}
     L = [f"Un seul challenge {NC} 50K, niveau d'aujourd'hui (descriptif, ecrit apres les resultats). Filtre simule :"
-         f" rho {rho:.2f}, {TIRAGES} tirages. Donnees jusqu'au {j[-1].date()}.", ""]
+         f" rho {rho:.2f}, {TIRAGES} tirages. Donnees jusqu'au {j[-1].date()} (septembre 2026 incomplet).", ""]
 
     # 1. le bot seul, sans compte
     d0 = int(np.searchsorted(j, pd.Timestamp("2023-01-01")))
     L.append(f"=== 1. Le bot seul, sans compte ni limite, 1 MNQ (+ 1 MES de nuit pour A3), {j[d0].date()} - {j[-1].date()}")
-    seul = {}
     for sc, bases in scen.items():
         for nb, rsi in BOTS.items():
-            s = sum(mensuel(D, bot_seul(D, bb, rsi, d0, nj - 1), d0) for bb in bases) / len(bases)
-            seul[(sc, nb)] = s
+            s = pd.concat([mensuel(D, bot_seul(D, bb, rsi, d0, nj - 1), d0) for bb in bases], axis=1)
             L.append(ligne_mois(f"{nb}, {sc}", s))
     a3 = mensuel(D, bot_seul(D, D4.base(D, np.zeros(nz, bool)), 4, d0, nj - 1), d0)
     L.append(ligne_mois("A3 seul (sans la zone)", a3))
@@ -180,10 +182,12 @@ def main():
     # 3. achats recents, vrai filtre (suivi tronque au dernier jour des donnees)
     dr = [d for d in range(d26, nj) if D["ouvert"][d] == 0 and j[d] <= pd.Timestamp("2026-06-30")]
     L += ["", f"=== 3. Achats de chaque seance du {j[dr[0]].date()} au {j[dr[-1]].date()} ({len(dr)} achats, qui se"
-              f" chevauchent), suivis jusqu'au {j[-1].date()} seulement (3 a 6 mois)"]
-    for nb, rsi in BOTS.items():
-        for nom, g in (("sans filtre", np.ones(nz, bool)), ("vrai filtre", gv)):
-            r = [un_achat(D, D4.base(D, g), d, rsi) for d in dr]
+              f" chevauchent : quelques issues independantes seulement), suivis jusqu'au {j[-1].date()} seulement (3 a 6"
+              f" mois) ; le temps pour valider ne compte que les challenges reussis avant cette date (biaise court)"]
+    for nom, g in (("sans filtre", np.ones(nz, bool)), ("vrai filtre", gv)):
+        bg = D4.base(D, g)
+        for nb, rsi in BOTS.items():
+            r = [un_achat(D, bg, d, rsi) for d in dr]
             iss = np.array([x[0] for x in r])
             nch = np.array([x[1] for x in r])
             v = nch[iss == 1]
@@ -197,25 +201,33 @@ def main():
         w1 = nj if z is None else int(np.searchsorted(j, pd.Timestamp(z)))
         mc = pd.PeriodIndex(j[w0:w1], freq="M")
         ans = sorted(set(mc.year))
-        L += ["", f"=== 4. Un seul compte a la fois, rachete des qu'il est perdu, {j[w0].date()} - {j[w1 - 1].date()}"
-                  f" ({DEPARTS} dates de depart, une seance sur cinq a partir du {j[w0].date()}) : gains nets par mois du"
-                  f" calendrier (retraits - abonnements - activation)",
+        L += ["", f"=== 4. Un seul compte a la fois, rachete des qu'il est perdu (ou apres 24 mois s'il est encore en vie),"
+                  f" {j[w0].date()} - {j[w1 - 1].date()} ({DEPARTS} dates de depart, une seance sur cinq a partir du"
+                  f" {j[w0].date()} ; elles se rejoignent en quelques chemins) : gains nets par mois du calendrier (retraits"
+                  f" - abonnements - activation), comptes a partir du mois de depart de chaque chaine",
               "bot | scenario | moyenne par mois | mois median | mois > 0 | mois < 0 | challenges achetes par an | "
-              "moyenne par mois selon le depart (min - max) | par annee : moyenne par mois"]
+              "moyenne par mois selon le depart (min - max) | sans la limite de 24 mois : moyenne par"
+              " mois | par annee : moyenne par mois"]
         for sc, bases in scen.items():
             for nb, rsi in BOTS.items():
-                M_, nbuy = [], []
-                for bb in bases:
-                    for k in range(DEPARTS):
-                        fl, n = chaine(D, bb, rsi, w0 + 5 * k, w1)
-                        M_.append(pd.Series(fl[w0:w1]).groupby(mc).sum())
-                        nbuy.append(n / ((w1 - w0) / M4.UN_AN))
-                tous = pd.concat(M_, axis=1)
+                res = {}
+                for lim in (H2, None):
+                    M_, nbuy = [], []
+                    for bb in bases:
+                        for k in range(DEPARTS):
+                            fl, n = chaine(D, bb, rsi, w0 + 5 * k, w1, lim)
+                            m_ = pd.Series(fl[w0:w1]).groupby(mc).sum()
+                            m_[m_.index < mc[5 * k]] = np.nan          # avant le depart de cette chaine
+                            M_.append(m_)
+                            nbuy.append(n / ((w1 - w0 - 5 * k) / M4.UN_AN))
+                    res[lim] = (pd.concat(M_, axis=1), nbuy)
+                tous, nbuy = res[H2]
+                v = tous.stack()
                 moy = tous.mean(axis=1)
                 par_an = moy.groupby(moy.index.year).mean()
-                L.append(f"{nb} | {sc} | {moy.mean():+,.0f} $ | {tous.stack().median():+,.0f} $ |"
-                         f" {(tous > 0).to_numpy().mean():.0%} | {(tous < 0).to_numpy().mean():.0%} |"
-                         f" {np.mean(nbuy):.1f} | {tous.mean().min():+,.0f} a {tous.mean().max():+,.0f} $ | "
+                L.append(f"{nb} | {sc} | {moy.mean():+,.0f} $ | {v.median():+,.0f} $ | {(v > 0).mean():.0%} |"
+                         f" {(v < 0).mean():.0%} | {np.mean(nbuy):.1f} | {tous.mean().min():+,.0f} a"
+                         f" {tous.mean().max():+,.0f} $ | {res[None][0].mean(axis=1).mean():+,.0f} $ | "
                          + ", ".join(f"{y} {par_an[y]:+,.0f}" for y in ans))
                 print(L[-1], flush=True)
     (D4.ICI / "un_compte.txt").write_text("\n".join(L) + "\n")
