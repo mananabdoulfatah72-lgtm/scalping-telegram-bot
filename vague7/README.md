@@ -66,7 +66,9 @@ Cela fait 10 candidates. La méthode est celle de la vague 6 :
    vérification (2023 - sept. 2026).
 2. **Le meilleur challenge** est le système final de chaque compte qui a le gain le plus haut sur la fenêtre de choix. Il
    est validé si, en vérification :
-   - il fait au moins +410 $ par mois (S2L, vague 6, le meilleur validé jusqu'ici) ;
+   - il fait au moins +481 $ par mois : le meilleur validé jusqu'ici. Au départ, c'était le S2L de la vague 6 (+410 $) ;
+     après la correction de LucidFlex demandée par la revue de code, c'est LucidFlex (+481 $). Ce seuil a été relevé avant
+     tout calcul de la vague 7 ;
    - chaque année est positive.
 
    Sinon, on passe au suivant.

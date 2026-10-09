@@ -19,7 +19,7 @@ import vague6 as V6  # noqa: E402
 
 W, D4, U = V6.W, V6.D4, V6.U
 FEN, BON, TIRAGES = V6.FEN, V6.BON, V6.TIRAGES
-REFERENCE = 410.0                                      # meilleur valide jusqu'ici (S2L, vague 6, suite)
+REFERENCE = 481.0                                      # meilleur valide jusqu'ici (LucidFlex, vague 6 corrigee)
 SYSTEMES = [dict(compte="Topstep", ch=3, fi=2, re=0), dict(compte="LucidFlex", ch=3, fi=2, re=0),
             dict(compte="FundedNext Legacy", ch=3, fi=2, re=0), dict(compte="Static", ch=3, fi=2, re=0),
             dict(compte="S2L", ch=1, fi=2, re=6000)]
