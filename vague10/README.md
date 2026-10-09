@@ -116,3 +116,30 @@ plupart de ces comptes n'ont pas encore eu le temps d'être financés.
   n'a pas servi à choisir le seuil.
 - Le filtre delta est simulé.
 - Valider prend plus longtemps : 5 mois en médiane, 9 pour les achats de 2025.
+
+## Budget de 30 € au plus (`budget30.py` → `budget30.txt`, descriptif)
+
+Recherche du 9 octobre 2026 (sites d'avis) des comptes 50K à 30 € au plus avec un code, robots acceptés :
+
+| Compte | Prix | Résultat de la recherche |
+|---|---|---|
+| **Bulenox 50K Qualification** | ≈ 19 $ avec un code à −89 % | robots personnels acceptés (avec accord préalable selon certaines sources) ; **148 $ d'activation à la réussite** ; paiement unique depuis le 17 août 2026 selon un article, à vérifier |
+| Funded Futures Family | ≈ 27 $ | robots interdits |
+| DayTraders Static 50K | 20 à 30 $ | plancher fixe de 1 000 $, déjà simulé : challenges très souvent perdus |
+| Goat Funded Futures EOD | ≈ 34,50 $ avec un code à −50 % | non simulé |
+
+Simulation de **Bulenox 50K option 2** :
+- challenge : perte 2 500 $ en fin de journée, limite du jour douce de 1 100 $ ;
+- compte Master : 10 jours par cycle, meilleur jour ≤ 40 %, ≤ 1 500 $ par retrait pour les 3 premiers, 100 % pour le
+  trader, compte réel après 3 retraits (non simulé au-delà) ;
+- un seul achat, bot de la vague 10.
+
+| Achats | Frein | Challenge perdu | Validé (moitié en) | Master perdu en 12 mois | Net sur 24 mois (médiane, prix et activation compris) |
+|---|---|---|---|---|---|
+| 2023 - mars 2026 | aucun | 10 % | 3,6 mois | 22 % | +3 858 $ |
+| 2023 - mars 2026 | **MES dès 750 $ sous le plus haut** | **5 %** | 4,4 mois | **13 %** | +3 835 $ |
+| 2025 - mars 2026 | aucun | 25 % | 6,1 mois | — | trop tôt |
+| 2025 - mars 2026 | **MES dès 750 $ sous le plus haut** | **10 %** | 8,8 mois | — | trop tôt |
+| 2012-2021 | **MES dès 750 $ sous le plus haut** | 11 % | 4,1 mois | 23 % | +2 577 $ |
+
+Retraits : le premier arrive environ 4 mois après la validation, puis environ 1 400 $ par retrait.

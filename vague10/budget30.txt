@@ -1,0 +1,56 @@
+Bulenox 50K Qualification option 2 (19.25 $ avec code + 148.0 $ d'activation a la reussite), bot zone 1 MNQ + RSI(2) de nuit sur 1 MES, pas de zone les jours de la Fed ; filtre simule aussi bon qu'en 2026 (10 tirages) ; un seul achat. Le Master passe en compte reel apres 3 retraits (non simule au-dela).
+
+=== sans frein | achats 2012-2021
+challenge : reussi 89%, perdu 11%, pas fini 0% ; valide : la moitie en 3.7 mois, 3 sur 4 en 5.4 mois
+premier retrait apres la validation : la moitie en 4.8 mois ; retrait moyen 1,426 $ ; comptes arrives au compte reel (3 retraits) : 80%
+Master perdu dans les 12 mois : 17% (3879 comptes)
+argent net sur 24 mois (prix et activation compris) : mediane +3,667 $, 1 sur 4 sous -19 $ ; achats qui perdent de l'argent 26%
+
+=== sans frein | achats 2023 - mars 2026
+challenge : reussi 90%, perdu 10%, pas fini 0% ; valide : la moitie en 3.6 mois, 3 sur 4 en 5.7 mois
+premier retrait apres la validation : la moitie en 3.9 mois ; retrait moyen 1,400 $ ; comptes arrives au compte reel (3 retraits) : 50%
+Master perdu dans les 12 mois : 22% (898 comptes)
+argent net sur 24 mois (prix et activation compris) : mediane +3,858 $, 1 sur 4 sous +2,380 $ ; achats qui perdent de l'argent 8%
+
+=== sans frein | achats 2025 - mars 2026
+challenge : reussi 75%, perdu 25%, pas fini 0% ; valide : la moitie en 6.1 mois, 3 sur 4 en 8.6 mois
+premier retrait apres la validation : la moitie en 3.6 mois ; retrait moyen 1,409 $ ; comptes arrives au compte reel (3 retraits) : 2%
+Master perdu dans les 12 mois : 85% (20 comptes)
+argent net sur 24 mois : pas encore de recul
+
+=== frein MES des 500 $ sous le plus haut | achats 2012-2021
+challenge : reussi 88%, perdu 12%, pas fini 0% ; valide : la moitie en 4.5 mois, 3 sur 4 en 7.8 mois
+premier retrait apres la validation : la moitie en 4.3 mois ; retrait moyen 1,434 $ ; comptes arrives au compte reel (3 retraits) : 65%
+Master perdu dans les 12 mois : 25% (3869 comptes)
+argent net sur 24 mois (prix et activation compris) : mediane +1,333 $, 1 sur 4 sous -19 $ ; achats qui perdent de l'argent 37%
+
+=== frein MES des 500 $ sous le plus haut | achats 2023 - mars 2026
+challenge : reussi 91%, perdu 6%, pas fini 2% ; valide : la moitie en 5.0 mois, 3 sur 4 en 8.1 mois
+premier retrait apres la validation : la moitie en 4.7 mois ; retrait moyen 1,377 $ ; comptes arrives au compte reel (3 retraits) : 44%
+Master perdu dans les 12 mois : 13% (839 comptes)
+argent net sur 24 mois (prix et activation compris) : mediane +2,744 $, 1 sur 4 sous +1,251 $ ; achats qui perdent de l'argent 13%
+
+=== frein MES des 500 $ sous le plus haut | achats 2025 - mars 2026
+challenge : reussi 85%, perdu 9%, pas fini 6% ; valide : la moitie en 8.7 mois, 3 sur 4 en 12.6 mois
+premier retrait apres la validation : la moitie en 4.1 mois ; retrait moyen 1,244 $ ; comptes arrives au compte reel (3 retraits) : 0%
+Master perdu dans les 12 mois : 9% (22 comptes)
+argent net sur 24 mois : pas encore de recul
+
+=== frein MES des 750 $ sous le plus haut | achats 2012-2021
+challenge : reussi 89%, perdu 11%, pas fini 0% ; valide : la moitie en 4.1 mois, 3 sur 4 en 6.7 mois
+premier retrait apres la validation : la moitie en 4.4 mois ; retrait moyen 1,427 $ ; comptes arrives au compte reel (3 retraits) : 69%
+Master perdu dans les 12 mois : 23% (3896 comptes)
+argent net sur 24 mois (prix et activation compris) : mediane +2,577 $, 1 sur 4 sous -19 $ ; achats qui perdent de l'argent 31%
+
+=== frein MES des 750 $ sous le plus haut | achats 2023 - mars 2026
+challenge : reussi 94%, perdu 5%, pas fini 1% ; valide : la moitie en 4.4 mois, 3 sur 4 en 7.9 mois
+premier retrait apres la validation : la moitie en 4.2 mois ; retrait moyen 1,381 $ ; comptes arrives au compte reel (3 retraits) : 47%
+Master perdu dans les 12 mois : 13% (854 comptes)
+argent net sur 24 mois (prix et activation compris) : mediane +3,835 $, 1 sur 4 sous +2,371 $ ; achats qui perdent de l'argent 8%
+
+=== frein MES des 750 $ sous le plus haut | achats 2025 - mars 2026
+challenge : reussi 87%, perdu 10%, pas fini 3% ; valide : la moitie en 8.8 mois, 3 sur 4 en 12.8 mois
+premier retrait apres la validation : la moitie en 3.6 mois ; retrait moyen 1,311 $ ; comptes arrives au compte reel (3 retraits) : 0%
+Master perdu dans les 12 mois : 23% (13 comptes)
+argent net sur 24 mois : pas encore de recul
+
