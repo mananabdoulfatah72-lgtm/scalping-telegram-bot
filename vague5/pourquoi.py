@@ -40,7 +40,7 @@ def bot_seul(args):
 
 def parcours_static(D, b, d, h):
     r = U.achat(D, b, d, STATIC["bot"], plafond=500.0, h1=h, h2=h, leviers=(STATIC["ch"], STATIC["fi"], W.SEUIL, 0.0),
-                niveau="jour" if W.NIVEAU == "jour" else True)
+                niveau="jour" if W.NIVEAU == "jour" else True, activite=W.ACTIVITE)
     issue = int(r[MS.ISSUE])
     fin = int(r[MS.FIN_EVAL]) if issue == -1 else (int(r[MS.FIN_PRO]) if r[MS.PRO_PERDU] == 1 else h)
     return issue, int(r[MS.FIN_EVAL]), bool(r[MS.PRO_PERDU] == 1), fin, r[MS.RECU2]
@@ -84,8 +84,10 @@ def comptes(args):
 def main():
     global STATIC
     W.regler(sys.argv[1] if len(sys.argv) > 1 else "achat")
-    if W.NIVEAU == "jour":
+    if W.SUFFIXE == "_jour":
         STATIC = dict(compte="Static", bot="E4", ch=2, fi=2, re=0)
+    elif W.SUFFIXE == "_regles":
+        STATIC = dict(W.json_retenue("Static"))
     W.G["D4"] = W.D4.charger()
     W.G["DS"] = W.DN.charger()
     D, DS = W.G["D4"], W.G["DS"]

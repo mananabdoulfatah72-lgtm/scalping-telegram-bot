@@ -95,12 +95,13 @@ def parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, ptN, ptE, p
 def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, perte, objectif, trace, retraits,
              O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde, dec, voulu,
              EO, EH, EL, EC, roule_es, AO, AH, AL, AC, BO, BH, BL, BC, na, npost, m_eval=1, m_pro=1, seuil_m=1e18,
-             reserve=0.0):
+             reserve=0.0, activite=0):
     """Un achat a la seance `debut` (RSI(2) a plat). Suivi jusqu'a h2 seances. Renvoie un tableau (voir colonnes).
     Leviers de la vague 5 (par defaut : aucun) : pendant l'evaluation, chaque nouvelle entree prend m_eval fois sa taille ;
     sur le compte finance, m_pro fois les jours ou le coussin (solde de la veille - plancher) est d'au moins seuil_m, et le
     plafond du jour est multiplie d'autant ; reserve : chaque retrait est de reserve $ de moins que le plus grand retrait
-    permis.
+    permis ; activite=1 : regle d'activite de DayTraders appliquee (21 seances de suite sans un jour a +200 $ : compte
+    coupe, a racheter ; 0 : seulement notee dans INACTIF).
     perte, objectif : ceux de l'evaluation (controles : tres grands = sans compte). trace[s - 1] : valeur de fin de
     journee de la s-ieme seance (avant un retrait), pour les controles. retraits[s - 1] : retrait recu a la fin de la
     s-ieme seance (tableau vide : non enregistre). regle : 0 Static puis Pro Static ; 1 idem, Pro pessimiste (plancher
@@ -240,6 +241,8 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
             sans_qualif = 0
         else:
             sans_qualif += 1
+        if activite == 1 and sans_qualif >= 21:
+            return _perdu(res, phase, s, True)
         if phase == 0:
             if eod >= objectif and qualif >= 2 and meilleur <= 0.5 * eod:
                 res[ISSUE], res[FIN_EVAL] = 1.0, s

@@ -43,10 +43,12 @@ def un_tirage(args):
 
 
 def main():
-    global STATIC
+    global STATIC, TOPSTEP
     W.regler(sys.argv[1] if len(sys.argv) > 1 else "achat")
-    if W.NIVEAU == "jour":
+    if W.SUFFIXE == "_jour":
         STATIC = dict(compte="Static", bot="E4", ch=2, fi=2, re=0)
+    elif W.SUFFIXE == "_regles":
+        STATIC, TOPSTEP = dict(W.json_retenue("Static")), dict(W.json_retenue("Topstep"))
     W.G["D4"] = W.D4.charger()
     W.G["DS"] = W.DN.charger()
     rho = W.S.rho_2026()

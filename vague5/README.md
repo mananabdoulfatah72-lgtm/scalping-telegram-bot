@@ -176,3 +176,32 @@ Contrôles ajoutés (`test_vague5.py`) :
    sa sortie.
 8. Un trade de zone prend le facteur de son jour : changer le facteur d'un seul jour ne change que le gain de ce jour.
 9. Pas de regard vers le futur : changer les facteurs après la fin d'un compte ne change rien.
+
+## Deuxième correction (9 octobre 2026, après la revue du calcul corrigé, avant le calcul final)
+
+La revue indépendante n'a trouvé aucune erreur dans les facteurs de prix. Elle a trouvé un effet qui fausse le résultat
+du Static :
+- **Sans la limite de 24 mois, les comptes Pro deviennent presque impossibles à perdre.** On ne retire que 2 000 $ à la
+  fois, et la règle des 30 % freine les retraits, donc le solde monte sans fin : en médiane, +82 000 $ au-dessus du
+  départ sur 2012-2022, contre un plancher à −1 000 $.
+- **Ces comptes ne respectent pas la règle d'activité de DayTraders.** La règle : au moins un jour à +200 $ tous les
+  30 jours, sinon le compte peut être coupé et doit être racheté (`research_notes/…/daytraders.md`, page d'aide
+  officielle « Minimum Activity Policy »). Le moteur la notait sans l'appliquer. 99 % de ces comptes la violent un
+  jour.
+
+**Correction** : la règle d'activité est appliquée sur le Static et le S2F, à l'évaluation et au compte financé. Au bout
+de 21 séances de suite sans un jour à +200 $, le compte est coupé et racheté. C'est le cas prudent, parce que la page
+dit « peut être coupé ». Topstep n'a pas cette règle.
+
+**Le calcul final** (`python3 vague5.py regles` → `vague5_regles.txt`) reprend tout le reste du calcul corrigé :
+- chaque trade au niveau d'aujourd'hui de son jour d'entrée ;
+- pas de limite de 24 mois ;
+- les mêmes 40 candidates et la même décision.
+
+Il devient le résultat principal. `vague5_jour.txt` reste publié pour mémoire : c'est ce que donnerait le Static si
+DayTraders n'appliquait jamais la règle d'activité.
+
+Contrôles ajoutés :
+- **7 bis** : le RSI(2) garde son facteur sur MNQ (E0) et sur MES (E4), avec un plancher bas souvent touché, la nuit
+  comprise. Les contrôles 6 à 9 ne le vérifiaient que sur MES sans plancher.
+- **10** : avec la règle d'activité, le compte est coupé exactement à la 21e séance sans un jour à +200 $.

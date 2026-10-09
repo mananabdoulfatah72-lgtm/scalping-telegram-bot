@@ -206,6 +206,68 @@ def test_niveau_jour(DA, DS):
           f" ({n7} trades) ; la zone prend celui de son jour ({n8} jours) ; rien apres la fin d'un compte ({n9} x 2)")
 
 
+def test_jour_strict(DS):
+    """7 bis. Le RSI(2) garde le facteur de son entree, sur MNQ (E0) et MES (E4), avec un plancher bas (300 $ sous le
+    depart) souvent touche, la nuit comprise : changer les facteurs des jours suivants ne change rien jusqu'a la sortie.
+    (Evaluation : pas de plafond du jour, donc pas de seconde entree du meme signal.)"""
+    kN, kE = U.facteurs_jour(DS)
+    kN, kE = 2.0 * kN, 5.0 * kE
+    b0 = U.base(DS, np.zeros(len(DS["Z"]), bool))
+    v, n, touches = DS["voulu"], 0, 0
+    for e in range(400, len(DS["jours"]) - 30):
+        if not (v[e] == 1 and v[e - 1] == 0 and v[e - 2] == 0 and v[e - 3] == 0 and DS["dec"][e] >= 0):
+            continue
+        x = next((k for k in range(e + 1, e + 25) if v[k] == 0), None)
+        if x is None or DS["roule_es"][e:x + 1].any() or DS["ouvert"][e - 2] != 0:
+            continue
+        s0, h = e - 2, x - e + 3
+        for var in (0, 4):
+            def run(aN, aE):
+                t = np.zeros(h)
+                r = MS.parcours(s0, h, h, var, 0.0, 0, 1, aN, aE, 300.0, 1e12, t, np.zeros(0), *b0)
+                return t, r
+            t1, r1 = run(kN, kE)
+            k2N, k2E = kN.copy(), kE.copy()
+            k2N[e + 1:x + 1] *= 1.7
+            k2E[e + 1:x + 1] *= 0.6
+            t2, r2 = run(k2N, k2E)
+            assert np.array_equal(t1, t2) and np.array_equal(r1, r2), (e, var)
+            touches += int(r1[MS.ISSUE] == -1)
+        n += 1
+        if n >= 40:
+            break
+    assert touches > 0
+    print(f"ok : le RSI(2) garde le facteur de son entree sur MNQ et MES ({n} trades, {touches} fois le plancher"
+          f" touche en route)")
+
+
+def test_activite(DS):
+    """10. Regle d'activite appliquee : le compte est coupe a la 21e seance de suite sans un jour a +200 $ (S2F, finance
+    des le premier jour), sauf s'il est perdu avant par le plancher."""
+    bS = U.base(DS)
+    n = 0
+    for d in U.departs(DS)[::17]:
+        tr, ret = np.zeros(504), np.zeros(504)
+        r0 = U.achat(DS, bS, d, "E0", plafond=500.0, h1=504, h2=504, trace=tr, retraits=ret, s2f=True)
+        r1 = U.achat(DS, bS, d, "E0", plafond=500.0, h1=504, h2=504, s2f=True, activite=1)
+        veille, suite, attendu = 0.0, 0, None
+        fin0 = int(r0[MS.FIN_PRO]) if r0[MS.PRO_PERDU] == 1 else 10 ** 9
+        for i in range(min(504, fin0, len(DS["jours"]) - d)):
+            g = tr[i] - veille
+            veille = tr[i] - ret[i]
+            suite = 0 if g >= 200.0 else suite + 1
+            if suite >= 21:
+                attendu = i + 1
+                break
+        if attendu is None:
+            assert r1[MS.PRO_PERDU] == r0[MS.PRO_PERDU] and r1[MS.FIN_PRO] == r0[MS.FIN_PRO], d
+        else:
+            assert r1[MS.PRO_PERDU] == 1 and int(r1[MS.FIN_PRO]) == attendu, (d, attendu, r1[MS.FIN_PRO])
+            n += 1
+    assert n > 0
+    print(f"ok : regle d'activite : compte coupe a la 21e seance sans jour a +200 $ ({n} comptes)")
+
+
 if __name__ == "__main__":
     DA, DS = W.D4.charger(), W.DN.charger()
     W.G["D4"], W.G["DS"] = DA, DS
@@ -215,4 +277,6 @@ if __name__ == "__main__":
     test_challenge_intact(DA, DS)
     test_double_finance(DS)
     test_niveau_jour(DA, DS)
+    test_jour_strict(DS)
+    test_activite(DS)
     test_sans_levier(DA, DS)

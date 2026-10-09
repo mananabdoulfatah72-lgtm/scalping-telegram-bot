@@ -57,10 +57,11 @@ def facteurs(D, d, niveau):
 
 
 def achat(D, b, d, variante, plafond=0.0, pessimiste=0, nuit=1, niveau=True, h1=252, h2=504, perte=M.PERTE,
-          objectif=M.OBJECTIF, trace=None, retraits=None, s2f=False, leviers=(1, 1, 1e18, 0.0)):
+          objectif=M.OBJECTIF, trace=None, retraits=None, s2f=False, leviers=(1, 1, 1e18, 0.0), activite=0):
     """Un achat : Static puis Pro Static (pessimiste=1 : Pro pessimiste), ou S2F 50K (s2f=True). leviers : (m_eval, m_pro,
     seuil_m, reserve) de la vague 5 (par defaut : aucun). niveau : True (niveau d'aujourd'hui, facteur fixe au depart),
-    False (prix de l'epoque) ou "jour" (vague 5 : chaque trade au facteur de son jour d'entree)."""
+    False (prix de l'epoque) ou "jour" (vague 5 : chaque trade au facteur de son jour d'entree). activite=1 : regle
+    d'activite appliquee (voir moteur_static._parcours)."""
     if niveau == "jour":
         fn, fe = facteurs_jour(D)
     else:
@@ -71,4 +72,4 @@ def achat(D, b, d, variante, plafond=0.0, pessimiste=0, nuit=1, niveau=True, h1=
         retraits = np.zeros(0)
     return M.parcours(int(d), h1, h2, M.VARIANTES[variante] if isinstance(variante, str) else variante, plafond,
                       2 if s2f else pessimiste, nuit, 2.0 * fn, 5.0 * fe, perte, objectif, trace, retraits, *b,
-                      *leviers)
+                      *leviers, activite)

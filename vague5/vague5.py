@@ -37,10 +37,22 @@ NIVEAU, SUFFIXE = "achat", ""
 
 def regler(niveau):
     """ "achat" : facteur de prix fixe a l'achat, compte rachete apres 24 mois ; "jour" : facteur du jour d'entree de
-    chaque trade, compte garde tant qu'il vit."""
-    global NIVEAU, SUFFIXE, H2
-    assert niveau in ("achat", "jour")
-    NIVEAU, SUFFIXE, H2 = niveau, ("_jour" if niveau == "jour" else ""), (10 ** 9 if niveau == "jour" else 504)
+    chaque trade, compte garde tant qu'il vit ; "regles" : comme "jour", avec la regle d'activite de DayTraders appliquee
+    (Static et S2F : 21 seances de suite sans un jour a +200 $ coupent le compte)."""
+    global NIVEAU, SUFFIXE, H2, ACTIVITE
+    assert niveau in ("achat", "jour", "regles")
+    ACTIVITE = 1 if niveau == "regles" else 0
+    NIVEAU = "jour" if niveau in ("jour", "regles") else "achat"
+    SUFFIXE = {"achat": "", "jour": "_jour", "regles": "_regles"}[niveau]
+    H2 = 10 ** 9 if NIVEAU == "jour" else 504
+
+
+ACTIVITE = 0
+
+
+def json_retenue(compte):
+    """Meilleure candidate d'un compte (fenetre de choix), lue dans vague5{SUFFIXE}.json."""
+    return json.loads((ICI / f"vague5{SUFFIXE}.json").read_text())["meilleures"][compte]
 
 
 def candidates():
@@ -94,7 +106,7 @@ def lien(c, b, pessimiste=0):
     def f(d, h, premier):
         ret = np.zeros(h)
         r = U.achat(D, b, d, c["bot"], plafond=500.0, pessimiste=pessimiste, h1=h, h2=h, retraits=ret, s2f=s2f,
-                    niveau="jour" if NIVEAU == "jour" else True,
+                    niveau="jour" if NIVEAU == "jour" else True, activite=ACTIVITE,
                     leviers=lev)
         fl = ret.copy()
         fl[0] -= prix[0] if premier else prix[1]
@@ -197,6 +209,8 @@ def main():
               " pires 12 mois de suite (mediane / pire) | par annee : moyenne par mois")
     mode = ("chaque trade au niveau d'aujourd'hui de son jour d'entree, compte garde tant qu'il vit" if NIVEAU == "jour"
             else "niveau d'aujourd'hui fixe a l'achat, compte rachete apres 24 mois")
+    if ACTIVITE:
+        mode += ", regle d'activite de DayTraders appliquee (21 seances sans un jour a +200 $ : compte coupe)"
     L = [f"Vague 5 : un seul compte a la fois, gains nets par mois du calendrier, {mode} ; filtre simule"
          f" rho {rho:.2f}, {TIRAGES} tirages ; coussin pour le 2x : {SEUIL:,.0f} $ ; reserve : chaque retrait"
          f" {RESERVE:,.0f} $ sous le plus grand permis."
@@ -254,7 +268,8 @@ def main():
     print(f"descriptif ({time.time() - t0:.0f} s)", flush=True)
     (ICI / f"vague5{SUFFIXE}.txt").write_text("\n".join(L) + "\n")
     (ICI / f"vague5{SUFFIXE}.json").write_text(json.dumps({" | ".join(k): v for k, v in res.items()} |
-                                                {"retenue": nom(retenue) if retenue else None}, indent=1,
+                                                {"retenue": nom(retenue) if retenue else None,
+                                                 "meilleures": meilleures}, indent=1,
                                                 ensure_ascii=False))
     print("\n".join(L))
 
