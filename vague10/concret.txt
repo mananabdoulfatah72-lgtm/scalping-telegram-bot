@@ -1,0 +1,29 @@
+FundedNext Legacy 50K (200 $ une fois, 80 % des retraits pour le trader), zone 1 MNQ + RSI(2) de nuit sur 1 MES, frein MES sous 1 500 $ de coussin, pas de zone les jours de la Fed, garder 4 000 $ apres chaque retrait.
+
+=== achats 2012-2021 (445 achats x 10 tirages)
+challenge : reussi 81%, perdu 19%, pas fini a la fin des donnees 0%
+temps pour valider : 1 sur 4 en 2.7 mois, la moitie en 4.3 mois, 3 sur 4 en 6.8 mois
+premier retrait apres la validation : la moitie en 4.8 mois (3 sur 4 en 6.7 mois) ; puis un retrait tous les 1.5 mois en mediane ; montant pour toi (80 %) : moyenne 1,190 $ (la moitie au-dessus de 1,004 $)
+retraits recus pour toi pendant la 1re annee financee : moyenne 4,235 $, mediane 3,267 $, 1 sur 4 sous 0 $ (3534 comptes suivis 12 mois)
+retraits recus pour toi pendant la 2e annee financee : moyenne 4,743 $, mediane 5,034 $ (2760 comptes suivis 24 mois)
+compte finance perdu : dans les 12 mois 25% (3534 comptes), dans les 24 mois 29% (2760 comptes)
+argent net de l'achat sur 24 mois (achats suivis 24 mois) : 1 sur 10 sous -200 $, 1 sur 4 sous -200 $, mediane +2,705 $, 3 sur 4 sous +9,250 $ ; perte d'argent 40%
+
+=== achats 2023 - mars 2026 (144 achats x 10 tirages)
+challenge : reussi 93%, perdu 3%, pas fini a la fin des donnees 3%
+temps pour valider : 1 sur 4 en 2.9 mois, la moitie en 5.0 mois, 3 sur 4 en 9.0 mois
+premier retrait apres la validation : la moitie en 4.8 mois (3 sur 4 en 8.0 mois) ; puis un retrait tous les 1.5 mois en mediane ; montant pour toi (80 %) : moyenne 1,087 $ (la moitie au-dessus de 829 $)
+retraits recus pour toi pendant la 1re annee financee : moyenne 3,212 $, mediane 3,192 $, 1 sur 4 sous 1,935 $ (799 comptes suivis 12 mois)
+retraits recus pour toi pendant la 2e annee financee : moyenne 6,329 $, mediane 6,597 $ (677 comptes suivis 24 mois)
+compte finance perdu : dans les 12 mois 3% (799 comptes), dans les 24 mois 3% (677 comptes)
+argent net de l'achat sur 24 mois (achats suivis 24 mois) : 1 sur 10 sous +2,626 $, 1 sur 4 sous +6,053 $, mediane +7,460 $, 3 sur 4 sous +8,950 $ ; perte d'argent 8%
+
+=== achats 2025 - mars 2026 (55 achats x 10 tirages)
+challenge : reussi 87%, perdu 5%, pas fini a la fin des donnees 8%
+temps pour valider : 1 sur 4 en 6.0 mois, la moitie en 9.3 mois, 3 sur 4 en 13.3 mois
+premier retrait apres la validation : la moitie en 4.4 mois (3 sur 4 en 4.6 mois) ; puis un retrait tous les 1.6 mois en mediane ; montant pour toi (80 %) : moyenne 430 $ (la moitie au-dessus de 383 $)
+retraits recus pour toi pendant la 1re annee financee : moyenne 0 $, mediane 0 $, 1 sur 4 sous 0 $ (3 comptes suivis 12 mois)
+2e annee financee : pas encore de recul
+compte finance perdu : dans les 12 mois 0% (3 comptes), dans les 24 mois nan% (0 comptes)
+argent net sur 24 mois : pas encore assez de recul
+
