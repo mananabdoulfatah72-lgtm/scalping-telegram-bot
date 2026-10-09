@@ -72,7 +72,8 @@ def lien(c, b, dll_ferme=False):
 
         def f(d, h, premier):
             ret = np.zeros(h)
-            r = M4.parcours4(d, 4, 2.0 * kN, 5.0 * kE, ret, *b, *e, *f_, h, c["ch"], c["fi"], SEUIL, 0.0)
+            r = M4.parcours4(d, 4, 2.0 * kN, 5.0 * kE, ret, *b, *e, *f_, h, c["ch"], c["fi"], SEUIL, 0.0,
+                             1 if c["compte"] == "LucidFlex" else 0)
             fl = ret * part
             for k in range(int(np.ceil(r[1] / MOIS)) if mensuel else 1):
                 fl[MOIS * k] -= prix

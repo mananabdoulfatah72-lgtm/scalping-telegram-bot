@@ -51,14 +51,15 @@ def charger():
     return D
 
 
-def base(D, garde=None):
-    """Tableaux de parcours4, apres (debut, rsi, ptN, ptE, retraits)."""
+def base(D, garde=None, rebond=None):
+    """Tableaux de parcours4, apres (debut, rsi, ptN, ptE, retraits). rebond : signal par seance (vague 7) ; None : aucun."""
     nj = len(D["jours"])
     if garde is None:
         garde = np.ones(len(D["Z"]), bool)
+    reb = np.zeros(nj, np.int64) if rebond is None else np.asarray(rebond, np.int64)
     zt = K.P.tableaux_zone(D["Z"], nj, garde)
     return (D["O"], D["H"], D["L"], D["C"], D["derniere"], *zt, D["dec"], D["voulu"], D["NO"], D["NH"], D["NL"], D["nn"],
-            D["EO"], D["EH"], D["EL"], D["EC"], D["ENO"], D["ENH"], D["ENL"], D["enn"])
+            D["EO"], D["EH"], D["EL"], D["EC"], D["ENO"], D["ENH"], D["ENL"], D["enn"], reb)
 
 
 def facteurs_jour(D):

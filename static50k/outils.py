@@ -7,15 +7,17 @@ import donnees as DN
 import moteur_static as M
 
 
-def base(D, garde=None):
-    """Tableaux du moteur (dans l'ordre de moteur_static.parcours, apres trace). garde : trades de zone gardes (None : tous)."""
+def base(D, garde=None, rebond=None):
+    """Tableaux du moteur (dans l'ordre de moteur_static.parcours, apres trace). garde : trades de zone gardes (None : tous).
+    rebond : signal du rebond par seance (vague 7) ; None : aucun rebond."""
     nj = len(D["jours"])
     if garde is None:
         garde = np.ones(len(D["Z"]), bool)
+    reb = np.zeros(nj, np.int64) if rebond is None else np.asarray(rebond, np.int64)
     zt = DN.P.tableaux_zone(D["Z"], nj, garde)
     return (D["O"], D["H"], D["L"], D["C"], D["derniere"], *zt, D["dec"], D["voulu"], D["EO"], D["EH"], D["EL"],
             D["EC"], D["roule_es"], D["AO"], D["AH"], D["AL"], D["AC"], D["BO"], D["BH"], D["BL"], D["BC"], D["na"],
-            D["npost"])
+            D["npost"], reb)
 
 
 def clotures(D):

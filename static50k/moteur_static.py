@@ -90,6 +90,8 @@ def parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, ptN, ptE, p
     nj = reste[0].shape[0]
     kN = np.full(nj, float(ptN)) if np.ndim(ptN) == 0 else np.asarray(ptN, np.float64)
     kE = np.full(nj, float(ptE)) if np.ndim(ptE) == 0 else np.asarray(ptE, np.float64)
+    if len(reste) <= 28 or not isinstance(reste[28], np.ndarray):     # tableaux sans le rebond (avant la vague 7)
+        reste = reste[:28] + (np.zeros(nj, np.int64),) + reste[28:]
     return _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, perte, objectif, trace, retraits,
                      *reste)
 
@@ -97,9 +99,11 @@ def parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, ptN, ptE, p
 @njit(cache=True)
 def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, perte, objectif, trace, retraits,
              O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde, dec, voulu,
-             EO, EH, EL, EC, roule_es, AO, AH, AL, AC, BO, BH, BL, BC, na, npost, m_eval=1, m_pro=1, seuil_m=1e18,
+             EO, EH, EL, EC, roule_es, AO, AH, AL, AC, BO, BH, BL, BC, na, npost, reb, m_eval=1, m_pro=1, seuil_m=1e18,
              reserve=0.0, activite=0):
     """Un achat a la seance `debut` (RSI(2) a plat). Suivi jusqu'a h2 seances. Renvoie un tableau (voir colonnes).
+    reb[d] = 1 : rebond (vague 7), achat de m MNQ a l'ouverture de 9 h 30, vente a la derniere minute, ferme avec le reste
+    si la limite ou le plafond du jour est touche.
     Leviers de la vague 5 (par defaut : aucun) : pendant l'evaluation, chaque nouvelle entree prend m_eval fois sa taille ;
     sur le compte finance, m_pro fois les jours ou le coussin (solde de la veille - plancher) est d'au moins seuil_m, et le
     plafond du jour est multiplie d'autant ; reserve : chaque retrait est de reserve $ de moins que le plus grand retrait
@@ -123,6 +127,7 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
     zp, ze, actif = 0, 0.0, -1      # zone : contrats signes, prix d'entree, trade en cours
     rq, re, ri = 0, 0.0, 0          # RSI(2) : contrats, prix d'entree, instrument (0 MNQ, 1 MES)
     rpt = 0.0                       # RSI(2) : $ par point, fixe a l'entree
+    bp, be = 0, 0.0                 # rebond : contrats, prix d'entree (MNQ, dans la seance)
     plancher = -perte
     veille = 0.0
     meilleur, qualif, base = -1e18, 0, 0.0
@@ -142,7 +147,9 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
     for d in range(debut, fin):
         s = d - debut + 1                   # seances jouees depuis l'achat
         pz = kN[d]                          # zone : $ par point du jour
-        m = m_eval if phase == 0 else (m_pro if veille - plancher >= seuil_m else 1)
+        # coussin = solde de la veille - plancher (S2L : le plancher qui suit le plus haut, sans la limite du jour)
+        pl_c = min(pic - S2L_PERTE, 0.0) if regle >= 3 else plancher
+        m = m_eval if phase == 0 else (m_pro if veille - pl_c >= seuil_m else 1)
         cap = veille + plafond_pro * m if (phase == 1 and plafond_pro > 0.0) else 0.0
         lim = veille - S2F_DLL if regle == 2 else (veille - S2L_DLL if regle == 3 else -1e18)
         if regle == 4:                      # limite du jour definitive : un plancher de plus pour la journee
@@ -169,6 +176,8 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
         for t in range(dmin + 1):
             nq = (rq if ri == 0 else 0)
             ne = (rq if ri == 1 else 0)
+            if t == 0 and reb[d] == 1 and not arret:               # rebond : achat a l'ouverture de 9 h 30
+                bp, be = m, O[d, 0]
             if t == dec[d]:
                 veut = voulu[d]
                 if bloque and veut == 0:
@@ -180,7 +189,7 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
                         cash += rq * ((EO[d, t] - re) * rpt - ORDRE_ES)
                     rq = 0
                 elif rq == 0 and veut == 1 and not bloque and not arret:
-                    vo = cash + pz * zp * (O[d, t] - ze)
+                    vo = cash + pz * zp * (O[d, t] - ze) + pz * bp * (O[d, t] - be)
                     inst, n = _rsi_choix(variante, vo - plancher)
                     n *= m
                     if n > 0 and not (inst == 1 and roule_es[d]):
@@ -195,8 +204,8 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
                             cash -= n * ORDRE_ES
                 nq = (rq if ri == 0 else 0)
                 ne = (rq if ri == 1 else 0)
-            en = pz * zp + rpt * nq                                  # $ par point de NQ de la position nette
-            a = cash - pz * zp * ze - rpt * (nq + ne) * re
+            en = pz * (zp + bp) + rpt * nq                           # $ par point de NQ de la position nette
+            a = cash - pz * (zp * ze + bp * be) - rpt * (nq + ne) * re
             ouv = a + en * O[d, t] + rpt * ne * EO[d, t]
             if en >= 0:
                 haut_n, bas_n = H[d, t], L[d, t]
@@ -213,17 +222,17 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
                 plancher = max(min(pic - S2L_PERTE, 0.0), plancher_jour)
             # limite du jour douce (S2F) : du meme cote que le plancher, touchee la premiere si elle est au-dessus et que la
             # minute ouvre au-dessus du plancher (comme _heure)
-            if not arret and (zp != 0 or rq > 0) and bas <= lim and lim > plancher and ouv > plancher:
+            if not arret and (zp != 0 or rq > 0 or bp > 0) and bas <= lim and lim > plancher and ouv > plancher:
                 x = lim if ouv > lim else ouv
-                cash = x - abs(zp) * (FRAIS_ZONE + TICK_NQ) - _sortie_rsi(rq, ri)
-                zp, rq, arret, actif = 0, 0, True, -1
+                cash = x - (abs(zp) + bp) * (FRAIS_ZONE + TICK_NQ) - _sortie_rsi(rq, ri)
+                zp, rq, bp, arret, actif = 0, 0, 0, True, -1
                 bas = cash
             if bas <= plancher:                                       # plancher avant le plafond (prudent)
                 return _perdu(res, phase, s, inactif)
-            if cap > 0.0 and not arret and (zp != 0 or rq > 0) and haut >= cap:
+            if cap > 0.0 and not arret and (zp != 0 or rq > 0 or bp > 0) and haut >= cap:
                 x = cap if ouv < cap else ouv
-                cash = x - abs(zp) * (FRAIS_ZONE + TICK_NQ) - _sortie_rsi(rq, ri)
-                zp, rq, arret, actif = 0, 0, True, -1
+                cash = x - (abs(zp) + bp) * (FRAIS_ZONE + TICK_NQ) - _sortie_rsi(rq, ri)
+                zp, rq, bp, arret, actif = 0, 0, 0, True, -1
             # zone : sortie puis entree a la cloture de la minute
             if actif >= 0 and z_ms[actif] == t:
                 cash += zp * (C[d, t] - ze) * pz - abs(zp) * FRAIS_ZONE
@@ -232,7 +241,8 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
                 k += 1
             if k < z_fin[d] and z_me[k] == t:
                 if z_garde[k] == 1 and zp == 0 and not arret:
-                    vc = cash + (rpt * nq * (C[d, t] - re) if ri == 0 else rpt * ne * (EC[d, t] - re))
+                    vc = cash + (rpt * nq * (C[d, t] - re) if ri == 0 else rpt * ne * (EC[d, t] - re)) \
+                        + pz * bp * (C[d, t] - be)
                     n = _zone_taille(variante, vc - plancher) * m
                     zp, ze, actif = z_sens[k] * n, C[d, t], k
                 k += 1
@@ -240,6 +250,9 @@ def _parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, kN, kE, pe
         if zp != 0:
             cash += zp * (C[d, dmin] - ze) * pz - abs(zp) * FRAIS_ZONE
             zp = 0
+        if bp > 0:                          # rebond : vente a la derniere minute
+            cash += bp * (C[d, dmin] - be) * pz - bp * FRAIS_ZONE
+            bp = 0
         actif = -1
         # ======================= barres de 16 h et 17 h (fin de la journee de trading d)
         pn, pe = C[d, dmin], EC[d, dmin]
