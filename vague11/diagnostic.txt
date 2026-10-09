@@ -1,0 +1,12 @@
+achats 2012-2021 | regles Bulenox (reference) : challenge perdu 12% ; 1er retrait au mois 9.7 ; 3e retrait au mois 17.1 (atteint 67%) ; Master perdu en 12 mois 25%
+achats 2012-2021 | sans la regle des 40 % : challenge perdu 12% ; 1er retrait au mois 9.5 ; 3e retrait au mois 13.6 (atteint 69%) ; Master perdu en 12 mois 28%
+achats 2012-2021 | minimum 500 $ au lieu de 1 000 $ : challenge perdu 12% ; 1er retrait au mois 9.3 ; 3e retrait au mois 16.6 (atteint 68%) ; Master perdu en 12 mois 25%
+achats 2012-2021 | plafond 3 000 $ au lieu de 1 500 $ : challenge perdu 12% ; 1er retrait au mois 9.7 ; 3e retrait au mois 17.1 (atteint 66%) ; Master perdu en 12 mois 26%
+achats 2012-2021 | 2 MNQ sur le Master des 4 000 $ de coussin : challenge perdu 12% ; 1er retrait au mois 9.7 ; 3e retrait au mois 18.2 (atteint 66%) ; Master perdu en 12 mois 26%
+achats 2012-2021 | 2 MNQ sur le Master des 3 500 $ de coussin : challenge perdu 12% ; 1er retrait au mois 9.8 ; 3e retrait au mois 18.5 (atteint 65%) ; Master perdu en 12 mois 27%
+achats 2023 - mars 2026 | regles Bulenox (reference) : challenge perdu 0% ; 1er retrait au mois 8.9 ; 3e retrait au mois 17.0 (atteint 81%) ; Master perdu en 12 mois 9%
+achats 2023 - mars 2026 | sans la regle des 40 % : challenge perdu 0% ; 1er retrait au mois 8.8 ; 3e retrait au mois 12.8 (atteint 87%) ; Master perdu en 12 mois 10%
+achats 2023 - mars 2026 | minimum 500 $ au lieu de 1 000 $ : challenge perdu 0% ; 1er retrait au mois 8.3 ; 3e retrait au mois 15.5 (atteint 80%) ; Master perdu en 12 mois 9%
+achats 2023 - mars 2026 | plafond 3 000 $ au lieu de 1 500 $ : challenge perdu 0% ; 1er retrait au mois 8.9 ; 3e retrait au mois 16.9 (atteint 80%) ; Master perdu en 12 mois 9%
+achats 2023 - mars 2026 | 2 MNQ sur le Master des 4 000 $ de coussin : challenge perdu 0% ; 1er retrait au mois 8.9 ; 3e retrait au mois 26.0 (atteint 72%) ; Master perdu en 12 mois 9%
+achats 2023 - mars 2026 | 2 MNQ sur le Master des 3 500 $ de coussin : challenge perdu 0% ; 1er retrait au mois 8.9 ; 3e retrait au mois 26.4 (atteint 70%) ; Master perdu en 12 mois 10%

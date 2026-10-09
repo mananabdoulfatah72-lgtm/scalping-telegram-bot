@@ -20,11 +20,13 @@ FRAIS_ZONE_ES = 2.0 * ORDRE_ES                         # vague 8 : zone sur MES,
 
 @njit(cache=True)
 def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, H, L, C, der, z_deb, z_fin, z_me, z_ms,
-            z_sens, z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn, reb, ptN, ptE, qz=1, zi=0):
+            z_sens, z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn, reb, ptN, ptE, qz=1, zi=0, cap=0.0):
     """Une seance (nuit + journee), qz contrats par nouvelle entree (zone, RSI(2) et rebond). reb[d] = 1 : rebond (vague 7),
     achat de qz MNQ a l'ouverture de 9 h 30, vente a la derniere minute. Renvoie (perdu, cash fin de seance, veut, pic_rt,
     plancher, au moins un trade). zi = 1 (vague 8) : la zone est executee sur MES aux prix de l'ES (memes minutes, $ par
-    point ptE, 4,50 $ par aller-retour) ; zi = 0 : sur MNQ, comme avant."""
+    point ptE, 4,50 $ par aller-retour) ; zi = 0 : sur MNQ, comme avant. cap > 0 (vague 11) : plafond de gain du jour, tout
+    est ferme au niveau depart + cap (ordre limite) des que la meilleure valeur l'atteint, puis plus aucune entree jusqu'a
+    la seance suivante ; 0 : aucun plafond, comme avant."""
     es = rsi == 3 or rsi == 4
     nuit_seule = rsi == 2 or rsi == 4
     pr = ptE if es else ptN
@@ -61,6 +63,11 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
                     basv = cash
                 if basv <= plancher:
                     return True, basv, veut, pic_rt, plancher, trade
+                if cap > 0.0 and not arret and hautv >= depart_jour + cap:
+                    x = depart_jour + cap if ouv < depart_jour + cap else ouv
+                    cash = x - (ordre + tick) * rp
+                    rp = 0
+                    arret = True
                 if arret:
                     break
         elif not nuit_seule:
@@ -125,12 +132,23 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
             basv = cash
         if basv <= plancher:
             return True, basv, veut, pic_rt, plancher, trade
+        if cap > 0.0 and not arret and (nq != 0 or ne != 0) and hautv >= depart_jour + cap:
+            x = depart_jour + cap if ouv < depart_jour + cap else ouv
+            if zi == 0:
+                cash = x - FRAIS_ZONE * (abs(zp) + bp) - ordre * rp - TICK_NQ * (abs(zp) + bp) - tick * rp
+            else:
+                cash = x - (FRAIS_ZONE_ES + TICK_ES) * abs(zp) - (FRAIS_ZONE + TICK_NQ) * bp - (ordre + tick) * rp
+            zp, rp, bp, arret = 0, 0, 0, True
+            if actif >= 0:
+                actif = -2
         if actif >= 0 and z_ms[actif] == t:
             if zi == 0:
                 cash += zp * (C[d, t] - ze) * ptN - FRAIS_ZONE * abs(zp)
             else:
                 cash += zp * (EC[d, t] - ze) * ptE - FRAIS_ZONE_ES * abs(zp)
             zp, actif = 0, -1
+        if cap > 0.0 and not arret and zp == 0 and rp == 0 and bp == 0 and cash >= depart_jour + cap:
+            arret = True
         while k < z_fin[d] and z_me[k] < t:
             k += 1
         if k < z_fin[d] and z_me[k] == t:
@@ -165,7 +183,7 @@ def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me
               NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn, reb,
               e_obj, e_perte, e_mode, e_bloc, e_dll, e_regul, e_jmin, f_perte, f_bloc, f_dll, f_jours, f_seuil, f_regul,
               f_min, plafonds, f_part, f_reserve, f_max, horizon=UN_AN, q_ch=1, q_f=1, seuil_f=1e18, reserve=0.0,
-               part_cycle=0, c_mnq=0.0, c_pause=0.0, n_pause=0):
+               part_cycle=0, c_mnq=0.0, c_pause=0.0, n_pause=0, cap_f=0.0):
     """Challenge puis compte finance, sur horizon seances apres l'achat (UN_AN : comme financee.parcours). Leviers de la
     vague 5 (par defaut : aucun) : q_ch fois la taille de chaque nouvelle entree (zone et RSI(2)) pendant le challenge ;
     sur le compte finance, q_f fois les jours ou le coussin (solde de la veille - plancher) est d'au moins seuil_f, 1 fois
@@ -174,7 +192,8 @@ def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me
     zone est executee sur MES les jours ou le coussin (solde de la veille - plancher) est sous c_mnq, sur MNQ sinon (0 :
     toujours MNQ, comme avant). Vague 10 : frein par pause, le bot entier (zone et RSI(2)) s'arrete n_pause seances quand
     le coussin de la veille passe sous c_pause ; le frein se rearme quand le coussin repasse au-dessus de c_pause (0 :
-    jamais, comme avant). Renvoie
+    jamais, comme avant). Vague 11 : cap_f > 0, plafond de gain du jour sur le compte finance seulement (voir seance4).
+    Renvoie
     (issue du challenge, seances du challenge, compte finance perdu, nombre de retraits, recu brut, seance du 1er retrait,
     seances jouees depuis l'achat a la fin du suivi ou a la perte du compte finance)."""
     nj = O.shape[0]
@@ -233,7 +252,7 @@ def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me
         perdu, cash, veut, pic_rt, plancher, tr = seance4(d, rsi, veut, cash, 0.0, plancher, 0, f_perte, f_bloc, f_dll,
                                                           O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde,
                                                           dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn,
-                                                          reb, kN[d], kE[d], qz, zi)
+                                                          reb, kN[d], kE[d], qz, zi, cap_f)
         if perdu:
             return 1, n_ch, True, n, recu, premier, d - debut + 1
         g = cash - veille
