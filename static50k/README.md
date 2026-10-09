@@ -322,3 +322,19 @@ Au total, environ 1 050 $ la première année et 2 300 à 3 000 $ sur deux ans.
 - **Filtre inutile** : moyenne 1 921 $ par mois.
 - Ces chiffres supposent que le plancher du compte Pro reste à 49 000 $ après un retrait. C'est la question à poser au
   support : dans le cas pessimiste, l'argent reçu est à peu près divisé par deux (section « Ce qu'il faut savoir »).
+
+## Un ou plusieurs Static (demande du 9 octobre 2026 ; descriptif)
+
+`plusieurs.py` → `plusieurs.txt`. Retraits reçus dans les 12 mois qui suivent chaque achat, système retenu, niveau
+d'aujourd'hui, activation ignorée. Contrôle : un seul Static acheté en 2012-2021 redonne les 955 $ moyens de
+`static.txt`.
+
+- **Plusieurs Static achetés le même jour** font les mêmes trades : c'est N fois le résultat d'un seul. On gagne tout
+  ou rien : 67 à 75 % de chances de ne rien toucher, quel que soit leur nombre.
+- **Les étaler dans le temps** garde la même moyenne, mais réduit beaucoup le risque de tout rater. Achats 2023-2024,
+  sans filtre :
+
+  | Achat | Rien touché | Médiane | Moyenne |
+  |---|---|---|---|
+  | 5 Static, un mois d'écart | 26 % | 3 000 $ | 4 719 $ |
+  | 10 Static, un mois d'écart | 14 % | 7 000 $ | 6 983 $ |
