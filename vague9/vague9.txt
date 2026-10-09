@@ -1,0 +1,42 @@
+Vague 9 : 8178 regles de confluence ; objectif = 12 mois sans toucher le plancher (2 000 $ sous le plus haut de fin de seance, bloque a +100 $) et au moins +6,000 $ ; filtre simule, 10 tirages ; fin de seance seulement.
+
+Bot de depart : choix : objectif tenu 66%, perdu 17%, gain median +8,350 $ | verification : objectif tenu 87%, perdu 10%, gain median +9,461 $ | 2025 : objectif tenu 51%, perdu 38%, gain median +3,330 $
+
+=== Les 20 meilleures regles sur le choix (departs 2012-2021)
+regle | part des trades gardes | choix | verification (2023 - sept. 2025) | 2025
+pas un jour de la Fed ; autres trades pas pris | 97% | objectif tenu 68%, perdu 16%, gain median +8,593 $ | objectif tenu 88%, perdu 9%, gain median +9,201 $ | objectif tenu 56%, perdu 34%, gain median +5,657 $
+pas un jour de la Fed ; autres trades en MES | 97% | objectif tenu 67%, perdu 17%, gain median +8,428 $ | objectif tenu 87%, perdu 10%, gain median +9,350 $ | objectif tenu 54%, perdu 36%, gain median +5,048 $
+pas un jour de la Fed ET dans le sens de l'ecart d'ouverture ; autres trades pas pris | 67% | objectif tenu 66%, perdu 14%, gain median +7,818 $ | objectif tenu 37%, perdu 23%, gain median +4,869 $ | objectif tenu 15%, perdu 54%, gain median +584 $
+dans le sens de l'ecart d'ouverture ; autres trades pas pris | 69% | objectif tenu 66%, perdu 15%, gain median +7,764 $ | objectif tenu 41%, perdu 23%, gain median +5,389 $ | objectif tenu 15%, perdu 59%, gain median +369 $
+pas un jour de la Fed ET dans le sens de l'ecart d'ouverture ; autres trades en MES | 67% | objectif tenu 64%, perdu 14%, gain median +7,926 $ | objectif tenu 68%, perdu 9%, gain median +7,407 $ | objectif tenu 24%, perdu 28%, gain median +2,997 $
+ecart d'ouverture pas petit ET pas un jour de la Fed ; autres trades pas pris | 56% | objectif tenu 64%, perdu 11%, gain median +7,590 $ | objectif tenu 47%, perdu 8%, gain median +5,815 $ | objectif tenu 21%, perdu 25%, gain median +2,288 $
+dans le sens de l'ecart d'ouverture ; autres trades en MES | 69% | objectif tenu 64%, perdu 14%, gain median +7,937 $ | objectif tenu 70%, perdu 9%, gain median +7,485 $ | objectif tenu 23%, perdu 28%, gain median +2,849 $
+ecart d'ouverture pas petit ET pas un jour de la Fed ; autres trades en MES | 56% | objectif tenu 64%, perdu 13%, gain median +7,642 $ | objectif tenu 67%, perdu 4%, gain median +7,165 $ | objectif tenu 23%, perdu 16%, gain median +4,264 $
+ecart d'ouverture pas petit ; autres trades en MES | 57% | objectif tenu 64%, perdu 14%, gain median +7,632 $ | objectif tenu 66%, perdu 4%, gain median +7,148 $ | objectif tenu 23%, perdu 16%, gain median +4,210 $
+pas un jour de la Fed ET pas le lundi ; autres trades en MES | 79% | objectif tenu 63%, perdu 17%, gain median +7,548 $ | objectif tenu 87%, perdu 10%, gain median +8,965 $ | objectif tenu 54%, perdu 37%, gain median +5,606 $
+ecart d'ouverture pas petit ; autres trades pas pris | 57% | objectif tenu 63%, perdu 12%, gain median +7,467 $ | objectif tenu 47%, perdu 9%, gain median +5,754 $ | objectif tenu 21%, perdu 28%, gain median +2,158 $
+pas un jour de la Fed ET 1er trade du jour ; autres trades en MES | 62% | objectif tenu 63%, perdu 17%, gain median +7,429 $ | objectif tenu 73%, perdu 6%, gain median +7,604 $ | objectif tenu 27%, perdu 20%, gain median +4,711 $
+pas le lundi ; autres trades en MES | 82% | objectif tenu 62%, perdu 17%, gain median +7,487 $ | objectif tenu 85%, perdu 12%, gain median +9,027 $ | objectif tenu 48%, perdu 45%, gain median +4,286 $
+pas un jour de la Fed ET pas le lundi ; autres trades pas pris | 79% | objectif tenu 61%, perdu 17%, gain median +7,180 $ | objectif tenu 81%, perdu 14%, gain median +8,307 $ | objectif tenu 51%, perdu 44%, gain median +5,106 $
+ecart d'ouverture pas petit ET pas un jour de la Fed ET dans le sens de l'ecart d'ouverture ; autres trades en MES | 41% | objectif tenu 61%, perdu 12%, gain median +7,333 $ | objectif tenu 65%, perdu 1%, gain median +6,719 $ | objectif tenu 32%, perdu 4%, gain median +4,809 $
+1er trade du jour ; autres trades en MES | 64% | objectif tenu 61%, perdu 19%, gain median +7,275 $ | objectif tenu 73%, perdu 6%, gain median +7,744 $ | objectif tenu 26%, perdu 19%, gain median +4,604 $
+ecart d'ouverture pas petit ET dans le sens de l'ecart d'ouverture ; autres trades en MES | 42% | objectif tenu 60%, perdu 13%, gain median +7,264 $ | objectif tenu 63%, perdu 1%, gain median +6,588 $ | objectif tenu 31%, perdu 4%, gain median +4,743 $
+pas un jour de la Fed ET 1er trade du jour ET dans le sens de l'ecart d'ouverture ; autres trades en MES | 42% | objectif tenu 60%, perdu 15%, gain median +7,172 $ | objectif tenu 61%, perdu 5%, gain median +6,586 $ | objectif tenu 17%, perdu 11%, gain median +4,072 $
+pas un jour de la Fed ET zone gagnante sur 60 seances ; autres trades en MES | 78% | objectif tenu 60%, perdu 15%, gain median +7,421 $ | objectif tenu 82%, perdu 5%, gain median +8,809 $ | objectif tenu 33%, perdu 19%, gain median +4,448 $
+pas un jour de la Fed ET 1er trade du jour ; autres trades pas pris | 62% | objectif tenu 60%, perdu 18%, gain median +7,111 $ | objectif tenu 53%, perdu 5%, gain median +6,236 $ | objectif tenu 22%, perdu 10%, gain median +4,362 $
+
+=== Jugement
+Meilleure regle : pas un jour de la Fed ; autres trades pas pris (trades gardes 97%)
+1. Jumeau de bruit : meilleure regle reelle 68.2% sur le choix ; meilleures des 10 recherches sur conditions melangees : 66.6%, 65.4%, 66.0%, 65.1%, 66.9%, 66.7%, 67.7%, 64.3%, 66.1%, 65.1% -> battue(s) 10/10 (oui, il faut 9)
+2. Verification : objectif tenu 88%, perdu 9%, gain median +9,201 $ contre le bot de depart objectif tenu 87%, perdu 10%, gain median +9,461 $ (oui)
+3. Filtres au hasard gardant la meme part des trades : la regle fait mieux que 100% d'entre eux (oui, il faut 90 %)
+=> RETENUE : a recalculer avec le moteur exact
+
+=== Pour information : la meilleure de chaque taille (1, 2, 3 conditions) et chaque facon
+pas un jour de la Fed ; autres trades pas pris | 97% | objectif tenu 68%, perdu 16%, gain median +8,593 $ | objectif tenu 88%, perdu 9%, gain median +9,201 $ | objectif tenu 56%, perdu 34%, gain median +5,657 $
+pas un jour de la Fed ; autres trades en MES | 97% | objectif tenu 67%, perdu 17%, gain median +8,428 $ | objectif tenu 87%, perdu 10%, gain median +9,350 $ | objectif tenu 54%, perdu 36%, gain median +5,048 $
+pas un jour de la Fed ET dans le sens de l'ecart d'ouverture ; autres trades pas pris | 67% | objectif tenu 66%, perdu 14%, gain median +7,818 $ | objectif tenu 37%, perdu 23%, gain median +4,869 $ | objectif tenu 15%, perdu 54%, gain median +584 $
+pas un jour de la Fed ET dans le sens de l'ecart d'ouverture ; autres trades en MES | 67% | objectif tenu 64%, perdu 14%, gain median +7,926 $ | objectif tenu 68%, perdu 9%, gain median +7,407 $ | objectif tenu 24%, perdu 28%, gain median +2,997 $
+ecart d'ouverture pas petit ET pas un jour de la Fed ET dans le sens de l'ecart d'ouverture ; autres trades pas pris | 41% | objectif tenu 57%, perdu 11%, gain median +6,680 $ | objectif tenu 41%, perdu 2%, gain median +4,911 $ | objectif tenu 29%, perdu 0%, gain median +3,343 $
+ecart d'ouverture pas petit ET pas un jour de la Fed ET dans le sens de l'ecart d'ouverture ; autres trades en MES | 41% | objectif tenu 61%, perdu 12%, gain median +7,333 $ | objectif tenu 65%, perdu 1%, gain median +6,719 $ | objectif tenu 32%, perdu 4%, gain median +4,809 $
+Regles qui font mieux que le bot de depart sur le choix et sur la verification : 2 sur 8178

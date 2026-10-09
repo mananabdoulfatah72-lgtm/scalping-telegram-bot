@@ -119,3 +119,38 @@ donc la sélection avec un critère écrit maintenant, contrôlé par le même j
    - moins de comptes perdus que 90 % de 200 filtres tirés au hasard gardant la même part des trades, appliqués de la
      même façon.
 4. Si elle passe : moteur exact sur les comptes 50K, comme pour la règle du premier jugement.
+
+## Résultats (9 octobre 2026) : `vague9.txt`, `vague9_securite.txt`, `vague9_exact.txt`
+
+**Premier jugement (objectif tenu le plus souvent).** Sur 8 178 règles, **seules 2 font mieux que le bot sur le choix ET
+sur la vérification**. Ce sont les deux versions de « pas de zone les jours d'annonce de la Fed ».
+
+| Bot, mesure rapide (fin de séance, sans retrait) | Objectif tenu (choix / vérification / 2025) | Compte perdu (choix / vérification / 2025) |
+|---|---|---|
+| Bot de départ | 66 / 87 / 51 % | 17 / 10 / 38 % |
+| **Sans les jours de la Fed** (97 % des trades gardés) | **68 / 88 / 56 %** | **16 / 9 / 34 %** |
+
+Cette règle passe les trois tests fixés à l'avance :
+- elle bat les 10 jumeaux de bruit (68,2 % contre 64,3 à 67,7 %) ;
+- elle fait mieux en vérification ;
+- elle bat 100 % des filtres au hasard.
+
+**Elle est retenue, mais son effet est petit.** Avec le moteur exact (plancher minute par minute, retraits, prix) :
+- challenge perdu pour les achats de 2025 : 46 % → 43 % (LucidFlex et FundedNext), 54 % → 51 % (Topstep) ;
+- revenu par mois presque inchangé (entre −40 $ et +40 $ selon le compte) ;
+- compte financé perdu : un peu moins sur 2012-2021, pas mieux sur 2023-2026.
+
+Elle ne règle pas le problème de 2025.
+
+**Second jugement (perdre le moins de comptes).** La règle choisie, « GEX sous sa médiane ET pas un jour de la Fed ET
+dans le sens de l'écart d'ouverture », garde 32 % des trades. Résultats :
+- elle perd 6 % des comptes au lieu de 17 % sur le choix, et bat 9 jumeaux sur 10 ;
+- mais en vérification, elle ne gagne plus que +3 238 $ médians sur 12 mois (objectif tenu 4 %) ;
+- et elle ne bat que 88 % des filtres au hasard.
+
+**Non retenue.** Les règles qui protègent le compte le font surtout en tradant moins, donc en gagnant moins.
+
+**Conclusion.** La zone + le filtre delta est déjà la confluence. Aucune combinaison de 1 à 3 conditions parmi 29
+(volatilité, écart d'ouverture, VIX, GEX, Fed, tendance, jour, heure, sens, courbe de la zone) ne fait de 2025 une bonne
+année sur un 50K. La seule règle qui tient le hasard (pas de zone les jours de la Fed) est un petit plus : elle peut
+entrer dans le bot, mais elle ne change pas la conclusion.

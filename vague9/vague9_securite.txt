@@ -1,0 +1,9 @@
+Vague 9, second jugement : perdre le moins de comptes (gain median sur 12 mois >= 6 000 $ sur le choix)
+
+Bot de depart : choix : objectif tenu 66%, perdu 17%, gain median +8,350 $ | verification : objectif tenu 87%, perdu 10%, gain median +9,461 $ | 2025 : objectif tenu 51%, perdu 38%, gain median +3,330 $
+Regle choisie : GEX sous sa mediane ET pas un jour de la Fed ET dans le sens de l'ecart d'ouverture ; autres trades pas pris (trades gardes 32%)
+  choix : objectif tenu 53%, perdu 6%, gain median +6,266 $ | verification : objectif tenu 4%, perdu 7%, gain median +3,238 $ | 2025 : objectif tenu 16%, perdu 2%, gain median +3,656 $
+1. Jumeau de bruit : perdu 6.3% sur le choix ; meilleures des 10 recherches melangees : 5.6%, 10.3%, 11.8%, 9.6%, 8.5%, 8.7%, 12.3%, 10.2%, 9.1%, 7.8% -> battue(s) 9/10 (oui, il faut 9)
+2. Verification : objectif tenu 4%, perdu 7%, gain median +3,238 $ contre objectif tenu 87%, perdu 10%, gain median +9,461 $ (non)
+3. Filtres au hasard : la regle perd moins de comptes que 88% d'entre eux (non, il faut 90 %)
+=> NON RETENUE
