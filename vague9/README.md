@@ -98,3 +98,24 @@ donnent simplement des règles sans trade.
 - 2023-2026 a déjà été regardé de nombreuses fois ;
 - les 33 conditions de `zone_optimisation` ont été vues sur les deux périodes, ce qui rend la vérification moins
   neuve.
+
+## Second jugement : « perdre le moins de comptes » (fixé après le premier calcul, avant de le lancer)
+
+Le premier calcul (`vague9.txt`) a montré des règles qui réduisent beaucoup les comptes perdus, en gagnant moins. Par
+exemple, « écart d'ouverture pas petit ET pas un jour de la Fed ET dans le sens de l'écart ; autres trades en MES » :
+compte perdu 12 % au lieu de 17 % sur le choix, 1 % au lieu de 10 % sur la vérification, 4 % au lieu de 38 % pour les
+départs de 2025.
+
+L'utilisateur veut d'abord ne pas brûler le compte. Mais ces règles ont été **vues** en lisant les résultats. On refait
+donc la sélection avec un critère écrit maintenant, contrôlé par le même jumeau de bruit (`vague9_securite.py`) :
+
+1. **Choix** : parmi les 8 178 règles dont le gain médian sur 12 mois reste d'au moins 6 000 $ sur le choix (1 % par
+   mois), on prend celle qui perd **le moins de comptes** sur les départs 2012-2021.
+2. **Jumeau de bruit** : la même sélection sur les 10 recherches à conditions mélangées. La règle réelle doit perdre moins
+   de comptes que la meilleure d'au moins 9 jumeaux sur 10.
+3. **Vérification** (départs 2023 - sept. 2025) :
+   - moins de comptes perdus que le bot de départ (10 %) ;
+   - gain médian d'au moins 6 000 $ ;
+   - moins de comptes perdus que 90 % de 200 filtres tirés au hasard gardant la même part des trades, appliqués de la
+     même façon.
+4. Si elle passe : moteur exact sur les comptes 50K, comme pour la règle du premier jugement.
