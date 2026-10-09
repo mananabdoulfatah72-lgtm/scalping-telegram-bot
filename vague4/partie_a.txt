@@ -1,0 +1,57 @@
+Vague 4, partie A : Topstep et Tradeify Growth, niveau d'aujourd'hui, 12 mois apres l'achat (prix, abonnements et activation deduits)
+
+compte | bot | achats | challenge reussi | au moins un retrait | retraits moyens | argent net moyen | compte finance perdu | retraits par mois d'un compte finance en vie
+--- Topstep, choix 2012-2021
+zone seule | 445 | 53% | 36% | 942 $ | +638 $ (mediane -147) | 74% | 420 $
+zone + RSI(2) entre deux clotures MNQ (reference) | 445 | 47% | 29% | 506 $ | +299 $ (mediane -98) | 100% | 446 $
+A1 : RSI(2) entre deux clotures MES | 445 | 56% | 41% | 790 $ | +531 $ (mediane -98) | 91% | 427 $
+A2 : RSI(2) de nuit seulement MNQ | 445 | 50% | 39% | 635 $ | +400 $ (mediane -98) | 97% | 417 $
+A3 : RSI(2) de nuit seulement MES | 445 | 60% | 46% | 1,114 $ | +830 $ (mediane -56) | 82% | 468 $
+--- Topstep, verification 2023 - sept. 2025
+zone seule | 124 | 55% | 43% | 868 $ | +594 $ (mediane -98) | 96% | 397 $
+zone + RSI(2) entre deux clotures MNQ (reference) | 124 | 48% | 25% | 379 $ | +162 $ (mediane -98) | 100% | 389 $
+A1 : RSI(2) entre deux clotures MES | 124 | 61% | 41% | 826 $ | +563 $ (mediane -98) | 99% | 408 $
+A2 : RSI(2) de nuit seulement MNQ | 124 | 52% | 34% | 1,173 $ | +941 $ (mediane -98) | 97% | 714 $
+A3 : RSI(2) de nuit seulement MES | 124 | 65% | 52% | 1,079 $ | +803 $ (mediane -22) | 96% | 397 $
+--- Topstep, 2025 (descriptif)
+zone seule | 35 | 0% | 0% | 0 $ | -141 $ (mediane -147) | 0% | 0 $
+zone + RSI(2) entre deux clotures MNQ (reference) | 35 | 9% | 0% | 0 $ | -132 $ (mediane -98) | 100% | 0 $
+A1 : RSI(2) entre deux clotures MES | 35 | 0% | 0% | 0 $ | -118 $ (mediane -98) | 0% | 0 $
+A2 : RSI(2) de nuit seulement MNQ | 35 | 9% | 3% | 153 $ | +17 $ (mediane -98) | 67% | 605 $
+A3 : RSI(2) de nuit seulement MES | 35 | 0% | 0% | 0 $ | -129 $ (mediane -147) | 0% | 0 $
+--- Tradeify Growth, choix 2012-2021
+zone seule | 445 | 52% | 16% | 223 $ | +78 $ (mediane -145) | 47% | 85 $
+zone + RSI(2) entre deux clotures MNQ (reference) | 445 | 49% | 15% | 223 $ | +78 $ (mediane -145) | 80% | 123 $
+A1 : RSI(2) entre deux clotures MES | 445 | 51% | 17% | 294 $ | +149 $ (mediane -145) | 65% | 122 $
+A2 : RSI(2) de nuit seulement MNQ | 445 | 55% | 23% | 406 $ | +261 $ (mediane -145) | 59% | 144 $
+A3 : RSI(2) de nuit seulement MES | 445 | 59% | 25% | 485 $ | +340 $ (mediane -145) | 51% | 153 $
+--- Tradeify Growth, verification 2023 - sept. 2025
+zone seule | 124 | 55% | 19% | 323 $ | +178 $ (mediane -145) | 66% | 119 $
+zone + RSI(2) entre deux clotures MNQ (reference) | 124 | 43% | 9% | 188 $ | +43 $ (mediane -145) | 87% | 151 $
+A1 : RSI(2) entre deux clotures MES | 124 | 61% | 25% | 359 $ | +214 $ (mediane -145) | 47% | 108 $
+A2 : RSI(2) de nuit seulement MNQ | 124 | 50% | 27% | 388 $ | +243 $ (mediane -145) | 47% | 131 $
+A3 : RSI(2) de nuit seulement MES | 124 | 65% | 35% | 404 $ | +259 $ (mediane -145) | 32% | 95 $
+--- Tradeify Growth, 2025 (descriptif)
+zone seule | 35 | 0% | 0% | 0 $ | -145 $ (mediane -145) | 0% | 0 $
+zone + RSI(2) entre deux clotures MNQ (reference) | 35 | 11% | 0% | 0 $ | -145 $ (mediane -145) | 100% | 0 $
+A1 : RSI(2) entre deux clotures MES | 35 | 0% | 0% | 0 $ | -145 $ (mediane -145) | 0% | 0 $
+A2 : RSI(2) de nuit seulement MNQ | 35 | 6% | 0% | 0 $ | -145 $ (mediane -145) | 100% | 0 $
+A3 : RSI(2) de nuit seulement MES | 35 | 0% | 0% | 0 $ | -145 $ (mediane -145) | 0% | 0 $
+
+=== Decision
+Topstep | A1 : RSI(2) entre deux clotures MES : +531 $ / +563 $ contre zone seule +638 $ / +594 $ -> non
+Topstep | A2 : RSI(2) de nuit seulement MNQ : +400 $ / +941 $ contre zone seule +638 $ / +594 $ -> non (regle stricte)
+Topstep | A3 : RSI(2) de nuit seulement MES : +830 $ / +803 $ contre zone seule +638 $ / +594 $ -> PASSE (regle stricte)
+=> Topstep : A3 : RSI(2) de nuit seulement MES
+Tradeify Growth | A1 : RSI(2) entre deux clotures MES : +149 $ / +214 $ contre zone seule +78 $ / +178 $ -> non
+Tradeify Growth | A2 : RSI(2) de nuit seulement MNQ : +261 $ / +243 $ contre zone seule +78 $ / +178 $ -> non (regle stricte)
+Tradeify Growth | A3 : RSI(2) de nuit seulement MES : +340 $ / +259 $ contre zone seule +78 $ / +178 $ -> non (regle stricte)
+=> Tradeify Growth : zone seule
+
+=== Filtre delta simule (descriptif, rho 0.24, 5 tirages), verification 2023 - sept. 2025
+Topstep | A3 : RSI(2) de nuit seulement MES | filtre aussi bon qu'en 2026 | 124 | 79% | 75% | 2,735 $ | +2,397 $ (mediane +2,005) | 56% | 581 $
+Topstep | zone seule | filtre aussi bon qu'en 2026 | 124 | 66% | 60% | 1,861 $ | +1,540 $ (mediane +456) | 71% | 492 $
+Tradeify Growth | zone seule | filtre aussi bon qu'en 2026 | 124 | 70% | 35% | 780 $ | +635 $ (mediane -145) | 37% | 164 $
+Topstep | A3 : RSI(2) de nuit seulement MES | filtre inutile | 124 | 60% | 56% | 1,115 $ | +804 $ (mediane -16) | 84% | 410 $
+Topstep | zone seule | filtre inutile | 124 | 49% | 39% | 948 $ | +648 $ (mediane -147) | 80% | 400 $
+Tradeify Growth | zone seule | filtre inutile | 124 | 51% | 20% | 335 $ | +190 $ (mediane -145) | 47% | 110 $

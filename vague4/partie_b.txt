@@ -1,0 +1,8 @@
+Vague 4, partie B : largeur des 10 plus grosses valeurs du Nasdaq 100, NQ 1 MNQ, sortie 15 h 55, 1,5 point de frais
+
+=== Exploration 2016-2022 (survie : t >= 2 et t au-dessus de 95 % de 1 000 tirages du sens)
+source | trades (dont achats) | t | bat le hasard | $ pour 1 MNQ (prix de l'epoque) | verdict
+B1 largeur a 10 h | 408 (209) | +0.79 | 87.8% | +5,384 | eliminee
+B2 largeur a 11 h | 475 (239) | -0.13 | 58.1% | +2,486 | eliminee
+B3 hausse etroite a 10 h 30 | 66 (34) | -0.75 | 30.7% | -1,660 | eliminee
+Survivantes : 0

@@ -96,3 +96,72 @@ Publié dans tous les cas, à titre descriptif :
    `intraday50k/financee.py` (même départ, même compte).
 2. Un trade de nuit seulement (A2) et un trade sur MES (A1) recalculés à la main.
 3. Partie B : la décision de la largeur recalculée à la main un jour donné ; pas de regard vers le futur.
+
+## Résultats (9 octobre 2026) : `partie_a.txt`, `partie_b.txt`
+
+Contrôles (`test_vague4.py`, 4 sur 4) :
+- le nouveau moteur redonne `financee.py` sur 248 parcours ;
+- un trade de nuit seulement et un trade sur MES sont recalculés à la main ;
+- la nuit de l'ES suit la même règle que celle du NQ ;
+- la largeur d'un jour est recalculée à la main, sans regard vers le futur.
+
+Une revue de code indépendante a demandé des corrections, toutes faites avant ces résultats :
+- la limite du jour suit la position nette, comme `financee.py` ;
+- le tableau des retraits par mois a été ajouté ;
+- les contrôles de la partie B ont été ajoutés.
+
+Les chiffres de la partie A sont inchangés par ces corrections.
+
+### Partie A : un RSI(2) plus petit et de nuit seulement (12 mois après l'achat, niveau d'aujourd'hui)
+
+| Compte | Bot | Argent net moyen : choix 2012-2021 | Vérification 2023 - sept. 2025 | Challenge réussi (vérif.) | Au moins un retrait (vérif.) |
+|---|---|---|---|---|---|
+| Topstep | zone seule | +638 $ | +594 $ | 55 % | 43 % |
+| Topstep | zone + RSI(2) entre deux clôtures MNQ | +299 $ | +162 $ | 48 % | 25 % |
+| Topstep | A1 : RSI(2) entre deux clôtures MES | +531 $ | +563 $ | 61 % | 41 % |
+| Topstep | A2 : RSI(2) de nuit seulement MNQ | +400 $ | +941 $ | 52 % | 34 % |
+| **Topstep** | **A3 : RSI(2) de nuit seulement MES** | **+830 $** | **+803 $** | **65 %** | **52 %** |
+| Tradeify Growth | zone seule | +78 $ | +178 $ | 55 % | 19 % |
+| Tradeify Growth | A3 | +340 $ | +259 $ | 65 % | 35 % |
+
+**Décision (règles fixées avant le calcul)** :
+- **Topstep : A3 remplace le RSI(2)**. Il bat la zone seule de plus de 100 $ sur les deux périodes, ce qu'exigeait la
+  règle stricte (+192 $ et +209 $).
+- **Tradeify Growth : la zone seule reste**. A3 fait mieux sur le choix (+262 $), mais seulement de +81 $ en
+  vérification, sous les 100 $ demandés.
+
+À savoir :
+- **A3 seul**, sans compte, au niveau d'aujourd'hui :
+  - environ +128 $ par mois sur 2023-2026, avec 22 % de mois perdants ;
+  - son pire mois : −732 $. Le RSI(2) sur MNQ entre deux clôtures descendait à −2 847 $.
+
+  Il rapporte peu, mais il est régulier : c'est pour ça qu'il ne gêne pas les règles de Topstep.
+- **Achats de 2025** : rien ne marche (−129 à −141 $ par achat).
+- **Compte financé en vie** : environ 400 $ de retraits par mois en moyenne chez Topstep. Mais la plupart des comptes
+  financés sont perdus dans l'année : leur limite suit le solde, et les retraits la rapprochent.
+- **Filtre delta simulé, Topstep, vérification** :
+
+  | Scénario | Zone + A3 | Zone seule | Challenges réussis (zone + A3) | Au moins un retrait (zone + A3) | Retraits par mois en vie (zone + A3) |
+  |---|---|---|---|---|---|
+  | filtre aussi bon qu'en 2026 | +2 397 $ (médiane +2 005 $) | +1 540 $ | 79 % | 75 % | 581 $ |
+  | filtre inutile | +804 $ | +648 $ | | | |
+
+### Partie B : largeur des grandes valeurs (exploration 2016-2022) : aucune survivante
+
+| Source | Trades | t | Bat le hasard | Verdict |
+|---|---|---|---|---|
+| B1 largeur à 10 h | 408 | +0,79 | 87,8 % | éliminée |
+| B2 largeur à 11 h | 475 | −0,13 | 58,1 % | éliminée |
+| B3 hausse étroite à 10 h 30 | 66 | −0,75 | 30,7 % | éliminée |
+
+Le coffre n'est pas ouvert. La largeur des 10 plus grosses valeurs n'apporte rien de plus que le mouvement du NQ.
+
+### Ce que ça veut dire pour le bot
+
+- **Topstep** : la zone (+ filtre), plus le RSI(2) **de nuit seulement sur 1 MES** :
+  - achat à 18 h si la règle le veut ;
+  - vente à l'ouverture de 9 h 30.
+
+  C'est à ajouter au bot. Pour l'instant, le bot ne sait faire que le RSI(2) sur MNQ, gardé la nuit.
+- **Tradeify** : la zone (+ filtre) seule.
+- **DayTraders Static** : le bot tel quel (zone + filtre + RSI(2)), plus le plafond de 500 $ sur le compte Pro.

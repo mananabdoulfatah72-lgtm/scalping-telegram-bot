@@ -1,0 +1,306 @@
+{
+ "Topstep | zone seule | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.5303370786516854,
+  "retrait": 0.35730337078651686,
+  "recu": 942.3549903035713,
+  "net": 637.8246532249194,
+  "net_median": -147.0,
+  "finance_perdu": 0.7415254237288136,
+  "par_mois_finance": 420.3688665037412
+ },
+ "Topstep | zone + RSI(2) entre deux clotures MNQ (reference) | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.47191011235955055,
+  "retrait": 0.2853932584269663,
+  "recu": 506.19691303420046,
+  "net": 299.01264337127924,
+  "net_median": -98.0,
+  "finance_perdu": 1.0,
+  "par_mois_finance": 446.18092362805163
+ },
+ "Topstep | A1 : RSI(2) entre deux clotures MES | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.5550561797752809,
+  "retrait": 0.4067415730337079,
+  "recu": 789.7391196436549,
+  "net": 531.186310654891,
+  "net_median": -98.0,
+  "finance_perdu": 0.9149797570850202,
+  "par_mois_finance": 427.3618665278797
+ },
+ "Topstep | A2 : RSI(2) de nuit seulement MNQ | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.503370786516854,
+  "retrait": 0.39325842696629215,
+  "recu": 634.6887978118282,
+  "net": 400.2438539916035,
+  "net_median": -98.0,
+  "finance_perdu": 0.9732142857142857,
+  "par_mois_finance": 417.4820029247226
+ },
+ "Topstep | A3 : RSI(2) de nuit seulement MES | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.6,
+  "retrait": 0.46292134831460674,
+  "recu": 1113.991753611786,
+  "net": 830.1333266454938,
+  "net_median": -55.89138137069355,
+  "finance_perdu": 0.8164794007490637,
+  "par_mois_finance": 467.7293856989774
+ },
+ "Topstep | zone seule | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.5483870967741935,
+  "retrait": 0.4274193548387097,
+  "recu": 868.0762111163984,
+  "net": 594.3181466002694,
+  "net_median": -98.0,
+  "finance_perdu": 0.9558823529411765,
+  "par_mois_finance": 396.573763815281
+ },
+ "Topstep | zone + RSI(2) entre deux clotures MNQ (reference) | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.47580645161290325,
+  "retrait": 0.25,
+  "recu": 378.55290260183546,
+  "net": 162.23838647280326,
+  "net_median": -98.0,
+  "finance_perdu": 1.0,
+  "par_mois_finance": 389.3174401165796
+ },
+ "Topstep | A1 : RSI(2) entre deux clotures MES | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.6129032258064516,
+  "retrait": 0.4112903225806452,
+  "recu": 825.519869936265,
+  "net": 563.4876118717488,
+  "net_median": -98.0,
+  "finance_perdu": 0.9868421052631579,
+  "par_mois_finance": 408.29130889155437
+ },
+ "Topstep | A2 : RSI(2) de nuit seulement MNQ | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.5241935483870968,
+  "retrait": 0.3387096774193548,
+  "recu": 1173.2812740651925,
+  "net": 941.4586934200311,
+  "net_median": -98.0,
+  "finance_perdu": 0.9692307692307692,
+  "par_mois_finance": 713.50407231802
+ },
+ "Topstep | A3 : RSI(2) de nuit seulement MES | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.6451612903225806,
+  "retrait": 0.5241935483870968,
+  "recu": 1079.1944606719824,
+  "net": 802.8718800268213,
+  "net_median": -22.272611115760213,
+  "finance_perdu": 0.9625,
+  "par_mois_finance": 396.8119705718501
+ },
+ "Topstep | zone seule | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.0,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "net": -141.4,
+  "net_median": -147.0,
+  "finance_perdu": 0.0,
+  "par_mois_finance": 0.0
+ },
+ "Topstep | zone + RSI(2) entre deux clotures MNQ (reference) | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.08571428571428572,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "net": -131.77142857142857,
+  "net_median": -98.0,
+  "finance_perdu": 1.0,
+  "par_mois_finance": 0.0
+ },
+ "Topstep | A1 : RSI(2) entre deux clotures MES | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.0,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "net": -117.6,
+  "net_median": -98.0,
+  "finance_perdu": 0.0,
+  "par_mois_finance": 0.0
+ },
+ "Topstep | A2 : RSI(2) de nuit seulement MNQ | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.08571428571428572,
+  "retrait": 0.02857142857142857,
+  "recu": 153.04844369169248,
+  "net": 17.077015120263916,
+  "net_median": -98.0,
+  "finance_perdu": 0.6666666666666666,
+  "par_mois_finance": 604.7882049107203
+ },
+ "Topstep | A3 : RSI(2) de nuit seulement MES | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.0,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "net": -128.8,
+  "net_median": -147.0,
+  "finance_perdu": 0.0,
+  "par_mois_finance": 0.0
+ },
+ "Tradeify Growth | zone seule | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.5168539325842697,
+  "retrait": 0.1550561797752809,
+  "recu": 223.0832601003725,
+  "net": 78.08326010037253,
+  "net_median": -145.0,
+  "finance_perdu": 0.47391304347826085,
+  "par_mois_finance": 84.73410013567376
+ },
+ "Tradeify Growth | zone + RSI(2) entre deux clotures MNQ (reference) | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.4943820224719101,
+  "retrait": 0.14831460674157304,
+  "recu": 223.1112209944426,
+  "net": 78.11122099444258,
+  "net_median": -145.0,
+  "finance_perdu": 0.8045454545454546,
+  "par_mois_finance": 122.90582175153656
+ },
+ "Tradeify Growth | A1 : RSI(2) entre deux clotures MES | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.5078651685393258,
+  "retrait": 0.1707865168539326,
+  "recu": 293.7412956158313,
+  "net": 148.7412956158313,
+  "net_median": -145.0,
+  "finance_perdu": 0.6548672566371682,
+  "par_mois_finance": 121.62217135710868
+ },
+ "Tradeify Growth | A2 : RSI(2) de nuit seulement MNQ | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.5528089887640449,
+  "retrait": 0.23146067415730337,
+  "recu": 405.5463244731994,
+  "net": 260.5463244731994,
+  "net_median": -145.0,
+  "finance_perdu": 0.5853658536585366,
+  "par_mois_finance": 144.132897322661
+ },
+ "Tradeify Growth | A3 : RSI(2) de nuit seulement MES | choix 2012-2021": {
+  "achats": 445,
+  "reussi": 0.5887640449438202,
+  "retrait": 0.2539325842696629,
+  "recu": 485.44995332661745,
+  "net": 340.44995332661745,
+  "net_median": -145.0,
+  "finance_perdu": 0.5076335877862596,
+  "par_mois_finance": 153.1990346426192
+ },
+ "Tradeify Growth | zone seule | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.5483870967741935,
+  "retrait": 0.18548387096774194,
+  "recu": 322.53420267807,
+  "net": 177.53420267807002,
+  "net_median": -145.0,
+  "finance_perdu": 0.6617647058823529,
+  "par_mois_finance": 119.06422792368788
+ },
+ "Tradeify Growth | zone + RSI(2) entre deux clotures MNQ (reference) | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.4274193548387097,
+  "retrait": 0.08870967741935484,
+  "recu": 188.13181489518507,
+  "net": 43.1318148951851,
+  "net_median": -145.0,
+  "finance_perdu": 0.8679245283018868,
+  "par_mois_finance": 151.06236385663334
+ },
+ "Tradeify Growth | A1 : RSI(2) entre deux clotures MES | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.6129032258064516,
+  "retrait": 0.25,
+  "recu": 359.419579330592,
+  "net": 214.41957933059203,
+  "net_median": -145.0,
+  "finance_perdu": 0.47368421052631576,
+  "par_mois_finance": 108.43802393429053
+ },
+ "Tradeify Growth | A2 : RSI(2) de nuit seulement MNQ | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.5,
+  "retrait": 0.2661290322580645,
+  "recu": 387.89267211163246,
+  "net": 242.89267211163244,
+  "net_median": -145.0,
+  "finance_perdu": 0.46774193548387094,
+  "par_mois_finance": 131.02510288995865
+ },
+ "Tradeify Growth | A3 : RSI(2) de nuit seulement MES | verification 2023 - sept. 2025": {
+  "achats": 124,
+  "reussi": 0.6451612903225806,
+  "retrait": 0.3548387096774194,
+  "recu": 404.1317206219433,
+  "net": 259.1317206219434,
+  "net_median": -145.0,
+  "finance_perdu": 0.325,
+  "par_mois_finance": 94.72178222318097
+ },
+ "Tradeify Growth | zone seule | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.0,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "net": -145.0,
+  "net_median": -145.0,
+  "finance_perdu": 0.0,
+  "par_mois_finance": 0.0
+ },
+ "Tradeify Growth | zone + RSI(2) entre deux clotures MNQ (reference) | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.11428571428571428,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "net": -145.0,
+  "net_median": -145.0,
+  "finance_perdu": 1.0,
+  "par_mois_finance": 0.0
+ },
+ "Tradeify Growth | A1 : RSI(2) entre deux clotures MES | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.0,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "net": -145.0,
+  "net_median": -145.0,
+  "finance_perdu": 0.0,
+  "par_mois_finance": 0.0
+ },
+ "Tradeify Growth | A2 : RSI(2) de nuit seulement MNQ | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.05714285714285714,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "net": -145.0,
+  "net_median": -145.0,
+  "finance_perdu": 1.0,
+  "par_mois_finance": 0.0
+ },
+ "Tradeify Growth | A3 : RSI(2) de nuit seulement MES | 2025 (descriptif)": {
+  "achats": 35,
+  "reussi": 0.0,
+  "retrait": 0.0,
+  "recu": 0.0,
+  "net": -145.0,
+  "net_median": -145.0,
+  "finance_perdu": 0.0,
+  "par_mois_finance": 0.0
+ },
+ "decision": {
+  "Topstep": "A3 : RSI(2) de nuit seulement MES",
+  "Tradeify Growth": "zone seule"
+ }
+}
