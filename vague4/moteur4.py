@@ -17,8 +17,9 @@ TICK_NQ, TICK_ES = 0.25 * 2.0, 0.25 * 5.0
 
 @njit(cache=True)
 def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, H, L, C, der, z_deb, z_fin, z_me, z_ms,
-            z_sens, z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn, ptN, ptE):
-    """Une seance (nuit + journee). Renvoie (perdu, cash fin de seance, veut, pic_rt, plancher, au moins un trade)."""
+            z_sens, z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn, ptN, ptE, qz=1):
+    """Une seance (nuit + journee), qz MNQ par trade de zone. Renvoie (perdu, cash fin de seance, veut, pic_rt, plancher,
+    au moins un trade)."""
     es = rsi == 3 or rsi == 4
     nuit_seule = rsi == 2 or rsi == 4
     pr = ptE if es else ptN
@@ -89,7 +90,7 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
             plancher = min(pic_rt - perte, blocage)
         if dll > 0.0 and (nq != 0 or ne != 0) and basv <= depart_jour - dll:     # comme financee : position nette
             x = depart_jour - dll if ouv > depart_jour - dll else ouv
-            cash = x - (FRAIS_ZONE if zp != 0 else 0.0) - (ordre if rp != 0 else 0.0) - TICK_NQ * abs(zp) - tick * rp
+            cash = x - FRAIS_ZONE * abs(zp) - (ordre if rp != 0 else 0.0) - TICK_NQ * abs(zp) - tick * rp
             zp, rp, arret = 0, 0, True
             if actif >= 0:
                 actif = -2
@@ -97,19 +98,19 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
         if basv <= plancher:
             return True, basv, veut, pic_rt, plancher, trade
         if actif >= 0 and z_ms[actif] == t:
-            cash += zp * (C[d, t] - ze) * ptN - FRAIS_ZONE
+            cash += zp * (C[d, t] - ze) * ptN - FRAIS_ZONE * abs(zp)
             zp, actif = 0, -1
         while k < z_fin[d] and z_me[k] < t:
             k += 1
         if k < z_fin[d] and z_me[k] == t:
             if not arret and z_garde[k] == 1 and zp == 0:
-                zp, ze, actif = z_sens[k], C[d, t], k
+                zp, ze, actif = z_sens[k] * qz, C[d, t], k
                 trade = True
             k += 1
     if rp == 1:
         cash += ((EC[d, dmin] if es else C[d, dmin]) - re) * pr - ordre
     if zp != 0:
-        cash += zp * (C[d, dmin] - ze) * ptN - FRAIS_ZONE
+        cash += zp * (C[d, dmin] - ze) * ptN - FRAIS_ZONE * abs(zp)
     return False, cash, veut, pic_rt, plancher, trade
 
 
@@ -117,8 +118,11 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
 def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde, dec, voulu,
               NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn,
               e_obj, e_perte, e_mode, e_bloc, e_dll, e_regul, e_jmin, f_perte, f_bloc, f_dll, f_jours, f_seuil, f_regul,
-              f_min, plafonds, f_part, f_reserve, f_max, horizon=UN_AN):
-    """Challenge puis compte finance, sur horizon seances apres l'achat (UN_AN : comme financee.parcours). Renvoie
+              f_min, plafonds, f_part, f_reserve, f_max, horizon=UN_AN, q_ch=1, q_f=1, seuil_f=1e18, reserve=0.0):
+    """Challenge puis compte finance, sur horizon seances apres l'achat (UN_AN : comme financee.parcours). Leviers de la
+    vague 5 (par defaut : aucun) : q_ch MNQ par trade de zone pendant le challenge ; sur le compte finance, q_f MNQ les
+    jours ou le coussin (solde de la veille - plancher) est d'au moins seuil_f, 1 sinon ; reserve : $ laisses en plus sur
+    le compte a chaque retrait. Renvoie
     (issue du challenge, seances du challenge, compte finance perdu, nombre de retraits, recu brut, seance du 1er retrait,
     seances jouees depuis l'achat a la fin du suivi ou a la perte du compte finance)."""
     nj = O.shape[0]
@@ -132,7 +136,7 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
         perdu, cash, veut, pic_rt, plancher, tr = seance4(d, rsi, veut, cash, pic_rt, plancher, e_mode, e_perte, e_bloc,
                                                           e_dll, O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens,
                                                           z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH,
-                                                          ENL, enn, ptN, ptE)
+                                                          ENL, enn, ptN, ptE, q_ch)
         if perdu:
             return -1, d - debut + 1, False, 0, 0.0, -1, d - debut + 1
         g = cash - veille
@@ -154,10 +158,11 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
     plancher = -f_perte
     meilleur, qual, n, recu, premier = -1e18, 0, 0, 0.0, -1
     while d < fin:
+        qz = q_f if cash - plancher >= seuil_f else 1
         perdu, cash, veut, pic_rt, plancher, tr = seance4(d, rsi, veut, cash, 0.0, plancher, 0, f_perte, f_bloc, f_dll,
                                                           O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde,
                                                           dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn,
-                                                          ptN, ptE)
+                                                          ptN, ptE, qz)
         if perdu:
             return 1, n_ch, True, n, recu, premier, d - debut + 1
         g = cash - veille
@@ -173,7 +178,7 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
         gain = cash - base
         if qual >= f_jours and gain > 0.0 and (f_regul == 0.0 or meilleur <= f_regul * gain):
             plaf = plafonds[min(n, len(plafonds) - 1)]
-            x = min(plaf, cash - f_reserve)
+            x = min(plaf, cash - f_reserve - reserve)
             if f_part > 0.0:
                 x = min(x, f_part * cash)
             if x >= f_min:

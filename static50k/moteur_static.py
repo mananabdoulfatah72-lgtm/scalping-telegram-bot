@@ -84,8 +84,12 @@ def _heure(cash, rq, re, ri, ptN, ptE, AO, AH, AL, BO, BH, BL, p, b, plancher, l
 @njit(cache=True)
 def parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, ptN, ptE, perte, objectif, trace, retraits,
              O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde, dec, voulu,
-             EO, EH, EL, EC, roule_es, AO, AH, AL, AC, BO, BH, BL, BC, na, npost):
+             EO, EH, EL, EC, roule_es, AO, AH, AL, AC, BO, BH, BL, BC, na, npost, m_eval=1, m_pro=1, seuil_m=1e18,
+             reserve=0.0):
     """Un achat a la seance `debut` (RSI(2) a plat). Suivi jusqu'a h2 seances. Renvoie un tableau (voir colonnes).
+    Leviers de la vague 5 (par defaut : aucun) : pendant l'evaluation, chaque nouvelle entree prend m_eval fois sa taille ;
+    sur le compte finance, m_pro fois les jours ou le coussin (solde de la veille - plancher) est d'au moins seuil_m, et le
+    plafond du jour est multiplie d'autant ; reserve : $ laisses en plus sur le compte a chaque retrait.
     perte, objectif : ceux de l'evaluation (controles : tres grands = sans compte). trace[s - 1] : valeur de fin de
     journee de la s-ieme seance (avant un retrait), pour les controles. retraits[s - 1] : retrait recu a la fin de la
     s-ieme seance (tableau vide : non enregistre). regle : 0 Static puis Pro Static ; 1 idem, Pro pessimiste (plancher
@@ -113,7 +117,8 @@ def parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, ptN, ptE, p
         plancher = -S2F_PERTE
     for d in range(debut, fin):
         s = d - debut + 1                   # seances jouees depuis l'achat
-        cap = veille + plafond_pro if (phase == 1 and plafond_pro > 0.0) else 0.0
+        m = m_eval if phase == 0 else (m_pro if veille - plancher >= seuil_m else 1)
+        cap = veille + plafond_pro * m if (phase == 1 and plafond_pro > 0.0) else 0.0
         lim = veille - S2F_DLL if regle == 2 else -1e18
         # ======================= barres de la nuit (de 18 h la veille a 8 h) : journee de trading d
         arret = False
@@ -144,6 +149,7 @@ def parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, ptN, ptE, p
                 elif rq == 0 and veut == 1 and not bloque and not arret:
                     vo = cash + ptN * zp * (O[d, t] - ze)
                     inst, n = _rsi_choix(variante, vo - plancher)
+                    n *= m
                     if n > 0 and not (inst == 1 and roule_es[d]):
                         rq, ri = n, inst
                         if inst == 0:
@@ -189,7 +195,7 @@ def parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, ptN, ptE, p
             if k < z_fin[d] and z_me[k] == t:
                 if z_garde[k] == 1 and zp == 0 and not arret:
                     vc = cash + (ptN * nq * (C[d, t] - re) if ri == 0 else ptE * ne * (EC[d, t] - re))
-                    n = _zone_taille(variante, vc - plancher)
+                    n = _zone_taille(variante, vc - plancher) * m
                     zp, ze, actif = z_sens[k] * n, C[d, t], k
                 k += 1
         # fin de seance : la zone est fermee a la derniere minute
@@ -239,7 +245,7 @@ def parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, ptN, ptE, p
             gain = eod - base
             seuil = S2F_SEUILS[min(nret, 2)]
             if qualif >= S2F_JOURS and gain >= seuil and meilleur <= S2F_REGUL * gain and eod >= 1500.0:
-                x = min(MAX_RET, eod - 1000.0)
+                x = min(MAX_RET, eod - 1000.0 - reserve)
                 if x >= 500.0:
                     cash -= x
                     veille = eod - x
@@ -258,7 +264,7 @@ def parcours(debut, h1, h2, variante, plafond_pro, regle, avec_nuit, ptN, ptE, p
                 inactif = True
             gain = eod - base
             if eod >= SEUIL_PRO and qualif >= 8 and meilleur <= 0.3 * gain:
-                x = min(MAX_RET, np.floor((eod - GARDE_PRO) / 500.0) * 500.0)
+                x = min(MAX_RET, np.floor((eod - GARDE_PRO - reserve) / 500.0) * 500.0)
                 if x >= 500.0:
                     cash -= x
                     veille = eod - x
