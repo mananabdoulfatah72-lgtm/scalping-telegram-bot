@@ -134,3 +134,23 @@ le meilleur**.
 - le retrait : 50 % du gain du cycle, au plus 2 000 $, après 5 jours à +150 $ ;
 - l'absence de limite du jour et de règle de régularité sur le compte financé ;
 - l'absence de frais d'activation.
+
+## Réglage prudent (demande de l'utilisateur : perdre le moins possible ; `prudent.py`, `prudent.txt`, descriptif)
+
+LucidFlex, zone + RSI(2) de nuit sur MES, filtre simulé aussi bon qu'en 2026.
+
+| Réglage | Challenge réussi (achats 2012-2021 / 2023-2024 / 2025 - mars 2026) | Temps pour valider (médiane) | Compte financé perdu dans les 12 mois | Gain net par mois, un seul compte (2012-2022 / 2023 - sept. 2026) |
+|---|---|---|---|---|
+| challenge 3×, financé 2× (le plus rentable) | 42 % / 55 % / 23 % | 1 mois | 47 % / 14 % / 79 % | +593 / +481 $ |
+| **challenge 1×, financé 2× dès 4 000 $ de coussin** | **80 % / 99 % / 54 %** | **3 à 3,6 mois** (5,9 en 2025) | **50 % / 17 % / 88 %** | **+548 / +443 $** |
+| challenge 1×, financé 1× | 80 % / 99 % / 54 % | 3 à 3,6 mois | 48 % / 17 % / 88 % | +321 / +287 $ |
+
+Retirer moins à chaque fois (réglage 1× / 2×) :
+
+| Retrait réduit de | Compte financé perdu dans les 12 mois | Retraits par mois d'un compte en vie (2012-2021 / 2023-2024) |
+|---|---|---|
+| 0 $ | 50 % / 17 % / 88 % | 545 / 382 $ |
+| 500 $ | 38 % / 8 % / 88 % | 365 / 270 $ |
+| 1 000 $ | 32 % / 2 % / 88 % | 243 / 184 $ |
+
+En 2025, presque tous les comptes financés sont perdus avant d'avoir accumulé un coussin, quel que soit le réglage.
