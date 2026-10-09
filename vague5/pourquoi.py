@@ -2,8 +2,10 @@
 """Pourquoi 2025 et 2026 rapportent peu (descriptif, demande de l'utilisateur du 9 octobre 2026). Ecrit pourquoi.txt :
 1. le bot seul, sans compte : gain sur 21 seances au niveau d'aujourd'hui, par annee de depart, source par source ;
 2. l'agitation du NQ par annee (ecart moyen entre plus haut et plus bas d'une seance, en % et en $ par MNQ aujourd'hui) ;
-3. les comptes de la vague 5 par annee d'achat : challenges reussis / perdus, comptes finances perdus, retraits."""
+3. les comptes de la vague 5 par annee d'achat : challenges reussis / perdus, comptes finances perdus, retraits.
+`python3 pourquoi.py jour` : methode corrigee (README.md) pour la partie 3 ; ecrit pourquoi_jour.txt."""
 import multiprocessing as mp
+import sys
 
 import numpy as np
 import pandas as pd
@@ -37,7 +39,8 @@ def bot_seul(args):
 
 
 def parcours_static(D, b, d, h):
-    r = U.achat(D, b, d, STATIC["bot"], plafond=500.0, h1=h, h2=h, leviers=(2, 1, W.SEUIL, 0.0))
+    r = U.achat(D, b, d, STATIC["bot"], plafond=500.0, h1=h, h2=h, leviers=(STATIC["ch"], STATIC["fi"], W.SEUIL, 0.0),
+                niveau="jour" if W.NIVEAU == "jour" else True)
     issue = int(r[MS.ISSUE])
     fin = int(r[MS.FIN_EVAL]) if issue == -1 else (int(r[MS.FIN_PRO]) if r[MS.PRO_PERDU] == 1 else h)
     return issue, int(r[MS.FIN_EVAL]), bool(r[MS.PRO_PERDU] == 1), fin, r[MS.RECU2]
@@ -45,7 +48,7 @@ def parcours_static(D, b, d, h):
 
 def parcours_topstep(D, b, d, h):
     e, f_ = CP.COMPTES["Topstep"][:7], F.FINANCES["Topstep"]["f"]
-    fn, fe = D4.facteurs(D, d)
+    fn, fe = D4.facteurs_jour(D) if W.NIVEAU == "jour" else D4.facteurs(D, d)
     r = M4.parcours4(d, 4, 2.0 * fn, 5.0 * fe, np.zeros(0), *b, *e, *f_, h, 2, 2, W.SEUIL, 0.0)
     return int(r[0]), int(r[1]), bool(r[2]), int(r[6]), r[4] * F.FINANCES["Topstep"]["part"]
 
@@ -79,6 +82,10 @@ def comptes(args):
 
 
 def main():
+    global STATIC
+    W.regler(sys.argv[1] if len(sys.argv) > 1 else "achat")
+    if W.NIVEAU == "jour":
+        STATIC = dict(compte="Static", bot="E4", ch=2, fi=2, re=0)
     W.G["D4"] = W.D4.charger()
     W.G["DS"] = W.DN.charger()
     D, DS = W.G["D4"], W.G["DS"]
@@ -129,7 +136,7 @@ def main():
             vie = (g["fin"] - g["nch"])[ok]
             L.append(f"{y} | {len(g)} | {ok.mean():.0%} | {ko.mean():.0%} | {g['nch'][ko].median():.0f} |"
                      f" {g['perdu'][ok].mean():.0%} | {vie.median():.0f} | {g['recu'].mean():,.0f} $")
-    (W.ICI / "pourquoi.txt").write_text("\n".join(L) + "\n")
+    (W.ICI / f"pourquoi{W.SUFFIXE}.txt").write_text("\n".join(L) + "\n")
     print("\n".join(L))
 
 

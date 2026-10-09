@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Deux comptes en meme temps, un Static (E4, challenge 2x) et un Topstep (zone + A3, challenge 2x, finance 2x), chacun
 rachete des qu'il est perdu : gains nets mois par mois, 2023 - sept. 2026 (descriptif, demande de l'utilisateur du
-9 octobre 2026). Les deux comptes jouent le meme tirage du filtre simule et partent le meme jour. Ecrit deux_comptes.txt."""
+9 octobre 2026). Les deux comptes jouent le meme tirage du filtre simule et partent le meme jour. Ecrit deux_comptes.txt.
+`python3 deux_comptes.py jour` : methode corrigee (README.md), avec la retenue de vague5_jour.txt pour le Static (financee
+2x) ; ecrit deux_comptes_jour.txt."""
 import multiprocessing as mp
+import sys
 
 import numpy as np
 import pandas as pd
@@ -40,13 +43,19 @@ def un_tirage(args):
 
 
 def main():
+    global STATIC
+    W.regler(sys.argv[1] if len(sys.argv) > 1 else "achat")
+    if W.NIVEAU == "jour":
+        STATIC = dict(compte="Static", bot="E4", ch=2, fi=2, re=0)
     W.G["D4"] = W.D4.charger()
     W.G["DS"] = W.DN.charger()
     rho = W.S.rho_2026()
     W.G["gardes"] = {"filtre aussi bon qu'en 2026 (simule)": W.S.gardes_simules(W.G["D4"], rho)[:W.TIRAGES],
                      "sans filtre": [None]}
-    L = [f"Deux comptes en meme temps (descriptif) : {W.nom(STATIC)} + {W.nom(TOPSTEP)}, chacun rachete des qu'il est"
-         f" perdu ; gains nets par mois du calendrier (retraits - prix - activation), niveau d'aujourd'hui ; {DEPARTS}"
+    mode = ("chaque trade au niveau d'aujourd'hui de son jour d'entree, comptes gardes tant qu'ils vivent"
+            if W.NIVEAU == "jour" else "niveau fixe a l'achat, compte rachete apres 24 mois")
+    L = [f"Deux comptes en meme temps (descriptif, {mode}) : {W.nom(STATIC)} + {W.nom(TOPSTEP)}, chacun rachete des"
+         f" qu'il est perdu ; gains nets par mois du calendrier (retraits - prix - activation), niveau d'aujourd'hui ; {DEPARTS}"
          f" dates de depart (une seance sur cinq a partir du 3 janvier 2023) x tirages du filtre simule (rho {rho:.2f})."
          f" Septembre 2026 s'arrete au 25.", ""]
     for scen in W.G["gardes"]:
@@ -96,7 +105,7 @@ def main():
             L.append(f"{m} | {NS.iloc[:, 0].loc[m]:+,.0f} | {NT.iloc[:, 0].loc[m]:+,.0f} | {x:+,.0f} (cumul {cum:+,.0f})")
         L.append("")
         print("\n".join(L[-60:]), flush=True)
-    (W.ICI / "deux_comptes.txt").write_text("\n".join(L) + "\n")
+    (W.ICI / f"deux_comptes{W.SUFFIXE}.txt").write_text("\n".join(L) + "\n")
 
 
 if __name__ == "__main__":
