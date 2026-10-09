@@ -19,14 +19,14 @@ def test_sans_levier(DA, DS):
               (W.REFERENCES["Static"], bS, socle.lien_static(DS, bS, "E0", 500.0, 0, (30.0, 30.0)), True),
               (W.REFERENCES["S2F"], bS, socle.lien_static(DS, bS, "E0", 500.0, 2, (570.0, 342.0)), True)]
     for c, b, ancien, statique in paires:
-        f1, n1 = W.chaine(DA, W.lien(c, b), w0, len(j))
+        f1, _, n1 = W.chaine(DA, W.lien(c, b), w0, len(j))
         f2, n2 = socle.chaine(DA, ancien, w0, len(j), statique)
         assert n1 == n2 and np.allclose(f1, f2), (W.nom(c), n1, n2, f1.sum(), f2.sum())
     print(f"ok : sans levier, vague5 = socle sur les trois comptes ({n1} achats S2F depuis {j[w0].date()})")
 
 
 def test_double(DA, DS):
-    """2. Taille 2x sans aucune limite : exactement deux fois le gain de chaque jour (zone, RSI(2), frais)."""
+    """2. Taille 2x sans aucune limite : exactement deux fois le gain de chaque jour (zone, RSI(2) de nuit sur MES, frais)."""
     bA = D4.base(DA)
     n = 0
     for d in range(300, len(DA["jours"]), 97):
@@ -34,8 +34,8 @@ def test_double(DA, DS):
         z2 = M4.seance4(d, 0, 1, 0.0, 0.0, -1e12, 0, 1e12, 1e12, 0.0, *bA, 2.0, 5.0, 2)[1]
         a1 = M4.seance4(d, 4, 1, 0.0, 0.0, -1e12, 0, 1e12, 1e12, 0.0, *bA, 2.0, 5.0, 1)[1]
         a2 = M4.seance4(d, 4, 1, 0.0, 0.0, -1e12, 0, 1e12, 1e12, 0.0, *bA, 2.0, 5.0, 2)[1]
-        assert abs(z2 - 2 * z1) < 1e-9 and abs(a2 - (a1 + z1)) < 1e-9, (d, z1, z2, a1, a2)
-        n += 1
+        assert abs(z2 - 2 * z1) < 1e-9 and abs(a2 - 2 * a1) < 1e-9, (d, z1, z2, a1, a2)
+        n += int(a1 != z1)
     bS = U.base(DS)
     for v in ("E0", "E4"):
         for d in U.departs(DS)[100::400]:
@@ -43,12 +43,13 @@ def test_double(DA, DS):
             U.achat(DS, bS, d, v, perte=1e12, objectif=1e12, h2=300, trace=t1)
             U.achat(DS, bS, d, v, perte=1e12, objectif=1e12, h2=300, trace=t2, leviers=(2, 1, 1e18, 0.0))
             assert np.allclose(t2, 2 * t1, atol=1e-6) and np.abs(t1).sum() > 0, (v, d)
-    print(f"ok : 2x sans limite = deux fois le gain (Topstep : {n} seances, zone seule et zone + A3 ; Static : E0 et E4,"
-          f" 300 seances par depart, nuit comprise)")
+    assert n > 0
+    print(f"ok : 2x sans limite = deux fois le gain (Topstep : zone seule et zone + A3, {n} seances avec un trade de A3 ;"
+          f" Static : E0 et E4, 300 seances par depart, nuit comprise)")
 
 
 def test_reserve(DA, DS):
-    """3. Reserve de 1 000 $ : chaque retrait laisse au moins 1 000 $ de plus, et c'est le plus grand retrait permis."""
+    """3. Reserve de 1 000 $ : chaque retrait est de 1 000 $ de moins que le plus grand retrait permis par les regles."""
     bS = U.base(DS)
     nS = nP = 0
     for d in U.departs(DS)[::7]:
@@ -59,11 +60,11 @@ def test_reserve(DA, DS):
             for s in np.flatnonzero(ret):
                 eod, x = tr[s], ret[s]
                 if s2f:
-                    assert abs(x - min(MS.MAX_RET, eod - 1000.0 - 1000.0)) < 1e-6, (d, s, eod, x)
+                    assert abs(x - (min(MS.MAX_RET, eod - 1000.0) - 1000.0)) < 1e-6 and x >= 500.0, (d, s, eod, x)
                     nS += 1
                 else:
-                    assert abs(x - min(MS.MAX_RET, np.floor((eod - 3000.0) / 500.0) * 500.0)) < 1e-6, (d, s, eod, x)
-                    assert eod - x >= 3000.0 - 1e-6
+                    assert abs(x - (min(MS.MAX_RET, np.floor((eod - 2000.0) / 500.0) * 500.0) - 1000.0)) < 1e-6, (d, s)
+                    assert x >= 500.0 and eod - x >= 3000.0 - 1e-6
                     nP += 1
             if r[MS.ISSUE] == 1 and not s2f:
                 assert int(r[MS.FIN_EVAL]) <= 504
@@ -78,11 +79,7 @@ def test_reserve(DA, DS):
         i0, i1 = np.flatnonzero(r0), np.flatnonzero(r1)
         if len(i0) == 0:
             continue
-        x0 = r0[i0[0]]
-        if x0 < 2000.0:                           # x0 = la moitie du solde : x1 = min(2 000, solde - 1 000, moitie)
-            attendu = min(2000.0, 2 * x0 - 1000.0, x0)
-        else:
-            attendu = 2000.0                      # solde >= 4 000 $
+        attendu = r0[i0[0]] - 1000.0              # meme seance, 1 000 $ de moins (si au moins le minimum de 125 $)
         if attendu >= 125.0:
             assert len(i1) and i1[0] == i0[0] and abs(r1[i1[0]] - attendu) < 1e-6, (d, x0, r1[i1[0]] if len(i1) else 0)
             nT += 1
@@ -109,16 +106,16 @@ def test_challenge_intact(DA, DS):
 
 
 def test_double_finance(DS):
-    """5. Compte finance (S2F, finance des le premier jour, sans plafond) : le premier jour, le coussin vaut 2 500 $ ; avec
-    un seuil de 2 500 $, il est joue en 2x (deux fois le gain du jour quand la limite du jour n'est pas touchee) ; avec un
-    seuil de 2 501 $, il reste en 1x."""
+    """5. Compte finance (S2F, finance des le premier jour, plafond du jour de 500 $) : le premier jour, le coussin vaut
+    2 500 $ ; avec un seuil de 2 500 $, il est joue en 2x avec un plafond de 1 000 $ (deux fois le gain du jour quand la
+    limite du jour n'est pas touchee) ; avec un seuil de 2 501 $, il reste en 1x."""
     bS = U.base(DS)
     n = egal = 0
     for d in U.departs(DS)[::3]:
         t = {}
         for seuil in (2500.0, 2501.0, 1e18):
             t[seuil] = np.zeros(1)
-            U.achat(DS, bS, d, "E0", h2=1, trace=t[seuil], s2f=True, leviers=(1, 2, seuil, 0.0))
+            U.achat(DS, bS, d, "E0", plafond=500.0, h2=1, trace=t[seuil], s2f=True, leviers=(1, 2, seuil, 0.0))
         assert t[2501.0][0] == t[1e18][0]
         if t[1e18][0] != 0.0:
             n += 1

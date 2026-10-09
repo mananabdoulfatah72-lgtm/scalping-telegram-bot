@@ -54,7 +54,8 @@ REFERENCES = {"Topstep": dict(compte="Topstep", bot="zone + A3", ch=1, fi=1, re=
 
 
 def lien(c, b, pessimiste=0):
-    """Fonction (d, h, premier) -> (flux par seance depuis l'achat, seances jusqu'a la fin du compte)."""
+    """Fonction (d, h, premier) -> (flux net par seance depuis l'achat, retraits par seance, seances jusqu'a la fin du
+    compte)."""
     if c["compte"] == "Topstep":
         D = G["D4"]
         e, f_ = CP.COMPTES["Topstep"][:7], F.FINANCES["Topstep"]["f"]
@@ -72,7 +73,7 @@ def lien(c, b, pessimiste=0):
                 fl[MOIS * k] -= prix
             if r[0] == 1:
                 fl[r[1] - 1] -= activation
-            return fl, r[6]
+            return fl, ret * part, r[6]
         return f
     D = G["DS"]
     s2f = c["compte"] == "S2F"
@@ -93,23 +94,24 @@ def lien(c, b, pessimiste=0):
             fin = int(r[MS.FIN_PRO])
         else:
             fin = h
-        return fl, fin
+        return fl, ret, fin
     return f
 
 
 def chaine(D, f, d, w1):
     """Un seul compte a la fois, de d a w1 (rachete a la premiere seance ou le RSI(2) est a plat apres la fin du compte).
-    Renvoie les flux par seance, le nombre d'achats et le nombre de comptes finances obtenus."""
-    flux, n = np.zeros(len(D["jours"])), 0
+    Renvoie les flux nets par seance, les retraits par seance et le nombre d'achats."""
+    flux, recu, n = np.zeros(len(D["jours"])), np.zeros(len(D["jours"])), 0
     while True:
         while d < w1 and D["ouvert"][d] != 0:
             d += 1
         if d >= w1:
-            return flux, n
+            return flux, recu, n
         h = min(H2, w1 - d)
-        fl, fin = f(d, h, n == 0)
+        fl, ret, fin = f(d, h, n == 0)
         assert 1 <= fin <= h
         flux[d:d + h] += fl
+        recu[d:d + h] += ret
         n += 1
         d += fin
 
@@ -131,28 +133,31 @@ def mesurer(args):
     w0 = int(np.searchsorted(j, pd.Timestamp(a)))
     w1 = len(j) if z is None else int(np.searchsorted(j, pd.Timestamp(z)))
     mc = pd.PeriodIndex(j[w0:w1], freq="M")
-    M_, nb, pire12 = [], [], []
+    M_, R_, nb, pire12 = [], [], [], []
     for b in bases(c, scen):
         f = lien(c, b, pessimiste)
         for k in range(ndep):
-            fl, n = chaine(D, f, w0 + 5 * k, w1)
+            fl, rc, n = chaine(D, f, w0 + 5 * k, w1)
             m_ = pd.Series(fl[w0:w1]).groupby(mc).sum()
+            r_ = pd.Series(rc[w0:w1]).groupby(mc).sum()
             m_[m_.index < mc[5 * k]] = np.nan
+            r_[r_.index < mc[5 * k]] = np.nan
             M_.append(m_)
+            R_.append(r_)
             nb.append(n / ((w1 - w0 - 5 * k) / 252))
             pire12.append(m_.dropna().rolling(12).sum().min())
     tous = pd.concat(M_, axis=1)
     moy = tous.mean(axis=1)
-    v = tous.stack()
     an = moy.groupby(moy.index.year).mean()
-    return {"moy": float(moy.mean()), "mois_pos": float((v > 0).mean()), "achats_an": float(np.mean(nb)),
+    rv = pd.concat(R_, axis=1).stack()
+    return {"moy": float(moy.mean()), "mois_retrait": float((rv > 0).mean()), "achats_an": float(np.mean(nb)),
             "min_dep": float(tous.mean().min()), "max_dep": float(tous.mean().max()),
             "pire12_med": float(np.nanmedian(pire12)), "pire12_min": float(np.nanmin(pire12)),
             "an": {int(y): float(x) for y, x in an.items()}}
 
 
 def texte(x):
-    return (f"{x['moy']:+,.0f} $ | {x['mois_pos']:.0%} | {x['achats_an']:.1f} | {x['min_dep']:+,.0f} a {x['max_dep']:+,.0f} $"
+    return (f"{x['moy']:+,.0f} $ | {x['mois_retrait']:.0%} | {x['achats_an']:.1f} | {x['min_dep']:+,.0f} a {x['max_dep']:+,.0f} $"
             f" | {x['pire12_med']:+,.0f} / {x['pire12_min']:+,.0f} $ | "
             + ", ".join(f"{y} {v:+,.0f}" for y, v in x["an"].items()))
 
@@ -176,10 +181,11 @@ def main():
     BON = "filtre aussi bon qu'en 2026 (simule)"
     CC = candidates()
     assert len(CC) == 40 and all(r in CC for r in REFERENCES.values())
-    entete = ("candidate | moyenne par mois | mois avec un gain | achats par an | selon le depart (min - max) |"
+    entete = ("candidate | moyenne par mois | mois avec un retrait | achats par an | selon le depart (min - max) |"
               " pires 12 mois de suite (mediane / pire) | par annee : moyenne par mois")
     L = [f"Vague 5 : un seul compte a la fois, gains nets par mois du calendrier, niveau d'aujourd'hui ; filtre simule"
-         f" rho {rho:.2f}, {TIRAGES} tirages ; coussin pour le 2x : {SEUIL:,.0f} $ ; reserve {RESERVE:,.0f} $."
+         f" rho {rho:.2f}, {TIRAGES} tirages ; coussin pour le 2x : {SEUIL:,.0f} $ ; reserve : chaque retrait"
+         f" {RESERVE:,.0f} $ sous le plus grand permis."
          f" Donnees jusqu'au {j[-1].date()}.", ""]
     res = {}
     for fw in FEN:
