@@ -131,3 +131,25 @@ Cela fait 12 candidates (`python3 vague6.py suite` → `vague6_suite.txt`).
 Même jugement : la meilleure sur 2012-2022 est validée si elle fait au moins +388 $ en vérification et si chaque année
 est positive. Cette suite a été décidée en voyant le premier calcul, sur une vérification déjà beaucoup utilisée : un
 résultat positif serait à confirmer en démo.
+
+## Résultats après la revue de code (9 octobre 2026) : `vague6.txt`, `vague6_suite.txt`
+
+Une revue indépendante a relevé deux défauts, corrigés, et tout a été recalculé :
+1. **LucidFlex** : le moteur plafonnait chaque retrait à 50 % du gain total, au lieu de 50 % du gain du cycle (depuis le
+   dernier retrait). Corrigé (`part_cycle` dans `moteur4.py`). Retirer moins à chaque fois laisse plus de coussin :
+   LucidFlex passe de +630 / +362 $ à **+593 / +481 $** par mois.
+2. **S2L avec une limite du jour définitive** : la taille 2× ne s'activait jamais (coussin mesuré contre le plancher du
+   jour). Corrigé ; cette ligne descriptive passe à −29 / −42 $ par mois.
+
+Le résultat principal du S2L (+744 / +410 $) n'a pas de défaut, mais il repose entièrement sur une limite du jour
+**douce**. Les retraits sont aussi calculés sur une valeur qui compte la position de nuit encore ouverte.
+
+| Gains nets par mois (filtre simulé aussi bon qu'en 2026) | Choix 2012-2022 | Vérification 2023 - sept. 2026 |
+|---|---|---|
+| **LucidFlex, zone + A3, challenge 3×, financé 2×** (retenue, validée) | **+593 $** | **+481 $** (2023 +254, 2024 +656, 2025 +402, 2026 +656) |
+| S2L, challenge 1×, live 2×, réserve 6 000 $ | +744 $ | +410 $ |
+| Topstep, challenge 3×, financé 2× | +559 $ | +391 $ |
+| Static E4, challenge 3×, financé 2× | +407 $ | +398 $ (2026 : −6 $) |
+| FundedNext Legacy, challenge 3×, financé 2× | +467 $ | +345 $ |
+
+**L'objectif de 500 $ n'est pas atteint** ; LucidFlex en est le plus près (+481 $).

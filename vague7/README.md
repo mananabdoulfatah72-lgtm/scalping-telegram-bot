@@ -88,3 +88,49 @@ Cela fait 10 candidates. La méthode est celle de la vague 6 :
    - les contrôles des vagues 4, 5, 6 et du Static passent.
 3. Le gain d'un jour de rebond sans limite = (clôture − ouverture) × 2 $ × facteur du jour − 3 $, par MNQ, sur les deux
    moteurs.
+
+## Résultats (9 octobre 2026) : `vague7.txt`
+
+Contrôles :
+- `test_vague7.py` 2 sur 2 : le signal du rebond est celui du robot (379 jours) ; un jour de rebond est recalculé à la
+  main sur les deux moteurs ;
+- sans rebond, `vague5_regles.txt` est redonné à l'identique, Topstep et le Static redonnent les chiffres de la vague 6,
+  et les contrôles du Static et des vagues 4, 5 et 6 passent.
+
+**1. Le rebond ne reste sur aucun compte** : aucun ne fait mieux à la fois sur le choix et sur la vérification.
+
+| Compte | Sans rebond (choix / vérif.) | Avec rebond |
+|---|---|---|
+| Topstep | +559 / +391 $ | +569 / +286 $ |
+| LucidFlex | +593 / +481 $ | +687 / +469 $ |
+| FundedNext | +467 / +345 $ | +391 / +375 $ |
+| Static | +407 / +398 $ | +416 / +393 $ |
+| S2L | +744 / +410 $ | +400 / +554 $ |
+
+Le rebond seul gagne surtout dans les krachs, et il est négatif ou faible les autres années :
+- 2020 : +23 080 $ ;
+- 2025 : +11 629 $ ;
+- 2014 : −2 743 $ ; 2022 : −1 760 $ ; 2026 : −685 $.
+
+**2. Le meilleur challenge**
+
+Selon la règle écrite, **aucun système n'est validé**, mais c'est un effet du seuil. Il valait +481 $, la valeur de
+LucidFlex arrondie vers le haut, et LucidFlex refait exactement le même calcul : +480,9 $. Le seuil voulait dire « au
+moins aussi bien que le meilleur validé jusqu'ici ». Lu ainsi, **LucidFlex (zone + A3, challenge 3×, financé 2×) reste
+le meilleur**.
+
+| Compte (système final, sans rebond) | Prix | Choix | Vérification | Sans filtre (vérif.) | Comptes achetés par an (vérif.) |
+|---|---|---|---|---|---|
+| **LucidFlex** | **140 $ une fois** | +593 $ | **+481 $** (2023 +254, 2024 +656, 2025 +402, 2026 +656) | +218 $ (chaque année positive) | 0,4 |
+| S2L DayTraders | 229 $ | +744 $ | +410 $ | +234 $ | 0,7 |
+| Static DayTraders | 30 $ + 130 $ | +407 $ | +398 $ | +310 $ | 4,2 |
+| Topstep | 49 $ par mois + 149 $ | +559 $ | +391 $ | +152 $ | 2,8 |
+| FundedNext Legacy | 200 $ une fois | +467 $ | +345 $ | +84 $ | 1,8 |
+
+**L'objectif de 500 $ par mois n'est pas atteint** : le plus haut en vérification est LucidFlex, avec +481 $.
+
+**À vérifier chez Lucid avant d'acheter** (les règles viennent de sites d'avis, `vague6/regles_firmes.md`) :
+- la perte maximale du 50K : 2 000 $ ou 2 500 $ ;
+- le retrait : 50 % du gain du cycle, au plus 2 000 $, après 5 jours à +150 $ ;
+- l'absence de limite du jour et de règle de régularité sur le compte financé ;
+- l'absence de frais d'activation.
