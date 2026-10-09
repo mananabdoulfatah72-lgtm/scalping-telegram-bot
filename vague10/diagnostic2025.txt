@@ -1,0 +1,18 @@
+=== LucidFlex 50K, garder 4 000 $ | achats 2012-2021 (4450 achats x tirages)
+challenge perdu : 20% avec la regle de regularite, 20% sans elle ; challenges perdus qui auraient ete reussis sans la regle : 0%
+=== LucidFlex 50K, garder 4 000 $ | achats 2025 - mars 2026 (550 achats x tirages)
+challenge perdu : 46% avec la regle de regularite, 46% sans elle ; challenges perdus qui auraient ete reussis sans la regle : 0%
+mois ou le challenge est perdu : 2025-03 9, 2025-04 21, 2025-06 2, 2025-07 53, 2025-08 32, 2025-09 1, 2025-10 9, 2026-01 121, 2026-02 6, 2026-03 1
+mois ou le compte finance est perdu : 2025-04 7, 2026-01 1
+=== Topstep 50K, garder 4 000 $ | achats 2012-2021 (4450 achats x tirages)
+challenge perdu : 19% avec la regle de regularite, 19% sans elle ; challenges perdus qui auraient ete reussis sans la regle : 1%
+=== Topstep 50K, garder 4 000 $ | achats 2025 - mars 2026 (550 achats x tirages)
+challenge perdu : 54% avec la regle de regularite, 54% sans elle ; challenges perdus qui auraient ete reussis sans la regle : 0%
+mois ou le challenge est perdu : 2025-03 9, 2025-04 4, 2025-05 7, 2025-06 23, 2025-07 89, 2025-08 35, 2025-09 1, 2025-10 9, 2026-01 113, 2026-02 5
+mois ou le compte finance est perdu : 2025-04 3, 2025-06 4, 2026-01 2
+=== FundedNext Legacy 50K, garder 4 000 $ | achats 2012-2021 (4450 achats x tirages)
+challenge perdu : 20% avec la regle de regularite, 20% sans elle ; challenges perdus qui auraient ete reussis sans la regle : 1%
+=== FundedNext Legacy 50K, garder 4 000 $ | achats 2025 - mars 2026 (550 achats x tirages)
+challenge perdu : 45% avec la regle de regularite, 45% sans elle ; challenges perdus qui auraient ete reussis sans la regle : 0%
+mois ou le challenge est perdu : 2025-03 9, 2025-04 19, 2025-06 2, 2025-07 53, 2025-08 32, 2025-09 1, 2025-10 9, 2026-01 117, 2026-02 7
+mois ou le compte finance est perdu : 2025-04 2

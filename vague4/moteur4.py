@@ -165,14 +165,16 @@ def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me
               NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn, reb,
               e_obj, e_perte, e_mode, e_bloc, e_dll, e_regul, e_jmin, f_perte, f_bloc, f_dll, f_jours, f_seuil, f_regul,
               f_min, plafonds, f_part, f_reserve, f_max, horizon=UN_AN, q_ch=1, q_f=1, seuil_f=1e18, reserve=0.0,
-               part_cycle=0, c_mnq=0.0):
+               part_cycle=0, c_mnq=0.0, c_pause=0.0, n_pause=0):
     """Challenge puis compte finance, sur horizon seances apres l'achat (UN_AN : comme financee.parcours). Leviers de la
     vague 5 (par defaut : aucun) : q_ch fois la taille de chaque nouvelle entree (zone et RSI(2)) pendant le challenge ;
     sur le compte finance, q_f fois les jours ou le coussin (solde de la veille - plancher) est d'au moins seuil_f, 1 fois
     sinon ; reserve : chaque retrait est de reserve $ de moins que le plus grand retrait permis ; part_cycle=1 : la part
     f_part s'applique au gain du cycle (depuis le dernier retrait) et non au gain total (vague 6, LucidFlex). Vague 8 : la
     zone est executee sur MES les jours ou le coussin (solde de la veille - plancher) est sous c_mnq, sur MNQ sinon (0 :
-    toujours MNQ, comme avant). Renvoie
+    toujours MNQ, comme avant). Vague 10 : frein par pause, le bot entier (zone et RSI(2)) s'arrete n_pause seances quand
+    le coussin de la veille passe sous c_pause ; le frein se rearme quand le coussin repasse au-dessus de c_pause (0 :
+    jamais, comme avant). Renvoie
     (issue du challenge, seances du challenge, compte finance perdu, nombre de retraits, recu brut, seance du 1er retrait,
     seances jouees depuis l'achat a la fin du suivi ou a la perte du compte finance)."""
     nj = O.shape[0]
@@ -182,12 +184,21 @@ def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me
     meilleur, jours = -1e18, 0
     issue, n_ch = 0, 0
     d = debut
+    arme, reste_p = True, 0
     while d < fin:
         zi = 1 if c_mnq > 0.0 and cash - plancher < c_mnq else 0
+        if n_pause > 0:
+            if cash - plancher >= c_pause:
+                arme = True
+            elif arme:
+                arme, reste_p = False, n_pause
+        qc = q_ch
+        if reste_p > 0:
+            qc, reste_p = 0, reste_p - 1
         perdu, cash, veut, pic_rt, plancher, tr = seance4(d, rsi, veut, cash, pic_rt, plancher, e_mode, e_perte, e_bloc,
                                                           e_dll, O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens,
                                                           z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH,
-                                                          ENL, enn, reb, kN[d], kE[d], q_ch, zi)
+                                                          ENL, enn, reb, kN[d], kE[d], qc, zi)
         if perdu:
             return -1, d - debut + 1, False, 0, 0.0, -1, d - debut + 1
         g = cash - veille
@@ -206,11 +217,19 @@ def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me
     if issue != 1:
         return 0, fin - debut, False, 0, 0.0, -1, fin - debut
     cash, pic_eod, veille, base = 0.0, 0.0, 0.0, 0.0
+    arme, reste_p = True, 0                                    # vague 10 : frein remis a zero au compte finance
     plancher = -f_perte
     meilleur, qual, n, recu, premier = -1e18, 0, 0, 0.0, -1
     while d < fin:
         qz = q_f if cash - plancher >= seuil_f else 1
         zi = 1 if c_mnq > 0.0 and cash - plancher < c_mnq else 0
+        if n_pause > 0:
+            if cash - plancher >= c_pause:
+                arme = True
+            elif arme:
+                arme, reste_p = False, n_pause
+        if reste_p > 0:
+            qz, reste_p = 0, reste_p - 1
         perdu, cash, veut, pic_rt, plancher, tr = seance4(d, rsi, veut, cash, 0.0, plancher, 0, f_perte, f_bloc, f_dll,
                                                           O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde,
                                                           dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn,
