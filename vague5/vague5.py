@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Vague 5, etape 2 (README.md) : 40 candidates (Topstep, DayTraders Static, DayTraders S2F) x leviers (taille du compte
 finance, reserve, taille du challenge, bot). Mesure : gain net par mois d'un seul compte a la fois, filtre delta simule
-aussi bon qu'en 2026. Choix 2012-2022, verification 2023 - sept. 2026. Ecrit vague5.txt et vague5.json."""
+aussi bon qu'en 2026. Choix 2012-2022, verification 2023 - sept. 2026. Ecrit vague5.txt et vague5.json.
+`python3 vague5.py jour` : methode corrigee (README.md) - chaque trade au niveau d'aujourd'hui de son jour d'entree, et
+pas de limite de 24 mois ; ecrit vague5_jour.txt et vague5_jour.json."""
 import itertools
 import json
 import multiprocessing as mp
@@ -30,6 +32,15 @@ PRIX = {"Static": (30.0, 30.0), "S2F": (570.0, 342.0)}
 ACTIVATION_PRO = 130.0
 FEN = {"choix 2012-2022": ("2012-01-01", "2023-01-01", 10), "verification 2023 - sept. 2026": ("2023-01-01", None, 20)}
 G = {}                                                           # donnees partagees avec les processus (fork)
+NIVEAU, SUFFIXE = "achat", ""
+
+
+def regler(niveau):
+    """ "achat" : facteur de prix fixe a l'achat, compte rachete apres 24 mois ; "jour" : facteur du jour d'entree de
+    chaque trade, compte garde tant qu'il vit."""
+    global NIVEAU, SUFFIXE, H2
+    assert niveau in ("achat", "jour")
+    NIVEAU, SUFFIXE, H2 = niveau, ("_jour" if niveau == "jour" else ""), (10 ** 9 if niveau == "jour" else 504)
 
 
 def candidates():
@@ -64,7 +75,7 @@ def lien(c, b, pessimiste=0):
         rsi = 4 if c["bot"] == "zone + A3" else 0
 
         def f(d, h, premier):
-            fn, fe = D4.facteurs(D, d)
+            fn, fe = D4.facteurs_jour(D) if NIVEAU == "jour" else D4.facteurs(D, d)
             ret = np.zeros(h)
             r = M4.parcours4(d, rsi, 2.0 * fn, 5.0 * fe, ret, *b, *e, *f_, h, c["ch"], c["fi"], SEUIL,
                              RESERVE * c["re"])
@@ -83,6 +94,7 @@ def lien(c, b, pessimiste=0):
     def f(d, h, premier):
         ret = np.zeros(h)
         r = U.achat(D, b, d, c["bot"], plafond=500.0, pessimiste=pessimiste, h1=h, h2=h, retraits=ret, s2f=s2f,
+                    niveau="jour" if NIVEAU == "jour" else True,
                     leviers=lev)
         fl = ret.copy()
         fl[0] -= prix[0] if premier else prix[1]
@@ -183,7 +195,9 @@ def main():
     assert len(CC) == 40 and all(r in CC for r in REFERENCES.values())
     entete = ("candidate | moyenne par mois | mois avec un retrait | achats par an | selon le depart (min - max) |"
               " pires 12 mois de suite (mediane / pire) | par annee : moyenne par mois")
-    L = [f"Vague 5 : un seul compte a la fois, gains nets par mois du calendrier, niveau d'aujourd'hui ; filtre simule"
+    mode = ("chaque trade au niveau d'aujourd'hui de son jour d'entree, compte garde tant qu'il vit" if NIVEAU == "jour"
+            else "niveau d'aujourd'hui fixe a l'achat, compte rachete apres 24 mois")
+    L = [f"Vague 5 : un seul compte a la fois, gains nets par mois du calendrier, {mode} ; filtre simule"
          f" rho {rho:.2f}, {TIRAGES} tirages ; coussin pour le 2x : {SEUIL:,.0f} $ ; reserve : chaque retrait"
          f" {RESERVE:,.0f} $ sous le plus grand permis."
          f" Donnees jusqu'au {j[-1].date()}.", ""]
@@ -238,12 +252,13 @@ def main():
         res[k] = x
         L.append(f"{k[0]} | {k[1]} | {fw} | " + texte(x))
     print(f"descriptif ({time.time() - t0:.0f} s)", flush=True)
-    (ICI / "vague5.txt").write_text("\n".join(L) + "\n")
-    (ICI / "vague5.json").write_text(json.dumps({" | ".join(k): v for k, v in res.items()} |
+    (ICI / f"vague5{SUFFIXE}.txt").write_text("\n".join(L) + "\n")
+    (ICI / f"vague5{SUFFIXE}.json").write_text(json.dumps({" | ".join(k): v for k, v in res.items()} |
                                                 {"retenue": nom(retenue) if retenue else None}, indent=1,
                                                 ensure_ascii=False))
     print("\n".join(L))
 
 
 if __name__ == "__main__":
+    regler(sys.argv[1] if len(sys.argv) > 1 else "achat")
     main()

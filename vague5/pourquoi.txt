@@ -1,0 +1,34 @@
+Pourquoi 2025 et 2026 rapportent peu (descriptif). Niveau d'aujourd'hui ; filtre simule aussi bon qu'en 2026 (rho 0.24, 10 tirages) quand il est indique.
+
+=== 1. Le bot seul, sans compte : gain moyen sur 21 seances (un mois) selon l'annee de depart
+source | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026
+zone seule (1 MNQ) | +6 $ | +665 $ | +377 $ | +1,053 $ | +770 $ | +444 $ | +200 $ | +273 $
+zone seule (1 MNQ), filtre simule | +216 $ | +940 $ | +583 $ | +1,364 $ | +975 $ | +665 $ | +534 $ | +482 $
+RSI(2) seul (1 MES) | +236 $ | -2 $ | +460 $ | -43 $ | +32 $ | +289 $ | +165 $ | +123 $
+zone + RSI(2) (Static E4) | +242 $ | +662 $ | +837 $ | +1,010 $ | +802 $ | +732 $ | +365 $ | +396 $
+zone + RSI(2) (Static E4), filtre simule | +451 $ | +938 $ | +1,043 $ | +1,321 $ | +1,007 $ | +954 $ | +699 $ | +605 $
+
+=== 2. Agitation du NQ : ecart moyen entre le plus haut et le plus bas de la seance (9 h 30 - 16 h)
+annee | en % du prix | en $ par MNQ au prix d'aujourd'hui
+2019 | 1.11% | 683 $
+2020 | 2.08% | 1,286 $
+2021 | 1.35% | 832 $
+2022 | 2.39% | 1,474 $
+2023 | 1.41% | 871 $
+2024 | 1.27% | 786 $
+2025 | 1.46% | 905 $
+2026 | 1.42% | 876 $
+
+=== 3. Static E4, challenge 2x, finance 1x, R0 : comptes achetes par annee d'achat (un seul compte a la fois, 20 departs x 10 tirages)
+annee d'achat | achats | challenge reussi | seuil touche | seances avant le seuil (mediane) | finance perdu (parmi les reussis) | vie du finance (mediane, seances) | retraits recus par achat
+2023 | 308 | 66% | 34% | 5 | 2% | 478 | 13,031 $
+2024 | 31 | 13% | 87% | 3 | 75% | 77 | 210 $
+2025 | 1018 | 23% | 77% | 13 | 84% | 6 | 72 $
+2026 | 440 | 41% | 55% | 12 | 21% | 117 | 116 $
+
+=== 3. Topstep zone + A3, challenge 2x, finance 2x, R0 : comptes achetes par annee d'achat (un seul compte a la fois, 20 departs x 10 tirages)
+annee d'achat | achats | challenge reussi | seuil touche | seances avant le seuil (mediane) | finance perdu (parmi les reussis) | vie du finance (mediane, seances) | retraits recus par achat
+2023 | 333 | 80% | 20% | 20 | 91% | 190 | 7,044 $
+2024 | 249 | 90% | 10% | 14 | 91% | 148 | 4,654 $
+2025 | 839 | 23% | 77% | 29 | 48% | 100 | 705 $
+2026 | 111 | 82% | 0% | nan | 13% | 16 | 1,571 $

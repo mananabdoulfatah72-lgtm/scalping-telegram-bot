@@ -61,6 +61,14 @@ def base(D, garde=None):
             D["EO"], D["EH"], D["EL"], D["EC"], D["ENO"], D["ENH"], D["ENL"], D["enn"])
 
 
+def facteurs_jour(D):
+    """Vague 5 : facteur de chaque seance (derniere cloture / cloture de la seance d'avant), NQ et ES."""
+    if "facteurs_jour" not in D:
+        cn, ce = D["cl_nq"], D["cl_es"]
+        D["facteurs_jour"] = (cn[-1] / np.r_[cn[0], cn[:-1]], ce[-1] / np.r_[ce[0], ce[:-1]])
+    return D["facteurs_jour"]
+
+
 def facteurs(D, d):
     """Niveau d'aujourd'hui (comme static50k) : derniere cloture des donnees / cloture de la seance d'avant le depart."""
     return D["cl_nq"][-1] / D["cl_nq"][d - 1], D["cl_es"][-1] / D["cl_es"][d - 1]

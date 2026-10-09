@@ -145,3 +145,34 @@ Descriptif, Static E4 challenge 2× (choix / vérification) :
 
 Topstep dépend beaucoup plus du filtre : sa meilleure candidate fait +182 $ sans filtre en vérification, contre +393 $
 pour le Static.
+
+## Correction de méthode (9 octobre 2026, écrite avant le calcul corrigé)
+
+**Ce qui a été trouvé** (`pourquoi.py`, `deux_comptes.py`, descriptif) :
+- Le Static fait peu en 2025 (+191 $ par mois) et en 2026 (+47 $). Une grande partie vient de la limite de 24 mois.
+- Beaucoup de comptes Pro achetés en 2023 étaient encore en vie début 2025. Le calcul les « rachetait » de force, et
+  les nouvelles évaluations de 2025 échouaient (77 % au seuil).
+- Sans cette limite, le Static fait +530 $ par mois sur 2023 - sept. 2026 (2025 : +403 $). Mais ce chiffre est gonflé.
+  Le facteur de prix reste celui du jour de l'achat : un compte acheté en 2023 joue encore en 2026 avec des prix
+  multipliés par 2,3, soit un NQ deux fois plus cher qu'aujourd'hui.
+
+**La correction** (dans les deux moteurs, sans effet dans l'ancien mode : `vague5.txt` redonné à l'identique) :
+- **Chaque trade est joué au niveau d'aujourd'hui de son jour d'entrée.** Le facteur vaut dernière clôture des données
+  / clôture de la séance d'avant. La zone prend celui du jour, le RSI(2) garde celui de son entrée jusqu'à sa sortie.
+  Les seuils, les frais et les retraits restent en dollars.
+- **Plus de limite de 24 mois** : un compte est gardé tant qu'il vit.
+
+**Le calcul corrigé** (`python3 vague5.py jour` → `vague5_jour.txt`) reprend tout le reste à l'identique :
+- les mêmes 40 candidates, fenêtres, tirages et dates de départ ;
+- le même classement et la même décision.
+
+Il remplace le premier calcul comme résultat principal. Le premier calcul reste publié pour mémoire.
+
+Contrôles ajoutés (`test_vague5.py`) :
+
+6. Le premier jour d'un achat, le mode « jour » redonne exactement le mode « achat », car le facteur est le même ce
+   jour-là.
+7. Une position du RSI(2) garde le facteur de son entrée : changer le facteur des jours suivants ne change rien jusqu'à
+   sa sortie.
+8. Un trade de zone prend le facteur de son jour : changer le facteur d'un seul jour ne change que le gain de ce jour.
+9. Pas de regard vers le futur : changer les facteurs après la fin d'un compte ne change rien.

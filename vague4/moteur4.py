@@ -4,7 +4,9 @@ compte finance, avec la zone (1 MNQ) et le RSI(2) en quatre facons. Meme logique
 parcours), avec en plus :
 - rsi : 0 aucun ; 1 entre deux clotures sur MNQ (= financee.py) ; 2 de nuit seulement sur MNQ (vente a 9 h 30) ;
   3 entre deux clotures sur MES ; 4 de nuit seulement sur MES ;
-- les prix sont multiplies par un facteur par depart via ptN / ptE ($ par point x facteur), comme static50k ;
+- les prix sont multiplies par un facteur via ptN / ptE ($ par point x facteur), comme static50k : un nombre (le meme
+  pour tout le parcours) ou un tableau par seance (vague 5 : chaque seance a son facteur ; ici, rien ne reste ouvert
+  d'une seance a l'autre) ;
 - retraits[s] : retrait recu a la fin de la s-ieme seance apres l'achat (tableau vide : non enregistre)."""
 import numpy as np
 from numba import njit
@@ -114,8 +116,16 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
     return False, cash, veut, pic_rt, plancher, trade
 
 
+def parcours4(debut, rsi, ptN, ptE, retraits, *reste):
+    """Voir _parcours4. ptN, ptE : $ par point (nombre : le meme pour tout le parcours ; tableau : par seance)."""
+    nj = reste[0].shape[0]
+    kN = np.full(nj, float(ptN)) if np.ndim(ptN) == 0 else np.asarray(ptN, np.float64)
+    kE = np.full(nj, float(ptE)) if np.ndim(ptE) == 0 else np.asarray(ptE, np.float64)
+    return _parcours4(debut, rsi, kN, kE, retraits, *reste)
+
+
 @njit(cache=True)
-def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde, dec, voulu,
+def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde, dec, voulu,
               NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn,
               e_obj, e_perte, e_mode, e_bloc, e_dll, e_regul, e_jmin, f_perte, f_bloc, f_dll, f_jours, f_seuil, f_regul,
               f_min, plafonds, f_part, f_reserve, f_max, horizon=UN_AN, q_ch=1, q_f=1, seuil_f=1e18, reserve=0.0):
@@ -136,7 +146,7 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
         perdu, cash, veut, pic_rt, plancher, tr = seance4(d, rsi, veut, cash, pic_rt, plancher, e_mode, e_perte, e_bloc,
                                                           e_dll, O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens,
                                                           z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH,
-                                                          ENL, enn, ptN, ptE, q_ch)
+                                                          ENL, enn, kN[d], kE[d], q_ch)
         if perdu:
             return -1, d - debut + 1, False, 0, 0.0, -1, d - debut + 1
         g = cash - veille
@@ -162,7 +172,7 @@ def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_m
         perdu, cash, veut, pic_rt, plancher, tr = seance4(d, rsi, veut, cash, 0.0, plancher, 0, f_perte, f_bloc, f_dll,
                                                           O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde,
                                                           dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn,
-                                                          ptN, ptE, qz)
+                                                          kN[d], kE[d], qz)
         if perdu:
             return 1, n_ch, True, n, recu, premier, d - debut + 1
         g = cash - veille
