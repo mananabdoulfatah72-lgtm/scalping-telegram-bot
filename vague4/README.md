@@ -64,6 +64,11 @@ GOOGL, AVGO, TSLA, COST, NFLX), Alpaca (flux SIP, gratuit), 2016 - septembre 202
     sur 4.
 - Une survivante est ensuite ajoutée à la zone sur les deux comptes, avec la règle de la partie A.
 
+- **Précisions écrites avant les données** :
+  - pas de trade un jour de clôture anticipée : la sortie de 15 h 55 n'existe pas ;
+  - la largeur est comptée parmi les valeurs connues ce jour-là, à condition d'en avoir au moins 8 sur 10 ;
+  - les seuils (9 sur 10, 1 sur 10, 3 et 7) s'appliquent à la part, ramenée à 10.
+
 ## Le jugement (fixé maintenant)
 
 Pour chaque compte et chaque candidate :
