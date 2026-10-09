@@ -1,0 +1,32 @@
+LucidFlex 50K, zone + A3, challenge 3x (3 MNQ + 3 MES), compte finance 2x des 4 000 $ de coussin ; chaque trade au niveau d'aujourd'hui de son jour d'entree (descriptif)
+
+=== filtre aussi bon qu'en 2026 (simule) | achats 2012-2021 (445 achats)
+  challenge : reussi 42%, seuil de perte touche 58%, pas fini 0%
+  temps pour valider (reussis) : 1 sur 4 en 0.7 mois, la moitie en 1.1 mois, 3 sur 4 en 1.8 mois ; seuil touche au bout de 0.7 mois en mediane
+  compte finance : premier retrait 1.6 mois apres la reussite en mediane (1 sur 4 : 1.0 mois, 3 sur 4 : 2.3 mois) ; puis un retrait tous les 1.2 mois en mediane ; retrait moyen 971 $ (90 % compris)
+  compte finance perdu dans les 12 mois : 47% ; dans les 24 mois : 47% ; retraits par mois d'un compte finance en vie : 528 $
+=== filtre aussi bon qu'en 2026 (simule) | achats 2023 - sept. 2024 (suivis 24 mois) (78 achats)
+  challenge : reussi 55%, seuil de perte touche 45%, pas fini -0%
+  temps pour valider (reussis) : 1 sur 4 en 0.6 mois, la moitie en 1.0 mois, 3 sur 4 en 1.5 mois ; seuil touche au bout de 0.6 mois en mediane
+  compte finance : premier retrait 1.4 mois apres la reussite en mediane (1 sur 4 : 1.1 mois, 3 sur 4 : 1.7 mois) ; puis un retrait tous les 1.4 mois en mediane ; retrait moyen 821 $ (90 % compris)
+  compte finance perdu dans les 12 mois : 14% ; dans les 24 mois : 9% ; retraits par mois d'un compte finance en vie : 420 $
+=== filtre aussi bon qu'en 2026 (simule) | achats 2025 - mars 2026 (suivis jusqu'au 25 sept. 2026) (55 achats)
+  challenge : reussi 23%, seuil de perte touche 77%, pas fini 0%
+  temps pour valider (reussis) : 1 sur 4 en 0.6 mois, la moitie en 1.0 mois, 3 sur 4 en 1.6 mois ; seuil touche au bout de 0.5 mois en mediane
+  compte finance : premier retrait 1.4 mois apres la reussite en mediane (1 sur 4 : 1.1 mois, 3 sur 4 : 2.3 mois) ; puis un retrait tous les 1.2 mois en mediane ; retrait moyen 699 $ (90 % compris)
+  compte finance perdu dans les 12 mois : 79% ; dans les 24 mois : nan% ; retraits par mois d'un compte finance en vie : 351 $
+=== sans filtre | achats 2012-2021 (445 achats)
+  challenge : reussi 27%, seuil de perte touche 73%, pas fini 0%
+  temps pour valider (reussis) : 1 sur 4 en 0.6 mois, la moitie en 0.9 mois, 3 sur 4 en 1.3 mois ; seuil touche au bout de 0.5 mois en mediane
+  compte finance : premier retrait 1.3 mois apres la reussite en mediane (1 sur 4 : 1.0 mois, 3 sur 4 : 2.1 mois) ; puis un retrait tous les 1.3 mois en mediane ; retrait moyen 931 $ (90 % compris)
+  compte finance perdu dans les 12 mois : 74% ; dans les 24 mois : 77% ; retraits par mois d'un compte finance en vie : 392 $
+=== sans filtre | achats 2023 - sept. 2024 (suivis 24 mois) (78 achats)
+  challenge : reussi 37%, seuil de perte touche 63%, pas fini 0%
+  temps pour valider (reussis) : 1 sur 4 en 0.5 mois, la moitie en 0.9 mois, 3 sur 4 en 1.2 mois ; seuil touche au bout de 0.5 mois en mediane
+  compte finance : premier retrait 1.4 mois apres la reussite en mediane (1 sur 4 : 1.2 mois, 3 sur 4 : 2.5 mois) ; puis un retrait tous les 2.0 mois en mediane ; retrait moyen 675 $ (90 % compris)
+  compte finance perdu dans les 12 mois : 24% ; dans les 24 mois : 35% ; retraits par mois d'un compte finance en vie : 247 $
+=== sans filtre | achats 2025 - mars 2026 (suivis jusqu'au 25 sept. 2026) (55 achats)
+  challenge : reussi 15%, seuil de perte touche 85%, pas fini 0%
+  temps pour valider (reussis) : 1 sur 4 en 0.6 mois, la moitie en 0.8 mois, 3 sur 4 en 1.1 mois ; seuil touche au bout de 0.4 mois en mediane
+  compte finance : premier retrait 1.2 mois apres la reussite en mediane (1 sur 4 : 0.8 mois, 3 sur 4 : 2.1 mois) ; puis un retrait tous les 1.8 mois en mediane ; retrait moyen 551 $ (90 % compris)
+  compte finance perdu dans les 12 mois : 100% ; dans les 24 mois : nan% ; retraits par mois d'un compte finance en vie : 306 $
