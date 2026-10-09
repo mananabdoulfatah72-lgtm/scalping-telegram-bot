@@ -205,3 +205,36 @@ Contrôles ajoutés :
 - **7 bis** : le RSI(2) garde son facteur sur MNQ (E0) et sur MES (E4), avec un plancher bas souvent touché, la nuit
   comprise. Les contrôles 6 à 9 ne le vérifiaient que sur MES sans plancher.
 - **10** : avec la règle d'activité, le compte est coupé exactement à la 21e séance sans un jour à +200 $.
+
+## Résultat final (9 octobre 2026) : `vague5_regles.txt`, `deux_comptes_regles.txt`
+
+Le calcul est fidèle aux règles connues :
+- chaque trade est au niveau d'aujourd'hui de son jour d'entrée ;
+- un compte est gardé tant qu'il vit ;
+- la règle d'activité de DayTraders est appliquée.
+
+Contrôles : `test_vague5.py` 8 sur 8, `test_static.py` 10 sur 10, `test_vague4.py` 5 sur 5.
+
+**Retenue et validée : Topstep, zone + A3, challenge 2×, financé 2× dès 4 000 $ de coussin.**
+- Elle fait +557 $ par mois sur le choix 2012-2022 et **+388 $ en vérification** (2023 +370, 2024 +600, 2025 +170,
+  2026 +419). **L'objectif de 500 $ n'est pas atteint avec un seul compte.**
+- Le système actuel de Topstep fait +329 $.
+- Meilleur Static (E4, challenge 2×, Pro 2×) : +407 / +392 $ (2025 +290, 2026 +7). Meilleur S2F : +309 / +214 $.
+
+**Deux comptes en même temps** (ce Static + ce Topstep, même filtre simulé, mêmes dates de départ) :
+
+| | 2023 | 2024 | 2025 | 2026 (9 mois) | Moyenne |
+|---|---|---|---|---|---|
+| filtre aussi bon qu'en 2026 | +634 $ | +1 510 $ | +460 $ | +426 $ | **+779 $** |
+| sans filtre | +517 $ | +1 050 $ | +222 $ | +23 $ | +482 $ |
+
+- Avec le filtre, 42 % des mois atteignent 500 $ ou plus.
+- Un mois sur deux, aucun des deux comptes ne verse rien : les retraits sont de 500 à 2 000 $ à la fois.
+
+**Pourquoi 2025 et 2026 sont faibles** (`pourquoi.txt`) :
+- **Le bot gagne moins.** Seul, sans compte, avec le filtre simulé, il fait +1 007 $ par mois en 2023, +699 $ en 2025
+  et +605 $ en 2026. La zone sans filtre passe de +770 $ (2023) à +200 $ (2025).
+- **Ce n'est pas un marché plus agité** : l'écart entre le plus haut et le plus bas d'une séance est de 1,41 % du prix
+  en 2023 et 1,46 % en 2025.
+- **Les seuils de perte des comptes amplifient la baisse** : chez Topstep, 80 % des challenges achetés en 2025 ont
+  touché le seuil.
