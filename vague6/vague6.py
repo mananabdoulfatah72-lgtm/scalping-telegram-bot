@@ -40,6 +40,12 @@ INTRADAY = {
 PRIX_STATIC, ACTIVATION_PRO, PRIX_S2L, PART_S2L = 30.0, 130.0, 229.0, 0.8
 
 
+def candidates_suite():
+    """Suite (README.md) : S2L avec des reserves plus grandes."""
+    return [dict(compte="S2L", ch=ch, fi=fi, re=re) for ch, fi, re in itertools.product((1, 2), (1, 2),
+                                                                                       (3000, 4000, 6000))]
+
+
 def candidates():
     out = []
     for compte in ("Topstep", "LucidFlex", "FundedNext Legacy", "Static"):
@@ -141,7 +147,7 @@ def lancer(taches):
         return p.map(mesurer, taches, chunksize=1)
 
 
-def main():
+def main(suite=False):
     t0 = time.time()
     W.regler("regles")
     W.G["D4"] = D4.charger()
@@ -151,8 +157,8 @@ def main():
     rho = S.rho_2026()
     W.G["gardes"] = {BON: S.gardes_simules(W.G["D4"], rho)[:TIRAGES], "sans filtre": [None],
                      "filtre inutile (simule)": S.gardes_simules(W.G["D4"], 0.0)[:TIRAGES]}
-    CC = candidates()
-    assert len(CC) == 42
+    CC = candidates_suite() if suite else candidates()
+    assert len(CC) == (12 if suite else 42)
     entete = ("candidate | moyenne par mois | mois avec un retrait | achats par an | selon le depart (min - max) |"
               " pires 12 mois de suite (mediane / pire) | par annee : moyenne par mois")
     L = [f"Vague 6 : un seul compte a la fois, gains nets par mois du calendrier (retraits x part du trader - prix),"
@@ -189,7 +195,7 @@ def main():
         v = res[(nom(retenue), BON, fv)]["moy"]
         L.append(f"=> retenue : {nom(retenue)} ; verification {v:+,.0f} $ par mois -> objectif de 500 $"
                  f" {'ATTEINT' if v >= 500 else 'PAS ATTEINT'}")
-    comptes = ("Topstep", "LucidFlex", "FundedNext Legacy", "Static", "S2L")
+    comptes = ("S2L",) if suite else ("Topstep", "LucidFlex", "FundedNext Legacy", "Static", "S2L")
     meilleures = {k: next(c for c in classe if c["compte"] == k) for k in comptes}
     L.append("Meilleure de chaque compte (choix) : " + " ; ".join(nom(c) for c in meilleures.values()))
     # descriptif : sans filtre, filtre inutile, pour la retenue et la meilleure de chaque compte
@@ -204,12 +210,13 @@ def main():
         res[(nom(c), sc2, fw)] = x
         L.append(f"{nom(c)} | {sc2} | {fw} | " + W.texte(x))
     print(f"descriptif ({time.time() - t0:.0f} s)", flush=True)
-    (ICI / "vague6.txt").write_text("\n".join(L) + "\n")
-    (ICI / "vague6.json").write_text(json.dumps({" | ".join(k): v for k, v in res.items()} |
+    nom_f = "vague6_suite" if suite else "vague6"
+    (ICI / f"{nom_f}.txt").write_text("\n".join(L) + "\n")
+    (ICI / f"{nom_f}.json").write_text(json.dumps({" | ".join(k): v for k, v in res.items()} |
                                                 {"retenue": nom(retenue) if retenue else None,
                                                  "meilleures": meilleures}, indent=1, ensure_ascii=False))
     print("\n".join(L))
 
 
 if __name__ == "__main__":
-    main()
+    main(suite=len(sys.argv) > 1 and sys.argv[1] == "suite")

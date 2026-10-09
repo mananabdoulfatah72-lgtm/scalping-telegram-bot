@@ -116,3 +116,18 @@ Topstep et le Static gardent leurs règles de la vague 5 : règle d'activité ap
 3. FundedNext et LucidFlex : les paramètres passés au moteur sont ceux écrits ici ; un retrait de FundedNext peut
    dépasser 2 000 $.
 4. La taille 3× donne trois fois le gain d'un jour sans limite.
+
+## Suite fixée après le premier calcul, avant de la calculer (9 octobre 2026) : réserves plus grandes sur le S2L
+
+Sur le S2L, le gain monte avec la réserve sur les deux fenêtres (choix : +69, +177, +277 $ ; vérification : +57, +262,
++303 $ pour 0, 1 000 et 2 000 $). C'est le seul compte où les retraits n'ont pas de plafond, donc la seule piste qui
+reste ouverte. On essaie :
+- réserves de **3 000, 4 000 et 6 000 $** ;
+- challenge 1× et 2× ;
+- compte live 1× et 2×.
+
+Cela fait 12 candidates (`python3 vague6.py suite` → `vague6_suite.txt`).
+
+Même jugement : la meilleure sur 2012-2022 est validée si elle fait au moins +388 $ en vérification et si chaque année
+est positive. Cette suite a été décidée en voyant le premier calcul, sur une vérification déjà beaucoup utilisée : un
+résultat positif serait à confirmer en démo.
