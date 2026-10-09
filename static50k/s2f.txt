@@ -1,0 +1,40 @@
+S2F 50K et bot seul, au niveau d'aujourd'hui (descriptif)
+
+=== 1. Le bot seul (zone + RSI(2), 1 MNQ chacun), sans compte : gain sur un mois (21 seances)
+periode | zone | moyenne | mediane | mois perdants | 1 mois sur 10 sous | 1 mois sur 10 au-dessus
+2012-2021 | sans filtre | +546 $ | +463 $ | 38% | -1,018 $ | +2,525 $
+2023-2026 | sans filtre | +883 $ | +754 $ | 28% | -665 $ | +2,545 $
+2025-2026 | sans filtre | +659 $ | +251 $ | 39% | -848 $ | +2,436 $
+2012-2021 | filtre aussi bon qu'en 2026 (simule) | +773 $ | +665 $ | 30% | -710 $ | +2,733 $
+2023-2026 | filtre aussi bon qu'en 2026 (simule) | +1,130 $ | +944 $ | 24% | -567 $ | +2,862 $
+2025-2026 | filtre aussi bon qu'en 2026 (simule) | +945 $ | +502 $ | 34% | -770 $ | +3,079 $
+2012-2021 | filtre inutile (simule) | +496 $ | +451 $ | 37% | -971 $ | +2,232 $
+2023-2026 | filtre inutile (simule) | +823 $ | +627 $ | 31% | -735 $ | +2,462 $
+2025-2026 | filtre inutile (simule) | +642 $ | +272 $ | 40% | -855 $ | +2,462 $
+
+=== 2. Un seul S2F 50K, 12 mois (prix 570 $ catalogue / 342 $ avec 40 % de reduction)
+variante | achats | au moins un retrait | retraits moyens en 12 mois | retraits par mois : mois 1-3 / 4-6 / 7-12 | retraits par mois d'un compte en vie | compte perdu | 1er retrait (mediane) | net moyen (570 $ / 342 $) | rembourse au moins 570 $
+--- achats 2012-2021
+E0 P0 sans filtre | 445 | 30% | 593 $ (mediane 0) | 12 / 57 / 64 $ | 91 $ | 63% | 7.7 mois | +23 $ / +251 $ | 30%
+E0 P500 sans filtre | 445 | 52% | 2,004 $ (mediane 2,000) | 108 / 190 / 185 $ | 284 $ | 60% | 4.3 mois | +1,434 $ / +1,662 $ | 52%
+E1 P500 sans filtre | 445 | 58% | 2,000 $ (mediane 2,000) | 66 / 190 / 205 $ | 229 $ | 53% | 5.5 mois | +1,430 $ / +1,658 $ | 58%
+E2 P500 sans filtre | 445 | 53% | 1,942 $ (mediane 2,000) | 102 / 187 / 179 $ | 250 $ | 56% | 4.5 mois | +1,372 $ / +1,600 $ | 53%
+E4 P500 sans filtre | 445 | 65% | 2,391 $ (mediane 2,000) | 81 / 255 / 231 $ | 285 $ | 47% | 4.8 mois | +1,821 $ / +2,049 $ | 65%
+E0 P500 filtre aussi bon qu'en 2026 (simule) | 445 | 61% | 2,778 $ (mediane 2,000) | 137 / 277 / 256 $ | 349 $ | 49% | 3.9 mois | +2,208 $ / +2,436 $ | 61%
+E0 P500 filtre inutile (simule) | 445 | 50% | 1,753 $ (mediane 2,000) | 98 / 187 / 150 $ | 250 $ | 63% | 4.4 mois | +1,183 $ / +1,411 $ | 50%
+--- achats 2023 - sept. 2025
+E0 P0 sans filtre | 124 | 19% | 371 $ (mediane 0) | 5 / 70 / 24 $ | 56 $ | 65% | 4.6 mois | -199 $ / +29 $ | 19%
+E0 P500 sans filtre | 124 | 45% | 1,419 $ (mediane 0) | 108 / 220 / 73 $ | 217 $ | 75% | 3.9 mois | +849 $ / +1,077 $ | 45%
+E1 P500 sans filtre | 124 | 52% | 1,774 $ (mediane 2,000) | 86 / 194 / 156 $ | 208 $ | 58% | 4.6 mois | +1,204 $ / +1,432 $ | 52%
+E2 P500 sans filtre | 124 | 50% | 1,694 $ (mediane 1,000) | 75 / 167 / 161 $ | 202 $ | 57% | 5.0 mois | +1,124 $ / +1,352 $ | 50%
+E4 P500 sans filtre | 124 | 60% | 2,581 $ (mediane 2,000) | 65 / 355 / 220 $ | 297 $ | 50% | 4.0 mois | +2,011 $ / +2,239 $ | 60%
+E0 P500 filtre aussi bon qu'en 2026 (simule) | 124 | 62% | 2,497 $ (mediane 2,000) | 138 / 305 / 195 $ | 316 $ | 57% | 3.9 mois | +1,927 $ / +2,155 $ | 62%
+E0 P500 filtre inutile (simule) | 124 | 44% | 1,366 $ (mediane 0) | 92 / 186 / 89 $ | 202 $ | 72% | 4.0 mois | +796 $ / +1,024 $ | 44%
+--- achats 2025
+E0 P0 sans filtre | 35 | 0% | 0 $ (mediane 0) | 0 / 0 / 0 $ | 0 $ | 77% | - | -570 $ / -342 $ | 0%
+E0 P500 sans filtre | 35 | 3% | 114 $ (mediane 0) | 0 / 19 / 10 $ | 21 $ | 71% | 5.9 mois | -456 $ / -228 $ | 3%
+E1 P500 sans filtre | 35 | 0% | 0 $ (mediane 0) | 0 / 0 / 0 $ | 0 $ | 100% | - | -570 $ / -342 $ | 0%
+E2 P500 sans filtre | 35 | 0% | 0 $ (mediane 0) | 0 / 0 / 0 $ | 0 $ | 100% | - | -570 $ / -342 $ | 0%
+E4 P500 sans filtre | 35 | 0% | 0 $ (mediane 0) | 0 / 0 / 0 $ | 0 $ | 97% | - | -570 $ / -342 $ | 0%
+E0 P500 filtre aussi bon qu'en 2026 (simule) | 35 | 32% | 1,046 $ (mediane 0) | 36 / 44 / 134 $ | 171 $ | 69% | 6.7 mois | +476 $ / +704 $ | 32%
+E0 P500 filtre inutile (simule) | 35 | 20% | 474 $ (mediane 0) | 27 / 15 / 58 $ | 80 $ | 69% | 7.7 mois | -96 $ / +132 $ | 20%

@@ -338,3 +338,42 @@ d'aujourd'hui, activation ignorée. Contrôle : un seul Static acheté en 2012-2
   |---|---|---|---|
   | 5 Static, un mois d'écart | 26 % | 3 000 $ | 4 719 $ |
   | 10 Static, un mois d'écart | 14 % | 7 000 $ | 6 983 $ |
+
+## Le S2F 50K, et ce que le bot peut verser au plus (demande du 9 octobre 2026 ; descriptif)
+
+`s2f.py` → `s2f.txt`. Le moteur sait maintenant jouer le S2F 50K (`regle = 2`, règles relevées le 7 octobre 2026,
+`research_notes/.../daytraders.md`, à confirmer) :
+- financé tout de suite, sans activation ;
+- plancher = plus haut solde de fin de journée − 2 500 $, bloqué à 50 000 $, surveillé en direct ;
+- limite du jour douce de 1 250 $ : tout est fermé jusqu'à 18 h, le compte continue ;
+- retrait après 10 jours à +200 $, avec :
+  - un gain du cycle d'au moins 3 500 $, puis 3 000 $, puis 2 500 $ ;
+  - un meilleur jour ≤ 20 % du gain du cycle ;
+  - au plus 2 000 $, en gardant 51 000 $.
+
+**Ordre limite du jour / plancher.** Les deux sont du même côté. En descendant, le prix touche d'abord le plus haut
+des deux : le compte n'est perdu que si le prix saute directement sous le plancher. Contrôle à la main ajouté dans
+`test_static.py` (10 contrôles sur 10). `static.txt` est inchangé.
+
+**Le bot seul**, sans compte, gain sur un mois au niveau d'aujourd'hui :
+
+| Période | Moyenne | Médiane | Mois perdants |
+|---|---|---|---|
+| 2023-2026 | +883 $ | +754 $ | 28 % |
+| 2025-2026 | +659 $ | +251 $ | 39 % |
+| 2023-2026, filtre simulé aussi bon qu'en 2026 | +1 130 $ | | |
+
+**C'est le maximum qu'un compte peut verser**, avant les règles des firmes.
+
+**Un S2F 50K** (bot + plafond de 500 $, achats 2023 - sept. 2025, 12 mois) :
+- 45 % des comptes font au moins un retrait ;
+- 1 419 $ reçus en moyenne, médiane 0 $ ;
+- 75 % des comptes perdus dans l'année ;
+- argent net moyen +849 $ au prix catalogue de 570 $, +1 077 $ à 342 $.
+
+Ailleurs :
+- filtre simulé aussi bon qu'en 2026 : 2 497 $ reçus, net +1 927 $ ;
+- achats de 2025 : 114 $ reçus, net −456 $.
+
+Les autres variantes (zone seule, RSI(2) sur MES…) sont dans `s2f.txt`, à titre descriptif. Une variante qui
+ferait mieux devrait être testée avec des règles fixées d'avance avant d'être adoptée.

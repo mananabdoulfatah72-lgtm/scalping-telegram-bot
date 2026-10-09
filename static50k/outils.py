@@ -48,11 +48,12 @@ def facteurs(D, d, niveau):
 
 
 def achat(D, b, d, variante, plafond=0.0, pessimiste=0, nuit=1, niveau=True, h1=252, h2=504, perte=M.PERTE,
-          objectif=M.OBJECTIF, trace=None, retraits=None):
+          objectif=M.OBJECTIF, trace=None, retraits=None, s2f=False):
+    """Un achat : Static puis Pro Static (pessimiste=1 : Pro pessimiste), ou S2F 50K (s2f=True)."""
     fn, fe = facteurs(D, d, niveau)
     if trace is None:
         trace = np.zeros(0)
     if retraits is None:
         retraits = np.zeros(0)
     return M.parcours(int(d), h1, h2, M.VARIANTES[variante] if isinstance(variante, str) else variante, plafond,
-                      pessimiste, nuit, 2.0 * fn, 5.0 * fe, perte, objectif, trace, retraits, *b)
+                      2 if s2f else pessimiste, nuit, 2.0 * fn, 5.0 * fe, perte, objectif, trace, retraits, *b)

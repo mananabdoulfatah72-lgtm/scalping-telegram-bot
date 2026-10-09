@@ -228,6 +228,37 @@ def test_plafond_deux_contrats():
     print(f"ok : plafond pas pris sur la somme de deux meilleurs points (fin de journee {tr[2]:+.2f} $)")
 
 
+def test_s2f():
+    """S2F (regle 2), marche synthetique a +300 $ par seance : pas d'evaluation ; retraits de 2 000 $ aux seances 12
+    (gain 3 600 >= 3 500, 12 jours a +200 $), 22 (gain du cycle 3 000) et 32 (seuil 2 500 atteint a la seance 31, mais
+    10 jours qualifiants seulement a la 32e). Limite du jour : un creux de -1 300 $ ferme tout a -1 250 $ (compte
+    continue). Plancher qui suit (plus haut de fin de journee +900 $ -> plancher -1 600 $) : une baisse continue jusqu'a
+    -1 600 $ touche d'abord la limite du jour (-350 $) et le compte continue ; une minute qui ouvre deja a -1 600 $ (trou)
+    fait perdre le compte."""
+    b = marche_synthetique(40, 151.5)
+    ret = np.zeros(40)
+    r = M.parcours(0, 40, 40, 1, 0.0, 2, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(40), ret, *b)
+    assert r[M.ISSUE] == 1 and r[M.FIN_EVAL] == 0 and r[M.PRO_PERDU] == 0, r
+    assert {int(k) + 1: v for k, v in zip(np.flatnonzero(ret), ret[ret > 0])} == {12: 2000, 22: 2000, 32: 2000}, ret
+    # limite du jour douce : seance 3 (veille +600), creux de 650 points pendant le trade
+    O, H, L, C = (x.copy() for x in b[:4])
+    L[2, 15] = 1000.0 - 650.0
+    tr = np.zeros(40)
+    r = M.parcours(0, 40, 40, 1, 0.0, 2, 1, 2.0, 5.0, 1000.0, 300.0, tr, np.zeros(40), O, H, L, C, *b[4:])
+    assert r[M.PRO_PERDU] == 0 and abs(tr[2] - (600.0 - 1250.0 - M.FRAIS_ZONE - M.TICK_NQ)) < 1e-9, (r, tr[:4])
+    # plancher qui suit : seance 4 apres trois jours a +300 (plus haut +900 -> plancher -1 600, limite du jour -350)
+    O, H, L, C = (x.copy() for x in b[:4])
+    L[3, 15] = 1000.0 - 1250.0                          # baisse continue depuis l'ouverture de la minute (1 000)
+    tr = np.zeros(40)
+    r = M.parcours(0, 40, 40, 1, 0.0, 2, 1, 2.0, 5.0, 1000.0, 300.0, tr, np.zeros(40), O, H, L, C, *b[4:])
+    assert r[M.PRO_PERDU] == 0 and abs(tr[3] - (900.0 - 1250.0 - M.FRAIS_ZONE - M.TICK_NQ)) < 1e-9, (r, tr[:5])
+    O[3, 15] = 1000.0 - 1250.0                          # trou : la minute ouvre deja au plancher
+    r = M.parcours(0, 40, 40, 1, 0.0, 2, 1, 2.0, 5.0, 1000.0, 300.0, np.zeros(40), np.zeros(40), O, H, L, C, *b[4:])
+    assert r[M.PRO_PERDU] == 1 and r[M.FIN_PRO] == 4, r
+    print("ok : S2F a la main (retraits aux seances 12, 22, 32 ; limite du jour a -1 250 $ ; plancher qui suit, sauve par"
+          " la limite du jour sauf trou)")
+
+
 def test_futur(D, b):
     """4. Changer les prix apres une date ne change aucune valeur de fin de journee avant cette date."""
     j = D["jours"]
@@ -277,6 +308,7 @@ if __name__ == "__main__":
     test_pessimiste()
     test_plancher_avant_plafond()
     test_plafond_deux_contrats()
+    test_s2f()
     test_gains(D, b)
     test_budget30(D, b)
     test_mes(D, b)
