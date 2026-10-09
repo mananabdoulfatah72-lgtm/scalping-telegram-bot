@@ -4,3 +4,4 @@ evolution3/cache/
 orderflow/atelier/seances/
 orderflow/atelier/index.json
 vague5/*.log
+vague5/*.err
