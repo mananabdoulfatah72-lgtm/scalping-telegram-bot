@@ -15,14 +15,16 @@ UN_AN = 252
 FRAIS_ZONE = 3.0
 ORDRE_NQ, ORDRE_ES = 1.0 + 0.25 * 2.0, 1.0 + 0.25 * 5.0
 TICK_NQ, TICK_ES = 0.25 * 2.0, 0.25 * 5.0
+FRAIS_ZONE_ES = 2.0 * ORDRE_ES                         # vague 8 : zone sur MES, aller-retour
 
 
 @njit(cache=True)
 def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, H, L, C, der, z_deb, z_fin, z_me, z_ms,
-            z_sens, z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn, reb, ptN, ptE, qz=1):
+            z_sens, z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn, reb, ptN, ptE, qz=1, zi=0):
     """Une seance (nuit + journee), qz contrats par nouvelle entree (zone, RSI(2) et rebond). reb[d] = 1 : rebond (vague 7),
     achat de qz MNQ a l'ouverture de 9 h 30, vente a la derniere minute. Renvoie (perdu, cash fin de seance, veut, pic_rt,
-    plancher, au moins un trade)."""
+    plancher, au moins un trade). zi = 1 (vague 8) : la zone est executee sur MES aux prix de l'ES (memes minutes, $ par
+    point ptE, 4,50 $ par aller-retour) ; zi = 0 : sur MNQ, comme avant."""
     es = rsi == 3 or rsi == 4
     nuit_seule = rsi == 2 or rsi == 4
     pr = ptE if es else ptN
@@ -81,23 +83,42 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
                 cash += (((EO[d, t] if es else O[d, t]) - re) * pr - ordre) * rp
                 rp = 0
             veut = voulu[d]
-        nq = zp + bp + (rp if not es else 0)
-        ne = rp if es else 0
-        a = cash - ptN * (zp * ze + bp * be + (rp * re if not es else 0.0)) - (pr * ne * re if es else 0.0)
-        ouv = a + ptN * nq * O[d, t] + (ptE * ne * EO[d, t] if es else 0.0)
-        if nq > 0:
-            hn, bn = H[d, t], L[d, t]
-        else:
-            hn, bn = L[d, t], H[d, t]
-        hautv = a + ptN * nq * hn + (ptE * ne * EH[d, t] if es else 0.0)
-        basv = a + ptN * nq * bn + (ptE * ne * EL[d, t] if es else 0.0)     # deux contrats : pires points additionnes
+        if zi == 0:
+            nq = zp + bp + (rp if not es else 0)
+            ne = rp if es else 0
+            a = cash - ptN * (zp * ze + bp * be + (rp * re if not es else 0.0)) - (pr * ne * re if es else 0.0)
+            ouv = a + ptN * nq * O[d, t] + (ptE * ne * EO[d, t] if es else 0.0)
+            if nq > 0:
+                hn, bn = H[d, t], L[d, t]
+            else:
+                hn, bn = L[d, t], H[d, t]
+            hautv = a + ptN * nq * hn + (ptE * ne * EH[d, t] if es else 0.0)
+            basv = a + ptN * nq * bn + (ptE * ne * EL[d, t] if es else 0.0)     # deux contrats : pires points additionnes
+        else:                                                 # zone sur MES : position nette de l'ES, dans son sens
+            nq = bp + (rp if not es else 0)
+            ne = zp + (rp if es else 0)
+            a = cash - ptN * (bp * be + (rp * re if not es else 0.0)) - ptE * (zp * ze + (rp * re if es else 0.0))
+            ouv = a + ptN * nq * O[d, t] + ptE * ne * EO[d, t]
+            if nq > 0:
+                hn, bn = H[d, t], L[d, t]
+            else:
+                hn, bn = L[d, t], H[d, t]
+            if ne > 0:
+                he, be2 = EH[d, t], EL[d, t]
+            else:
+                he, be2 = EL[d, t], EH[d, t]
+            hautv = a + ptN * nq * hn + ptE * ne * he
+            basv = a + ptN * nq * bn + ptE * ne * be2
         if mode == 1:
             if hautv > pic_rt:
                 pic_rt = hautv
             plancher = min(pic_rt - perte, blocage)
         if dll > 0.0 and (nq != 0 or ne != 0) and basv <= depart_jour - dll:     # comme financee : position nette
             x = depart_jour - dll if ouv > depart_jour - dll else ouv
-            cash = x - FRAIS_ZONE * (abs(zp) + bp) - ordre * rp - TICK_NQ * (abs(zp) + bp) - tick * rp
+            if zi == 0:
+                cash = x - FRAIS_ZONE * (abs(zp) + bp) - ordre * rp - TICK_NQ * (abs(zp) + bp) - tick * rp
+            else:
+                cash = x - (FRAIS_ZONE_ES + TICK_ES) * abs(zp) - (FRAIS_ZONE + TICK_NQ) * bp - (ordre + tick) * rp
             zp, rp, bp, arret = 0, 0, 0, True
             if actif >= 0:
                 actif = -2
@@ -105,19 +126,25 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
         if basv <= plancher:
             return True, basv, veut, pic_rt, plancher, trade
         if actif >= 0 and z_ms[actif] == t:
-            cash += zp * (C[d, t] - ze) * ptN - FRAIS_ZONE * abs(zp)
+            if zi == 0:
+                cash += zp * (C[d, t] - ze) * ptN - FRAIS_ZONE * abs(zp)
+            else:
+                cash += zp * (EC[d, t] - ze) * ptE - FRAIS_ZONE_ES * abs(zp)
             zp, actif = 0, -1
         while k < z_fin[d] and z_me[k] < t:
             k += 1
         if k < z_fin[d] and z_me[k] == t:
             if not arret and z_garde[k] == 1 and zp == 0:
-                zp, ze, actif = z_sens[k] * qz, C[d, t], k
+                zp, ze, actif = z_sens[k] * qz, (C[d, t] if zi == 0 else EC[d, t]), k
                 trade = True
             k += 1
     if rp > 0:
         cash += (((EC[d, dmin] if es else C[d, dmin]) - re) * pr - ordre) * rp
     if zp != 0:
-        cash += zp * (C[d, dmin] - ze) * ptN - FRAIS_ZONE * abs(zp)
+        if zi == 0:
+            cash += zp * (C[d, dmin] - ze) * ptN - FRAIS_ZONE * abs(zp)
+        else:
+            cash += zp * (EC[d, dmin] - ze) * ptE - FRAIS_ZONE_ES * abs(zp)
     if bp > 0:
         cash += bp * (C[d, dmin] - be) * ptN - FRAIS_ZONE * bp
     return False, cash, veut, pic_rt, plancher, trade
@@ -138,12 +165,14 @@ def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me
               NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn, reb,
               e_obj, e_perte, e_mode, e_bloc, e_dll, e_regul, e_jmin, f_perte, f_bloc, f_dll, f_jours, f_seuil, f_regul,
               f_min, plafonds, f_part, f_reserve, f_max, horizon=UN_AN, q_ch=1, q_f=1, seuil_f=1e18, reserve=0.0,
-               part_cycle=0):
+               part_cycle=0, c_mnq=0.0):
     """Challenge puis compte finance, sur horizon seances apres l'achat (UN_AN : comme financee.parcours). Leviers de la
     vague 5 (par defaut : aucun) : q_ch fois la taille de chaque nouvelle entree (zone et RSI(2)) pendant le challenge ;
     sur le compte finance, q_f fois les jours ou le coussin (solde de la veille - plancher) est d'au moins seuil_f, 1 fois
     sinon ; reserve : chaque retrait est de reserve $ de moins que le plus grand retrait permis ; part_cycle=1 : la part
-    f_part s'applique au gain du cycle (depuis le dernier retrait) et non au gain total (vague 6, LucidFlex). Renvoie
+    f_part s'applique au gain du cycle (depuis le dernier retrait) et non au gain total (vague 6, LucidFlex). Vague 8 : la
+    zone est executee sur MES les jours ou le coussin (solde de la veille - plancher) est sous c_mnq, sur MNQ sinon (0 :
+    toujours MNQ, comme avant). Renvoie
     (issue du challenge, seances du challenge, compte finance perdu, nombre de retraits, recu brut, seance du 1er retrait,
     seances jouees depuis l'achat a la fin du suivi ou a la perte du compte finance)."""
     nj = O.shape[0]
@@ -154,10 +183,11 @@ def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me
     issue, n_ch = 0, 0
     d = debut
     while d < fin:
+        zi = 1 if c_mnq > 0.0 and cash - plancher < c_mnq else 0
         perdu, cash, veut, pic_rt, plancher, tr = seance4(d, rsi, veut, cash, pic_rt, plancher, e_mode, e_perte, e_bloc,
                                                           e_dll, O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens,
                                                           z_garde, dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH,
-                                                          ENL, enn, reb, kN[d], kE[d], q_ch)
+                                                          ENL, enn, reb, kN[d], kE[d], q_ch, zi)
         if perdu:
             return -1, d - debut + 1, False, 0, 0.0, -1, d - debut + 1
         g = cash - veille
@@ -180,10 +210,11 @@ def _parcours4(debut, rsi, kN, kE, retraits, O, H, L, C, der, z_deb, z_fin, z_me
     meilleur, qual, n, recu, premier = -1e18, 0, 0, 0.0, -1
     while d < fin:
         qz = q_f if cash - plancher >= seuil_f else 1
+        zi = 1 if c_mnq > 0.0 and cash - plancher < c_mnq else 0
         perdu, cash, veut, pic_rt, plancher, tr = seance4(d, rsi, veut, cash, 0.0, plancher, 0, f_perte, f_bloc, f_dll,
                                                           O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde,
                                                           dec, voulu, NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn,
-                                                          reb, kN[d], kE[d], qz)
+                                                          reb, kN[d], kE[d], qz, zi)
         if perdu:
             return 1, n_ch, True, n, recu, premier, d - debut + 1
         g = cash - veille

@@ -132,3 +132,91 @@ vague 6 : retraits × part − prix, mois du calendrier, choix 2012-2022, vérif
 3. La règle du coussin : sous c, la zone passe sur MES ; au-dessus, sur MNQ (marché synthétique).
 4. Le coussin gardé : aucun retrait ne laisse moins de K $ au-dessus du plancher bloqué.
 5. Les paramètres des comptes 100K et 150K sont ceux écrits ici.
+
+## Ajouts et corrections avant le calcul final (9 octobre 2026)
+
+**Ajout descriptif** (après un essai à 2 tirages qui servait seulement à vérifier que le code tourne) :
+- part des achats qui perdent de l'argent ;
+- réponse à la condition de l'utilisateur : si un compte est perdu, que ce soit après avoir gagné de quoi en racheter.
+
+**Revue indépendante du code.** Elle n'a trouvé **aucune erreur qui change les résultats** dans le moteur :
+- zone sur MES, positions vendeuses, frais, limite du jour ;
+- taille selon le coussin, coussin gardé ;
+- prix des comptes.
+
+Elle a relevé des biais de mesure, corrigés avant le calcul final :
+1. **Challenges pas finis.** Pour les achats récents, un challenge encore en cours à la fin des données comptait comme
+   « pas perdu ». On mesure maintenant la part des challenges **perdus parmi ceux qui sont terminés**, ce qui est plus
+   sévère.
+2. **Suivi trop court pour les comptes lents.** Avec 24 mois de suivi, la perte du compte financé dans les 12 mois ne
+   comptait que les comptes validés en moins d'un an. Le suivi passe à **36 mois au plus**.
+3. **Fenêtre de choix.** Les achats de fin 2021 étaient suivis jusque dans la vérification (2023). Ils sont maintenant
+   arrêtés au 31 décembre 2022.
+4. **Contrôle 1 bis.** Il comparait le nouveau moteur à lui-même. Il compare maintenant aux sorties du moteur d'avant la
+   vague 8 : 213 achats, retraits séance par séance compris, `ref_moteur_avant.json`.
+5. Détails sans effet sur les résultats :
+   - avec c = 0, la zone ne peut plus passer sur MES ;
+   - la plus sûre de chaque compte traite une valeur inconnue comme un échec ;
+   - le gain net par achat est mesuré sur ses 24 premiers mois au plus.
+
+## Résultats (calcul final après la revue) : `vague8.txt`, `sensibilite.txt`
+
+Filtre simulé aussi bon qu'en 2026 (10 tirages). « Gain net par mois » = un seul compte à la fois, racheté s'il est
+perdu, retraits × part − prix.
+
+**Verdict fixé à l'avance : aucune candidate sûre et validée ; l'objectif de 500 $ par mois n'est pas atteint.**
+- 23 candidates sur 60 sont sûres sur les achats 2012-2021, toutes des LucidFlex 100K ou 150K.
+- Sur la vérification, elles gardent le compte :
+  - challenge perdu 0 à 1 % ;
+  - compte financé perdu dans les 12 mois 0 à 5 %.
+- Mais elles échouent à « chaque année positive » : 2023, première année, est négative (prix payé, puis 8 à 12 mois de
+  challenge sans retrait). Elles rapportent +233 $ par mois au mieux.
+
+| Système (zone + RSI(2) de nuit sur 1 MES, taille 1×) | Gain net par mois (choix / vérification) | Challenge perdu (achats 2012-21 / 2023-26 / 2025) | Financé perdu en 12 mois (2012-21 / 2023-26 / 2025) | Temps pour valider | Prix |
+|---|---|---|---|---|---|
+| **LucidFlex 100K, zone 1 MNQ, garder 3 000 $** | +316 / +233 $ | 6 / 1 / 3 % | 17 / 5 % / pas encore mesurable | 7,8 mois (10,9 pour les achats 2025) | 293 $ |
+| LucidFlex 150K, zone 1 MNQ | +312 / +234 $ | 1 / 0 / 0 % | 5 / 3 % / pas encore mesurable | 11,7 mois (14,1) | 407 $ |
+| LucidFlex 50K, zone 1 MNQ, garder 4 000 $ | +324 / +255 $ | 20 / 19 / 46 % | 27 / 7 / 88 % | 3,6 mois | 146 $ |
+| FundedNext Legacy 50K, zone 1 MNQ, garder 4 000 $ | +562 / +471 $ | 20 / 18 / 46 % | 26 / 8 / 100 % | 3,9 mois | 200 $ |
+| Topstep 50K, zone 1 MNQ, garder 4 000 $ | +596 / +421 $ | 19 / 22 / 54 % | 28 / 20 / 88 % | 3,6 mois | 49 $ par mois + 149 $ |
+| LucidFlex 50K, zone sur MES jusqu'à 3 000 $ de coussin | +308 / +172 $ | 21 / 0 / 1 % | 46 / 4 % / pas encore mesurable | 6,5 à 8 mois (10,9) | 146 $ |
+
+**Ce qu'on apprend :**
+1. **Garder un coussin après chaque retrait est le levier qui marche.** Sur Topstep 50K (achats 2012-2021), le compte
+   financé perdu dans les 12 mois passe de 75 % (retrait maximal) à 43 % (garder 2 000 $), puis 28 % (garder 4 000 $).
+   Le gain monte aussi (+386, +525, +596 $ par mois), parce qu'on rachète moins de comptes.
+2. **La zone sur MES n'est pas une solution solide.** Elle protège le challenge en 2023-2026 (0 % perdu), pas en
+   2012-2021 (21 %) : le signal du NQ exécuté sur l'ES y est plus faible.
+3. **Les comptes plus grands gardent le compte.** Leur seuil de 3 000 à 4 500 $ est au-dessus des baisses normales du
+   bot. Mais :
+   - il faut 8 à 12 mois pour valider (objectif de 6 000 à 9 000 $) ;
+   - la règle de retrait de LucidFlex, lue prudemment (50 % du gain de chaque cycle), laisse la moitié des gains sur le
+     compte.
+4. **Achats de 2025 :** sur un 50K à 1 MNQ, environ la moitié des challenges sont perdus et presque tous les comptes
+   financés dans l'année. Aucun réglage sur 50K ne l'évite, sauf la zone sur MES, qui tombe à moins de 200 $ par mois.
+
+**Sensibilité : la règle des 50 % de LucidFlex** (`sensibilite.py`, descriptif). Les sources se contredisent :
+- 50 % du gain du **cycle** (lecture prudente, utilisée partout jusqu'ici) ;
+- 50 % du gain **total** sur le compte (exemple de pipback : 1 600 $ de gain → 800 $ de retrait).
+
+Les chances de perdre le compte ne changent presque pas ; le revenu presque double :
+
+| Gain net par mois (choix / vérification) | 50 % du gain du cycle | 50 % du gain total |
+|---|---|---|
+| LucidFlex 100K, zone 1 MNQ, garder 3 000 $ | +316 / +233 $ | **+599 / +487 $** (financé perdu en 12 mois : 18 / 5 %) |
+| LucidFlex 150K, zone 1 MNQ | +312 / +234 $ | +474 / +420 $ (financé perdu en 12 mois : 12 / 11 %) |
+| LucidFlex 50K, zone 1 MNQ, garder 4 000 $ | +324 / +255 $ | +640 / +534 $ (mais challenge perdu 20 % ; 46 % en 2025) |
+
+**Conclusion honnête :**
+- Avec ce bot, sur ces comptes, on ne peut pas avoir à la fois 500 $ par mois et une faible chance de perdre le compte,
+  sauf si LucidFlex applique les 50 % au gain total.
+- Le meilleur compromis entre sécurité et revenu est **LucidFlex 100K**, zone sur 1 MNQ et RSI(2) de nuit sur 1 MES, en gardant 3 000 $ de
+  coussin après chaque retrait :
+  - environ +230 à +320 $ par mois en moyenne avec la lecture prudente, +490 à +600 $ avec la lecture large ;
+  - il faut 8 à 11 mois pour valider.
+- **À faire confirmer par Lucid avant d'acheter :**
+  1. la règle des 50 % : gain du cycle ou gain total ;
+  2. ce qui se passe après 5 retraits (passage à un compte LucidLive, non simulé) ;
+  3. le prix du 100K (293 $ affiché sans limite du jour, environ 190 $ avec un code de 30 à 40 %).
+- **Tout suppose le filtre delta aussi bon qu'en 2026.** Sans filtre, LucidFlex 100K perd 30 % des challenges et 39 %
+  des comptes financés dans les 12 mois (achats 2012-2021).
