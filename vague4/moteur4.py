@@ -117,12 +117,12 @@ def seance4(d, rsi, veut, cash, pic_rt, plancher, mode, perte, blocage, dll, O, 
 def parcours4(debut, rsi, ptN, ptE, retraits, O, H, L, C, der, z_deb, z_fin, z_me, z_ms, z_sens, z_garde, dec, voulu,
               NO, NH, NL, nn, EO, EH, EL, EC, ENO, ENH, ENL, enn,
               e_obj, e_perte, e_mode, e_bloc, e_dll, e_regul, e_jmin, f_perte, f_bloc, f_dll, f_jours, f_seuil, f_regul,
-              f_min, plafonds, f_part, f_reserve, f_max):
-    """Challenge puis compte finance, sur UN_AN seances apres l'achat (comme financee.parcours). Renvoie (issue du
-    challenge, seances du challenge, compte finance perdu, nombre de retraits, recu brut, seance du 1er retrait, seances
-    jouees depuis l'achat a la fin du suivi ou a la perte du compte finance)."""
+              f_min, plafonds, f_part, f_reserve, f_max, horizon=UN_AN):
+    """Challenge puis compte finance, sur horizon seances apres l'achat (UN_AN : comme financee.parcours). Renvoie
+    (issue du challenge, seances du challenge, compte finance perdu, nombre de retraits, recu brut, seance du 1er retrait,
+    seances jouees depuis l'achat a la fin du suivi ou a la perte du compte finance)."""
     nj = O.shape[0]
-    fin = min(nj, debut + UN_AN)
+    fin = min(nj, debut + horizon)
     cash, veut, pic_rt, pic_eod, veille = 0.0, 0, 0.0, 0.0, 0.0
     plancher = -e_perte
     meilleur, jours = -1e18, 0

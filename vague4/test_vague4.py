@@ -95,11 +95,46 @@ def test_largeur(D):
     print(f"ok : largeur du {jour} a 10 h = {main_:.0%} (a la main = moteur), sens {sens[d]:+d} ; pas de futur")
 
 
+def test_chaine(D, b):
+    """5. Un seul compte a la fois (un_compte.py) : chaque compte est rejoue a part, rachete a la premiere seance a plat
+    apres sa fin ; la somme des flux de la chaine = la somme des argents nets ; avec un horizon d'un an, le moteur redonne
+    les issues de parcours4 sans horizon."""
+    import un_compte as U
+    j, nj = D["jours"], len(D["jours"])
+    e, f_ = U.CP.COMPTES[U.NC][:7], U.F.FINANCES[U.NC]["f"]
+    prix, mensuel, act = U.F.FINANCES[U.NC]["prix"]
+    part = U.F.FINANCES[U.NC]["part"]
+    w0 = int(np.searchsorted(j, pd.Timestamp("2023-01-01")))
+    for rsi in (0, 4):
+        fl, n = U.chaine(D, b, rsi, w0, nj)
+        d, tot, k = w0, 0.0, 0
+        while True:
+            while d < nj and D["ouvert"][d] != 0:
+                d += 1
+            if d >= nj:
+                break
+            fn, fe = D4.facteurs(D, d)
+            h = min(U.H2, nj - d)
+            ret = np.zeros(h)
+            r = M4.parcours4(d, rsi, 2.0 * fn, 5.0 * fe, ret, *b, *e, *f_, h)
+            assert abs(ret.sum() - r[4]) < 1e-6 and 1 <= r[6] <= h
+            tot += r[4] * part - prix * np.ceil(r[1] / U.MOIS) - (act if r[0] == 1 else 0.0)
+            d, k = d + r[6], k + 1
+        assert k == n and abs(fl.sum() - tot) < 1e-6, (rsi, k, n, fl.sum(), tot)
+        for d in range(w0, w0 + 200, 37):
+            fn, fe = D4.facteurs(D, d)
+            x = M4.parcours4(d, rsi, 2.0 * fn, 5.0 * fe, np.zeros(0), *b, *e, *f_)
+            y = M4.parcours4(d, rsi, 2.0 * fn, 5.0 * fe, np.zeros(0), *b, *e, *f_, M4.UN_AN)
+            assert x == y
+    print(f"ok : un seul compte a la fois, {n} challenges achetes depuis {j[w0].date()} (zone + A3), flux = argents nets")
+
+
 if __name__ == "__main__":
     D = D4.charger()
     b = D4.base(D)
     test_nuit_es(D)
     test_a_la_main(D, b)
     test_financee(D, b)
+    test_chaine(D, b)
     if (D4.ICI / "donnees" / "grandes.csv.gz").exists():
         test_largeur(D)
