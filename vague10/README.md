@@ -79,3 +79,40 @@ Groupes d'achats :
 - `vague8/test_vague8.py` : par défaut, le moteur redonne exactement le moteur d'avant la vague 8 (213 achats,
   retraits séance par séance).
 - `test_vague10.py` : la pause arrête le bot le bon nombre de séances et se réarme au bon moment (marché synthétique).
+
+## Résultats (9 octobre 2026) : `vague10.txt`
+
+**Verdict fixé à l'avance : aucune candidate n'est sûre sur les achats 2012-2021.** Sur cette période, toutes perdent
+plus de 20 % des comptes financés dans l'année. Rien n'est donc « validé » au sens strict.
+
+**Mais un frein change tout sur la période récente :** passer la zone sur MES dès que le compte recule de 500 $ sous son
+plus haut (coussin sous 1 500 $), et revenir au MNQ quand il remonte.
+
+FundedNext Legacy 50K, garder 4 000 $ après chaque retrait, pas de zone les jours de la Fed, **un seul achat** :
+
+| Achats | Challenge réussi / perdu | Temps pour valider (moitié / 3 sur 4) | Financé perdu en 12 mois | Retraits par mois en vie | Net de l'achat sur 24 mois (moyenne / médiane) |
+|---|---|---|---|---|---|
+| Sans frein, 2023 - mars 2026 | 82 % / 18 % | 3,4 / 5,6 mois | 10 % | 435 $ | +4 672 / +6 024 $ |
+| **Frein MES sous 1 500 $, 2023 - mars 2026** | **93 % / 3 %** | 5,0 / 9,0 mois | **3 %** | 388 $ | +3 980 / +3 938 $ |
+| Sans frein, achats 2025 - mars 2026 | 57 % / 43 % | 7,1 / 11,3 mois | — | — | trop tôt |
+| **Frein MES sous 1 500 $, achats 2025 - mars 2026** | **87 % / 6 %** (8 % pas fini) | 9,3 / 13,3 mois | — | — | trop tôt |
+| Sans frein, 2012-2021 | 80 % / 20 % | 3,8 / 5,3 mois | 23 % | 531 $ | +5 814 / +4 293 $ |
+| Frein MES sous 1 500 $, 2012-2021 | 81 % / 19 % | 4,3 / 6,8 mois | 25 % | 501 $ | +5 035 / +3 162 $ |
+
+Pour les achats 2025, le net est encore négatif seulement parce que les données s'arrêtent en septembre 2026 : la
+plupart de ces comptes n'ont pas encore eu le temps d'être financés.
+
+**Ce que montrent les autres freins :**
+- **La pause du bot (10 ou 20 séances) est mauvaise partout.** Elle rate les reprises et perd plus de challenges.
+- **Le stop du jour (300 ou 500 $) aide un peu en 2025** (challenge perdu 35 à 49 % au lieu de 43 à 51 %), mais coûte
+  beaucoup de gains. Les pertes de 2025 ne sont pas de gros jours.
+- **Le frein MES est le seul qui protège nettement.** Le seuil de 1 500 $ est le meilleur compromis ; à 1 750 $, on
+  protège encore plus (2 % de challenges perdus en 2025), mais on valide plus lentement.
+
+**Limites, à dire clairement :**
+- Le frein n'aide pas sur 2012-2021 : la zone exécutée sur MES y était faible (vague 8). Il marche dans le régime
+  récent, où l'ES et le NQ bougent ensemble.
+- La famille de freins a été choisie **après** avoir regardé comment mouraient les comptes de 2025. Seule l'année 2025
+  n'a pas servi à choisir le seuil.
+- Le filtre delta est simulé.
+- Valider prend plus longtemps : 5 mois en médiane, 9 pour les achats de 2025.
