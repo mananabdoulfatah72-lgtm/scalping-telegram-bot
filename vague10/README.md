@@ -143,3 +143,21 @@ Simulation de **Bulenox 50K option 2** :
 | 2012-2021 | **MES dès 750 $ sous le plus haut** | 11 % | 4,1 mois | 23 % | +2 577 $ |
 
 Retraits : le premier arrive environ 4 mois après la validation, puis environ 1 400 $ par retrait.
+
+## FundedNext Futures Flex 50K (règles données par l'utilisateur, `flex50k.py` → `flex50k.txt`, descriptif)
+
+Règles du Flex 50K :
+- challenge : objectif 2 500 $, **perte max 1 500 $** en fin de journée, régularité 40 % ;
+- compte financé : 5 jours à +200 $, retrait ≤ 50 % des profits et ≤ 1 500 $, 95 % pour le trader, revue après 5
+  retraits.
+
+Résultats :
+- **Avec la zone sur MNQ**, le seuil de 1 500 $ est trop serré : challenge perdu 28 % (2023-26) et 58 % (achats 2025),
+  et le frein « MES dès 500 $ sous le plus haut » n'y change presque rien.
+- **Avec la zone toujours sur MES** : challenge perdu 3 % (2023-26) et 7 % (2025). Mais :
+  - il faut environ 8 mois pour valider (9 en 2025) ;
+  - le premier retrait arrive vers le 11e-12e mois ;
+  - la 1re année financée rapporte environ 1 900 à 2 800 $ (en gardant 1 500 $) ;
+  - sur 2012-2021 : 26 % de challenges perdus et environ la moitié des comptes financés perdus dans l'année.
+
+Le Legacy 50K (perte 2 000 $) reste nettement meilleur pour ce bot.

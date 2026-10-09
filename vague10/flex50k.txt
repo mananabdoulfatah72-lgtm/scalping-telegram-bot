@@ -1,0 +1,98 @@
+FundedNext Futures Flex 50K (regles de l'utilisateur ; prix suppose 49.0 $), bot de la vague 10, un seul achat, filtre simule aussi bon qu'en 2026 (10 tirages). Colonnes : challenge perdu | valide (moitie / 3 sur 4) | finance perdu en 12 mois | 1er retrait (mois apres l'achat) | retraits recus la 1re et la 2e annee financee (medianes) | arrives a 5 retraits
+
+=== 50 % du gain du cycle | garder 0 $ | sans frein
+  achats 2012-2021 : challenge perdu 29% | valide 3.1 / 4.5 mois | finance perdu en 12 mois 51% | 1er retrait au mois 4.9 | 1re annee 2,232 $, 2e annee 0 $ | 5 retraits 49%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 2.8 / 4.6 mois | finance perdu en 12 mois 41% | 1er retrait au mois 4.2 | 1re annee 2,519 $, 2e annee 0 $ | 5 retraits 46%
+  achats 2025 - mars 2026 : challenge perdu 58% | valide 6.6 / 11.3 mois | finance perdu en 12 mois 100% | 1er retrait au mois 7.7 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 0 $ | frein MES des 500 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 30% | valide 3.4 / 5.0 mois | finance perdu en 12 mois 56% | 1er retrait au mois 5.2 | 1re annee 1,425 $, 2e annee 0 $ | 5 retraits 43%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 3.0 / 5.0 mois | finance perdu en 12 mois 33% | 1er retrait au mois 5.0 | 1re annee 2,420 $, 2e annee 0 $ | 5 retraits 52%
+  achats 2025 - mars 2026 : challenge perdu 62% | valide 5.3 / 10.7 mois | finance perdu en 12 mois 100% | 1er retrait au mois 6.6 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 0 $ | frein MES des 375 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 29% | valide 3.6 / 5.5 mois | finance perdu en 12 mois 58% | 1er retrait au mois 5.5 | 1re annee 1,271 $, 2e annee 0 $ | 5 retraits 42%
+  achats 2023 - mars 2026 : challenge perdu 25% | valide 3.4 / 5.9 mois | finance perdu en 12 mois 32% | 1er retrait au mois 5.5 | 1re annee 2,304 $, 2e annee 0 $ | 5 retraits 48%
+  achats 2025 - mars 2026 : challenge perdu 51% | valide 6.8 / 11.5 mois | finance perdu en 12 mois 100% | 1er retrait au mois 7.8 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 0 $ | zone toujours sur MES
+  achats 2012-2021 : challenge perdu 26% | valide 5.5 / 8.1 mois | finance perdu en 12 mois 53% | 1er retrait au mois 8.3 | 1re annee 1,334 $, 2e annee 0 $ | 5 retraits 47%
+  achats 2023 - mars 2026 : challenge perdu 3% | valide 7.7 / 11.6 mois | finance perdu en 12 mois 13% | 1er retrait au mois 10.4 | 1re annee 2,297 $, 2e annee 766 $ | 5 retraits 45%
+  achats 2025 - mars 2026 : challenge perdu 7% | valide 8.9 / 13.3 mois | finance perdu en 12 mois - | 1er retrait au mois 11.1 | 1re annee nan $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 1,500 $ | sans frein
+  achats 2012-2021 : challenge perdu 29% | valide 3.1 / 4.5 mois | finance perdu en 12 mois 39% | 1er retrait au mois 5.4 | 1re annee 2,881 $, 2e annee 0 $ | 5 retraits 60%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 2.8 / 4.6 mois | finance perdu en 12 mois 33% | 1er retrait au mois 4.8 | 1re annee 2,485 $, 2e annee 0 $ | 5 retraits 52%
+  achats 2025 - mars 2026 : challenge perdu 58% | valide 6.6 / 11.3 mois | finance perdu en 12 mois 100% | 1er retrait au mois 8.4 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 1,500 $ | frein MES des 500 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 30% | valide 3.4 / 5.0 mois | finance perdu en 12 mois 45% | 1er retrait au mois 5.8 | 1re annee 2,336 $, 2e annee 0 $ | 5 retraits 54%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 3.0 / 5.0 mois | finance perdu en 12 mois 21% | 1er retrait au mois 5.9 | 1re annee 2,509 $, 2e annee 0 $ | 5 retraits 61%
+  achats 2025 - mars 2026 : challenge perdu 62% | valide 5.3 / 10.7 mois | finance perdu en 12 mois 100% | 1er retrait au mois 7.4 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 1,500 $ | frein MES des 375 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 29% | valide 3.6 / 5.5 mois | finance perdu en 12 mois 47% | 1er retrait au mois 6.0 | 1re annee 1,970 $, 2e annee 0 $ | 5 retraits 52%
+  achats 2023 - mars 2026 : challenge perdu 25% | valide 3.4 / 5.9 mois | finance perdu en 12 mois 20% | 1er retrait au mois 6.7 | 1re annee 2,437 $, 2e annee 0 $ | 5 retraits 57%
+  achats 2025 - mars 2026 : challenge perdu 51% | valide 6.8 / 11.5 mois | finance perdu en 12 mois 100% | 1er retrait au mois 8.5 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 1,500 $ | zone toujours sur MES
+  achats 2012-2021 : challenge perdu 26% | valide 5.5 / 8.1 mois | finance perdu en 12 mois 48% | 1er retrait au mois 9.3 | 1re annee 1,148 $, 2e annee 0 $ | 5 retraits 52%
+  achats 2023 - mars 2026 : challenge perdu 3% | valide 7.7 / 11.6 mois | finance perdu en 12 mois 3% | 1er retrait au mois 11.4 | 1re annee 1,939 $, 2e annee 952 $ | 5 retraits 50%
+  achats 2025 - mars 2026 : challenge perdu 7% | valide 8.9 / 13.3 mois | finance perdu en 12 mois - | 1er retrait au mois 12.0 | 1re annee nan $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 3,000 $ | sans frein
+  achats 2012-2021 : challenge perdu 29% | valide 3.1 / 4.5 mois | finance perdu en 12 mois 29% | 1er retrait au mois 7.0 | 1re annee 2,648 $, 2e annee 0 $ | 5 retraits 70%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 2.8 / 4.6 mois | finance perdu en 12 mois 29% | 1er retrait au mois 6.4 | 1re annee 2,231 $, 2e annee 0 $ | 5 retraits 55%
+  achats 2025 - mars 2026 : challenge perdu 58% | valide 6.6 / 11.3 mois | finance perdu en 12 mois 100% | 1er retrait au mois 9.5 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 3,000 $ | frein MES des 500 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 30% | valide 3.4 / 5.0 mois | finance perdu en 12 mois 35% | 1er retrait au mois 7.5 | 1re annee 2,333 $, 2e annee 0 $ | 5 retraits 64%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 3.0 / 5.0 mois | finance perdu en 12 mois 16% | 1er retrait au mois 7.9 | 1re annee 2,196 $, 2e annee 0 $ | 5 retraits 65%
+  achats 2025 - mars 2026 : challenge perdu 62% | valide 5.3 / 10.7 mois | finance perdu en 12 mois 100% | 1er retrait au mois 8.7 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 3,000 $ | frein MES des 375 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 29% | valide 3.6 / 5.5 mois | finance perdu en 12 mois 37% | 1er retrait au mois 7.8 | 1re annee 2,025 $, 2e annee 0 $ | 5 retraits 62%
+  achats 2023 - mars 2026 : challenge perdu 25% | valide 3.4 / 5.9 mois | finance perdu en 12 mois 16% | 1er retrait au mois 8.5 | 1re annee 2,155 $, 2e annee 0 $ | 5 retraits 60%
+  achats 2025 - mars 2026 : challenge perdu 51% | valide 6.8 / 11.5 mois | finance perdu en 12 mois 100% | 1er retrait au mois 9.6 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain du cycle | garder 3,000 $ | zone toujours sur MES
+  achats 2012-2021 : challenge perdu 26% | valide 5.5 / 8.1 mois | finance perdu en 12 mois 40% | 1er retrait au mois 12.0 | 1re annee 521 $, 2e annee 563 $ | 5 retraits 55%
+  achats 2023 - mars 2026 : challenge perdu 3% | valide 7.7 / 11.6 mois | finance perdu en 12 mois 2% | 1er retrait au mois 12.4 | 1re annee 1,308 $, 2e annee 1,545 $ | 5 retraits 48%
+  achats 2025 - mars 2026 : challenge perdu 7% | valide 8.9 / 13.3 mois | finance perdu en 12 mois - | 1er retrait au mois 13.7 | 1re annee nan $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 0 $ | sans frein
+  achats 2012-2021 : challenge perdu 29% | valide 3.1 / 4.5 mois | finance perdu en 12 mois 64% | 1er retrait au mois 4.9 | 1re annee 1,874 $, 2e annee 0 $ | 5 retraits 36%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 2.8 / 4.6 mois | finance perdu en 12 mois 59% | 1er retrait au mois 4.2 | 1re annee 1,932 $, 2e annee 0 $ | 5 retraits 32%
+  achats 2025 - mars 2026 : challenge perdu 58% | valide 6.6 / 11.3 mois | finance perdu en 12 mois 100% | 1er retrait au mois 7.7 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 0 $ | frein MES des 500 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 30% | valide 3.4 / 5.0 mois | finance perdu en 12 mois 65% | 1er retrait au mois 5.2 | 1re annee 1,527 $, 2e annee 0 $ | 5 retraits 35%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 3.0 / 5.0 mois | finance perdu en 12 mois 53% | 1er retrait au mois 5.0 | 1re annee 2,831 $, 2e annee 0 $ | 5 retraits 36%
+  achats 2025 - mars 2026 : challenge perdu 62% | valide 5.3 / 10.7 mois | finance perdu en 12 mois 100% | 1er retrait au mois 6.6 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 0 $ | frein MES des 375 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 29% | valide 3.6 / 5.5 mois | finance perdu en 12 mois 67% | 1er retrait au mois 5.5 | 1re annee 1,362 $, 2e annee 0 $ | 5 retraits 33%
+  achats 2023 - mars 2026 : challenge perdu 25% | valide 3.4 / 5.9 mois | finance perdu en 12 mois 51% | 1er retrait au mois 5.5 | 1re annee 3,123 $, 2e annee 0 $ | 5 retraits 35%
+  achats 2025 - mars 2026 : challenge perdu 51% | valide 6.8 / 11.5 mois | finance perdu en 12 mois 100% | 1er retrait au mois 7.8 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 0 $ | zone toujours sur MES
+  achats 2012-2021 : challenge perdu 26% | valide 5.5 / 8.1 mois | finance perdu en 12 mois 62% | 1er retrait au mois 8.3 | 1re annee 1,481 $, 2e annee 0 $ | 5 retraits 37%
+  achats 2023 - mars 2026 : challenge perdu 3% | valide 7.7 / 11.6 mois | finance perdu en 12 mois 43% | 1er retrait au mois 10.4 | 1re annee 3,310 $, 2e annee 0 $ | 5 retraits 29%
+  achats 2025 - mars 2026 : challenge perdu 7% | valide 8.9 / 13.3 mois | finance perdu en 12 mois - | 1er retrait au mois 11.1 | 1re annee nan $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 1,500 $ | sans frein
+  achats 2012-2021 : challenge perdu 29% | valide 3.1 / 4.5 mois | finance perdu en 12 mois 46% | 1er retrait au mois 5.4 | 1re annee 4,162 $, 2e annee 0 $ | 5 retraits 53%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 2.8 / 4.6 mois | finance perdu en 12 mois 37% | 1er retrait au mois 4.8 | 1re annee 4,105 $, 2e annee 0 $ | 5 retraits 49%
+  achats 2025 - mars 2026 : challenge perdu 58% | valide 6.6 / 11.3 mois | finance perdu en 12 mois 100% | 1er retrait au mois 8.4 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 1,500 $ | frein MES des 500 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 30% | valide 3.4 / 5.0 mois | finance perdu en 12 mois 52% | 1er retrait au mois 5.8 | 1re annee 2,883 $, 2e annee 0 $ | 5 retraits 47%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 3.0 / 5.0 mois | finance perdu en 12 mois 25% | 1er retrait au mois 5.9 | 1re annee 3,969 $, 2e annee 0 $ | 5 retraits 58%
+  achats 2025 - mars 2026 : challenge perdu 62% | valide 5.3 / 10.7 mois | finance perdu en 12 mois 100% | 1er retrait au mois 7.4 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 1,500 $ | frein MES des 375 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 29% | valide 3.6 / 5.5 mois | finance perdu en 12 mois 54% | 1er retrait au mois 6.0 | 1re annee 2,574 $, 2e annee 0 $ | 5 retraits 45%
+  achats 2023 - mars 2026 : challenge perdu 25% | valide 3.4 / 5.9 mois | finance perdu en 12 mois 25% | 1er retrait au mois 6.7 | 1re annee 3,753 $, 2e annee 0 $ | 5 retraits 53%
+  achats 2025 - mars 2026 : challenge perdu 51% | valide 6.8 / 11.5 mois | finance perdu en 12 mois 100% | 1er retrait au mois 8.5 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 1,500 $ | zone toujours sur MES
+  achats 2012-2021 : challenge perdu 26% | valide 5.5 / 8.1 mois | finance perdu en 12 mois 51% | 1er retrait au mois 9.3 | 1re annee 1,460 $, 2e annee 0 $ | 5 retraits 45%
+  achats 2023 - mars 2026 : challenge perdu 3% | valide 7.7 / 11.6 mois | finance perdu en 12 mois 3% | 1er retrait au mois 11.4 | 1re annee 2,791 $, 2e annee 1,425 $ | 5 retraits 51%
+  achats 2025 - mars 2026 : challenge perdu 7% | valide 8.9 / 13.3 mois | finance perdu en 12 mois - | 1er retrait au mois 12.0 | 1re annee nan $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 3,000 $ | sans frein
+  achats 2012-2021 : challenge perdu 29% | valide 3.1 / 4.5 mois | finance perdu en 12 mois 29% | 1er retrait au mois 7.0 | 1re annee 4,484 $, 2e annee 0 $ | 5 retraits 69%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 2.8 / 4.6 mois | finance perdu en 12 mois 29% | 1er retrait au mois 6.4 | 1re annee 3,723 $, 2e annee 0 $ | 5 retraits 55%
+  achats 2025 - mars 2026 : challenge perdu 58% | valide 6.6 / 11.3 mois | finance perdu en 12 mois 100% | 1er retrait au mois 9.5 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 3,000 $ | frein MES des 500 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 30% | valide 3.4 / 5.0 mois | finance perdu en 12 mois 35% | 1er retrait au mois 7.5 | 1re annee 3,705 $, 2e annee 0 $ | 5 retraits 64%
+  achats 2023 - mars 2026 : challenge perdu 28% | valide 3.0 / 5.0 mois | finance perdu en 12 mois 16% | 1er retrait au mois 7.9 | 1re annee 3,495 $, 2e annee 0 $ | 5 retraits 65%
+  achats 2025 - mars 2026 : challenge perdu 62% | valide 5.3 / 10.7 mois | finance perdu en 12 mois 100% | 1er retrait au mois 8.7 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 3,000 $ | frein MES des 375 $ sous le plus haut
+  achats 2012-2021 : challenge perdu 29% | valide 3.6 / 5.5 mois | finance perdu en 12 mois 37% | 1er retrait au mois 7.8 | 1re annee 3,179 $, 2e annee 0 $ | 5 retraits 62%
+  achats 2023 - mars 2026 : challenge perdu 25% | valide 3.4 / 5.9 mois | finance perdu en 12 mois 16% | 1er retrait au mois 8.5 | 1re annee 3,535 $, 2e annee 0 $ | 5 retraits 60%
+  achats 2025 - mars 2026 : challenge perdu 51% | valide 6.8 / 11.5 mois | finance perdu en 12 mois 100% | 1er retrait au mois 9.6 | 1re annee 0 $, 2e annee nan $ | 5 retraits 0%
+=== 50 % du gain total | garder 3,000 $ | zone toujours sur MES
+  achats 2012-2021 : challenge perdu 26% | valide 5.5 / 8.1 mois | finance perdu en 12 mois 40% | 1er retrait au mois 12.0 | 1re annee 597 $, 2e annee 1,111 $ | 5 retraits 57%
+  achats 2023 - mars 2026 : challenge perdu 3% | valide 7.7 / 11.6 mois | finance perdu en 12 mois 2% | 1er retrait au mois 12.4 | 1re annee 1,425 $, 2e annee 2,850 $ | 5 retraits 49%
+  achats 2025 - mars 2026 : challenge perdu 7% | valide 8.9 / 13.3 mois | finance perdu en 12 mois - | 1er retrait au mois 13.7 | 1re annee nan $, 2e annee nan $ | 5 retraits 0%
