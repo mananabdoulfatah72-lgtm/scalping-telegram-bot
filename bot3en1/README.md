@@ -136,6 +136,7 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Limite de perte du jour | 1 050 (juste avant les 1 100 $ de Bulenox) | 1 050 |
 | Frein | 750 | 750 |
 | Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
+| Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |
 
 **Au passage au compte Master :**
 - choisir le nouveau compte dans les réglages ;
