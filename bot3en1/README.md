@@ -105,6 +105,70 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
   - hors séance, il le vérifie à chaque transaction du NQ, **si le PC est allumé**. PC éteint la nuit : le RSI(2) reste
     ouvert, et le plafond n'est vérifié qu'au retour.
 
+## Mode à plat pour Bulenox (et FundedNext) — ajouté le 10 octobre 2026
+
+Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plusieurs jours y est interdit. Le réglage
+**« Mode a plat chaque jour »** fait ce que les vagues 8 à 11 ont simulé. Désactivé (par défaut), le bot ne change pas.
+
+**Les 4 changements :**
+1. **RSI(2) de nuit seulement, sur 1 MES.** La règle est décidée à 15 h 50 comme avant, mais rien n'est acheté à 15 h 50 :
+   - le bot achète 1 MES à la réouverture de 18 h (dimanche 18 h avant un lundi) ;
+   - il revend à 9 h 30.
+   - Démarré plus tard dans la nuit, il achète jusqu'à 9 h 25, pas au-delà.
+2. **Frein.** Quand le compte finit une journée à 750 $ ou plus sous son plus haut de fin de journée, la zone trade sur MES
+   au lieu de MNQ toute la séance suivante. Plus précisément : coussin = solde − plancher, avec plancher = plus haut de fin
+   de journée − 2 500 $, arrêté à 50 100 $ ; frein si coussin < 1 750 $. Le solde est lu dans Quantower ; s'il est
+   illisible, le bot utilise sa propre estimation et le signale.
+3. **Pas de zone les jours d'annonce de la Fed.** Les dates sont dans `Calendrier.JoursFed` jusqu'à fin 2027 ; on peut en
+   ajouter dans les réglages.
+4. **Plafond de gain du jour : 500 $, seulement sur le compte Master** (0 pendant le challenge). Il est vérifié deux fois
+   par seconde sur la valeur réelle du compte (solde + gains latents), sinon sur l'estimation du bot. Une fois atteint, tout
+   est fermé et plus rien n'est pris jusqu'à 18 h.
+
+**Réglages pour Bulenox 50K (option 2, perte calculée en fin de journée) :**
+
+| Réglage | Challenge | Compte Master (après la réussite) |
+|---|---|---|
+| Mode a plat chaque jour | coché | coché |
+| MNQ, MES, NQ | échéance du moment (ex. MNQZ6, MESZ6, NQZ6) | idem |
+| MNQ par source | 1 | 1 |
+| Plafond de gain du jour | **0** | **500** |
+| Limite de perte du jour | 1 050 (juste avant les 1 100 $ de Bulenox) | 1 050 |
+| Frein | 750 | 750 |
+| Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
+
+**Au passage au compte Master :**
+- choisir le nouveau compte dans les réglages ;
+- le bot repart alors d'un plus haut de 50 000 $ (il reconnaît le changement de compte) ;
+- mettre le plafond à 500 ;
+- demander chaque retrait dès que Bulenox l'autorise (au moins 1 000 $, 52 600 $ gardés).
+
+**Vérifié (10 octobre 2026) :**
+- **Ancien mode inchangé :**
+  - rejeu 2023-2026 : +21 767,0 $ ;
+  - test de l'adaptateur avec trades de zone (sans filtre), avec et sans plafond : ordres, journal et messages identiques
+    octet pour octet à avant le changement.
+- **RSI(2) de nuit :** d'avril à septembre 2026, le bot achète **les mêmes 19 nuits** que la recherche Python
+  (`vague4/moteur4.py`, rsi = 4).
+- **Adaptateur en mode à plat** (avril - septembre 2026, transaction par transaction) :
+  - à plat chaque jour à 16 h, jamais de MNQ la nuit, 0 erreur ;
+  - avec un solde lu à 49 000 $, toute la zone part sur MES ;
+  - avec le plafond à 500 $, 7 journées arrêtées.
+- **Moteur :** `Bot3en1.TestAPlat`, 21 contrôles sur 21 (frein avant et après blocage du plancher, Fed, nuit, plafond).
+
+```
+dotnet run -c Release --project Bot3en1.TestAPlat
+A_PLAT=1 SANS_FILTRE=1 dotnet run -c Release --project Bot3en1.TestQuantower -- <dossier> <nq_1min.csv.gz> <agresseurs.csv.gz> 2026-04-01 2026-09-25
+```
+
+**Limites :**
+- La lecture du solde (`Account.Balance`) et des gains latents (`Position.GrossPnL`) passe par réflexion, pour ne pas
+  bloquer la compilation si Quantower les nomme autrement. Au premier lancement, vérifier dans le journal que le message
+  « mode a plat : solde ... » donne le vrai solde, et non « solde estimé ».
+- Le flux du MES doit arriver : sans transaction MES récente, le bot n'achète pas le RSI(2) de nuit.
+- PC (ou serveur) allumé de 18 h à 9 h 30 (New York) pour le RSI(2) de nuit, soit de minuit à 15 h 30 heure de Paris, en
+  plus de la séance.
+
 ## Limites connues
 
 - Les ordres sont au marché. Le backtest compte 1,5 point par aller-retour pour la zone et 1 $ + 1 tick par ordre

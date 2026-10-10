@@ -13,15 +13,27 @@ namespace Bot3en1
     /// <summary>Bot 3 en 1 pour Quantower (compte Rithmic, par exemple DayTraders) : zone de bruit filtree par le vrai delta
     /// des 30 minutes + RSI(2), 1 MNQ par source. Les decisions viennent du moteur verifie (Bot3en1.Core, rejeu identique au
     /// robot Python) ; cette classe ne fait que lire le marche, appeler le moteur et aligner la position sur MNQ.
-    /// A tester d'abord sur un compte de simulation (voir GUIDE.md).</summary>
+    /// A tester d'abord sur un compte de simulation (voir GUIDE.md).
+    /// Mode a plat (Bulenox, FundedNext, vagues 10-11) : RSI(2) de nuit seulement sur MES (achat a 18 h, vente a 9 h 30), zone
+    /// sur MES quand le compte est trop pres de son plancher (frein), pas de zone les jours d'annonce de la Fed, plafond du jour
+    /// (a mettre seulement sur le compte finance) verifie sur la valeur reelle du compte.</summary>
     public class Bot3en1Strategy : Strategy
     {
         [InputParameter("Compte", 10)] public Account Compte;
+        [InputParameter("Mode a plat chaque jour (Bulenox, FundedNext) : RSI(2) de nuit sur MES, frein, pas de zone les jours de la Fed", 12)]
+        public bool ModeAPlat = false;
         [InputParameter("NQ (barres et delta), contrat du moment, ex. NQZ6", 20)] public Symbol SymboleNQ;
         [InputParameter("MNQ (ordres), meme echeance, ex. MNQZ6", 30)] public Symbol SymboleMNQ;
+        [InputParameter("MES (mode a plat : RSI(2) de nuit et zone freinee), meme echeance, ex. MESZ6", 35)] public Symbol SymboleMES;
         [InputParameter("Dossier des donnees du bot", 40)] public string Dossier = @"C:\Bot3en1";
         [InputParameter("MNQ par source", 50, 1, 5, 1, 0)] public int Taille = 1;
-        [InputParameter("Plafond de gain du jour en $ (0 = aucun ; 500 sur le compte Pro du Static)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
+        [InputParameter("Plafond de gain du jour en $ (0 = aucun ; Bulenox : 500 sur le compte Master seulement, 0 pendant le challenge ; Static : 500 sur le compte Pro)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
+        [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1050, juste avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
+        [InputParameter("Mode a plat : frein, zone sur MES quand le compte est a X $ ou plus sous son plus haut de fin de journee (0 = jamais ; Bulenox : 750)", 62, 0, 5000, 50, 0)] public double Frein = 750;
+        [InputParameter("Mode a plat : solde de depart du compte (ex. 50000)", 63, 0, 1000000, 1000, 0)] public double SoldeDepart = 50000;
+        [InputParameter("Mode a plat : perte max suivie en fin de journee (Bulenox 50K : 2500)", 64, 0, 100000, 100, 0)] public double PerteMax = 2500;
+        [InputParameter("Mode a plat : le plancher s'arrete a solde de depart + X (Bulenox : 100)", 65, 0, 10000, 50, 0)] public double Blocage = 100;
+        [InputParameter("Mode a plat : jours de la Fed en plus (AAAA-MM-JJ separes par des virgules)", 66)] public string JoursFedEnPlus = "";
         [InputParameter("Telegram : jeton du bot (facultatif)", 70)] public string JetonTelegram = "";
         [InputParameter("Telegram : numero de conversation (facultatif)", 80)] public string ChatTelegram = "";
         [InputParameter("Historique : adresse des barres du robot", 90)]
@@ -43,6 +55,14 @@ namespace Bot3en1
         bool plafondANoter;                          // plafond atteint dans une transaction de nuit : message et etat au prochain tic
         bool etatASauver;                            // nouvelle journee de trading : etat a enregistrer au prochain tic
         bool alerteSilence;
+        // mode a plat
+        double dernierPrixES;                        // dernier prix de l'ES (flux du MES)
+        DateTime dernierTickES = DateTime.MinValue;
+        DateTime ordreMESEnAttenteDepuis = DateTime.MinValue;
+        string nuitJournee = "";                     // journee de trading du dernier RSI(2) de nuit achete
+        double picFinJour, soldeEstime, equiteDebut; // plus haut de fin de journee, solde estime par le bot, equite a 18 h
+        string freinJournee = "";                    // journee de trading pour laquelle le frein a ete decide
+        bool freinActif;
         static readonly HttpClient http = new HttpClient { Timeout = TimeSpan.FromSeconds(20) };
 
         public Bot3en1Strategy() : base()
@@ -58,6 +78,8 @@ namespace Bot3en1
             {
                 if (Compte == null || SymboleNQ == null || SymboleMNQ == null)
                     throw new Exception("choisis le compte, le symbole NQ et le symbole MNQ dans les reglages");
+                if (ModeAPlat && SymboleMES == null)
+                    throw new Exception("mode a plat : choisis aussi le symbole MES dans les reglages");
                 ny = TrouverFuseau();
                 Directory.CreateDirectory(Dossier);
                 var maintenant = HeureNY();
@@ -66,6 +88,7 @@ namespace Bot3en1
                 PreparerMoteur();
                 DemarrerSeance(maintenant);
                 SymboleNQ.NewLast += SurTransaction;
+                if (ModeAPlat) SymboleMES.NewLast += SurTransactionES;
                 horloge = new Timer(_ => Tic(), null, 500, 500);
                 Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York). {EtatTexte()}");
             }
@@ -80,6 +103,7 @@ namespace Bot3en1
         {
             horloge?.Dispose();
             if (SymboleNQ != null) SymboleNQ.NewLast -= SurTransaction;
+            if (ModeAPlat && SymboleMES != null) SymboleMES.NewLast -= SurTransactionES;
             SauverEtat();
             Dire("arrete. Les positions ouvertes restent ouvertes (le RSI(2) peut tenir la nuit).");
         }
@@ -98,7 +122,7 @@ namespace Bot3en1
         {
             string attendu = Calendrier.Contrat(jour);                  // ex. "Z26"
             string court = $"{attendu[0]}{attendu[^1]}";                // ex. "Z6"
-            foreach (var s in new[] { SymboleNQ, SymboleMNQ })
+            foreach (var s in ModeAPlat ? new[] { SymboleNQ, SymboleMNQ, SymboleMES } : new[] { SymboleNQ, SymboleMNQ })
                 if (!(s.Name ?? "").ToUpperInvariant().Contains(court) && !(s.Name ?? "").ToUpperInvariant().Contains(attendu))
                     Dire($"ATTENTION : le symbole {s.Name} ne semble pas etre l'echeance du jour ({court}). Change-le dans les reglages.", true);
         }
@@ -125,7 +149,15 @@ namespace Bot3en1
                 Dire($"ATTENTION : l'historique s'arrete le {derniere:yyyy-MM-dd} (robot en retard ?). La zone utilise des parametres un peu anciens.", true);
             bot = Rejoueur.Preparer(seances, jour);
             bot.Taille = Math.Max(1, Taille);
-            bot.PlafondJour = PlafondJour;
+            bot.PlafondJour = ModeAPlat ? 0 : PlafondJour;     // mode a plat : plafond gere ici, sur la valeur reelle du compte
+            bot.ModeAPlat = ModeAPlat;
+            if (ModeAPlat)
+            {
+                bot.JoursFed = new HashSet<DateTime>(Calendrier.JoursFed);
+                foreach (var x in (JoursFedEnPlus ?? "").Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+                    if (DateTime.TryParseExact(x.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dj)) bot.JoursFed.Add(dj);
+                    else Dire($"ATTENTION : jour de la Fed illisible dans les reglages : {x}", true);
+            }
             bot.ContratSuivant = (j, c) => Calendrier.Contrat(Calendrier.SeanceSuivante(j));
             var etat = LireEtat();
             if (etat != null && etat.RsiTenu) bot.RestaurerRsi(true, etat.EntreeRsi);
@@ -140,6 +172,97 @@ namespace Bot3en1
                 bot.RestaurerJournee(etat.RealiseJour, etat.RefRsi, etat.PlafondJournee == jt);
             else
                 bot.NouvelleJournee(prixAvantPause > 0 ? prixAvantPause : (bot.Historique.Count > 0 ? bot.Historique[^1].Cloture : 0));
+            if (ModeAPlat) PreparerModeAPlat(etat, jt);
+        }
+
+        /// <summary>Mode a plat : etat du compte (plus haut de fin de journee, solde estime, frein) et RSI(2) de nuit en cours,
+        /// repris de etat.json s'il s'agit du meme compte.</summary>
+        void PreparerModeAPlat(Etat etat, string jt)
+        {
+            double? reel = SoldeReel();
+            if (etat != null && etat.CompteNom == (Compte.Name ?? ""))
+            {
+                picFinJour = etat.PicFinJour; soldeEstime = etat.SoldeEstime;
+                nuitJournee = etat.NuitJournee ?? "";
+                if (etat.NuitTenue) bot.RestaurerNuit(true, etat.EntreeNuitES > 0 ? etat.EntreeNuitES : double.NaN);
+                if (etat.JourneeTrading == jt) { bot.RestaurerRealiseAPlat(etat.RealiseAPlat); equiteDebut = etat.EquiteDebut; }
+                if (etat.FreinJournee != null) { freinJournee = etat.FreinJournee; freinActif = etat.FreinActif; }
+            }
+            else
+            {
+                soldeEstime = reel ?? SoldeDepart;
+                picFinJour = Math.Max(SoldeDepart, soldeEstime);
+                if (etat != null && !string.IsNullOrEmpty(etat.CompteNom))
+                    Dire($"nouveau compte ({Compte.Name}) : plus haut de fin de journee repris a {picFinJour:F0} $");
+            }
+            double solde = reel ?? soldeEstime;
+            picFinJour = Math.Max(picFinJour, Math.Max(SoldeDepart, solde));
+            Dire($"mode a plat : solde {(reel.HasValue ? "" : "estime ")}{solde:F0} $, plus haut de fin de journee {picFinJour:F0} $, plancher"
+                 + $" {RegleCompte.Plancher(picFinJour, SoldeDepart, PerteMax, Blocage):F0} $"
+                 + $"{(reel.HasValue ? "" : " (solde du compte illisible : estimation du bot)")}");
+        }
+
+        // ------------------------------------------------------------------ mode a plat : compte
+        static double? LireDouble(object o, string propriete)
+        {
+            try
+            {
+                var v = o?.GetType().GetProperty(propriete)?.GetValue(o);
+                return v switch { double d => d, float f => f, decimal m => (double)m, int i => i, long l => l, _ => (double?)null };
+            }
+            catch { return null; }
+        }
+
+        /// <summary>Solde du compte donne par la plateforme (Account.Balance), lu sans en dependre a la compilation.</summary>
+        double? SoldeReel()
+        {
+            var b = LireDouble(Compte, "Balance");
+            return b.HasValue && b.Value > 0 && !double.IsNaN(b.Value) ? b : null;
+        }
+
+        /// <summary>Equite du compte : solde + gains latents des positions MNQ et MES (Position.GrossPnL.Value). null si illisible.</summary>
+        double? EquiteReelle()
+        {
+            var b = SoldeReel();
+            if (b == null) return null;
+            double ouvert = 0;
+            foreach (var p in Core.Instance.Positions)
+            {
+                if (p.Account != Compte || (p.Symbol != SymboleMNQ && p.Symbol != SymboleMES)) continue;
+                object g;
+                try { g = p.GetType().GetProperty("GrossPnL")?.GetValue(p); } catch { return null; }
+                var v = LireDouble(g, "Value");
+                if (v == null) return null;
+                ouvert += v.Value;
+            }
+            return b + ouvert;
+        }
+
+        /// <summary>Gain de la journee de trading (depuis 18 h) : equite reelle - equite de 18 h, sinon l'estimation du bot.</summary>
+        double ValeurJour()
+        {
+            var e = EquiteReelle();
+            if (e.HasValue && equiteDebut > 0) return e.Value - equiteDebut;
+            bot.PrixES = dernierPrixES > 0 ? dernierPrixES : double.NaN;
+            return bot.ValeurJourAPlat(dernierPrix);
+        }
+
+        /// <summary>18 h : la journee qui se termine est close (positions a plat) ; solde, plus haut de fin de journee et frein
+        /// pour la seance suivante.</summary>
+        void FinDeJourneeAPlat(string jt)
+        {
+            soldeEstime += bot.RealiseAPlat;
+            double? reel = SoldeReel();
+            double solde = reel ?? soldeEstime;
+            if (solde > picFinJour) picFinJour = solde;
+            equiteDebut = reel ?? 0;
+            bool avant = freinActif;
+            freinActif = RegleCompte.Frein(solde, picFinJour, SoldeDepart, PerteMax, Blocage, Frein);
+            freinJournee = jt;
+            double coussin = RegleCompte.Coussin(solde, picFinJour, SoldeDepart, PerteMax, Blocage);
+            if (freinActif != avant || freinActif)
+                Dire($"journee du {jt} : solde {(reel.HasValue ? "" : "estime ")}{solde:F0} $, coussin {coussin:F0} $ -> "
+                     + (freinActif ? $"FREIN : zone sur MES (compte a {picFinJour - solde:F0} $ sous son plus haut)" : "zone sur MNQ"));
         }
 
         /// <summary>18 h (New York) : nouvelle journee de trading de la firme (gain du jour remis a zero, plafond leve, RSI(2)
@@ -149,6 +272,7 @@ namespace Bot3en1
             var jt = JourneeTrading(ny);
             if (jt == journeeTrading || ny.TimeOfDay < TimeSpan.FromHours(18)) return;
             journeeTrading = jt;
+            if (ModeAPlat && bot != null) FinDeJourneeAPlat(jt.ToString("yyyy-MM-dd"));
             bot?.NouvelleJournee(prixAvantPause > 0 ? prixAvantPause : dernierPrix);
             etatASauver = true;
         }
@@ -161,7 +285,21 @@ namespace Bot3en1
             derniereMinute = Calendrier.JourCourt(jour) ? (Calendrier.Ferie(jour) ? 209 : 224) : Moteur.N - 1;
             if (Calendrier.JourFerme(jour)) { seanceFinie = true; return; }
             for (int i = 0; i < Moteur.N; i++) barres[i] = new Barre();
+            if (ModeAPlat)
+            {
+                string js = jour.ToString("yyyy-MM-dd");
+                if (freinJournee != js)                  // frein pas encore decide a 18 h (demarrage du bot) : decide maintenant
+                {
+                    double solde = SoldeReel() ?? soldeEstime;
+                    picFinJour = Math.Max(picFinJour, solde);
+                    freinActif = RegleCompte.Frein(solde, picFinJour, SoldeDepart, PerteMax, Blocage, Frein);
+                    freinJournee = js;
+                }
+                bot.ZoneSurMES = freinActif;
+            }
             bot.DebutSeance(jour, Calendrier.Contrat(jour), derniereMinute);
+            if (ModeAPlat && bot.JourFed) Dire("jour d'annonce de la Fed : pas de zone aujourd'hui (le RSI(2) de nuit continue)");
+            if (ModeAPlat && bot.ZoneSurMES && bot.ZoneActive) Dire("frein actif : la zone trade sur MES aujourd'hui");
             decisionRsiFaite = seanceFinie = false;
             prochaineMinute = 0;
             int m = Minute(maintenant);
@@ -210,10 +348,15 @@ namespace Bot3en1
                 PasserJournee(t);                        // une transaction de 18 h peut arriver avant le tic de l'horloge
                 // hors seance (apres la fin de la seance, ou avant 9 h 30) : plafond du jour verifie a chaque transaction
                 bool horsSeance = seanceFinie || t.Date != jour || Minute(t) < 0;
-                if (horsSeance && PlafondJour > 0 && bot != null && bot.VerifierPlafondHorsSeance(last.Price))
+                if (horsSeance && !ModeAPlat && PlafondJour > 0 && bot != null && bot.VerifierPlafondHorsSeance(last.Price))
                     fermerHorsSeance = plafondANoter = true;
                 if (t.Date == jour) Ajouter(t, last.Price, last.Size, last.AggressorFlag);
             }
+        }
+
+        void SurTransactionES(Symbol s, Last last)
+        {
+            lock (verrou) { dernierPrixES = last.Price; dernierTickES = Maintenant(); }
         }
 
         void Ajouter(DateTime t, double prix, double taille, AggressorFlag cote)
@@ -251,8 +394,13 @@ namespace Bot3en1
                     }
                     if (fermerHorsSeance && bot != null)
                     {
-                        if (PositionReelle() == bot.PositionNette) fermerHorsSeance = false;
+                        if (PositionReelle(SymboleMNQ) == bot.PositionNette) fermerHorsSeance = false;
                         else Aligner();
+                    }
+                    if (ModeAPlat && bot != null)
+                    {
+                        TicAPlat(maintenant);
+                        if (seanceFinie) { Aligner(); return; }
                     }
                     if (seanceFinie) return;
                     if (File.Exists(Path.Combine(Dossier, "STOP"))) { ToutFermer("fichier STOP present"); return; }
@@ -276,8 +424,45 @@ namespace Bot3en1
             catch (Exception e) { Dire($"ERREUR : {e.Message}", true); }
         }
 
+        /// <summary>Mode a plat, a chaque tic : RSI(2) de nuit (achat a 18 h, vente a 9 h 30), plafond et limite de perte du jour.</summary>
+        void TicAPlat(DateTime maintenant)
+        {
+            var tod = maintenant.TimeOfDay;
+            bot.PrixES = dernierPrixES > 0 ? dernierPrixES : double.NaN;
+            if (File.Exists(Path.Combine(Dossier, "STOP"))) { ToutFermer("fichier STOP present"); return; }
+            // vente du RSI(2) de nuit a 9 h 30
+            if (bot.RsiNuit != 0 && tod >= TimeSpan.FromMinutes(570) && tod < TimeSpan.FromHours(18))
+            {
+                foreach (var s in bot.FermerNuit(dernierPrix)) Dire(s.Texte);
+                SauverEtat();
+            }
+            // achat du RSI(2) de nuit : de 18 h a 9 h 25, si la seance qui suit existe et que le MES cote
+            string jt = journeeTrading.ToString("yyyy-MM-dd");
+            bool nuit = tod >= TimeSpan.FromHours(18) || tod < TimeSpan.FromMinutes(565);
+            bool esVivant = dernierPrixES > 0 && (Maintenant() - dernierTickES).TotalMinutes < 5;
+            if (bot.NuitVoulue && bot.RsiNuit == 0 && !bot.Arret && nuit && nuitJournee != jt && !Calendrier.JourFerme(journeeTrading) && esVivant)
+            {
+                foreach (var s in bot.OuvrirNuit(dernierPrix)) Dire(s.Texte);
+                nuitJournee = jt;
+                SauverEtat();
+            }
+            // plafond (compte finance) et limite de perte du jour, sur la valeur reelle du compte
+            if (!bot.Arret && (PlafondJour > 0 || LimitePerteJour > 0) && (bot.ZoneTenue != 0 || bot.RsiNuit != 0 || bot.RealiseAPlat != 0))
+            {
+                double v = ValeurJour();
+                string raison = PlafondJour > 0 && v >= PlafondJour ? $"plafond du jour atteint ({v:F0} $)"
+                              : LimitePerteJour > 0 && v <= -LimitePerteJour ? $"limite de perte du jour atteinte ({v:F0} $)" : null;
+                if (raison != null)
+                {
+                    foreach (var s in bot.ArreterJournee(dernierPrix, raison)) Dire(s.Texte, raison.StartsWith("limite"));
+                    SauverEtat();
+                }
+            }
+        }
+
         void FermerMinute(int m, bool executer)
         {
+            if (ModeAPlat) bot.PrixES = dernierPrixES > 0 ? dernierPrixES : double.NaN;
             var signaux = bot.MinuteFermee(m, barres[m]);
             foreach (var s in signaux)
                 if (executer) Dire(s.Texte);
@@ -301,11 +486,11 @@ namespace Bot3en1
         }
 
         // ------------------------------------------------------------------ ordres
-        int PositionReelle()
+        int PositionReelle(Symbol symbole)
         {
             int q = 0;
             foreach (var p in Core.Instance.Positions)
-                if (p.Account == Compte && p.Symbol == SymboleMNQ)
+                if (p.Account == Compte && p.Symbol == symbole)
                     q += (p.Side == Side.Buy ? 1 : -1) * (int)Math.Round(p.Quantity);
             return q;
         }
@@ -313,32 +498,45 @@ namespace Bot3en1
         void Aligner()
         {
             if (bot == null) return;
-            if ((Maintenant() - ordreEnAttenteDepuis).TotalSeconds < 15) return;     // laisser le temps a l'ordre precedent
-            int voulu = bot.PositionNette, reel = PositionReelle(), ecart = voulu - reel;
+            if (!ModeAPlat) { AlignerSymbole(SymboleMNQ, "MNQ", bot.PositionNette, ref ordreEnAttenteDepuis); return; }
+            AlignerSymbole(SymboleMNQ, "MNQ", bot.PositionMNQ, ref ordreEnAttenteDepuis);
+            AlignerSymbole(SymboleMES, "MES", bot.PositionMES, ref ordreMESEnAttenteDepuis);
+        }
+
+        void AlignerSymbole(Symbol symbole, string nom, int voulu, ref DateTime attente)
+        {
+            if ((Maintenant() - attente).TotalSeconds < 15) return;     // laisser le temps a l'ordre precedent
+            int reel = PositionReelle(symbole), ecart = voulu - reel;
             if (ecart == 0) return;
             var r = Core.Instance.PlaceOrder(new PlaceOrderRequestParameters
             {
-                Account = Compte, Symbol = SymboleMNQ, Side = ecart > 0 ? Side.Buy : Side.Sell,
+                Account = Compte, Symbol = symbole, Side = ecart > 0 ? Side.Buy : Side.Sell,
                 Quantity = Math.Abs(ecart), OrderTypeId = OrderType.Market
             });
-            ordreEnAttenteDepuis = Maintenant();
+            attente = Maintenant();
             if (r.Status == TradingOperationResultStatus.Failure)
-                Dire($"ERREUR d'ordre ({(ecart > 0 ? "achat" : "vente")} {Math.Abs(ecart)} MNQ) : {r.Message}", true);
+                Dire($"ERREUR d'ordre ({(ecart > 0 ? "achat" : "vente")} {Math.Abs(ecart)} {nom}) : {r.Message}", true);
             else
-                Dire($"ordre envoye : {(ecart > 0 ? "achat" : "vente")} {Math.Abs(ecart)} MNQ (position {reel} -> {voulu})");
+                Dire($"ordre envoye : {(ecart > 0 ? "achat" : "vente")} {Math.Abs(ecart)} {nom} (position {reel} -> {voulu})");
         }
 
         void ToutFermer(string raison)
         {
-            int reel = PositionReelle();
-            if (reel != 0 && (Maintenant() - ordreEnAttenteDepuis).TotalSeconds >= 15)
+            FermerSymbole(SymboleMNQ, ref ordreEnAttenteDepuis, raison);
+            if (ModeAPlat) FermerSymbole(SymboleMES, ref ordreMESEnAttenteDepuis, raison);
+        }
+
+        void FermerSymbole(Symbol symbole, ref DateTime attente, string raison)
+        {
+            int reel = PositionReelle(symbole);
+            if (reel != 0 && (Maintenant() - attente).TotalSeconds >= 15)
             {
                 Core.Instance.PlaceOrder(new PlaceOrderRequestParameters
                 {
-                    Account = Compte, Symbol = SymboleMNQ, Side = reel > 0 ? Side.Sell : Side.Buy,
+                    Account = Compte, Symbol = symbole, Side = reel > 0 ? Side.Sell : Side.Buy,
                     Quantity = Math.Abs(reel), OrderTypeId = OrderType.Market
                 });
-                ordreEnAttenteDepuis = Maintenant();
+                attente = Maintenant();
                 Dire($"tout ferme : {raison}", true);
             }
         }
@@ -354,6 +552,17 @@ namespace Bot3en1
             public double RealiseJour { get; set; }         // gain deja realise dans cette journee de trading
             public double RefRsi { get; set; }              // reference du RSI(2) pour le gain du jour
             public double PrixAvantPause { get; set; }      // dernier prix du NQ avant 17 h
+            // mode a plat
+            public string CompteNom { get; set; }
+            public bool NuitTenue { get; set; }
+            public double EntreeNuitES { get; set; }
+            public string NuitJournee { get; set; }
+            public double PicFinJour { get; set; }
+            public double SoldeEstime { get; set; }
+            public double EquiteDebut { get; set; }
+            public double RealiseAPlat { get; set; }
+            public string FreinJournee { get; set; }
+            public bool FreinActif { get; set; }
         }
 
         Etat LireEtat()
@@ -368,11 +577,20 @@ namespace Bot3en1
             var e = new Etat { Jour = jour.ToString("yyyy-MM-dd"), RsiTenu = bot.Rsi == 1, EntreeRsi = bot.EntreeRsi,
                                PlafondJournee = bot.Arret ? journeeTrading.ToString("yyyy-MM-dd") : null,
                                JourneeTrading = journeeTrading.ToString("yyyy-MM-dd"), RealiseJour = bot.RealiseJour,
-                               RefRsi = bot.RefRsi, PrixAvantPause = prixAvantPause };
+                               RefRsi = bot.RefRsi, PrixAvantPause = prixAvantPause,
+                               CompteNom = Compte?.Name ?? "", NuitTenue = bot.RsiNuit == 1, EntreeNuitES = Fini(bot.EntreeNuitES),
+                               NuitJournee = nuitJournee, PicFinJour = picFinJour, SoldeEstime = soldeEstime, EquiteDebut = equiteDebut,
+                               RealiseAPlat = Fini(bot.RealiseAPlat), FreinJournee = freinJournee, FreinActif = freinActif };
             File.WriteAllText(Path.Combine(Dossier, "etat.json"), JsonSerializer.Serialize(e));
         }
 
-        string EtatTexte() => bot == null ? "" :
+        static double Fini(double v) => double.IsNaN(v) || double.IsInfinity(v) ? 0 : v;      // JSON : pas de NaN
+
+        string EtatTexte() => bot == null ? "" : ModeAPlat ?
+            $"Positions voulues : MNQ {bot.PositionMNQ}, MES {bot.PositionMES} (zone {bot.ZoneTenue}{(bot.ZoneSurMES ? " sur MES, frein" : "")},"
+            + $" RSI(2) de nuit {bot.RsiNuit}{(bot.NuitVoulue ? ", achat de nuit voulu" : "")})"
+            + $"{(bot.ZoneActive ? "" : bot.JourFed ? " ; jour de la Fed, pas de zone" : " ; zone inactive aujourd'hui")}"
+            + $"{(bot.Arret ? " ; plafond ou limite du jour atteint, plus de trade jusqu'a 18 h" : "")}" :
             $"Position voulue {bot.PositionNette} MNQ (zone {bot.ZoneTenue}, RSI(2) {bot.Rsi}){(bot.Rsi == 1 ? $", RSI(2) achete a {bot.EntreeRsi:F2}" : "")}" +
             $"{(bot.ZoneActive ? "" : " ; zone inactive aujourd'hui")}" +
             $"{(bot.Arret ? " ; plafond du jour atteint, plus de trade jusqu'a 18 h" : "")}";

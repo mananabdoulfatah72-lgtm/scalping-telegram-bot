@@ -92,7 +92,94 @@ namespace Bot3en1
         public double RealiseJour { get; private set; }   // gain realise de la journee de trading (depuis 18 h la veille)
         public readonly List<Signal> Journal = new List<Signal>();
 
+        // ------------------------------------------------------------------ mode a plat (Bulenox, FundedNext : vagues 10-11)
+        // Le compte oblige a etre a plat chaque jour : le RSI(2) ne se tient que la nuit, sur MES (achat a 18 h si la regle le
+        // veut a 15 h 50, vente a 9 h 30) ; la zone passe sur MES les jours ou l'hote active le frein ; pas de zone les jours
+        // d'annonce de la Fed. Le plafond du jour est gere par l'hote (sur la valeur reelle du compte). Comptes du mode a plat
+        // en $ du compte : MNQ 2 $ par point du NQ, MES 5 $ par point de l'ES, frais 3 $ (MNQ) et 4,50 $ (MES) par aller-retour.
+        public bool ModeAPlat = false;
+        public HashSet<DateTime> JoursFed = new HashSet<DateTime>();
+        public bool ZoneSurMES;                      // fixe par l'hote au debut de la seance (frein)
+        public double PrixES = double.NaN;           // dernier prix de l'ES connu de l'hote
+        public bool JourFed { get; private set; }
+        public bool NuitVoulue { get; private set; } // regle du RSI(2) a 15 h 50 : RSI(2) de nuit a acheter a 18 h
+        public int RsiNuit { get; private set; }     // RSI(2) de nuit tenu (1 MES par unite de Taille)
+        public double EntreeNuitES { get; private set; } = double.NaN;
+        double entreeZoneES = double.NaN;
+        public double RealiseAPlat { get; private set; }   // gain realise de la journee de trading, en $ du compte
+
         public Moteur(List<Resume> historique) { Historique = historique; }
+
+        /// <summary>Mode a plat : position voulue en MNQ (la zone, sauf les jours de frein).</summary>
+        public int PositionMNQ => ModeAPlat ? (ZoneSurMES ? 0 : ZoneTenue * Taille) : PositionNette;
+
+        /// <summary>Mode a plat : position voulue en MES (RSI(2) de nuit, plus la zone les jours de frein).</summary>
+        public int PositionMES => ModeAPlat ? ((ZoneSurMES ? ZoneTenue : 0) + RsiNuit) * Taille : 0;
+
+        static double Es(double prix, double entree) => double.IsNaN(prix) || double.IsNaN(entree) ? 0 : prix - entree;
+
+        /// <summary>Mode a plat : gain de la journee de trading (realise + positions ouvertes), en $ du compte.</summary>
+        public double ValeurJourAPlat(double prixNQ)
+        {
+            double v = RealiseAPlat;
+            if (ZoneTenue != 0) v += ZoneSurMES ? Taille * 5 * ZoneTenue * Es(PrixES, entreeZoneES) : Taille * 2 * ZoneTenue * (prixNQ - EntreeZone);
+            if (RsiNuit != 0) v += Taille * 5 * Es(PrixES, EntreeNuitES);
+            return v;
+        }
+
+        /// <summary>Mode a plat, 18 h (ou plus tard dans la nuit si le bot demarre) : achat du RSI(2) de nuit sur MES si la
+        /// regle le veut. prixNQ : pour le journal.</summary>
+        public List<Signal> OuvrirNuit(double prixNQ)
+        {
+            var s = new List<Signal>();
+            if (!ModeAPlat || !NuitVoulue || RsiNuit != 0 || Arret) return s;
+            RsiNuit = 1; EntreeNuitES = PrixES;
+            RealiseAPlat -= Taille * 2.25;
+            s.Add(new Signal { Minute = -1, Source = "rsi2-nuit", PrixReference = prixNQ,
+                               Texte = $"RSI(2) de nuit : achat {Taille} MES (ES {PrixES:F2}, NQ {prixNQ:F2}), vente demain 9h30" });
+            Journal.AddRange(s);
+            return s;
+        }
+
+        /// <summary>Mode a plat, 9 h 30 : vente du RSI(2) de nuit.</summary>
+        public List<Signal> FermerNuit(double prixNQ)
+        {
+            var s = new List<Signal>();
+            if (RsiNuit == 0) return s;
+            RealiseAPlat += Taille * (5 * Es(PrixES, EntreeNuitES) - 2.25);
+            RsiNuit = 0;
+            s.Add(new Signal { Minute = 0, Source = "rsi2-nuit", PrixReference = prixNQ,
+                               Texte = $"RSI(2) de nuit : vente {Taille} MES a 9h30 (ES {PrixES:F2}, entree {EntreeNuitES:F2})" });
+            Journal.AddRange(s);
+            return s;
+        }
+
+        /// <summary>Mode a plat : plafond (ou limite de perte) du jour atteint, constate par l'hote. Tout est ferme, plus rien
+        /// jusqu'a 18 h.</summary>
+        public List<Signal> ArreterJournee(double prixNQ, string raison)
+        {
+            var s = new List<Signal>();
+            if (Arret) return s;
+            Arret = true;
+            if (ZoneTenue != 0)
+            {
+                RealiseAPlat += ZoneSurMES ? Taille * (5 * ZoneTenue * Es(PrixES, entreeZoneES) - 4.5) : Taille * (2 * ZoneTenue * (prixNQ - EntreeZone) - 3.0);
+                ZoneTenue = 0;
+            }
+            if (RsiNuit != 0) { RealiseAPlat += Taille * (5 * Es(PrixES, EntreeNuitES) - 2.25); RsiNuit = 0; }
+            s.Add(new Signal { Minute = -1, Source = "plafond", PrixReference = prixNQ, Texte = $"{raison} : tout ferme jusqu'a 18 h" });
+            Journal.AddRange(s);
+            return s;
+        }
+
+        /// <summary>Reprend le RSI(2) de nuit enregistre par le bot (etat.json) apres un redemarrage pendant la nuit.</summary>
+        public void RestaurerNuit(bool tenue, double entreeES)
+        {
+            RsiNuit = tenue ? 1 : 0; EntreeNuitES = entreeES;
+        }
+
+        /// <summary>Gain deja realise de la journee de trading (mode a plat), repris apres un redemarrage.</summary>
+        public void RestaurerRealiseAPlat(double v) { RealiseAPlat = v; }
 
         public int PositionNette => (ZoneTenue + Rsi) * Taille;
 
@@ -122,6 +209,8 @@ namespace Bot3en1
             bool assez = completes.Count == JOURS_MOYENNE;
             for (int k = 0; k < NMOMENTS; k++) Sigma[k] = assez ? completes.Average(r => r.Mv[k]) : double.NaN;
             ZoneActive = assez && !double.IsNaN(Veille) && !Calendrier.JourCourt(jour) && !Calendrier.JourFerme(jour);
+            JourFed = ModeAPlat && JoursFed != null && JoursFed.Contains(jour.Date);
+            if (JourFed) ZoneActive = false;                 // vague 9 : pas de zone les jours d'annonce de la Fed
             MinuteDecisionRsi = Calendrier.Ferie(jour) ? -1 : derniereMinute - 9;
         }
 
@@ -130,7 +219,7 @@ namespace Bot3en1
         /// avant la pause de 17 h). Comme static50k/ : le gain du jour est mesure depuis la fin de la journee d'avant.</summary>
         public void NouvelleJournee(double prixReference)
         {
-            RealiseJour = 0; Arret = false;
+            RealiseJour = 0; Arret = false; RealiseAPlat = 0;
             if (Rsi != 0 && prixReference > 0) RefRsi = prixReference;
         }
 
@@ -223,6 +312,7 @@ namespace Bot3en1
                 if (garde && !Arret)
                 {
                     ZoneTenue = sens; EntreeZone = p;
+                    if (ModeAPlat) entreeZoneES = PrixES;
                     s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p,
                         Texte = $"{(sens > 0 ? "achat" : "vente")} {h} a {p:F2} (delta 30 min {d:+0;-0;0}, GARDE)" });
                 }
@@ -236,6 +326,8 @@ namespace Bot3en1
         {
             if (ZoneTenue != 0)
             {
+                if (ModeAPlat)
+                    RealiseAPlat += ZoneSurMES ? Taille * (5 * ZoneTenue * Es(PrixES, entreeZoneES) - 4.5) : Taille * (2 * ZoneTenue * (p - EntreeZone) - 3.0);
                 RealiseJour += Taille * (ZoneTenue * (p - EntreeZone) - 1.5) * 2;
                 s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p, Texte = $"{quoi} {Heure(m)} a {p:F2}" });
             }
@@ -261,6 +353,17 @@ namespace Bot3en1
             if (RsiRegle && cx > m5) RsiRegle = false;
             else if (!RsiRegle && cx > m200 && rsi < 10) RsiRegle = true;
             if (roule) RsiRegle = false;
+            if (ModeAPlat)
+            {
+                // a plat chaque jour : pas de position a 15 h 50 ; RSI(2) de nuit sur MES (achat a 18 h, vente a 9 h 30) tant
+                // que la regle le veut (vagues 4 et 10, « A3 »)
+                NuitVoulue = RsiRegle;
+                s.Add(new Signal { Minute = MinuteDecisionRsi, Source = "rsi2-decision", PrixReference = prixOuverture,
+                    Texte = $"RSI(2) {Heure(MinuteDecisionRsi)} : {(NuitVoulue ? "achat de nuit sur MES a 18 h" : "pas de trade cette nuit")}"
+                          + $" (cloture {cx:F2}, RSI {rsi:F1}, moyenne 200 {m200:F2}, moyenne 5 {m5:F2}{(roule ? ", changement d'echeance" : "")})" });
+                Journal.AddRange(s);
+                return s;
+            }
             if (RsiAttendSignal && !RsiRegle) RsiAttendSignal = false;
             int voulu = (RsiRegle && !RsiAttendSignal && !Arret) ? 1 : 0;
             string h = Heure(MinuteDecisionRsi);
@@ -319,6 +422,7 @@ namespace Bot3en1
         {
             ZoneVirtuelle = ZoneTenue = Rsi = 0; RealiseJour = 0; Arret = false;
             RsiAttendSignal = RsiRegle;
+            RsiNuit = 0; RealiseAPlat = 0; NuitVoulue = RsiRegle;   // mode a plat : la nuit en cours peut encore etre prise
             Journal.Clear();
         }
 
