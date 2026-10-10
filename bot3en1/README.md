@@ -161,7 +161,32 @@ dotnet run -c Release --project Bot3en1.TestAPlat
 A_PLAT=1 SANS_FILTRE=1 dotnet run -c Release --project Bot3en1.TestQuantower -- <dossier> <nq_1min.csv.gz> <agresseurs.csv.gz> 2026-04-01 2026-09-25
 ```
 
+**Revue indépendante du code (10 octobre 2026), puis corrections :**
+- **Défaut grave corrigé : le fichier STOP la nuit.** Le bot revendait puis rachetait le MES toutes les 16 secondes
+  (15 ordres en 4 minutes dans le scénario de la revue). Maintenant : un seul ordre de vente, plus rien ensuite.
+- **Plafond et limite de perte.** Ils ne se déclenchent plus sur une lecture fausse du compte (perte comptée deux fois
+  pendant qu'une position se ferme). Il faut que la valeur lue dans Quantower et l'estimation du bot soient d'accord,
+  3 secondes de suite, sans ordre envoyé dans les 10 dernières secondes.
+- **RSI(2) de nuit.** Le bot n'achète que si la décision de 15 h 50 de la séance d'avant est bien connue. Sinon, il
+  envoie une alerte au lieu d'acheter sur une décision périmée. La décision est enregistrée pour les redémarrages.
+- **Un fichier d'état par compte** (`etat_<compte>.json`) : le challenge et le Master ne s'écrasent plus.
+- **Nouveau réglage « plus haut de fin de journée déjà atteint »**, pour un compte qui a déjà tradé.
+- **Détails :**
+  - le gain du jour n'est plus compté deux fois après un redémarrage en séance ;
+  - le solde estimé se recale sur le vrai solde ;
+  - une alerte part si le flux du MES manque à l'heure de l'achat de nuit.
+- **Revérifié après les corrections :**
+  - ancien mode identique, octet pour octet ;
+  - mêmes 19 nuits que la recherche ;
+  - à plat chaque jour, 0 erreur ;
+  - 21 contrôles du moteur sur 21 ;
+  - scénarios de la revue repassés (STOP, redémarrage à 2 h, fausse lecture de perte).
+
 **Limites :**
+- Si le bot est éteint pendant toute une séance avec un MES de nuit ouvert, il le revend au redémarrage s'il est entre
+  9 h 30 et 18 h, sinon seulement le lendemain à 9 h 30.
+- Si le PC dort à 18 h, la nouvelle journée ne commence qu'au tic suivant après 18 h. Une nuit sans tic après 18 h fait
+  manquer l'achat de nuit.
 - La lecture du solde (`Account.Balance`) et des gains latents (`Position.GrossPnL`) passe par réflexion, pour ne pas
   bloquer la compilation si Quantower les nomme autrement. Au premier lancement, vérifier dans le journal que le message
   « mode a plat : solde ... » donne le vrai solde, et non « solde estimé ».

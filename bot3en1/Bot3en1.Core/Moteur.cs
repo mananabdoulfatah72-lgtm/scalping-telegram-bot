@@ -103,6 +103,9 @@ namespace Bot3en1
         public double PrixES = double.NaN;           // dernier prix de l'ES connu de l'hote
         public bool JourFed { get; private set; }
         public bool NuitVoulue { get; private set; } // regle du RSI(2) a 15 h 50 : RSI(2) de nuit a acheter a 18 h
+        /// <summary>Seance de la derniere decision du RSI(2) (regle mise a jour), dans les deux modes : l'hote n'achete le RSI(2)
+        /// de nuit que si cette decision est celle de la seance d'avant (sinon elle est perimee).</summary>
+        public DateTime JourDecision { get; private set; }
         public int RsiNuit { get; private set; }     // RSI(2) de nuit tenu (1 MES par unite de Taille)
         public double EntreeNuitES { get; private set; } = double.NaN;
         double entreeZoneES = double.NaN;
@@ -176,6 +179,13 @@ namespace Bot3en1
         public void RestaurerNuit(bool tenue, double entreeES)
         {
             RsiNuit = tenue ? 1 : 0; EntreeNuitES = entreeES;
+        }
+
+        /// <summary>Decision du RSI(2) de nuit enregistree par le bot (etat.json) : reprise si elle est plus recente que celle du
+        /// rejeu (historique en retard, rattrapage impossible).</summary>
+        public void RestaurerDecisionNuit(bool voulue, DateTime jour)
+        {
+            if (jour > JourDecision) { NuitVoulue = voulue; JourDecision = jour; }
         }
 
         /// <summary>Gain deja realise de la journee de trading (mode a plat), repris apres un redemarrage.</summary>
@@ -353,6 +363,7 @@ namespace Bot3en1
             if (RsiRegle && cx > m5) RsiRegle = false;
             else if (!RsiRegle && cx > m200 && rsi < 10) RsiRegle = true;
             if (roule) RsiRegle = false;
+            JourDecision = Jour;
             if (ModeAPlat)
             {
                 // a plat chaque jour : pas de position a 15 h 50 ; RSI(2) de nuit sur MES (achat a 18 h, vente a 9 h 30) tant
