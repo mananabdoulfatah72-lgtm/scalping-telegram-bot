@@ -1,0 +1,8 @@
+Bot (filtre simule) : 9,380 $/an, Sharpe 2.04, baisse max 5,199 $ ; sans filtre 6,499 $/an, Sharpe 1.33
+Permutation : 14 400 bots, 100% gagnants, Sharpe median 0.98, bot = 1.33 (rang 99%)
+PBO : bots 30%, zones 28%, RSI(2) 48%
+Sharpe degonfle (sans filtre) : N=1 100.0%, N grille 99.8%, N effectif 19 -> 100.0%, N=800 000 99.1%
+Hors echantillon : meilleur bot 2012-2021 Sharpe 1.52 -> 2023-2026 1.35 ; bot 1.29 -> 1.40 ; correlation des rangs 0.30
+Walk-forward (3 ans, 12 mois) : 5,829 $/an, Sharpe 1.06, efficacite 63% ; bot fixe 6,943 $/an ; bot moyen de la grille 5,425 $/an
+Permutation : zone p = 0.0000 (77,690 $ contre -9,965 $ au hasard) ; nuits p = 0.0003 (19,874 $ contre 3,918 $) ; baisse max reelle 5,199 $, melanges : mediane 4,664 $, 95 % 6,873 $
+Portefeuille : meilleur Sharpe 2012-2021 = zone 0.4, nuit 0.5, tendance 0.125 -> Sharpe 2023-2026 2.07 ; bot (1, 1, 0) 2.04 ; correlation zone/nuit 0.02, zone/tendance -0.08
