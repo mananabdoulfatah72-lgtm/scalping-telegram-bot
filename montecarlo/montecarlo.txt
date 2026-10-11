@@ -1,0 +1,11 @@
+Monte Carlo Bulenox 50K : 4000 achats par scenario, 24 mois chacun, blocs de 21 seances ; frein MES sous 1,750 $ de coussin, plafond 500 $/jour sur le Master, pas de zone les jours de la Fed.
+
+Toute l'histoire / filtre aussi bon qu'en 2026 : valide 89% (mois 4.0), challenge perdu 11%, Master perdu 12%, 1 retrait ou plus 76%, 3 retraits 64%, net median +3,709 $, moyen +2,677 $, achats perdants 24%
+Toute l'histoire / filtre deux fois plus faible : valide 82% (mois 4.5), challenge perdu 17%, Master perdu 18%, 1 retrait ou plus 62%, 3 retraits 46%, net median +2,433 $, moyen +2,023 $, achats perdants 38%
+Toute l'histoire / filtre aucun filtre : valide 67% (mois 4.5), challenge perdu 32%, Master perdu 26%, 1 retrait ou plus 42%, 3 retraits 28%, net median -19 $, moyen +1,281 $, achats perdants 58%
+Regime recent / filtre aussi bon qu'en 2026 : valide 93% (mois 4.7), challenge perdu 6%, Master perdu 6%, 1 retrait ou plus 83%, 3 retraits 69%, net median +3,741 $, moyen +2,892 $, achats perdants 17%
+Regime recent / filtre deux fois plus faible : valide 87% (mois 5.3), challenge perdu 11%, Master perdu 10%, 1 retrait ou plus 68%, 3 retraits 48%, net median +2,583 $, moyen +2,161 $, achats perdants 32%
+Regime recent / filtre aucun filtre : valide 70% (mois 5.6), challenge perdu 28%, Master perdu 17%, 1 retrait ou plus 45%, 3 retraits 27%, net median -19 $, moyen +1,291 $, achats perdants 55%
+Annee 2025 / filtre aussi bon qu'en 2026 : valide 50% (mois 6.2), challenge perdu 44%, Master perdu 17%, 1 retrait ou plus 15%, 3 retraits 5%, net median -19 $, moyen +282 $, achats perdants 85%
+Annee 2025 / filtre deux fois plus faible : valide 38% (mois 6.7), challenge perdu 58%, Master perdu 16%, 1 retrait ou plus 7%, 3 retraits 2%, net median -19 $, moyen +96 $, achats perdants 93%
+Annee 2025 / filtre aucun filtre : valide 7% (mois 4.3), challenge perdu 93%, Master perdu 6%, 1 retrait ou plus 0%, 3 retraits 0%, net median -19 $, moyen -28 $, achats perdants 100%
