@@ -1,0 +1,37 @@
+
+## Legacy option 2 (2 500 $, limite du jour 1 100 $)
+
+| Achats de | Filtre | Validé en 30 jours | Perdu | Expiré sans valider | Séances pour valider (médiane) |
+|---|---|---|---|---|---|
+| 2012 - aout 2026 | aussi bon qu'en 2026 | 5 % | 1 % | 95 % | 17 |
+| 2012 - aout 2026 | deux fois plus faible | 4 % | 1 % | 96 % | 17 |
+| 2012 - aout 2026 | aucun | 3 % | 1 % | 96 % | 17 |
+| 2023 - aout 2026 | aussi bon qu'en 2026 | 2 % | 0 % | 98 % | 17 |
+| 2023 - aout 2026 | deux fois plus faible | 2 % | 0 % | 98 % | 17 |
+| 2023 - aout 2026 | aucun | 1 % | 0 % | 99 % | 15 |
+| 2025 | aussi bon qu'en 2026 | 1 % | 0 % | 99 % | 12 |
+| 2025 | deux fois plus faible | 0 % | 0 % | 100 % | - |
+| 2025 | aucun | 0 % | 0 % | 100 % | - |
+| 2026 (jan - aout) | aussi bon qu'en 2026 | 6 % | 0 % | 94 % | 15 |
+| 2026 (jan - aout) | deux fois plus faible | 4 % | 0 % | 96 % | 14 |
+| 2026 (jan - aout) | aucun | 1 % | 0 % | 99 % | 8 |
+
+## Momentum EOD (2 250 $, limite du jour 1 200 $*)
+
+| Achats de | Filtre | Validé en 30 jours | Perdu | Expiré sans valider | Séances pour valider (médiane) |
+|---|---|---|---|---|---|
+| 2012 - aout 2026 | aussi bon qu'en 2026 | 5 % | 1 % | 95 % | 17 |
+| 2012 - aout 2026 | deux fois plus faible | 4 % | 1 % | 95 % | 17 |
+| 2012 - aout 2026 | aucun | 3 % | 1 % | 96 % | 17 |
+| 2023 - aout 2026 | aussi bon qu'en 2026 | 2 % | 0 % | 98 % | 17 |
+| 2023 - aout 2026 | deux fois plus faible | 2 % | 0 % | 98 % | 17 |
+| 2023 - aout 2026 | aucun | 1 % | 0 % | 99 % | 15 |
+| 2025 | aussi bon qu'en 2026 | 1 % | 0 % | 99 % | 12 |
+| 2025 | deux fois plus faible | 0 % | 0 % | 100 % | - |
+| 2025 | aucun | 0 % | 0 % | 100 % | - |
+| 2026 (jan - aout) | aussi bon qu'en 2026 | 6 % | 0 % | 94 % | 15 |
+| 2026 (jan - aout) | deux fois plus faible | 4 % | 0 % | 96 % | 14 |
+| 2026 (jan - aout) | aucun | 1 % | 0 % | 99 % | 8 |
+
+Séances dans 30 jours calendaires : médiane 22 (de 18 à 22).
+* Les tables gardent la limite du jour du bot à 1 100 $ ; Momentum autorise 1 200 $ : un peu prudent.

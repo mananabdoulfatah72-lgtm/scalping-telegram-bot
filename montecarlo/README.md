@@ -1,5 +1,11 @@
 # Monte Carlo du bot sur Bulenox 50K (11 octobre 2026)
 
+> **Correction du 12 octobre 2026 : les chiffres ci-dessous supposent un challenge sans limite de temps. Ce n'est plus
+> le cas chez Bulenox.** Depuis le 17 août 2026, d'après plusieurs sites et l'aide de Bulenox sur Momentum (à
+> confirmer au panier), le challenge est un achat unique valable 30 jours calendaires (Legacy Qualification et
+> Momentum), et un reset ne prolonge pas ce délai. Avec 30 jours (22 séances), le bot ne valide qu'environ **5 % des
+> challenges** (`trente_jours.py`, plus bas). Ces chiffres ne justifient donc pas un achat Bulenox aujourd'hui.
+
 Page : `monte_carlo_bulenox.html` (artefact). La version 2 (plus bas) met le moteur du bot dans la page.
 
 Demande de l'utilisateur : une simulation Monte Carlo visuelle du bot 3 en 1, avec ses réglages Bulenox, et toutes ses
@@ -101,3 +107,25 @@ mêmes 10 tirages que le moteur exact, la page redonne les 9 scénarios de contr
 - épingle pour comparer deux réglages.
 
 Construction : `python3 tables.py && python3 test_v2.py && python3 construire_v2.py && node test_js.mjs`.
+
+## Correction : 30 jours pour valider (12 octobre 2026)
+
+`trente_jours.py` prend chaque jour d'achat possible de l'histoire, dans le vrai calendrier et sans tirage. Il
+utilise les 21 tirages du filtre et laisse au bot les séances des 30 jours calendaires suivants (22 en médiane). Le
+moteur est le moteur journalier exact (`moteur_jour.py`). Résultats : `trente_jours.txt`.
+
+| Achats de | Filtre aussi bon qu'en 2026 | Deux fois plus faible | Sans filtre |
+|---|---|---|---|
+| 2012 - août 2026 | 5 % validés | 4 % | 3 % |
+| 2023 - août 2026 | 2 % | 2 % | 1 % |
+| 2025 | 1 % | 0 % | 0 % |
+| 2026 (janvier - août) | 6 % | 4 % | 1 % |
+
+- **Le reste n'est presque jamais perdu : il expire.**
+  - Perdus : 0 à 1 %. Expirés sans valider : 94 à 100 %.
+  - Le bot gagne environ 780 $ par mois en moyenne, et l'objectif est de 3 000 $.
+- **Les règles Momentum EOD 50K ne changent rien** (perte max 2 250 $, limite du jour 1 200 $, frein à 1 500 $) :
+  mêmes pourcentages.
+- **Contrôle sans limite de temps** (mêmes jours d'achat, achats tous les 3 jours, filtre comme 2026) :
+  - en 2 ans, 92 % validés en 82 séances médianes, comme le Monte Carlo (89 %, 4 mois) ;
+  - selon le délai laissé : 5 % en 30 jours, 19 % en 2 mois, 35 % en 3 mois, 49 % en 4 mois, 68 % en 6 mois.
