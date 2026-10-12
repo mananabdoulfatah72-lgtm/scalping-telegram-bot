@@ -8,6 +8,7 @@ vague4/moteur4 seance par seance), Bulenox Legacy 50K, challenge de 30 jours pui
 Usage : python3 donnees30.py [lettre de la vague 13 retenue, A par defaut]. Ecrit donnees30.json."""
 import json
 import multiprocessing as mp
+import pickle
 import sys
 import time
 from pathlib import Path
@@ -150,7 +151,7 @@ def exemple(d, q, c_ch, lettre, t=0):
         for k in range(z_deb[j], z_fin[j]):
             me, ms, se = int(z_me[k]), int(z_ms[k]), int(z_sens[k])
             if z_garde[k] != 1:
-                raison = "jour de la Fed" if not pf[j] else "écarté par le filtre delta"
+                raison = "jour de la Fed" if not pf[k] else "écarté par le filtre delta"
                 trades.append(dict(type="ecarte", sens="achat" if se > 0 else "vente", entree=heure(me), raison=raison))
                 continue
             if zi == 0:
@@ -212,6 +213,16 @@ def gains_seance():
 
 def main():
     t0 = time.time()
+    cache = ICI / f"cache30_{RETENUE}.pkl"
+    if cache.exists():
+        stats, par_an, ech = pickle.loads(cache.read_bytes())
+    else:
+        stats, par_an, ech = calculer(t0)
+        cache.write_bytes(pickle.dumps((stats, par_an, ech)))
+    finir(t0, stats, par_an, ech)
+
+
+def calculer(t0):
     taches = [(v, fil, t) for v in VERSIONS for fil, n in FILTRES.items() for t in range(n)]
     X = {}
     with mp.get_context("fork").Pool(4) as pool:
@@ -232,6 +243,10 @@ def main():
         for v, fil, g, out in pool.imap_unordered(echantillon, args):
             ech[f"{v}|{fil}|{g}"] = out
     print(f"echantillons ({time.time() - t0:.0f} s)", flush=True)
+    return stats, par_an, ech
+
+
+def finir(t0, stats, par_an, ech):
     vr = "v13" if "v13" in VERSIONS else "t4"
     _, q, c_ch, lettre = VERSIONS[vr]
     b0 = P["bases"]["fort"][0]
