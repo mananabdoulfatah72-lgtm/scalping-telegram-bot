@@ -174,6 +174,19 @@ une fois (approximation).
 jours, perdre plus souvent ne coûte rien de plus, alors que valider deux fois plus vite change tout. La taille 4 valide
 en 9 séances médianes, quand elle valide.
 
+### Le Master en taille 1 après la validation (`master12.py` → `master12.txt`)
+
+Retour à 1 MNQ, avec le frein (750 $ sous le plus haut) et le plafond de 500 $ par jour.
+
+| Validations (filtre comme 2026 / deux fois plus faible) | Master perdu avant tout retrait | 1er retrait (médiane après la validation) | 2e / 3e retrait | 3 retraits atteints |
+|---|---|---|---|---|
+| Achats 2012-2020 | 17 % / 24 % | 4,9 / 5,4 mois | 7,1 / 7,6 puis 8,8 / 9,8 mois | 68 % / 62 % |
+| Achats 2023 - sept. 2024 | 0 % / 1 % | 4,0 / 4,5 mois | 6,3 / 7,3 puis 8,7 / 11,0 mois | 96 % / 90 % |
+
+Il n'y a rien à retirer les premiers mois. Bulenox demande de garder 52 600 $, et le premier retrait est d'au moins
+1 000 $ : le Master doit d'abord gagner environ 3 600 $. Ensuite, chaque retrait est d'au plus 1 500 $. Soit environ
+4 500 $ en 9 mois quand tout va bien, puis le compte réel, non simulé.
+
 ### Comparaison avec les comptes sans limite de temps (net moyen d'un achat sur 24 mois)
 
 | Compte | Prix avant de savoir | 2012-2020 (comme 2026 / moitié) | 2023 - sept. 2024 (comme 2026 / moitié) | Validé (vérif.) | Achats perdants (vérif.) |

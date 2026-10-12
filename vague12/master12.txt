@@ -1,0 +1,26 @@
+Master Bulenox en taille 1 apres une validation en taille 4 (achats Legacy suivis 24 mois). Mois de 21 seances.
+
+filtre comme 2026 | achats 2012-2020 : 9427 validations
+  Master perdu avant tout retrait : 17% ; perdu dans les 12 mois : 18% ; perdu avant la fin des 24 mois (apres 0 a 3 retraits) : 23%
+  1er retrait : 82% des Masters, 4.9 mois apres la validation en mediane (1 sur 4 apres 7.4 mois)
+  2e retrait : 7.1 mois ; 3e retrait : 8.8 mois apres la validation (medianes) ; 3 retraits atteints : 68%
+  argent recu par Master : moyenne 3,020 $ ; par mois de Master entre la validation et le 3e retrait (ou la perte) : 277 $
+
+filtre comme 2026 | achats 2023 - sept. 2024 : 2227 validations
+  Master perdu avant tout retrait : 0% ; perdu dans les 12 mois : 2% ; perdu avant la fin des 24 mois (apres 0 a 3 retraits) : 2%
+  1er retrait : 99% des Masters, 4.0 mois apres la validation en mediane (1 sur 4 apres 6.1 mois)
+  2e retrait : 6.3 mois ; 3e retrait : 8.7 mois apres la validation (medianes) ; 3 retraits atteints : 96%
+  argent recu par Master : moyenne 3,935 $ ; par mois de Master entre la validation et le 3e retrait (ou la perte) : 395 $
+
+filtre deux fois plus faible | achats 2012-2020 : 8774 validations
+  Master perdu avant tout retrait : 24% ; perdu dans les 12 mois : 24% ; perdu avant la fin des 24 mois (apres 0 a 3 retraits) : 30%
+  1er retrait : 75% des Masters, 5.4 mois apres la validation en mediane (1 sur 4 apres 7.7 mois)
+  2e retrait : 7.6 mois ; 3e retrait : 9.8 mois apres la validation (medianes) ; 3 retraits atteints : 62%
+  argent recu par Master : moyenne 2,726 $ ; par mois de Master entre la validation et le 3e retrait (ou la perte) : 250 $
+
+filtre deux fois plus faible | achats 2023 - sept. 2024 : 2059 validations
+  Master perdu avant tout retrait : 1% ; perdu dans les 12 mois : 3% ; perdu avant la fin des 24 mois (apres 0 a 3 retraits) : 5%
+  1er retrait : 98% des Masters, 4.5 mois apres la validation en mediane (1 sur 4 apres 7.8 mois)
+  2e retrait : 7.3 mois ; 3e retrait : 11.0 mois apres la validation (medianes) ; 3 retraits atteints : 90%
+  argent recu par Master : moyenne 3,765 $ ; par mois de Master entre la validation et le 3e retrait (ou la perte) : 313 $
+
