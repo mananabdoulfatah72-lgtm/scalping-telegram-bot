@@ -1,0 +1,14 @@
+/home/user/scalping-telegram-bot/vague9/socle9.py:115: RuntimeWarning: All-NaN slice encountered
+  nh = np.nanmax(D["NH"], axis=1)
+/home/user/scalping-telegram-bot/vague9/socle9.py:116: RuntimeWarning: All-NaN slice encountered
+  nl = np.nanmin(D["NL"], axis=1)
+achats : 1/126 (3 s)
+achats : 21/126 (14 s)
+achats : 41/126 (39 s)
+achats : 61/126 (80 s)
+achats : 81/126 (119 s)
+achats : 101/126 (171 s)
+achats : 121/126 (221 s)
+echantillons (240 s)
+exemples (243 s)
+fini en 246 s ; 3.04 Mo

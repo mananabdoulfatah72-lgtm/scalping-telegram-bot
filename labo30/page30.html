@@ -19,7 +19,8 @@
 * { box-sizing: border-box; }
 html { background: var(--encre); }
 body { background: var(--encre); color: var(--texte); font-family: var(--f-texte); font-size: 15px; line-height: 1.55; }
-.page { max-width: 1280px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 64px; display: grid; gap: 34px; }
+.page { max-width: 1280px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 64px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 34px; }
+.page > * { min-width: 0; }
 @media (max-width: 560px) { .page { padding-inline: 16px; gap: 26px; } }
 h1, h2, h3 { font-family: var(--f-titre); font-weight: 800; letter-spacing: .01em; text-wrap: balance; margin: 0; line-height: 1.02; }
 h1 { font-size: clamp(2.6rem, 7.4vw, 5.6rem); font-weight: 900; text-transform: uppercase; }
@@ -102,6 +103,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 table { border-collapse: collapse; width: 100%; font-size: .84rem; }
 th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--trait); vertical-align: top; }
 th { font-weight: 600; color: var(--texte-2); font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; }
+td.chiffre { white-space: nowrap; }
 td.n, th.n { text-align: right; font-family: var(--f-chiffre); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .pos { color: var(--valide); } .neg { color: var(--perte); }
 tr.choisi td { background: rgba(255, 211, 110, .07); }
@@ -214,7 +216,7 @@ tr.choisi td { background: rgba(255, 211, 110, .07); }
       <div class="panneau" id="oos"><h3>Choix contre vérification</h3><canvas id="c-oos" height="290"></canvas><p class="petit muet">Chaque point est une version essayée (vagues 12 et 13, Legacy et Momentum). Un point sur la diagonale valide autant sur 2023-2026 que sur 2012-2021 : le classement tient hors échantillon.</p></div>
       <div class="panneau"><h3>Plus de taille : un plafond</h3><canvas id="c-plafond" height="290"></canvas><p class="petit muet">Validés en 30 jours selon le nombre de MNQ (Legacy, sans frein). Au-delà de 4, les challenges expirés deviennent des challenges perdus : la réussite ne monte plus.</p></div>
       <div class="panneau"><h3>Toutes les combinaisons taille × frein</h3><div class="defile"><table id="matrice"></table></div><p class="petit muet">Part des challenges validés en 30 jours, filtre comme en 2026. Les choix 2012-2021 et la vérification 2023-2026 donnent le même classement.</p></div>
-      <div class="panneau"><h3>Année par année</h3><canvas id="c-annees" height="250"></canvas><p class="petit muet">Part des achats de chaque année validés en 30 jours (filtre comme en 2026).</p></div>
+      <div class="panneau"><h3>Année par année</h3><canvas id="c-annees" height="250"></canvas><div class="legende" id="leg-annees"></div><p class="petit muet">Part des achats de chaque année validés en 30 jours (filtre comme en 2026). 2022 n'a pas d'achats simulés : c'est la frontière entre le choix et la vérification.</p></div>
       <div class="panneau"><h3>Si le filtre delta est plus faible</h3><div class="defile"><table id="t-filtres"></table></div><p class="petit muet">Le filtre est la grande inconnue du bot. Plus de taille le rend moins décisif : même sans filtre, la version 30 jours valide encore souvent.</p></div>
       <div class="panneau"><h3>Vague 13 : arrêt à l'objectif, taille qui s'adapte</h3><div class="defile"><table id="t-v13"></table></div><p class="petit muet" id="t-v13-note"></p></div>
     </div>
@@ -249,9 +251,11 @@ const C = {valide: css("--valide"), perdu: css("--perdu"), expire: css("--expire
   t1: css("--t1"), t4: css("--t4"), gain: css("--gain"), perte: css("--perte"), panneau2: css("--panneau-2"), master: css("--master")};
 const pc = x => x == null ? "–" : `${Math.round(100 * x)} %`;
 const usd = (x, signe = true) => x == null ? "–" : `${signe && x > 0 ? "+" : x < 0 ? "−" : ""}${Math.abs(Math.round(x)).toLocaleString("fr-FR")} $`;
+const ax = v => `${v < 0 ? "−" : ""}${Math.abs(Math.round(v)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} $`;
 const mois = s => s == null ? "–" : `${(s / 21).toFixed(1).replace(".", ",")} mois`;
 const FILTRES = {fort: "Comme en 2026", moitie: "Deux fois plus faible", aucun: "Aucun filtre"};
-const PERIODES = {"2012-2021": "2012-2021 (choix)", "2023-2026": "2023-2026 (vérif.)", "2025": "2025"};
+const PERIODES_L = [["2012-2021", "2012-2021 (choix)"], ["2023-2026", "2023-2026 (vérif.)"], ["2025", "2025"]];
+const PERIODES = Object.fromEntries(PERIODES_L);
 const VR = D.retenue;
 const etat = {version: VR, filtre: "fort", periode: "2023-2026", vitesse: 1};
 const stat = (v = etat.version, f = etat.filtre, g = etat.periode) => D.stats[`${v}|${f}|${g}`];
@@ -278,7 +282,7 @@ function barres(cv, vals, {couleur, etiq, fmtY = v => v, maxY = null, xlab = nul
 /* ---------- pupitre ---------- */
 function segments(id, choix, cle) {
   const box = $(id); box.innerHTML = "";
-  for (const [k, lib] of Object.entries(choix)) {
+  for (const [k, lib] of (Array.isArray(choix) ? choix : Object.entries(choix))) {
     const b = document.createElement("button"); b.type = "button"; b.textContent = lib; b.setAttribute("aria-pressed", String(etat[cle] === k));
     b.onclick = () => { etat[cle] = k; segments(id, choix, cle); tout(); }; box.appendChild(b);
   }
@@ -318,7 +322,7 @@ function plancherDe(s) { let pic = 0, out = []; for (const v of s) { pic = Math.
 function dessinerMachine() {
   const cv = $("c-machine"), {g, w, h} = prep(cv), m = {l: 54, r: 14, t: 14, b: 26};
   const X = s => m.l + (w - m.l - m.r) * s / NMAX, Y = v => m.t + (h - m.t - m.b) * (YMAX - v) / (YMAX - YMIN);
-  for (const v of [-2500, -1000, 0, 1000, 3000]) axeY(g, m.l, w - m.r, Y(v), usd(v), v === 0 ? C.traitF : C.trait);
+  for (const v of [-2500, -1000, 0, 1000, 3000]) axeY(g, m.l, w - m.r, Y(v), ax(v), v === 0 ? C.traitF : C.trait);
   g.fillStyle = C.texte3; g.textAlign = "center";
   for (let s = 0; s <= NMAX; s += 2) g.fillText(s, X(s), h - 12);
   g.textAlign = "right"; g.fillText("séances", w - m.r, h - 2);
@@ -431,20 +435,22 @@ function master() {
   $("tuiles-master").innerHTML = T.map(([b, l]) => `<div class="tuile"><b>${b}</b><span>${l}</span></div>`).join("");
   // argent pour toi : bandes sur l'échantillon
   const fils = D.echantillons[`${etat.version}|${etat.filtre}|${etat.periode}`] || [], H = 504, pas = 6, nb = Math.floor(H / pas) + 1;
-  const courbes = fils.map(f => { const c = new Float64Array(nb); let ev = [[0, -19.25]]; if (f.i === 1) { ev.push([f.n, -148]); f.r.forEach((r, k) => { if (r != null && f.m[k] != null) ev.push([f.n + r, f.m[k]]); }); }
-    for (let i = 0; i < nb; i++) { const t = i * pas; let v = 0; for (const [a, x] of ev) if (a <= t) v += x; c[i] = v; } return c; });
+  const valides = fils.filter(f => f.i === 1);
+  const mk = f => { const c = new Float64Array(nb); let ev = [[0, -19.25]]; if (f.i === 1) { ev.push([f.n, -148]); f.r.forEach((r, k) => { if (r != null && f.m[k] != null) ev.push([f.n + r, f.m[k]]); }); }
+    for (let i = 0; i < nb; i++) { const t = i * pas; let v = 0; for (const [a, x] of ev) if (a <= t) v += x; c[i] = v; } return c; };
+  const tous = fils.map(mk), courbes = valides.map(mk);
   const q = p => Array.from({length: nb}, (_, i) => { const col = courbes.map(c => c[i]).sort((a, b) => a - b); return col.length ? col[Math.min(col.length - 1, Math.floor(p * col.length))] : 0; });
   const B = {p10: q(.1), p25: q(.25), p50: q(.5), p75: q(.75), p90: q(.9)};
-  const moy = Array.from({length: nb}, (_, i) => courbes.reduce((a, c) => a + c[i], 0) / Math.max(1, courbes.length));
+  const moy = Array.from({length: nb}, (_, i) => tous.reduce((a, c) => a + c[i], 0) / Math.max(1, tous.length));
   const {g, w, h} = prep($("c-argent")), m = {l: 56, r: 12, t: 12, b: 26}, lo = -400, hi = 5000;
   const X = i => m.l + (w - m.l - m.r) * i / (nb - 1), Y = v => m.t + (h - m.t - m.b) * (hi - v) / (hi - lo);
-  for (const v of [0, 1000, 2000, 3000, 4000, 5000]) axeY(g, m.l, w - m.r, Y(v), usd(v, false), v === 0 ? C.traitF : C.trait);
+  for (const v of [0, 1000, 2000, 3000, 4000, 5000]) axeY(g, m.l, w - m.r, Y(v), ax(v), v === 0 ? C.traitF : C.trait);
   g.fillStyle = C.texte3; g.textAlign = "center"; for (let mo = 0; mo <= 24; mo += 6) g.fillText(`${mo} m`, X(mo * 21 / pas), h - 12);
   const bande = (a, b, al) => { g.fillStyle = C.master; g.globalAlpha = al; g.beginPath(); a.forEach((v, i) => i ? g.lineTo(X(i), Y(v)) : g.moveTo(X(i), Y(v))); for (let i = nb - 1; i >= 0; i--) g.lineTo(X(i), Y(b[i])); g.closePath(); g.fill(); g.globalAlpha = 1; };
   bande(B.p10, B.p90, .14); bande(B.p25, B.p75, .26);
   const ligne = (arr, col, lw, dash = []) => { g.strokeStyle = col; g.lineWidth = lw; g.setLineDash(dash); g.beginPath(); arr.forEach((v, i) => i ? g.lineTo(X(i), Y(v)) : g.moveTo(X(i), Y(v))); g.stroke(); g.setLineDash([]); };
   ligne(B.p50, C.or, 2); ligne(moy, C.texte, 1.2, [4, 3]);
-  $("t-argent").textContent = `Sur ${fils.length} achats tirés : bande claire de 10 à 90 %, foncée de 25 à 75 %, trait plein la médiane, pointillé la moyenne. Chaque marche est un retrait. ${etat.periode !== "2012-2021" ? "Achats récents : le suivi s'arrête en septembre 2026, les derniers retraits manquent." : ""}`;
+  $("t-argent").textContent = `Les ${valides.length} challenges validés parmi ${fils.length} achats tirés : −19 $ à l'achat, −148 $ d'activation à la validation, puis chaque marche est un retrait. Bande claire de 10 à 90 %, foncée de 25 à 75 %, trait plein la médiane. Pointillé : la moyenne de tous les achats, ratés compris. ${etat.periode !== "2012-2021" ? "Achats récents : le suivi s'arrête en septembre 2026, les derniers retraits manquent." : ""}`;
   if (s.hist_net) {
     const tot = s.hist_net.reduce((a, b) => a + b, 0) || 1;
     barres($("c-net"), s.hist_net.map(x => x / tot), {couleur: i => i < 2 ? C.perdu : C.valide, etiq: i => i % 4 === 0 ? `${(-500 + 250 * i) / 1000}k` : null, fmtY: v => `${Math.round(100 * v)} %`, xlab: "net $"});
@@ -465,7 +471,7 @@ function exemples() {
   const {g, w, h} = prep($("c-ex")), m = {l: 54, r: 12, t: 12, b: 24}, n = Math.max(J.length, 5);
   const vals = J.map(j => j.solde).concat(J.map(j => j.plancher), [0, 3000, -2500]), lo = Math.min(...vals) - 200, hi = Math.max(...vals) + 200;
   const X = s => m.l + (w - m.l - m.r) * s / n, Y = v => m.t + (h - m.t - m.b) * (hi - v) / (hi - lo);
-  for (const v of [-2500, 0, 3000]) axeY(g, m.l, w - m.r, Y(v), usd(v), v === 3000 ? C.valide : v === -2500 ? C.perdu : C.traitF);
+  for (const v of [-2500, 0, 3000]) axeY(g, m.l, w - m.r, Y(v), ax(v), v === 3000 ? C.valide : v === -2500 ? C.perdu : C.traitF);
   g.strokeStyle = C.perdu; g.setLineDash([4, 3]); g.beginPath(); g.moveTo(X(0), Y(-2500)); J.forEach((j, s) => { g.lineTo(X(s + 1), Y(s === 0 ? -2500 : J[s - 1].plancher)); g.lineTo(X(s + 1), Y(j.plancher)); }); g.stroke(); g.setLineDash([]);
   J.forEach((j, s) => { const y0 = Y(0), bh = Y(j.gain) - y0; g.fillStyle = j.gain >= 0 ? C.gain : C.perte; g.globalAlpha = .35; g.fillRect(X(s + 1) - 5, Math.min(y0, y0 + bh), 10, Math.abs(bh)); g.globalAlpha = 1; });
   g.strokeStyle = C.or; g.lineWidth = 2.2; g.beginPath(); g.moveTo(X(0), Y(0)); J.forEach((j, s) => g.lineTo(X(s + 1), Y(j.solde))); g.stroke();
@@ -491,9 +497,12 @@ function gains() {
   va.forEach((v, i) => { const bh = (h - m.t - m.b) * v / M; g.fillStyle = C.t4; g.globalAlpha = .75; g.fillRect(m.l + i * bw + 1, h - m.b - bh, Math.max(1, bw - 2), bh); });
   g.globalAlpha = 1; g.strokeStyle = C.t1; g.lineWidth = 1.6; g.beginPath(); vb.forEach((v, i) => { const x = m.l + (i + .5) * bw, y = h - m.b - (h - m.t - m.b) * v / M; i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke();
   g.fillStyle = C.texte3; g.textAlign = "center"; for (let i = 0; i < n; i += 5) g.fillText(`${(-1300 + 100 * i) / 1000}k`, m.l + (i + .5) * bw, h - 10);
+  { const iM = va.indexOf(Math.max(...va.slice(0, 4))); g.fillStyle = C.t4; g.textAlign = "left"; g.fillText("← limite de perte du jour", m.l + (iM + 1.2) * bw, m.t + 8); }
   const c4 = a.courbe, c1 = b.courbe, cv = prep($("c-courbe")), mm = {l: 60, r: 12, t: 12, b: 24};
   const hi = Math.max(...c4, ...c1) * 1.05, lo = Math.min(0, ...c4, ...c1) * 1.1, X = i => mm.l + (cv.w - mm.l - mm.r) * i / (c4.length - 1), Y = v => mm.t + (cv.h - mm.t - mm.b) * (hi - v) / (hi - lo);
-  for (const f of [0, .25, .5, .75, 1]) axeY(cv.g, mm.l, cv.w - mm.r, Y(lo + f * (hi - lo)), usd(lo + f * (hi - lo), false));
+  const brut = (hi - lo) / 5, p10 = Math.pow(10, Math.floor(Math.log10(brut))), pasY = [1, 2, 5, 10].map(k => k * p10).find(k => k >= brut);
+  const axK = v => Math.abs(v) >= 10000 ? `${v < 0 ? "−" : ""}${Math.abs(v) / 1000} k$` : ax(v);
+  for (let v = Math.ceil(lo / pasY) * pasY; v <= hi; v += pasY) axeY(cv.g, mm.l, cv.w - mm.r, Y(v), axK(v), v === 0 ? C.traitF : C.trait);
   for (const [c, col] of [[c1, C.t1], [c4, C.t4]]) { cv.g.strokeStyle = col; cv.g.lineWidth = 1.6; cv.g.beginPath(); c.forEach((v, i) => i ? cv.g.lineTo(X(i), Y(v)) : cv.g.moveTo(X(i), Y(v))); cv.g.stroke(); }
   cv.g.fillStyle = C.texte3; cv.g.textAlign = "center"; a.dates.forEach((d, i) => { if (i % 252 === 0) cv.g.fillText(d.slice(0, 4), X(i), cv.h - 10); });
   $("t-courbe").textContent = `4 MNQ : environ ${usd(a.par_an)} par an, mais une pire baisse de ${usd(a.pire_baisse)}. 1 MNQ : ${usd(b.par_an)} par an, pire baisse ${usd(b.pire_baisse)}. Dans un challenge, cette baisse se heurte au plancher de 2 500 $.`;
@@ -513,7 +522,7 @@ function robustesse() {
     for (const p of pts) { g.fillStyle = p.v === 13 ? C.master : C.cours; g.globalAlpha = .85; g.beginPath(); g.arc(X(p.x), Y(p.y), p.v === 13 ? 4 : 3.2, 0, 7); g.fill(); g.globalAlpha = 1; }
     const sel = stat(VR, "fort", "2012-2021"), sv = stat(VR, "fort", "2023-2026");
     g.strokeStyle = C.or; g.lineWidth = 2; g.beginPath(); g.arc(X(sel.valide), Y(sv.valide), 8, 0, 7); g.stroke();
-    g.fillStyle = C.or; g.textAlign = "left"; g.fillText("version retenue", X(sel.valide) + 11, Y(sv.valide));
+    const aDroite = X(sel.valide) + 110 < w; g.fillStyle = C.or; g.textAlign = aDroite ? "left" : "right"; g.fillText("version retenue", X(sel.valide) + (aDroite ? 11 : -11), Y(sv.valide) + (aDroite ? 0 : 16));
     g.fillStyle = C.texte3; g.save(); g.translate(12, m.t + (h - m.t - m.b) / 2); g.rotate(-Math.PI / 2); g.textAlign = "center"; g.fillText("validés 2023-2026 (vérification)", 0, 0); g.restore();
   }
   barres($("c-plafond"), [6, 24, 36, 41, 41, 43, 40].map(x => x / 100), {couleur: i => i === 3 ? C.or : C.cours, etiq: i => [1, 2, 3, 4, 5, 6, 8][i] + " MNQ", fmtY: v => pc(v), maxY: .5});
@@ -532,7 +541,7 @@ function robustesse() {
     for (const f of [0, .35, .7]) axeY(g, m.l, w - m.r, h - m.b - (h - m.t - m.b) * f / M, pc(f));
     annees.forEach((a, i) => { vs.forEach((v, k) => { const val = ans[`${v}|fort`][a] ?? 0, bh = (h - m.t - m.b) * val / M, bw = (gw - 4) / vs.length; g.fillStyle = cols[v]; g.fillRect(m.l + i * gw + 2 + k * bw, h - m.b - bh, Math.max(1, bw - 1), bh); });
       if (i % 2 === 0) { g.fillStyle = C.texte3; g.textAlign = "center"; g.fillText(String(a).slice(2), m.l + (i + .5) * gw, h - 10); } });
-    g.textAlign = "left"; vs.forEach((v, k) => { g.fillStyle = cols[v]; g.fillText("■ " + VERS[v], m.l + 6 + k * 150, m.t + 6); });
+    $("leg-annees").innerHTML = vs.map(v => `<span><i style="background:${cols[v]}"></i>${VERS[v]}</span>`).join("");
   }
   let t = `<thead><tr><th>Version</th><th>Filtre</th><th class="n">2012-2021</th><th class="n">2023-2026</th><th class="n">2025</th></tr></thead><tbody>`;
   for (const v of Object.keys(D.versions)) for (const f of ["fort", "moitie", "aucun"]) t += `<tr class="${v === VR ? "choisi" : ""}"><td>${VERS[v]}</td><td>${FILTRES[f]}</td>${["2012-2021", "2023-2026", "2025"].map(g => `<td class="n">${pc(stat(v, f, g).valide)}</td>`).join("")}</tr>`;
@@ -552,7 +561,7 @@ function robustesse() {
 
 /* ---------- tout ---------- */
 function tout() { exact(); lancer(false); relief(); master(); }
-segments("s-version", VERS, "version"); segments("s-filtre", FILTRES, "filtre"); segments("s-periode", PERIODES, "periode");
+segments("s-version", VERS, "version"); segments("s-filtre", FILTRES, "filtre"); segments("s-periode", PERIODES_L, "periode");
 $("r-vitesse").oninput = e => { etat.vitesse = +e.target.value; $("o-vitesse").textContent = `${etat.vitesse.toString().replace(".", ",")}×`; };
 $("b-rejouer").onclick = () => lancer(false); $("b-tirer").onclick = () => lancer(true);
 ticker(); cartes(); tout(); exemples(); gains(); robustesse();
