@@ -122,3 +122,99 @@ valider, puis ce que rapporte le Master.
 - le filtre est simulé ;
 - les règles des comptes viennent de sites d'avis ;
 - plus de taille veut dire plus de glissement réel que le backtest (1,5 point par aller-retour sur la zone).
+
+## Contrôles (`test_vague12.py`)
+
+Sur 300 achats tirés au hasard :
+- une limite très longue redonne exactement le parcours sans limite (sorties et retraits) ;
+- avec 30 jours, un achat est validé si et seulement si il validait dans les 30 jours sans limite. Il est alors
+  identique, sinon il expire, sauf s'il était perdu avant la limite. Vérifié en taille 1 et en taille 3 ;
+- un frein du compte financé égal à celui du challenge redonne l'ancien appel ;
+- taille 1 Legacy : le moteur minute par minute avec la limite redonne exactement le moteur journalier du Monte Carlo
+  (mêmes issues, mêmes séances pour valider).
+
+Par défaut, le moteur reste celui d'avant : `vague8/test_vague8.py` donne 213 achats identiques, et
+`montecarlo/test_montecarlo.py` repasse.
+
+## Résultats (12 octobre 2026) : `vague12.txt`, `detail12.txt`
+
+### Jugement fixé à l'avance
+
+**Version 30 jours retenue, pour les deux comptes Bulenox : taille 4 sans frein en challenge**, puis taille 1, frein
+et plafond de 500 $ au Master. Elle est **validée** pour les deux comptes.
+
+| Bulenox Legacy, filtre comme 2026 | Validé en 30 jours | Perdu | Expiré | Séances pour valider | Net moyen d'un achat sur 24 mois |
+|---|---|---|---|---|---|
+| Bot tel quel (taille 1, frein), 2012-2021 | 5 % | 1 % | 94 % | 17 | +135 $ |
+| **Taille 4 sans frein, 2012-2021 (choix)** | **41 %** | 38 % | 22 % | 9 | **+1 149 $** |
+| Bot tel quel, 2023 - août 2026 | 2 % | 0 % | 98 % | 17 | +55 $ |
+| **Taille 4 sans frein, 2023 - août 2026 (vérification)** | **40 %** | 45 % | 15 % | 9 | **+1 814 $** |
+| Taille 4 sans frein, sans filtre, 2023 - août 2026 | 32 % | 58 % | 11 % | 8 | +1 331 $ |
+| Taille 4 sans frein, achats 2025 (jamais utilisés pour choisir) | 32 % (28 % sans filtre) | 49 % | 18 % | 11 | trop tôt |
+
+Le net est calculé sur les achats suivis 24 mois : 2012-2020 pour le choix, 2023 - septembre 2024 pour la vérification.
+
+**Momentum** : mêmes chances de valider (38 % en vérification), net moyen +1 774 $. Mais il faut payer 143 $ avant de
+savoir, contre 19,25 $ pour le Legacy. Avec les règles du Master Legacy à la place des règles supposées, le résultat
+est presque le même (+1 709 $).
+
+### Ce que devient un achat (`detail12.txt`, Legacy, taille 4 sans frein)
+
+| Achats | Challenge raté (−19 $) | Validé puis Master perdu sans retrait (−167 $) | 1 ou 2 retraits | 3 retraits (≈ +4 300 $) | Net moyen |
+|---|---|---|---|---|---|
+| 2012-2020, filtre comme 2026 | 59 % | 7 % | 6 % | 27 % | +1 149 $ |
+| 2012-2020, filtre deux fois plus faible | 62 % | 10 % | 5 % | 23 % | +957 $ |
+| 2023 - sept. 2024, filtre comme 2026 | 52 % | 0 % | 1 % | 47 % | +1 814 $ |
+| 2023 - sept. 2024, filtre deux fois plus faible | 55 % | 1 % | 4 % | 40 % | +1 600 $ |
+
+Deux achats de suite (le second un mois plus tard si le premier rate) : environ 62 à 73 % de chances de valider au moins
+une fois (approximation).
+
+**Pourquoi plus de taille gagne ici** : un challenge perdu et un challenge expiré coûtent la même chose, le prix. Avec 30
+jours, perdre plus souvent ne coûte rien de plus, alors que valider deux fois plus vite change tout. La taille 4 valide
+en 9 séances médianes, quand elle valide.
+
+### Comparaison avec les comptes sans limite de temps (net moyen d'un achat sur 24 mois)
+
+| Compte | Prix avant de savoir | 2012-2020 (comme 2026 / moitié) | 2023 - sept. 2024 (comme 2026 / moitié) | Validé (vérif.) | Achats perdants (vérif.) |
+|---|---|---|---|---|---|
+| **Bulenox Legacy, taille 4 sans frein** | **19,25 $** (+148 $ à la réussite) | +1 149 / +957 $ | +1 814 / +1 600 $ | 40 % | 52 % |
+| Bulenox Momentum, taille 4 sans frein | 143 $ | +1 092 / +884 $ | +1 774 / +1 448 $ | 38 % | 54 % |
+| FundedNext Flex, zone toujours sur MES | 69,99 $ | +1 197 / +813 $ | +2 438 / +1 899 $ | 90 % | 6 % |
+| FundedNext Flex, zone MNQ et frein | 69,99 $ | +1 513 / +1 016 $ | +2 262 / +1 571 $ | 72 % | 16 % |
+| Goat EOD, frein (challenge seulement) | 34,50 $ | — | — | 87 % (perdu 7 %) | — |
+
+- **FundedNext Flex (zone sur MES)** est le plus sûr sur la période récente : 90 % validés, 6 % d'achats perdants. Mais :
+  - il coûte deux fois le budget ;
+  - il est lent, avec 150 séances médianes pour valider (environ 7 mois) ;
+  - sur 2012-2021, il perd 51 % des achats. La zone sur MES n'y marchait pas (vague 8).
+- **Goat EOD** valide souvent (80 à 87 %), mais lentement (70 à 100 séances). Il perd 24 à 49 % des challenges achetés
+  en 2025. Ses règles de compte financé sont trop floues pour être simulées.
+- **Règle 4** : dans le budget, la version 30 jours du Legacy a un net moyen positif avec le filtre deux fois plus
+  faible, sur les deux périodes.
+
+### Revue (ce qui pourrait rendre ces chiffres trop beaux)
+
+- **Taille 4, c'est le bord de la grille.** La taille 5 n'a pas été essayée. L'écart entre 3 et 4 est déjà faible (36 →
+  41 % sur le choix), parce que les pertes montent presque autant que les validations.
+- **La limite du jour de Bulenox est supposée « douce »** : la journée s'arrête, le compte vit. En taille 4, elle est
+  souvent touchée. Si Bulenox la traite comme une faute qui fait perdre le compte, les challenges perdus montent. **À
+  confirmer par écrit.**
+- **Glissement** : 4 MNQ au marché restent petits pour le marché, mais le backtest compte 1,5 point par aller-retour et
+  par contrat. Un vrai remplissage peut coûter un peu plus.
+- **Moins dépendant du filtre que le bot tel quel** : sans filtre, 32 % de validés et +1 331 $ en vérification.
+- 2023-2026 a déjà été regardé souvent ; le filtre est simulé ; les règles viennent de sites d'avis ; le Master est
+  suivi jusqu'à 3 retraits seulement (compte réel ensuite).
+- Les retraits du Master arrivent des mois après la validation. Le gain est un gain sur 24 mois, pas tout de suite.
+
+### Réglages du bot pour cette version (`bot3en1`, sans changement de code)
+
+| Réglage | Challenge (30 jours) | Master |
+|---|---|---|
+| MNQ par source | **4** | **1** |
+| Frein | **0** (jamais) | 750 |
+| Plafond de gain du jour | 0 | 500 |
+| Limite de perte du jour | 1 050 (Legacy) ou 1 150 (Momentum) | idem |
+| Perte max / blocage | 2 500 / 100 (Legacy) ou 2 250 / 100 (Momentum) | idem |
+
+« MNQ par source » multiplie la zone (MNQ ou MES), le MES de nuit et le MES du frein, comme la simulation.

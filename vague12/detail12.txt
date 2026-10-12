@@ -1,0 +1,74 @@
+Un achat Bulenox Legacy 50K (19,25 $ + 148 $ a la reussite), suivi 24 mois. Part des achats :
+
+taille 4 sans frein (version 30 jours) | filtre comme 2026 | achats 2012-2020 (23170 achats x tirages)
+  challenge rate (perdu ou expire, -19 $) : 59%
+  valide puis Master perdu avant tout retrait (-167 $) : 7%
+  1 retrait(s) : 3%
+  2 retrait(s) : 3%
+  3 retrait(s) : 27%
+  net : moyenne +1,149 $, 3 achats sur 4 sous +3,611 $, 1 sur 10 au-dessus de +3,949 $
+  deux achats de suite (le 2e le mois suivant si le 1er rate) : au moins une validation 65%
+
+taille 4 sans frein (version 30 jours) | filtre comme 2026 | achats 2023 - sept. 2024 (4600 achats x tirages)
+  challenge rate (perdu ou expire, -19 $) : 52%
+  valide puis Master perdu avant tout retrait (-167 $) : 0%
+  1 retrait(s) : 0%
+  2 retrait(s) : 1%
+  3 retrait(s) : 47%
+  net : moyenne +1,814 $, 3 achats sur 4 sous +3,842 $, 1 sur 10 au-dessus de +4,006 $
+  deux achats de suite (le 2e le mois suivant si le 1er rate) : au moins une validation 73%
+
+taille 4 sans frein (version 30 jours) | filtre deux fois plus faible | achats 2012-2020 (23170 achats x tirages)
+  challenge rate (perdu ou expire, -19 $) : 62%
+  valide puis Master perdu avant tout retrait (-167 $) : 10%
+  1 retrait(s) : 3%
+  2 retrait(s) : 2%
+  3 retrait(s) : 23%
+  net : moyenne +957 $, 3 achats sur 4 sous +2,299 $, 1 sur 10 au-dessus de +3,906 $
+  deux achats de suite (le 2e le mois suivant si le 1er rate) : au moins une validation 62%
+
+taille 4 sans frein (version 30 jours) | filtre deux fois plus faible | achats 2023 - sept. 2024 (4600 achats x tirages)
+  challenge rate (perdu ou expire, -19 $) : 55%
+  valide puis Master perdu avant tout retrait (-167 $) : 1%
+  1 retrait(s) : 2%
+  2 retrait(s) : 2%
+  3 retrait(s) : 40%
+  net : moyenne +1,600 $, 3 achats sur 4 sous +3,772 $, 1 sur 10 au-dessus de +3,980 $
+  deux achats de suite (le 2e le mois suivant si le 1er rate) : au moins une validation 69%
+
+taille 1 frein (bot tel quel) | filtre comme 2026 | achats 2012-2020 (23170 achats x tirages)
+  challenge rate (perdu ou expire, -19 $) : 95%
+  valide puis Master perdu avant tout retrait (-167 $) : 1%
+  1 retrait(s) : 0%
+  2 retrait(s) : 0%
+  3 retrait(s) : 4%
+  net : moyenne +135 $, 3 achats sur 4 sous -19 $, 1 sur 10 au-dessus de -19 $
+  deux achats de suite (le 2e le mois suivant si le 1er rate) : au moins une validation 10%
+
+taille 1 frein (bot tel quel) | filtre comme 2026 | achats 2023 - sept. 2024 (4600 achats x tirages)
+  challenge rate (perdu ou expire, -19 $) : 98%
+  valide puis Master perdu avant tout retrait (-167 $) : 0%
+  1 retrait(s) : 0%
+  2 retrait(s) : 0%
+  3 retrait(s) : 2%
+  net : moyenne +55 $, 3 achats sur 4 sous -19 $, 1 sur 10 au-dessus de -19 $
+  deux achats de suite (le 2e le mois suivant si le 1er rate) : au moins une validation 5%
+
+taille 1 frein (bot tel quel) | filtre deux fois plus faible | achats 2012-2020 (23170 achats x tirages)
+  challenge rate (perdu ou expire, -19 $) : 96%
+  valide puis Master perdu avant tout retrait (-167 $) : 1%
+  1 retrait(s) : 0%
+  2 retrait(s) : 0%
+  3 retrait(s) : 3%
+  net : moyenne +100 $, 3 achats sur 4 sous -19 $, 1 sur 10 au-dessus de -19 $
+  deux achats de suite (le 2e le mois suivant si le 1er rate) : au moins une validation 8%
+
+taille 1 frein (bot tel quel) | filtre deux fois plus faible | achats 2023 - sept. 2024 (4600 achats x tirages)
+  challenge rate (perdu ou expire, -19 $) : 98%
+  valide puis Master perdu avant tout retrait (-167 $) : 0%
+  1 retrait(s) : 0%
+  2 retrait(s) : 0%
+  3 retrait(s) : 1%
+  net : moyenne +40 $, 3 achats sur 4 sous -19 $, 1 sur 10 au-dessus de -19 $
+  deux achats de suite (le 2e le mois suivant si le 1er rate) : au moins une validation 4%
+

@@ -1,0 +1,318 @@
+
+### choix 2012-2021 | filtre aussi bon qu'en 2026
+
+| Candidate | Validé | Perdu | Expiré / pas fini | Séances pour valider | Au moins un retrait en 24 mois | Net moyen 24 mois | Net médian | Achats perdants | Master perdu en 12 mois |
+|---|---|---|---|---|---|---|---|---|---|
+| legacy | taille 1 | frein | 5 % | 1 % | 94 % | 17 | 4 % | +135 $ | -19 $ | 96 % | 18 % |
+| legacy | taille 1 | sans frein | 6 % | 1 % | 93 % | 17 | 5 % | +160 $ | -19 $ | 95 % | 18 % |
+| legacy | taille 2 | frein | 21 % | 7 % | 71 % | 12 | 17 % | +603 $ | -19 $ | 83 % | 17 % |
+| legacy | taille 2 | sans frein | 24 % | 12 % | 64 % | 12 | 19 % | +681 $ | -19 $ | 81 % | 18 % |
+| legacy | taille 3 | frein | 32 % | 16 % | 52 % | 10 | 26 % | +895 $ | -19 $ | 74 % | 15 % |
+| legacy | taille 3 | sans frein | 36 % | 24 % | 40 % | 10 | 30 % | +1 044 $ | -19 $ | 70 % | 15 % |
+| legacy | taille 4 | frein | 36 % | 27 % | 37 % | 9 | 29 % | +1 009 $ | -19 $ | 71 % | 16 % |
+| legacy | taille 4 | sans frein | 41 % | 38 % | 22 % | 9 | 33 % | +1 149 $ | -19 $ | 67 % | 16 % |
+| momentum | taille 1 | frein | 5 % | 1 % | 94 % | 17 | 4 % | +19 $ | -143 $ | 96 % | 19 % |
+| momentum | taille 1 | sans frein | 6 % | 2 % | 93 % | 17 | 5 % | +45 $ | -143 $ | 95 % | 20 % |
+| momentum | taille 2 | frein | 22 % | 10 % | 68 % | 12 | 17 % | +533 $ | -143 $ | 83 % | 21 % |
+| momentum | taille 2 | sans frein | 24 % | 16 % | 60 % | 12 | 19 % | +596 $ | -143 $ | 81 % | 21 % |
+| momentum | taille 3 | frein | 32 % | 22 % | 47 % | 10 | 25 % | +812 $ | -143 $ | 75 % | 19 % |
+| momentum | taille 3 | sans frein | 35 % | 30 % | 35 % | 10 | 28 % | +934 $ | -143 $ | 72 % | 18 % |
+| momentum | taille 4 | frein | 35 % | 35 % | 30 % | 8 | 28 % | +936 $ | -143 $ | 72 % | 19 % |
+| momentum | taille 4 | sans frein | 40 % | 44 % | 16 % | 9 | 32 % | +1 092 $ | -143 $ | 68 % | 18 % |
+| momentum_masterlegacy | taille 1 | frein | 5 % | 1 % | 94 % | 17 | 4 % | +21 $ | -143 $ | 96 % | 16 % |
+| momentum_masterlegacy | taille 1 | sans frein | 6 % | 2 % | 93 % | 17 | 5 % | +46 $ | -143 $ | 95 % | 17 % |
+| momentum_masterlegacy | taille 2 | frein | 22 % | 10 % | 68 % | 12 | 18 % | +535 $ | -143 $ | 82 % | 17 % |
+| momentum_masterlegacy | taille 2 | sans frein | 24 % | 16 % | 60 % | 12 | 20 % | +598 $ | -143 $ | 80 % | 18 % |
+| momentum_masterlegacy | taille 3 | frein | 32 % | 22 % | 47 % | 10 | 26 % | +819 $ | -143 $ | 74 % | 16 % |
+| momentum_masterlegacy | taille 3 | sans frein | 35 % | 30 % | 35 % | 10 | 29 % | +944 $ | -143 $ | 71 % | 15 % |
+| momentum_masterlegacy | taille 4 | frein | 35 % | 35 % | 30 % | 8 | 30 % | +958 $ | -143 $ | 70 % | 14 % |
+| momentum_masterlegacy | taille 4 | sans frein | 40 % | 44 % | 16 % | 9 | 34 % | +1 110 $ | -143 $ | 66 % | 14 % |
+| goat | taille 1 | frein | 81 % | 19 % | 0 % | 79 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| goat | taille 1 | sans frein | 81 % | 19 % | 0 % | 73 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| flex | taille 1 | zone toujours sur MES | 74 % | 26 % | 0 % | 115 | 49 % | +1 197 $ | -70 $ | 51 % | 49 % |
+| flex | taille 1 | zone MNQ, frein | 70 % | 30 % | 0 % | 66 | 50 % | +1 513 $ | -70 $ | 50 % | 41 % |
+
+### verification 2023 - aout 2026 | filtre aussi bon qu'en 2026
+
+| Candidate | Validé | Perdu | Expiré / pas fini | Séances pour valider | Au moins un retrait en 24 mois | Net moyen 24 mois | Net médian | Achats perdants | Master perdu en 12 mois |
+|---|---|---|---|---|---|---|---|---|---|
+| legacy | taille 1 | frein | 2 % | 0 % | 98 % | 17 | 2 % | +55 $ | -19 $ | 98 % | 5 % |
+| legacy | taille 1 | sans frein | 2 % | 0 % | 98 % | 17 | 2 % | +55 $ | -19 $ | 98 % | 5 % |
+| legacy | taille 2 | frein | 19 % | 5 % | 76 % | 14 | 24 % | +887 $ | -19 $ | 76 % | 6 % |
+| legacy | taille 2 | sans frein | 23 % | 14 % | 64 % | 14 | 29 % | +1 074 $ | -19 $ | 71 % | 5 % |
+| legacy | taille 3 | frein | 32 % | 18 % | 50 % | 11 | 38 % | +1 406 $ | -19 $ | 62 % | 9 % |
+| legacy | taille 3 | sans frein | 36 % | 31 % | 33 % | 11 | 46 % | +1 730 $ | -19 $ | 54 % | 7 % |
+| legacy | taille 4 | frein | 36 % | 32 % | 32 % | 9 | 43 % | +1 592 $ | -19 $ | 57 % | 9 % |
+| legacy | taille 4 | sans frein | 40 % | 45 % | 15 % | 9 | 48 % | +1 814 $ | -19 $ | 52 % | 9 % |
+| momentum | taille 1 | frein | 2 % | 0 % | 98 % | 17 | 2 % | -60 $ | -143 $ | 98 % | 5 % |
+| momentum | taille 1 | sans frein | 2 % | 0 % | 98 % | 17 | 2 % | -60 $ | -143 $ | 98 % | 5 % |
+| momentum | taille 2 | frein | 20 % | 8 % | 72 % | 14 | 26 % | +900 $ | -143 $ | 74 % | 7 % |
+| momentum | taille 2 | sans frein | 23 % | 19 % | 58 % | 14 | 30 % | +1 078 $ | -143 $ | 70 % | 5 % |
+| momentum | taille 3 | frein | 32 % | 25 % | 43 % | 11 | 39 % | +1 464 $ | -143 $ | 61 % | 8 % |
+| momentum | taille 3 | sans frein | 36 % | 38 % | 26 % | 11 | 46 % | +1 741 $ | -143 $ | 54 % | 8 % |
+| momentum | taille 4 | frein | 35 % | 41 % | 24 % | 9 | 44 % | +1 671 $ | -143 $ | 56 % | 10 % |
+| momentum | taille 4 | sans frein | 38 % | 52 % | 11 % | 9 | 46 % | +1 774 $ | -143 $ | 54 % | 12 % |
+| momentum_masterlegacy | taille 1 | frein | 2 % | 0 % | 98 % | 17 | 2 % | -59 $ | -143 $ | 98 % | 0 % |
+| momentum_masterlegacy | taille 1 | sans frein | 2 % | 0 % | 98 % | 17 | 2 % | -59 $ | -143 $ | 98 % | 0 % |
+| momentum_masterlegacy | taille 2 | frein | 20 % | 8 % | 72 % | 14 | 26 % | +859 $ | -143 $ | 74 % | 5 % |
+| momentum_masterlegacy | taille 2 | sans frein | 23 % | 19 % | 58 % | 14 | 30 % | +1 024 $ | -143 $ | 70 % | 4 % |
+| momentum_masterlegacy | taille 3 | frein | 32 % | 25 % | 43 % | 11 | 39 % | +1 410 $ | -143 $ | 61 % | 7 % |
+| momentum_masterlegacy | taille 3 | sans frein | 36 % | 38 % | 26 % | 11 | 46 % | +1 672 $ | -143 $ | 54 % | 7 % |
+| momentum_masterlegacy | taille 4 | frein | 35 % | 41 % | 24 % | 9 | 44 % | +1 609 $ | -143 $ | 56 % | 8 % |
+| momentum_masterlegacy | taille 4 | sans frein | 38 % | 52 % | 11 % | 9 | 47 % | +1 709 $ | -143 $ | 53 % | 9 % |
+| goat | taille 1 | frein | 87 % | 7 % | 5 % | 85 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| goat | taille 1 | sans frein | 80 % | 15 % | 5 % | 69 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| flex | taille 1 | zone toujours sur MES | 90 % | 3 % | 7 % | 150 | 94 % | +2 438 $ | +2 597 $ | 6 % | 3 % |
+| flex | taille 1 | zone MNQ, frein | 72 % | 24 % | 4 % | 59 | 84 % | +2 262 $ | +2 679 $ | 16 % | 20 % |
+
+### 2025 | filtre aussi bon qu'en 2026
+
+| Candidate | Validé | Perdu | Expiré / pas fini | Séances pour valider | Au moins un retrait en 24 mois | Net moyen 24 mois | Net médian | Achats perdants | Master perdu en 12 mois |
+|---|---|---|---|---|---|---|---|---|---|
+| legacy | taille 1 | frein | 1 % | 0 % | 99 % | 11 | - | - | - | - | 0 % |
+| legacy | taille 1 | sans frein | 1 % | 0 % | 99 % | 11 | - | - | - | - | 0 % |
+| legacy | taille 2 | frein | 10 % | 10 % | 80 % | 12 | - | - | - | - | 52 % |
+| legacy | taille 2 | sans frein | 11 % | 25 % | 64 % | 13 | - | - | - | - | 68 % |
+| legacy | taille 3 | frein | 21 % | 23 % | 56 % | 11 | - | - | - | - | 44 % |
+| legacy | taille 3 | sans frein | 24 % | 40 % | 36 % | 12 | - | - | - | - | 40 % |
+| legacy | taille 4 | frein | 22 % | 43 % | 35 % | 10 | - | - | - | - | 39 % |
+| legacy | taille 4 | sans frein | 32 % | 49 % | 18 % | 11 | - | - | - | - | 32 % |
+| momentum | taille 1 | frein | 1 % | 0 % | 99 % | 11 | - | - | - | - | 0 % |
+| momentum | taille 1 | sans frein | 1 % | 0 % | 99 % | 11 | - | - | - | - | 0 % |
+| momentum | taille 2 | frein | 9 % | 16 % | 75 % | 10 | - | - | - | - | 75 % |
+| momentum | taille 2 | sans frein | 10 % | 35 % | 55 % | 12 | - | - | - | - | 71 % |
+| momentum | taille 3 | frein | 20 % | 32 % | 48 % | 11 | - | - | - | - | 48 % |
+| momentum | taille 3 | sans frein | 24 % | 51 % | 25 % | 12 | - | - | - | - | 50 % |
+| momentum | taille 4 | frein | 21 % | 54 % | 25 % | 10 | - | - | - | - | 46 % |
+| momentum | taille 4 | sans frein | 30 % | 59 % | 11 % | 11 | - | - | - | - | 44 % |
+| momentum_masterlegacy | taille 1 | frein | 1 % | 0 % | 99 % | 11 | - | - | - | - | 0 % |
+| momentum_masterlegacy | taille 1 | sans frein | 1 % | 0 % | 99 % | 11 | - | - | - | - | 0 % |
+| momentum_masterlegacy | taille 2 | frein | 9 % | 16 % | 75 % | 10 | - | - | - | - | 40 % |
+| momentum_masterlegacy | taille 2 | sans frein | 10 % | 35 % | 55 % | 12 | - | - | - | - | 36 % |
+| momentum_masterlegacy | taille 3 | frein | 20 % | 32 % | 48 % | 11 | - | - | - | - | 34 % |
+| momentum_masterlegacy | taille 3 | sans frein | 24 % | 51 % | 25 % | 12 | - | - | - | - | 35 % |
+| momentum_masterlegacy | taille 4 | frein | 21 % | 54 % | 25 % | 10 | - | - | - | - | 32 % |
+| momentum_masterlegacy | taille 4 | sans frein | 30 % | 59 % | 11 % | 11 | - | - | - | - | 32 % |
+| goat | taille 1 | frein | 75 % | 24 % | 1 % | 205 | - | - | - | - | 100 % |
+| goat | taille 1 | sans frein | 51 % | 49 % | 0 % | 167 | - | - | - | - | 100 % |
+| flex | taille 1 | zone toujours sur MES | 92 % | 7 % | 1 % | 219 | - | - | - | - | - |
+| flex | taille 1 | zone MNQ, frein | 26 % | 73 % | 2 % | 232 | - | - | - | - | 79 % |
+
+### choix 2012-2021 | filtre deux fois plus faible
+
+| Candidate | Validé | Perdu | Expiré / pas fini | Séances pour valider | Au moins un retrait en 24 mois | Net moyen 24 mois | Net médian | Achats perdants | Master perdu en 12 mois |
+|---|---|---|---|---|---|---|---|---|---|
+| legacy | taille 1 | frein | 4 % | 1 % | 95 % | 17 | 3 % | +100 $ | -19 $ | 97 % | 21 % |
+| legacy | taille 1 | sans frein | 4 % | 1 % | 94 % | 17 | 4 % | +122 $ | -19 $ | 96 % | 20 % |
+| legacy | taille 2 | frein | 19 % | 8 % | 73 % | 12 | 14 % | +501 $ | -19 $ | 86 % | 21 % |
+| legacy | taille 2 | sans frein | 22 % | 13 % | 65 % | 13 | 16 % | +564 $ | -19 $ | 84 % | 23 % |
+| legacy | taille 3 | frein | 29 % | 18 % | 53 % | 10 | 22 % | +742 $ | -19 $ | 78 % | 21 % |
+| legacy | taille 3 | sans frein | 34 % | 27 % | 40 % | 10 | 25 % | +862 $ | -19 $ | 75 % | 21 % |
+| legacy | taille 4 | frein | 34 % | 30 % | 37 % | 9 | 25 % | +842 $ | -19 $ | 75 % | 22 % |
+| legacy | taille 4 | sans frein | 38 % | 40 % | 21 % | 9 | 28 % | +957 $ | -19 $ | 72 % | 21 % |
+| momentum | taille 1 | frein | 4 % | 1 % | 95 % | 17 | 3 % | -19 $ | -143 $ | 97 % | 25 % |
+| momentum | taille 1 | sans frein | 4 % | 2 % | 94 % | 17 | 4 % | +0 $ | -143 $ | 96 % | 25 % |
+| momentum | taille 2 | frein | 19 % | 11 % | 69 % | 12 | 14 % | +423 $ | -143 $ | 86 % | 25 % |
+| momentum | taille 2 | sans frein | 22 % | 18 % | 61 % | 12 | 16 % | +476 $ | -143 $ | 84 % | 26 % |
+| momentum | taille 3 | frein | 29 % | 24 % | 48 % | 10 | 21 % | +651 $ | -143 $ | 79 % | 27 % |
+| momentum | taille 3 | sans frein | 32 % | 33 % | 35 % | 10 | 23 % | +747 $ | -143 $ | 77 % | 26 % |
+| momentum | taille 4 | frein | 33 % | 38 % | 29 % | 8 | 24 % | +755 $ | -143 $ | 76 % | 26 % |
+| momentum | taille 4 | sans frein | 37 % | 47 % | 16 % | 9 | 27 % | +884 $ | -143 $ | 73 % | 26 % |
+| momentum_masterlegacy | taille 1 | frein | 4 % | 1 % | 95 % | 17 | 3 % | -15 $ | -143 $ | 97 % | 21 % |
+| momentum_masterlegacy | taille 1 | sans frein | 4 % | 2 % | 94 % | 17 | 4 % | +4 $ | -143 $ | 96 % | 22 % |
+| momentum_masterlegacy | taille 2 | frein | 19 % | 11 % | 69 % | 12 | 15 % | +424 $ | -143 $ | 85 % | 22 % |
+| momentum_masterlegacy | taille 2 | sans frein | 22 % | 18 % | 61 % | 12 | 16 % | +480 $ | -143 $ | 84 % | 23 % |
+| momentum_masterlegacy | taille 3 | frein | 29 % | 24 % | 48 % | 10 | 21 % | +651 $ | -143 $ | 79 % | 23 % |
+| momentum_masterlegacy | taille 3 | sans frein | 32 % | 33 % | 35 % | 10 | 24 % | +753 $ | -143 $ | 76 % | 22 % |
+| momentum_masterlegacy | taille 4 | frein | 33 % | 38 % | 29 % | 8 | 25 % | +768 $ | -143 $ | 75 % | 22 % |
+| momentum_masterlegacy | taille 4 | sans frein | 37 % | 47 % | 16 % | 9 | 28 % | +907 $ | -143 $ | 72 % | 21 % |
+| goat | taille 1 | frein | 73 % | 27 % | 0 % | 86 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| goat | taille 1 | sans frein | 72 % | 28 % | 0 % | 79 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| flex | taille 1 | zone toujours sur MES | 65 % | 35 % | 0 % | 122 | 38 % | +813 $ | -70 $ | 62 % | 55 % |
+| flex | taille 1 | zone MNQ, frein | 63 % | 37 % | 0 % | 72 | 40 % | +1 016 $ | -70 $ | 60 % | 56 % |
+
+### verification 2023 - aout 2026 | filtre deux fois plus faible
+
+| Candidate | Validé | Perdu | Expiré / pas fini | Séances pour valider | Au moins un retrait en 24 mois | Net moyen 24 mois | Net médian | Achats perdants | Master perdu en 12 mois |
+|---|---|---|---|---|---|---|---|---|---|
+| legacy | taille 1 | frein | 2 % | 0 % | 98 % | 17 | 2 % | +40 $ | -19 $ | 98 % | 0 % |
+| legacy | taille 1 | sans frein | 2 % | 0 % | 98 % | 17 | 2 % | +40 $ | -19 $ | 98 % | 0 % |
+| legacy | taille 2 | frein | 16 % | 6 % | 78 % | 14 | 20 % | +711 $ | -19 $ | 80 % | 7 % |
+| legacy | taille 2 | sans frein | 20 % | 15 % | 65 % | 14 | 25 % | +882 $ | -19 $ | 75 % | 6 % |
+| legacy | taille 3 | frein | 28 % | 20 % | 53 % | 11 | 33 % | +1 138 $ | -19 $ | 67 % | 11 % |
+| legacy | taille 3 | sans frein | 31 % | 35 % | 34 % | 11 | 41 % | +1 468 $ | -19 $ | 59 % | 9 % |
+| legacy | taille 4 | frein | 32 % | 35 % | 32 % | 9 | 38 % | +1 347 $ | -19 $ | 62 % | 13 % |
+| legacy | taille 4 | sans frein | 36 % | 48 % | 16 % | 9 | 44 % | +1 600 $ | -19 $ | 56 % | 12 % |
+| momentum | taille 1 | frein | 2 % | 0 % | 98 % | 17 | 2 % | -83 $ | -143 $ | 98 % | 3 % |
+| momentum | taille 1 | sans frein | 2 % | 0 % | 98 % | 17 | 2 % | -83 $ | -143 $ | 98 % | 3 % |
+| momentum | taille 2 | frein | 17 % | 9 % | 74 % | 14 | 21 % | +639 $ | -143 $ | 79 % | 14 % |
+| momentum | taille 2 | sans frein | 20 % | 21 % | 59 % | 14 | 25 % | +788 $ | -143 $ | 75 % | 13 % |
+| momentum | taille 3 | frein | 28 % | 27 % | 45 % | 11 | 33 % | +1 110 $ | -143 $ | 67 % | 14 % |
+| momentum | taille 3 | sans frein | 31 % | 43 % | 27 % | 11 | 39 % | +1 383 $ | -143 $ | 61 % | 13 % |
+| momentum | taille 4 | frein | 31 % | 45 % | 24 % | 9 | 38 % | +1 325 $ | -143 $ | 62 % | 17 % |
+| momentum | taille 4 | sans frein | 33 % | 56 % | 11 % | 8 | 40 % | +1 448 $ | -143 $ | 60 % | 17 % |
+| momentum_masterlegacy | taille 1 | frein | 2 % | 0 % | 98 % | 17 | 2 % | -83 $ | -143 $ | 98 % | 0 % |
+| momentum_masterlegacy | taille 1 | sans frein | 2 % | 0 % | 98 % | 17 | 2 % | -83 $ | -143 $ | 98 % | 0 % |
+| momentum_masterlegacy | taille 2 | frein | 17 % | 9 % | 74 % | 14 | 22 % | +643 $ | -143 $ | 78 % | 10 % |
+| momentum_masterlegacy | taille 2 | sans frein | 20 % | 21 % | 59 % | 14 | 26 % | +790 $ | -143 $ | 74 % | 9 % |
+| momentum_masterlegacy | taille 3 | frein | 28 % | 27 % | 45 % | 11 | 34 % | +1 123 $ | -143 $ | 66 % | 12 % |
+| momentum_masterlegacy | taille 3 | sans frein | 31 % | 43 % | 27 % | 11 | 40 % | +1 384 $ | -143 $ | 60 % | 11 % |
+| momentum_masterlegacy | taille 4 | frein | 31 % | 45 % | 24 % | 9 | 39 % | +1 319 $ | -143 $ | 61 % | 14 % |
+| momentum_masterlegacy | taille 4 | sans frein | 33 % | 56 % | 11 % | 8 | 41 % | +1 445 $ | -143 $ | 59 % | 16 % |
+| goat | taille 1 | frein | 80 % | 13 % | 7 % | 99 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| goat | taille 1 | sans frein | 74 % | 20 % | 5 % | 80 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| flex | taille 1 | zone toujours sur MES | 86 % | 4 % | 9 % | 169 | 91 % | +1 899 $ | +2 011 $ | 9 % | 2 % |
+| flex | taille 1 | zone MNQ, frein | 62 % | 32 % | 6 % | 63 | 67 % | +1 571 $ | +2 156 $ | 33 % | 35 % |
+
+### 2025 | filtre deux fois plus faible
+
+| Candidate | Validé | Perdu | Expiré / pas fini | Séances pour valider | Au moins un retrait en 24 mois | Net moyen 24 mois | Net médian | Achats perdants | Master perdu en 12 mois |
+|---|---|---|---|---|---|---|---|---|---|
+| legacy | taille 1 | frein | 0 % | 0 % | 100 % | - | - | - | - | - | - |
+| legacy | taille 1 | sans frein | 0 % | 1 % | 99 % | - | - | - | - | - | - |
+| legacy | taille 2 | frein | 8 % | 13 % | 79 % | 10 | - | - | - | - | 59 % |
+| legacy | taille 2 | sans frein | 9 % | 27 % | 64 % | 13 | - | - | - | - | 61 % |
+| legacy | taille 3 | frein | 19 % | 25 % | 57 % | 11 | - | - | - | - | 48 % |
+| legacy | taille 3 | sans frein | 21 % | 44 % | 34 % | 11 | - | - | - | - | 44 % |
+| legacy | taille 4 | frein | 20 % | 46 % | 34 % | 10 | - | - | - | - | 45 % |
+| legacy | taille 4 | sans frein | 29 % | 53 % | 18 % | 11 | - | - | - | - | 38 % |
+| momentum | taille 1 | frein | 0 % | 0 % | 100 % | - | - | - | - | - | - |
+| momentum | taille 1 | sans frein | 0 % | 1 % | 99 % | - | - | - | - | - | - |
+| momentum | taille 2 | frein | 8 % | 18 % | 74 % | 10 | - | - | - | - | 74 % |
+| momentum | taille 2 | sans frein | 9 % | 38 % | 53 % | 12 | - | - | - | - | 71 % |
+| momentum | taille 3 | frein | 17 % | 35 % | 48 % | 11 | - | - | - | - | 58 % |
+| momentum | taille 3 | sans frein | 21 % | 55 % | 24 % | 12 | - | - | - | - | 60 % |
+| momentum | taille 4 | frein | 19 % | 57 % | 24 % | 9 | - | - | - | - | 55 % |
+| momentum | taille 4 | sans frein | 27 % | 62 % | 11 % | 11 | - | - | - | - | 54 % |
+| momentum_masterlegacy | taille 1 | frein | 0 % | 0 % | 100 % | - | - | - | - | - | - |
+| momentum_masterlegacy | taille 1 | sans frein | 0 % | 1 % | 99 % | - | - | - | - | - | - |
+| momentum_masterlegacy | taille 2 | frein | 8 % | 18 % | 74 % | 10 | - | - | - | - | 74 % |
+| momentum_masterlegacy | taille 2 | sans frein | 9 % | 38 % | 53 % | 12 | - | - | - | - | 71 % |
+| momentum_masterlegacy | taille 3 | frein | 17 % | 35 % | 48 % | 11 | - | - | - | - | 59 % |
+| momentum_masterlegacy | taille 3 | sans frein | 21 % | 55 % | 24 % | 12 | - | - | - | - | 60 % |
+| momentum_masterlegacy | taille 4 | frein | 19 % | 57 % | 24 % | 9 | - | - | - | - | 56 % |
+| momentum_masterlegacy | taille 4 | sans frein | 27 % | 62 % | 11 % | 11 | - | - | - | - | 55 % |
+| goat | taille 1 | frein | 60 % | 38 % | 2 % | 218 | - | - | - | - | 100 % |
+| goat | taille 1 | sans frein | 37 % | 63 % | 0 % | 180 | - | - | - | - | 100 % |
+| flex | taille 1 | zone toujours sur MES | 84 % | 11 % | 5 % | 234 | - | - | - | - | - |
+| flex | taille 1 | zone MNQ, frein | 13 % | 85 % | 2 % | 353 | - | - | - | - | 100 % |
+
+### choix 2012-2021 | sans filtre
+
+| Candidate | Validé | Perdu | Expiré / pas fini | Séances pour valider | Au moins un retrait en 24 mois | Net moyen 24 mois | Net médian | Achats perdants | Master perdu en 12 mois |
+|---|---|---|---|---|---|---|---|---|---|
+| legacy | taille 1 | frein | 3 % | 2 % | 95 % | 17 | 2 % | +70 $ | -19 $ | 98 % | 34 % |
+| legacy | taille 1 | sans frein | 4 % | 2 % | 94 % | 17 | 3 % | +97 $ | -19 $ | 97 % | 29 % |
+| legacy | taille 2 | frein | 19 % | 12 % | 70 % | 12 | 13 % | +456 $ | -19 $ | 87 % | 30 % |
+| legacy | taille 2 | sans frein | 22 % | 18 % | 60 % | 12 | 16 % | +540 $ | -19 $ | 84 % | 31 % |
+| legacy | taille 3 | frein | 28 % | 23 % | 49 % | 9 | 18 % | +649 $ | -19 $ | 82 % | 33 % |
+| legacy | taille 3 | sans frein | 34 % | 36 % | 31 % | 9 | 22 % | +740 $ | -19 $ | 78 % | 34 % |
+| legacy | taille 4 | frein | 33 % | 38 % | 29 % | 8 | 20 % | +684 $ | -19 $ | 80 % | 34 % |
+| legacy | taille 4 | sans frein | 37 % | 51 % | 12 % | 8 | 23 % | +734 $ | -19 $ | 77 % | 35 % |
+| momentum | taille 1 | frein | 3 % | 2 % | 94 % | 17 | 2 % | -56 $ | -143 $ | 98 % | 38 % |
+| momentum | taille 1 | sans frein | 4 % | 4 % | 92 % | 17 | 3 % | -28 $ | -143 $ | 97 % | 32 % |
+| momentum | taille 2 | frein | 19 % | 17 % | 64 % | 12 | 12 % | +352 $ | -143 $ | 88 % | 34 % |
+| momentum | taille 2 | sans frein | 21 % | 24 % | 55 % | 12 | 14 % | +398 $ | -143 $ | 86 % | 36 % |
+| momentum | taille 3 | frein | 28 % | 31 % | 41 % | 9 | 17 % | +524 $ | -143 $ | 83 % | 38 % |
+| momentum | taille 3 | sans frein | 32 % | 43 % | 25 % | 9 | 19 % | +591 $ | -143 $ | 81 % | 37 % |
+| momentum | taille 4 | frein | 31 % | 48 % | 21 % | 8 | 18 % | +552 $ | -143 $ | 82 % | 38 % |
+| momentum | taille 4 | sans frein | 35 % | 56 % | 9 % | 8 | 20 % | +647 $ | -143 $ | 80 % | 39 % |
+| momentum_masterlegacy | taille 1 | frein | 3 % | 2 % | 94 % | 17 | 2 % | -40 $ | -143 $ | 98 % | 27 % |
+| momentum_masterlegacy | taille 1 | sans frein | 4 % | 4 % | 92 % | 17 | 3 % | -12 $ | -143 $ | 97 % | 24 % |
+| momentum_masterlegacy | taille 2 | frein | 19 % | 17 % | 64 % | 12 | 13 % | +389 $ | -143 $ | 87 % | 27 % |
+| momentum_masterlegacy | taille 2 | sans frein | 21 % | 24 % | 55 % | 12 | 15 % | +439 $ | -143 $ | 85 % | 29 % |
+| momentum_masterlegacy | taille 3 | frein | 28 % | 31 % | 41 % | 9 | 18 % | +550 $ | -143 $ | 82 % | 31 % |
+| momentum_masterlegacy | taille 3 | sans frein | 32 % | 43 % | 25 % | 9 | 20 % | +627 $ | -143 $ | 80 % | 31 % |
+| momentum_masterlegacy | taille 4 | frein | 31 % | 48 % | 21 % | 8 | 20 % | +602 $ | -143 $ | 80 % | 31 % |
+| momentum_masterlegacy | taille 4 | sans frein | 35 % | 56 % | 9 % | 8 | 22 % | +680 $ | -143 $ | 78 % | 33 % |
+| goat | taille 1 | frein | 61 % | 39 % | 0 % | 77 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| goat | taille 1 | sans frein | 62 % | 38 % | 0 % | 73 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| flex | taille 1 | zone toujours sur MES | 58 % | 42 % | 0 % | 117 | 28 % | +592 $ | -70 $ | 72 % | 67 % |
+| flex | taille 1 | zone MNQ, frein | 50 % | 50 % | 0 % | 61 | 22 % | +335 $ | -70 $ | 78 % | 79 % |
+
+### verification 2023 - aout 2026 | sans filtre
+
+| Candidate | Validé | Perdu | Expiré / pas fini | Séances pour valider | Au moins un retrait en 24 mois | Net moyen 24 mois | Net médian | Achats perdants | Master perdu en 12 mois |
+|---|---|---|---|---|---|---|---|---|---|
+| legacy | taille 1 | frein | 1 % | 0 % | 99 % | 15 | 1 % | +21 $ | -19 $ | 99 % | 0 % |
+| legacy | taille 1 | sans frein | 1 % | 0 % | 99 % | 15 | 1 % | +21 $ | -19 $ | 99 % | 0 % |
+| legacy | taille 2 | frein | 13 % | 10 % | 77 % | 12 | 16 % | +553 $ | -19 $ | 84 % | 16 % |
+| legacy | taille 2 | sans frein | 19 % | 22 % | 59 % | 14 | 23 % | +791 $ | -19 $ | 77 % | 13 % |
+| legacy | taille 3 | frein | 26 % | 28 % | 47 % | 10 | 29 % | +990 $ | -19 $ | 71 % | 21 % |
+| legacy | taille 3 | sans frein | 30 % | 42 % | 27 % | 10 | 40 % | +1 347 $ | -19 $ | 60 % | 15 % |
+| legacy | taille 4 | frein | 28 % | 47 % | 25 % | 8 | 32 % | +1 136 $ | -19 $ | 68 % | 20 % |
+| legacy | taille 4 | sans frein | 32 % | 58 % | 11 % | 8 | 37 % | +1 331 $ | -19 $ | 63 % | 21 % |
+| momentum | taille 1 | frein | 1 % | 0 % | 99 % | 15 | 1 % | -97 $ | -143 $ | 99 % | 0 % |
+| momentum | taille 1 | sans frein | 1 % | 1 % | 98 % | 15 | 1 % | -97 $ | -143 $ | 99 % | 0 % |
+| momentum | taille 2 | frein | 15 % | 13 % | 72 % | 13 | 16 % | +492 $ | -143 $ | 84 % | 16 % |
+| momentum | taille 2 | sans frein | 19 % | 33 % | 48 % | 13 | 25 % | +795 $ | -143 $ | 75 % | 14 % |
+| momentum | taille 3 | frein | 26 % | 35 % | 38 % | 10 | 32 % | +1 073 $ | -143 $ | 68 % | 16 % |
+| momentum | taille 3 | sans frein | 30 % | 53 % | 17 % | 10 | 38 % | +1 339 $ | -143 $ | 62 % | 19 % |
+| momentum | taille 4 | frein | 27 % | 57 % | 16 % | 8 | 34 % | +1 203 $ | -143 $ | 66 % | 19 % |
+| momentum | taille 4 | sans frein | 30 % | 64 % | 6 % | 8 | 35 % | +1 257 $ | -143 $ | 65 % | 29 % |
+| momentum_masterlegacy | taille 1 | frein | 1 % | 0 % | 99 % | 15 | 1 % | -99 $ | -143 $ | 99 % | 0 % |
+| momentum_masterlegacy | taille 1 | sans frein | 1 % | 1 % | 98 % | 15 | 1 % | -99 $ | -143 $ | 99 % | 0 % |
+| momentum_masterlegacy | taille 2 | frein | 15 % | 13 % | 72 % | 13 | 16 % | +458 $ | -143 $ | 84 % | 25 % |
+| momentum_masterlegacy | taille 2 | sans frein | 19 % | 33 % | 48 % | 13 | 25 % | +741 $ | -143 $ | 75 % | 18 % |
+| momentum_masterlegacy | taille 3 | frein | 26 % | 35 % | 38 % | 10 | 32 % | +956 $ | -143 $ | 68 % | 15 % |
+| momentum_masterlegacy | taille 3 | sans frein | 30 % | 53 % | 17 % | 10 | 38 % | +1 214 $ | -143 $ | 62 % | 16 % |
+| momentum_masterlegacy | taille 4 | frein | 27 % | 57 % | 16 % | 8 | 34 % | +1 072 $ | -143 $ | 66 % | 16 % |
+| momentum_masterlegacy | taille 4 | sans frein | 30 % | 64 % | 6 % | 8 | 35 % | +1 156 $ | -143 $ | 65 % | 26 % |
+| goat | taille 1 | frein | 60 % | 34 % | 6 % | 89 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| goat | taille 1 | sans frein | 64 % | 30 % | 7 % | 73 | 0 % | -34 $ | -34 $ | 100 % | 100 % |
+| flex | taille 1 | zone toujours sur MES | 62 % | 14 % | 23 % | 149 | 63 % | +1 060 $ | +1 296 $ | 37 % | 21 % |
+| flex | taille 1 | zone MNQ, frein | 47 % | 46 % | 7 % | 57 | 41 % | +765 $ | -70 $ | 59 % | 49 % |
+
+### 2025 | sans filtre
+
+| Candidate | Validé | Perdu | Expiré / pas fini | Séances pour valider | Au moins un retrait en 24 mois | Net moyen 24 mois | Net médian | Achats perdants | Master perdu en 12 mois |
+|---|---|---|---|---|---|---|---|---|---|
+| legacy | taille 1 | frein | 0 % | 0 % | 100 % | - | - | - | - | - | - |
+| legacy | taille 1 | sans frein | 0 % | 0 % | 100 % | - | - | - | - | - | - |
+| legacy | taille 2 | frein | 4 % | 18 % | 78 % | 5 | - | - | - | - | 100 % |
+| legacy | taille 2 | sans frein | 7 % | 33 % | 60 % | 11 | - | - | - | - | - |
+| legacy | taille 3 | frein | 19 % | 31 % | 51 % | 10 | - | - | - | - | 60 % |
+| legacy | taille 3 | sans frein | 20 % | 46 % | 34 % | 11 | - | - | - | - | 67 % |
+| legacy | taille 4 | frein | 15 % | 61 % | 24 % | 8 | - | - | - | - | 94 % |
+| legacy | taille 4 | sans frein | 28 % | 58 % | 14 % | 11 | - | - | - | - | 65 % |
+| momentum | taille 1 | frein | 0 % | 0 % | 100 % | - | - | - | - | - | - |
+| momentum | taille 1 | sans frein | 0 % | 0 % | 100 % | - | - | - | - | - | - |
+| momentum | taille 2 | frein | 4 % | 25 % | 71 % | 5 | - | - | - | - | 100 % |
+| momentum | taille 2 | sans frein | 4 % | 54 % | 42 % | 5 | - | - | - | - | - |
+| momentum | taille 3 | frein | 17 % | 40 % | 43 % | 10 | - | - | - | - | 100 % |
+| momentum | taille 3 | sans frein | 21 % | 63 % | 16 % | 12 | - | - | - | - | 100 % |
+| momentum | taille 4 | frein | 15 % | 71 % | 14 % | 8 | - | - | - | - | 100 % |
+| momentum | taille 4 | sans frein | 26 % | 69 % | 5 % | 11 | - | - | - | - | 100 % |
+| momentum_masterlegacy | taille 1 | frein | 0 % | 0 % | 100 % | - | - | - | - | - | - |
+| momentum_masterlegacy | taille 1 | sans frein | 0 % | 0 % | 100 % | - | - | - | - | - | - |
+| momentum_masterlegacy | taille 2 | frein | 4 % | 25 % | 71 % | 5 | - | - | - | - | 100 % |
+| momentum_masterlegacy | taille 2 | sans frein | 4 % | 54 % | 42 % | 5 | - | - | - | - | - |
+| momentum_masterlegacy | taille 3 | frein | 17 % | 40 % | 43 % | 10 | - | - | - | - | 100 % |
+| momentum_masterlegacy | taille 3 | sans frein | 21 % | 63 % | 16 % | 12 | - | - | - | - | 100 % |
+| momentum_masterlegacy | taille 4 | frein | 15 % | 71 % | 14 % | 8 | - | - | - | - | 100 % |
+| momentum_masterlegacy | taille 4 | sans frein | 26 % | 69 % | 5 % | 11 | - | - | - | - | 100 % |
+| goat | taille 1 | frein | 10 % | 89 % | 1 % | 178 | - | - | - | - | - |
+| goat | taille 1 | sans frein | 7 % | 92 % | 1 % | 389 | - | - | - | - | 100 % |
+| flex | taille 1 | zone toujours sur MES | 50 % | 24 % | 26 % | 218 | - | - | - | - | - |
+| flex | taille 1 | zone MNQ, frein | 2 % | 95 % | 4 % | 41 | - | - | - | - | 100 % |
+
+## Jugement fixé à l'avance
+
+- **legacy** : retenue « legacy | taille 4 | sans frein » (validé en 30 jours sur 2012-2021 : 41 %, le meilleur étant 41 %).
+  - vérification 2023 - août 2026 : validé 40 % contre 2 % pour le bot tel quel (au moins 2 fois) ; net moyen 24 mois +1 814 $ → **VALIDÉE**
+- **momentum** : retenue « momentum | taille 4 | sans frein » (validé en 30 jours sur 2012-2021 : 40 %, le meilleur étant 40 %).
+  - vérification 2023 - août 2026 : validé 38 % contre 2 % pour le bot tel quel (au moins 2 fois) ; net moyen 24 mois +1 774 $ → **VALIDÉE**
+
+## Comparaison finale (net moyen d'un achat sur 24 mois, prix et activation compris)
+
+| Compte | Prix payé avant de savoir | Choix 2012-2021 (fort / moitié) | Vérif. 2023 - sept. 2024 (fort / moitié) | Validé, vérif. fort | Achats perdants, vérif. fort |
+|---|---|---|---|---|---|
+| legacy | taille 4 | sans frein | 19,25 $ (+148 $ à la réussite) | +1 149 $ / +957 $ | +1 814 $ / +1 600 $ | 40 % | 52 % |
+| momentum | taille 4 | sans frein | 143 $ (85,80 $ avec -40 %) | +1 092 $ / +884 $ | +1 774 $ / +1 448 $ | 38 % | 54 % |
+| legacy | taille 1 | frein | 19,25 $ (+148 $ à la réussite) | +135 $ / +100 $ | +55 $ / +40 $ | 2 % | 98 % |
+| goat | taille 1 | frein | 34,50 $ | -34 $ / -34 $ | -34 $ / -34 $ | 87 % | 100 % |
+| goat | taille 1 | sans frein | 34,50 $ | -34 $ / -34 $ | -34 $ / -34 $ | 80 % | 100 % |
+| flex | taille 1 | zone toujours sur MES | 69,99 $ | +1 197 $ / +813 $ | +2 438 $ / +1 899 $ | 90 % | 6 % |
+| flex | taille 1 | zone MNQ, frein | 69,99 $ | +1 513 $ / +1 016 $ | +2 262 $ / +1 571 $ | 72 % | 16 % |
+
+Règle 4 (dans le budget, net moyen positif avec le filtre deux fois plus faible, sur les deux périodes) : legacy | taille 4 | sans frein, legacy | taille 1 | frein. Goat : compte financé non simulé, comparé sur le challenge seulement.

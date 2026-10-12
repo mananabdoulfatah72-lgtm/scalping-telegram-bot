@@ -1,0 +1,3502 @@
+{
+ "legacy | taille 1 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.049453551912568304,
+    "perdu": 0.009172521467603435,
+    "expire": 0.9413739266198282,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.04091497626240829,
+    "net_moy": 134.57456591719787,
+    "net_med": -19.25,
+    "perdants": 0.9590850237375917,
+    "master_perdu12": 0.1768
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.022848034006376194,
+    "perdu": 0.0,
+    "expire": 0.9771519659936238,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.021521739130434783,
+    "net_moy": 55.33195494446663,
+    "net_med": -19.25,
+    "perdants": 0.9784782608695652,
+    "master_perdu12": 0.049586776859504134
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.008560311284046693,
+    "perdu": 0.0,
+    "expire": 0.9914396887159533,
+    "seances_med": 11.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.0
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.03825136612021858,
+    "perdu": 0.010733801717408275,
+    "expire": 0.9510148321623731,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.03154941735002158,
+    "net_moy": 100.032369767004,
+    "net_med": -19.25,
+    "perdants": 0.9684505826499784,
+    "master_perdu12": 0.20743034055727555
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.01636556854410202,
+    "perdu": 0.0,
+    "expire": 0.983634431455898,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.01717391304347826,
+    "net_moy": 39.88266083622485,
+    "net_med": -19.25,
+    "perdants": 0.9828260869565217,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.0,
+    "perdu": 0.0,
+    "expire": 1.0,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.03434816549570648,
+    "perdu": 0.0156128024980484,
+    "expire": 0.9500390320062451,
+    "seances_med": 17.0,
+    "suivis24": 2317,
+    "retrait24": 0.024600776866637895,
+    "net_moy": 70.17355018349089,
+    "net_med": -19.25,
+    "perdants": 0.9753992231333621,
+    "master_perdu12": 0.3372093023255814
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.007438894792773645,
+    "perdu": 0.0,
+    "expire": 0.9925611052072264,
+    "seances_med": 15.0,
+    "suivis24": 460,
+    "retrait24": 0.010869565217391304,
+    "net_moy": 21.082966812571723,
+    "net_med": -19.25,
+    "perdants": 0.9891304347826086,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.0,
+    "perdu": 0.0,
+    "expire": 1.0,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "legacy | taille 1 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.05714285714285714,
+    "perdu": 0.011748633879781421,
+    "expire": 0.9311085089773614,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.047475183426845056,
+    "net_moy": 160.45288594024092,
+    "net_med": -19.25,
+    "perdants": 0.9525248165731549,
+    "master_perdu12": 0.17829993089149965
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.022848034006376194,
+    "perdu": 0.0,
+    "expire": 0.9771519659936238,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.021521739130434783,
+    "net_moy": 55.33195494446663,
+    "net_med": -19.25,
+    "perdants": 0.9784782608695652,
+    "master_perdu12": 0.049586776859504134
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.008560311284046693,
+    "perdu": 0.0,
+    "expire": 0.9914396887159533,
+    "seances_med": 11.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.0
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.044223263075722094,
+    "perdu": 0.013348946135831381,
+    "expire": 0.9424277907884465,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.036901165299956844,
+    "net_moy": 121.55832528467116,
+    "net_med": -19.25,
+    "perdants": 0.9630988347000432,
+    "master_perdu12": 0.20320855614973263
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.01636556854410202,
+    "perdu": 0.001594048884165781,
+    "expire": 0.9820403825717322,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.01717391304347826,
+    "net_moy": 39.88266083622485,
+    "net_med": -19.25,
+    "perdants": 0.9828260869565217,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.0,
+    "perdu": 0.005836575875486381,
+    "expire": 0.9941634241245136,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.04137392661982826,
+    "perdu": 0.02224824355971897,
+    "expire": 0.9363778298204528,
+    "seances_med": 17.0,
+    "suivis24": 2317,
+    "retrait24": 0.03107466551575313,
+    "net_moy": 96.94128899108475,
+    "net_med": -19.25,
+    "perdants": 0.9689253344842469,
+    "master_perdu12": 0.28846153846153844
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.007438894792773645,
+    "perdu": 0.0,
+    "expire": 0.9925611052072264,
+    "seances_med": 15.0,
+    "suivis24": 460,
+    "retrait24": 0.010869565217391304,
+    "net_moy": 21.082966812571723,
+    "net_med": -19.25,
+    "perdants": 0.9891304347826086,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.0,
+    "perdu": 0.0,
+    "expire": 1.0,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "legacy | taille 2 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.21401249024199845,
+    "perdu": 0.07291178766588603,
+    "expire": 0.7130757220921156,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.1735002157962883,
+    "net_moy": 603.316817901273,
+    "net_med": -19.25,
+    "perdants": 0.8264997842037117,
+    "master_perdu12": 0.16974913019593482
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.19277364505844846,
+    "perdu": 0.04824654622741764,
+    "expire": 0.758979808714134,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.24391304347826087,
+    "net_moy": 887.2256956301121,
+    "net_med": -19.25,
+    "perdants": 0.7560869565217392,
+    "master_perdu12": 0.06013179571663921
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.10233463035019455,
+    "perdu": 0.09844357976653696,
+    "expire": 0.7992217898832685,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.5164835164835165
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.19000780640124904,
+    "perdu": 0.07868852459016394,
+    "expire": 0.731303669008587,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.14428139835994822,
+    "net_moy": 500.69938065774056,
+    "net_med": -19.25,
+    "perdants": 0.8557186016400518,
+    "master_perdu12": 0.21471254893880073
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.16280552603613177,
+    "perdu": 0.06057385759829968,
+    "expire": 0.7766206163655686,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.2006521739130435,
+    "net_moy": 710.844011457012,
+    "net_med": -19.25,
+    "perdants": 0.7993478260869565,
+    "master_perdu12": 0.07079646017699115
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.07859922178988327,
+    "perdu": 0.1264591439688716,
+    "expire": 0.7949416342412451,
+    "seances_med": 10.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.5925925925925926
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.18618266978922718,
+    "perdu": 0.11514441842310695,
+    "expire": 0.6986729117876659,
+    "seances_med": 12.0,
+    "suivis24": 2317,
+    "retrait24": 0.13077255071212776,
+    "net_moy": 456.48868339076756,
+    "net_med": -19.25,
+    "perdants": 0.8692274492878722,
+    "master_perdu12": 0.29979035639413
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.13283740701381508,
+    "perdu": 0.09776833156216791,
+    "expire": 0.769394261424017,
+    "seances_med": 12.0,
+    "suivis24": 460,
+    "retrait24": 0.1565217391304348,
+    "net_moy": 553.37296818454,
+    "net_med": -19.25,
+    "perdants": 0.8434782608695652,
+    "master_perdu12": 0.15853658536585366
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.038910505836575876,
+    "perdu": 0.17898832684824903,
+    "expire": 0.7821011673151751,
+    "seances_med": 5.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "legacy | taille 2 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.24285714285714285,
+    "perdu": 0.11717408274785324,
+    "expire": 0.6399687743950039,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.19469141130772552,
+    "net_moy": 680.5717920880256,
+    "net_med": -19.25,
+    "perdants": 0.8053085886922745,
+    "master_perdu12": 0.1786524133462909
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.22741764080765142,
+    "perdu": 0.1363443145589798,
+    "expire": 0.6362380446333687,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.2932608695652174,
+    "net_moy": 1073.8694452109082,
+    "net_med": -19.25,
+    "perdants": 0.7067391304347826,
+    "master_perdu12": 0.05137227304714989
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.11089494163424124,
+    "perdu": 0.24591439688715952,
+    "expire": 0.6431906614785993,
+    "seances_med": 13.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.6805555555555556
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.2176814988290398,
+    "perdu": 0.13391881342701015,
+    "expire": 0.6483996877439501,
+    "seances_med": 13.0,
+    "suivis24": 23170,
+    "retrait24": 0.16158826068191628,
+    "net_moy": 564.1229608210626,
+    "net_med": -19.25,
+    "perdants": 0.8384117393180838,
+    "master_perdu12": 0.22656532754252623
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.19829968119022318,
+    "perdu": 0.15377258235919236,
+    "expire": 0.6479277364505844,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.24630434782608696,
+    "net_moy": 881.581734238336,
+    "net_med": -19.25,
+    "perdants": 0.753695652173913,
+    "master_perdu12": 0.05906148867313916
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.08988326848249027,
+    "perdu": 0.26926070038910505,
+    "expire": 0.6408560311284047,
+    "seances_med": 13.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.6101694915254238
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.22092115534738485,
+    "perdu": 0.17876658860265418,
+    "expire": 0.600312256049961,
+    "seances_med": 12.0,
+    "suivis24": 2317,
+    "retrait24": 0.15537332757876565,
+    "net_moy": 539.5461750723783,
+    "net_med": -19.25,
+    "perdants": 0.8446266724212343,
+    "master_perdu12": 0.3096085409252669
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.1902231668437832,
+    "perdu": 0.21679064824654623,
+    "expire": 0.5929861849096706,
+    "seances_med": 14.0,
+    "suivis24": 460,
+    "retrait24": 0.23043478260869565,
+    "net_moy": 791.3824961300799,
+    "net_med": -19.25,
+    "perdants": 0.7695652173913043,
+    "master_perdu12": 0.13157894736842105
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.07003891050583658,
+    "perdu": 0.32684824902723736,
+    "expire": 0.603112840466926,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "legacy | taille 3 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3186572989851678,
+    "perdu": 0.16053864168618268,
+    "expire": 0.5208040593286495,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.25861027190332325,
+    "net_moy": 894.6016540511658,
+    "net_med": -19.25,
+    "perdants": 0.7413897280966767,
+    "master_perdu12": 0.15409113179813816
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3177470775770457,
+    "perdu": 0.17842720510095644,
+    "expire": 0.5038257173219979,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.3815217391304348,
+    "net_moy": 1405.9425839680684,
+    "net_med": -19.25,
+    "perdants": 0.6184782608695653,
+    "master_perdu12": 0.08693540553666829
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.21284046692607003,
+    "perdu": 0.22684824902723735,
+    "expire": 0.5603112840466926,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.4392156862745098
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.29172521467603435,
+    "perdu": 0.17892271662763465,
+    "expire": 0.529352068696331,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.21747949935261113,
+    "net_moy": 742.4330408973906,
+    "net_med": -19.25,
+    "perdants": 0.7825205006473889,
+    "master_perdu12": 0.20752443432855805
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.2760892667375133,
+    "perdu": 0.19787460148777897,
+    "expire": 0.5260361317747078,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.32565217391304346,
+    "net_moy": 1137.5774637977029,
+    "net_med": -19.25,
+    "perdants": 0.6743478260869565,
+    "master_perdu12": 0.10943606923506422
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.1859922178988327,
+    "perdu": 0.24863813229571985,
+    "expire": 0.5653696498054475,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.4792626728110599
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.27985948477751754,
+    "perdu": 0.22716627634660422,
+    "expire": 0.4929742388758782,
+    "seances_med": 9.0,
+    "suivis24": 2317,
+    "retrait24": 0.18385843763487267,
+    "net_moy": 649.1450826361989,
+    "net_med": -19.25,
+    "perdants": 0.8161415623651274,
+    "master_perdu12": 0.3277545327754533
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.2561105207226355,
+    "perdu": 0.2773645058448459,
+    "expire": 0.4665249734325186,
+    "seances_med": 10.0,
+    "suivis24": 460,
+    "retrait24": 0.28695652173913044,
+    "net_moy": 989.6102237819119,
+    "net_med": -19.25,
+    "perdants": 0.7130434782608696,
+    "master_perdu12": 0.21176470588235294
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.1867704280155642,
+    "perdu": 0.30739299610894943,
+    "expire": 0.5058365758754864,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.6
+   }
+  }
+ },
+ "legacy | taille 3 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.36424668227946916,
+    "perdu": 0.23793911007025761,
+    "expire": 0.3978142076502732,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.3005179110919292,
+    "net_moy": 1043.8578444081863,
+    "net_med": -19.25,
+    "perdants": 0.6994820889080707,
+    "master_perdu12": 0.1484777015437393
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.35887353878852285,
+    "perdu": 0.3139213602550478,
+    "expire": 0.32720510095642935,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.46,
+    "net_moy": 1729.565718776367,
+    "net_med": -19.25,
+    "perdants": 0.54,
+    "master_perdu12": 0.06771463119709795
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.24474708171206225,
+    "perdu": 0.3968871595330739,
+    "expire": 0.3583657587548638,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.39814814814814814
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3359094457455113,
+    "perdu": 0.2665495706479313,
+    "expire": 0.3975409836065574,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.2535606387570134,
+    "net_moy": 861.8500879183399,
+    "net_med": -19.25,
+    "perdants": 0.7464393612429866,
+    "master_perdu12": 0.20712954333643988
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.31339001062699257,
+    "perdu": 0.35015940488841657,
+    "expire": 0.33645058448459086,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.4052173913043478,
+    "net_moy": 1467.9882432691777,
+    "net_med": -19.25,
+    "perdants": 0.5947826086956521,
+    "master_perdu12": 0.09291835814163284
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.211284046692607,
+    "perdu": 0.4439688715953307,
+    "expire": 0.34474708171206225,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.4387755102040816
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.33918813427010147,
+    "perdu": 0.3551912568306011,
+    "expire": 0.30562060889929743,
+    "seances_med": 9.0,
+    "suivis24": 2317,
+    "retrait24": 0.22227017695295642,
+    "net_moy": 740.0795595454509,
+    "net_med": -19.25,
+    "perdants": 0.7777298230470436,
+    "master_perdu12": 0.3440736478711162
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.3028692879914984,
+    "perdu": 0.42295430393198724,
+    "expire": 0.27417640807651433,
+    "seances_med": 10.0,
+    "suivis24": 460,
+    "retrait24": 0.39565217391304347,
+    "net_moy": 1346.9829515536796,
+    "net_med": -19.25,
+    "perdants": 0.6043478260869565,
+    "master_perdu12": 0.14746543778801843
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.20233463035019456,
+    "perdu": 0.45525291828793774,
+    "expire": 0.3424124513618677,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.6666666666666666
+   }
+  }
+ },
+ "legacy | taille 4 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.36362217017954723,
+    "perdu": 0.2704527712724434,
+    "expire": 0.3659250585480094,
+    "seances_med": 9.0,
+    "suivis24": 23170,
+    "retrait24": 0.2921450151057402,
+    "net_moy": 1009.0903139355723,
+    "net_med": -19.25,
+    "perdants": 0.7078549848942598,
+    "master_perdu12": 0.1635524054982818
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3564293304994687,
+    "perdu": 0.32178533475026566,
+    "expire": 0.32178533475026566,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.43043478260869567,
+    "net_moy": 1592.065919262956,
+    "net_med": -19.25,
+    "perdants": 0.5695652173913044,
+    "master_perdu12": 0.08573818485989126
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.2237354085603113,
+    "perdu": 0.4291828793774319,
+    "expire": 0.3470817120622568,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.39209726443769
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.337743950039032,
+    "perdu": 0.2970335675253708,
+    "expire": 0.3652224824355972,
+    "seances_med": 9.0,
+    "suivis24": 23170,
+    "retrait24": 0.24721622788088046,
+    "net_moy": 842.1846823029844,
+    "net_med": -19.25,
+    "perdants": 0.7527837721191195,
+    "master_perdu12": 0.21863799283154123
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.32274176408076516,
+    "perdu": 0.35377258235919234,
+    "expire": 0.3234856535600425,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.3834782608695652,
+    "net_moy": 1346.8088497739152,
+    "net_med": -19.25,
+    "perdants": 0.6165217391304347,
+    "master_perdu12": 0.12878093492208983
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.20233463035019456,
+    "perdu": 0.4583657587548638,
+    "expire": 0.33929961089494165,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.44761904761904764
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.32786885245901637,
+    "perdu": 0.37822014051522246,
+    "expire": 0.2939110070257611,
+    "seances_med": 8.0,
+    "suivis24": 2317,
+    "retrait24": 0.20457488131204143,
+    "net_moy": 684.445289686313,
+    "net_med": -19.25,
+    "perdants": 0.7954251186879586,
+    "master_perdu12": 0.3380952380952381
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.281615302869288,
+    "perdu": 0.46865037194473963,
+    "expire": 0.24973432518597238,
+    "seances_med": 8.0,
+    "suivis24": 460,
+    "retrait24": 0.3239130434782609,
+    "net_moy": 1136.0307202595732,
+    "net_med": -19.25,
+    "perdants": 0.6760869565217391,
+    "master_perdu12": 0.20320855614973263
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.1517509727626459,
+    "perdu": 0.6070038910505836,
+    "expire": 0.24124513618677043,
+    "seances_med": 8.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.9411764705882353
+   }
+  }
+ },
+ "legacy | taille 4 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.40741608118657296,
+    "perdu": 0.3768540202966432,
+    "expire": 0.21572989851678376,
+    "seances_med": 9.0,
+    "suivis24": 23170,
+    "retrait24": 0.3332757876564523,
+    "net_moy": 1149.2447202265391,
+    "net_med": -19.25,
+    "perdants": 0.6667242123435477,
+    "master_perdu12": 0.15823270078589227
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.39659936238044635,
+    "perdu": 0.448990435706695,
+    "expire": 0.15441020191285867,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.4810869565217391,
+    "net_moy": 1814.0698364283787,
+    "net_med": -19.25,
+    "perdants": 0.5189130434782608,
+    "master_perdu12": 0.08605549701440113
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.322568093385214,
+    "perdu": 0.49416342412451364,
+    "expire": 0.18326848249027236,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.32375478927203066
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3807962529274005,
+    "perdu": 0.4049570647931304,
+    "expire": 0.21424668227946916,
+    "seances_med": 9.0,
+    "suivis24": 23170,
+    "retrait24": 0.2821320673284419,
+    "net_moy": 957.063413972948,
+    "net_med": -19.25,
+    "perdants": 0.717867932671558,
+    "master_perdu12": 0.21286417726713172
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3622741764080765,
+    "perdu": 0.479596174282678,
+    "expire": 0.15812964930924547,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.4391304347826087,
+    "net_moy": 1599.6634798898453,
+    "net_med": -19.25,
+    "perdants": 0.5608695652173913,
+    "master_perdu12": 0.11686838124054463
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.29377431906614787,
+    "perdu": 0.5280155642023346,
+    "expire": 0.17821011673151751,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.38028169014084506
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.366120218579235,
+    "perdu": 0.5124902419984387,
+    "expire": 0.1213895394223263,
+    "seances_med": 8.0,
+    "suivis24": 2317,
+    "retrait24": 0.22529132498921017,
+    "net_moy": 733.7028172493335,
+    "net_med": -19.25,
+    "perdants": 0.7747086750107898,
+    "master_perdu12": 0.35287846481876334
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.31562167906482463,
+    "perdu": 0.5781083953241233,
+    "expire": 0.10626992561105207,
+    "seances_med": 8.0,
+    "suivis24": 460,
+    "retrait24": 0.3673913043478261,
+    "net_moy": 1330.6874966769774,
+    "net_med": -19.25,
+    "perdants": 0.6326086956521739,
+    "master_perdu12": 0.21397379912663755
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.27626459143968873,
+    "perdu": 0.5836575875486382,
+    "expire": 0.14007782101167315,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.6511627906976745
+   }
+  }
+ },
+ "momentum | taille 1 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.04875097580015613,
+    "perdu": 0.011787665886026541,
+    "expire": 0.9394613583138174,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.0403539059128183,
+    "net_moy": 19.19485559558891,
+    "net_med": -143.0,
+    "perdants": 0.9596460940871817,
+    "master_perdu12": 0.19074675324675325
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.022848034006376194,
+    "perdu": 0.0009564293304994687,
+    "expire": 0.9761955366631243,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.021521739130434783,
+    "net_moy": -60.12586096633893,
+    "net_med": -143.0,
+    "perdants": 0.9784782608695652,
+    "master_perdu12": 0.049586776859504134
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.008560311284046693,
+    "perdu": 0.003501945525291829,
+    "expire": 0.9879377431906615,
+    "seances_med": 11.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.0
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.03801717408274785,
+    "perdu": 0.013427010148321624,
+    "expire": 0.9485558157689306,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.030211480362537766,
+    "net_moy": -19.244712385166736,
+    "net_med": -143.0,
+    "perdants": 0.9697885196374623,
+    "master_perdu12": 0.245067497403946
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.01636556854410202,
+    "perdu": 0.0009564293304994687,
+    "expire": 0.9826780021253985,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.01717391304347826,
+    "net_moy": -82.7950180661044,
+    "net_med": -143.0,
+    "perdants": 0.9828260869565217,
+    "master_perdu12": 0.02531645569620253
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.0,
+    "perdu": 0.003501945525291829,
+    "expire": 0.9964980544747082,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.03395784543325527,
+    "perdu": 0.02107728337236534,
+    "expire": 0.9449648711943794,
+    "seances_med": 17.0,
+    "suivis24": 2317,
+    "retrait24": 0.020716443677168753,
+    "net_moy": -56.17829851527587,
+    "net_med": -143.0,
+    "perdants": 0.9792835563228313,
+    "master_perdu12": 0.3764705882352941
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.007438894792773645,
+    "perdu": 0.0021253985122210413,
+    "expire": 0.9904357066950054,
+    "seances_med": 15.0,
+    "suivis24": 460,
+    "retrait24": 0.010869565217391304,
+    "net_moy": -96.66708132989987,
+    "net_med": -143.0,
+    "perdants": 0.9891304347826086,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.0,
+    "perdu": 0.0,
+    "expire": 1.0,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "momentum | taille 1 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.056010928961748634,
+    "perdu": 0.017330210772833723,
+    "expire": 0.9266588602654177,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.046741476046611996,
+    "net_moy": 45.24906038639665,
+    "net_med": -143.0,
+    "perdants": 0.953258523953388,
+    "master_perdu12": 0.19675599435825106
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.022848034006376194,
+    "perdu": 0.0012752391073326248,
+    "expire": 0.9758767268862912,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.021521739130434783,
+    "net_moy": -60.12586096633893,
+    "net_med": -143.0,
+    "perdants": 0.9784782608695652,
+    "master_perdu12": 0.049586776859504134
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.008560311284046693,
+    "perdu": 0.004280155642023347,
+    "expire": 0.98715953307393,
+    "seances_med": 11.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.0
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.04371584699453552,
+    "perdu": 0.01908665105386417,
+    "expire": 0.9371975019516003,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.035088476478204574,
+    "net_moy": 0.3504114839536421,
+    "net_med": -143.0,
+    "perdants": 0.9649115235217954,
+    "master_perdu12": 0.24887285843101895
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.01636556854410202,
+    "perdu": 0.0024442082890541975,
+    "expire": 0.9811902231668438,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.01717391304347826,
+    "net_moy": -82.7950180661044,
+    "net_med": -143.0,
+    "perdants": 0.9828260869565217,
+    "master_perdu12": 0.02531645569620253
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.0,
+    "perdu": 0.008560311284046693,
+    "expire": 0.9914396887159533,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.04059328649492584,
+    "perdu": 0.03590944574551132,
+    "expire": 0.9234972677595629,
+    "seances_med": 17.0,
+    "suivis24": 2317,
+    "retrait24": 0.027190332326283987,
+    "net_moy": -27.882497408729684,
+    "net_med": -143.0,
+    "perdants": 0.972809667673716,
+    "master_perdu12": 0.3235294117647059
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.007438894792773645,
+    "perdu": 0.008501594048884165,
+    "expire": 0.9840595111583422,
+    "seances_med": 15.0,
+    "suivis24": 460,
+    "retrait24": 0.010869565217391304,
+    "net_moy": -96.66708132989987,
+    "net_med": -143.0,
+    "perdants": 0.9891304347826086,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.0,
+    "perdu": 0.0,
+    "expire": 1.0,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "momentum | taille 2 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.21705698672911788,
+    "perdu": 0.10171740827478533,
+    "expire": 0.6812256049960967,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.17259387138541218,
+    "net_moy": 532.5299265279241,
+    "net_med": -143.0,
+    "perdants": 0.8274061286145878,
+    "master_perdu12": 0.20510037981551818
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.19861849096705633,
+    "perdu": 0.07715196599362381,
+    "expire": 0.7242295430393199,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.2589130434782609,
+    "net_moy": 899.9200966829628,
+    "net_med": -143.0,
+    "perdants": 0.7410869565217392,
+    "master_perdu12": 0.06877470355731226
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.09027237354085603,
+    "perdu": 0.15953307392996108,
+    "expire": 0.7501945525291829,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.7534246575342466
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.1923887587822014,
+    "perdu": 0.11389539422326307,
+    "expire": 0.6937158469945355,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.1438929650410013,
+    "net_moy": 422.9938904316468,
+    "net_med": -143.0,
+    "perdants": 0.8561070349589988,
+    "master_perdu12": 0.24735342019543974
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.1712008501594049,
+    "perdu": 0.08735387885228481,
+    "expire": 0.7414452709883103,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.20804347826086955,
+    "net_moy": 638.9658203079686,
+    "net_med": -143.0,
+    "perdants": 0.7919565217391304,
+    "master_perdu12": 0.1429889298892989
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.07626459143968872,
+    "perdu": 0.1821011673151751,
+    "expire": 0.7416342412451362,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.7368421052631579
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.1873536299765808,
+    "perdu": 0.1682279469164715,
+    "expire": 0.6444184231069477,
+    "seances_med": 12.0,
+    "suivis24": 2317,
+    "retrait24": 0.12429866206301252,
+    "net_moy": 351.7723970778133,
+    "net_med": -143.0,
+    "perdants": 0.8757013379369875,
+    "master_perdu12": 0.3416666666666667
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.15090329436769395,
+    "perdu": 0.13283740701381508,
+    "expire": 0.7162592986184909,
+    "seances_med": 13.0,
+    "suivis24": 460,
+    "retrait24": 0.1608695652173913,
+    "net_moy": 491.9424147254484,
+    "net_med": -143.0,
+    "perdants": 0.8391304347826087,
+    "master_perdu12": 0.15789473684210525
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.038910505836575876,
+    "perdu": 0.2529182879377432,
+    "expire": 0.708171206225681,
+    "seances_med": 5.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "momentum | taille 2 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.24020296643247463,
+    "perdu": 0.15999219359875097,
+    "expire": 0.5998048399687744,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.18869227449287873,
+    "net_moy": 595.5733549090735,
+    "net_med": -143.0,
+    "perdants": 0.8113077255071213,
+    "master_perdu12": 0.21058669288757784
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.22688629117959616,
+    "perdu": 0.1902231668437832,
+    "expire": 0.5828905419766206,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.3,
+    "net_moy": 1078.4034913492799,
+    "net_med": -143.0,
+    "perdants": 0.7,
+    "master_perdu12": 0.05165289256198347
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.10155642023346304,
+    "perdu": 0.3521400778210117,
+    "expire": 0.5463035019455252,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.7083333333333334
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.2154176424668228,
+    "perdu": 0.17685402029664324,
+    "expire": 0.607728337236534,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.1576176089771256,
+    "net_moy": 476.48469128246495,
+    "net_med": -143.0,
+    "perdants": 0.8423823910228744,
+    "master_perdu12": 0.2626281112737921
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.19798087141339002,
+    "perdu": 0.2130712008501594,
+    "expire": 0.5889479277364505,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.2467391304347826,
+    "net_moy": 788.4842935080453,
+    "net_med": -143.0,
+    "perdants": 0.7532608695652174,
+    "master_perdu12": 0.1283464566929134
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.08599221789883268,
+    "perdu": 0.38132295719844356,
+    "expire": 0.5326848249027237,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.711864406779661
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.21233411397345825,
+    "perdu": 0.24121779859484777,
+    "expire": 0.546448087431694,
+    "seances_med": 12.0,
+    "suivis24": 2317,
+    "retrait24": 0.13854121709106604,
+    "net_moy": 398.04313406148844,
+    "net_med": -143.0,
+    "perdants": 0.861458782908934,
+    "master_perdu12": 0.3592592592592593
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.19341126461211477,
+    "perdu": 0.32518597236981933,
+    "expire": 0.4814027630180659,
+    "seances_med": 13.0,
+    "suivis24": 460,
+    "retrait24": 0.24782608695652175,
+    "net_moy": 795.2307685364547,
+    "net_med": -143.0,
+    "perdants": 0.7521739130434782,
+    "master_perdu12": 0.13740458015267176
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.03501945525291829,
+    "perdu": 0.5408560311284046,
+    "expire": 0.42412451361867703,
+    "seances_med": 5.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "momentum | taille 3 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3161982825917252,
+    "perdu": 0.215807962529274,
+    "expire": 0.4679937548790008,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.24734570565386274,
+    "net_moy": 812.0865463486691,
+    "net_med": -143.0,
+    "perdants": 0.7526542943461373,
+    "master_perdu12": 0.19108752005925195
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3196599362380446,
+    "perdu": 0.24941551540913923,
+    "expire": 0.43092454835281613,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.391304347826087,
+    "net_moy": 1463.632145821049,
+    "net_med": -143.0,
+    "perdants": 0.6086956521739131,
+    "master_perdu12": 0.07670182166826463
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.19766536964980544,
+    "perdu": 0.32023346303501943,
+    "expire": 0.4821011673151751,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.4817813765182186
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.2884855581576893,
+    "perdu": 0.23622170179547228,
+    "expire": 0.4752927400468384,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.20660336642209753,
+    "net_moy": 651.1897712520251,
+    "net_med": -143.0,
+    "perdants": 0.7933966335779025,
+    "master_perdu12": 0.2652232746955345
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.2789585547290117,
+    "perdu": 0.27481402763018065,
+    "expire": 0.44622741764080764,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.32869565217391306,
+    "net_moy": 1109.6840183136503,
+    "net_med": -143.0,
+    "perdants": 0.671304347826087,
+    "master_perdu12": 0.14301310043668122
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.1715953307392996,
+    "perdu": 0.3529182879377432,
+    "expire": 0.4754863813229572,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.5849056603773585
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.28064012490241996,
+    "perdu": 0.31030444964871196,
+    "expire": 0.4090554254488681,
+    "seances_med": 9.0,
+    "suivis24": 2317,
+    "retrait24": 0.1661631419939577,
+    "net_moy": 524.0305980719183,
+    "net_med": -143.0,
+    "perdants": 0.8338368580060423,
+    "master_perdu12": 0.3796940194714882
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.2624867162592986,
+    "perdu": 0.35494155154091395,
+    "expire": 0.38257173219978746,
+    "seances_med": 10.0,
+    "suivis24": 460,
+    "retrait24": 0.3173913043478261,
+    "net_moy": 1072.64877506996,
+    "net_med": -143.0,
+    "perdants": 0.6826086956521739,
+    "master_perdu12": 0.16374269005847952
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.16731517509727625,
+    "perdu": 0.40077821011673154,
+    "expire": 0.43190661478599224,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "momentum | taille 3 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.352263856362217,
+    "perdu": 0.29867291178766586,
+    "expire": 0.3490632318501171,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.2789382822615451,
+    "net_moy": 934.3991545644905,
+    "net_med": -143.0,
+    "perdants": 0.7210617177384548,
+    "master_perdu12": 0.1834608136570225
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3568544102019129,
+    "perdu": 0.38235919234856536,
+    "expire": 0.2607863974495218,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.45565217391304347,
+    "net_moy": 1740.76290660039,
+    "net_med": -143.0,
+    "perdants": 0.5443478260869565,
+    "master_perdu12": 0.08319805194805195
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.23852140077821013,
+    "perdu": 0.5070038910505836,
+    "expire": 0.2544747081712062,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.5015290519877675
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.32482435597189696,
+    "perdu": 0.3291178766588603,
+    "expire": 0.34605776736924276,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.2335347432024169,
+    "net_moy": 746.9703528643175,
+    "net_med": -143.0,
+    "perdants": 0.766465256797583,
+    "master_perdu12": 0.2621686746987952
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.30924548352816156,
+    "perdu": 0.4255047821466525,
+    "expire": 0.26524973432518595,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.38913043478260867,
+    "net_moy": 1383.044659391757,
+    "net_med": -143.0,
+    "perdants": 0.6108695652173913,
+    "master_perdu12": 0.13308857273978889
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.20583657587548637,
+    "perdu": 0.553307392996109,
+    "expire": 0.24085603112840467,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.5973154362416108
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.32201405152224827,
+    "perdu": 0.4274004683840749,
+    "expire": 0.2505854800936768,
+    "seances_med": 9.0,
+    "suivis24": 2317,
+    "retrait24": 0.1903323262839879,
+    "net_moy": 590.6554457742844,
+    "net_med": -143.0,
+    "perdants": 0.8096676737160121,
+    "master_perdu12": 0.36848484848484847
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.30499468650371947,
+    "perdu": 0.5281615302869288,
+    "expire": 0.16684378320935175,
+    "seances_med": 10.0,
+    "suivis24": 460,
+    "retrait24": 0.3847826086956522,
+    "net_moy": 1338.9560411636292,
+    "net_med": -143.0,
+    "perdants": 0.6152173913043478,
+    "master_perdu12": 0.18691588785046728
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.21011673151750973,
+    "perdu": 0.6264591439688716,
+    "expire": 0.16342412451361868,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "momentum | taille 4 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3513270882123341,
+    "perdu": 0.35366900858704137,
+    "expire": 0.29500390320062453,
+    "seances_med": 8.0,
+    "suivis24": 23170,
+    "retrait24": 0.28118256365990507,
+    "net_moy": 935.985087412101,
+    "net_med": -143.0,
+    "perdants": 0.718817436340095,
+    "master_perdu12": 0.18761809492052905
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.34888416578108394,
+    "perdu": 0.41392136025504783,
+    "expire": 0.23719447396386822,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.44065217391304345,
+    "net_moy": 1671.0949728932364,
+    "net_med": -143.0,
+    "perdants": 0.5593478260869565,
+    "master_perdu12": 0.09747145187601958
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.20972762645914397,
+    "perdu": 0.5420233463035019,
+    "expire": 0.2482490272373541,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.46417445482866043
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3250585480093677,
+    "perdu": 0.3834504293520687,
+    "expire": 0.29149102263856363,
+    "seances_med": 8.5,
+    "suivis24": 23170,
+    "retrait24": 0.23552006905481226,
+    "net_moy": 755.3948367648859,
+    "net_med": -143.0,
+    "perdants": 0.7644799309451877,
+    "master_perdu12": 0.26189332051898123
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3112646121147715,
+    "perdu": 0.4526036131774708,
+    "expire": 0.2361317747077577,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.3804347826086957,
+    "net_moy": 1324.668164958517,
+    "net_med": -143.0,
+    "perdants": 0.6195652173913043,
+    "master_perdu12": 0.16659162539396669
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.1859922178988327,
+    "perdu": 0.5735408560311284,
+    "expire": 0.24046692607003892,
+    "seances_med": 9.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.5514950166112956
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.3083528493364559,
+    "perdu": 0.47970335675253706,
+    "expire": 0.21194379391100704,
+    "seances_med": 8.0,
+    "suivis24": 2317,
+    "retrait24": 0.18429003021148035,
+    "net_moy": 551.9881148856931,
+    "net_med": -143.0,
+    "perdants": 0.8157099697885196,
+    "master_perdu12": 0.3759493670886076
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.2731137088204038,
+    "perdu": 0.5696068012752391,
+    "expire": 0.15727948990435706,
+    "seances_med": 8.0,
+    "suivis24": 460,
+    "retrait24": 0.34347826086956523,
+    "net_moy": 1203.0232720624301,
+    "net_med": -143.0,
+    "perdants": 0.6565217391304348,
+    "master_perdu12": 0.18652849740932642
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.1517509727626459,
+    "perdu": 0.7120622568093385,
+    "expire": 0.13618677042801555,
+    "seances_med": 8.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "momentum | taille 4 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.39707259953161594,
+    "perdu": 0.43914910226385634,
+    "expire": 0.16377829820452772,
+    "seances_med": 9.0,
+    "suivis24": 23170,
+    "retrait24": 0.32235649546827794,
+    "net_moy": 1092.17840104915,
+    "net_med": -143.0,
+    "perdants": 0.6776435045317221,
+    "master_perdu12": 0.18290884059396204
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3750265674814028,
+    "perdu": 0.51817215727949,
+    "expire": 0.10680127523910733,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.46260869565217394,
+    "net_moy": 1773.7337331552467,
+    "net_med": -143.0,
+    "perdants": 0.5373913043478261,
+    "master_perdu12": 0.12207418077061577
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.29961089494163423,
+    "perdu": 0.5898832684824903,
+    "expire": 0.11050583657587548,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.4389233954451346
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3708040593286495,
+    "perdu": 0.46850117096018734,
+    "expire": 0.16069476971116314,
+    "seances_med": 9.0,
+    "suivis24": 23170,
+    "retrait24": 0.2698748381527838,
+    "net_moy": 884.481236885547,
+    "net_med": -143.0,
+    "perdants": 0.7301251618472162,
+    "master_perdu12": 0.2590564448188711
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.33177470775770457,
+    "perdu": 0.5608926673751329,
+    "expire": 0.1073326248671626,
+    "seances_med": 8.0,
+    "suivis24": 4600,
+    "retrait24": 0.4006521739130435,
+    "net_moy": 1447.7458242016041,
+    "net_med": -143.0,
+    "perdants": 0.5993478260869565,
+    "master_perdu12": 0.17452076677316294
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.2680933852140078,
+    "perdu": 0.624124513618677,
+    "expire": 0.10778210116731518,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.5412026726057907
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.351288056206089,
+    "perdu": 0.5636221701795472,
+    "expire": 0.08508977361436378,
+    "seances_med": 8.0,
+    "suivis24": 2317,
+    "retrait24": 0.20457488131204143,
+    "net_moy": 646.7577031208411,
+    "net_med": -143.0,
+    "perdants": 0.7954251186879586,
+    "master_perdu12": 0.38555555555555554
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.29968119022316686,
+    "perdu": 0.6354941551540914,
+    "expire": 0.06482465462274177,
+    "seances_med": 8.0,
+    "suivis24": 460,
+    "retrait24": 0.35434782608695653,
+    "net_moy": 1256.866545801071,
+    "net_med": -143.0,
+    "perdants": 0.6456521739130435,
+    "master_perdu12": 0.28699551569506726
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.2607003891050584,
+    "perdu": 0.6926070038910506,
+    "expire": 0.04669260700389105,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "momentum_masterlegacy | taille 1 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.04875097580015613,
+    "perdu": 0.011787665886026541,
+    "expire": 0.9394613583138174,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.041778161415623655,
+    "net_moy": 20.81339472753544,
+    "net_med": -143.0,
+    "perdants": 0.9582218385843764,
+    "master_perdu12": 0.16314935064935066
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.022848034006376194,
+    "perdu": 0.0009564293304994687,
+    "expire": 0.9761955366631243,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.021521739130434783,
+    "net_moy": -58.5314634522452,
+    "net_med": -143.0,
+    "perdants": 0.9784782608695652,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.008560311284046693,
+    "perdu": 0.003501945525291829,
+    "expire": 0.9879377431906615,
+    "seances_med": 11.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.0
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.03801717408274785,
+    "perdu": 0.013427010148321624,
+    "expire": 0.9485558157689306,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.03180837289598619,
+    "net_moy": -14.945824296402868,
+    "net_med": -143.0,
+    "perdants": 0.9681916271040139,
+    "master_perdu12": 0.2066458982346833
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.01636556854410202,
+    "perdu": 0.0009564293304994687,
+    "expire": 0.9826780021253985,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.01717391304347826,
+    "net_moy": -83.06271384819505,
+    "net_med": -143.0,
+    "perdants": 0.9828260869565217,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.0,
+    "perdu": 0.003501945525291829,
+    "expire": 0.9964980544747082,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.03395784543325527,
+    "perdu": 0.02107728337236534,
+    "expire": 0.9449648711943794,
+    "seances_med": 17.0,
+    "suivis24": 2317,
+    "retrait24": 0.024600776866637895,
+    "net_moy": -40.443723423196914,
+    "net_med": -143.0,
+    "perdants": 0.9753992231333621,
+    "master_perdu12": 0.27058823529411763
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.007438894792773645,
+    "perdu": 0.0021253985122210413,
+    "expire": 0.9904357066950054,
+    "seances_med": 15.0,
+    "suivis24": 460,
+    "retrait24": 0.010869565217391304,
+    "net_moy": -99.39717433698718,
+    "net_med": -143.0,
+    "perdants": 0.9891304347826086,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.0,
+    "perdu": 0.0,
+    "expire": 1.0,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "momentum_masterlegacy | taille 1 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.056010928961748634,
+    "perdu": 0.017330210772833723,
+    "expire": 0.9266588602654177,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.04807941303409581,
+    "net_moy": 46.32736954022252,
+    "net_med": -143.0,
+    "perdants": 0.9519205869659042,
+    "master_perdu12": 0.17418899858956277
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.022848034006376194,
+    "perdu": 0.0012752391073326248,
+    "expire": 0.9758767268862912,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.021521739130434783,
+    "net_moy": -58.5314634522452,
+    "net_med": -143.0,
+    "perdants": 0.9784782608695652,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.008560311284046693,
+    "perdu": 0.004280155642023347,
+    "expire": 0.98715953307393,
+    "seances_med": 11.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.0
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.04371584699453552,
+    "perdu": 0.01908665105386417,
+    "expire": 0.9371975019516003,
+    "seances_med": 17.0,
+    "suivis24": 23170,
+    "retrait24": 0.036685369011653,
+    "net_moy": 4.457004355188032,
+    "net_med": -143.0,
+    "perdants": 0.963314630988347,
+    "master_perdu12": 0.21550946798917944
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.01636556854410202,
+    "perdu": 0.0024442082890541975,
+    "expire": 0.9811902231668438,
+    "seances_med": 17.0,
+    "suivis24": 4600,
+    "retrait24": 0.01717391304347826,
+    "net_moy": -83.06271384819505,
+    "net_med": -143.0,
+    "perdants": 0.9828260869565217,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.0,
+    "perdu": 0.008560311284046693,
+    "expire": 0.9914396887159533,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.04059328649492584,
+    "perdu": 0.03590944574551132,
+    "expire": 0.9234972677595629,
+    "seances_med": 17.0,
+    "suivis24": 2317,
+    "retrait24": 0.03107466551575313,
+    "net_moy": -12.147922316650726,
+    "net_med": -143.0,
+    "perdants": 0.9689253344842469,
+    "master_perdu12": 0.23529411764705882
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.007438894792773645,
+    "perdu": 0.008501594048884165,
+    "expire": 0.9840595111583422,
+    "seances_med": 15.0,
+    "suivis24": 460,
+    "retrait24": 0.010869565217391304,
+    "net_moy": -99.39717433698718,
+    "net_med": -143.0,
+    "perdants": 0.9891304347826086,
+    "master_perdu12": 0.0
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.0,
+    "perdu": 0.0,
+    "expire": 1.0,
+    "seances_med": null,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "momentum_masterlegacy | taille 2 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.21705698672911788,
+    "perdu": 0.10171740827478533,
+    "expire": 0.6812256049960967,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.18014674147604662,
+    "net_moy": 534.9748718285665,
+    "net_med": -143.0,
+    "perdants": 0.8198532585239534,
+    "master_perdu12": 0.16675709893289925
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.19861849096705633,
+    "perdu": 0.07715196599362381,
+    "expire": 0.7242295430393199,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.2589130434782609,
+    "net_moy": 859.3242269768822,
+    "net_med": -143.0,
+    "perdants": 0.7410869565217392,
+    "master_perdu12": 0.045059288537549404
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.09027237354085603,
+    "perdu": 0.15953307392996108,
+    "expire": 0.7501945525291829,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.3972602739726027
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.1923887587822014,
+    "perdu": 0.11389539422326307,
+    "expire": 0.6937158469945355,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.14833836858006041,
+    "net_moy": 424.1797513084202,
+    "net_med": -143.0,
+    "perdants": 0.8516616314199396,
+    "master_perdu12": 0.21844462540716614
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.1712008501594049,
+    "perdu": 0.08735387885228481,
+    "expire": 0.7414452709883103,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.21565217391304348,
+    "net_moy": 643.3991026181104,
+    "net_med": -143.0,
+    "perdants": 0.7843478260869565,
+    "master_perdu12": 0.0996309963099631
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.07626459143968872,
+    "perdu": 0.1821011673151751,
+    "expire": 0.7416342412451362,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.7368421052631579
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.1873536299765808,
+    "perdu": 0.1682279469164715,
+    "expire": 0.6444184231069477,
+    "seances_med": 12.0,
+    "suivis24": 2317,
+    "retrait24": 0.13293051359516617,
+    "net_moy": 389.49139256370466,
+    "net_med": -143.0,
+    "perdants": 0.8670694864048338,
+    "master_perdu12": 0.26666666666666666
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.15090329436769395,
+    "perdu": 0.13283740701381508,
+    "expire": 0.7162592986184909,
+    "seances_med": 13.0,
+    "suivis24": 460,
+    "retrait24": 0.1608695652173913,
+    "net_moy": 457.6504946807663,
+    "net_med": -143.0,
+    "perdants": 0.8391304347826087,
+    "master_perdu12": 0.25263157894736843
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.038910505836575876,
+    "perdu": 0.2529182879377432,
+    "expire": 0.708171206225681,
+    "seances_med": 5.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "momentum_masterlegacy | taille 2 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.24020296643247463,
+    "perdu": 0.15999219359875097,
+    "expire": 0.5998048399687744,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.19719464825205008,
+    "net_moy": 598.050444032374,
+    "net_med": -143.0,
+    "perdants": 0.80280535174795,
+    "master_perdu12": 0.17551622418879056
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.22688629117959616,
+    "perdu": 0.1902231668437832,
+    "expire": 0.5828905419766206,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.3,
+    "net_moy": 1023.5702438649432,
+    "net_med": -143.0,
+    "perdants": 0.7,
+    "master_perdu12": 0.04132231404958678
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.10155642023346304,
+    "perdu": 0.3521400778210117,
+    "expire": 0.5463035019455252,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.3611111111111111
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.2154176424668228,
+    "perdu": 0.17685402029664324,
+    "expire": 0.607728337236534,
+    "seances_med": 12.0,
+    "suivis24": 23170,
+    "retrait24": 0.16245144583513163,
+    "net_moy": 479.5139164489364,
+    "net_med": -143.0,
+    "perdants": 0.8375485541648684,
+    "master_perdu12": 0.2335285505124451
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.19798087141339002,
+    "perdu": 0.2130712008501594,
+    "expire": 0.5889479277364505,
+    "seances_med": 14.0,
+    "suivis24": 4600,
+    "retrait24": 0.25565217391304346,
+    "net_moy": 789.6007733391756,
+    "net_med": -143.0,
+    "perdants": 0.7443478260869565,
+    "master_perdu12": 0.09133858267716535
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.08599221789883268,
+    "perdu": 0.38132295719844356,
+    "expire": 0.5326848249027237,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.711864406779661
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.21233411397345825,
+    "perdu": 0.24121779859484777,
+    "expire": 0.546448087431694,
+    "seances_med": 12.0,
+    "suivis24": 2317,
+    "retrait24": 0.14760466119982737,
+    "net_moy": 439.2156651898864,
+    "net_med": -143.0,
+    "perdants": 0.8523953388001726,
+    "master_perdu12": 0.29444444444444445
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.19341126461211477,
+    "perdu": 0.32518597236981933,
+    "expire": 0.4814027630180659,
+    "seances_med": 13.0,
+    "suivis24": 460,
+    "retrait24": 0.24782608695652175,
+    "net_moy": 740.9425071614246,
+    "net_med": -143.0,
+    "perdants": 0.7521739130434782,
+    "master_perdu12": 0.183206106870229
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.03501945525291829,
+    "perdu": 0.5408560311284046,
+    "expire": 0.42412451361867703,
+    "seances_med": 5.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "momentum_masterlegacy | taille 3 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3161982825917252,
+    "perdu": 0.215807962529274,
+    "expire": 0.4679937548790008,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.25934397928355635,
+    "net_moy": 818.5611556042759,
+    "net_med": -143.0,
+    "perdants": 0.7406560207164437,
+    "master_perdu12": 0.1561535612887298
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3196599362380446,
+    "perdu": 0.24941551540913923,
+    "expire": 0.43092454835281613,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.391304347826087,
+    "net_moy": 1410.2184400101687,
+    "net_med": -143.0,
+    "perdants": 0.6086956521739131,
+    "master_perdu12": 0.07142857142857142
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.19766536964980544,
+    "perdu": 0.32023346303501943,
+    "expire": 0.4821011673151751,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.340080971659919
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.2884855581576893,
+    "perdu": 0.23622170179547228,
+    "expire": 0.4752927400468384,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.21337936987483816,
+    "net_moy": 651.2266448181563,
+    "net_med": -143.0,
+    "perdants": 0.7866206301251618,
+    "master_perdu12": 0.22543978349120433
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.2789585547290117,
+    "perdu": 0.27481402763018065,
+    "expire": 0.44622741764080764,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.3393478260869565,
+    "net_moy": 1123.1906555396145,
+    "net_med": -143.0,
+    "perdants": 0.6606521739130434,
+    "master_perdu12": 0.11735807860262008
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.1715953307392996,
+    "perdu": 0.3529182879377432,
+    "expire": 0.4754863813229572,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.589622641509434
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.28064012490241996,
+    "perdu": 0.31030444964871196,
+    "expire": 0.4090554254488681,
+    "seances_med": 9.0,
+    "suivis24": 2317,
+    "retrait24": 0.17652136383254208,
+    "net_moy": 550.1572898685464,
+    "net_med": -143.0,
+    "perdants": 0.8234786361674579,
+    "master_perdu12": 0.30737134909596664
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.2624867162592986,
+    "perdu": 0.35494155154091395,
+    "expire": 0.38257173219978746,
+    "seances_med": 10.0,
+    "suivis24": 460,
+    "retrait24": 0.3173913043478261,
+    "net_moy": 956.4886594161454,
+    "net_med": -143.0,
+    "perdants": 0.6826086956521739,
+    "master_perdu12": 0.14619883040935672
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.16731517509727625,
+    "perdu": 0.40077821011673154,
+    "expire": 0.43190661478599224,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "momentum_masterlegacy | taille 3 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.352263856362217,
+    "perdu": 0.29867291178766586,
+    "expire": 0.3490632318501171,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.2930082002589555,
+    "net_moy": 944.2201306818803,
+    "net_med": -143.0,
+    "perdants": 0.7069917997410444,
+    "master_perdu12": 0.14887484757787384
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3568544102019129,
+    "perdu": 0.38235919234856536,
+    "expire": 0.2607863974495218,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.456304347826087,
+    "net_moy": 1672.412845302228,
+    "net_med": -143.0,
+    "perdants": 0.543695652173913,
+    "master_perdu12": 0.06777597402597403
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.23852140077821013,
+    "perdu": 0.5070038910505836,
+    "expire": 0.2544747081712062,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.3486238532110092
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.32482435597189696,
+    "perdu": 0.3291178766588603,
+    "expire": 0.34605776736924276,
+    "seances_med": 10.0,
+    "suivis24": 23170,
+    "retrait24": 0.24190763918860594,
+    "net_moy": 753.2835170216575,
+    "net_med": -143.0,
+    "perdants": 0.7580923608113941,
+    "master_perdu12": 0.2227710843373494
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.30924548352816156,
+    "perdu": 0.4255047821466525,
+    "expire": 0.26524973432518595,
+    "seances_med": 11.0,
+    "suivis24": 4600,
+    "retrait24": 0.39869565217391306,
+    "net_moy": 1384.1558409031927,
+    "net_med": -143.0,
+    "perdants": 0.601304347826087,
+    "master_perdu12": 0.10830656264341441
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.20583657587548637,
+    "perdu": 0.553307392996109,
+    "expire": 0.24085603112840467,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.6040268456375839
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.32201405152224827,
+    "perdu": 0.4274004683840749,
+    "expire": 0.2505854800936768,
+    "seances_med": 9.0,
+    "suivis24": 2317,
+    "retrait24": 0.20414328873543375,
+    "net_moy": 627.1175677648365,
+    "net_med": -143.0,
+    "perdants": 0.7958567112645663,
+    "master_perdu12": 0.30666666666666664
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.30499468650371947,
+    "perdu": 0.5281615302869288,
+    "expire": 0.16684378320935175,
+    "seances_med": 10.0,
+    "suivis24": 460,
+    "retrait24": 0.3847826086956522,
+    "net_moy": 1214.0440691385315,
+    "net_med": -143.0,
+    "perdants": 0.6152173913043478,
+    "master_perdu12": 0.16355140186915887
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.21011673151750973,
+    "perdu": 0.6264591439688716,
+    "expire": 0.16342412451361868,
+    "seances_med": 12.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "momentum_masterlegacy | taille 4 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3513270882123341,
+    "perdu": 0.35366900858704137,
+    "expire": 0.29500390320062453,
+    "seances_med": 8.0,
+    "suivis24": 23170,
+    "retrait24": 0.297583081570997,
+    "net_moy": 958.2471979975571,
+    "net_med": -143.0,
+    "perdants": 0.702416918429003,
+    "master_perdu12": 0.14493720128931867
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.34888416578108394,
+    "perdu": 0.41392136025504783,
+    "expire": 0.23719447396386822,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.4426086956521739,
+    "net_moy": 1608.8353838452729,
+    "net_med": -143.0,
+    "perdants": 0.5573913043478261,
+    "master_perdu12": 0.07585644371941272
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.20972762645914397,
+    "perdu": 0.5420233463035019,
+    "expire": 0.2482490272373541,
+    "seances_med": 10.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.32398753894080995
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3250585480093677,
+    "perdu": 0.3834504293520687,
+    "expire": 0.29149102263856363,
+    "seances_med": 8.5,
+    "suivis24": 23170,
+    "retrait24": 0.24656883901596893,
+    "net_moy": 767.5986328008472,
+    "net_med": -143.0,
+    "perdants": 0.7534311609840311,
+    "master_perdu12": 0.21792407496395963
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3112646121147715,
+    "perdu": 0.4526036131774708,
+    "expire": 0.2361317747077577,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.39260869565217393,
+    "net_moy": 1318.5373668763436,
+    "net_med": -143.0,
+    "perdants": 0.6073913043478261,
+    "master_perdu12": 0.14272850067537146
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.1859922178988327,
+    "perdu": 0.5735408560311284,
+    "expire": 0.24046692607003892,
+    "seances_med": 9.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.5647840531561462
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.3083528493364559,
+    "perdu": 0.47970335675253706,
+    "expire": 0.21194379391100704,
+    "seances_med": 8.0,
+    "suivis24": 2317,
+    "retrait24": 0.20112214069917997,
+    "net_moy": 602.0993291087581,
+    "net_med": -143.0,
+    "perdants": 0.79887785930082,
+    "master_perdu12": 0.3050632911392405
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.2731137088204038,
+    "perdu": 0.5696068012752391,
+    "expire": 0.15727948990435706,
+    "seances_med": 8.0,
+    "suivis24": 460,
+    "retrait24": 0.34347826086956523,
+    "net_moy": 1071.7168280677784,
+    "net_med": -143.0,
+    "perdants": 0.6565217391304348,
+    "master_perdu12": 0.16062176165803108
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.1517509727626459,
+    "perdu": 0.7120622568093385,
+    "expire": 0.13618677042801555,
+    "seances_med": 8.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "momentum_masterlegacy | taille 4 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.39707259953161594,
+    "perdu": 0.43914910226385634,
+    "expire": 0.16377829820452772,
+    "seances_med": 9.0,
+    "suivis24": 23170,
+    "retrait24": 0.3381959430297799,
+    "net_moy": 1110.2882004186542,
+    "net_med": -143.0,
+    "perdants": 0.6618040569702202,
+    "master_perdu12": 0.1449503392663979
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.3750265674814028,
+    "perdu": 0.51817215727949,
+    "expire": 0.10680127523910733,
+    "seances_med": 9.0,
+    "suivis24": 4600,
+    "retrait24": 0.4667391304347826,
+    "net_moy": 1709.4642449326323,
+    "net_med": -143.0,
+    "perdants": 0.5332608695652173,
+    "master_perdu12": 0.09002520705797623
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.29961089494163423,
+    "perdu": 0.5898832684824903,
+    "expire": 0.11050583657587548,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.32298136645962733
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 25620,
+    "valide": 0.3708040593286495,
+    "perdu": 0.46850117096018734,
+    "expire": 0.16069476971116314,
+    "seances_med": 9.0,
+    "suivis24": 23170,
+    "retrait24": 0.2836858006042296,
+    "net_moy": 907.0178984483049,
+    "net_med": -143.0,
+    "perdants": 0.7163141993957703,
+    "master_perdu12": 0.21135214827295704
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 9410,
+    "valide": 0.33177470775770457,
+    "perdu": 0.5608926673751329,
+    "expire": 0.1073326248671626,
+    "seances_med": 8.0,
+    "suivis24": 4600,
+    "retrait24": 0.41239130434782606,
+    "net_moy": 1445.3052319584715,
+    "net_med": -143.0,
+    "perdants": 0.5876086956521739,
+    "master_perdu12": 0.15575079872204473
+   },
+   "2025": {
+    "achats": 2570,
+    "valide": 0.2680933852140078,
+    "perdu": 0.624124513618677,
+    "expire": 0.10778210116731518,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.5501113585746102
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 2562,
+    "valide": 0.351288056206089,
+    "perdu": 0.5636221701795472,
+    "expire": 0.08508977361436378,
+    "seances_med": 8.0,
+    "suivis24": 2317,
+    "retrait24": 0.22227017695295642,
+    "net_moy": 680.1176156607808,
+    "net_med": -143.0,
+    "perdants": 0.7777298230470436,
+    "master_perdu12": 0.33
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 941,
+    "valide": 0.29968119022316686,
+    "perdu": 0.6354941551540914,
+    "expire": 0.06482465462274177,
+    "seances_med": 8.0,
+    "suivis24": 460,
+    "retrait24": 0.35434782608695653,
+    "net_moy": 1156.3360685796067,
+    "net_med": -143.0,
+    "perdants": 0.6456521739130435,
+    "master_perdu12": 0.2600896860986547
+   },
+   "2025": {
+    "achats": 257,
+    "valide": 0.2607003891050584,
+    "perdu": 0.6926070038910506,
+    "expire": 0.04669260700389105,
+    "seances_med": 11.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "goat | taille 1 | frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 12810,
+    "valide": 0.8085089773614363,
+    "perdu": 0.19149102263856363,
+    "expire": 0.0,
+    "seances_med": 79.0,
+    "suivis24": 11590,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 4710,
+    "valide": 0.872823779193206,
+    "perdu": 0.07473460721868365,
+    "expire": 0.052441613588110406,
+    "seances_med": 85.0,
+    "suivis24": 2300,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "2025": {
+    "achats": 1290,
+    "valide": 0.7457364341085271,
+    "perdu": 0.24496124031007752,
+    "expire": 0.009302325581395349,
+    "seances_med": 205.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 12810,
+    "valide": 0.7280249804839969,
+    "perdu": 0.2719750195160031,
+    "expire": 0.0,
+    "seances_med": 86.0,
+    "suivis24": 11590,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 4710,
+    "valide": 0.799787685774947,
+    "perdu": 0.1326963906581741,
+    "expire": 0.06751592356687898,
+    "seances_med": 99.0,
+    "suivis24": 2300,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "2025": {
+    "achats": 1290,
+    "valide": 0.5976744186046512,
+    "perdu": 0.37906976744186044,
+    "expire": 0.023255813953488372,
+    "seances_med": 218.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 1281,
+    "valide": 0.60967993754879,
+    "perdu": 0.39032006245121,
+    "expire": 0.0,
+    "seances_med": 77.0,
+    "suivis24": 1159,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 471,
+    "valide": 0.5987261146496815,
+    "perdu": 0.3375796178343949,
+    "expire": 0.06369426751592357,
+    "seances_med": 89.5,
+    "suivis24": 230,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "2025": {
+    "achats": 129,
+    "valide": 0.10077519379844961,
+    "perdu": 0.8914728682170543,
+    "expire": 0.007751937984496124,
+    "seances_med": 178.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "goat | taille 1 | sans frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 12810,
+    "valide": 0.805152224824356,
+    "perdu": 0.19484777517564403,
+    "expire": 0.0,
+    "seances_med": 73.0,
+    "suivis24": 11590,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 4710,
+    "valide": 0.8038216560509555,
+    "perdu": 0.1484076433121019,
+    "expire": 0.04777070063694268,
+    "seances_med": 69.0,
+    "suivis24": 2300,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "2025": {
+    "achats": 1290,
+    "valide": 0.5108527131782946,
+    "perdu": 0.48914728682170544,
+    "expire": 0.0,
+    "seances_med": 167.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 12810,
+    "valide": 0.7203747072599531,
+    "perdu": 0.2796252927400468,
+    "expire": 0.0,
+    "seances_med": 79.0,
+    "suivis24": 11590,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 4710,
+    "valide": 0.7443736730360934,
+    "perdu": 0.20127388535031848,
+    "expire": 0.05435244161358811,
+    "seances_med": 80.0,
+    "suivis24": 2300,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "2025": {
+    "achats": 1290,
+    "valide": 0.37209302325581395,
+    "perdu": 0.6271317829457365,
+    "expire": 0.0007751937984496124,
+    "seances_med": 180.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 1281,
+    "valide": 0.6221701795472288,
+    "perdu": 0.37782982045277125,
+    "expire": 0.0,
+    "seances_med": 73.0,
+    "suivis24": 1159,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 471,
+    "valide": 0.6369426751592356,
+    "perdu": 0.2951167728237792,
+    "expire": 0.06794055201698514,
+    "seances_med": 73.5,
+    "suivis24": 230,
+    "retrait24": 0.0,
+    "net_moy": -34.5,
+    "net_med": -34.5,
+    "perdants": 1.0,
+    "master_perdu12": 1.0
+   },
+   "2025": {
+    "achats": 129,
+    "valide": 0.06976744186046512,
+    "perdu": 0.9224806201550387,
+    "expire": 0.007751937984496124,
+    "seances_med": 389.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ },
+ "flex | taille 1 | zone toujours sur MES": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 12810,
+    "valide": 0.7380952380952381,
+    "perdu": 0.2619047619047619,
+    "expire": 0.0,
+    "seances_med": 115.0,
+    "suivis24": 11590,
+    "retrait24": 0.4893874029335634,
+    "net_moy": 1197.120438479721,
+    "net_med": -69.99,
+    "perdants": 0.5106125970664366,
+    "master_perdu12": 0.48693443019598354
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 4710,
+    "valide": 0.9040339702760085,
+    "perdu": 0.025690021231422507,
+    "expire": 0.070276008492569,
+    "seances_med": 150.0,
+    "suivis24": 2300,
+    "retrait24": 0.9439130434782609,
+    "net_moy": 2438.1597245716725,
+    "net_med": 2596.705907977072,
+    "perdants": 0.05608695652173913,
+    "master_perdu12": 0.030360531309297913
+   },
+   "2025": {
+    "achats": 1290,
+    "valide": 0.9224806201550387,
+    "perdu": 0.06511627906976744,
+    "expire": 0.012403100775193798,
+    "seances_med": 219.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 12810,
+    "valide": 0.6491022638563623,
+    "perdu": 0.34730679156908667,
+    "expire": 0.003590944574551132,
+    "seances_med": 122.0,
+    "suivis24": 11590,
+    "retrait24": 0.37998274374460744,
+    "net_moy": 812.9466114420558,
+    "net_med": -69.99,
+    "perdants": 0.6200172562553926,
+    "master_perdu12": 0.5461202647514435
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 4710,
+    "valide": 0.864755838641189,
+    "perdu": 0.041613588110403395,
+    "expire": 0.09363057324840764,
+    "seances_med": 169.0,
+    "suivis24": 2300,
+    "retrait24": 0.91,
+    "net_moy": 1898.6668427502284,
+    "net_med": 2010.889537985963,
+    "perdants": 0.09,
+    "master_perdu12": 0.0236096537250787
+   },
+   "2025": {
+    "achats": 1290,
+    "valide": 0.8387596899224806,
+    "perdu": 0.10775193798449613,
+    "expire": 0.053488372093023255,
+    "seances_med": 234.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 1281,
+    "valide": 0.5846994535519126,
+    "perdu": 0.41530054644808745,
+    "expire": 0.0,
+    "seances_med": 117.0,
+    "suivis24": 1159,
+    "retrait24": 0.28386540120793785,
+    "net_moy": 592.0523696461519,
+    "net_med": -69.99,
+    "perdants": 0.7161345987920621,
+    "master_perdu12": 0.6735015772870663
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 471,
+    "valide": 0.6220806794055201,
+    "perdu": 0.14437367303609341,
+    "expire": 0.23354564755838642,
+    "seances_med": 149.0,
+    "suivis24": 230,
+    "retrait24": 0.6347826086956522,
+    "net_moy": 1060.4795428382452,
+    "net_med": 1295.5004732465884,
+    "perdants": 0.3652173913043478,
+    "master_perdu12": 0.20625
+   },
+   "2025": {
+    "achats": 129,
+    "valide": 0.5038759689922481,
+    "perdu": 0.24031007751937986,
+    "expire": 0.2558139534883721,
+    "seances_med": 218.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": null
+   }
+  }
+ },
+ "flex | taille 1 | zone MNQ, frein": {
+  "fort": {
+   "choix 2012-2021": {
+    "achats": 12810,
+    "valide": 0.700312256049961,
+    "perdu": 0.29968774395003905,
+    "expire": 0.0,
+    "seances_med": 66.0,
+    "suivis24": 11590,
+    "retrait24": 0.4992234685073339,
+    "net_moy": 1512.818282330529,
+    "net_med": -69.99,
+    "perdants": 0.5007765314926661,
+    "master_perdu12": 0.41402298850574715
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 4710,
+    "valide": 0.7193205944798301,
+    "perdu": 0.24331210191082803,
+    "expire": 0.037367303609341825,
+    "seances_med": 59.0,
+    "suivis24": 2300,
+    "retrait24": 0.8434782608695652,
+    "net_moy": 2262.1829608804037,
+    "net_med": 2678.587689078902,
+    "perdants": 0.1565217391304348,
+    "master_perdu12": 0.20215857202158571
+   },
+   "2025": {
+    "achats": 1290,
+    "valide": 0.2558139534883721,
+    "perdu": 0.7286821705426356,
+    "expire": 0.015503875968992248,
+    "seances_med": 232.5,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 0.7948717948717948
+   }
+  },
+  "moitie": {
+   "choix 2012-2021": {
+    "achats": 12810,
+    "valide": 0.6316939890710382,
+    "perdu": 0.36814988290398126,
+    "expire": 0.000156128024980484,
+    "seances_med": 72.0,
+    "suivis24": 11590,
+    "retrait24": 0.4016393442622951,
+    "net_moy": 1015.6613939462014,
+    "net_med": -69.99,
+    "perdants": 0.5983606557377049,
+    "master_perdu12": 0.5563298490127758
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 4710,
+    "valide": 0.6203821656050955,
+    "perdu": 0.3195329087048832,
+    "expire": 0.06008492569002123,
+    "seances_med": 63.0,
+    "suivis24": 2300,
+    "retrait24": 0.6721739130434783,
+    "net_moy": 1571.299343533146,
+    "net_med": 2156.454261050613,
+    "perdants": 0.3278260869565217,
+    "master_perdu12": 0.3471189591078067
+   },
+   "2025": {
+    "achats": 1290,
+    "valide": 0.1310077519379845,
+    "perdu": 0.8472868217054264,
+    "expire": 0.021705426356589147,
+    "seances_med": 353.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  },
+  "aucun": {
+   "choix 2012-2021": {
+    "achats": 1281,
+    "valide": 0.4996096799375488,
+    "perdu": 0.5003903200624512,
+    "expire": 0.0,
+    "seances_med": 61.0,
+    "suivis24": 1159,
+    "retrait24": 0.22433132010353754,
+    "net_moy": 334.970998493609,
+    "net_med": -69.99,
+    "perdants": 0.7756686798964625,
+    "master_perdu12": 0.7878787878787878
+   },
+   "verification 2023 - aout 2026": {
+    "achats": 471,
+    "valide": 0.4713375796178344,
+    "perdu": 0.4585987261146497,
+    "expire": 0.07006369426751592,
+    "seances_med": 57.5,
+    "suivis24": 230,
+    "retrait24": 0.41304347826086957,
+    "net_moy": 765.2960992839705,
+    "net_med": -69.99,
+    "perdants": 0.5869565217391305,
+    "master_perdu12": 0.49101796407185627
+   },
+   "2025": {
+    "achats": 129,
+    "valide": 0.015503875968992248,
+    "perdu": 0.9457364341085271,
+    "expire": 0.03875968992248062,
+    "seances_med": 41.0,
+    "suivis24": 0,
+    "retrait24": null,
+    "net_moy": null,
+    "net_med": null,
+    "perdants": null,
+    "master_perdu12": 1.0
+   }
+  }
+ }
+}

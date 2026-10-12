@@ -138,6 +138,11 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
 | Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |
 
+**Challenge de 30 jours (vague 12, 12 octobre 2026)** : Bulenox limite maintenant le challenge à 30 jours. Le bot tel
+quel n'y valide qu'environ 5 % des challenges. La version retenue par `vague12/` met **« MNQ par source » à 4 et le
+frein à 0 pendant le challenge** (environ 40 % de validés en 30 jours en simulation), puis remet 1 et 750 au Master.
+Voir `vague12/README.md` avant d'acheter.
+
 **Au passage au compte Master :**
 - choisir le nouveau compte dans les réglages ;
 - le bot repart alors d'un plus haut de 50 000 $ (il reconnaît le changement de compte) ;

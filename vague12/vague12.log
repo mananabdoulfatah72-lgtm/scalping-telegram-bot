@@ -1,0 +1,29 @@
+/home/user/scalping-telegram-bot/vague9/socle9.py:115: RuntimeWarning: All-NaN slice encountered
+  nh = np.nanmax(D["NH"], axis=1)
+/home/user/scalping-telegram-bot/vague9/socle9.py:116: RuntimeWarning: All-NaN slice encountered
+  nl = np.nanmin(D["NL"], axis=1)
+1/588 taches, 2 s
+26/588 taches, 14 s
+51/588 taches, 32 s
+76/588 taches, 57 s
+101/588 taches, 94 s
+126/588 taches, 136 s
+151/588 taches, 182 s
+176/588 taches, 217 s
+201/588 taches, 226 s
+226/588 taches, 246 s
+251/588 taches, 275 s
+276/588 taches, 311 s
+301/588 taches, 351 s
+326/588 taches, 393 s
+351/588 taches, 414 s
+376/588 taches, 426 s
+401/588 taches, 450 s
+426/588 taches, 484 s
+451/588 taches, 517 s
+476/588 taches, 561 s
+501/588 taches, 606 s
+526/588 taches, 624 s
+551/588 taches, 658 s
+576/588 taches, 712 s
+fini en 729 s
