@@ -187,6 +187,19 @@ Il n'y a rien à retirer les premiers mois. Bulenox demande de garder 52 600 $, 
 1 000 $ : le Master doit d'abord gagner environ 3 600 $. Ensuite, chaque retrait est d'au plus 1 500 $. Soit environ
 4 500 $ en 9 mois quand tout va bien, puis le compte réel, non simulé.
 
+### Au-delà de la taille 4 : un plafond (`plafond12.py` → `plafond12.txt`, descriptif, ne sert pas à choisir)
+
+Legacy sans frein, filtre comme 2026, validés en 30 jours :
+
+| Taille | 1 | 2 | 3 | 4 | 5 | 6 | 8 |
+|---|---|---|---|---|---|---|---|
+| 2012-2021 | 6 % | 24 % | 36 % | 41 % | 41 % | 43 % | 40 % |
+| 2023 - août 2026 | 2 % | 23 % | 36 % | 40 % | 40 % | 39 % | 33 % |
+
+Au-delà de 4, les challenges perdus remplacent les challenges expirés : la chance de valider plafonne vers 40 %. En un
+mois, le gain moyen du bot reste petit devant ses écarts. Grossir ne fait plus que jouer « quel mur toucher en premier »
+: +3 000 $ ou −2 500 $.
+
 ### Comparaison avec les comptes sans limite de temps (net moyen d'un achat sur 24 mois)
 
 | Compte | Prix avant de savoir | 2012-2020 (comme 2026 / moitié) | 2023 - sept. 2024 (comme 2026 / moitié) | Validé (vérif.) | Achats perdants (vérif.) |

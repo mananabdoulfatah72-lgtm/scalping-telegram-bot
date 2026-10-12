@@ -1,0 +1,20 @@
+Bulenox Legacy, sans frein, challenge de 30 jours, filtre comme 2026 : validé / perdu / expiré selon la taille
+
+achats 2012-2021
+  taille 1 : validé 6%, perdu 1%, expiré 93%
+  taille 2 : validé 24%, perdu 12%, expiré 64%
+  taille 3 : validé 36%, perdu 24%, expiré 40%
+  taille 4 : validé 41%, perdu 38%, expiré 22%
+  taille 5 : validé 41%, perdu 46%, expiré 12%
+  taille 6 : validé 43%, perdu 50%, expiré 7%
+  taille 8 : validé 40%, perdu 57%, expiré 3%
+
+achats 2023 - août 2026
+  taille 1 : validé 2%, perdu 0%, expiré 98%
+  taille 2 : validé 23%, perdu 14%, expiré 64%
+  taille 3 : validé 36%, perdu 31%, expiré 33%
+  taille 4 : validé 40%, perdu 45%, expiré 15%
+  taille 5 : validé 40%, perdu 55%, expiré 4%
+  taille 6 : validé 39%, perdu 58%, expiré 3%
+  taille 8 : validé 33%, perdu 65%, expiré 2%
+
