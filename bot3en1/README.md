@@ -125,28 +125,47 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
    par seconde sur la valeur réelle du compte (solde + gains latents), sinon sur l'estimation du bot. Une fois atteint, tout
    est fermé et plus rien n'est pris jusqu'à 18 h.
 
-**Réglages pour Bulenox 50K (option 2, perte calculée en fin de journée) :**
+**Réglages pour Bulenox 50K (option 2, perte calculée en fin de journée), version 30 jours (vague 13, version D) :**
 
-| Réglage | Challenge | Compte Master (après la réussite) |
+| Réglage | Challenge (30 jours) | Compte Master (après la réussite) |
 |---|---|---|
 | Mode a plat chaque jour | coché | coché |
 | MNQ, MES, NQ | échéance du moment (ex. MNQZ6, MESZ6, NQZ6) | idem |
-| MNQ par source | 1 | 1 |
-| Plafond de gain du jour | **0** | **500** |
+| MNQ par source | **4** | **1** |
+| Plafond de gain du jour | 0 | **500** |
 | Limite de perte du jour | 1 050 (juste avant les 1 100 $ de Bulenox) | 1 050 |
-| Frein | 750 | 750 |
+| Frein | **0** | **750** |
 | Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
 | Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |
+| Challenge : objectif | **53 000** | **0** |
+| Challenge : dernier jour (AAAA-MM-JJ) | **date de fin donnée par Bulenox** | vide |
+| Challenge : MNQ en fin de challenge | **6** | **0** |
+| Challenge : nombre de dernières séances | 5 | (sans effet) |
 
-**Challenge de 30 jours (vague 12, 12 octobre 2026)** : Bulenox limite maintenant le challenge à 30 jours. Le bot tel
-quel n'y valide qu'environ 5 % des challenges. La version retenue par `vague12/` met **« MNQ par source » à 4 et le
-frein à 0 pendant le challenge** (environ 40 % de validés en 30 jours en simulation), puis remet 1 et 750 au Master.
-Voir `vague12/README.md` avant d'acheter.
+**Challenge de 30 jours (vagues 12 et 13, 12 octobre 2026)** : Bulenox limite maintenant le challenge à 30 jours. Le bot
+tel quel n'y valide qu'environ 5 % des challenges.
+- **Vague 12 :** 4 MNQ par source et pas de frein pendant le challenge, environ 40 % de validés en simulation.
+- **Vague 13, version D (retenue) :** environ 53 à 55 % de validés en simulation (45 % en 2025). Elle ajoute deux
+  réglages :
+  1. **Arrêt à l'objectif.**
+     - Pendant la journée, dès que le compte atteint 53 050 $ (l'objectif de 53 000 $ plus 50 $ pour les frais de
+       sortie), le bot ferme tout et ne prend plus rien jusqu'à 18 h.
+     - Les jours suivants, si le solde de 18 h est à 53 000 $ ou plus, il ne trade plus du tout sur ce compte et le dit
+       chaque soir.
+     - Pas besoin de 6 000 $ quand 3 000 suffisent : c'est ce qui évite de reperdre un challenge déjà gagné.
+  2. **Fin de course.** Si l'objectif n'est pas atteint, le bot passe à 6 MNQ par source (zone et RSI(2) de nuit)
+     pendant les 5 dernières séances avant la date de fin.
+     - Il change de taille seulement quand il est à plat, normalement à 18 h.
+     - Le décompte saute les week-ends et les jours fériés de la Bourse.
+     - La date à mettre est le dernier jour où Bulenox laisse trader le compte (30 jours après l'achat, à vérifier sur
+       le tableau de bord de Bulenox).
+- Voir `vague12/README.md` et `vague13/README.md` avant d'acheter.
 
 **Au passage au compte Master :**
 - choisir le nouveau compte dans les réglages ;
 - le bot repart alors d'un plus haut de 50 000 $ (il reconnaît le changement de compte) ;
-- mettre le plafond à 500 ;
+- mettre MNQ par source à 1, le frein à 750, le plafond à 500, l'objectif à 0, la date de fin vide et MNQ en fin de
+  challenge à 0 (colonne de droite du tableau) ;
 - demander chaque retrait dès que Bulenox l'autorise (au moins 1 000 $, 52 600 $ gardés).
 
 **Vérifié (10 octobre 2026) :**
@@ -160,11 +179,39 @@ Voir `vague12/README.md` avant d'acheter.
   - à plat chaque jour à 16 h, jamais de MNQ la nuit, 0 erreur ;
   - avec un solde lu à 49 000 $, toute la zone part sur MES ;
   - avec le plafond à 500 $, 7 journées arrêtées.
-- **Moteur :** `Bot3en1.TestAPlat`, 21 contrôles sur 21 (frein avant et après blocage du plancher, Fed, nuit, plafond).
+- **Moteur :** `Bot3en1.TestAPlat`, 21 contrôles sur 21 (frein avant et après blocage du plancher, Fed, nuit, plafond) ;
+  34 depuis le 12 octobre.
 
 ```
 dotnet run -c Release --project Bot3en1.TestAPlat
 A_PLAT=1 SANS_FILTRE=1 dotnet run -c Release --project Bot3en1.TestQuantower -- <dossier> <nq_1min.csv.gz> <agresseurs.csv.gz> 2026-04-01 2026-09-25
+```
+
+**Vérifié (12 octobre 2026), réglages du challenge de 30 jours :**
+- **Rien d'autre ne change.** Nouveaux réglages à 0 : ordres, journal et messages identiques octet pour octet à avant,
+  dans les 4 modes testés (mode à plat, avec frein, avec plafond, ancien mode).
+- **Moteur :** `Bot3en1.TestAPlat`, 34 contrôles sur 34. Les nouveaux portent sur :
+  - le plafond de l'objectif : 53 050 $ moins le solde de 18 h, ou le plus petit avec le plafond du jour ;
+  - le décompte des séances : semaine de Thanksgiving, 3 juillet 2026, après la date de fin ;
+  - la taille : 4 MNQ, puis 6 MNQ les 5 dernières séances.
+- **Adaptateur, transaction par transaction** (mode à plat, sans le filtre) :
+  - **taille de fin de course** (date de fin au 8 juillet 2026) : mêmes trades qu'avant, en 6 MNQ au lieu de 1,
+    seulement du 1er au 8 juillet (3 juillet férié sauté), puis retour à 1 ;
+  - **objectif** : après le déclenchement, plus aucun ordre jusqu'à la fin du test. Solde lu à 53 000 $ dès le départ :
+    aucun ordre du tout ;
+  - **6 challenges de 30 jours rejoués en 2026** avec tous les réglages de la colonne challenge : 5 objectifs atteints
+    sans aucun ordre ensuite, et 1 non atteint, joué en 6 MNQ sur ses 5 dernières séances. Ce test vérifie la mécanique,
+    pas la rentabilité : il est fait sans le filtre et ne simule pas la perte du compte.
+- **Défaut ancien trouvé et corrigé pendant ce test.** Quand la dernière séance de l'historique était incomplète, la
+  zone restait coupée **pour toute la durée du lancement du bot**, pas seulement un jour. Exemples de séances
+  incomplètes : demi-séance du 3 juillet, lendemain de Thanksgiving, 24 décembre, trou dans les données. Même chose après
+  un rattrapage de transactions raté. Exemple : démarré le lundi 6 juillet 2026, le bot ne prenait aucun trade de zone
+  pendant 30 jours. Maintenant, la zone est réautorisée à chaque nouvelle séance : démarré le 6 juillet, il prend les
+  mêmes trades que s'il tournait depuis avril.
+
+```
+A_PLAT=1 SANS_FILTRE=1 TAILLE=4 OBJECTIF=53000 DATE_FIN=2026-05-12 TAILLE_FIN=6 SEANCES_FIN=5 FREIN=0 LIMITE=1050 \
+  dotnet run -c Release --project Bot3en1.TestQuantower -- <dossier> <nasdaq100_1min.csv.gz> <agresseurs.csv.gz> 2026-04-13 2026-05-12
 ```
 
 **Revue indépendante du code (10 octobre 2026), puis corrections :**

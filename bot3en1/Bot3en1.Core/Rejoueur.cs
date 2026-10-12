@@ -92,6 +92,7 @@ namespace Bot3en1
                 JouerSeance(bot, kv.Key, kv.Value.b, kv.Value.contrat, null);
             }
             bot.RemettreAPlat();
+            bot.ZoneAutorisee = true;     // la derniere seance de l'historique peut etre incomplete (demi-seance) : pas la suivante
             return bot;
         }
     }

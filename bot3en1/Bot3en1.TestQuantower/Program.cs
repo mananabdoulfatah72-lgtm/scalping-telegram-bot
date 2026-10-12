@@ -17,6 +17,8 @@ using TradingPlatform.BusinessLayer;
 // passer l'adaptateur par l'achat du RSI(2) de nuit. SOLDE=49000 : solde du compte lu par la plateforme (frein).
 // Controles du mode a plat : a plat sur MNQ et MES a 16 h 00 30 chaque jour, pas de zone les jours de la Fed, liste des nuits
 // achetees ecrite dans test_nuits.txt (seance qui suit).
+// Challenge de 30 jours (vague 13) : TAILLE=4 (MNQ par source), OBJECTIF=53000 (arret a l'objectif + 50 $), DATE_FIN=AAAA-MM-JJ,
+// TAILLE_FIN=6, SEANCES_FIN=5, FREIN=0, LIMITE=1050. Controles : plus aucun ordre apres l'objectif ; journees jouees a plus de TAILLE (fin de course).
 class Program
 {
     static int Main(string[] a)
@@ -41,7 +43,12 @@ class Program
         {
             Compte = new Account(), SymboleNQ = new Symbol { Name = Nom(jours[0], "NQ") }, SymboleMNQ = new Symbol { Name = Nom(jours[0], "MNQ") },
             Dossier = dossier, AdresseHistorique = "http://127.0.0.1:9/absent",
-            PlafondJour = double.Parse(Environment.GetEnvironmentVariable("PLAFOND") ?? "0", inv)
+            PlafondJour = double.Parse(Environment.GetEnvironmentVariable("PLAFOND") ?? "0", inv),
+            Taille = int.Parse(Environment.GetEnvironmentVariable("TAILLE") ?? "1", inv),
+            ObjectifChallenge = double.Parse(Environment.GetEnvironmentVariable("OBJECTIF") ?? "0", inv),
+            DateFinChallenge = Environment.GetEnvironmentVariable("DATE_FIN") ?? "",
+            TailleFin = int.Parse(Environment.GetEnvironmentVariable("TAILLE_FIN") ?? "0", inv),
+            SeancesFin = int.Parse(Environment.GetEnvironmentVariable("SEANCES_FIN") ?? "5", inv)
         };
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";
         if (aPlat)
@@ -49,6 +56,8 @@ class Program
             strat.ModeAPlat = true;
             strat.SymboleMES = new Symbol { Name = Nom(jours[0], "MES") };
             strat.Compte.Balance = double.Parse(Environment.GetEnvironmentVariable("SOLDE") ?? "0", inv);
+            if (Environment.GetEnvironmentVariable("FREIN") is string fr) strat.Frein = double.Parse(fr, inv);
+            if (Environment.GetEnvironmentVariable("LIMITE") is string li) strat.LimitePerteJour = double.Parse(li, inv);
         }
         var tic = typeof(Bot3en1Strategy).GetMethod("Tic", BindingFlags.NonPublic | BindingFlags.Instance);
         horloge.DateTimeUtcNow = Utc(jours[0].AddHours(9).AddMinutes(29));
@@ -162,6 +171,35 @@ class Program
         Console.WriteLine($"Zone : {nZ} trades gardes, {nE} ecartes, {zone:+0.0;-0.0} $ ; RSI(2) : {nR} entrees, {rsi:+0.0;-0.0} $ ;"
                           + $" total {zone + rsi:+0.0;-0.0} $ ; plafonds {nP} ; ordres envoyes {Core.Instance.Ordres.Count} ; position finale {strat_pos()}");
         int strat_pos() { var p = Core.Instance.Liste.FirstOrDefault(); return p == null ? 0 : (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity; }
+        // challenge : ordres apres l'objectif, et journees jouees a plus de TAILLE (heure de New York, journee de 18 h a 17 h)
+        DateTime NY(string date, string heure) => TimeZoneInfo.ConvertTimeFromUtc(DateTime.Parse($"{date} {heure}", inv), ny);
+        if (strat.ObjectifChallenge > 0)
+        {
+            var obj = File.ReadAllLines(Path.Combine(dossier, "journal.txt")).FirstOrDefault(l => l.Contains("OBJECTIF DU CHALLENGE ATTEINT"));
+            if (obj == null) Console.WriteLine("objectif : jamais atteint");
+            else
+            {
+                var x = obj.Split(' ');
+                var t = DateTime.Parse($"{x[0]} {x[1]}", inv);
+                int apres = Core.Instance.Ordres.Count(o => DateTime.Parse(o.Substring(0, 19), inv) > t.AddSeconds(20));
+                Console.WriteLine($"objectif : atteint le {TimeZoneInfo.ConvertTimeFromUtc(t, ny):yyyy-MM-dd HH:mm} (New York) ; ordres ensuite : {apres}");
+                Console.WriteLine("  " + obj.Substring(24));
+            }
+        }
+        if (strat.TailleFin > 0)
+        {
+            var parJournee = new SortedDictionary<DateTime, int>();
+            foreach (var o in Core.Instance.Ordres)
+            {
+                var x = o.Split(' ');
+                var t = NY(x[0], x[1]);
+                var jt = t.TimeOfDay >= TimeSpan.FromHours(18) ? t.Date.AddDays(1) : t.Date;
+                int q = Math.Abs(int.Parse(x[7], inv));
+                parJournee[jt] = Math.Max(parJournee.TryGetValue(jt, out var v) ? v : 0, q);
+            }
+            var grosses = parJournee.Where(kv => kv.Value > strat.Taille).Select(kv => $"{kv.Key:MM-dd} ({kv.Value})").ToList();
+            Console.WriteLine($"fin de course : journees a plus de {strat.Taille} par contrat : {(grosses.Count == 0 ? "aucune" : string.Join(", ", grosses))}");
+        }
         Console.WriteLine($"erreurs : {strat.Logs.Count(l => l.StartsWith("[Error]"))}");
         foreach (var l in strat.Logs.Where(l => l.StartsWith("[Error]")).Take(5)) Console.WriteLine("  " + l);
         return 0;

@@ -78,6 +78,27 @@ class Program
         Poser(v, "ZoneTenue", -1);
         Ok(v.PositionMNQ == v.PositionNette && v.PositionMES == 0, "ancien mode : tout en MNQ, comme avant");
 
+        // 6. challenge de 30 jours (vague 13, version D) : arret a l'objectif et taille de fin de course
+        Ok(RegleCompte.PlafondEffectif(0, 0, 50000) == 0, "sans plafond ni objectif : aucun plafond");
+        Ok(RegleCompte.PlafondEffectif(500, 0, 50000) == 500, "compte Master : plafond 500 $ inchange");
+        Ok(RegleCompte.PlafondEffectif(0, 53000, 51200) == 1850, "objectif 53 000 $, solde 51 200 $ : tout ferme a +1 850 $ (53 050 $)");
+        Ok(RegleCompte.PlafondEffectif(500, 53000, 52800) == 250, "objectif et plafond : le plus petit (250 $)");
+        Ok(RegleCompte.PlafondEffectif(0, 53000, 53020) > 0, "objectif depasse de peu : plafond positif (jamais 0 = aucun)");
+        Ok(!RegleCompte.ObjectifAtteint(53000, 52999) && RegleCompte.ObjectifAtteint(53000, 53000) && !RegleCompte.ObjectifAtteint(0, 99999),
+           "objectif atteint a 53 000 $ (0 = pas d'objectif)");
+        // semaine de Thanksgiving 2026 : jeudi 26 ferie ; fin le lundi 30 -> lun 23, mar 24, mer 25, ven 27, lun 30
+        var fin = new DateTime(2026, 11, 30);
+        Ok(RegleCompte.SeancesRestantes(new DateTime(2026, 11, 23), fin) == 5, "Thanksgiving : 5 seances du 23 au 30 novembre");
+        Ok(RegleCompte.SeancesRestantes(new DateTime(2026, 11, 20), fin) == 6, "6 seances du vendredi 20 au 30 novembre");
+        Ok(RegleCompte.SeancesRestantes(new DateTime(2026, 11, 21), fin) == 5, "samedi 21 (soiree du vendredi apres 18 h) : comme le lundi");
+        Ok(RegleCompte.SeancesRestantes(new DateTime(2026, 11, 30), fin) == 1 && RegleCompte.SeancesRestantes(new DateTime(2026, 12, 1), fin) == 0,
+           "dernier jour : 1 seance ; apres la fin : 0");
+        Ok(RegleCompte.SeancesRestantes(new DateTime(2026, 7, 1), new DateTime(2026, 7, 8)) == 5, "4 juillet 2026 (samedi) : ferie le vendredi 3");
+        Ok(RegleCompte.TailleDuJour(4, 6, 5, 6) == 4 && RegleCompte.TailleDuJour(4, 6, 5, 5) == 6 && RegleCompte.TailleDuJour(4, 6, 5, 1) == 6,
+           "4 MNQ, puis 6 MNQ les 5 dernieres seances");
+        Ok(RegleCompte.TailleDuJour(4, 6, 5, 0) == 4 && RegleCompte.TailleDuJour(4, 0, 5, 3) == 4 && RegleCompte.TailleDuJour(1, 0, 5, 1) == 1,
+           "apres la fin, ou sans taille de fin : taille normale");
+
         Console.WriteLine(echecs == 0 ? "tous les controles passent" : $"{echecs} ECHEC(S)");
         return echecs == 0 ? 0 : 1;
     }

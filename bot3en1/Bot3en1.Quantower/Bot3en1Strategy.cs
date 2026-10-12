@@ -16,7 +16,10 @@ namespace Bot3en1
     /// A tester d'abord sur un compte de simulation (voir GUIDE.md).
     /// Mode a plat (Bulenox, FundedNext, vagues 10-11) : RSI(2) de nuit seulement sur MES (achat a 18 h, vente a 9 h 30), zone
     /// sur MES quand le compte est trop pres de son plancher (frein), pas de zone les jours d'annonce de la Fed, plafond du jour
-    /// (a mettre seulement sur le compte finance) verifie sur la valeur reelle du compte.</summary>
+    /// (a mettre seulement sur le compte finance) verifie sur la valeur reelle du compte.
+    /// Challenge de 30 jours (vague 13, version D) : arret a l'objectif (tout ferme des que le compte atteint l'objectif + 50 $,
+    /// plus aucun trade ensuite) et taille de fin de course (6 MNQ par source les 5 dernieres seances si l'objectif n'est pas
+    /// atteint).</summary>
     public class Bot3en1Strategy : Strategy
     {
         [InputParameter("Compte", 10)] public Account Compte;
@@ -26,7 +29,7 @@ namespace Bot3en1
         [InputParameter("MNQ (ordres), meme echeance, ex. MNQZ6", 30)] public Symbol SymboleMNQ;
         [InputParameter("MES (mode a plat : RSI(2) de nuit et zone freinee), meme echeance, ex. MESZ6", 35)] public Symbol SymboleMES;
         [InputParameter("Dossier des donnees du bot", 40)] public string Dossier = @"C:\Bot3en1";
-        [InputParameter("MNQ par source", 50, 1, 5, 1, 0)] public int Taille = 1;
+        [InputParameter("MNQ par source (Bulenox : 4 pendant le challenge de 30 jours, 1 sur le compte Master)", 50, 1, 6, 1, 0)] public int Taille = 1;
         [InputParameter("Plafond de gain du jour en $ (0 = aucun ; Bulenox : 500 sur le compte Master seulement, 0 pendant le challenge ; Static : 500 sur le compte Pro)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
         [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1050, juste avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
         [InputParameter("Mode a plat : frein, zone sur MES quand le compte est a X $ ou plus sous son plus haut de fin de journee (0 = jamais ; Bulenox : 750)", 62, 0, 5000, 50, 0)] public double Frein = 750;
@@ -35,7 +38,15 @@ namespace Bot3en1
         [InputParameter("Mode a plat : le plancher s'arrete a solde de depart + X (Bulenox : 100)", 65, 0, 10000, 50, 0)] public double Blocage = 100;
         [InputParameter("Mode a plat : jours de la Fed en plus (AAAA-MM-JJ separes par des virgules)", 66)] public string JoursFedEnPlus = "";
         [InputParameter("Mode a plat : plus haut de fin de journee deja atteint par ce compte (0 = inconnu ; compte neuf : 0)", 67, 0, 1000000, 100, 0)] public double PlusHautConnu = 0;
-        [InputParameter("Telegram : jeton du bot (facultatif)", 70)] public string JetonTelegram = "";
+        [InputParameter("Challenge : objectif, solde du compte a atteindre (Bulenox 50K : 53000). Des que le compte atteint l'objectif + 50 $, le bot ferme tout et ne trade plus (0 = aucun ; compte Master : 0)", 68, 0, 10000000, 500, 0)]
+        public double ObjectifChallenge = 0;
+        [InputParameter("Challenge : dernier jour ou le compte peut trader, AAAA-MM-JJ (date de fin donnee par Bulenox ; vide = aucune ; compte Master : vide)", 69)]
+        public string DateFinChallenge = "";
+        [InputParameter("Challenge : MNQ par source pendant les dernieres seances si l'objectif n'est pas atteint (0 = jamais ; version 30 jours : 6 ; compte Master : 0)", 71, 0, 6, 1, 0)]
+        public int TailleFin = 0;
+        [InputParameter("Challenge : nombre de dernieres seances jouees avec cette taille (version 30 jours : 5)", 72, 1, 20, 1, 0)]
+        public int SeancesFin = 5;
+        [InputParameter("Telegram : jeton du bot (facultatif)", 75)] public string JetonTelegram = "";
         [InputParameter("Telegram : numero de conversation (facultatif)", 80)] public string ChatTelegram = "";
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
@@ -66,6 +77,7 @@ namespace Bot3en1
         bool freinActif;
         DateTime depassementDepuis = DateTime.MinValue;   // plafond ou limite constate depuis (confirmation sur 3 s)
         string alerteNuit = "";                      // journee de trading deja signalee (achat de nuit impossible)
+        DateTime finChallenge = DateTime.MinValue;   // dernier jour du challenge (DateFinChallenge), MinValue si aucun
         static readonly HttpClient http = new HttpClient { Timeout = TimeSpan.FromSeconds(20) };
 
         public Bot3en1Strategy() : base()
@@ -160,7 +172,20 @@ namespace Bot3en1
                 foreach (var x in (JoursFedEnPlus ?? "").Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))
                     if (DateTime.TryParseExact(x.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dj)) bot.JoursFed.Add(dj);
                     else Dire($"ATTENTION : jour de la Fed illisible dans les reglages : {x}", true);
+                finChallenge = DateTime.MinValue;
+                if (!string.IsNullOrWhiteSpace(DateFinChallenge))
+                {
+                    if (DateTime.TryParseExact(DateFinChallenge.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var df)) finChallenge = df;
+                    else Dire($"ATTENTION : date de fin du challenge illisible ({DateFinChallenge}) : ecris-la AAAA-MM-JJ, ex. 2026-11-11", true);
+                }
+                if (TailleFin > 0 && finChallenge == DateTime.MinValue)
+                    Dire($"ATTENTION : {TailleFin} MNQ en fin de challenge demande, mais sans date de fin lisible : la taille reste a {Taille}", true);
+                if (ObjectifChallenge > 0 && ObjectifChallenge <= SoldeDepart)
+                    Dire($"ATTENTION : objectif du challenge ({ObjectifChallenge:F0} $) pas au-dessus du solde de depart ({SoldeDepart:F0} $) :"
+                         + " il faut le solde a atteindre (Bulenox 50K : 53000). Le bot ne tradera pas.", true);
             }
+            else if (ObjectifChallenge > 0 || TailleFin > 0 || !string.IsNullOrWhiteSpace(DateFinChallenge))
+                Dire("ATTENTION : reglages du challenge ignores, ils ne marchent qu'avec le mode a plat coche", true);
             bot.ContratSuivant = (j, c) => Calendrier.Contrat(Calendrier.SeanceSuivante(j));
             var etat = LireEtat();
             if (etat != null && etat.RsiTenu) bot.RestaurerRsi(true, etat.EntreeRsi);
@@ -206,7 +231,30 @@ namespace Bot3en1
             Dire($"mode a plat : solde {(reel.HasValue ? "" : "estime ")}{solde:F0} $, plus haut de fin de journee {picFinJour:F0} $, plancher"
                  + $" {RegleCompte.Plancher(picFinJour, SoldeDepart, PerteMax, Blocage):F0} $"
                  + $"{(reel.HasValue ? "" : " (solde du compte illisible : estimation du bot)")}");
+            // taille de la journee : celle du RSI(2) de nuit deja achete s'il y en a un (comptes du bot = position reelle),
+            // sinon celle du calendrier du challenge
+            bot.Taille = bot.RsiNuit != 0 && etat != null && etat.CompteNom == (Compte.Name ?? "") && etat.TailleTenue > 0
+                ? etat.TailleTenue : TailleJournee(journeeTrading);
+            if (ObjectifChallenge > 0 || finChallenge != DateTime.MinValue)
+            {
+                int reste = finChallenge == DateTime.MinValue ? -1 : RegleCompte.SeancesRestantes(journeeTrading, finChallenge);
+                Dire("challenge : " + (ObjectifChallenge > 0
+                         ? $"objectif {ObjectifChallenge:F0} $ (tout ferme a {ObjectifChallenge + RegleCompte.MargeObjectif:F0} $, puis plus de trade)"
+                         : "pas d'objectif")
+                     + (reste >= 0 ? $", dernier jour le {finChallenge:yyyy-MM-dd} ({reste} seance(s) restante(s), aujourd'hui compris)" : "")
+                     + (TailleFin > 0 && reste >= 0 ? $", {TailleFin} MNQ par source les {SeancesFin} dernieres seances" : "")
+                     + $" ; taille aujourd'hui : {bot.Taille} MNQ par source");
+                if (reste == 0) Dire($"ATTENTION : la date de fin du challenge ({finChallenge:yyyy-MM-dd}) est passee", true);
+            }
         }
+
+        /// <summary>Solde du compte au debut de la journee de trading : equite lue a 18 h, a defaut l'estimation du bot.</summary>
+        double SoldeDebutJour() => equiteDebut > 0 ? equiteDebut : soldeEstime;
+
+        /// <summary>MNQ par source pour la journee de trading jt : taille de fin de course pendant les SeancesFin dernieres seances
+        /// avant DateFinChallenge (vague 13), taille normale sinon.</summary>
+        int TailleJournee(DateTime jt) => Math.Max(1, finChallenge == DateTime.MinValue ? Taille
+            : RegleCompte.TailleDuJour(Taille, TailleFin, SeancesFin, RegleCompte.SeancesRestantes(jt, finChallenge)));
 
         // ------------------------------------------------------------------ mode a plat : compte
         static double? LireDouble(object o, string propriete)
@@ -306,6 +354,7 @@ namespace Bot3en1
             derniereMinute = Calendrier.JourCourt(jour) ? (Calendrier.Ferie(jour) ? 209 : 224) : Moteur.N - 1;
             if (Calendrier.JourFerme(jour)) { seanceFinie = true; return; }
             for (int i = 0; i < Moteur.N; i++) barres[i] = new Barre();
+            bot.ZoneAutorisee = true;                    // coupee seulement pour la seance d'un rattrapage impossible
             if (ModeAPlat)
             {
                 string js = jour.ToString("yyyy-MM-dd");
@@ -459,8 +508,27 @@ namespace Bot3en1
                 foreach (var s in bot.FermerNuit(dernierPrix)) Dire(s.Texte);
                 SauverEtat();
             }
-            // achat du RSI(2) de nuit : de 18 h a 9 h 25, si la seance qui suit existe et que le MES cote
             string jt = journeeTrading.ToString("yyyy-MM-dd");
+            // taille de la journee (challenge : fin de course), changee seulement a plat (comptes du bot = positions reelles)
+            int tj = TailleJournee(journeeTrading);
+            if (bot.Taille != tj && bot.ZoneTenue == 0 && bot.RsiNuit == 0)
+            {
+                int avant = bot.Taille;
+                bot.Taille = tj;
+                bool finCourse = TailleFin > 0 && tj == TailleFin && tj != Taille;
+                Dire($"journee du {jt} : {tj} MNQ par source (avant {avant})"
+                     + (finCourse ? $", fin de course du challenge ({RegleCompte.SeancesRestantes(journeeTrading, finChallenge)} seance(s) restante(s))" : ""));
+                SauverEtat();
+            }
+            // objectif du challenge deja atteint au debut de la journee : plus aucun trade sur ce compte
+            if (!bot.Arret && RegleCompte.ObjectifAtteint(ObjectifChallenge, SoldeDebutJour()))
+            {
+                bot.ArreterJournee(dernierPrix, "objectif du challenge atteint");
+                Dire($"OBJECTIF DU CHALLENGE ATTEINT (solde {SoldeDebutJour():F0} $, objectif {ObjectifChallenge:F0} $) : le bot ne trade plus sur ce"
+                     + " compte. Compte Master : MNQ par source 1, frein 750, plafond du jour 500, objectif 0, date de fin vide, MNQ en fin de challenge 0.");
+                SauverEtat();
+            }
+            // achat du RSI(2) de nuit : de 18 h a 9 h 25, si la seance qui suit existe et que le MES cote
             bool nuit = tod >= TimeSpan.FromHours(18) || tod < TimeSpan.FromMinutes(565);
             bool esVivant = dernierPrixES > 0 && (Maintenant() - dernierTickES).TotalMinutes < 5;
             if (bot.NuitVoulue && bot.RsiNuit == 0 && !bot.Arret && nuit && nuitJournee != jt && !Calendrier.JourFerme(journeeTrading))
@@ -481,14 +549,16 @@ namespace Bot3en1
                     Dire($"ALERTE : RSI(2) de nuit voulu mais pas achete ({empeche})", true);
                 }
             }
-            // plafond (compte finance) et limite de perte du jour : la valeur reelle du compte (si lisible) et l'estimation du bot
-            // doivent etre d'accord, 3 secondes de suite, sans ordre envoye dans les 10 dernieres secondes (evite une lecture
-            // fausse pendant qu'une position se ferme)
-            if (!bot.Arret && (PlafondJour > 0 || LimitePerteJour > 0) && (bot.ZoneTenue != 0 || bot.RsiNuit != 0 || bot.RealiseAPlat != 0))
+            // plafond (compte finance), arret a l'objectif (challenge : plafond = objectif + 50 $ - solde de 18 h) et limite de perte
+            // du jour : la valeur reelle du compte (si lisible) et l'estimation du bot doivent etre d'accord, 3 secondes de suite,
+            // sans ordre envoye dans les 10 dernieres secondes (evite une lecture fausse pendant qu'une position se ferme)
+            double cap = RegleCompte.PlafondEffectif(PlafondJour, ObjectifChallenge, SoldeDebutJour());
+            if (!bot.Arret && (cap > 0 || LimitePerteJour > 0) && (bot.ZoneTenue != 0 || bot.RsiNuit != 0 || bot.RealiseAPlat != 0))
             {
                 double? vr = ValeurJourReelle();
                 double ve = ValeurJourEstimee();
-                bool plafond = PlafondJour > 0 && ve >= PlafondJour && (vr == null || vr >= PlafondJour);
+                bool plafond = cap > 0 && ve >= cap && (vr == null || vr >= cap);
+                bool parObjectif = ObjectifChallenge > 0 && (PlafondJour <= 0 || cap < PlafondJour);
                 bool limite = LimitePerteJour > 0 && ve <= -LimitePerteJour && (vr == null || vr <= -LimitePerteJour);
                 bool ordreRecent = (Maintenant() - ordreEnAttenteDepuis).TotalSeconds < 10 || (Maintenant() - ordreMESEnAttenteDepuis).TotalSeconds < 10;
                 if ((plafond || limite) && !ordreRecent)
@@ -497,8 +567,14 @@ namespace Bot3en1
                     else if ((Maintenant() - depassementDepuis).TotalSeconds >= 3)
                     {
                         string v = $"{(vr.HasValue ? $"compte {vr.Value:F0} $, " : "")}estimation {ve:F0} $";
-                        string raison = plafond ? $"plafond du jour atteint ({v})" : $"limite de perte du jour atteinte ({v})";
-                        foreach (var s in bot.ArreterJournee(dernierPrix, raison)) Dire(s.Texte, limite);
+                        string raison = !plafond ? $"limite de perte du jour atteinte ({v})"
+                            : parObjectif ? $"OBJECTIF DU CHALLENGE ATTEINT ({v}, solde vise {ObjectifChallenge + RegleCompte.MargeObjectif:F0} $)"
+                            : $"plafond du jour atteint ({v})";
+                        foreach (var s in bot.ArreterJournee(dernierPrix, raison)) Dire(s.Texte, limite && !plafond);
+                        if (plafond && parObjectif)
+                            Dire("challenge : si Bulenox confirme la reussite, passe au compte Master avec ses reglages (MNQ par source 1, frein 750,"
+                                 + " plafond du jour 500, objectif 0, date de fin vide, MNQ en fin de challenge 0). Sur ce compte, plus aucun trade"
+                                 + " tant que le solde de 18 h est a l'objectif.");
                         depassementDepuis = DateTime.MinValue;
                         SauverEtat();
                     }
@@ -613,6 +689,7 @@ namespace Bot3en1
             public bool FreinActif { get; set; }
             public bool NuitVoulue { get; set; }
             public string JourDecisionNuit { get; set; }
+            public int TailleTenue { get; set; }            // MNQ par source des positions en cours (challenge : fin de course)
         }
 
         /// <summary>Fichier d'etat : etat.json (ancien mode) ; en mode a plat, un fichier par compte (challenge et Master peuvent
@@ -640,7 +717,8 @@ namespace Bot3en1
                                CompteNom = Compte?.Name ?? "", NuitTenue = bot.RsiNuit == 1, EntreeNuitES = Fini(bot.EntreeNuitES),
                                NuitJournee = nuitJournee, PicFinJour = picFinJour, SoldeEstime = soldeEstime, EquiteDebut = equiteDebut,
                                RealiseAPlat = Fini(bot.RealiseAPlat), FreinJournee = freinJournee, FreinActif = freinActif,
-                               NuitVoulue = bot.NuitVoulue, JourDecisionNuit = bot.JourDecision == default ? null : bot.JourDecision.ToString("yyyy-MM-dd") };
+                               NuitVoulue = bot.NuitVoulue, JourDecisionNuit = bot.JourDecision == default ? null : bot.JourDecision.ToString("yyyy-MM-dd"),
+                               TailleTenue = bot.Taille };
             File.WriteAllText(FichierEtat(), JsonSerializer.Serialize(e));
         }
 
