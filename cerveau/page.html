@@ -663,7 +663,7 @@ function finParole() {
   if (!appel.actif || (appel.etat !== "parle" && appel.etat !== "reflexion")) return;
   if (appel.pauseApres) { appel.pauseApres = false; etatAppel("pause"); } else ecouter();
 }
-const ETATS = {ecoute: "Je t'écoute…", reflexion: "Je réfléchis…", parle: "Je parle · touche pour couper", pause: "En pause · touche pour parler", dictee: "Dicte avec ton clavier"};
+const ETATS = {ecoute: "Je t'écoute…", reflexion: "Je réfléchis…", parle: "Je parle · touche pour couper", pause: "En pause · touche pour parler", dictee: "Dicte dans la case"};
 function etatAppel(k) {
   appel.etat = k; $("appel").dataset.etat = k; $("a-etat").textContent = ETATS[k] || "";
   $("a-orbe").setAttribute("aria-label", {ecoute: "Arrêter d'écouter", reflexion: "Couper et parler", parle: "Me couper et parler", pause: "Parler", dictee: "Dicter"}[k] || "Parler");
@@ -693,10 +693,16 @@ function ecouter() {
   };
   try { r.start(); etatAppel("ecoute"); } catch (e) { appel.reco = null; passerEnDictee("start"); }
 }
+// la dictée dépend de l'appareil : Windows + H sur PC, la dictée du Mac, le micro du clavier sur téléphone
+const UA = navigator.userAgent, MOBILE = /Mobi|Android|iPhone|iPad/i.test(UA);
+const CONSEIL = !MOBILE && /Windows/i.test(UA) ? {note: "Clique dans la case ci-dessous, puis appuie sur Windows + H et parle", place: "Clique ici, puis Windows + H et parle…"}
+  : !MOBILE && /Macintosh/i.test(UA) ? {note: "Clique dans la case ci-dessous, puis lance la dictée du Mac (touche micro, ou Fn deux fois) et parle", place: "Clique ici, puis lance la dictée et parle…"}
+  : {note: "Touche le micro de ton clavier et parle", place: "Touche le micro de ton clavier et parle…"};
 function passerEnDictee(raison) {
   appel.dictee = true; arreterEcoute();
   const pourquoi = raison === "absent" ? "Ce navigateur ne sait pas écouter dans une page web." : raison === "network" ? "La reconnaissance vocale de ton navigateur n'est pas joignable." : "Le micro est bloqué pour cette page.";
-  $("a-note").textContent = pourquoi + " Touche le micro de ton clavier et parle : j'envoie tout seul dès que tu t'arrêtes, et je te réponds à voix haute.";
+  $("a-note").textContent = pourquoi + " " + CONSEIL.note + " : j'envoie tout seul dès que tu t'arrêtes, et je te réponds à voix haute.";
+  $("a-dictee").placeholder = CONSEIL.place;
   $("a-note").hidden = false; $("a-dictee").hidden = false; etatAppel("dictee"); cadrer();
   try { $("a-dictee").focus(); } catch (e) {}
 }
