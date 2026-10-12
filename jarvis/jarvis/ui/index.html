@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jarvis</title>
+<meta name="jarvis-jeton" content="__JETON__">
+<meta name="jarvis-demo" content="__DEMO__">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/ui/style.css">
+</head>
+<body>
+<!--CORPS-->
+<canvas id="cerveau" aria-label="Cerveau de Jarvis : chaque zone s'allume quand Jarvis s'en sert"></canvas>
+<div id="voile"></div>
+<div id="etiquettes" aria-hidden="true"></div>
+
+<header class="tete hud">
+  <div class="logo">J<span>.</span>A<span>.</span>R<span>.</span>V<span>.</span>I<span>.</span>S<span>.</span></div>
+  <div class="sous" id="sous">système cognitif · <b id="moteur">connexion…</b></div>
+</header>
+
+<div class="etat hud" id="etat" data-etat="veille">
+  <span class="point"></span><span id="etat-texte">EN VEILLE</span><span class="sep">·</span><span id="horloge">--:--</span>
+</div>
+
+<aside class="panneau gauche hud" aria-label="État du PC">
+  <h2>Système</h2>
+  <div class="jauge" id="j-cpu"><span class="n">Processeur</span><span class="v">–</span><i><b></b></i></div>
+  <div class="jauge" id="j-ram"><span class="n">Mémoire</span><span class="v">–</span><i><b></b></i></div>
+  <div class="jauge" id="j-gpu"><span class="n">Graphique</span><span class="v">–</span><i><b></b></i></div>
+  <div class="jauge" id="j-bat" hidden><span class="n">Batterie</span><span class="v">–</span><i><b></b></i></div>
+  <canvas id="trace" width="220" height="44" aria-hidden="true"></canvas>
+  <h2>Minuteurs</h2>
+  <ul id="minuteurs" class="liste-min"><li class="vide">aucun</li></ul>
+  <h2>Personnalité</h2>
+  <div id="personnalite" class="valeur">—</div>
+</aside>
+
+<aside class="panneau droite hud" aria-label="Modules de Jarvis">
+  <h2>Modules <span id="compte-modules"></span></h2>
+  <ul id="modules"></ul>
+</aside>
+
+<section class="journal hud" aria-label="Activité récente">
+  <h2>Activité</h2>
+  <ol id="journal"></ol>
+</section>
+
+<section class="dialogue hud" aria-live="polite">
+  <p class="toi" id="toi"></p>
+  <p class="jarvis" id="jarvis">Dis « Hey Jarvis », ou écris-moi ci-dessous.</p>
+  <form id="saisie" autocomplete="off">
+    <input id="texte" name="texte" type="text" placeholder="Écris à Jarvis…" aria-label="Message à Jarvis">
+    <button type="button" id="parler" title="Parler (comme « Hey Jarvis »)">● Parler</button>
+    <button type="button" id="stop" title="Faire taire Jarvis">■</button>
+  </form>
+</section>
+
+<div class="outils-ecran hud">
+  <button type="button" id="plein" title="Plein écran (F)">⤢</button>
+  <button type="button" id="masquer" title="Masquer les panneaux (H)">◐</button>
+</div>
+
+<div id="confirmation" class="confirmation" hidden role="dialog" aria-modal="true" aria-labelledby="conf-q">
+  <div class="carte">
+    <div class="titre">Confirmation demandée</div>
+    <p id="conf-q"></p>
+    <div class="barre"><b id="conf-temps"></b></div>
+    <div class="boutons"><button type="button" id="conf-oui">Oui, vas-y</button><button type="button" id="conf-non">Non</button></div>
+  </div>
+</div>
+<div id="toasts" aria-live="assertive"></div>
+<!--/CORPS-->
+<script src="/ui/vendor/three.min.js"></script>
+<script src="/ui/app.js"></script>
+</body>
+</html>

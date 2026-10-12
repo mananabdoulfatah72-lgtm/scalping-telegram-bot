@@ -1,0 +1,160 @@
+/* Disposition : le cerveau 3D occupe tout l'écran ; un HUD fin l'encadre (titre en haut à gauche, état au centre,
+   système à gauche, modules à droite, activité en bas à gauche, dialogue en bas au centre). Un seul thème sombre,
+   voulu : un écran de contrôle la nuit, lisible sur une télé à trois mètres. */
+:root {
+  color-scheme: dark;
+  --nuit: #02040a;
+  --verre: rgba(8, 16, 30, 0.58);
+  --filet: rgba(120, 200, 255, 0.16);
+  --texte: #dfeaf7;
+  --doux: #8ea3bd;
+  --cyan: #45e0ff;
+  --vert: #3cf0a8;
+  --ambre: #ffc857;
+  --rouge: #ff5470;
+  --f-titre: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --f-donnee: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; background: var(--nuit); color: var(--texte); overflow: hidden;
+  font: 14px/1.45 var(--f-donnee); }
+#cerveau { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+#voile { position: fixed; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 46%, transparent 52%, rgba(0, 0, 0, 0.62) 100%),
+              repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 3px); }
+.hud { position: fixed; z-index: 2; transition: opacity .5s; }
+body.sans-hud .hud:not(.outils-ecran):not(.etat) { opacity: 0; pointer-events: none; }
+h2 { font: 600 11px/1 var(--f-titre); letter-spacing: .22em; text-transform: uppercase; color: var(--doux);
+  margin: 14px 0 8px; }
+h2:first-child { margin-top: 0; }
+
+/* titre */
+.tete { top: calc(18px + env(safe-area-inset-top, 0px)); left: 22px; }
+.logo { font: 700 22px/1 var(--f-titre); letter-spacing: .32em; color: #fff; text-shadow: 0 0 18px rgba(69, 224, 255, .55); }
+.logo span { color: var(--cyan); }
+.sous { margin-top: 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--doux); }
+.sous b { color: var(--cyan); font-weight: 500; }
+
+/* état */
+.etat { top: calc(18px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%);
+  display: flex; gap: 10px; align-items: center; padding: 8px 16px; border: 1px solid var(--filet); border-radius: 999px;
+  background: var(--verre); backdrop-filter: blur(8px); font: 600 12px/1 var(--f-titre); letter-spacing: .2em;
+  white-space: nowrap; }
+.etat .point { width: 9px; height: 9px; border-radius: 50%; background: var(--doux); box-shadow: 0 0 10px currentColor; }
+.etat[data-etat="ecoute"] .point { background: var(--cyan); color: var(--cyan); animation: battre .9s infinite; }
+.etat[data-etat="transcription"] .point, .etat[data-etat="reflexion"] .point { background: var(--ambre); color: var(--ambre); animation: battre .5s infinite; }
+.etat[data-etat="parle"] .point { background: var(--vert); color: var(--vert); animation: battre .35s infinite; }
+.etat .sep { color: var(--doux); }
+#horloge { color: var(--doux); font-family: var(--f-donnee); letter-spacing: .05em; }
+@keyframes battre { 50% { transform: scale(.55); opacity: .6; } }
+
+/* panneaux */
+.panneau { top: 92px; width: 248px; max-height: calc(100% - 280px); overflow: auto; padding: 14px 16px;
+  border: 1px solid var(--filet); border-radius: 10px; background: var(--verre); backdrop-filter: blur(8px);
+  scrollbar-width: thin; }
+.gauche { left: 22px; }
+.droite { right: 22px; }
+.jauge { display: grid; grid-template-columns: 1fr auto; gap: 3px 8px; margin-bottom: 9px; font-size: 12px; }
+.jauge .n { color: var(--doux); }
+.jauge .v { font-variant-numeric: tabular-nums; }
+.jauge i { grid-column: 1 / -1; height: 3px; background: rgba(255, 255, 255, .07); border-radius: 2px; overflow: hidden; }
+.jauge i b { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), #8a7dff);
+  box-shadow: 0 0 8px var(--cyan); transition: width .6s; }
+#trace { width: 100%; height: 44px; display: block; margin-top: 2px; }
+.liste-min { list-style: none; margin: 0; padding: 0; font-size: 12px; }
+.liste-min li { display: flex; justify-content: space-between; padding: 3px 0; }
+.liste-min .vide, .valeur { color: var(--doux); font-size: 12px; }
+#modules { list-style: none; margin: 0; padding: 0; }
+#modules li { display: grid; grid-template-columns: 10px 1fr auto; align-items: center; gap: 9px; padding: 5px 0;
+  font-size: 11.5px; letter-spacing: .06em; border-bottom: 1px solid rgba(255, 255, 255, .04); }
+#modules li .d { width: 7px; height: 7px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); opacity: .35; }
+#modules li .e { font-size: 10px; color: var(--doux); letter-spacing: .12em; }
+#modules li.pret .d { opacity: .9; }
+#modules li.pret .e { color: var(--vert); }
+#modules li.actif .d { opacity: 1; transform: scale(1.5); }
+#modules li.actif { color: #fff; }
+#modules li.actif .e { color: #fff; }
+#modules li.non_configure .e, #modules li.absent .e { color: var(--ambre); }
+#modules li.erreur .e { color: var(--rouge); }
+
+/* journal */
+.journal { left: 22px; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); width: 330px; max-height: 150px;
+  overflow: hidden; padding: 12px 14px; border: 1px solid var(--filet); border-radius: 10px; background: var(--verre);
+  backdrop-filter: blur(8px); }
+#journal { list-style: none; margin: 0; padding: 0; font-size: 11.5px; }
+#journal li { display: grid; grid-template-columns: auto auto 1fr; gap: 8px; padding: 2px 0; white-space: nowrap;
+  overflow: hidden; animation: entrer .35s ease-out; }
+#journal li .h { color: var(--doux); }
+#journal li .z { color: var(--c); letter-spacing: .08em; }
+#journal li .r { overflow: hidden; text-overflow: ellipsis; color: var(--texte); }
+#journal li.ko .r { color: var(--rouge); }
+@keyframes entrer { from { opacity: 0; transform: translateY(6px); } }
+
+/* dialogue */
+.dialogue { left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  width: min(720px, calc(100% - 44px)); text-align: center; }
+.dialogue p { margin: 0 auto 8px; max-width: 64ch; text-wrap: balance; }
+.toi { color: var(--cyan); font-size: 13px; min-height: 1.2em; opacity: .9; }
+.toi:not(:empty)::before { content: "« "; } .toi:not(:empty)::after { content: " »"; }
+.jarvis { font: 500 17px/1.45 var(--f-titre); letter-spacing: .02em; color: #fff; text-shadow: 0 0 22px rgba(0, 0, 0, .9);
+  max-height: 7.5em; overflow: hidden; }
+#saisie { display: flex; gap: 8px; margin-top: 12px; }
+#saisie input { flex: 1; min-width: 0; padding: 11px 14px; border-radius: 8px; border: 1px solid var(--filet);
+  background: rgba(4, 10, 20, .72); color: var(--texte); font: inherit; outline: none; }
+#saisie input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(69, 224, 255, .15); }
+button { font: 600 12px/1 var(--f-titre); letter-spacing: .12em; text-transform: uppercase; color: var(--texte);
+  background: rgba(10, 22, 40, .8); border: 1px solid var(--filet); border-radius: 8px; padding: 0 14px; cursor: pointer; }
+button:hover { border-color: var(--cyan); color: #fff; }
+button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+#parler { color: var(--cyan); min-width: 104px; }
+.outils-ecran { right: 22px; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); display: flex; gap: 6px; }
+.outils-ecran button { width: 36px; height: 36px; padding: 0; font-size: 15px; }
+
+/* étiquettes des zones (placées sur le cerveau) */
+#etiquettes { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+.etq { position: absolute; transform: translate(-50%, -50%); font: 600 10px/1 var(--f-titre); letter-spacing: .2em;
+  color: var(--c); opacity: .5; white-space: nowrap; text-shadow: 0 0 10px var(--c), 0 0 2px #000; transition: opacity .3s; }
+.etq::before { content: ""; display: inline-block; width: 5px; height: 5px; margin-right: 6px; border-radius: 50%;
+  background: var(--c); box-shadow: 0 0 8px var(--c); vertical-align: 1px; }
+.etq.actif { opacity: 1; color: #fff; font-size: 12px; }
+body.sans-hud .etq { opacity: .28; }
+
+/* confirmation */
+.confirmation { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; background: rgba(0, 0, 0, .45);
+  backdrop-filter: blur(3px); }
+.confirmation .carte { width: min(460px, calc(100% - 40px)); padding: 22px 24px; border: 1px solid var(--ambre);
+  border-radius: 12px; background: rgba(12, 14, 22, .94); box-shadow: 0 0 60px rgba(255, 200, 87, .18); }
+.confirmation .titre { font: 600 11px/1 var(--f-titre); letter-spacing: .24em; text-transform: uppercase; color: var(--ambre); }
+.confirmation p { font: 500 17px/1.45 var(--f-titre); margin: 12px 0 14px; }
+.confirmation .barre { height: 3px; background: rgba(255, 255, 255, .08); border-radius: 2px; overflow: hidden; }
+.confirmation .barre b { display: block; height: 100%; width: 100%; background: var(--ambre); transition: width 1s linear; }
+.confirmation .boutons { display: flex; gap: 10px; margin-top: 16px; }
+.confirmation button { flex: 1; height: 42px; }
+#conf-oui { border-color: var(--vert); color: var(--vert); }
+#conf-non { border-color: var(--rouge); color: var(--rouge); }
+
+/* annonces */
+#toasts { position: fixed; top: 74px; left: 50%; transform: translateX(-50%); z-index: 6; display: grid; gap: 8px;
+  width: min(520px, calc(100% - 40px)); pointer-events: none; }
+.toast { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--filet); background: rgba(8, 16, 30, .92);
+  font-size: 12.5px; animation: entrer .3s ease-out; }
+.toast.erreur { border-color: var(--rouge); color: #ffd3da; }
+.toast.annonce { border-color: var(--vert); }
+
+@media (max-width: 1100px) {
+  .journal { display: none; }
+}
+@media (max-width: 820px) {
+  .panneau { display: none; }
+  .tete { left: 16px; } .logo { font-size: 17px; }
+  .etat { top: auto; bottom: calc(158px + env(safe-area-inset-bottom, 0px)); }
+  .dialogue { width: calc(100% - 32px); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .jarvis { font-size: 15px; }
+  .outils-ecran { top: calc(16px + env(safe-area-inset-top, 0px)); right: 16px; bottom: auto; }
+  .etq { font-size: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .etat .point { animation: none !important; }
+  #journal li, .toast { animation: none; }
+}

@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jarvis-assistant"
+version = "1.0.0"
+description = "Jarvis : assistant vocal local qui pilote le PC, la maison et les comptes, avec un cerveau 3D à l'écran"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=1.13",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "requests>=2.31",
+    "psutil>=5.9",
+    "numpy>=1.26",
+    "pillow>=10",
+    "mss>=9",
+    "mcp>=2.3,<3",
+]
+
+[project.optional-dependencies]
+voix = ["sounddevice>=0.4.6", "faster-whisper>=1.0", "openwakeword>=0.6", "webrtcvad-wheels>=2.0.11",
+        "piper-tts>=1.2", "pyttsx3>=2.90"]
+windows = ["pycaw>=20230407; sys_platform == 'win32'", "comtypes>=1.2; sys_platform == 'win32'"]
+google = ["google-api-python-client>=2.100", "google-auth-oauthlib>=1.2"]
+obs = ["obsws-python>=1.6"]
+appels = ["twilio>=9"]
+navigateur = ["playwright>=1.45"]
+nvidia = ["nvidia-ml-py>=12"]
+tests = ["pytest>=8"]
+
+[project.scripts]
+jarvis = "jarvis.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["jarvis*"]
+
+[tool.setuptools.package-data]
+jarvis = ["ui/*.html", "ui/*.css", "ui/*.js", "ui/vendor/*.js"]
