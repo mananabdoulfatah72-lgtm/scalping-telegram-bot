@@ -18,7 +18,13 @@ Page publiée : https://claude.ai/artifact/PGPr62imebYHe3k7GfpGvn (privée).
   - `chercher_notes` pour fouiller le cerveau ;
   - `retenir` pour créer un souvenir. Il refuse les mots de passe, les clés et les identifiants.
 - Les souvenirs et les 12 derniers échanges sont gardés dans `data/users/<id>/`, qui est privé.
-- La voix : la dictée du clavier sert pour poser la question. Le bouton « Voix » lit la réponse (speechSynthesis).
+- Le mode appel (micro vert) : on se parle à voix haute, comme au téléphone.
+  - Le cerveau écoute avec la reconnaissance vocale du navigateur.
+  - Il lit sa réponse phrase par phrase pendant qu'elle s'écrit, puis il se remet à écouter tout seul.
+  - Toucher le rond lui coupe la parole. Après 4 silences, il se met en pause.
+  - Pendant que tu parles, des impulsions entrent vers le centre. Pendant qu'il parle, elles partent du centre et le cerveau respire.
+  - Si le navigateur bloque le micro dans la page, il passe à la dictée du clavier. Il envoie tout seul après 1,7 s sans changement, et répond quand même à voix haute.
+- Le bouton « Voix » lit aussi les réponses écrites.
 - Sans Claude (page ouverte hors de claude.ai, ou permission refusée), il passe en mode local : il répond avec les extraits des notes.
 
 ## Fichiers
@@ -38,4 +44,8 @@ Page publiée : https://claude.ai/artifact/PGPr62imebYHe3k7GfpGvn (privée).
 - Le rendu 3D s'affiche.
 - La réponse locale marche, avec ses citations cliquables.
 - Un souvenir crée un neurone blanc ; un mot de passe est refusé.
-- La partie Claude et la mémoire en base ne peuvent être essayées que dans claude.ai.
+- Mode appel, avec le micro, la voix et Claude simulés :
+  - une question parlée, puis 4 phrases lues dans l'ordre, puis le retour à l'écoute, puis la pause après 4 silences ;
+  - la coupure de parole, suivie d'une deuxième question ;
+  - le micro refusé, puis la dictée envoyée toute seule et lue à voix haute.
+- La partie Claude, la mémoire en base et le vrai micro ne peuvent être essayés que dans claude.ai.

@@ -66,13 +66,15 @@ body { background: radial-gradient(1200px 800px at 40% 45%, #0d1230 0%, #070916 
 .idee { font: 500 .78rem var(--f-texte); color: var(--texte); background: rgba(255, 255, 255, .05); border: 1px solid var(--bord); border-radius: 999px; padding: 5px 11px; cursor: pointer; text-align: left; }
 .idee:hover { background: rgba(255, 255, 255, .1); }
 .note-sys { font-size: .74rem; color: var(--texte-3); }
-.saisie { border-top: 1px solid var(--bord); padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px) * 0); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: end; }
+.saisie { border-top: 1px solid var(--bord); padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px) * 0); display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: end; }
 .saisie textarea { resize: none; font: 400 .92rem var(--f-texte); color: var(--texte); background: rgba(0, 0, 0, .3); border: 1px solid var(--bord); border-radius: 12px; padding: 10px 12px; min-height: 44px; max-height: 140px; outline: none; }
 .saisie textarea:focus { border-color: rgba(143, 180, 255, .6); }
 .envoyer { width: 44px; height: 44px; border-radius: 12px; border: 0; background: var(--chaud); color: #120d00; font: 700 1.1rem var(--f-texte); cursor: pointer; }
 .envoyer.stop { background: #ff7a7a; }
 .envoyer:disabled { opacity: .45; cursor: default; }
 .astuce { grid-column: 1 / -1; font-size: .7rem; color: var(--texte-3); }
+.micro { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(110, 231, 160, .55); background: radial-gradient(circle at 50% 38%, rgba(110, 231, 160, .38), rgba(110, 231, 160, .08)); color: var(--texte); cursor: pointer; display: grid; place-items: center; box-shadow: 0 0 14px rgba(110, 231, 160, .25); }
+.micro svg { width: 20px; height: 20px; }
 button:focus-visible, textarea:focus-visible { outline: 2px solid var(--chaud); outline-offset: 2px; }
 
 /* Fiche d'un neurone */
@@ -95,6 +97,41 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--chaud); 
   .identite.ouvre .aires { display: flex; }
   .fiche { bottom: calc(52vh + 22px); }
   .indice { display: none; }
+}
+/* Appel : on se parle à voix haute, le cerveau au centre */
+.appel { position: fixed; left: 18px; right: calc(min(420px, 38vw) + 34px); bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); display: flex; flex-direction: column; align-items: center; gap: 10px; pointer-events: none; }
+.appel[hidden] { display: none; }
+.appel > * { pointer-events: auto; }
+.a-sous { max-width: 640px; min-height: 4.8em; display: flex; align-items: flex-end; justify-content: center; text-align: center; font: 500 1.06rem/1.55 var(--f-texte); color: var(--texte); text-shadow: 0 1px 14px #000, 0 0 3px #000; pointer-events: none; }
+.a-sous span { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.a-sous.moi { color: var(--signal); font-style: italic; }
+.a-note { margin: 0; max-width: 560px; font-size: .76rem; color: var(--texte-2); text-align: center; background: rgba(6, 8, 18, .78); border: 1px solid var(--bord); border-radius: 10px; padding: 6px 10px; }
+.a-note[hidden], .a-dictee[hidden], .a-voix[hidden] { display: none; }
+.a-dictee { width: min(560px, 100%); resize: none; font: 400 .95rem var(--f-texte); color: var(--texte); background: var(--verre-fort); border: 1px solid rgba(143, 180, 255, .55); border-radius: 14px; padding: 10px 12px; min-height: 48px; outline: none; }
+.a-barre { display: flex; align-items: center; gap: 14px; max-width: 100%; background: var(--verre-fort); border: 1px solid var(--bord); border-radius: 999px; padding: 8px 10px 8px 8px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.orbe { flex: none; width: 64px; height: 64px; border-radius: 50%; border: 0; cursor: pointer; position: relative; color: #0a0c18; display: grid; place-items: center; background: radial-gradient(circle at 50% 36%, rgba(255, 255, 255, .55), transparent 62%), var(--o, #8fb4ff); box-shadow: 0 0 26px var(--o, #8fb4ff); transition: background-color .3s, box-shadow .3s; }
+.orbe svg { width: 26px; height: 26px; }
+.orbe::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--o, #8fb4ff); opacity: .6; animation: onde 1.6s ease-out infinite; }
+.appel[data-etat="ecoute"] .orbe { --o: #6ee7a0; }
+.appel[data-etat="reflexion"] .orbe { --o: #b58cff; }
+.appel[data-etat="reflexion"] .orbe::after { border-style: dashed; animation: tourne 1.1s linear infinite; }
+.appel[data-etat="parle"] .orbe { --o: #ffc65c; }
+.appel[data-etat="parle"] .orbe::after { animation-duration: .75s; }
+.appel[data-etat="pause"] .orbe::after { animation: none; opacity: .25; }
+@keyframes onde { from { transform: scale(1); opacity: .7; } to { transform: scale(1.38); opacity: 0; } }
+@keyframes tourne { to { transform: rotate(360deg); } }
+.a-texte { display: grid; gap: 3px; min-width: 0; }
+.a-etat { font: 600 .88rem/1.25 var(--f-texte); }
+.a-voix { font: 400 .72rem var(--f-texte); color: var(--texte-2); background: rgba(0, 0, 0, .35); border: 1px solid var(--bord); border-radius: 8px; padding: 2px 4px; max-width: 200px; }
+.a-fin { flex: none; font: 600 .8rem var(--f-texte); color: #fff; background: #d9485f; border: 0; border-radius: 999px; padding: 10px 14px; cursor: pointer; }
+.en-appel .indice { display: none; }
+.en-appel .fiche { bottom: calc(env(safe-area-inset-bottom, 0px) + 200px); max-height: 38vh; }
+@media (max-width: 760px) {
+  .en-appel .panneau { display: none; }
+  .appel { left: 10px; right: 10px; bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); }
+  .a-sous { font-size: 1rem; }
+  .a-barre { gap: 10px; }
+  .a-voix { max-width: 130px; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 </style>
@@ -122,12 +159,24 @@ button:focus-visible, textarea:focus-visible { outline: 2px solid var(--chaud); 
   <div class="fil" id="fil" aria-live="polite"></div>
   <form class="saisie" id="saisie">
     <textarea id="question" rows="1" placeholder="Demande-moi quelque chose… ou « retiens que … »" aria-label="Ta question"></textarea>
+    <button class="micro" id="parler" type="button" aria-label="Se parler à voix haute" title="Se parler à voix haute"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
     <button class="envoyer" id="envoyer" type="submit" aria-label="Envoyer">➤</button>
-    <span class="astuce">Pour parler : touche le micro de ton clavier (dictée du téléphone).</span>
+    <span class="astuce">Touche le micro vert : on se parle à voix haute, comme au téléphone.</span>
   </form>
 </section>
 
 <aside class="fiche" id="fiche" hidden></aside>
+
+<section class="appel" id="appel" hidden data-etat="off" aria-label="Appel vocal avec le cerveau">
+  <div class="a-sous" id="a-sous" aria-live="polite"><span></span></div>
+  <p class="a-note" id="a-note" hidden></p>
+  <textarea class="a-dictee" id="a-dictee" rows="1" hidden placeholder="Touche le micro de ton clavier et parle…" aria-label="Ce que tu dis"></textarea>
+  <div class="a-barre">
+    <button class="orbe" id="a-orbe" type="button" aria-label="Parler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+    <div class="a-texte"><span class="a-etat" id="a-etat">Je t'écoute…</span><select class="a-voix" id="a-voix" aria-label="Voix du cerveau" hidden></select></div>
+    <button class="a-fin" id="a-fin" type="button">Raccrocher</button>
+  </div>
+</section>
 <div class="indice">Glisse pour tourner · molette pour zoomer · clique un neurone</div>
 
 <script id="savoir" type="application/json">/*SAVOIR*/</script>
@@ -269,7 +318,8 @@ function taille() {
 function cadrer() {
   if (!cam) return;
   const w = innerWidth, h = innerHeight, pan = $("panneau").getBoundingClientRect(), id = $("identite").getBoundingClientRect();
-  const libre = w > 760 ? {x0: 0, x1: pan.left - 8, y0: 24, y1: h - 24} : {x0: 0, x1: w, y0: id.bottom + 4, y1: pan.top - 4};
+  const enAppel = document.body.classList.contains("en-appel"), barre = $("appel").getBoundingClientRect();
+  const libre = w > 760 ? {x0: 0, x1: pan.left - 8, y0: 24, y1: enAppel ? barre.top - 8 : h - 24} : {x0: 0, x1: w, y0: id.bottom + 4, y1: enAppel ? barre.top - 4 : pan.top - 4};
   const fw = Math.max(120, libre.x1 - libre.x0), fh = Math.max(120, libre.y1 - libre.y0);
   vue.but.cx = w / 2 - (libre.x0 + libre.x1) / 2; vue.but.cy = h / 2 - (libre.y0 + libre.y1) / 2;
   vue.but.dist = 2 * 1.5 * h / (Math.min(fw, fh) * .9 * 2 * Math.tan(cam.fov * Math.PI / 360));
@@ -313,6 +363,16 @@ function boucle(t) {
   const taux = enReflexion ? 9 : 0.35 + activite * 6;
   if (!reduit && Math.random() < taux * dt) { const i = Math.floor(Math.random() * notes.length); allumer(i, enReflexion ? .75 : .45); const v = liensGeo.voisins[i]; for (let k = 0; k < Math.min(3, v.length); k++) impulsion(i, v[Math.floor(Math.random() * v.length)][0]); }
   activite *= Math.pow(.4, dt);
+  // en appel : quand tu parles, tes mots entrent vers le centre ; quand il parle, les impulsions partent du centre et le cerveau respire
+  if (appel.actif && !reduit) {
+    if (appel.etat === "parle") {
+      if (Math.random() < 5 * dt) parleBoost = Math.max(parleBoost, .45 + .55 * Math.random());
+      activite = Math.max(activite, .35 * parleBoost);
+      if (Math.random() < (4 + 16 * parleBoost) * dt) { const c = epinglesReponse; impulsion(CENTRE, c.length ? c[Math.floor(Math.random() * c.length)] : Math.floor(Math.random() * notes.length), [1, .86, .56]); }
+    } else if (appel.etat === "ecoute" && Math.random() < (1.2 + 18 * ecouteBoost) * dt) impulsion(Math.floor(Math.random() * notes.length), CENTRE, [.55, 1, .75]);
+  }
+  parleBoost *= Math.pow(.2, dt); ecouteBoost *= Math.pow(.15, dt);
+  groupe.scale.setScalar(1 + (appel.etat === "parle" ? .022 * parleBoost * (.6 + .4 * Math.sin(t / 70)) : 0));
   for (let i = 0; i < notes.length; i++) { const plancher = (filtreCat && notes[i].c === filtreCat ? .55 : 0) + EPINGLE[i]; ECLAT[i] = Math.max(plancher, ECLAT[i] * Math.pow(.25, dt)); }
   ptsGeo.attributes.eclat.array.set(ECLAT); ptsGeo.attributes.eclat.needsUpdate = true;
   // liens : brillent avec leurs neurones
@@ -400,7 +460,7 @@ function ajouterMsg(qui, html) {
   return d;
 }
 function accueil() {
-  const d = ajouterMsg("lui", `<p>Salut. Je suis ton second cerveau : ${notes.length} neurones, un par note de ta recherche (le bot, Bulenox, les tournois, le Monte Carlo, le labo…). Pose-moi une question : je cherche les neurones utiles, ils s'allument, et je te réponds à partir d'eux.</p><p class="note-sys">Dis « retiens que… » pour créer un souvenir. Il reste d'une visite à l'autre, et toi seul peux le lire.</p>`);
+  const d = ajouterMsg("lui", `<p>Salut. Je suis ton second cerveau : ${notes.length} neurones, un par note de ta recherche (le bot, Bulenox, les tournois, le Monte Carlo, le labo…). Pose-moi une question : je cherche les neurones utiles, ils s'allument, et je te réponds à partir d'eux.</p><p class="note-sys">Touche le micro vert pour qu'on se parle à voix haute. Dis « retiens que… » pour créer un souvenir : il reste d'une visite à l'autre, et toi seul peux le lire.</p>`);
   const idees = document.createElement("div"); idees.className = "idees";
   for (const q of ["Où en est mon filtre delta ?", "Combien je peux gagner avec Bulenox ?", "Mon bot est-il suroptimisé ?", "Quelle est ma prochaine étape ?", "Retiens que je veux passer le challenge avant l'été 2027"]) {
     const b = document.createElement("button"); b.type = "button"; b.className = "idee"; b.textContent = q; b.onclick = () => envoyer(q); idees.appendChild(b);
@@ -475,14 +535,6 @@ const OUTILS = () => [
     inputSchema: {type: "object", properties: {titre: {type: "string", description: "titre court du souvenir"}, texte: {type: "string", description: "le souvenir, en une ou deux phrases"}}, required: ["titre", "texte"]},
     execute: input => retenir(input.titre, input.texte)},
 ];
-function parler(texte) {
-  if ($("o-voix").getAttribute("aria-pressed") !== "true" || !("speechSynthesis" in window)) return;
-  const propre = texte.replace(/\[(n|s)\d+\]/g, "").replace(/\*\*/g, "").replace(/^\s*[-•]\s+/gm, "").slice(0, 1600);
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(propre); u.lang = "fr-FR"; u.rate = 1.03;
-  const v = speechSynthesis.getVoices().find(x => /^fr/i.test(x.lang)); if (v) u.voice = v;
-  speechSynthesis.speak(u);
-}
 function reponseLocale(q, hits) {
   if (/^\s*retiens/i.test(q)) {
     const t = q.replace(/^\s*retiens( que)?\s*/i, "");
@@ -493,13 +545,16 @@ function reponseLocale(q, hits) {
   if (!hits.length) return "Je ne trouve rien là-dessus dans mes neurones. Essaie avec d'autres mots (bot, filtre, Bulenox, Monte Carlo, risque…).";
   return "Mode local (Claude n'est pas disponible ici) : voici ce que mes neurones savent là-dessus.\n\n" + hits.slice(0, 3).map(h => `- **${notes[h.i].t}** [${notes[h.i].id}] : ${notes[h.i].x.slice(0, 260)}${notes[h.i].x.length > 260 ? "…" : ""}`).join("\n");
 }
-async function envoyer(q) {
+async function envoyer(q, opt = {}) {
   q = (q || "").trim(); if (!q) return;
   if (ctl) return;
+  const vocal = !!opt.vocal || appel.actif, oral = vocal || $("o-voix").getAttribute("aria-pressed") === "true", monTour = appel.tour;
+  const aJour = () => appel.tour === monTour;
   $("question").value = ""; ajusterSaisie();
-  if (innerWidth < 760) $("panneau").classList.remove("replie");
+  if (innerWidth < 760 && !appel.actif) $("panneau").classList.remove("replie");
   ajouterMsg("moi", q);
-  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  taire(); flux.dit = 0; voix.fini = !oral;
+  if (appel.actif) { arreterEcoute(); etatAppel("reflexion"); sousTitre(q, "moi"); }
   // 1. la question entre au centre, les neurones proches s'allument
   epinglesReponse = []; EPINGLE.fill(0);
   const hits = chercher(q, 8);
@@ -508,36 +563,172 @@ async function envoyer(q) {
   activite = 1;
   const d = ajouterMsg("lui", `<span class="reflexion">Réflexion</span>`), corps = d.querySelector(".corps");
   if (!sample) {
-    await new Promise(r => setTimeout(r, reduit ? 0 : 900));
-    const t = reponseLocale(q, hits); corps.innerHTML = rendreReponse(t); epinglesReponse = citesDans(t); reEpingler(); parler(t);
+    await new Promise(r => setTimeout(r, reduit ? 0 : 700));
+    const t = reponseLocale(q, hits); corps.innerHTML = rendreReponse(t); epinglesReponse = citesDans(t); reEpingler();
+    if (oral && aJour()) direTout(vocal ? versionOrale(q, hits, t) : t);
     TOURS.push({role: "user", content: q}, {role: "assistant", content: t}); sauverFil(); return;
   }
   enReflexion = true; ctl = new AbortController(); basculeEnvoi(true);
-  const contexte = REGLES + "\n\nNotes du cerveau les plus proches de la question :\n" + (blocNotes(hits) || "(aucune)");
+  const contexte = REGLES + (vocal ? ORAL : "") + "\n\nNotes du cerveau les plus proches de la question :\n" + (blocNotes(hits) || "(aucune)");
   const tours = [{role: "user", content: contexte}, ...TOURS.slice(-10), {role: "user", content: q}];
+  let relance = false;
   try {
     const opts = {signal: ctl.signal, cache: false, modelTier: $("o-profond").getAttribute("aria-pressed") === "true" ? "default" : "quick",
-      onText: ({text}) => { enReflexion = false; activite = 1; corps.innerHTML = rendreReponse(text); const c = citesDans(text); for (const i of c) allumer(i, 1, .85); epinglesReponse = c; fil.scrollTop = fil.scrollHeight; }};
+      onText: ({text}) => { enReflexion = false; activite = 1; corps.innerHTML = rendreReponse(text); const c = citesDans(text); for (const i of c) allumer(i, 1, .85); epinglesReponse = c; fil.scrollTop = fil.scrollHeight; if (oral && aJour()) nourrirVoix(text, false); }};
     if (outilsOk) opts.tools = OUTILS();
     const {text, truncated} = await sample(tours, opts);
     corps.innerHTML = rendreReponse(text) + (truncated ? `<p class="note-sys">Réponse coupée : demande-moi la suite.</p>` : "");
-    epinglesReponse = citesDans(text); reEpingler(); parler(text);
+    epinglesReponse = citesDans(text); reEpingler();
+    if (oral && aJour()) nourrirVoix(text, true);
     TOURS.push({role: "user", content: q}, {role: "assistant", content: text}); sauverFil();
   } catch (e) {
     const code = e && e.code;
     if (code === "cancelled") { corps.innerHTML = e.text ? rendreReponse(e.text) : `<p class="note-sys">Arrêté.</p>`; }
     else if (code === "not_granted" || code === "sampling_disabled" || code === "not_declared" || code === "capability_disabled" || code === "capability_removed") {
       sample = null; etat("local"); const t = reponseLocale(q, hits); corps.innerHTML = rendreReponse(t); epinglesReponse = citesDans(t); reEpingler();
-    } else if (code === "tools_unavailable") { outilsOk = false; corps.innerHTML = `<p class="note-sys">Je réessaie sans mes outils…</p>`; ctl = null; enReflexion = false; basculeEnvoi(false); fil.removeChild(d); fil.removeChild(fil.lastElementChild); return envoyer(q); }
+      if (oral && aJour()) { taire(); voix.fini = false; direTout(vocal ? versionOrale(q, hits, t) : t); }
+    } else if (code === "tools_unavailable") { outilsOk = false; relance = true; fil.removeChild(d); fil.removeChild(fil.lastElementChild); }
     else {
       const copie = {rate_limited: "Trop de questions d'affilée, ou ta limite Claude est atteinte : réessaie dans un moment.", session_expired: "Ta session Claude a expiré : reconnecte-toi.", refused: "Je ne peux pas répondre à ça. Reformule ta question.", prompt_too_large: "La conversation est trop longue : clique « Effacer » puis repose ta question.", empty_completion: "Je n'ai rien trouvé à dire : reformule."}[code] || "La connexion a coupé : renvoie ta question.";
-      corps.innerHTML = (e && e.text ? rendreReponse(e.text) : "") + `<p class="note-sys">${copie}</p>`;
+      corps.innerHTML = (e && e.text && code !== "refused" ? rendreReponse(e.text) : "") + `<p class="note-sys">${copie}</p>`;
+      if (vocal && aJour()) { if (code === "refused") taire(); appel.pauseApres = code === "rate_limited" || code === "session_expired"; dire(copie.replace(/ :.*$/, ".").replace("clique « Effacer » puis repose ta question", "")); }
     }
-  } finally { enReflexion = false; ctl = null; basculeEnvoi(false); }
+  } finally {
+    enReflexion = false; ctl = null; basculeEnvoi(false);
+    if (oral && aJour() && !relance) { voix.fini = true; if (!voix.enCours && !voix.file.length) finParole(); }
+  }
+  if (relance) return envoyer(q, opt);
 }
 function basculeEnvoi(enCours) { const b = $("envoyer"); b.classList.toggle("stop", enCours); b.textContent = enCours ? "■" : "➤"; b.setAttribute("aria-label", enCours ? "Arrêter" : "Envoyer"); }
 function etat(k) { const e = $("etat"); e.className = "etat " + (k === "ok" ? "ok" : "local"); e.querySelector("span").textContent = k === "ok" ? "Claude connecté · répond depuis ton compte" : "Mode local · le cerveau répond avec ses notes"; }
 function ajusterSaisie() { const t = $("question"); t.style.height = "auto"; t.style.height = Math.min(140, t.scrollHeight) + "px"; }
+
+/* ================= la voix : on se parle ================= */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const appel = {actif: false, etat: "off", reco: null, vides: 0, dictee: false, tour: 0, pauseApres: false};
+const voix = {file: [], enCours: null, fini: true, garde: 0}, flux = {dit: 0};
+let parleBoost = 0, ecouteBoost = 0, minuteurDictee = 0;
+const lireLocal = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const garderLocal = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+const ORAL = `
+
+MODE APPEL : vous vous parlez à voix haute, comme en face à face. Ta réponse est lue par une voix de synthèse, et ce que dit l'utilisateur vient d'une dictée vocale.
+- Parle comme à l'oral : phrases courtes et naturelles, 1 à 4 phrases. Pas de listes, pas de titres, pas de gras, pas d'emoji.
+- Dis les nombres comme on les dit (« environ neuf mille dollars par an »).
+- Tu peux citer les notes comme [n12] : les crochets ne sont pas lus, ils allument les neurones.
+- Relance l'échange avec une courte question quand c'est utile, comme dans une vraie discussion.
+- La dictée peut contenir des erreurs : devine le sens, et ne fais répéter que si c'est vraiment incompréhensible.`;
+const voixFr = () => ("speechSynthesis" in window) ? speechSynthesis.getVoices().filter(v => /^fr/i.test(v.lang)) : [];
+function meilleureVoix() {
+  const vs = voixFr(); if (!vs.length) return null;
+  const pref = vs.find(v => v.voiceURI === lireLocal("cerveau-voix")); if (pref) return pref;
+  const note = v => (/natural|neural|premium|enhanced|online/i.test(v.name) ? 4 : 0) + (/google/i.test(v.name) ? 3 : 0) + (/am[ée]lie|thomas|audrey|denise|henri|eloise|vivienne|remy|marie/i.test(v.name) ? 2 : 0) + (/fr[-_]FR/i.test(v.lang) ? 1 : 0);
+  return vs.slice().sort((a, b) => note(b) - note(a))[0];
+}
+function remplirVoix() {
+  const sel = $("a-voix"), vs = voixFr(), choisie = meilleureVoix();
+  sel.hidden = vs.length < 2; sel.innerHTML = "";
+  for (const v of vs) { const o = document.createElement("option"); o.value = v.voiceURI; o.textContent = v.name.replace(/\s*\([^)]*\)\s*/g, " ").trim(); o.selected = !!choisie && v.voiceURI === choisie.voiceURI; sel.appendChild(o); }
+}
+const pourOral = t => t.replace(/\s*\[(n|s)\d+\]/g, "").replace(/\*\*/g, "").replace(/^\s*[-•]\s+/gm, "").replace(/[#*_`>]/g, "").replace(/\s+/g, " ").trim();
+function sousTitre(t, qui) { const b = $("a-sous"); b.className = "a-sous " + qui; b.firstElementChild.textContent = t; }
+function dire(phrase) {
+  const p = pourOral(phrase); if (!p || !/[\p{L}\p{N}]/u.test(p) || !("speechSynthesis" in window)) return;
+  voix.file.push(p); if (!voix.enCours) suivante();
+}
+function suivante() {
+  clearTimeout(voix.garde);
+  const p = voix.file.shift();
+  if (!p) { voix.enCours = null; if (voix.fini) finParole(); return; }
+  if (appel.actif) { arreterEcoute(); etatAppel("parle"); sousTitre(p, "lui"); }
+  const u = new SpeechSynthesisUtterance(p); u.lang = "fr-FR"; u.rate = 1.05;
+  const v = meilleureVoix(); if (v) { try { u.voice = v; } catch (e) {} }
+  u.onboundary = () => { parleBoost = 1; };
+  u.onend = u.onerror = () => { if (voix.enCours === u) suivante(); };
+  voix.enCours = u; speechSynthesis.speak(u);
+  voix.garde = setTimeout(() => { if (voix.enCours === u) { voix.enCours = null; speechSynthesis.cancel(); suivante(); } }, 4000 + p.length * 110);   // filet : certains navigateurs oublient la fin
+}
+function taire() { voix.file = []; voix.fini = true; voix.enCours = null; clearTimeout(voix.garde); if ("speechSynthesis" in window) speechSynthesis.cancel(); }
+// lit le texte au fil de l'écriture : chaque phrase terminée part tout de suite
+function nourrirVoix(texte, fin) {
+  const reste = texte.slice(flux.dit); if (!reste) return;
+  let coupe = fin ? reste.length : -1;
+  if (!fin) { const re = /[.!?…](?=\s)|\n/g; let m; while ((m = re.exec(reste))) coupe = m.index + 1; }
+  if (coupe <= 0) return;
+  flux.dit += coupe;
+  for (const ph of reste.slice(0, coupe).replace(/([.!?…])\s+/g, "$1\n").split(/\n+/)) dire(ph);
+}
+function direTout(t) { flux.dit = 0; nourrirVoix(t, true); voix.fini = true; if (!voix.enCours && !voix.file.length) finParole(); }
+function finParole() {
+  if (!appel.actif || (appel.etat !== "parle" && appel.etat !== "reflexion")) return;
+  if (appel.pauseApres) { appel.pauseApres = false; etatAppel("pause"); } else ecouter();
+}
+const ETATS = {ecoute: "Je t'écoute…", reflexion: "Je réfléchis…", parle: "Je parle · touche pour couper", pause: "En pause · touche pour parler", dictee: "Dicte avec ton clavier"};
+function etatAppel(k) {
+  appel.etat = k; $("appel").dataset.etat = k; $("a-etat").textContent = ETATS[k] || "";
+  $("a-orbe").setAttribute("aria-label", {ecoute: "Arrêter d'écouter", reflexion: "Couper et parler", parle: "Me couper et parler", pause: "Parler", dictee: "Dicter"}[k] || "Parler");
+  if (k === "ecoute") sousTitre("", "moi");
+}
+function arreterEcoute() { const r = appel.reco; appel.reco = null; if (r) { try { r.abort(); } catch (e) {} } }
+function ecouter() {
+  if (!appel.actif) return;
+  if (appel.dictee) { etatAppel("dictee"); return; }
+  taire(); arreterEcoute();
+  let r;
+  try { r = new SR(); } catch (e) { passerEnDictee("absent"); return; }
+  appel.reco = r; r.lang = "fr-FR"; r.interimResults = true; r.continuous = false; r.maxAlternatives = 1;
+  let final = "";
+  r.onresult = e => {
+    let inter = ""; for (let k = e.resultIndex; k < e.results.length; k++) { const t = e.results[k][0].transcript; if (e.results[k].isFinal) final += t; else inter += t; }
+    sousTitre((final + " " + inter).trim(), "moi"); ecouteBoost = 1;
+  };
+  r.onerror = e => { if (appel.reco !== r) return; if (["not-allowed", "service-not-allowed", "audio-capture", "network", "language-not-supported"].includes(e.error)) passerEnDictee(e.error); };
+  r.onend = () => {
+    if (appel.reco !== r) return; appel.reco = null;
+    if (!appel.actif || appel.dictee) return;
+    const q = final.trim();
+    if (q) { appel.vides = 0; envoyer(q, {vocal: true}); }
+    else if (++appel.vides < 4) ecouter();
+    else { etatAppel("pause"); sousTitre("Je n'entends plus rien. Touche le rond pour reprendre.", "lui"); }
+  };
+  try { r.start(); etatAppel("ecoute"); } catch (e) { appel.reco = null; passerEnDictee("start"); }
+}
+function passerEnDictee(raison) {
+  appel.dictee = true; arreterEcoute();
+  const pourquoi = raison === "absent" ? "Ce navigateur ne sait pas écouter dans une page web." : raison === "network" ? "La reconnaissance vocale de ton navigateur n'est pas joignable." : "Le micro est bloqué pour cette page.";
+  $("a-note").textContent = pourquoi + " Touche le micro de ton clavier et parle : j'envoie tout seul dès que tu t'arrêtes, et je te réponds à voix haute.";
+  $("a-note").hidden = false; $("a-dictee").hidden = false; etatAppel("dictee"); cadrer();
+  try { $("a-dictee").focus(); } catch (e) {}
+}
+function envoyerDictee() { clearTimeout(minuteurDictee); const v = $("a-dictee").value.trim(); if (!v || ctl) return; $("a-dictee").value = ""; envoyer(v, {vocal: true}); }
+function demarrerAppel() {
+  if (appel.actif) return;
+  appel.actif = true; appel.vides = 0; appel.tour++; appel.dictee = !SR; appel.pauseApres = false;
+  fermerFiche(); document.body.classList.add("en-appel"); $("appel").hidden = false;
+  remplirVoix(); requestAnimationFrame(cadrer);
+  // débloque le son pendant le geste (iPhone), puis écoute tout de suite : le micro est demandé à ce moment-là
+  if ("speechSynthesis" in window) { const u = new SpeechSynthesisUtterance(" "); u.volume = 0; speechSynthesis.speak(u); }
+  sousTitre(TOURS.length ? "On reprend. Je t'écoute." : "Salut ! Parle-moi, je t'écoute.", "lui");
+  if (appel.dictee) passerEnDictee("absent"); else ecouter();
+}
+function finAppel() {
+  if (!appel.actif) return;
+  appel.actif = false; appel.tour++; arreterEcoute(); taire(); if (ctl) ctl.abort();
+  clearTimeout(minuteurDictee); $("a-dictee").value = "";
+  etatAppel("off"); document.body.classList.remove("en-appel"); $("appel").hidden = true; requestAnimationFrame(cadrer);
+}
+function toucherOrbe() {
+  if (!appel.actif) return demarrerAppel();
+  if (appel.etat === "parle" || appel.etat === "reflexion") { appel.tour++; if (ctl) ctl.abort(); taire(); ecouter(); }
+  else if (appel.etat === "ecoute") { arreterEcoute(); etatAppel("pause"); }
+  else if (appel.etat === "pause") { appel.vides = 0; ecouter(); }
+  else if (appel.etat === "dictee") $("a-dictee").focus();
+}
+function versionOrale(q, hits, t) {
+  if (/^\s*retiens/i.test(q) || !hits.length) return t;
+  const n = notes[hits[0].i], phrase = (n.x.match(/^[\s\S]*?[.!?](?=\s|$)/) || [n.x])[0].slice(0, 240);
+  return `Je n'ai pas accès à Claude ici, alors je te lis mes notes. ${n.t}. ${phrase}`;
+}
 
 /* ================= démarrage ================= */
 compteur(); aires(); accueil();
@@ -546,11 +737,19 @@ if (!ok3d && typeof THREE === "undefined") $("scene").innerHTML = '<p style="pad
 $("saisie").addEventListener("submit", e => { e.preventDefault(); if (ctl) { ctl.abort(); return; } envoyer($("question").value); });
 $("question").addEventListener("input", ajusterSaisie);
 $("question").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); if (!ctl) envoyer($("question").value); } });
-for (const id of ["o-profond", "o-voix"]) $(id).onclick = () => { const b = $(id); b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")); if (id === "o-voix" && b.getAttribute("aria-pressed") !== "true" && "speechSynthesis" in window) speechSynthesis.cancel(); };
+for (const id of ["o-profond", "o-voix"]) $(id).onclick = () => { const b = $(id); b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")); if (id === "o-voix" && b.getAttribute("aria-pressed") !== "true" && !appel.actif) taire(); };
 $("o-effacer").onclick = () => { if (ctl) ctl.abort(); TOURS.length = 0; fil.innerHTML = ""; accueil(); sauverFil(); epinglesReponse = []; EPINGLE.fill(0); };
 $("poignee").onclick = () => $("panneau").classList.toggle("replie");
 $("identite").addEventListener("click", e => { if (innerWidth < 760 && e.target.closest("h1")) $("identite").classList.toggle("ouvre"); });
 if (!("speechSynthesis" in window)) $("o-voix").hidden = true;
+$("parler").onclick = demarrerAppel;
+$("a-orbe").onclick = toucherOrbe;
+$("a-fin").onclick = finAppel;
+$("a-voix").onchange = () => { garderLocal("cerveau-voix", $("a-voix").value); if (appel.etat === "ecoute" || appel.etat === "pause" || appel.etat === "dictee") { arreterEcoute(); taire(); etatAppel(appel.dictee ? "dictee" : "parle"); dire("Voilà ma nouvelle voix."); } };
+$("a-dictee").addEventListener("input", () => { clearTimeout(minuteurDictee); if ($("a-dictee").value.trim()) minuteurDictee = setTimeout(envoyerDictee, 1700); });
+$("a-dictee").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); envoyerDictee(); } });
+addEventListener("keydown", e => { if (e.key === "Escape" && appel.actif) finAppel(); });
+if ("speechSynthesis" in window) { speechSynthesis.getVoices(); speechSynthesis.addEventListener?.("voiceschanged", remplirVoix); }
 (async () => {
   if (!window.claude || typeof claude.use !== "function") { etat("local"); return; }
   const [s] = await Promise.all([claude.use("sample"), brancherMemoire()]);
