@@ -142,6 +142,10 @@ body.sans-hud .etq { opacity: .28; }
 .toast.erreur { border-color: var(--rouge); color: #ffd3da; }
 .toast.annonce { border-color: var(--vert); }
 
+.bandeau-demo { top: calc(64px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%);
+  width: max-content; max-width: min(620px, calc(100% - 32px)); padding: 7px 14px; border-radius: 8px;
+  border: 1px solid rgba(255, 200, 87, .35); background: rgba(30, 22, 6, .72); color: var(--ambre);
+  font: 500 12px/1.4 var(--f-donnee); text-align: center; }
 @media (max-width: 1100px) {
   .journal { display: none; }
 }

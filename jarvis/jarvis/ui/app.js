@@ -601,6 +601,10 @@ const demo = (() => {
   }
   function demarrer() {
     $("moteur").textContent = "démonstration";
+    const b = document.createElement("div");
+    b.className = "bandeau-demo hud";
+    b.textContent = "Démonstration : ici Jarvis ne t'entend pas et joue des scènes préparées. Installé sur ton PC, il t'écoute et te répond pour de vrai.";
+    document.body.appendChild(b);
     $("personnalite").textContent = "Majordome sarcastique";
     majModules(Object.keys(MODULE_ZONE).map((m) => ({ module: m, etat: "pret", message: "démo" })), true);
     setInterval(stats, 1000); stats();
@@ -613,7 +617,7 @@ const demo = (() => {
     demarrer,
     demande(texte) {
       if (occupe) return;
-      if (!texte) { jouer(SCENES[i++ % SCENES.length], false); return; }
+      if (!texte) { toast("Dans la démo, Jarvis ne peut pas utiliser ton micro : voici une scène préparée."); jouer(SCENES[i++ % SCENES.length], false); return; }
       jouer({ dit: texte, outils: [["memoire_chercher", "MEMOIRE", "Recherche faite."]], rep: "En démonstration, je joue des scènes préparées. Installe-moi sur ton PC pour que je fasse vraiment tout ça." }, true);
     },
   };

@@ -56,11 +56,19 @@ Pour voir le cerveau sans rien configurer : `lancer.bat --demo` (une démonstrat
 Il te faut un micro et des haut-parleurs (ou un casque), internet et environ 3 Go de place. Une carte NVIDIA
 accélère la transcription, mais elle n'est pas obligatoire.
 
-1. **Récupère le dossier `jarvis`** : sur la page GitHub du dépôt, choisis la branche, puis
-   **Code > Download ZIP**. Décompresse, puis ouvre le dossier `jarvis`.
-2. **Double-clique sur `installer.bat`**. Il installe Python si besoin, les modules, le mot de réveil, la
-   transcription et la voix française, puis crée la configuration et un raccourci **Jarvis** sur le Bureau. Compte
-   10 à 20 minutes la première fois. Le journal complet est enregistré sur le Bureau (`installation_jarvis.txt`).
+1. **Ouvre PowerShell** : clique sur Démarrer, tape `PowerShell`, appuie sur Entrée.
+2. **Colle cette ligne** (clic droit dans la fenêtre pour coller), puis appuie sur Entrée :
+   ```
+   irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/keen-babbage-r686cl/jarvis/telecharger.ps1 | iex
+   ```
+   Elle télécharge seulement Jarvis (moins de 1 Mo) dans ton dossier personnel (`C:\Users\TON_NOM\Jarvis`), puis
+   installe Python si besoin, les modules, le mot de réveil, la transcription et la voix française. Elle crée
+   aussi la configuration et un raccourci **Jarvis** sur le Bureau. Compte 10 à 20 minutes la première fois. Le
+   journal complet est enregistré sur le Bureau (`installation_jarvis.txt`). Recoller la même ligne plus tard met
+   Jarvis à jour.
+
+   *Autre façon :* télécharge le dépôt en ZIP depuis GitHub (**Code > Download ZIP**, mais il pèse plusieurs
+   centaines de Mo à cause des données de trading), ouvre le dossier `jarvis` et double-clique sur `installer.bat`.
 3. **Choisis le cerveau** dans la configuration qui s'ouvre à la fin (`%APPDATA%\Jarvis\config.toml`), voir
    ci-dessous. Mets aussi ton prénom dans `proprietaire`.
 4. **Double-clique sur Jarvis** sur le Bureau. Le cerveau s'ouvre dans le navigateur. Dis « Hey Jarvis ».
@@ -299,13 +307,13 @@ ou mets-le sur un second écran.
 
 | Problème | Solution |
 |---|---|
-| Rien ne se lance | Lance `lancer.bat` : la fenêtre noire affiche l'erreur. |
+| Rien ne se lance | Double-clique sur `lancer.bat` dans `C:\Users\TON_NOM\Jarvis` : la fenêtre noire affiche l'erreur. |
 | « Aucun cerveau disponible » | Mets une clé d'API, ou installe Claude Code et connecte-toi (voir plus haut). |
 | Un module affiche « À CONFIG. » | Il manque un réglage dans la configuration ; `lancer.bat --verifier` dit lequel. |
 | « Port déjà utilisé » | Jarvis tourne déjà, ou change `[interface] port`. |
 | Google : « autorisation expirée » | Redemande : le navigateur s'ouvre pour renouveler (voir « Publier l'application »). |
 | La carte graphique n'est pas utilisée | Supprime `%APPDATA%\Jarvis\whisper_cuda.txt` après avoir installé tes pilotes : Jarvis refait l'essai. |
-| Tout réinstaller | Relance `installer.bat` (ta configuration est gardée). |
+| Tout réinstaller ou mettre à jour | Recolle la ligne dans PowerShell (ta configuration est gardée). |
 
 Pour essayer sans micro : `lancer.bat --texte` (conversation au clavier dans le terminal).
 
@@ -315,6 +323,7 @@ Pour essayer sans micro : `lancer.bat --texte` (conversation au clavier dans le 
 
 ```
 jarvis/
+  telecharger.ps1                téléchargement en une ligne (PowerShell), puis installation
   installer.bat, installer.ps1   installation Windows
   lancer.bat                     lancement (--demo, --texte, --verifier, --mcp, --claude-desktop)
   config.exemple.toml            configuration commentée (copiée dans %APPDATA%\Jarvis)
