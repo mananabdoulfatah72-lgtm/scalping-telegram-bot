@@ -1,0 +1,125 @@
+
+## legacy
+
+| Candidate | Filtre | Achats | Validé | Perdu | Expiré | Séances pour valider | Net moyen 24 mois | Achats perdants |
+|---|---|---|---|---|---|---|---|---|
+| A taille 4 (vague 12) | fort | choix 2012-2021 | 41 % | 38 % | 22 % | 9 | +1 149 $ | 67 % |
+| B + arret a l'objectif | fort | choix 2012-2021 | 51 % | 32 % | 16 % | 8 | +1 491 $ | 57 % |
+| C + arret + protection | fort | choix 2012-2021 | 49 % | 24 % | 27 % | 7 | +1 419 $ | 59 % |
+| F + arret + prudence pres du but | fort | choix 2012-2021 | 51 % | 32 % | 17 % | 8 | +1 494 $ | 57 % |
+| D + arret + fin de course | fort | choix 2012-2021 | 53 % | 35 % | 12 % | 8 | +1 552 $ | 55 % |
+| E + arret + protection + fin de course | fort | choix 2012-2021 | 51 % | 24 % | 25 % | 8 | +1 466 $ | 58 % |
+| A taille 4 (vague 12) | moitie | choix 2012-2021 | 38 % | 40 % | 21 % | 9 | +957 $ | 72 % |
+| B + arret a l'objectif | moitie | choix 2012-2021 | 48 % | 35 % | 17 % | 8 | +1 256 $ | 63 % |
+| C + arret + protection | moitie | choix 2012-2021 | 46 % | 26 % | 28 % | 7 | +1 191 $ | 65 % |
+| F + arret + prudence pres du but | moitie | choix 2012-2021 | 48 % | 35 % | 17 % | 8 | +1 259 $ | 63 % |
+| D + arret + fin de course | moitie | choix 2012-2021 | 51 % | 38 % | 12 % | 8 | +1 313 $ | 61 % |
+| E + arret + protection + fin de course | moitie | choix 2012-2021 | 48 % | 27 % | 25 % | 8 | +1 238 $ | 64 % |
+| A taille 4 (vague 12) | aucun | choix 2012-2021 | 37 % | 51 % | 12 % | 8 | +734 $ | 77 % |
+| B + arret a l'objectif | aucun | choix 2012-2021 | 46 % | 45 % | 9 % | 7 | +995 $ | 70 % |
+| C + arret + protection | aucun | choix 2012-2021 | 46 % | 33 % | 21 % | 7 | +979 $ | 70 % |
+| F + arret + prudence pres du but | aucun | choix 2012-2021 | 46 % | 44 % | 10 % | 7 | +1 012 $ | 69 % |
+| D + arret + fin de course | aucun | choix 2012-2021 | 48 % | 47 % | 6 % | 7 | +1 025 $ | 69 % |
+| E + arret + protection + fin de course | aucun | choix 2012-2021 | 47 % | 35 % | 18 % | 7 | +1 001 $ | 69 % |
+| A taille 4 (vague 12) | fort | verification 2023 - aout 2026 | 40 % | 45 % | 15 % | 9 | +1 814 $ | 52 % |
+| B + arret a l'objectif | fort | verification 2023 - aout 2026 | 55 % | 36 % | 9 % | 7 | +2 335 $ | 38 % |
+| C + arret + protection | fort | verification 2023 - aout 2026 | 55 % | 26 % | 19 % | 7 | +2 289 $ | 39 % |
+| F + arret + prudence pres du but | fort | verification 2023 - aout 2026 | 55 % | 35 % | 10 % | 7 | +2 322 $ | 39 % |
+| D + arret + fin de course | fort | verification 2023 - aout 2026 | 55 % | 37 % | 7 % | 7 | +2 354 $ | 38 % |
+| E + arret + protection + fin de course | fort | verification 2023 - aout 2026 | 56 % | 27 % | 16 % | 7 | +2 351 $ | 38 % |
+| A taille 4 (vague 12) | moitie | verification 2023 - aout 2026 | 36 % | 48 % | 16 % | 9 | +1 600 $ | 56 % |
+| B + arret a l'objectif | moitie | verification 2023 - aout 2026 | 52 % | 38 % | 10 % | 7 | +2 106 $ | 42 % |
+| C + arret + protection | moitie | verification 2023 - aout 2026 | 52 % | 29 % | 19 % | 7 | +2 046 $ | 44 % |
+| F + arret + prudence pres du but | moitie | verification 2023 - aout 2026 | 52 % | 38 % | 10 % | 7 | +2 090 $ | 42 % |
+| D + arret + fin de course | moitie | verification 2023 - aout 2026 | 53 % | 40 % | 7 % | 7 | +2 138 $ | 41 % |
+| E + arret + protection + fin de course | moitie | verification 2023 - aout 2026 | 53 % | 30 % | 17 % | 7 | +2 111 $ | 42 % |
+| A taille 4 (vague 12) | aucun | verification 2023 - aout 2026 | 32 % | 58 % | 11 % | 8 | +1 331 $ | 63 % |
+| B + arret a l'objectif | aucun | verification 2023 - aout 2026 | 48 % | 46 % | 6 % | 6 | +1 812 $ | 48 % |
+| C + arret + protection | aucun | verification 2023 - aout 2026 | 49 % | 39 % | 13 % | 6 | +1 788 $ | 48 % |
+| F + arret + prudence pres du but | aucun | verification 2023 - aout 2026 | 49 % | 45 % | 6 % | 6 | +1 866 $ | 47 % |
+| D + arret + fin de course | aucun | verification 2023 - aout 2026 | 49 % | 47 % | 5 % | 6 | +1 821 $ | 48 % |
+| E + arret + protection + fin de course | aucun | verification 2023 - aout 2026 | 49 % | 39 % | 11 % | 6 | +1 841 $ | 47 % |
+| A taille 4 (vague 12) | fort | 2025 | 32 % | 49 % | 18 % | 11 | - | - |
+| B + arret a l'objectif | fort | 2025 | 44 % | 41 % | 15 % | 7 | - | - |
+| C + arret + protection | fort | 2025 | 43 % | 35 % | 22 % | 7 | - | - |
+| F + arret + prudence pres du but | fort | 2025 | 44 % | 41 % | 15 % | 7 | - | - |
+| D + arret + fin de course | fort | 2025 | 45 % | 43 % | 12 % | 7 | - | - |
+| E + arret + protection + fin de course | fort | 2025 | 44 % | 36 % | 21 % | 7 | - | - |
+| A taille 4 (vague 12) | moitie | 2025 | 29 % | 53 % | 18 % | 11 | - | - |
+| B + arret a l'objectif | moitie | 2025 | 42 % | 44 % | 14 % | 7 | - | - |
+| C + arret + protection | moitie | 2025 | 40 % | 38 % | 21 % | 7 | - | - |
+| F + arret + prudence pres du but | moitie | 2025 | 41 % | 44 % | 15 % | 7 | - | - |
+| D + arret + fin de course | moitie | 2025 | 42 % | 46 % | 12 % | 7 | - | - |
+| E + arret + protection + fin de course | moitie | 2025 | 41 % | 39 % | 20 % | 7 | - | - |
+| A taille 4 (vague 12) | aucun | 2025 | 28 % | 58 % | 14 % | 11 | - | - |
+| B + arret a l'objectif | aucun | 2025 | 40 % | 50 % | 10 % | 6 | - | - |
+| C + arret + protection | aucun | 2025 | 38 % | 48 % | 14 % | 6 | - | - |
+| F + arret + prudence pres du but | aucun | 2025 | 40 % | 49 % | 11 % | 6 | - | - |
+| D + arret + fin de course | aucun | 2025 | 40 % | 51 % | 9 % | 6 | - | - |
+| E + arret + protection + fin de course | aucun | 2025 | 38 % | 49 % | 13 % | 6 | - | - |
+
+## momentum
+
+| Candidate | Filtre | Achats | Validé | Perdu | Expiré | Séances pour valider | Net moyen 24 mois | Achats perdants |
+|---|---|---|---|---|---|---|---|---|
+| A taille 4 (vague 12) | fort | choix 2012-2021 | 40 % | 44 % | 16 % | 9 | +1 092 $ | 68 % |
+| B + arret a l'objectif | fort | choix 2012-2021 | 50 % | 38 % | 12 % | 7 | +1 428 $ | 59 % |
+| C + arret + protection | fort | choix 2012-2021 | 47 % | 28 % | 24 % | 7 | +1 342 $ | 61 % |
+| F + arret + prudence pres du but | fort | choix 2012-2021 | 49 % | 37 % | 13 % | 7 | +1 425 $ | 59 % |
+| D + arret + fin de course | fort | choix 2012-2021 | 51 % | 41 % | 8 % | 8 | +1 470 $ | 58 % |
+| E + arret + protection + fin de course | fort | choix 2012-2021 | 49 % | 30 % | 21 % | 8 | +1 401 $ | 60 % |
+| A taille 4 (vague 12) | moitie | choix 2012-2021 | 37 % | 47 % | 16 % | 9 | +884 $ | 73 % |
+| B + arret a l'objectif | moitie | choix 2012-2021 | 47 % | 41 % | 12 % | 7 | +1 170 $ | 66 % |
+| C + arret + protection | moitie | choix 2012-2021 | 44 % | 31 % | 24 % | 7 | +1 092 $ | 68 % |
+| F + arret + prudence pres du but | moitie | choix 2012-2021 | 47 % | 40 % | 13 % | 7 | +1 171 $ | 66 % |
+| D + arret + fin de course | moitie | choix 2012-2021 | 48 % | 44 % | 8 % | 8 | +1 209 $ | 64 % |
+| E + arret + protection + fin de course | moitie | choix 2012-2021 | 46 % | 33 % | 21 % | 8 | +1 142 $ | 66 % |
+| A taille 4 (vague 12) | aucun | choix 2012-2021 | 35 % | 56 % | 9 % | 8 | +647 $ | 80 % |
+| B + arret a l'objectif | aucun | choix 2012-2021 | 44 % | 50 % | 6 % | 6 | +895 $ | 72 % |
+| C + arret + protection | aucun | choix 2012-2021 | 44 % | 40 % | 17 % | 7 | +871 $ | 73 % |
+| F + arret + prudence pres du but | aucun | choix 2012-2021 | 45 % | 49 % | 6 % | 7 | +917 $ | 72 % |
+| D + arret + fin de course | aucun | choix 2012-2021 | 45 % | 51 % | 4 % | 7 | +909 $ | 72 % |
+| E + arret + protection + fin de course | aucun | choix 2012-2021 | 45 % | 41 % | 14 % | 7 | +887 $ | 72 % |
+| A taille 4 (vague 12) | fort | verification 2023 - aout 2026 | 38 % | 52 % | 11 % | 9 | +1 774 $ | 54 % |
+| B + arret a l'objectif | fort | verification 2023 - aout 2026 | 51 % | 43 % | 6 % | 6 | +2 267 $ | 42 % |
+| C + arret + protection | fort | verification 2023 - aout 2026 | 53 % | 33 % | 14 % | 7 | +2 302 $ | 41 % |
+| F + arret + prudence pres du but | fort | verification 2023 - aout 2026 | 51 % | 42 % | 7 % | 6 | +2 282 $ | 41 % |
+| D + arret + fin de course | fort | verification 2023 - aout 2026 | 52 % | 44 % | 4 % | 6 | +2 291 $ | 41 % |
+| E + arret + protection + fin de course | fort | verification 2023 - aout 2026 | 53 % | 34 % | 12 % | 7 | +2 355 $ | 40 % |
+| A taille 4 (vague 12) | moitie | verification 2023 - aout 2026 | 33 % | 56 % | 11 % | 8 | +1 448 $ | 60 % |
+| B + arret a l'objectif | moitie | verification 2023 - aout 2026 | 48 % | 46 % | 6 % | 6 | +1 941 $ | 47 % |
+| C + arret + protection | moitie | verification 2023 - aout 2026 | 49 % | 37 % | 14 % | 7 | +1 939 $ | 47 % |
+| F + arret + prudence pres du but | moitie | verification 2023 - aout 2026 | 48 % | 45 % | 7 % | 6 | +1 953 $ | 47 % |
+| D + arret + fin de course | moitie | verification 2023 - aout 2026 | 49 % | 47 % | 4 % | 6 | +1 967 $ | 46 % |
+| E + arret + protection + fin de course | moitie | verification 2023 - aout 2026 | 50 % | 38 % | 12 % | 7 | +1 982 $ | 46 % |
+| A taille 4 (vague 12) | aucun | verification 2023 - aout 2026 | 30 % | 64 % | 6 % | 8 | +1 257 $ | 65 % |
+| B + arret a l'objectif | aucun | verification 2023 - aout 2026 | 45 % | 52 % | 3 % | 5 | +1 733 $ | 51 % |
+| C + arret + protection | aucun | verification 2023 - aout 2026 | 46 % | 44 % | 9 % | 6 | +1 801 $ | 50 % |
+| F + arret + prudence pres du but | aucun | verification 2023 - aout 2026 | 46 % | 51 % | 3 % | 6 | +1 798 $ | 50 % |
+| D + arret + fin de course | aucun | verification 2023 - aout 2026 | 45 % | 53 % | 2 % | 5 | +1 741 $ | 51 % |
+| E + arret + protection + fin de course | aucun | verification 2023 - aout 2026 | 47 % | 45 % | 8 % | 6 | +1 854 $ | 49 % |
+| A taille 4 (vague 12) | fort | 2025 | 30 % | 59 % | 11 % | 11 | - | - |
+| B + arret a l'objectif | fort | 2025 | 42 % | 49 % | 9 % | 7 | - | - |
+| C + arret + protection | fort | 2025 | 39 % | 46 % | 14 % | 7 | - | - |
+| F + arret + prudence pres du but | fort | 2025 | 42 % | 49 % | 9 % | 7 | - | - |
+| D + arret + fin de course | fort | 2025 | 43 % | 51 % | 7 % | 7 | - | - |
+| E + arret + protection + fin de course | fort | 2025 | 40 % | 47 % | 13 % | 7 | - | - |
+| A taille 4 (vague 12) | moitie | 2025 | 27 % | 62 % | 11 % | 11 | - | - |
+| B + arret a l'objectif | moitie | 2025 | 40 % | 52 % | 8 % | 7 | - | - |
+| C + arret + protection | moitie | 2025 | 37 % | 50 % | 14 % | 7 | - | - |
+| F + arret + prudence pres du but | moitie | 2025 | 40 % | 52 % | 8 % | 7 | - | - |
+| D + arret + fin de course | moitie | 2025 | 41 % | 53 % | 6 % | 7 | - | - |
+| E + arret + protection + fin de course | moitie | 2025 | 37 % | 50 % | 13 % | 7 | - | - |
+| A taille 4 (vague 12) | aucun | 2025 | 26 % | 69 % | 5 % | 11 | - | - |
+| B + arret a l'objectif | aucun | 2025 | 39 % | 57 % | 5 % | 6 | - | - |
+| C + arret + protection | aucun | 2025 | 35 % | 56 % | 9 % | 6 | - | - |
+| F + arret + prudence pres du but | aucun | 2025 | 39 % | 57 % | 5 % | 6 | - | - |
+| D + arret + fin de course | aucun | 2025 | 39 % | 57 % | 4 % | 6 | - | - |
+| E + arret + protection + fin de course | aucun | 2025 | 35 % | 56 % | 10 % | 6 | - | - |
+
+## Jugement fixé à l'avance
+
+- **legacy** : retenue D (+ arret + fin de course), validé en 30 jours sur 2012-2021 : 53 % (A : 41 %).
+  - vérification 2023 - août 2026 : 55 % contre 40 % pour A ; 2025 : 45 % contre 32 % → **REMPLACE la version de la vague 12**
+- **momentum** : retenue D (+ arret + fin de course), validé en 30 jours sur 2012-2021 : 51 % (A : 40 %).
+  - vérification 2023 - août 2026 : 52 % contre 38 % pour A ; 2025 : 43 % contre 30 % → **REMPLACE la version de la vague 12**
