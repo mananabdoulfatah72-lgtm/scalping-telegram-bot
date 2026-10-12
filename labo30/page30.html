@@ -1,0 +1,561 @@
+<title>Labo 30 jours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+/* Écran d'instrument (même monde que le labo) : pupitre, machine des 30 jours sur toute la largeur, relief 3D,
+   puis l'après-validation, les trades réels, les gains et pertes, la robustesse. Un seul thème sombre, assumé. */
+:root {
+  color-scheme: dark;
+  --encre: #0a0d14; --panneau: #0f141d; --panneau-2: #141b27; --trait: #222b3a; --trait-fort: #334056;
+  --texte: #e7eaf0; --texte-2: #a9b2c3; --texte-3: #7c869a;
+  --valide: #5fd3a8; --perdu: #e0565b; --expire: #7a8397; --cours: #6da7ec; --or: #ffd36e; --master: #d39a2c;
+  --gain: #6da7ec; --perte: #e66767; --t1: #8a93a6; --t4: #ffd36e;
+  --f-titre: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-texte: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --f-chiffre: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { background: var(--encre); }
+body { background: var(--encre); color: var(--texte); font-family: var(--f-texte); font-size: 15px; line-height: 1.55; }
+.page { max-width: 1280px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 64px; display: grid; gap: 34px; }
+@media (max-width: 560px) { .page { padding-inline: 16px; gap: 26px; } }
+h1, h2, h3 { font-family: var(--f-titre); font-weight: 800; letter-spacing: .01em; text-wrap: balance; margin: 0; line-height: 1.02; }
+h1 { font-size: clamp(2.6rem, 7.4vw, 5.6rem); font-weight: 900; text-transform: uppercase; }
+h1 span { color: var(--or); }
+h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); text-transform: uppercase; }
+h3 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: .03em; }
+p { margin: 0; max-width: 72ch; }
+.sur { font-family: var(--f-chiffre); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--texte-3); }
+.chiffre { font-family: var(--f-chiffre); font-variant-numeric: tabular-nums; }
+.muet { color: var(--texte-2); }
+.petit { font-size: .84rem; }
+.entete { display: grid; gap: 14px; }
+.entete p { color: var(--texte-2); font-size: 1.02rem; }
+.ticker { display: flex; flex-wrap: wrap; gap: 6px 22px; font-family: var(--f-chiffre); font-size: .78rem; color: var(--texte-3); border-top: 1px solid var(--trait); border-bottom: 1px solid var(--trait); padding-block: 8px; }
+.ticker b { color: var(--texte); font-weight: 500; }
+section > header { display: grid; gap: 8px; margin-bottom: 14px; }
+
+/* Verdict */
+.cartes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 1000px) { .cartes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .cartes { grid-template-columns: minmax(0, 1fr); } }
+.carte { background: var(--panneau); border: 1px solid var(--trait); border-top: 3px solid var(--ton, var(--trait-fort)); border-radius: 8px; padding: 14px 16px; display: grid; gap: 6px; text-decoration: none; color: inherit; min-width: 0; }
+.carte:hover { border-color: var(--trait-fort); border-top-color: var(--ton); }
+.carte .val { font-family: var(--f-titre); font-size: 2.2rem; font-weight: 800; line-height: 1; color: var(--ton, var(--texte)); }
+.carte .lib { font-size: .86rem; color: var(--texte-2); }
+.carte[data-ton="bon"] { --ton: var(--valide); }
+.carte[data-ton="reserve"] { --ton: var(--or); }
+.carte[data-ton="faible"] { --ton: var(--perdu); }
+
+/* Pupitre */
+.pupitre { background: var(--panneau); border: 1px solid var(--trait); border-radius: 10px; padding: 16px 18px; display: grid; grid-template-columns: 2.2fr 1.2fr 1.2fr 1fr; gap: 16px 22px; align-items: end; }
+@media (max-width: 1000px) { .pupitre { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (max-width: 560px) { .pupitre { grid-template-columns: minmax(0, 1fr); } }
+.champ { display: grid; gap: 6px; min-width: 0; }
+.champ > span { font-size: .78rem; color: var(--texte-2); display: flex; justify-content: space-between; gap: 8px; }
+.segments { display: flex; flex-wrap: wrap; border: 1px solid var(--trait-fort); border-radius: 6px; overflow: hidden; }
+.segments button { font: 500 .8rem var(--f-texte); color: var(--texte-2); background: transparent; border: 0; border-right: 1px solid var(--trait-fort); padding: 7px 10px; cursor: pointer; flex: 1 1 auto; }
+.segments button:last-child { border-right: 0; }
+.segments button[aria-pressed="true"] { background: var(--texte); color: var(--encre); }
+.segments button:hover:not([aria-pressed="true"]) { background: var(--panneau-2); color: var(--texte); }
+.ligne-boutons { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.bouton { font: 600 .85rem var(--f-texte); color: var(--encre); background: var(--or); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer; }
+.bouton.second { background: transparent; color: var(--texte); border: 1px solid var(--trait-fort); }
+input[type="range"] { width: 100%; accent-color: var(--or); }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--or); outline-offset: 2px; }
+
+/* Machine */
+.machine { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; }
+@media (max-width: 960px) { .machine { grid-template-columns: minmax(0, 1fr); } }
+.ecran { background: var(--panneau); border: 1px solid var(--trait); border-radius: 10px; padding: 12px; min-width: 0; position: relative; }
+.ecran canvas { display: block; width: 100%; }
+.legende { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .78rem; color: var(--texte-2); margin-top: 8px; }
+.legende i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+.compteurs { background: var(--panneau); border: 1px solid var(--trait); border-radius: 10px; padding: 14px 16px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.compteur { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 6px; border-bottom: 1px solid var(--trait); padding-bottom: 8px; }
+.compteur b { font-family: var(--f-titre); font-size: 2rem; font-weight: 800; line-height: 1; }
+.compteur span { font-size: .84rem; color: var(--texte-2); }
+.horloge { font-family: var(--f-chiffre); font-size: .78rem; color: var(--texte-3); }
+
+/* Grilles de relevés */
+.grille { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 860px) { .grille { grid-template-columns: minmax(0, 1fr); } }
+.panneau { background: var(--panneau); border: 1px solid var(--trait); border-radius: 10px; padding: 14px 16px; display: grid; gap: 10px; min-width: 0; align-content: start; }
+.panneau canvas { display: block; width: 100%; }
+.tuiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 860px) { .tuiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tuile { background: var(--panneau); border: 1px solid var(--trait); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; min-width: 0; }
+.tuile b { font-family: var(--f-titre); font-size: 1.8rem; font-weight: 800; line-height: 1.05; }
+.tuile span { font-size: .8rem; color: var(--texte-2); }
+.tuile small { font-family: var(--f-chiffre); font-size: .72rem; color: var(--texte-3); }
+
+/* Relief */
+.relief { background: var(--panneau); border: 1px solid var(--trait); border-radius: 10px; overflow: hidden; position: relative; }
+#relief3d { height: 420px; cursor: grab; touch-action: none; }
+@media (max-width: 560px) { #relief3d { height: 300px; } }
+.relief .note { position: absolute; left: 14px; bottom: 10px; font-size: .76rem; color: var(--texte-3); pointer-events: none; }
+
+/* Tableaux */
+.defile { overflow-x: auto; min-width: 0; }
+table { border-collapse: collapse; width: 100%; font-size: .84rem; }
+th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--trait); vertical-align: top; }
+th { font-weight: 600; color: var(--texte-2); font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; }
+td.n, th.n { text-align: right; font-family: var(--f-chiffre); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pos { color: var(--valide); } .neg { color: var(--perte); }
+tr.choisi td { background: rgba(255, 211, 110, .07); }
+.case { text-align: center; font-family: var(--f-chiffre); font-variant-numeric: tabular-nums; border: 1px solid var(--encre); }
+
+/* Exemples */
+.onglets { display: flex; flex-wrap: wrap; gap: 6px; }
+.onglets button { font: 500 .82rem var(--f-texte); color: var(--texte-2); background: var(--panneau); border: 1px solid var(--trait-fort); border-radius: 999px; padding: 6px 13px; cursor: pointer; }
+.onglets button[aria-pressed="true"] { background: var(--texte); color: var(--encre); border-color: var(--texte); }
+.trade { display: inline-flex; gap: 6px; align-items: baseline; font-size: .78rem; background: var(--panneau-2); border: 1px solid var(--trait); border-radius: 6px; padding: 2px 7px; margin: 2px 4px 2px 0; white-space: nowrap; }
+.trade b { font-weight: 600; }
+.trade.ecarte { color: var(--texte-3); border-style: dashed; }
+.etiquette { font-family: var(--f-chiffre); font-size: .7rem; padding: 1px 6px; border-radius: 4px; background: var(--panneau-2); color: var(--texte-2); }
+.limites { display: grid; gap: 8px; color: var(--texte-2); font-size: .9rem; }
+.limites ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<main class="page">
+  <header class="entete">
+    <div class="sur">Bot 3 en 1 · Bulenox Legacy 50K · challenge limité à 30 jours</div>
+    <h1>Labo <span>30 jours</span></h1>
+    <p>Chaque challenge ci-dessous a été joué par le moteur exact du bot, minute par minute, sur de vraies séances du Nasdaq depuis 2012. La page rejoue des achats tirés au hasard parmi tous ces achats simulés, et chaque chiffre affiché vient de tous les achats, pas seulement de l'échantillon animé.</p>
+    <div class="ticker" id="ticker"></div>
+  </header>
+
+  <section aria-labelledby="t-verdict">
+    <header><div class="sur">Le verdict en un coup d'œil</div><h2 id="t-verdict">Huit réponses</h2>
+      <p class="muet petit">Vert : clairement bon. Orange : correct, avec une réserve. Rouge : le point faible. Chaque carte renvoie à sa section.</p></header>
+    <div class="cartes" id="cartes"></div>
+  </section>
+
+  <section class="pupitre" aria-label="Réglages">
+    <div class="champ"><span>Version du bot pendant le challenge</span><div class="segments" id="s-version" role="group" aria-label="Version"></div></div>
+    <div class="champ"><span>Force du filtre delta</span><div class="segments" id="s-filtre" role="group" aria-label="Filtre"></div></div>
+    <div class="champ"><span>Achats faits en</span><div class="segments" id="s-periode" role="group" aria-label="Période"></div></div>
+    <div class="champ"><span>Vitesse <output id="o-vitesse" class="chiffre">1×</output></span><input type="range" id="r-vitesse" min="0.25" max="4" step="0.25" value="1" aria-label="Vitesse de l'animation"></div>
+  </section>
+
+  <section id="machine-s" aria-labelledby="t-machine">
+    <header><div class="sur">La machine</div><h2 id="t-machine">300 challenges de 30 jours</h2>
+      <p class="muet">Chaque fil est un achat : le solde du compte chaque soir, depuis l'achat jusqu'à l'objectif (+3 000 $), au plancher, ou jusqu'à la fin des 30 jours. Le plancher part à −2 500 $ et monte avec le meilleur solde du soir, jusqu'à +100 $ au plus.</p></header>
+    <div class="machine">
+      <div class="ecran">
+        <canvas id="c-machine" height="430" aria-label="Fils des challenges simulés"></canvas>
+        <div class="legende"><span><i style="background:var(--cours)"></i>en cours</span><span><i style="background:var(--valide)"></i>validé</span><span><i style="background:var(--perdu)"></i>perdu (plancher touché)</span><span><i style="background:var(--expire)"></i>expiré (30 jours sans valider)</span><span><i style="background:var(--or)"></i>un achat suivi, avec son plancher</span></div>
+      </div>
+      <div class="compteurs">
+        <div class="ligne-boutons"><button class="bouton" id="b-rejouer" type="button">Rejouer</button><button class="bouton second" id="b-tirer" type="button">Tirer 300 autres</button></div>
+        <div class="horloge" id="horloge">séance 0 / 22</div>
+        <div class="compteur"><span>Validés (animés)</span><b class="pos" id="k-v">0</b></div>
+        <div class="compteur"><span>Perdus</span><b class="neg" id="k-p">0</b></div>
+        <div class="compteur"><span>Expirés</span><b id="k-e" style="color:var(--expire)">0</b></div>
+        <div class="compteur"><span>Encore en course</span><b id="k-c" style="color:var(--cours)">300</b></div>
+        <p class="petit muet" id="k-exact"></p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-quand">
+    <header><div class="sur">Le rythme</div><h2 id="t-quand">Quand ça se décide</h2>
+      <p class="muet">Sur tous les achats de la sélection : à quelle séance les challenges sont validés, et à quelle séance ils sont perdus.</p></header>
+    <div class="grille">
+      <div class="panneau"><h3>Validés, séance par séance</h3><canvas id="c-hv" height="210"></canvas><p class="petit muet" id="t-hv"></p></div>
+      <div class="panneau"><h3>Perdus, séance par séance</h3><canvas id="c-hp" height="210"></canvas><p class="petit muet" id="t-hp"></p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-relief">
+    <header><div class="sur">Le relief</div><h2 id="t-relief">La diffusion des comptes</h2>
+      <p class="muet">La hauteur montre où se trouvent les comptes encore en course, séance après séance. Le mur vert est l'objectif, le mur rouge le plancher de départ. Glisse pour tourner.</p></header>
+    <div class="relief"><div id="relief3d" aria-label="Relief 3D de la répartition des soldes"></div><div class="note" id="relief-note">séances →, solde ↑, part des comptes en hauteur</div></div>
+  </section>
+
+  <section id="master" aria-labelledby="t-master">
+    <header><div class="sur">Après la validation</div><h2 id="t-master">Le Master, retour à 1 MNQ</h2>
+      <p class="muet">Une fois le challenge validé, le bot repasse à 1 MNQ, avec le frein (750 $ sous le plus haut) et un plafond de gain de 500 $ par jour. Bulenox demande de garder 52 600 $ et le premier retrait est d'au moins 1 000 $ : il faut d'abord gagner environ 3 600 $ sur le Master.</p></header>
+    <div class="tuiles" id="tuiles-master"></div>
+    <div class="grille" style="margin-top:14px">
+      <div class="panneau"><h3>L'argent pour toi, mois après mois</h3><canvas id="c-argent" height="250"></canvas><p class="petit muet" id="t-argent"></p></div>
+      <div class="panneau"><h3>Ce que rapporte un achat en 24 mois</h3><canvas id="c-net" height="250"></canvas><p class="petit muet" id="t-net"></p></div>
+    </div>
+  </section>
+
+  <section id="exemples" aria-labelledby="t-exemples">
+    <header><div class="sur">De vrais trades</div><h2 id="t-exemples">Quatre fenêtres de 30 jours</h2>
+      <p class="muet" id="t-ex-intro"></p></header>
+    <div class="onglets" id="onglets" role="group" aria-label="Exemples"></div>
+    <div class="grille" style="margin-top:12px">
+      <div class="panneau"><h3 id="ex-titre"></h3><canvas id="c-ex" height="230"></canvas><p class="petit muet" id="ex-resume"></p></div>
+      <div class="panneau"><h3>Comment lire</h3><p class="petit muet">Zone de bruit : achat ou vente sur MNQ quand le prix sort de sa zone habituelle, contrôle toutes les 30 minutes de 10 h à 15 h 30 (heure de New York), sortie au plus tard à 16 h. Nuit : RSI(2), achat de MES à 18 h, revente à 9 h 30. Les montants sont comptés au niveau de prix d'aujourd'hui, frais compris. Les signaux en pointillés n'ont pas été pris (filtre delta, ou jour de la Fed). Quand la limite de perte du jour ou l'objectif coupe la journée, certains trades sont fermés plus tôt ou pas pris : le total du jour reste exact.</p></div>
+    </div>
+    <div class="panneau defile" style="margin-top:14px"><table id="ex-table"></table></div>
+  </section>
+
+  <section id="gains" aria-labelledby="t-gains">
+    <header><div class="sur">Gains et pertes à attendre</div><h2 id="t-gains">Une séance en 4 MNQ</h2>
+      <p class="muet">Chaque séance de 2012 à 2026, jouée par le bot sans règles de compte (seule la limite de perte de 1 100 $ par jour), avec le filtre comme en 2026. En 4 MNQ, tout est environ quatre fois plus gros qu'en 1 MNQ, gains comme pertes.</p></header>
+    <div class="tuiles" id="tuiles-gains"></div>
+    <div class="grille" style="margin-top:14px">
+      <div class="panneau"><h3>Gain d'une séance avec au moins un trade</h3><canvas id="c-gains" height="250"></canvas><div class="legende"><span><i style="background:var(--t4)"></i>4 MNQ</span><span><i style="background:var(--t1)"></i>1 MNQ</span></div></div>
+      <div class="panneau"><h3>Le bot sans règles de compte, cumulé</h3><canvas id="c-courbe" height="250"></canvas><p class="petit muet" id="t-courbe"></p></div>
+    </div>
+  </section>
+
+  <section id="robustesse" aria-labelledby="t-rob">
+    <header><div class="sur">Pourquoi croire ces chiffres</div><h2 id="t-rob">La robustesse de la version 30 jours</h2>
+      <p class="muet">Les réglages ont été fixés avant le calcul, choisis sur les achats 2012-2021, puis vérifiés sur 2023-2026, que le choix n'a jamais vus. L'année 2025 n'a jamais servi à choisir.</p></header>
+    <div class="grille">
+      <div class="panneau" id="oos"><h3>Choix contre vérification</h3><canvas id="c-oos" height="290"></canvas><p class="petit muet">Chaque point est une version essayée (vagues 12 et 13, Legacy et Momentum). Un point sur la diagonale valide autant sur 2023-2026 que sur 2012-2021 : le classement tient hors échantillon.</p></div>
+      <div class="panneau"><h3>Plus de taille : un plafond</h3><canvas id="c-plafond" height="290"></canvas><p class="petit muet">Validés en 30 jours selon le nombre de MNQ (Legacy, sans frein). Au-delà de 4, les challenges expirés deviennent des challenges perdus : la réussite ne monte plus.</p></div>
+      <div class="panneau"><h3>Toutes les combinaisons taille × frein</h3><div class="defile"><table id="matrice"></table></div><p class="petit muet">Part des challenges validés en 30 jours, filtre comme en 2026. Les choix 2012-2021 et la vérification 2023-2026 donnent le même classement.</p></div>
+      <div class="panneau"><h3>Année par année</h3><canvas id="c-annees" height="250"></canvas><p class="petit muet">Part des achats de chaque année validés en 30 jours (filtre comme en 2026).</p></div>
+      <div class="panneau"><h3>Si le filtre delta est plus faible</h3><div class="defile"><table id="t-filtres"></table></div><p class="petit muet">Le filtre est la grande inconnue du bot. Plus de taille le rend moins décisif : même sans filtre, la version 30 jours valide encore souvent.</p></div>
+      <div class="panneau"><h3>Vague 13 : arrêt à l'objectif, taille qui s'adapte</h3><div class="defile"><table id="t-v13"></table></div><p class="petit muet" id="t-v13-note"></p></div>
+    </div>
+  </section>
+
+  <section id="firmes" aria-labelledby="t-firmes">
+    <header><div class="sur">Et ailleurs</div><h2 id="t-firmes">Les comptes sans limite de temps</h2></header>
+    <div class="panneau defile"><table id="t-comp"></table><p class="petit muet">Net moyen d'un achat sur 24 mois, prix et activation compris, achats suivis 24 mois. Goat : seul le challenge est simulé, ses règles de compte financé sont trop floues.</p></div>
+  </section>
+
+  <section class="limites" aria-labelledby="t-lim">
+    <h2 id="t-lim">Ce que ces chiffres ne disent pas</h2>
+    <ul>
+      <li>Ce sont des simulations sur le passé. Le filtre delta est simulé sur 2012-2025 : il n'existe en vrai que depuis avril 2026.</li>
+      <li>Les règles de Bulenox viennent de sites d'avis. La limite de perte de 1 100 $ par jour est supposée « douce » (la journée s'arrête, le compte vit) : à confirmer par écrit, car en 4 MNQ elle est souvent touchée.</li>
+      <li>En 4 MNQ, le glissement réel des ordres au marché peut coûter un peu plus que les 1,5 point par aller-retour comptés ici.</li>
+      <li>Le Master est suivi jusqu'à 3 retraits, puis Bulenox passe en compte réel, aux règles inconnues. Les achats récents ne sont suivis que jusqu'en septembre 2026.</li>
+      <li>Contrôles : moteur de la vague 13 = moteur exact (250 achats par réglage, identiques), moteur exact = moteur journalier du Monte Carlo, anciennes études inchangées.</li>
+    </ul>
+  </section>
+</main>
+
+<script id="donnees" type="application/json">/*DONNEES*/</script>
+<script>
+(() => {
+"use strict";
+const D = JSON.parse(document.getElementById("donnees").textContent);
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C = {valide: css("--valide"), perdu: css("--perdu"), expire: css("--expire"), cours: css("--cours"), or: css("--or"),
+  texte: css("--texte"), texte2: css("--texte-2"), texte3: css("--texte-3"), trait: css("--trait"), traitF: css("--trait-fort"),
+  t1: css("--t1"), t4: css("--t4"), gain: css("--gain"), perte: css("--perte"), panneau2: css("--panneau-2"), master: css("--master")};
+const pc = x => x == null ? "–" : `${Math.round(100 * x)} %`;
+const usd = (x, signe = true) => x == null ? "–" : `${signe && x > 0 ? "+" : x < 0 ? "−" : ""}${Math.abs(Math.round(x)).toLocaleString("fr-FR")} $`;
+const mois = s => s == null ? "–" : `${(s / 21).toFixed(1).replace(".", ",")} mois`;
+const FILTRES = {fort: "Comme en 2026", moitie: "Deux fois plus faible", aucun: "Aucun filtre"};
+const PERIODES = {"2012-2021": "2012-2021 (choix)", "2023-2026": "2023-2026 (vérif.)", "2025": "2025"};
+const VR = D.retenue;
+const etat = {version: VR, filtre: "fort", periode: "2023-2026", vitesse: 1};
+const stat = (v = etat.version, f = etat.filtre, g = etat.periode) => D.stats[`${v}|${f}|${g}`];
+
+/* ---------- canevas ---------- */
+function prep(cv) {
+  const r = window.devicePixelRatio || 1, w = cv.clientWidth || 600, h = +cv.getAttribute("height");
+  cv.style.height = h + "px"; cv.width = Math.round(w * r); cv.height = Math.round(h * r);
+  const g = cv.getContext("2d"); g.setTransform(r, 0, 0, r, 0, 0); g.clearRect(0, 0, w, h);
+  g.font = `11px ${css("--f-chiffre")}`; g.textBaseline = "middle";
+  return {g, w, h};
+}
+function axeY(g, x0, x1, y, lab, col = C.trait) { g.strokeStyle = col; g.lineWidth = 1; g.beginPath(); g.moveTo(x0, y); g.lineTo(x1, y); g.stroke(); g.fillStyle = C.texte3; g.textAlign = "right"; g.fillText(lab, x0 - 6, y); }
+function barres(cv, vals, {couleur, etiq, fmtY = v => v, maxY = null, xlab = null}) {
+  const {g, w, h} = prep(cv), m = {l: 44, r: 10, t: 10, b: 24};
+  const n = vals.length, M = maxY ?? Math.max(1e-9, ...vals), bw = (w - m.l - m.r) / n;
+  for (const f of [0, .5, 1]) axeY(g, m.l, w - m.r, h - m.b - f * (h - m.t - m.b), fmtY(f * M));
+  vals.forEach((v, i) => { const bh = (h - m.t - m.b) * v / M; g.fillStyle = typeof couleur === "function" ? couleur(i) : couleur; g.fillRect(m.l + i * bw + 1, h - m.b - bh, Math.max(1, bw - 2), bh); });
+  g.fillStyle = C.texte3; g.textAlign = "center";
+  vals.forEach((v, i) => { const e = etiq(i); if (e != null) g.fillText(e, m.l + (i + .5) * bw, h - m.b + 12); });
+  if (xlab) { g.textAlign = "right"; g.fillText(xlab, w - m.r, h - 6); }
+}
+
+/* ---------- pupitre ---------- */
+function segments(id, choix, cle) {
+  const box = $(id); box.innerHTML = "";
+  for (const [k, lib] of Object.entries(choix)) {
+    const b = document.createElement("button"); b.type = "button"; b.textContent = lib; b.setAttribute("aria-pressed", String(etat[cle] === k));
+    b.onclick = () => { etat[cle] = k; segments(id, choix, cle); tout(); }; box.appendChild(b);
+  }
+}
+const VERS = {}; for (const [k, v] of Object.entries(D.versions)) VERS[k] = v.replace(" (version 30 jours, vague 12)", " · vague 12").replace(" (vague 13)", " · vague 13");
+
+/* ---------- ticker et verdict ---------- */
+function ticker() {
+  const s = stat(VR, "fort", "2023-2026"), s0 = stat("t1", "fort", "2023-2026");
+  $("ticker").innerHTML = `<span>Version retenue <b>${D.versions[VR]}</b></span><span>Validés en 30 jours <b>${pc(s.valide)}</b> (bot tel quel ${pc(s0.valide)})</span><span>Séances pour valider <b>${s.seances_med ?? "–"}</b></span><span>Données <b>3 janv. 2012 – 25 sept. 2026</b></span><span>Moteur <b>exact, minute par minute</b></span>`;
+}
+function cartes() {
+  const ch = stat(VR, "fort", "2012-2021"), ve = stat(VR, "fort", "2023-2026"), a25 = stat(VR, "fort", "2025"), sf = stat(VR, "aucun", "2023-2026"), b = stat("t1", "fort", "2023-2026");
+  const L = [
+    ["machine-s", "reserve", pc(ve.valide), `des challenges validés en 30 jours (achats 2023-2026), contre ${pc(b.valide)} pour le bot tel quel`],
+    ["oos", ch.valide - ve.valide < .05 ? "bon" : "reserve", `${pc(ch.valide)} → ${pc(ve.valide)}`, "du choix 2012-2021 à la vérification 2023-2026 : le résultat tient hors échantillon"],
+    ["robustesse", a25.valide >= .25 ? "reserve" : "faible", pc(a25.valide), "validés pour les achats de 2025, l'année difficile, jamais utilisée pour choisir"],
+    ["robustesse", sf.valide >= .25 ? "reserve" : "faible", pc(sf.valide), "validés même sans aucun filtre delta (2023-2026)"],
+    ["robustesse", "faible", "≈ 40 %", "plafond : au-delà de 4 MNQ, la réussite ne monte plus, les pertes oui"],
+    ["master", (ch.m_perdu_sans ?? 0) < .1 ? "bon" : "reserve", pc(ch.m_perdu_sans), "des Masters perdus avant tout retrait (achats 2012-2021) ; " + pc(ve.m_perdu_sans) + " sur 2023-2026"],
+    ["master", "reserve", mois(ch.r1[1]), "après la validation, en médiane, pour le premier retrait (au moins 1 000 $)"],
+    ["master", "faible", pc(ve.perdants), "des achats perdent de l'argent sur 24 mois (surtout les 19 $ du challenge raté)"]];
+  $("cartes").innerHTML = L.map(([a, ton, val, lib]) => `<a class="carte" data-ton="${ton}" href="#${a}"><span class="val">${val}</span><span class="lib">${lib}</span></a>`).join("");
+}
+
+/* ---------- machine ---------- */
+let anim = {fils: [], t: 0, dernier: 0, suivi: 0, raf: 0};
+const YMIN = -2900, YMAX = 3500, NMAX = 22;
+function choisirFils(nouveau) {
+  const ech = D.echantillons[`${etat.version}|${etat.filtre}|${etat.periode}`] || [];
+  let fils = ech.slice();
+  if (nouveau) { for (let i = fils.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [fils[i], fils[j]] = [fils[j], fils[i]]; } }
+  anim.fils = fils; anim.t = 0;
+  anim.suivi = Math.max(0, fils.findIndex(f => f.i === 1 && f.n >= 6));
+}
+function plancherDe(s) { let pic = 0, out = []; for (const v of s) { pic = Math.max(pic, v); out.push(Math.min(pic - 2500, 100)); } return out; }
+function dessinerMachine() {
+  const cv = $("c-machine"), {g, w, h} = prep(cv), m = {l: 54, r: 14, t: 14, b: 26};
+  const X = s => m.l + (w - m.l - m.r) * s / NMAX, Y = v => m.t + (h - m.t - m.b) * (YMAX - v) / (YMAX - YMIN);
+  for (const v of [-2500, -1000, 0, 1000, 3000]) axeY(g, m.l, w - m.r, Y(v), usd(v), v === 0 ? C.traitF : C.trait);
+  g.fillStyle = C.texte3; g.textAlign = "center";
+  for (let s = 0; s <= NMAX; s += 2) g.fillText(s, X(s), h - 12);
+  g.textAlign = "right"; g.fillText("séances", w - m.r, h - 2);
+  g.strokeStyle = C.valide; g.lineWidth = 1.5; g.beginPath(); g.moveTo(m.l, Y(3000)); g.lineTo(w - m.r, Y(3000)); g.stroke();
+  g.setLineDash([5, 4]); g.strokeStyle = C.perdu; g.beginPath(); g.moveTo(m.l, Y(-2500)); g.lineTo(w - m.r, Y(-2500)); g.stroke(); g.setLineDash([]);
+  g.fillStyle = C.valide; g.textAlign = "left"; g.fillText("objectif +3 000 $", m.l + 6, Y(3000) - 9);
+  g.fillStyle = C.perdu; g.fillText("plancher de départ −2 500 $", m.l + 6, Y(-2500) + 10);
+  const t = anim.t, k = {v: 0, p: 0, e: 0, c: 0};
+  anim.fils.forEach((f, idx) => {
+    const fin = f.n, jus = Math.min(t, fin), fini = t >= fin;
+    const col = !fini ? C.cours : f.i === 1 ? C.valide : f.i === -1 ? C.perdu : C.expire;
+    g.strokeStyle = col; g.globalAlpha = fini ? .32 : .22; g.lineWidth = 1; g.beginPath(); g.moveTo(X(0), Y(0));
+    for (let s = 1; s <= Math.floor(jus); s++) g.lineTo(X(s), Y(Math.max(YMIN, Math.min(YMAX, f.s[s - 1]))));
+    const fr = jus - Math.floor(jus);
+    if (fr > 0 && Math.floor(jus) < fin) { const a = Math.floor(jus) === 0 ? 0 : f.s[Math.floor(jus) - 1], b = f.s[Math.floor(jus)]; g.lineTo(X(jus), Y(Math.max(YMIN, Math.min(YMAX, a + (b - a) * fr)))); }
+    g.stroke(); g.globalAlpha = 1;
+    if (fini) { k[f.i === 1 ? "v" : f.i === -1 ? "p" : "e"]++; g.fillStyle = col; g.globalAlpha = .7; g.fillRect(X(fin) - 1.5, Y(Math.max(YMIN, Math.min(YMAX, f.s[fin - 1]))) - 1.5, 3, 3); g.globalAlpha = 1; } else k.c++;
+  });
+  const f = anim.fils[anim.suivi];
+  if (f) {
+    const pl = plancherDe(f.s), jus = Math.min(Math.floor(t), f.n);
+    g.strokeStyle = C.or; g.lineWidth = 2.2; g.beginPath(); g.moveTo(X(0), Y(0));
+    for (let s = 1; s <= jus; s++) g.lineTo(X(s), Y(f.s[s - 1])); g.stroke();
+    g.setLineDash([3, 3]); g.lineWidth = 1.2; g.beginPath(); g.moveTo(X(0), Y(-2500));
+    for (let s = 1; s <= jus; s++) { g.lineTo(X(s), Y(pl[s - 1 - 1] ?? -2500)); g.lineTo(X(s), Y(pl[s - 1])); } g.stroke(); g.setLineDash([]);
+    if (jus > 0) { g.fillStyle = C.or; g.textAlign = "left"; g.fillText(`achat du ${f.j}`, X(Math.min(jus, NMAX - 5)) + 4, Y(f.s[jus - 1]) - 10); }
+  }
+  $("k-v").textContent = k.v; $("k-p").textContent = k.p; $("k-e").textContent = k.e; $("k-c").textContent = k.c;
+  $("horloge").textContent = `séance ${Math.min(NMAX, Math.floor(t))} / ${NMAX}`;
+}
+function boucle(ts) {
+  const dt = anim.dernier ? Math.min(.1, (ts - anim.dernier) / 1000) : 0; anim.dernier = ts;
+  anim.t = Math.min(NMAX, anim.t + dt * 2.2 * etat.vitesse);
+  dessinerMachine();
+  if (anim.t < NMAX) anim.raf = requestAnimationFrame(boucle); else anim.raf = 0;
+}
+function lancer(nouveau) {
+  choisirFils(nouveau); cancelAnimationFrame(anim.raf); anim.dernier = 0;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { anim.t = NMAX; dessinerMachine(); return; }
+  anim.raf = requestAnimationFrame(boucle);
+}
+function exact() {
+  const s = stat();
+  $("k-exact").innerHTML = `Sur <b class="chiffre">${s.achats.toLocaleString("fr-FR")}</b> achats simulés (${FILTRES[etat.filtre].toLowerCase()}, ${PERIODES[etat.periode]}) : <b class="pos">${pc(s.valide)}</b> validés, <b class="neg">${pc(s.perdu)}</b> perdus, ${pc(s.expire)} expirés. Validés en <b>${s.seances_med ?? "–"}</b> séances en médiane.`;
+  const hv = s.hist_valide.slice(1, 23), hp = s.hist_perdu.slice(1, 23), tot = s.achats;
+  const M = Math.max(...hv, ...hp, 1) / tot;
+  barres($("c-hv"), hv.map(x => x / tot), {couleur: C.valide, etiq: i => (i + 1) % 3 === 1 ? i + 1 : null, fmtY: v => `${(100 * v).toFixed(1)} %`, maxY: M, xlab: "séance"});
+  barres($("c-hp"), hp.map(x => x / tot), {couleur: C.perdu, etiq: i => (i + 1) % 3 === 1 ? i + 1 : null, fmtY: v => `${(100 * v).toFixed(1)} %`, maxY: M, xlab: "séance"});
+  $("t-hv").textContent = `${pc(s.valide)} des achats sont validés ; la moitié de ceux-là l'est en ${s.seances_med ?? "–"} séances ou moins.`;
+  $("t-hp").textContent = `${pc(s.perdu)} des achats touchent le plancher. En grande taille, ça arrive souvent dans les premières séances.`;
+}
+
+/* ---------- relief 3D ---------- */
+let R3 = null;
+function relief() {
+  const box = $("relief3d");
+  if (typeof THREE === "undefined") { box.innerHTML = '<p class="muet" style="padding:20px">Le relief 3D n\'a pas pu se charger.</p>'; return; }
+  const fils = D.echantillons[`${etat.version}|${etat.filtre}|${etat.periode}`] || [];
+  const NB = 32, lo = -2600, hi = 3200, pas = (hi - lo) / NB;
+  const grille = []; let M = 0;
+  for (let s = 0; s <= NMAX; s++) {
+    const col = new Array(NB).fill(0);
+    for (const f of fils) { if (s > f.n) continue; const v = s === 0 ? 0 : f.s[s - 1]; const b = Math.max(0, Math.min(NB - 1, Math.floor((v - lo) / pas))); col[b] += 1; }
+    const tot = Math.max(1, fils.length); for (let b = 0; b < NB; b++) { col[b] /= tot; M = Math.max(M, col[b]); }
+    grille.push(col);
+  }
+  if (!R3) {
+    let ren; try { ren = new THREE.WebGLRenderer({antialias: true, alpha: true}); } catch (e) { box.innerHTML = '<p class="muet" style="padding:20px">WebGL indisponible : le relief ne peut pas s\'afficher.</p>'; return; }
+    ren.setPixelRatio(Math.min(2, devicePixelRatio || 1)); box.appendChild(ren.domElement);
+    const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(38, 1, .1, 100), groupe = new THREE.Group(); scene.add(groupe);
+    scene.add(new THREE.AmbientLight(0xffffff, .55)); const lum = new THREE.DirectionalLight(0xffffff, .8); lum.position.set(3, 6, 4); scene.add(lum);
+    R3 = {ren, scene, cam, groupe, az: -.7, el: .55, drag: null};
+    const el = ren.domElement;
+    el.addEventListener("pointerdown", e => { R3.drag = {x: e.clientX, y: e.clientY, az: R3.az, el: R3.el}; el.setPointerCapture(e.pointerId); });
+    el.addEventListener("pointermove", e => { if (!R3.drag) return; R3.az = R3.drag.az - (e.clientX - R3.drag.x) * .008; R3.el = Math.max(.15, Math.min(1.3, R3.drag.el + (e.clientY - R3.drag.y) * .006)); rendre(); });
+    el.addEventListener("pointerup", () => { R3.drag = null; });
+    addEventListener("resize", rendre);
+  }
+  const {groupe} = R3; while (groupe.children.length) { const o = groupe.children.pop(); o.geometry && o.geometry.dispose(); }
+  const W = 8, Hh = 5, Zm = 2.4;
+  const geo = new THREE.PlaneGeometry(W, Hh, NMAX, NB - 1), pos = geo.attributes.position, cols = [];
+  const cBas = new THREE.Color(0x1b2a44), cHaut = new THREE.Color(C.or);
+  for (let i = 0; i < pos.count; i++) {
+    const ix = i % (NMAX + 1), iy = NB - 1 - Math.floor(i / (NMAX + 1)), v = grille[ix][iy] / (M || 1);
+    pos.setZ(i, v * Zm); const c = cBas.clone().lerp(cHaut, Math.pow(v, .6)); cols.push(c.r, c.g, c.b);
+  }
+  geo.setAttribute("color", new THREE.Float32BufferAttribute(cols, 3)); geo.computeVertexNormals();
+  const surf = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({vertexColors: true, side: THREE.DoubleSide}));
+  surf.rotation.x = -Math.PI / 2; groupe.add(surf);
+  const fil = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({color: 0x334056, wireframe: true, transparent: true, opacity: .25}));
+  fil.rotation.x = -Math.PI / 2; groupe.add(fil);
+  const mur = (v, couleur) => { const y = -Hh / 2 + Hh * (v - lo) / (hi - lo); const m = new THREE.Mesh(new THREE.PlaneGeometry(W, Zm * .9), new THREE.MeshBasicMaterial({color: couleur, transparent: true, opacity: .16, side: THREE.DoubleSide})); m.position.set(0, Zm * .45, -y); groupe.add(m); };
+  mur(3000, C.valide); mur(-2500, C.perdu);
+  rendre();
+}
+function rendre() {
+  if (!R3) return; const box = $("relief3d"), w = box.clientWidth, h = box.clientHeight;
+  R3.ren.setSize(w, h); R3.cam.aspect = w / h; R3.cam.updateProjectionMatrix();
+  const d = 11; R3.cam.position.set(Math.sin(R3.az) * Math.cos(R3.el) * d, Math.sin(R3.el) * d, Math.cos(R3.az) * Math.cos(R3.el) * d); R3.cam.lookAt(0, .6, 0);
+  R3.ren.render(R3.scene, R3.cam);
+}
+
+/* ---------- Master ---------- */
+function master() {
+  const s = stat(), sCh = stat(etat.version, etat.filtre, "2012-2021");
+  const T = [[pc(s.m_un_retrait), "des Masters suivis 12 mois touchent au moins un retrait"], [mois(s.r1[1]), `pour le 1er retrait après la validation (1 sur 4 : plus de ${mois(s.r1[2])})`],
+    [`${mois(s.r2)} · ${mois(s.r3)}`, "pour le 2e puis le 3e retrait (médianes)"], [pc(s.m_trois), "des Masters suivis 12 mois arrivent à 3 retraits (≈ 4 500 $)"],
+    [pc(s.m_perdu_sans), "des Masters perdus avant tout retrait"], [usd(s.net_moy), "net moyen d'un achat sur 24 mois (prix et activation compris)"],
+    [usd(s.net_med), "net médian : la moitié des achats fait moins"], [pc(s.perdants), "des achats perdent de l'argent sur 24 mois"]];
+  $("tuiles-master").innerHTML = T.map(([b, l]) => `<div class="tuile"><b>${b}</b><span>${l}</span></div>`).join("");
+  // argent pour toi : bandes sur l'échantillon
+  const fils = D.echantillons[`${etat.version}|${etat.filtre}|${etat.periode}`] || [], H = 504, pas = 6, nb = Math.floor(H / pas) + 1;
+  const courbes = fils.map(f => { const c = new Float64Array(nb); let ev = [[0, -19.25]]; if (f.i === 1) { ev.push([f.n, -148]); f.r.forEach((r, k) => { if (r != null && f.m[k] != null) ev.push([f.n + r, f.m[k]]); }); }
+    for (let i = 0; i < nb; i++) { const t = i * pas; let v = 0; for (const [a, x] of ev) if (a <= t) v += x; c[i] = v; } return c; });
+  const q = p => Array.from({length: nb}, (_, i) => { const col = courbes.map(c => c[i]).sort((a, b) => a - b); return col.length ? col[Math.min(col.length - 1, Math.floor(p * col.length))] : 0; });
+  const B = {p10: q(.1), p25: q(.25), p50: q(.5), p75: q(.75), p90: q(.9)};
+  const moy = Array.from({length: nb}, (_, i) => courbes.reduce((a, c) => a + c[i], 0) / Math.max(1, courbes.length));
+  const {g, w, h} = prep($("c-argent")), m = {l: 56, r: 12, t: 12, b: 26}, lo = -400, hi = 5000;
+  const X = i => m.l + (w - m.l - m.r) * i / (nb - 1), Y = v => m.t + (h - m.t - m.b) * (hi - v) / (hi - lo);
+  for (const v of [0, 1000, 2000, 3000, 4000, 5000]) axeY(g, m.l, w - m.r, Y(v), usd(v, false), v === 0 ? C.traitF : C.trait);
+  g.fillStyle = C.texte3; g.textAlign = "center"; for (let mo = 0; mo <= 24; mo += 6) g.fillText(`${mo} m`, X(mo * 21 / pas), h - 12);
+  const bande = (a, b, al) => { g.fillStyle = C.master; g.globalAlpha = al; g.beginPath(); a.forEach((v, i) => i ? g.lineTo(X(i), Y(v)) : g.moveTo(X(i), Y(v))); for (let i = nb - 1; i >= 0; i--) g.lineTo(X(i), Y(b[i])); g.closePath(); g.fill(); g.globalAlpha = 1; };
+  bande(B.p10, B.p90, .14); bande(B.p25, B.p75, .26);
+  const ligne = (arr, col, lw, dash = []) => { g.strokeStyle = col; g.lineWidth = lw; g.setLineDash(dash); g.beginPath(); arr.forEach((v, i) => i ? g.lineTo(X(i), Y(v)) : g.moveTo(X(i), Y(v))); g.stroke(); g.setLineDash([]); };
+  ligne(B.p50, C.or, 2); ligne(moy, C.texte, 1.2, [4, 3]);
+  $("t-argent").textContent = `Sur ${fils.length} achats tirés : bande claire de 10 à 90 %, foncée de 25 à 75 %, trait plein la médiane, pointillé la moyenne. Chaque marche est un retrait. ${etat.periode !== "2012-2021" ? "Achats récents : le suivi s'arrête en septembre 2026, les derniers retraits manquent." : ""}`;
+  if (s.hist_net) {
+    const tot = s.hist_net.reduce((a, b) => a + b, 0) || 1;
+    barres($("c-net"), s.hist_net.map(x => x / tot), {couleur: i => i < 2 ? C.perdu : C.valide, etiq: i => i % 4 === 0 ? `${(-500 + 250 * i) / 1000}k` : null, fmtY: v => `${Math.round(100 * v)} %`, xlab: "net $"});
+    $("t-net").textContent = `Achats suivis 24 mois. La barre rouge de gauche : le challenge raté (−19 $). À droite : 3 retraits atteints. Net moyen ${usd(s.net_moy)}, médian ${usd(s.net_med)}.`;
+  } else { prep($("c-net")); $("t-net").textContent = "Pas encore assez de recul pour ces achats (suivi jusqu'en septembre 2026)."; }
+}
+
+/* ---------- exemples ---------- */
+const EX = {rapide: "Le plus rapide", typique: "Une validation typique", perdu: "Un challenge perdu", expire: "Un challenge expiré"};
+let exChoisi = "typique";
+function exemples() {
+  $("t-ex-intro").textContent = `Fenêtres réelles de 2023-2026, jouées avec la version retenue (${D.versions[VR]}) et un tirage du filtre comme en 2026. Chaque ligne est une séance.`;
+  $("onglets").innerHTML = Object.entries(EX).map(([k, l]) => `<button type="button" data-k="${k}" aria-pressed="${k === exChoisi}">${l}</button>`).join("");
+  $("onglets").querySelectorAll("button").forEach(b => b.onclick = () => { exChoisi = b.dataset.k; exemples(); });
+  const e = D.exemples[exChoisi], J = e.jours;
+  $("ex-titre").textContent = `${EX[exChoisi]} · achat le ${J[0].date}`;
+  $("ex-resume").textContent = `Issue : ${e.issue} en ${e.seances} séance${e.seances > 1 ? "s" : ""}. Solde final ${usd(J[J.length - 1].solde)}.`;
+  const {g, w, h} = prep($("c-ex")), m = {l: 54, r: 12, t: 12, b: 24}, n = Math.max(J.length, 5);
+  const vals = J.map(j => j.solde).concat(J.map(j => j.plancher), [0, 3000, -2500]), lo = Math.min(...vals) - 200, hi = Math.max(...vals) + 200;
+  const X = s => m.l + (w - m.l - m.r) * s / n, Y = v => m.t + (h - m.t - m.b) * (hi - v) / (hi - lo);
+  for (const v of [-2500, 0, 3000]) axeY(g, m.l, w - m.r, Y(v), usd(v), v === 3000 ? C.valide : v === -2500 ? C.perdu : C.traitF);
+  g.strokeStyle = C.perdu; g.setLineDash([4, 3]); g.beginPath(); g.moveTo(X(0), Y(-2500)); J.forEach((j, s) => { g.lineTo(X(s + 1), Y(s === 0 ? -2500 : J[s - 1].plancher)); g.lineTo(X(s + 1), Y(j.plancher)); }); g.stroke(); g.setLineDash([]);
+  J.forEach((j, s) => { const y0 = Y(0), bh = Y(j.gain) - y0; g.fillStyle = j.gain >= 0 ? C.gain : C.perte; g.globalAlpha = .35; g.fillRect(X(s + 1) - 5, Math.min(y0, y0 + bh), 10, Math.abs(bh)); g.globalAlpha = 1; });
+  g.strokeStyle = C.or; g.lineWidth = 2.2; g.beginPath(); g.moveTo(X(0), Y(0)); J.forEach((j, s) => g.lineTo(X(s + 1), Y(j.solde))); g.stroke();
+  g.fillStyle = C.texte3; g.textAlign = "center"; J.forEach((j, s) => { if (s % 3 === 0 || s === J.length - 1) g.fillText(s + 1, X(s + 1), h - 10); });
+  const puce = t => t.type === "ecarte" ? `<span class="trade ecarte">${t.sens} ${t.entree} · ${t.raison}</span>` :
+    `<span class="trade"><b>${t.type === "nuit" ? "Nuit" : "Zone"}</b> ${t.sens} ${t.entree} → ${t.sortie} · ${t.contrats} · ${(t.points > 0 ? "+" : "") + t.points.toLocaleString("fr-FR")} pts · <b class="${t.usd >= 0 ? "pos" : "neg"}">${usd(t.usd)}</b></span>`;
+  $("ex-table").innerHTML = `<thead><tr><th>Séance</th><th>Date</th><th class="n">Taille</th><th>Trades</th><th class="n">Gain du jour</th><th class="n">Solde</th><th class="n">Plancher</th></tr></thead><tbody>` +
+    J.map((j, s) => `<tr><td class="n">${s + 1}</td><td class="chiffre">${j.date}</td><td class="n">${j.taille}</td><td>${j.trades.length ? j.trades.map(puce).join("") : '<span class="muet">aucun trade</span>'}${j.anticipe ? ' <span class="etiquette">journée coupée (limite du jour ou objectif)</span>' : ""}${j.perdu ? ' <span class="etiquette neg">plancher touché</span>' : ""}</td><td class="n ${j.gain >= 0 ? "pos" : "neg"}">${usd(j.gain)}</td><td class="n">${usd(j.solde)}</td><td class="n">${usd(j.plancher)}</td></tr>`).join("") + "</tbody>";
+}
+
+/* ---------- gains et pertes ---------- */
+function gains() {
+  const a = D.gains["4"], b = D.gains["1"];
+  const T = [[pc(a.jours_trade), "des séances ont au moins un trade", ""], [pc(a.gagnants), "des séances avec trade finissent gagnantes", ""],
+    [usd(a.gain_moy), "jour gagnant moyen", `1 MNQ : ${usd(b.gain_moy)}`], [usd(a.perte_moy), "jour perdant moyen", `1 MNQ : ${usd(b.perte_moy)}`],
+    [usd(a.p5), "1 jour sur 20 est pire que ça", `1 MNQ : ${usd(b.p5)}`], [usd(a.pire), "pire jour (limite de perte du jour)", `1 MNQ : ${usd(b.pire)}`],
+    [usd(a.meilleur), "meilleur jour", `1 MNQ : ${usd(b.meilleur)}`], [pc(a.limite_jour), "des jours de trade touchent la limite de perte du jour", `1 MNQ : ${pc(b.limite_jour)}`]];
+  $("tuiles-gains").innerHTML = T.map(([v, l, s]) => `<div class="tuile"><b>${v}</b><span>${l}</span>${s ? `<small>${s}</small>` : ""}</div>`).join("");
+  const {g, w, h} = prep($("c-gains")), m = {l: 44, r: 10, t: 10, b: 24}, n = a.hist.length;
+  const ta = a.hist.reduce((x, y) => x + y, 0), tb = b.hist.reduce((x, y) => x + y, 0);
+  const va = a.hist.map(x => x / ta), vb = b.hist.map(x => x / tb), M = Math.max(...va, ...vb), bw = (w - m.l - m.r) / n;
+  for (const f of [0, .5, 1]) axeY(g, m.l, w - m.r, h - m.b - f * (h - m.t - m.b), `${Math.round(100 * f * M)} %`);
+  va.forEach((v, i) => { const bh = (h - m.t - m.b) * v / M; g.fillStyle = C.t4; g.globalAlpha = .75; g.fillRect(m.l + i * bw + 1, h - m.b - bh, Math.max(1, bw - 2), bh); });
+  g.globalAlpha = 1; g.strokeStyle = C.t1; g.lineWidth = 1.6; g.beginPath(); vb.forEach((v, i) => { const x = m.l + (i + .5) * bw, y = h - m.b - (h - m.t - m.b) * v / M; i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke();
+  g.fillStyle = C.texte3; g.textAlign = "center"; for (let i = 0; i < n; i += 5) g.fillText(`${(-1300 + 100 * i) / 1000}k`, m.l + (i + .5) * bw, h - 10);
+  const c4 = a.courbe, c1 = b.courbe, cv = prep($("c-courbe")), mm = {l: 60, r: 12, t: 12, b: 24};
+  const hi = Math.max(...c4, ...c1) * 1.05, lo = Math.min(0, ...c4, ...c1) * 1.1, X = i => mm.l + (cv.w - mm.l - mm.r) * i / (c4.length - 1), Y = v => mm.t + (cv.h - mm.t - mm.b) * (hi - v) / (hi - lo);
+  for (const f of [0, .25, .5, .75, 1]) axeY(cv.g, mm.l, cv.w - mm.r, Y(lo + f * (hi - lo)), usd(lo + f * (hi - lo), false));
+  for (const [c, col] of [[c1, C.t1], [c4, C.t4]]) { cv.g.strokeStyle = col; cv.g.lineWidth = 1.6; cv.g.beginPath(); c.forEach((v, i) => i ? cv.g.lineTo(X(i), Y(v)) : cv.g.moveTo(X(i), Y(v))); cv.g.stroke(); }
+  cv.g.fillStyle = C.texte3; cv.g.textAlign = "center"; a.dates.forEach((d, i) => { if (i % 252 === 0) cv.g.fillText(d.slice(0, 4), X(i), cv.h - 10); });
+  $("t-courbe").textContent = `4 MNQ : environ ${usd(a.par_an)} par an, mais une pire baisse de ${usd(a.pire_baisse)}. 1 MNQ : ${usd(b.par_an)} par an, pire baisse ${usd(b.pire_baisse)}. Dans un challenge, cette baisse se heurte au plancher de 2 500 $.`;
+}
+
+/* ---------- robustesse ---------- */
+function robustesse() {
+  const v12 = D.vague12, v13 = D.vague13, pts = [];
+  for (const [n, r] of Object.entries(v12)) if (/^(legacy|momentum) \|/.test(n)) pts.push({n, x: r.fort["choix 2012-2021"].valide, y: r.fort["verification 2023 - aout 2026"].valide, v: 12});
+  for (const [n, r] of Object.entries(v13)) pts.push({n: n + " (v13)", x: r.fort["choix 2012-2021"].valide, y: r.fort["verification 2023 - aout 2026"].valide, v: 13});
+  {
+    const {g, w, h} = prep($("c-oos")), m = {l: 44, r: 12, t: 12, b: 30}, M = .6;
+    const X = v => m.l + (w - m.l - m.r) * v / M, Y = v => m.t + (h - m.t - m.b) * (1 - v / M);
+    for (const v of [0, .2, .4, .6]) { axeY(g, m.l, w - m.r, Y(v), pc(v)); g.fillStyle = C.texte3; g.textAlign = "center"; g.fillText(pc(v), X(v), h - 16); }
+    g.textAlign = "right"; g.fillText("validés 2012-2021 (choix)", w - m.r, h - 3);
+    g.strokeStyle = C.traitF; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(X(0), Y(0)); g.lineTo(X(M), Y(M)); g.stroke(); g.setLineDash([]);
+    for (const p of pts) { g.fillStyle = p.v === 13 ? C.master : C.cours; g.globalAlpha = .85; g.beginPath(); g.arc(X(p.x), Y(p.y), p.v === 13 ? 4 : 3.2, 0, 7); g.fill(); g.globalAlpha = 1; }
+    const sel = stat(VR, "fort", "2012-2021"), sv = stat(VR, "fort", "2023-2026");
+    g.strokeStyle = C.or; g.lineWidth = 2; g.beginPath(); g.arc(X(sel.valide), Y(sv.valide), 8, 0, 7); g.stroke();
+    g.fillStyle = C.or; g.textAlign = "left"; g.fillText("version retenue", X(sel.valide) + 11, Y(sv.valide));
+    g.fillStyle = C.texte3; g.save(); g.translate(12, m.t + (h - m.t - m.b) / 2); g.rotate(-Math.PI / 2); g.textAlign = "center"; g.fillText("validés 2023-2026 (vérification)", 0, 0); g.restore();
+  }
+  barres($("c-plafond"), [6, 24, 36, 41, 41, 43, 40].map(x => x / 100), {couleur: i => i === 3 ? C.or : C.cours, etiq: i => [1, 2, 3, 4, 5, 6, 8][i] + " MNQ", fmtY: v => pc(v), maxY: .5});
+  const cell = v => { const a = Math.min(1, v / .45); return `<td class="case" style="background:rgba(95,211,168,${(.08 + .6 * a).toFixed(2)})">${pc(v)}</td>`; };
+  let html = `<thead><tr><th>Legacy</th><th class="n">2012-2021</th><th class="n">2023-2026</th><th class="n">2025</th></tr></thead><tbody>`;
+  for (const q of [1, 2, 3, 4]) for (const fr of ["frein", "sans frein"]) {
+    const r = v12[`legacy | taille ${q} | ${fr}`];
+    const choisi = q === 4 && fr === "sans frein";
+    html += `<tr class="${choisi ? "choisi" : ""}"><td>${q} MNQ, ${fr}${choisi ? " ← vague 12" : ""}</td>${cell(r.fort["choix 2012-2021"].valide)}${cell(r.fort["verification 2023 - aout 2026"].valide)}${cell(r.fort["2025"].valide)}</tr>`;
+  }
+  $("matrice").innerHTML = html + "</tbody>";
+  const ans = D.par_an, vs = ["t1", "t4"].concat(D.versions.v13 ? ["v13"] : []), cols = {t1: C.t1, t4: C.t4, v13: C.master};
+  const annees = Object.keys(ans["t4|fort"]).filter(a => a >= 2012 && a <= 2026);
+  {
+    const {g, w, h} = prep($("c-annees")), m = {l: 44, r: 10, t: 10, b: 24}, n = annees.length, gw = (w - m.l - m.r) / n, M = .7;
+    for (const f of [0, .35, .7]) axeY(g, m.l, w - m.r, h - m.b - (h - m.t - m.b) * f / M, pc(f));
+    annees.forEach((a, i) => { vs.forEach((v, k) => { const val = ans[`${v}|fort`][a] ?? 0, bh = (h - m.t - m.b) * val / M, bw = (gw - 4) / vs.length; g.fillStyle = cols[v]; g.fillRect(m.l + i * gw + 2 + k * bw, h - m.b - bh, Math.max(1, bw - 1), bh); });
+      if (i % 2 === 0) { g.fillStyle = C.texte3; g.textAlign = "center"; g.fillText(String(a).slice(2), m.l + (i + .5) * gw, h - 10); } });
+    g.textAlign = "left"; vs.forEach((v, k) => { g.fillStyle = cols[v]; g.fillText("■ " + VERS[v], m.l + 6 + k * 150, m.t + 6); });
+  }
+  let t = `<thead><tr><th>Version</th><th>Filtre</th><th class="n">2012-2021</th><th class="n">2023-2026</th><th class="n">2025</th></tr></thead><tbody>`;
+  for (const v of Object.keys(D.versions)) for (const f of ["fort", "moitie", "aucun"]) t += `<tr class="${v === VR ? "choisi" : ""}"><td>${VERS[v]}</td><td>${FILTRES[f]}</td>${["2012-2021", "2023-2026", "2025"].map(g => `<td class="n">${pc(stat(v, f, g).valide)}</td>`).join("")}</tr>`;
+  $("t-filtres").innerHTML = t + "</tbody>";
+  const N13 = {A: "4 MNQ (vague 12)", B: "+ arrêt à l'objectif", C: "+ arrêt + protection", D: "+ arrêt + fin de course", E: "+ arrêt + protection + fin de course", F: "+ arrêt + prudence près du but"};
+  let u = `<thead><tr><th>Legacy</th><th class="n">2012-2021</th><th class="n">2023-2026</th><th class="n">2025</th><th class="n">Perdus 23-26</th></tr></thead><tbody>`;
+  for (const l of "ABCDEF") { const r = v13[`legacy | ${l}`]; u += `<tr class="${l === D.lettre13 ? "choisi" : ""}"><td>${l} ${N13[l]}</td><td class="n">${pc(r.fort["choix 2012-2021"].valide)}</td><td class="n">${pc(r.fort["verification 2023 - aout 2026"].valide)}</td><td class="n">${pc(r.fort["2025"].valide)}</td><td class="n">${pc(r.fort["verification 2023 - aout 2026"].perdu)}</td></tr>`; }
+  $("t-v13").innerHTML = u + "</tbody>";
+  $("t-v13-note").textContent = D.versions.v13 ? `Retenue selon la règle fixée avant le calcul : ${D.versions.v13}.` : "Aucun levier ne gagne assez pour remplacer la version de la vague 12 (règle fixée avant le calcul).";
+  const C12 = [["legacy | taille 4 | sans frein", "Bulenox Legacy, 4 MNQ", "19,25 $ (+148 $ à la réussite)"], ["momentum | taille 4 | sans frein", "Bulenox Momentum, 4 MNQ", "143 $"],
+    ["legacy | taille 1 | frein", "Bulenox Legacy, bot tel quel", "19,25 $"], ["flex | taille 1 | zone toujours sur MES", "FundedNext Flex, zone sur MES", "69,99 $"],
+    ["flex | taille 1 | zone MNQ, frein", "FundedNext Flex, zone MNQ + frein", "69,99 $"], ["goat | taille 1 | frein", "Goat EOD (challenge seulement)", "34,50 $"]];
+  $("t-comp").innerHTML = `<thead><tr><th>Compte</th><th>Prix</th><th class="n">Validés 2023-26</th><th class="n">Net 2012-20</th><th class="n">Net 2023-24</th><th class="n">Net 2023-24, filtre ÷2</th><th class="n">Achats perdants</th></tr></thead><tbody>` +
+    C12.map(([k, nom, prix]) => { const r = v12[k], ve = r.fort["verification 2023 - aout 2026"], ch = r.fort["choix 2012-2021"], mo = r.moitie["verification 2023 - aout 2026"], goat = k.startsWith("goat");
+      return `<tr><td>${nom}</td><td>${prix}</td><td class="n">${pc(ve.valide)}</td><td class="n">${goat ? "–" : usd(ch.net_moy)}</td><td class="n">${goat ? "–" : usd(ve.net_moy)}</td><td class="n">${goat ? "–" : usd(mo.net_moy)}</td><td class="n">${goat ? "–" : pc(ve.perdants)}</td></tr>`; }).join("") + "</tbody>";
+}
+
+/* ---------- tout ---------- */
+function tout() { exact(); lancer(false); relief(); master(); }
+segments("s-version", VERS, "version"); segments("s-filtre", FILTRES, "filtre"); segments("s-periode", PERIODES, "periode");
+$("r-vitesse").oninput = e => { etat.vitesse = +e.target.value; $("o-vitesse").textContent = `${etat.vitesse.toString().replace(".", ",")}×`; };
+$("b-rejouer").onclick = () => lancer(false); $("b-tirer").onclick = () => lancer(true);
+ticker(); cartes(); tout(); exemples(); gains(); robustesse();
+let attente; addEventListener("resize", () => { clearTimeout(attente); attente = setTimeout(() => { dessinerMachine(); exact(); master(); exemples(); gains(); robustesse(); rendre(); }, 150); });
+})();
+</script>
