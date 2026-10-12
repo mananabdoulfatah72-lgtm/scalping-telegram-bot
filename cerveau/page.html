@@ -1,0 +1,564 @@
+<title>Second Cerveau</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+/* Un seul monde : un cerveau de neurones dans le noir. Scène plein écran ; en haut à gauche l'identité et les aires ;
+   à droite (en bas sur téléphone) la conversation. */
+:root {
+  color-scheme: dark;
+  --nuit: #04050b; --verre: rgba(12, 15, 28, .78); --verre-fort: rgba(16, 20, 36, .92); --bord: rgba(150, 170, 255, .16);
+  --texte: #e9edf7; --texte-2: #a6aec4; --texte-3: #6f7891; --signal: #8fb4ff; --chaud: #ffc65c;
+  --f-titre: "Unbounded", "Segoe UI", system-ui, sans-serif;
+  --f-texte: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --f-chiffre: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+html { background: var(--nuit); }
+body { background: radial-gradient(1200px 800px at 40% 45%, #0d1230 0%, #070916 45%, var(--nuit) 100%); color: var(--texte); font-family: var(--f-texte); font-size: 15px; line-height: 1.5; overflow: hidden; }
+#scene { position: fixed; inset: 0; touch-action: none; }
+#scene canvas { display: block; width: 100%; height: 100%; }
+.etiquettes { position: fixed; inset: 0; pointer-events: none; }
+.etiq { position: absolute; transform: translate(-50%, -150%); font: 500 .72rem var(--f-texte); color: var(--texte); background: rgba(6, 8, 18, .72); border: 1px solid var(--bord); border-radius: 999px; padding: 2px 9px; white-space: nowrap; max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+.etiq i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+/* Identité */
+.identite { position: fixed; left: max(18px, env(safe-area-inset-left, 0px)); top: calc(env(safe-area-inset-top, 0px) + 16px); max-width: 360px; display: grid; gap: 10px; pointer-events: none; }
+.identite > * { pointer-events: auto; }
+.identite h1 { font-family: var(--f-titre); font-weight: 700; font-size: clamp(1.4rem, 3vw, 2.1rem); letter-spacing: .02em; margin: 0; line-height: 1.05; }
+.identite h1 span { color: var(--chaud); }
+.compte { font-family: var(--f-chiffre); font-size: .72rem; color: var(--texte-2); letter-spacing: .06em; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.compte b { color: var(--texte); font-weight: 500; }
+.aires { display: flex; flex-wrap: wrap; gap: 6px; }
+.aire { font: 500 .72rem var(--f-texte); color: var(--texte-2); background: rgba(8, 10, 22, .6); border: 1px solid var(--bord); border-radius: 999px; padding: 3px 10px 3px 7px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.aire i { width: 8px; height: 8px; border-radius: 50%; }
+.aire[aria-pressed="true"] { color: var(--texte); border-color: rgba(255, 255, 255, .45); }
+.aire small { color: var(--texte-3); font-family: var(--f-chiffre); }
+.etat { font-family: var(--f-chiffre); font-size: .7rem; color: var(--texte-3); display: inline-flex; gap: 6px; align-items: center; }
+.etat i { width: 7px; height: 7px; border-radius: 50%; background: var(--texte-3); }
+.etat.ok i { background: #6ee7a0; box-shadow: 0 0 8px #6ee7a0; }
+.etat.local i { background: var(--chaud); }
+
+/* Conversation */
+.panneau { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); top: calc(env(safe-area-inset-top, 0px) + 16px); bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); width: min(420px, 38vw); display: flex; flex-direction: column; background: var(--verre); border: 1px solid var(--bord); border-radius: 18px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); overflow: hidden; }
+.panneau header { padding: 14px 16px 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid var(--bord); }
+.panneau header h2 { margin: 0; font: 600 .95rem var(--f-texte); letter-spacing: .02em; }
+.poignee { display: none; }
+.options { display: flex; gap: 6px; flex-wrap: wrap; }
+.bascule { font: 500 .72rem var(--f-texte); color: var(--texte-2); background: transparent; border: 1px solid var(--bord); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+.bascule[aria-pressed="true"] { color: #0a0c18; background: var(--texte); border-color: var(--texte); }
+.fil { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; }
+.msg { max-width: 100%; font-size: .9rem; line-height: 1.55; overflow-wrap: anywhere; }
+.msg.moi { align-self: flex-end; background: rgba(143, 180, 255, .14); border: 1px solid rgba(143, 180, 255, .25); border-radius: 14px 14px 4px 14px; padding: 8px 12px; max-width: 88%; }
+.msg.lui { align-self: stretch; }
+.msg.lui .qui { font-family: var(--f-chiffre); font-size: .66rem; color: var(--texte-3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 3px; display: flex; gap: 8px; align-items: center; }
+.msg.lui .qui i { width: 6px; height: 6px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 6px var(--signal); }
+.msg.lui p { margin: 0 0 8px; }
+.msg.lui ul { margin: 0 0 8px; padding-left: 18px; }
+.cite { display: inline-flex; align-items: center; gap: 4px; font: 500 .7rem var(--f-texte); color: var(--texte); background: rgba(255, 255, 255, .07); border: 1px solid var(--bord); border-radius: 999px; padding: 0 7px; margin: 0 1px; cursor: pointer; vertical-align: 1px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cite i { width: 6px; height: 6px; border-radius: 50%; flex: none; }
+.reflexion { color: var(--texte-3); font-family: var(--f-chiffre); font-size: .78rem; }
+.reflexion::after { content: "…"; animation: points 1.2s infinite steps(4); display: inline-block; width: 1.2em; overflow: hidden; vertical-align: bottom; }
+@keyframes points { from { width: 0; } to { width: 1.2em; } }
+.idees { display: flex; flex-wrap: wrap; gap: 6px; }
+.idee { font: 500 .78rem var(--f-texte); color: var(--texte); background: rgba(255, 255, 255, .05); border: 1px solid var(--bord); border-radius: 999px; padding: 5px 11px; cursor: pointer; text-align: left; }
+.idee:hover { background: rgba(255, 255, 255, .1); }
+.note-sys { font-size: .74rem; color: var(--texte-3); }
+.saisie { border-top: 1px solid var(--bord); padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px) * 0); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: end; }
+.saisie textarea { resize: none; font: 400 .92rem var(--f-texte); color: var(--texte); background: rgba(0, 0, 0, .3); border: 1px solid var(--bord); border-radius: 12px; padding: 10px 12px; min-height: 44px; max-height: 140px; outline: none; }
+.saisie textarea:focus { border-color: rgba(143, 180, 255, .6); }
+.envoyer { width: 44px; height: 44px; border-radius: 12px; border: 0; background: var(--chaud); color: #120d00; font: 700 1.1rem var(--f-texte); cursor: pointer; }
+.envoyer.stop { background: #ff7a7a; }
+.envoyer:disabled { opacity: .45; cursor: default; }
+.astuce { grid-column: 1 / -1; font-size: .7rem; color: var(--texte-3); }
+button:focus-visible, textarea:focus-visible { outline: 2px solid var(--chaud); outline-offset: 2px; }
+
+/* Fiche d'un neurone */
+.fiche { position: fixed; left: max(18px, env(safe-area-inset-left, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 18px); width: min(380px, calc(100vw - 36px)); background: var(--verre-fort); border: 1px solid var(--bord); border-radius: 16px; padding: 14px 16px; display: grid; gap: 8px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); max-height: 45vh; overflow: auto; }
+.fiche[hidden] { display: none; }
+.fiche .cat { font-family: var(--f-chiffre); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; display: flex; gap: 6px; align-items: center; }
+.fiche .cat i { width: 8px; height: 8px; border-radius: 50%; }
+.fiche h3 { margin: 0; font: 600 1rem var(--f-texte); }
+.fiche p { margin: 0; font-size: .84rem; color: var(--texte-2); }
+.fiche .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.fiche button { font: 500 .78rem var(--f-texte); color: var(--texte); background: rgba(255, 255, 255, .06); border: 1px solid var(--bord); border-radius: 999px; padding: 5px 12px; cursor: pointer; }
+.indice { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); font-family: var(--f-chiffre); font-size: .68rem; color: var(--texte-3); pointer-events: none; white-space: nowrap; }
+
+@media (max-width: 760px) {
+  .panneau { left: 10px; right: 10px; width: auto; top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); height: 52vh; border-radius: 18px; transition: height .25s ease; }
+  .panneau.replie { height: 112px; }
+  .poignee { display: block; width: 44px; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, .25); border: 0; margin: 8px auto 0; cursor: pointer; padding: 0; }
+  .identite { max-width: calc(100vw - 36px); gap: 8px; }
+  .aires { display: none; }
+  .identite.ouvre .aires { display: flex; }
+  .fiche { bottom: calc(52vh + 22px); }
+  .indice { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+</style>
+
+<div id="scene" aria-label="Cerveau en trois dimensions : chaque point est une note de ta recherche"></div>
+<div class="etiquettes" id="etiquettes" aria-hidden="true"></div>
+
+<div class="identite" id="identite">
+  <h1>Second <span>cerveau</span></h1>
+  <div class="compte" id="compte"></div>
+  <div class="aires" id="aires" role="group" aria-label="Aires du cerveau"></div>
+  <span class="etat" id="etat"><i></i><span>Connexion à Claude…</span></span>
+</div>
+
+<section class="panneau" id="panneau" aria-label="Conversation avec le cerveau">
+  <button class="poignee" id="poignee" type="button" aria-label="Agrandir ou réduire la conversation"></button>
+  <header>
+    <h2>Pose ta question</h2>
+    <div class="options">
+      <button class="bascule" id="o-profond" type="button" aria-pressed="false" title="Réponses plus réfléchies, plus lentes">Approfondi</button>
+      <button class="bascule" id="o-voix" type="button" aria-pressed="false" title="Le cerveau lit ses réponses à voix haute">Voix</button>
+      <button class="bascule" id="o-effacer" type="button" title="Effacer la conversation (les souvenirs restent)">Effacer</button>
+    </div>
+  </header>
+  <div class="fil" id="fil" aria-live="polite"></div>
+  <form class="saisie" id="saisie">
+    <textarea id="question" rows="1" placeholder="Demande-moi quelque chose… ou « retiens que … »" aria-label="Ta question"></textarea>
+    <button class="envoyer" id="envoyer" type="submit" aria-label="Envoyer">➤</button>
+    <span class="astuce">Pour parler : touche le micro de ton clavier (dictée du téléphone).</span>
+  </form>
+</section>
+
+<aside class="fiche" id="fiche" hidden></aside>
+<div class="indice">Glisse pour tourner · molette pour zoomer · clique un neurone</div>
+
+<script id="savoir" type="application/json">/*SAVOIR*/</script>
+<script>
+(() => {
+"use strict";
+const S = JSON.parse(document.getElementById("savoir").textContent);
+const CATS = S.cats;
+const notes = S.notes.map((n, i) => Object.assign({}, n, {id: "n" + i, i}));
+const liens = S.liens.slice();
+const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = id => document.getElementById(id);
+
+/* ================= recherche (BM25, sans accents) ================= */
+const VIDES = new Set("le la les un une des du de d l a au aux et ou en est sont pas plus pour par sur sous avec sans que qui quoi dans ce cette ces son sa ses leur leurs il elle ils elles on nous vous je tu se ne y si mais donc car comme tout tous toute toutes fait faire etre avoir ete deja aussi tres bien peu entre apres avant chaque meme ainsi alors quel quelle quels quelles est-ce mon ma mes ton ta tes moi toi combien comment pourquoi quand the of and to in is for".split(" "));
+const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+const mots = s => (norm(s).match(/[a-z0-9]+/g) || []).filter(m => m.length > 2 && !VIDES.has(m)).map(m => m.length > 5 ? m.replace(/(ement|ements|ations|ation|ions|ion|es|s|e)$/, "") : m);
+let index = null;
+function indexer() {
+  const docs = notes.map(n => { const t = mots(n.t + " " + n.t + " " + n.x), c = new Map(); for (const m of t) c.set(m, (c.get(m) || 0) + 1); return {c, len: t.length}; });
+  const df = new Map(); for (const d of docs) for (const m of d.c.keys()) df.set(m, (df.get(m) || 0) + 1);
+  const moy = docs.reduce((a, d) => a + d.len, 0) / docs.length;
+  index = {docs, df, moy};
+}
+function chercher(q, k = 8) {
+  if (!index || index.docs.length !== notes.length) indexer();
+  const qm = [...new Set(mots(q))], N = notes.length, res = [];
+  index.docs.forEach((d, i) => {
+    let s = 0;
+    for (const m of qm) { const f = d.c.get(m); if (!f) continue; const idf = Math.log(1 + (N - index.df.get(m) + .5) / (index.df.get(m) + .5)); s += idf * f * 2.2 / (f + 1.2 * (.25 + .75 * d.len / index.moy)); }
+    if (notes[i].d === "cœur") s *= 1.35;
+    if (notes[i].c === "souvenir") s *= 1.25;
+    if (s > 0) res.push({i, s});
+  });
+  return res.sort((a, b) => b.s - a.s).slice(0, k);
+}
+
+/* ================= le cerveau en 3D ================= */
+let ren, scene, cam, groupe, ptsGeo, ptsMat, liensGeo, poussiere, impGeo; const MATS = [];
+const POS = [], COLS = [], TAILLE = [], ECLAT = [], EPINGLE = [];
+const PULSES = [], NP = 220;
+let vue = {az: -0.8, el: 0.42, zoom: 1, dist: 5.4, touche: 0, cx: 0, cy: 0, but: {dist: 5.4, cx: 0, cy: 0}}, filtreCat = null, enReflexion = false, activite = 0;
+function rng(seed) { let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const gauss = r => { let u = 0, v = 0; while (!u) u = r(); while (!v) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+// aires : lobe préfrontal = tes objectifs, cortex moteur = le bot, lobes temporaux = les données, arrière = la recherche, hippocampe = les souvenirs
+const AIRES = {toi: [[0, .45, .78]], bot: [[0, .66, .05]], robustesse: [[.55, .18, .55]], prop: [[-.55, .18, .55]], recherche: [[0, .12, -.72]], flux: [[.78, -.28, .02], [-.78, -.28, .02]], souvenir: [[0, -.22, .06]]};
+const SIG = {recherche: .42, toi: .2, souvenir: .18};
+const ECH = [1.12, .9, 1.42];
+function versCerveau(p) {
+  let [x, y, z] = p;
+  const r = Math.sqrt(x * x + y * y + z * z); if (r > .97) { x *= .97 / r; y *= .97 / r; z *= .97 / r; }
+  x = Math.sign(x || 1) * (Math.abs(x) * .86 + .11) * (1 - .1 * z);            // deux hémisphères séparés par la scissure, plus larges à l'arrière
+  // dessous : le lobe frontal reste haut, le lobe temporal descend sur les côtés, l'occipital laisse la place au cervelet
+  const temporal = Math.exp(-(((z - .05) / .42) ** 2)) * Math.min(1, Math.abs(x) / .5), arriere = Math.max(0, -z - .35) / .6;
+  const fond = -.2 - .34 * temporal + .1 * Math.min(1, arriere);
+  if (y < fond) y = fond + (y - fond) * .35;
+  if (y > .35) y = .35 + (y - .35) * .9;                                         // dessus un peu plus plat
+  return [x * ECH[0], y * ECH[1], z * ECH[2]];
+}
+function placer(i, r) {
+  const n = notes[i], centres = AIRES[n.c] || AIRES.recherche, c = centres[i % centres.length], s = SIG[n.c] || .27;
+  return versCerveau([c[0] + gauss(r) * s, c[1] + gauss(r) * s * .8, c[2] + gauss(r) * s]);
+}
+const rgb = h => { const v = parseInt(h.slice(1), 16); return [(v >> 16 & 255) / 255, (v >> 8 & 255) / 255, (v & 255) / 255]; };
+const degre = new Array(notes.length).fill(0);
+for (const [a, b] of liens) { degre[a]++; degre[b]++; }
+function initScene() {
+  const box = $("scene");
+  try { ren = new THREE.WebGLRenderer({antialias: true, alpha: true}); } catch (e) { box.innerHTML = '<p style="padding:24px;color:#a6aec4">WebGL n\'est pas disponible : la conversation marche, le cerveau 3D ne peut pas s\'afficher.</p>'; return false; }
+  ren.setPixelRatio(Math.min(2, devicePixelRatio || 1)); ren.setClearColor(0x000000, 0);
+  box.appendChild(ren.domElement);
+  scene = new THREE.Scene(); cam = new THREE.PerspectiveCamera(42, 1, .1, 100); groupe = new THREE.Group(); scene.add(groupe);
+  const r = rng(12);
+  notes.forEach((n, i) => { POS.push(...placer(i, r)); COLS.push(...rgb(CATS[n.c].couleur)); TAILLE.push(n.d === "cœur" ? 30 : 13 + Math.min(16, degre[i] * 1.6)); ECLAT.push(0); EPINGLE.push(0); });
+  ptsGeo = new THREE.BufferGeometry();
+  ptsGeo.setAttribute("position", new THREE.Float32BufferAttribute(POS, 3));
+  ptsGeo.setAttribute("couleur", new THREE.Float32BufferAttribute(COLS, 3));
+  ptsGeo.setAttribute("taille", new THREE.Float32BufferAttribute(TAILLE, 1));
+  ptsGeo.setAttribute("eclat", new THREE.Float32BufferAttribute(ECLAT, 1));
+  ptsMat = new THREE.ShaderMaterial({
+    uniforms: {uPx: {value: 260 * Math.min(2, devicePixelRatio || 1)}, uAttenue: {value: 1}},
+    vertexShader: "attribute vec3 couleur; attribute float taille; attribute float eclat; uniform float uPx; uniform float uAttenue; varying vec3 vC; varying float vE; void main(){ vC = couleur * uAttenue; vE = eclat; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = taille * (1.0 + eclat * 1.8) * uPx / (-mv.z * 60.0); gl_Position = projectionMatrix * mv; }",
+    fragmentShader: "varying vec3 vC; varying float vE; void main(){ vec2 p = gl_PointCoord - 0.5; float d = length(p); if (d > 0.5) discard; float g = pow(1.0 - d * 2.0, 2.0); float coeur = pow(1.0 - d * 2.0, 10.0); vec3 c = vC * (0.6 + 1.6 * vE) * g + vec3(1.0) * coeur * (0.35 + 0.9 * vE); gl_FragColor = vec4(c, g); }",
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending});
+  groupe.add(new THREE.Points(ptsGeo, ptsMat));
+  construireLiens();
+  // poussière : des neurones éteints qui dessinent la silhouette (cortex plissé, cervelet, tronc), un voile dedans, un halo autour
+  const pp = [], pc = [], pt = [], pe = [];
+  const unite = () => { let x = gauss(r), y = gauss(r), z = gauss(r); const l = Math.sqrt(x * x + y * y + z * z) || 1; return [x / l, y / l, z / l]; };
+  const pose = (q, t, bleu) => { pp.push(...q); const u = r(); pc.push((.45 + .3 * u) * bleu, (.55 + .25 * u) * bleu, .9 * bleu); pt.push(t); pe.push(0); };
+  for (let k = 0; k < 2000; k++) {                                              // cortex : surface avec des circonvolutions
+    const [x, y, z] = unite(), pli = 1 + .045 * Math.sin(x * 13 + z * 8) * Math.cos(y * 11 - z * 6);
+    pose(versCerveau([x * .95, y * .95, z * .95]).map(v => v * pli * (1 + (r() - .5) * .025)), 4.5 + r() * 4, 1.6);
+  }
+  for (let k = 0; k < 340; k++) {                                               // cervelet : sous l'arrière, strié
+    const [x, y, z] = unite(); const yy = y * .27 + .012 * Math.sin(z * 40);
+    pose([x * .62, -.52 + yy, -.98 + z * .33], 4.5 + r() * 3.5, 1.5);
+  }
+  for (let k = 0; k < 80; k++) {                                                // tronc cérébral
+    const a = r() * Math.PI * 2, h = r();
+    pose([Math.cos(a) * .13, -.42 - h * .62, -.42 - h * .2 + Math.sin(a) * .13], 4 + r() * 3, .8);
+  }
+  for (let k = 0; k < 260; k++) { const [x, y, z] = unite(), rad = r() * .9; pose(versCerveau([x * rad, y * rad, z * rad]), 3.5 + r() * 3.5, .7); }
+  for (let k = 0; k < 240; k++) { const [x, y, z] = unite(), rad = 1.25 + r() * .7; pose([x * rad * ECH[0], y * rad * ECH[1], z * rad * ECH[2]], 3 + r() * 3, .55); }
+  const pg = new THREE.BufferGeometry();
+  pg.setAttribute("position", new THREE.Float32BufferAttribute(pp, 3)); pg.setAttribute("couleur", new THREE.Float32BufferAttribute(pc, 3));
+  pg.setAttribute("taille", new THREE.Float32BufferAttribute(pt, 1)); pg.setAttribute("eclat", new THREE.Float32BufferAttribute(pe, 1));
+  const pm = ptsMat.clone(); pm.uniforms = {uPx: {value: ptsMat.uniforms.uPx.value}, uAttenue: {value: .5}};
+  poussiere = new THREE.Points(pg, pm); groupe.add(poussiere);
+  // impulsions
+  const ip = new Float32Array(NP * 3), ic = new Float32Array(NP * 3), it = new Float32Array(NP), ie = new Float32Array(NP);
+  impGeo = new THREE.BufferGeometry();
+  impGeo.setAttribute("position", new THREE.BufferAttribute(ip, 3)); impGeo.setAttribute("couleur", new THREE.BufferAttribute(ic, 3));
+  impGeo.setAttribute("taille", new THREE.BufferAttribute(it, 1)); impGeo.setAttribute("eclat", new THREE.BufferAttribute(ie, 1));
+  const im = ptsMat.clone(); im.uniforms = {uPx: {value: ptsMat.uniforms.uPx.value}, uAttenue: {value: 1}};
+  groupe.add(new THREE.Points(impGeo, im)); MATS.push(ptsMat, pm, im);
+  for (let k = 0; k < NP; k++) PULSES.push({vie: 0});
+  brancherVue(); taille(); addEventListener("resize", taille);
+  $("panneau").addEventListener("transitionend", cadrer);
+  requestAnimationFrame(boucle);
+  return true;
+}
+function construireLiens() {
+  if (liensGeo) { groupe.remove(liensGeo.objet); liensGeo.geo.dispose(); }
+  const n = liens.length, p = new Float32Array(n * 6), c = new Float32Array(n * 6);
+  liens.forEach(([a, b], k) => { for (let d = 0; d < 3; d++) { p[k * 6 + d] = POS[a * 3 + d]; p[k * 6 + 3 + d] = POS[b * 3 + d]; } });
+  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(p, 3)); geo.setAttribute("color", new THREE.BufferAttribute(c, 3));
+  const objet = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({vertexColors: true, transparent: true, opacity: .9, blending: THREE.AdditiveBlending, depthWrite: false}));
+  groupe.add(objet); liensGeo = {geo, objet, voisins: null};
+  const v = notes.map(() => []); liens.forEach(([a, b], k) => { v[a].push([b, k]); v[b].push([a, k]); }); liensGeo.voisins = v;
+}
+function taille() {
+  const w = innerWidth, h = innerHeight, dpr = Math.min(2, devicePixelRatio || 1);
+  ren.setSize(w, h, false); ren.domElement.style.width = w + "px"; ren.domElement.style.height = h + "px";
+  cam.aspect = w / h; cam.updateProjectionMatrix();
+  for (const m of MATS) m.uniforms.uPx.value = 260 * dpr * h / 820;           // les neurones gardent leur taille par rapport au cerveau
+  cadrer(); vue.cx = vue.but.cx; vue.cy = vue.but.cy; vue.dist = vue.but.dist;
+}
+function cadrer() {
+  if (!cam) return;
+  const w = innerWidth, h = innerHeight, pan = $("panneau").getBoundingClientRect(), id = $("identite").getBoundingClientRect();
+  const libre = w > 760 ? {x0: 0, x1: pan.left - 8, y0: 24, y1: h - 24} : {x0: 0, x1: w, y0: id.bottom + 4, y1: pan.top - 4};
+  const fw = Math.max(120, libre.x1 - libre.x0), fh = Math.max(120, libre.y1 - libre.y0);
+  vue.but.cx = w / 2 - (libre.x0 + libre.x1) / 2; vue.but.cy = h / 2 - (libre.y0 + libre.y1) / 2;
+  vue.but.dist = 2 * 1.5 * h / (Math.min(fw, fh) * .9 * 2 * Math.tan(cam.fov * Math.PI / 360));
+}
+function brancherVue() {
+  const el = ren.domElement; let drag = null, pinch = null;
+  el.addEventListener("pointerdown", e => { drag = {x: e.clientX, y: e.clientY, az: vue.az, el: vue.el, moved: false}; el.setPointerCapture(e.pointerId); vue.touche = performance.now(); });
+  el.addEventListener("pointermove", e => {
+    if (drag) { const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true; vue.az = drag.az - dx * .007; vue.el = Math.max(-1.1, Math.min(1.1, drag.el + dy * .005)); vue.touche = performance.now(); }
+    else survol(e.clientX, e.clientY);
+  });
+  el.addEventListener("pointerup", e => { if (drag && !drag.moved) { const k = pique(e.clientX, e.clientY); if (k >= 0) ouvrirFiche(k); else fermerFiche(); } drag = null; });
+  el.addEventListener("wheel", e => { e.preventDefault(); vue.zoom = Math.max(.45, Math.min(2.2, vue.zoom * (1 + Math.sign(e.deltaY) * .08))); vue.touche = performance.now(); }, {passive: false});
+  el.addEventListener("touchstart", e => { if (e.touches.length === 2) pinch = {d: Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY), zoom: vue.zoom}; }, {passive: true});
+  el.addEventListener("touchmove", e => { if (pinch && e.touches.length === 2) { const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); vue.zoom = Math.max(.45, Math.min(2.2, pinch.zoom * pinch.d / d)); } }, {passive: true});
+  el.addEventListener("touchend", () => { pinch = null; }, {passive: true});
+}
+const V3 = () => new THREE.Vector3();
+function ecran(i) { const v = V3().set(POS[i * 3], POS[i * 3 + 1], POS[i * 3 + 2]).applyMatrix4(groupe.matrixWorld).project(cam); return [(v.x + 1) / 2 * innerWidth, (1 - v.y) / 2 * innerHeight, v.z]; }
+function pique(x, y) { let best = -1, dm = 18 * 18; for (let i = 0; i < notes.length; i++) { const [sx, sy, z] = ecran(i); if (z > 1) continue; const d = (sx - x) ** 2 + (sy - y) ** 2; if (d < dm) { dm = d; best = i; } } return best; }
+let survole = -1;
+function survol(x, y) { survole = pique(x, y); ren.domElement.style.cursor = survole >= 0 ? "pointer" : "grab"; }
+function allumer(i, v = 1, epingle = 0) { if (i < 0 || i >= notes.length) return; ECLAT[i] = Math.max(ECLAT[i], v); if (epingle) EPINGLE[i] = Math.max(EPINGLE[i], epingle); }
+function impulsion(a, b, couleur, vitesse = 1) {
+  const p = PULSES.find(q => q.vie <= 0); if (!p) return;
+  Object.assign(p, {a, b, t: 0, vie: 1, v: (.9 + Math.random() * .6) * vitesse, c: couleur || rgb(CATS[notes[b] ? notes[b].c : "toi"].couleur)});
+}
+function eclair(depuis, versListe, couleur) { for (const b of versListe) impulsion(depuis, b, couleur, 1.2); }
+const CENTRE = -1;
+function posDe(i) { return i === CENTRE ? [0, .05, .1] : [POS[i * 3], POS[i * 3 + 1], POS[i * 3 + 2]]; }
+let tPrec = 0;
+function boucle(t) {
+  const dt = Math.min(.05, (t - tPrec) / 1000 || .016); tPrec = t;
+  if (!reduit && performance.now() - vue.touche > 2500) vue.az += dt * (enReflexion ? .22 : .07);
+  const lisse = Math.min(1, dt * 5);
+  vue.cx += (vue.but.cx - vue.cx) * lisse; vue.cy += (vue.but.cy - vue.cy) * lisse; vue.dist += (vue.but.dist - vue.dist) * lisse;
+  cam.setViewOffset(innerWidth, innerHeight, vue.cx, vue.cy, innerWidth, innerHeight);
+  const d = vue.dist * vue.zoom; cam.position.set(Math.sin(vue.az) * Math.cos(vue.el) * d, Math.sin(vue.el) * d - .08, Math.cos(vue.az) * Math.cos(vue.el) * d);
+  cam.lookAt(0, -.08, -.08); cam.updateMatrixWorld();
+  // activité : pendant la réflexion, des neurones s'allument au hasard et propagent
+  const taux = enReflexion ? 9 : 0.35 + activite * 6;
+  if (!reduit && Math.random() < taux * dt) { const i = Math.floor(Math.random() * notes.length); allumer(i, enReflexion ? .75 : .45); const v = liensGeo.voisins[i]; for (let k = 0; k < Math.min(3, v.length); k++) impulsion(i, v[Math.floor(Math.random() * v.length)][0]); }
+  activite *= Math.pow(.4, dt);
+  for (let i = 0; i < notes.length; i++) { const plancher = (filtreCat && notes[i].c === filtreCat ? .55 : 0) + EPINGLE[i]; ECLAT[i] = Math.max(plancher, ECLAT[i] * Math.pow(.25, dt)); }
+  ptsGeo.attributes.eclat.array.set(ECLAT); ptsGeo.attributes.eclat.needsUpdate = true;
+  // liens : brillent avec leurs neurones
+  const lc = liensGeo.geo.attributes.color.array;
+  liens.forEach(([a, b], k) => { const e = Math.max(ECLAT[a], ECLAT[b]), base = filtreCat ? (notes[a].c === filtreCat || notes[b].c === filtreCat ? .2 : .03) : .1; const f = base + e * .75; for (let q = 0; q < 3; q++) { lc[k * 6 + q] = COLS[a * 3 + q] * f; lc[k * 6 + 3 + q] = COLS[b * 3 + q] * f; } });
+  liensGeo.geo.attributes.color.needsUpdate = true;
+  // impulsions
+  const ip = impGeo.attributes.position.array, ic = impGeo.attributes.couleur.array, it = impGeo.attributes.taille.array, ie = impGeo.attributes.eclat.array;
+  PULSES.forEach((p, k) => {
+    if (p.vie > 0) {
+      p.t += dt * 1.6 * p.v; const A = posDe(p.a), B = posDe(p.b), s = Math.min(1, p.t), e = s * s * (3 - 2 * s);
+      for (let q = 0; q < 3; q++) { ip[k * 3 + q] = A[q] + (B[q] - A[q]) * e; ic[k * 3 + q] = p.c[q]; }
+      it[k] = 12; ie[k] = .9;
+      if (p.t >= 1) { p.vie = 0; allumer(p.b, .65); }
+    } else { it[k] = 0; ie[k] = 0; }
+  });
+  impGeo.attributes.position.needsUpdate = true; impGeo.attributes.couleur.needsUpdate = true; impGeo.attributes.taille.needsUpdate = true; impGeo.attributes.eclat.needsUpdate = true;
+  ren.render(scene, cam);
+  etiquettes();
+  requestAnimationFrame(boucle);
+}
+const POOL = [];
+function etiquettes() {
+  const box = $("etiquettes"), cands = [];
+  for (let i = 0; i < notes.length; i++) if (EPINGLE[i] > .2 || i === survole) cands.push(i);
+  cands.sort((a, b) => (b === survole) - (a === survole) || EPINGLE[b] - EPINGLE[a]);
+  const montre = cands.slice(0, innerWidth < 760 ? 4 : 7);
+  while (POOL.length < montre.length) { const d = document.createElement("div"); d.className = "etiq"; box.appendChild(d); POOL.push(d); }
+  POOL.forEach((d, k) => {
+    if (k >= montre.length) { d.style.display = "none"; return; }
+    const i = montre[k], [x, y, z] = ecran(i);
+    if (z > 1) { d.style.display = "none"; return; }
+    d.style.display = "block";
+    const cle = notes[i].id + (i === survole);
+    if (d.dataset.cle !== cle) { d.dataset.cle = cle; d.innerHTML = `<i style="background:${CATS[notes[i].c].couleur}"></i>`; d.appendChild(document.createTextNode(notes[i].t)); d.dataset.l = d.offsetWidth; }
+    const dw = (+d.dataset.l || 120) / 2; d.style.left = Math.max(8 + dw, Math.min(innerWidth - 8 - dw, x)) + "px"; d.style.top = Math.max(30, y) + "px";
+  });
+}
+
+/* ================= fiche d'un neurone ================= */
+function ouvrirFiche(i) {
+  const n = notes[i], f = $("fiche"), c = CATS[n.c];
+  allumer(i, 1, .9); for (const [b] of liensGeo.voisins[i]) { impulsion(i, b); }
+  f.innerHTML = `<div class="cat" style="color:${c.couleur}"><i style="background:${c.couleur}"></i>${c.nom}${n.d && n.d !== "cœur" ? " · " + n.d : ""}</div><h3></h3><p></p><div class="actions"><button type="button" id="f-demander">Demander au cerveau</button><button type="button" id="f-fermer">Fermer</button></div>`;
+  f.querySelector("h3").textContent = n.t; f.querySelector("p").textContent = n.x;
+  f.hidden = false;
+  $("f-fermer").onclick = fermerFiche;
+  $("f-demander").onclick = () => { fermerFiche(); envoyer(`Explique-moi simplement : « ${n.t} ». Qu'est-ce que ça change pour mon bot ?`); };
+}
+function fermerFiche() { $("fiche").hidden = true; EPINGLE.fill(0, 0, EPINGLE.length); reEpingler(); }
+let epinglesReponse = [];
+function reEpingler() { for (const i of epinglesReponse) EPINGLE[i] = .8; }
+
+/* ================= interface ================= */
+function compteur() {
+  const nbS = notes.filter(n => n.c === "souvenir").length;
+  $("compte").innerHTML = `<span>Neurones <b>${notes.length}</b></span><span>Connexions <b>${liens.length}</b></span><span>Souvenirs <b>${nbS}</b></span>`;
+}
+function aires() {
+  const box = $("aires"); box.innerHTML = "";
+  const role = {toi: "préfrontal", bot: "moteur", robustesse: "front droit", prop: "front gauche", recherche: "arrière", flux: "temporaux", souvenir: "hippocampe"};
+  for (const [k, c] of Object.entries(CATS)) {
+    const nb = notes.filter(n => n.c === k).length;
+    const b = document.createElement("button"); b.type = "button"; b.className = "aire"; b.setAttribute("aria-pressed", String(filtreCat === k)); b.title = `Aire ${role[k]} : ${c.nom}`;
+    b.innerHTML = `<i style="background:${c.couleur};box-shadow:0 0 6px ${c.couleur}"></i>`; b.appendChild(document.createTextNode(c.nom + " ")); const s = document.createElement("small"); s.textContent = nb; b.appendChild(s);
+    b.onclick = () => { filtreCat = filtreCat === k ? null : k; aires(); };
+    box.appendChild(b);
+  }
+}
+const fil = $("fil");
+function echapper(s) { return s.replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c])); }
+function rendreReponse(texte) {
+  let h = echapper(texte);
+  h = h.replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+  h = h.replace(/\[(n|s)(\d+)\]/g, (m, t, k) => { const i = t === "n" ? +k : idxSouvenir(+k); const n = notes[i]; if (!n) return ""; return `<span class="cite" data-i="${i}" title="${echapper(n.t)}"><i style="background:${CATS[n.c].couleur}"></i>${echapper(n.t.slice(0, 34))}${n.t.length > 34 ? "…" : ""}</span>`; });
+  const blocs = h.split(/\n{2,}/).map(b => { const l = b.split("\n"); if (l.every(x => /^\s*[-•]\s+/.test(x))) return "<ul>" + l.map(x => "<li>" + x.replace(/^\s*[-•]\s+/, "") + "</li>").join("") + "</ul>"; return "<p>" + l.join("<br>") + "</p>"; });
+  return blocs.join("");
+}
+function citesDans(texte) { const out = new Set(); for (const m of texte.matchAll(/\[(n|s)(\d+)\]/g)) { const i = m[1] === "n" ? +m[2] : idxSouvenir(+m[2]); if (notes[i]) out.add(i); } return [...out]; }
+function ajouterMsg(qui, html) {
+  const d = document.createElement("div"); d.className = "msg " + qui;
+  if (qui === "lui") d.innerHTML = `<div class="qui"><i></i>Cerveau</div><div class="corps">${html}</div>`; else d.textContent = html;
+  fil.appendChild(d); fil.scrollTop = fil.scrollHeight;
+  d.addEventListener("click", e => { const c = e.target.closest(".cite"); if (c) ouvrirFiche(+c.dataset.i); });
+  return d;
+}
+function accueil() {
+  const d = ajouterMsg("lui", `<p>Salut. Je suis ton second cerveau : ${notes.length} neurones, un par note de ta recherche (le bot, Bulenox, les tournois, le Monte Carlo, le labo…). Pose-moi une question : je cherche les neurones utiles, ils s'allument, et je te réponds à partir d'eux.</p><p class="note-sys">Dis « retiens que… » pour créer un souvenir. Il reste d'une visite à l'autre, et toi seul peux le lire.</p>`);
+  const idees = document.createElement("div"); idees.className = "idees";
+  for (const q of ["Où en est mon filtre delta ?", "Combien je peux gagner avec Bulenox ?", "Mon bot est-il suroptimisé ?", "Quelle est ma prochaine étape ?", "Retiens que je veux passer le challenge avant l'été 2027"]) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "idee"; b.textContent = q; b.onclick = () => envoyer(q); idees.appendChild(b);
+  }
+  d.querySelector(".corps").appendChild(idees);
+}
+
+/* ================= mémoire (db, privée par personne) ================= */
+let db = null, uid = null, refFil = null, colSouvenirs = null;
+const souvenirsIdx = [];                      // numéro de souvenir -> indice de neurone
+const idxSouvenir = k => souvenirsIdx[k];
+function ajouterSouvenir(titre, texte, naissance) {
+  const i = notes.length, k = souvenirsIdx.length;
+  notes.push({t: titre, x: texte, c: "souvenir", d: "souvenir", id: "s" + k, i});
+  souvenirsIdx.push(i);
+  const proches = chercher(titre + " " + texte, 4).filter(h => h.i !== i).slice(0, 3);
+  const r = rng(1000 + k); const p = placer(i, r);
+  POS.push(...p); COLS.push(1, 1, 1); TAILLE.push(22); ECLAT.push(naissance ? 1 : 0); EPINGLE.push(naissance ? .9 : 0); degre.push(proches.length);
+  for (const h of proches) liens.push([h.i, i, .3]);
+  if (ptsGeo) {
+    ptsGeo.setAttribute("position", new THREE.Float32BufferAttribute(POS, 3)); ptsGeo.setAttribute("couleur", new THREE.Float32BufferAttribute(COLS, 3));
+    ptsGeo.setAttribute("taille", new THREE.Float32BufferAttribute(TAILLE, 1)); ptsGeo.setAttribute("eclat", new THREE.Float32BufferAttribute(ECLAT, 1));
+    construireLiens();
+    if (naissance) for (const h of proches) { impulsion(i, h.i, [1, 1, 1]); impulsion(h.i, i, [1, 1, 1]); }
+  }
+  index = null; compteur(); aires();
+  return k;
+}
+async function brancherMemoire() {
+  try {
+    db = await claude.use("db"); const user = await claude.use("user");
+    uid = user ? await user.id() : null;
+    if (!db || !uid) return;
+    colSouvenirs = db.doc("data/users/" + uid + "/cerveau").collection("souvenirs");
+    refFil = db.doc("data/users/" + uid + "/fil");
+    const snap = await colSouvenirs.orderBy("t").get();
+    for (const d of snap.docs) { const x = d.data() || {}; if (x.titre) ajouterSouvenir(String(x.titre).slice(0, 120), String(x.texte || "").slice(0, 800), false); }
+    const f = await refFil.get();
+    if (f.exists) { const tours = (f.data() || {}).tours; if (Array.isArray(tours) && tours.length) { TOURS.push(...tours.slice(-12)); for (const t of TOURS) ajouterMsg(t.role === "user" ? "moi" : "lui", t.role === "user" ? t.content : rendreReponse(t.content)); } }
+  } catch (e) { db = null; }
+}
+async function sauverFil() { if (!refFil) return; try { await refFil.set({tours: TOURS.slice(-12)}); } catch (e) {} }
+const SECRET = /(mot de passe|password|api.?key|jeton|token|identifiant|login|secret)/i;
+async function retenir(titre, texte) {
+  titre = String(titre || "").trim().slice(0, 120); texte = String(texte || "").trim().slice(0, 800);
+  if (!titre) throw new Error("titre vide");
+  if (SECRET.test(titre + " " + texte)) throw new Error("refusé : le cerveau ne retient jamais de mots de passe, clés ou identifiants");
+  const k = ajouterSouvenir(titre, texte, true);
+  if (colSouvenirs) { try { await colSouvenirs.add({titre, texte, t: Date.now()}); } catch (e) { return `Souvenir s${k} créé pour cette visite, mais pas enregistré (${e.code || "erreur"}).`; } }
+  else return `Souvenir s${k} créé pour cette visite seulement (mémoire indisponible ici).`;
+  return `Souvenir s${k} enregistré.`;
+}
+
+/* ================= penser et répondre ================= */
+let sample = null, outilsOk = false, ctl = null;
+const TOURS = [];
+const REGLES = `Tu es le « second cerveau » de l'utilisateur, affiché comme un cerveau de neurones en 3D. Chaque neurone est une note de sa recherche. L'utilisateur est un étudiant trader français, sans revenu, qui construit un bot de futures sur le Nasdaq (le « bot 3 en 1 ») pour passer un challenge de prop firm 50K avec un seul achat et un petit budget.
+
+Comment répondre :
+- En français, clair et direct, comme un ami expert. 2 à 7 phrases, sauf si on te demande plus de détails.
+- Honnête : jamais de promesse de gains ; distingue ce qui est prouvé, ce qui est supposé (le filtre delta) et ce qui est inconnu.
+- Appuie-toi d'abord sur les notes fournies et cite celles que tu utilises avec leur numéro entre crochets, exactement comme [n12] ou [s3]. Si les notes ne suffisent pas, dis-le et réponds avec tes connaissances générales en le signalant.
+- Outil chercher_notes : pour trouver d'autres notes si celles fournies ne suffisent pas.
+- Outil retenir : quand l'utilisateur te demande de retenir quelque chose, ou te donne une information durable sur lui ou son projet (objectif, décision, réglage choisi). Jamais de mot de passe, de clé ou d'identifiant : refuse de les retenir.
+- Tu ne passes jamais d'ordre de bourse et tu ne changes pas le bot : tu conseilles.`;
+function blocNotes(hits) { return hits.map(h => { const n = notes[h.i]; return `[${n.id}] ${n.t} — ${n.x.slice(0, 650)}`; }).join("\n"); }
+const OUTILS = () => [
+  {name: "chercher_notes", description: "Cherche dans le cerveau les notes les plus proches d'une requête (mots-clés en français). Renvoie jusqu'à 6 notes {id, titre, texte}. Cite ensuite les notes par leur id entre crochets.",
+    inputSchema: {type: "object", properties: {requete: {type: "string", description: "mots-clés"}}, required: ["requete"]},
+    execute: input => { const hits = chercher(String(input.requete || ""), 6); const ids = hits.map(h => h.i); eclair(CENTRE, ids); ids.forEach(i => allumer(i, 1, .7)); return hits.map(h => ({id: notes[h.i].id, titre: notes[h.i].t, texte: notes[h.i].x.slice(0, 500)})); }},
+  {name: "retenir", description: "Crée un souvenir durable dans la mémoire privée de l'utilisateur (un nouveau neurone). À utiliser quand il demande de retenir quelque chose ou donne une information durable sur lui ou son projet. Renvoie un court message de confirmation.",
+    inputSchema: {type: "object", properties: {titre: {type: "string", description: "titre court du souvenir"}, texte: {type: "string", description: "le souvenir, en une ou deux phrases"}}, required: ["titre", "texte"]},
+    execute: input => retenir(input.titre, input.texte)},
+];
+function parler(texte) {
+  if ($("o-voix").getAttribute("aria-pressed") !== "true" || !("speechSynthesis" in window)) return;
+  const propre = texte.replace(/\[(n|s)\d+\]/g, "").replace(/\*\*/g, "").replace(/^\s*[-•]\s+/gm, "").slice(0, 1600);
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(propre); u.lang = "fr-FR"; u.rate = 1.03;
+  const v = speechSynthesis.getVoices().find(x => /^fr/i.test(x.lang)); if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+function reponseLocale(q, hits) {
+  if (/^\s*retiens/i.test(q)) {
+    const t = q.replace(/^\s*retiens( que)?\s*/i, "");
+    if (SECRET.test(t)) return "Je ne retiens jamais de mots de passe, de clés ou d'identifiants. Garde-les pour toi.";
+    retenir(t.slice(0, 60), t).catch(() => {});
+    return `C'est noté, j'ai créé un nouveau neurone : « ${t.slice(0, 60)} ».`;
+  }
+  if (!hits.length) return "Je ne trouve rien là-dessus dans mes neurones. Essaie avec d'autres mots (bot, filtre, Bulenox, Monte Carlo, risque…).";
+  return "Mode local (Claude n'est pas disponible ici) : voici ce que mes neurones savent là-dessus.\n\n" + hits.slice(0, 3).map(h => `- **${notes[h.i].t}** [${notes[h.i].id}] : ${notes[h.i].x.slice(0, 260)}${notes[h.i].x.length > 260 ? "…" : ""}`).join("\n");
+}
+async function envoyer(q) {
+  q = (q || "").trim(); if (!q) return;
+  if (ctl) return;
+  $("question").value = ""; ajusterSaisie();
+  if (innerWidth < 760) $("panneau").classList.remove("replie");
+  ajouterMsg("moi", q);
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  // 1. la question entre au centre, les neurones proches s'allument
+  epinglesReponse = []; EPINGLE.fill(0);
+  const hits = chercher(q, 8);
+  const ids = hits.map(h => h.i);
+  eclair(CENTRE, ids.slice(0, 6), [1, .95, .8]); setTimeout(() => ids.forEach((i, k) => allumer(i, 1 - k * .06, .55)), 380);
+  activite = 1;
+  const d = ajouterMsg("lui", `<span class="reflexion">Réflexion</span>`), corps = d.querySelector(".corps");
+  if (!sample) {
+    await new Promise(r => setTimeout(r, reduit ? 0 : 900));
+    const t = reponseLocale(q, hits); corps.innerHTML = rendreReponse(t); epinglesReponse = citesDans(t); reEpingler(); parler(t);
+    TOURS.push({role: "user", content: q}, {role: "assistant", content: t}); sauverFil(); return;
+  }
+  enReflexion = true; ctl = new AbortController(); basculeEnvoi(true);
+  const contexte = REGLES + "\n\nNotes du cerveau les plus proches de la question :\n" + (blocNotes(hits) || "(aucune)");
+  const tours = [{role: "user", content: contexte}, ...TOURS.slice(-10), {role: "user", content: q}];
+  try {
+    const opts = {signal: ctl.signal, cache: false, modelTier: $("o-profond").getAttribute("aria-pressed") === "true" ? "default" : "quick",
+      onText: ({text}) => { enReflexion = false; activite = 1; corps.innerHTML = rendreReponse(text); const c = citesDans(text); for (const i of c) allumer(i, 1, .85); epinglesReponse = c; fil.scrollTop = fil.scrollHeight; }};
+    if (outilsOk) opts.tools = OUTILS();
+    const {text, truncated} = await sample(tours, opts);
+    corps.innerHTML = rendreReponse(text) + (truncated ? `<p class="note-sys">Réponse coupée : demande-moi la suite.</p>` : "");
+    epinglesReponse = citesDans(text); reEpingler(); parler(text);
+    TOURS.push({role: "user", content: q}, {role: "assistant", content: text}); sauverFil();
+  } catch (e) {
+    const code = e && e.code;
+    if (code === "cancelled") { corps.innerHTML = e.text ? rendreReponse(e.text) : `<p class="note-sys">Arrêté.</p>`; }
+    else if (code === "not_granted" || code === "sampling_disabled" || code === "not_declared" || code === "capability_disabled" || code === "capability_removed") {
+      sample = null; etat("local"); const t = reponseLocale(q, hits); corps.innerHTML = rendreReponse(t); epinglesReponse = citesDans(t); reEpingler();
+    } else if (code === "tools_unavailable") { outilsOk = false; corps.innerHTML = `<p class="note-sys">Je réessaie sans mes outils…</p>`; ctl = null; enReflexion = false; basculeEnvoi(false); fil.removeChild(d); fil.removeChild(fil.lastElementChild); return envoyer(q); }
+    else {
+      const copie = {rate_limited: "Trop de questions d'affilée, ou ta limite Claude est atteinte : réessaie dans un moment.", session_expired: "Ta session Claude a expiré : reconnecte-toi.", refused: "Je ne peux pas répondre à ça. Reformule ta question.", prompt_too_large: "La conversation est trop longue : clique « Effacer » puis repose ta question.", empty_completion: "Je n'ai rien trouvé à dire : reformule."}[code] || "La connexion a coupé : renvoie ta question.";
+      corps.innerHTML = (e && e.text ? rendreReponse(e.text) : "") + `<p class="note-sys">${copie}</p>`;
+    }
+  } finally { enReflexion = false; ctl = null; basculeEnvoi(false); }
+}
+function basculeEnvoi(enCours) { const b = $("envoyer"); b.classList.toggle("stop", enCours); b.textContent = enCours ? "■" : "➤"; b.setAttribute("aria-label", enCours ? "Arrêter" : "Envoyer"); }
+function etat(k) { const e = $("etat"); e.className = "etat " + (k === "ok" ? "ok" : "local"); e.querySelector("span").textContent = k === "ok" ? "Claude connecté · répond depuis ton compte" : "Mode local · le cerveau répond avec ses notes"; }
+function ajusterSaisie() { const t = $("question"); t.style.height = "auto"; t.style.height = Math.min(140, t.scrollHeight) + "px"; }
+
+/* ================= démarrage ================= */
+compteur(); aires(); accueil();
+const ok3d = typeof THREE !== "undefined" && initScene();
+if (!ok3d && typeof THREE === "undefined") $("scene").innerHTML = '<p style="padding:24px;color:#a6aec4">Le cerveau 3D n\'a pas pu se charger (three.js) : la conversation marche quand même.</p>';
+$("saisie").addEventListener("submit", e => { e.preventDefault(); if (ctl) { ctl.abort(); return; } envoyer($("question").value); });
+$("question").addEventListener("input", ajusterSaisie);
+$("question").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); if (!ctl) envoyer($("question").value); } });
+for (const id of ["o-profond", "o-voix"]) $(id).onclick = () => { const b = $(id); b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")); if (id === "o-voix" && b.getAttribute("aria-pressed") !== "true" && "speechSynthesis" in window) speechSynthesis.cancel(); };
+$("o-effacer").onclick = () => { if (ctl) ctl.abort(); TOURS.length = 0; fil.innerHTML = ""; accueil(); sauverFil(); epinglesReponse = []; EPINGLE.fill(0); };
+$("poignee").onclick = () => $("panneau").classList.toggle("replie");
+$("identite").addEventListener("click", e => { if (innerWidth < 760 && e.target.closest("h1")) $("identite").classList.toggle("ouvre"); });
+if (!("speechSynthesis" in window)) $("o-voix").hidden = true;
+(async () => {
+  if (!window.claude || typeof claude.use !== "function") { etat("local"); return; }
+  const [s] = await Promise.all([claude.use("sample"), brancherMemoire()]);
+  sample = s;
+  if (!sample) { etat("local"); return; }
+  const lim = await sample.limits().catch(() => null);
+  outilsOk = !!(lim && lim.tools);
+  etat("ok");
+})();
+})();
+</script>
