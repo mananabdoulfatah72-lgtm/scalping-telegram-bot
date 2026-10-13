@@ -174,3 +174,30 @@ def test_repli_refuse_relance_sans_repli():
     assert rep == "Voilà." and len(faux.requetes) == 2
     assert faux.requetes[0]["corps"]["fallbacks"] == "default" and "fallbacks" not in faux.requetes[1]["corps"]
     assert faux.requetes[1]["corps"]["messages"] == faux.requetes[0]["corps"]["messages"]
+
+
+def test_plus_de_credit_passe_sur_l_abonnement(tmp_path):
+    """Clé d'API sans crédit (erreur 400 de l'API) : en mode auto, Jarvis refait la demande avec Claude Code."""
+    import sys
+    if sys.platform == "win32":
+        pytest.skip("faux programme en script shell")
+    from jarvis.moteurs import ErreurCle, MoteurAuto, MoteurClaudeCode
+    from test_serveur_mcp import faux_claude
+    credit = ("Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade "
+              "or purchase credits.")
+    faux = FauxAnthropic([credit, credit])
+    try:
+        with pytest.raises(ErreurCle, match="plus de crédit"):
+            moteur(faux.port).repondre([{"type": "text", "text": "salut"}], lambda t: None, lambda n, a: None)
+        exe, _ = faux_claude(tmp_path)
+        S.cfg.set("cerveau.reserve_claude_code", False, ecrire=False)
+        auto = MoteurAuto(S.cfg, api=moteur(faux.port), claude_code=MoteurClaudeCode(S.cfg, executable=str(exe)))
+        auto.nouvelle_conversation("Tu es Jarvis.", [])
+        assert auto.nom == "api"
+        assert auto.repondre([{"type": "text", "text": "Bonjour"}], lambda t: None, None) == "Réponse 1 à Bonjour."
+        assert auto.nom == "claude_code"
+        assert auto.repondre([{"type": "text", "text": "Encore"}], lambda t: None, None) == "Réponse 2 à Encore."
+        assert len(faux.requetes) == 2                        # l'API n'est plus appelée après la bascule
+        auto.actuel.arreter()
+    finally:
+        faux.fermer()

@@ -37,6 +37,10 @@ class ErreurCerveau(Exception):
     """Problème du moteur expliqué à l'utilisateur (clé absente, pas d'internet, quota...)."""
 
 
+class ErreurCle(ErreurCerveau):
+    """La clé d'API ne peut pas servir (plus de crédit, clé refusée) : en mode auto, Jarvis passe sur Claude Code."""
+
+
 class MoteurAPI:
     nom = "api"
 
@@ -98,7 +102,7 @@ class MoteurAPI:
                     raise ErreurCerveau("Je n'ai pas réussi à formuler l'action, peux-tu reformuler ?")
                 continue
             except anthropic.AuthenticationError:
-                raise ErreurCerveau("Ma clé d'API est refusée. Vérifie la clé dans le fichier de configuration.")
+                raise ErreurCle("Ma clé d'API est refusée. Vérifie la clé dans le fichier de configuration.")
             except anthropic.PermissionDeniedError:
                 raise ErreurCerveau("Ma clé d'API n'a pas accès à ce modèle.")
             except anthropic.RateLimitError:
@@ -107,6 +111,9 @@ class MoteurAPI:
                 if self.repli and "fallback" in str(getattr(e, "message", e)).lower():
                     self.repli = False          # modèle sans repli côté serveur : même demande, sans repli
                     continue
+                if "credit balance" in str(getattr(e, "message", e)).lower():
+                    raise ErreurCle("La clé d'API Claude n'a plus de crédit (console.anthropic.com, rubrique Billing). "
+                                    "Elle est payée à part de l'abonnement Claude.")
                 raise ErreurCerveau(f"Demande refusée par l'API : {getattr(e, 'message', e)}")
             except anthropic.APIConnectionError:
                 raise ErreurCerveau("Je n'arrive pas à joindre mon cerveau en ligne. La connexion internet est-elle coupée ?")
@@ -427,8 +434,44 @@ class MoteurClaudeCode:
                 return True, obj.get("result", "") or "".join(morceaux).strip()
 
 
+class MoteurAuto:
+    """Mode « auto » avec une clé d'API **et** Claude Code : la clé d'abord ; si elle ne peut pas servir (plus de
+    crédit, clé refusée), Jarvis passe pour de bon sur Claude Code (l'abonnement) et refait la même demande."""
+
+    def __init__(self, cfg: Config, api: Any = None, claude_code: Any = None):
+        self.cfg = cfg
+        self.actuel = api if api is not None else MoteurAPI(cfg)
+        self._claude_code = claude_code
+        self.consigne, self.outils = "", []
+
+    @property
+    def nom(self) -> str:
+        return self.actuel.nom
+
+    def nouvelle_conversation(self, consigne: str, outils: list[dict]) -> None:
+        self.consigne, self.outils = consigne, outils
+        self.actuel.nouvelle_conversation(consigne, outils)
+
+    def taille(self) -> int:
+        return self.actuel.taille()
+
+    def repondre(self, contenu: list[dict], sur_texte: SurTexte, executer: Executer) -> str:
+        try:
+            return self.actuel.repondre(contenu, sur_texte, executer)
+        except ErreurCle as e:
+            if self.actuel.nom == "claude_code":
+                raise
+            secours = self._claude_code if self._claude_code is not None else MoteurClaudeCode(self.cfg)
+            bus.publier("erreur", message=f"{e} Je passe sur l'abonnement Claude (Claude Code).")
+            self.actuel = secours
+            self.actuel.nouvelle_conversation(self.consigne, self.outils)
+            return self.actuel.repondre(contenu, sur_texte, executer)
+
+
 def creer_moteur(cfg: Config) -> Any:
     choix = cfg.get("cerveau.moteur", "auto")
+    if choix == "auto" and cfg.cle_api() and trouver_claude():
+        return MoteurAuto(cfg)
     if choix == "api" or (choix == "auto" and cfg.cle_api()):
         return MoteurAPI(cfg)
     if choix in ("claude_code", "auto") and trouver_claude():
