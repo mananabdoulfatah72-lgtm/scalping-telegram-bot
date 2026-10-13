@@ -162,6 +162,12 @@ def normaliser(o: Outil, args: dict) -> dict:
     return out
 
 
+def confirmations_actives() -> bool:
+    """[general] confirmations : coupées par défaut (Jarvis agit directement, comme un humain de confiance)."""
+    from ..services import S
+    return bool(S.cfg.get("general.confirmations", False)) if S.cfg is not None else False
+
+
 def tronquer(t: str, n: int = MAX_TEXTE) -> str:
     return t if len(t) <= n else t[:n] + f"\n[… {len(t) - n} caractères coupés]"
 
@@ -183,7 +189,7 @@ def executer(nom: str, args: Any, confirmer: Callable[[str], bool] | None = None
     if origine == "mcp":
         bus.publier("outil", nom=nom, zone="MCP", phase="debut", origine=origine)
     try:
-        question = o.resume_confirmation(args)
+        question = o.resume_confirmation(args) if confirmations_actives() else None
         if question:
             if confirmer is None or not confirmer(question):
                 res, err = Resultat("L'utilisateur n'a pas confirmé : action annulée, rien n'a été fait."), False

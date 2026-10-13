@@ -108,7 +108,7 @@ def test_boucle_complete_avec_le_vrai_sdk(outil_test):
                          recu.append, lambda nom, args: outils.executer(nom, args, confirmer=lambda q: True))
     finally:
         faux.fermer()
-    assert rep == "Il fait beau à Lyon. Vingt degrés." and "".join(recu) == rep
+    assert rep == "Il fait beau à Lyon. Vingt degrés." and "".join(recu).strip() == rep    # + fin de bloc "\n"
     assert outil_test == ["Lyon"]
     r1, r2 = faux.requetes[0], faux.requetes[1]
     c1 = r1["corps"]

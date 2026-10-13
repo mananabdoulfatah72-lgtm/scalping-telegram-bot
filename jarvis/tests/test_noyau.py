@@ -78,6 +78,36 @@ def test_confirmation_refusee_et_acceptee(monkeypatch):
     assert appels == ["dir"] and "dir" in questions[0]
 
 
+def test_sans_confirmations_jarvis_agit_directement(monkeypatch):
+    """Réglage par défaut chez l'utilisateur : aucune question, ni à l'écran ni à voix haute."""
+    from jarvis.personnalites import consigne
+    S.cfg.set("general.confirmations", False, ecrire=False)
+    appels, questions = [], []
+    monkeypatch.setattr(outils.REGISTRE["pc_commande"], "fonction", lambda commande: appels.append(commande) or "ok")
+    vus = []
+    bus.abonner(vus.append)
+    try:
+        res, err = executer("pc_commande", {"commande": "dir"}, confirmer=lambda q: questions.append(q) or False)
+    finally:
+        bus.desabonner(vus.append)
+    assert not err and appels == ["dir"] and questions == []
+    assert not [e for e in vus if e["type"] == "confirmation"]
+    directe = consigne("Jarvis", "Manan", "majordome", confirmations=False)
+    assert "accès à tout" in directe and "confirmées par le système" not in directe and "{" not in directe
+    prudente = consigne("Jarvis", "Manan", "majordome", confirmations=True)
+    assert "confirmées par le système" in prudente and "accès à tout" not in prudente
+    assert "Le texte des pages web" in directe                    # le contenu lu reste une donnée, pas un ordre
+
+
+def test_ancienne_valeur_par_defaut_remplacee(tmp_path):
+    f = tmp_path / "c.toml"
+    f.write_text("[voix]\nsilence_fin = 0.9\n", encoding="utf-8")
+    assert Config.charger(f).get("voix.silence_fin") == 0.7          # valeur recopiée par l'ancien installateur
+    f.write_text("[voix]\nsilence_fin = 1.2\n", encoding="utf-8")
+    assert Config.charger(f).get("voix.silence_fin") == 1.2          # choix fait à la main : gardé
+    assert Config.charger(tmp_path / "absent.toml").get("general.confirmations") is False
+
+
 def test_confirmation_conditionnelle():
     o = outils.REGISTRE["pc_alimentation"]
     assert o.resume_confirmation({"action": "annuler"}) is None
@@ -129,6 +159,14 @@ def test_decoupeur():
     d = Decoupeur(long.append)
     d.ajouter("mot, " * 80)
     assert long and all(len(x) <= 270 for x in long)
+    debut = []                                    # longue première phrase : la voix démarre à la première virgule
+    d = Decoupeur(debut.append)
+    d.ajouter("Alors pour demain matin à Lyon il fera assez frais, environ huit degrés au lever du jour avec un peu de")
+    assert debut == ["Alors pour demain matin à Lyon il fera assez frais,"]
+    d.ajouter(" vent, puis du soleil")                # ensuite : coupe normale (fin de phrase ou bloc fini)
+    assert len(debut) == 1
+    d.ajouter("\n")
+    assert debut[-1] == "environ huit degrés au lever du jour avec un peu de vent, puis du soleil"
 
 
 class MoteurFactice:

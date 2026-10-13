@@ -153,46 +153,79 @@ def test_mcp_liste_et_appel():
 
 FAUX_CLAUDE = textwrap.dedent('''\
     #!{python}
-    import json, sys
+    # Imite « claude -p --input-format stream-json » : reste ouvert, une ligne JSON par demande.
+    import json, sys, time
     args = sys.argv[1:]
     open({journal!r}, "a").write(json.dumps(args) + "\\n")
-    prompt = sys.stdin.read()
-    if "--include-partial-messages" in args and {refuse!r}:
-        print("error: unknown option '--include-partial-messages'", file=sys.stderr); sys.exit(1)
-    sortie = [{{"type": "system", "subtype": "init", "session_id": "sess-42"}}]
-    if "--include-partial-messages" in args:
-        sortie += [{{"type": "stream_event", "event": {{"type": "content_block_delta", "delta": {{"type": "text_delta", "text": "Salut "}}}}}},
-                   {{"type": "stream_event", "event": {{"type": "content_block_delta", "delta": {{"type": "text_delta", "text": "Manan."}}}}}}]
-    sortie += [{{"type": "assistant", "message": {{"content": [{{"type": "text", "text": "Salut Manan."}}]}}}},
-               {{"type": "result", "subtype": "success", "is_error": False, "result": "Salut Manan.", "session_id": "sess-42"}}]
-    for o in sortie:
-        print(json.dumps(o))
+    if "--effort" in args and {refuse!r}:
+        print("error: unknown option '--effort'", file=sys.stderr); sys.exit(1)
+    def dire(o):
+        print(json.dumps(o), flush=True)
+    dire({{"type": "system", "subtype": "init", "session_id": "sess-42", "mcp_servers": [{{"name": "jarvis", "status": "connected"}}]}})
+    continu = "--include-partial-messages" in args
+    for n, ligne in enumerate(sys.stdin):
+        demande = json.loads(ligne)
+        assert demande["type"] == "user" and demande["message"]["role"] == "user"
+        texte = " ".join(b["text"] for b in demande["message"]["content"] if b["type"] == "text")
+        images = sum(1 for b in demande["message"]["content"] if b["type"] == "image")
+        reponse = f"Réponse {{n + 1}} à {{texte.split()[-1]}}" + (f" avec {{images}} image" if images else "") + "."
+        if continu:
+            for morceau in (reponse[:9], reponse[9:]):
+                dire({{"type": "stream_event", "event": {{"type": "content_block_delta", "delta": {{"type": "text_delta", "text": morceau}}}}}})
+            dire({{"type": "stream_event", "event": {{"type": "content_block_stop", "index": 0}}}})
+            dire({{"type": "stream_event", "event": {{"type": "message_delta", "delta": {{"stop_reason": "end_turn"}}}}}})
+        dire({{"type": "assistant", "message": {{"content": [{{"type": "text", "text": reponse}}]}}}})
+        time.sleep(0.4)                          # le résumé interne de Claude Code avant la fin du tour
+        dire({{"type": "system", "subtype": "post_turn_summary"}})
+        dire({{"type": "result", "subtype": "success", "is_error": False, "result": reponse, "session_id": "sess-42"}})
     ''')
 
 
-@pytest.mark.parametrize("refuse", [False, True])
-def test_moteur_claude_code(tmp_path, refuse):
-    if sys.platform == "win32":
-        pytest.skip("faux programme en script shell")
+def faux_claude(tmp_path, refuse=False):
     journal = tmp_path / "appels.txt"
     exe = tmp_path / "claude"
     exe.write_text(FAUX_CLAUDE.format(python=sys.executable, journal=str(journal), refuse=refuse), encoding="utf-8")
     exe.chmod(exe.stat().st_mode | stat.S_IEXEC)
+    return exe, journal
+
+
+@pytest.mark.parametrize("refuse", [False, True])
+def test_moteur_claude_code_garde_ouvert(tmp_path, refuse):
+    if sys.platform == "win32":
+        pytest.skip("faux programme en script shell")
+    import time
+    exe, journal = faux_claude(tmp_path, refuse)
     from jarvis.moteurs import MoteurClaudeCode
     m = MoteurClaudeCode(S.cfg, executable=str(exe))
-    m.nouvelle_conversation("Tu es Jarvis.", [])
+    m.nouvelle_conversation("Tu es Jarvis.", [])                  # lancé tout de suite, avec une réserve
     recu = []
-    assert m.repondre([{"type": "text", "text": "Bonjour"}], recu.append, None) == "Salut Manan."
-    assert "".join(recu) == "Salut Manan."
-    assert m.repondre([{"type": "text", "text": "Encore"}], recu.append, None) == "Salut Manan."
-    appels = [json.loads(l) for l in journal.read_text().splitlines()]
-    dernier = appels[-1]
-    assert "--resume" in dernier and dernier[dernier.index("--resume") + 1] == "sess-42"
-    assert "mcp__jarvis" in dernier and "--append-system-prompt" in dernier
+    t = time.time()
+    assert m.repondre([{"type": "text", "text": "[Contexte] lundi"}, {"type": "text", "text": "Bonjour"}],
+                      recu.append, None) == "Réponse 1 à Bonjour."
+    assert "".join(recu).strip() == "Réponse 1 à Bonjour."
+    image = {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": "AAAA"}}
+    # demandée tout de suite : la fin du tour précédent (après le résumé interne) arrive pendant celle-ci
+    assert m.repondre([{"type": "text", "text": "Encore"}, image], lambda x: None, None) == "Réponse 2 à Encore avec 1 image."
+    if not refuse:
+        assert time.time() - t < 0.7                              # sans attendre les résumés internes (0,4 s chacun)
+    assert m.actuel.vivant() and m.taille() == 4
+    lancements = [json.loads(l) for l in journal.read_text().splitlines()]
+    principal = lancements[-2] if not refuse else lancements[-1]
+    assert "--input-format" in principal and principal[principal.index("--input-format") + 1] == "stream-json"
+    assert "mcp__jarvis" in principal
+    if refuse:
+        assert m.options is False and "--effort" not in lancements[-1] and "--append-system-prompt" in lancements[-1]
+    else:
+        assert "--system-prompt-file" in principal and principal[principal.index("--tools") + 1] == ""
+        assert principal[principal.index("--effort") + 1] == "low"
+        assert len(lancements) == 2                               # le principal et la réserve, lancés une seule fois
+        ancien_reserve = m.reserve
+        m.nouvelle_conversation("Tu es Jarvis.", [])              # nouvelle conversation : la réserve prend le relais
+        assert m.actuel is ancien_reserve and m.reserve is not None
+        assert m.repondre([{"type": "text", "text": "Neuf"}], lambda x: None, None) == "Réponse 1 à Neuf."
     config = json.loads((tmp_path / "mcp_claude_code.json").read_text())
     assert config["mcpServers"]["jarvis"]["args"] == ["-m", "jarvis", "--mcp"]
-    if refuse:
-        assert "--include-partial-messages" not in dernier and m.options is False
+    m.arreter()
 
 
 def test_claude_cmd_lance_par_node(tmp_path, monkeypatch):
@@ -218,10 +251,12 @@ def test_claude_code_bloque_est_coupe(tmp_path):
     exe.chmod(exe.stat().st_mode | stat.S_IEXEC)
     from jarvis.moteurs import ErreurCerveau, MoteurClaudeCode
     S.cfg.set("cerveau.delai_claude_code", 1, ecrire=False)
+    S.cfg.set("cerveau.reserve_claude_code", False, ecrire=False)
     m = MoteurClaudeCode(S.cfg, executable=str(exe))
     m.nouvelle_conversation("Tu es Jarvis.", [])
     with pytest.raises(ErreurCerveau, match="délai"):
         m.repondre([{"type": "text", "text": "Bonjour"}], lambda t: None, None)
+    m.arreter()
 
 
 def test_branchement_claude_desktop(tmp_path, capsys):

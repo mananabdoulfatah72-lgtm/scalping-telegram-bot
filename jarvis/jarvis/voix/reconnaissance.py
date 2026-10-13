@@ -62,6 +62,14 @@ def cuda_utilisable(modele: str) -> bool:
     return ok
 
 
+def coeurs() -> int:
+    try:
+        import psutil
+        return max(4, psutil.cpu_count(logical=False) or 4)
+    except Exception:
+        return 4
+
+
 class Transcripteur:
     def __init__(self, modele: str = "small", peripherique: str = "auto"):
         try:
@@ -75,15 +83,22 @@ class Transcripteur:
             except Exception:
                 if peripherique == "cuda":
                     raise
-        if self.modele is None:
-            self.modele = WhisperModel(modele, device="cpu", compute_type="int8")
+        if self.modele is None:                         # tous les cœurs du processeur (4 par défaut sinon)
+            self.modele = WhisperModel(modele, device="cpu", compute_type="int8", cpu_threads=coeurs())
+        try:                                             # premier passage à vide : la première phrase n'attend pas
+            segments, _ = self.modele.transcribe(np.zeros(8000, dtype=np.float32), language="fr", beam_size=1)
+            list(segments)
+        except Exception:
+            pass
 
     def transcrire(self, audio) -> str:
         """audio : int16 à 16 kHz, ou chemin d'un fichier (note vocale Telegram .ogg...)."""
         if isinstance(audio, np.ndarray):
             audio = audio.astype(np.float32) / 32768.0
+        # une seule passe (température 0, sans horodatage) : pas de nouveaux essais plus lents sur une phrase hésitante
         segments, _ = self.modele.transcribe(audio, language="fr", beam_size=1, vad_filter=not isinstance(audio, np.ndarray),
-                                             condition_on_previous_text=False, initial_prompt="Jarvis,")
+                                             condition_on_previous_text=False, initial_prompt="Jarvis,",
+                                             temperature=0.0, without_timestamps=True)
         texte = " ".join(s.text.strip() for s in segments).strip()
         return nettoyer(texte)
 

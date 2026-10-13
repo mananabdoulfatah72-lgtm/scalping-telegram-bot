@@ -34,6 +34,7 @@ class Decoupeur:
 
     def __init__(self, sortie: Callable[[str], None] | None):
         self.sortie, self.tampon = sortie, ""
+        self.premiere = True
 
     def ajouter(self, morceau: str) -> None:
         self.tampon += morceau
@@ -41,6 +42,9 @@ class Decoupeur:
             m = self.COUPE.search(self.tampon)
             if m:
                 phrase, self.tampon = self.tampon[:m.end()], self.tampon[m.end():]
+            elif self.premiere and len(self.tampon) > 90 and self.tampon.find(", ", 40) >= 0:
+                i = self.tampon.find(", ", 40)           # longue première phrase : Jarvis commence à la virgule
+                phrase, self.tampon = self.tampon[:i + 1], self.tampon[i + 2:]
             elif len(self.tampon) > 260:
                 coupes = [i for i in (self.tampon.find(", ", 100), self.tampon.find("; ", 100)) if i >= 0]
                 if not coupes:
@@ -58,6 +62,7 @@ class Decoupeur:
 
     def _emettre(self, phrase: str) -> None:
         if self.sortie and phrase.strip():
+            self.premiere = False
             self.sortie(phrase.strip())
 
 
@@ -74,7 +79,8 @@ class Cerveau:
     # ------------------------------------------------------------------ conversation
     def consigne(self) -> str:
         return consigne(self.cfg.get("general.nom", "Jarvis"), self.cfg.get("general.proprietaire", ""),
-                        self.cfg.get("general.personnalite", "majordome"))
+                        self.cfg.get("general.personnalite", "majordome"),
+                        bool(self.cfg.get("general.confirmations", False)))
 
     def nouvelle_conversation(self) -> None:
         self.moteur.nouvelle_conversation(self.consigne(), outils.definitions_api())

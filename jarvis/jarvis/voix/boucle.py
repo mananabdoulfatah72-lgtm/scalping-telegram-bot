@@ -28,13 +28,25 @@ class BoucleVocale(threading.Thread):
         """Bouton Parler de l'écran : comme si on avait dit « Hey Jarvis »."""
         self.declencheur.set()
 
+    def bip(self, son) -> None:
+        """Petit son « je t'écoute », micro coupé pendant le son seulement : ce que tu dis juste après « Hey
+        Jarvis » est gardé (plus besoin d'attendre le bip pour parler)."""
+        coupe = getattr(self.micro, "coupe", None)
+        if coupe is not None:
+            coupe.set()
+        try:
+            self.synthese.jouer_son(son)
+        finally:
+            if coupe is not None:
+                coupe.clear()
+
     def niveau(self, x: float) -> None:
         bus.publier("micro", niveau=round(x, 3))
 
     def ecouter(self, attente: float) -> str:
         bus.publier("etat", etat="ecoute")
         audio = enregistrer_phrase(lambda: self.micro.lire(0.5), attente,
-                                   float(self.cfg.get("voix.silence_fin", 0.9)), detecteur=self.detecteur,
+                                   float(self.cfg.get("voix.silence_fin", 0.7)), detecteur=self.detecteur,
                                    sur_niveau=self.niveau)
         if audio is None:
             return ""
@@ -78,8 +90,8 @@ class BoucleVocale(threading.Thread):
                 if time.time() < suivi_jusqua:
                     if self.declencheur.is_set():      # bouton Parler pendant la réponse : bip, puis écoute
                         self.declencheur.clear()
-                        self.synthese.jouer_son(BIP_ECOUTE)
                         self.micro.vider()
+                        self.bip(BIP_ECOUTE)
                         suivi_jusqua = time.time() + 6.0
                     texte = self.ecouter(max(0.5, suivi_jusqua - time.time()))
                     suivi_jusqua = 0.0
@@ -89,8 +101,7 @@ class BoucleVocale(threading.Thread):
                     if not self.attendre_reveil():
                         break
                     self.synthese.stop()
-                    self.synthese.jouer_son(BIP_ECOUTE)
-                    self.micro.vider()
+                    self.bip(BIP_ECOUTE)               # sans vider le micro : la phrase dite d'une traite est gardée
                     texte = self.ecouter(6.0)
                     if not texte:
                         self.synthese.jouer_son(BIP_FIN)

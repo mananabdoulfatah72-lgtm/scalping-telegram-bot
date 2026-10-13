@@ -26,6 +26,16 @@
         Write-Host ""
         Write-Host "Jarvis est telecharge dans $dest" -ForegroundColor Green
         if ($env:JARVIS_TELECHARGER_SEULEMENT) { return }
+        $py = Join-Path $env:LOCALAPPDATA "Jarvis\venv\Scripts\python.exe"
+        if ((Test-Path $py) -and (Test-Path (Join-Path $env:APPDATA "Jarvis\config.toml"))) {
+            # deja installe : mise a jour rapide (modules eventuellement nouveaux), configuration gardee
+            Write-Host "Mise a jour des modules (moins d'une minute)..."
+            $ancien = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+            & $py -m pip install -e $dest --quiet 2>$null | Out-Null
+            $ErrorActionPreference = $ancien
+            Write-Host "Jarvis est a jour. Ferme-le s'il tourne (fenetre noire), puis double-clique sur Jarvis sur le Bureau." -ForegroundColor Green
+            return
+        }
         Write-Host "Installation (10 a 20 minutes la premiere fois)..."
         powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $dest "installer.ps1")
     } catch {

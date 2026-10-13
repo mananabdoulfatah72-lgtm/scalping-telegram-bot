@@ -149,5 +149,5 @@ def ton(frequences: list[tuple[float, float]], volume: float = 0.18, taux: int =
     return np.concatenate(morceaux).astype(np.float32)
 
 
-BIP_ECOUTE = ton([(660, 0.07), (990, 0.09)])
+BIP_ECOUTE = ton([(740, 0.04), (1110, 0.05)])           # court : Jarvis écoute presque aussitôt
 BIP_FIN = ton([(880, 0.06), (587, 0.08)])

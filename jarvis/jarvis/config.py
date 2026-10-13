@@ -13,7 +13,8 @@ from pathlib import Path
 from typing import Any
 
 DEFAUTS: dict[str, Any] = {
-    "general": {"nom": "Jarvis", "personnalite": "majordome", "ville": "Paris", "proprietaire": ""},
+    "general": {"nom": "Jarvis", "personnalite": "majordome", "ville": "Paris", "proprietaire": "",
+                "confirmations": False},   # true = Jarvis demande ton accord avant les actions sensibles
     "cerveau": {
         "moteur": "auto",              # auto | api | claude_code
         "modele": "claude-opus-5-5",
@@ -33,7 +34,7 @@ DEFAUTS: dict[str, Any] = {
         "voix_piper": "fr_FR-tom-medium",
         "vitesse": 1.0,
         "suivi_secondes": 6.0,         # écoute sans mot de réveil après une réponse
-        "silence_fin": 0.9,
+        "silence_fin": 0.7,
         "micro": "",                   # nom ou numéro du micro ; vide = micro par défaut
     },
     "interface": {"port": 8765, "ouvrir_navigateur": True, "reseau": False, "cle": ""},
@@ -64,6 +65,11 @@ def dossier() -> Path:
     return d
 
 
+# Réglages dont la valeur par défaut a changé : l'ancienne valeur (recopiée par l'installateur dans config.toml)
+# est remplacée par la nouvelle au chargement. Une autre valeur choisie à la main est gardée.
+ANCIENS_DEFAUTS = {"voix.silence_fin": (0.9, 0.7)}
+
+
 def fusionner(base: dict, ajout: dict) -> dict:
     out = copy.deepcopy(base)
     for k, v in ajout.items():
@@ -90,7 +96,11 @@ class Config:
         if fichier.exists():
             with open(fichier, "rb") as f:
                 donnees = tomllib.load(f)
-        return cls(donnees, fichier)
+        cfg = cls(donnees, fichier)
+        for chemin, (ancien, nouveau) in ANCIENS_DEFAUTS.items():
+            if cfg.get(chemin) == ancien:            # valeur laissée telle que l'installateur l'avait écrite
+                cfg.set(chemin, nouveau, ecrire=False)
+        return cfg
 
     def get(self, chemin: str, defaut: Any = None) -> Any:
         x: Any = self.donnees

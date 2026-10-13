@@ -16,13 +16,13 @@ ou depuis ton téléphone n'importe où (Telegram).
 | **Tout à la voix** | Mot de réveil « Hey Jarvis » (openWakeWord) et transcription (Whisper) sur le PC, voix neuronale française (Piper). Il commence à parler pendant qu'il finit de réfléchir, puis écoute encore 6 s pour que tu enchaînes sans redire « Hey Jarvis ». | Un micro (installé tout seul) |
 | **Vision de l'écran** | « C'est quoi cette erreur ? », « traduis ce qui est à l'écran », « lis-moi ça ». | Rien |
 | **Domotique Philips Hue** | Allumer, éteindre, intensité, couleur, scènes, par pièce ou partout. | Le pont Hue (appairage à la voix) |
-| **Streaming OBS** | Direct (avec confirmation), enregistrement, scènes, replay, micro. | OBS 28 ou plus |
+| **Streaming OBS** | Direct, enregistrement, scènes, replay, micro. | OBS 28 ou plus |
 | **Contrôle du PC** | Ouvrir ou fermer des applis, son et lecture média, raccourcis clavier, taper du texte, fenêtres, presse-papiers, fichiers, verrouillage, veille et arrêt, commandes PowerShell. Statistiques en direct : processeur, mémoire, carte graphique, disque, batterie. | Rien |
-| **Agenda Google** (avec iCal) | Lit tous tes agendas, y compris ceux auxquels tu es abonné par iCal ; crée des événements après confirmation. | Un accès Google (10 min, voir plus bas) |
-| **Mail Gmail** | Résume les non lus, cherche, lit, écrit des brouillons, envoie après confirmation. | Le même accès Google |
-| **Discord** | Qui t'a mentionné, récap des salons, envoi après confirmation. | Un bot Discord à toi |
+| **Agenda Google** (avec iCal) | Lit tous tes agendas, y compris ceux auxquels tu es abonné par iCal ; crée des événements. | Un accès Google (10 min, voir plus bas) |
+| **Mail Gmail** | Résume les non lus, cherche, lit, écrit des brouillons, envoie. | Le même accès Google |
+| **Discord** | Qui t'a mentionné, récap des salons, envoi de messages. | Un bot Discord à toi |
 | **Instagram** | Abonnés et vues comparés à la veille, plusieurs comptes, derniers posts. | API officielle de Meta |
-| **Réservations web** | Restaurant (TheFork), médecin (Doctolib), coiffeur (Planity) ou n'importe quel site : Jarvis remplit et clique ; le clic final (réserver, payer, confirmer) passe par toi. | Rien (Edge est déjà sur Windows) |
+| **Réservations web** | Restaurant (TheFork), médecin (Doctolib), coiffeur (Planity) ou n'importe quel site : Jarvis remplit, clique et valide. | Rien (Edge est déjà sur Windows) |
 | **Assistant navigateur** | Résumer ou traduire une page, chercher sur le web, gérer les onglets, remplir des formulaires. | Rien |
 | **Appels Twilio** | Appeler quelqu'un pour lui lire un message, ou **mener la conversation à ta place** (prévenir d'un retard, prendre rendez-vous) puis te faire le résumé. | Un compte Twilio |
 | **Mémoire long terme** | « Retiens que je joue au foot le jeudi », « qu'est-ce que tu sais sur moi ? », « oublie ça ». | Rien |
@@ -30,7 +30,7 @@ ou depuis ton téléphone n'importe où (Telegram).
 | **Présence** | Sait si ton téléphone est sur le wifi de la maison ; à ton arrivée ou à ton départ, il lance des actions (scène Hue, message…). Notifications sur le téléphone. | IP fixe du téléphone ; appli ntfy |
 | **Utilitaires** | Météo, minuteurs annoncés à voix haute, heure et date. | Rien |
 | **Serveur MCP** | Claude Desktop, Claude Code ou tout client MCP peuvent utiliser les outils de Jarvis. | Une commande |
-| *En plus* | **Telegram** : Jarvis sur ton iPhone partout. Messages, notes vocales, photos, et boutons Oui / Non pour les confirmations. | Un bot Telegram (2 min) |
+| *En plus* | **Telegram** : Jarvis sur ton iPhone partout. Messages, notes vocales, photos. | Un bot Telegram (2 min) |
 
 Ce qui n'est pas configuré s'affiche « À CONFIG. » dans le panneau de droite, et tout le reste marche quand même.
 
@@ -84,7 +84,9 @@ la fenêtre noire, puis relance le raccourci.
 2. Tape `claude` une fois dans un terminal et connecte-toi à ton compte.
 3. Laisse `moteur = "auto"` et `cle_api = ""`. Jarvis trouve Claude Code tout seul.
 
-C'est un peu plus lent (1 à 3 secondes de plus par demande) et l'usage compte dans les limites de ton abonnement.
+Claude Code reste ouvert en permanence, prêt dès le démarrage de Jarvis : une réponse simple arrive en une à
+deux secondes. L'usage compte dans les limites de ton abonnement. Pour aller encore plus vite (un peu moins
+malin), mets `modele_claude_code = "haiku"` ou `"sonnet"` dans `[cerveau]`.
 
 **Avec une clé d'API (le plus rapide)** :
 1. Sur [console.anthropic.com](https://console.anthropic.com) : **Settings > API keys > Create Key**, puis ajoute
@@ -129,17 +131,14 @@ Quelques exemples (après « Hey Jarvis », ou tapés dans le champ en bas de l'
 - « Minuteur 12 minutes pour les pâtes » · « Il fait quel temps demain ? »
 - « Stop » coupe la parole. « Merci » ou « c'est tout » termine la conversation.
 
-### Les confirmations
+### Aucune confirmation
 
-Jarvis demande ton accord avant les actions qui ont des conséquences :
-- envoyer un mail, un message Discord ou un événement d'agenda ;
-- appeler quelqu'un, lancer le direct ;
-- fermer une application, éteindre ou redémarrer le PC ;
-- lancer une commande PowerShell ou un programme, taper dans un terminal ;
-- cliquer ou appuyer sur Entrée sur un bouton qui réserve, paie, envoie ou confirme.
+Jarvis a accès à tout et agit directement, comme quelqu'un de confiance : il envoie, appelle, valide, ferme ou
+éteint sans te demander « tu confirmes ? ». Il ne touche jamais aux processus de Windows ni à lui-même.
 
-Tu réponds « oui » ou « non » à voix haute, avec les boutons de l'écran, ou avec les boutons sur Telegram. Sans
-réponse au bout de 45 secondes, rien n'est fait. Jarvis ne peut jamais se confirmer lui-même.
+Si un jour tu veux qu'il demande ton accord avant les actions qui ont des conséquences (envoyer, appeler, payer,
+éteindre, commandes…), mets `confirmations = true` dans `[general]` de la configuration. Tu réponds alors « oui »
+ou « non » à voix haute, à l'écran ou sur Telegram.
 
 ---
 
@@ -259,7 +258,6 @@ N'appelle que des gens d'accord pour parler à un assistant. Jarvis se présente
   arrivee = [{ outil = "hue_scene", arguments = { scene = "Détente" } }, { dire = "Bon retour, monsieur." }]
   depart = [{ outil = "hue_regler", arguments = { cible = "tout", allumer = false } }]
   ```
-  Ces actions ne peuvent rien faire qui demande une confirmation.
 
 ### Telegram (Jarvis partout sur ton téléphone)
 1. Dans Telegram, écris à **@BotFather**, envoie `/newbot` et choisis un nom. Copie le jeton dans
@@ -276,8 +274,7 @@ Ensuite, tu peux lui écrire, lui envoyer des notes vocales et des photos. Perso
   ```
   claude mcp add jarvis -- "%LOCALAPPDATA%\Jarvis\venv\Scripts\python.exe" -m jarvis --mcp
   ```
-Si Jarvis tourne, les demandes passent par lui : les neurones s'allument et les confirmations apparaissent à
-l'écran. Sinon, les outils marchent seuls, sans les actions qui demandent une confirmation.
+Si Jarvis tourne, les demandes passent par lui et les neurones s'allument. Sinon, les outils marchent seuls.
 
 ### Sur la télé ou le téléphone du salon
 Dans `[interface]`, mets `reseau = true` et une `cle` longue. Ouvre ensuite `http://IP-DU-PC:8765/?cle=TA_CLE` sur
@@ -298,7 +295,7 @@ ou mets-le sur un second écran.
   web ouvert dans le navigateur ne peut donc pas commander Jarvis. La page n'est pas donnée aux demandes qui
   passent par un tunnel, ni aux sites qui détournent leur nom vers ton PC. Le mode télé exige sa clé.
 - **Ce que Jarvis lit** (pages web, mails, messages Discord) est traité comme une information, jamais comme un
-  ordre. Les actions sensibles demandent toujours ton accord.
+  ordre : une page web ou un mail ne peut pas lui faire faire quelque chose à ta place.
 - Il ne touche jamais aux processus de Windows ni à lui-même.
 
 ---

@@ -8,6 +8,7 @@ proprietaire = ""                 # ton prénom (Jarvis se présente comme ton a
 personnalite = "majordome"        # majordome | neutre | concis | coach | pote
 ville = "Paris"                   # ville de la météo par défaut
 fuseau = "Europe/Paris"
+confirmations = false             # false = Jarvis agit directement ; true = il demande ton accord avant d'envoyer, payer, éteindre...
 
 [cerveau]
 # Deux façons de faire penser Jarvis :
@@ -19,7 +20,8 @@ cle_api = ""                      # ou variable d'environnement ANTHROPIC_API_KE
 modele = "claude-opus-5-5"        # autres choix : "claude-sonnet-5-5", "claude-haiku-5-5" (bien moins cher)
 effort = "low"                    # low = réponses rapides ; medium ou high pour les tâches longues (réservations)
 inactivite_minutes = 15           # nouvelle conversation après ce silence
-modele_claude_code = ""           # vide = le modèle par défaut de Claude Code
+modele_claude_code = ""           # vide = le modèle par défaut de Claude Code ; "haiku" = le plus rapide, "sonnet" = rapide et malin
+effort_claude_code = "low"        # réflexion de Claude Code : low = réponses rapides (conseillé à la voix) | medium | high
 
 [voix]
 active = true
@@ -31,7 +33,7 @@ synthese = "auto"                 # auto | piper | windows | aucune
 voix_piper = "fr_FR-tom-medium"
 vitesse = 1.0
 suivi_secondes = 6.0              # après une réponse, Jarvis écoute encore 6 s sans « Hey Jarvis »
-silence_fin = 0.9                 # secondes de silence qui terminent ta phrase
+silence_fin = 0.7                 # secondes de silence qui terminent ta phrase
 micro = ""                        # vide = micro par défaut ; sinon un morceau de son nom, ex. "Realtek"
 
 [interface]
@@ -42,7 +44,7 @@ reseau = false                    # true = cerveau visible depuis la télé ou l
 cle = ""                          # obligatoire si reseau = true : http://IP-du-PC:8765/?cle=TA_CLE
 
 [pc]
-commandes = true                  # commandes PowerShell autorisées (toujours avec confirmation)
+commandes = true                  # commandes PowerShell autorisées
 
 [pc.applications]                 # tes raccourcis : nom parlé = commande ou chemin
 # "mon jeu" = "steam://rungameid/730"

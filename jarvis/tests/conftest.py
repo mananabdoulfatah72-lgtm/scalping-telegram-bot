@@ -16,7 +16,8 @@ def dossier_jarvis(tmp_path, monkeypatch):
     from jarvis.confirmation import Confirmations
     from jarvis.memoire import Memoire
     from jarvis.services import S
-    (tmp_path / "config.toml").write_text("[general]\nproprietaire = \"Manan\"\n", encoding="utf-8")
+    # confirmations activées ici pour tester leur mécanisme (coupées par défaut chez l'utilisateur)
+    (tmp_path / "config.toml").write_text("[general]\nproprietaire = \"Manan\"\nconfirmations = true\n", encoding="utf-8")
     S.cfg = Config.charger(tmp_path / "config.toml")
     S.memoire = Memoire(tmp_path / "memoire.db")
     S.confirmations = Confirmations(delai=0.5)
