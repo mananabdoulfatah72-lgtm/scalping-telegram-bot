@@ -23,8 +23,10 @@ namespace Bot3en1
     public class Bot3en1Strategy : Strategy
     {
         [InputParameter("Compte", 10)] public Account Compte;
-        [InputParameter("Mode a plat chaque jour (Bulenox, FundedNext) : RSI(2) de nuit sur MES, frein, pas de zone les jours de la Fed", 12)]
+        [InputParameter("Mode a plat chaque jour (Bulenox, FundedNext) : frein, pas de zone les jours de la Fed, a plat avant 16 h 59 (New York)", 12)]
         public bool ModeAPlat = false;
+        [InputParameter("Mode a plat : RSI(2) de nuit sur MES, achat 18 h - vente 9 h 30 (Bulenox interdit de garder une position la nuit : laisser decoche)", 13)]
+        public bool RsiDeNuit = false;
         [InputParameter("NQ (barres et delta), contrat du moment, ex. NQZ6", 20)] public Symbol SymboleNQ;
         [InputParameter("MNQ (ordres), meme echeance, ex. MNQZ6", 30)] public Symbol SymboleMNQ;
         [InputParameter("MES (mode a plat : RSI(2) de nuit et zone freinee), meme echeance, ex. MESZ6", 35)] public Symbol SymboleMES;
@@ -119,6 +121,22 @@ namespace Bot3en1
             horloge?.Dispose();
             if (SymboleNQ != null) SymboleNQ.NewLast -= SurTransaction;
             if (ModeAPlat && SymboleMES != null) SymboleMES.NewLast -= SurTransactionES;
+            if (ModeAPlat && Compte != null && SymboleMNQ != null && SymboleMES != null)
+            {
+                // mode a plat : rien ne doit rester ouvert quand le bot ne tourne plus (la firme interdit les positions de nuit)
+                try
+                {
+                    lock (verrou)
+                    {
+                        ordreEnAttenteDepuis = ordreMESEnAttenteDepuis = DateTime.MinValue;
+                        ToutFermer("arret du bot : positions fermees (mode a plat)");
+                    }
+                }
+                catch (Exception e) { Dire($"ERREUR en fermant les positions a l'arret : {e.Message}", true); }
+                SauverEtat();
+                Dire("arrete. Mode a plat : les positions ont ete fermees.");
+                return;
+            }
             SauverEtat();
             Dire("arrete. Les positions ouvertes restent ouvertes (le RSI(2) peut tenir la nuit).");
         }
@@ -502,6 +520,14 @@ namespace Bot3en1
             var tod = maintenant.TimeOfDay;
             bot.PrixES = dernierPrixES > 0 ? dernierPrixES : double.NaN;
             if (File.Exists(Path.Combine(Dossier, "STOP"))) { ToutFermer("fichier STOP present"); return true; }
+            // filet de 16 h 30 a 18 h : la firme exige d'etre a plat avant 16 h 59 (New York) ; toute position encore ouverte
+            // (ordre de sortie refuse, position prise a la main...) est fermee, quoi que pense le moteur
+            if (tod >= TimeSpan.FromMinutes(16 * 60 + 30) && tod < TimeSpan.FromHours(18)
+                && (PositionReelle(SymboleMNQ) != 0 || PositionReelle(SymboleMES) != 0))
+            {
+                ToutFermer("filet de 16 h 30 : position encore ouverte apres la seance (a plat obligatoire avant 16 h 59)");
+                return true;
+            }
             // vente du RSI(2) de nuit a 9 h 30
             if (bot.RsiNuit != 0 && tod >= TimeSpan.FromMinutes(570) && tod < TimeSpan.FromHours(18))
             {
@@ -531,7 +557,7 @@ namespace Bot3en1
             // achat du RSI(2) de nuit : de 18 h a 9 h 25, si la seance qui suit existe et que le MES cote
             bool nuit = tod >= TimeSpan.FromHours(18) || tod < TimeSpan.FromMinutes(565);
             bool esVivant = dernierPrixES > 0 && (Maintenant() - dernierTickES).TotalMinutes < 5;
-            if (bot.NuitVoulue && bot.RsiNuit == 0 && !bot.Arret && nuit && nuitJournee != jt && !Calendrier.JourFerme(journeeTrading))
+            if (RsiDeNuit && bot.NuitVoulue && bot.RsiNuit == 0 && !bot.Arret && nuit && nuitJournee != jt && !Calendrier.JourFerme(journeeTrading))
             {
                 var attendue = DecisionAttendue(journeeTrading);
                 string empeche = bot.JourDecision != attendue
@@ -726,7 +752,7 @@ namespace Bot3en1
 
         string EtatTexte() => bot == null ? "" : ModeAPlat ?
             $"Positions voulues : MNQ {bot.PositionMNQ}, MES {bot.PositionMES} (zone {bot.ZoneTenue}{(bot.ZoneSurMES ? " sur MES, frein" : "")},"
-            + $" RSI(2) de nuit {bot.RsiNuit}{(bot.NuitVoulue ? ", achat de nuit voulu" : "")})"
+            + $" RSI(2) de nuit {(RsiDeNuit ? $"{bot.RsiNuit}{(bot.NuitVoulue ? ", achat de nuit voulu" : "")}" : "decoche")})"
             + $"{(bot.ZoneActive ? "" : bot.JourFed ? " ; jour de la Fed, pas de zone" : " ; zone inactive aujourd'hui")}"
             + $"{(bot.Arret ? " ; plafond ou limite du jour atteint, plus de trade jusqu'a 18 h" : "")}" :
             $"Position voulue {bot.PositionNette} MNQ (zone {bot.ZoneTenue}, RSI(2) {bot.Rsi}){(bot.Rsi == 1 ? $", RSI(2) achete a {bot.EntreeRsi:F2}" : "")}" +

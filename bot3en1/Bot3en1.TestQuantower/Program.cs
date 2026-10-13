@@ -58,6 +58,7 @@ class Program
             strat.Compte.Balance = double.Parse(Environment.GetEnvironmentVariable("SOLDE") ?? "0", inv);
             if (Environment.GetEnvironmentVariable("FREIN") is string fr) strat.Frein = double.Parse(fr, inv);
             if (Environment.GetEnvironmentVariable("LIMITE") is string li) strat.LimitePerteJour = double.Parse(li, inv);
+            strat.RsiDeNuit = Environment.GetEnvironmentVariable("RSI_NUIT") == "1";
         }
         var tic = typeof(Bot3en1Strategy).GetMethod("Tic", BindingFlags.NonPublic | BindingFlags.Instance);
         horloge.DateTimeUtcNow = Utc(jours[0].AddHours(9).AddMinutes(29));
@@ -139,6 +140,7 @@ class Program
         if (aPlat)
         {
             File.WriteAllLines(Path.Combine(dossier, "test_nuits.txt"), nuits);
+            if (!strat.RsiDeNuit && nuits.Count > 0) violations.Add($"RSI(2) de nuit decoche mais {nuits.Count} nuit(s) achetee(s)");
             Console.WriteLine($"mode a plat : {nuits.Count} nuits achetees ; ordres MES {Core.Instance.Ordres.Count(o => o.Contains(" MES"))} ;"
                               + $" a plat chaque jour a 16 h et sans MNQ la nuit : {(violations.Count == 0 ? "oui" : "NON")}");
             foreach (var v in violations.Take(10)) Console.WriteLine("  " + v);
@@ -202,6 +204,21 @@ class Program
         }
         Console.WriteLine($"erreurs : {strat.Logs.Count(l => l.StartsWith("[Error]"))}");
         foreach (var l in strat.Logs.Where(l => l.StartsWith("[Error]")).Take(5)) Console.WriteLine("  " + l);
+        if (aPlat)
+        {
+            // apres les chiffres ci-dessus : filet de 16 h 30 (position prise a la main apres la seance), puis arret du bot
+            // avec une position ouverte ; dans les deux cas, plus rien ne doit rester ouvert
+            var dj = jours[^1];
+            horloge.DateTimeUtcNow = Utc(dj.AddHours(16).AddMinutes(35));
+            Core.Instance.PlaceOrder(new PlaceOrderRequestParameters { Account = strat.Compte, Symbol = strat.SymboleMNQ, Side = Side.Buy, Quantity = 2, OrderTypeId = OrderType.Market });
+            tic.Invoke(strat, null);
+            bool filet = Pos(strat.SymboleMNQ) == 0;
+            horloge.DateTimeUtcNow = Utc(dj.AddHours(16).AddMinutes(40));
+            Core.Instance.PlaceOrder(new PlaceOrderRequestParameters { Account = strat.Compte, Symbol = strat.SymboleMES, Side = Side.Sell, Quantity = 3, OrderTypeId = OrderType.Market });
+            strat.Arreter();
+            bool arret = Pos(strat.SymboleMNQ) == 0 && Pos(strat.SymboleMES) == 0;
+            Console.WriteLine($"filet de 16 h 30 : {(filet ? "ok" : "NON")} ; arret du bot avec une position ouverte : tout ferme {(arret ? "ok" : "NON")}");
+        }
         return 0;
     }
 }

@@ -112,7 +112,9 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 **« Mode a plat chaque jour »** fait ce que les vagues 8 à 11 ont simulé. Désactivé (par défaut), le bot ne change pas.
 
 **Les 4 changements :**
-1. **RSI(2) de nuit seulement, sur 1 MES.** La règle est décidée à 15 h 50 comme avant, mais rien n'est acheté à 15 h 50 :
+1. **RSI(2) de nuit seulement, sur 1 MES** — **décoché par défaut depuis le 13 octobre 2026** (réglage « RSI(2) de nuit
+   sur MES », voir plus bas : Bulenox interdit de garder une position la nuit). Coché, la règle est décidée à 15 h 50
+   comme avant, mais rien n'est acheté à 15 h 50 :
    - le bot achète 1 MES à la réouverture de 18 h (dimanche 18 h avant un lundi) ;
    - il revend à 9 h 30.
    - Démarré plus tard dans la nuit, il achète jusqu'à 9 h 25, pas au-delà.
@@ -131,6 +133,7 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Réglage | Challenge (30 jours) | Compte Master (après la réussite) |
 |---|---|---|
 | Mode a plat chaque jour | coché | coché |
+| RSI(2) de nuit sur MES | **décoché** | **décoché** |
 | MNQ, MES, NQ | échéance du moment (ex. MNQZ6, MESZ6, NQZ6) | idem |
 | MNQ par source | **4** | **1** |
 | Plafond de gain du jour | 0 | **500** |
@@ -154,13 +157,42 @@ tel quel n'y valide qu'environ 5 % des challenges.
      - Les jours suivants, si le solde de 18 h est à 53 000 $ ou plus, il ne trade plus du tout sur ce compte et le dit
        chaque soir.
      - Pas besoin de 6 000 $ quand 3 000 suffisent : c'est ce qui évite de reperdre un challenge déjà gagné.
-  2. **Fin de course.** Si l'objectif n'est pas atteint, le bot passe à 6 MNQ par source (zone et RSI(2) de nuit)
+  2. **Fin de course.** Si l'objectif n'est pas atteint, le bot passe à 6 MNQ par source (zone, et RSI(2) de nuit s'il
+     est coché)
      pendant les 5 dernières séances avant la date de fin.
      - Il change de taille seulement quand il est à plat, normalement à 18 h.
      - Le décompte saute les week-ends et les jours fériés de la Bourse.
      - La date à mettre est le dernier jour où Bulenox laisse trader le compte (30 jours après l'achat, à vérifier sur
        le tableau de bord de Bulenox).
 - Voir `vague12/README.md` et `vague13/README.md` avant d'acheter.
+
+**Règles confirmées par Bulenox par e-mail (13 octobre 2026), et ce que fait le bot :**
+- **Journée de trading de 17 h à 16 h (heure de Chicago)**, soit de 18 h à 17 h à New York. Le bot compte sa journée,
+  sa limite de perte et son plafond à partir de 18 h (New York) : c'est la même journée.
+- **Tout fermer avant 15 h 59 (Chicago), soit 16 h 59 (New York), 22 h 59 à Paris.** La zone ferme à 16 h (New York),
+  22 h à Paris. Deux sécurités en plus depuis le 13 octobre :
+  - **filet de 16 h 30 :** entre 16 h 30 et 18 h (New York), si une position MNQ ou MES est encore ouverte (ordre refusé,
+    coupure, position ouverte à la main), le bot ferme tout ;
+  - **arrêt du bot :** en mode à plat, arrêter la stratégie dans Quantower ferme d'abord toutes les positions. Le bot
+    peut être relancé le jour même.
+- **« Holding positions overnight is strictly prohibited ».** Le RSI(2) de nuit garde 1 MES de 18 h à 9 h 30 : il est
+  donc **décoché par défaut**. Simulation du challenge de 30 jours (vague 13, version D, filtre fort), il n'apportait
+  presque rien :
+
+  | Période | Avec RSI(2) de nuit | Sans |
+  |---|---|---|
+  | 2012-2026 | 54,6 % | 54,4 % |
+  | 2023-2026 | 55,4 % | 56,0 % |
+  | 2025 | 44,7 % | 41,5 % |
+
+- **Bots permis**, mais seulement un outil fait par le titulaire du compte, pour lui seul. Les outils « publicly
+  distributed » sont interdits : passer le dépôt GitHub en privé une fois le bot installé.
+- **100 $ par mois** si on se connecte à Rithmic par une API tierce ou un logiciel composite. Demander à Bulenox si
+  Quantower avec Rithmic est concerné.
+- **Taille :** au plus 6 MNQ à la fois pendant le challenge (6 micros, soit 0,6 contrat standard), loin de la limite de
+  contrats du compte 50K.
+- **Ce que le bot ne peut pas empêcher :** la perte maximale suivie en fin de journée (2 500 $). C'est elle qui fait
+  perdre environ un tiers des challenges en simulation : ce n'est pas une infraction, c'est un challenge raté.
 
 **Au passage au compte Master :**
 - choisir le nouveau compte dans les réglages ;
@@ -215,6 +247,12 @@ A_PLAT=1 SANS_FILTRE=1 TAILLE=4 OBJECTIF=53000 DATE_FIN=2026-05-12 TAILLE_FIN=6 
   dotnet run -c Release --project Bot3en1.TestQuantower -- <dossier> <nasdaq100_1min.csv.gz> <agresseurs.csv.gz> 2026-04-13 2026-05-12
 ```
 
+**Vérifié (13 octobre 2026), RSI(2) de nuit décoché, filet de 16 h 30 et arrêt du bot :**
+- RSI(2) de nuit coché : ordres, journal et messages identiques octet pour octet à avant, dans les 5 modes testés (à plat,
+  frein, plafond, challenge de 30 jours, ancien mode).
+- Décoché (par défaut) : aucune nuit achetée, mêmes trades de zone, 0 erreur.
+- Position MNQ ouverte à la main à 16 h 35 : fermée au tic suivant. Position MES ouverte puis arrêt du bot : tout fermé.
+
 **Revue indépendante du code (10 octobre 2026), puis corrections :**
 - **Défaut grave corrigé : le fichier STOP la nuit.** Le bot revendait puis rachetait le MES toutes les 16 secondes
   (15 ordres en 4 minutes dans le scénario de la revue). Maintenant : un seul ordre de vente, plus rien ensuite.
@@ -245,8 +283,8 @@ A_PLAT=1 SANS_FILTRE=1 TAILLE=4 OBJECTIF=53000 DATE_FIN=2026-05-12 TAILLE_FIN=6 
   bloquer la compilation si Quantower les nomme autrement. Au premier lancement, vérifier dans le journal que le message
   « mode a plat : solde ... » donne le vrai solde, et non « solde estimé ».
 - Le flux du MES doit arriver : sans transaction MES récente, le bot n'achète pas le RSI(2) de nuit.
-- PC (ou serveur) allumé de 18 h à 9 h 30 (New York) pour le RSI(2) de nuit, soit de minuit à 15 h 30 heure de Paris, en
-  plus de la séance.
+- RSI(2) de nuit coché seulement : PC (ou serveur) allumé de 18 h à 9 h 30 (New York), soit de minuit à 15 h 30 heure
+  de Paris, en plus de la séance.
 
 ## Limites connues
 
