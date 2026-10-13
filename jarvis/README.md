@@ -306,6 +306,7 @@ ou mets-le sur un second écran.
 |---|---|
 | Rien ne se lance | Double-clique sur `lancer.bat` dans `C:\Users\TON_NOM\Jarvis` : la fenêtre noire affiche l'erreur. |
 | « Your credit balance is too low » | La clé d'API n'a plus de crédit (elle est payée à part de l'abonnement). Si Claude Code est installé, Jarvis passe tout seul sur ton abonnement. Pour ne plus jamais utiliser la clé : `moteur = "claude_code"` dans `[cerveau]`. |
+| « Claude Code : Credit balance is too low » | Claude Code est connecté à un compte API (Console) au lieu de ton abonnement. Dans PowerShell : `claude auth logout`, puis `claude auth login`, et choisis **le compte Claude avec abonnement**. |
 | « Aucun cerveau disponible » | Mets une clé d'API, ou installe Claude Code et connecte-toi (voir plus haut). |
 | Un module affiche « À CONFIG. » | Il manque un réglage dans la configuration ; `lancer.bat --verifier` dit lequel. |
 | « Port déjà utilisé » | Jarvis tourne déjà, ou change `[interface] port`. |

@@ -191,8 +191,10 @@ class ProcessusClaude:
     def __init__(self, commande: list[str], consigne: str):
         self.consigne, self.utilise = consigne, False
         self.en_retard = 0               # fins de tour pas encore arrivées pour des réponses déjà rendues
+        # sans ANTHROPIC_API_KEY : une clé d'API présente dans Windows ne doit pas remplacer la connexion à l'abonnement
+        env = {k: v for k, v in os.environ.items() if k.upper() != "ANTHROPIC_API_KEY"}
         self.proc = subprocess.Popen(commande, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                     text=True, encoding="utf-8", errors="replace", cwd=str(dossier()),
+                                     text=True, encoding="utf-8", errors="replace", cwd=str(dossier()), env=env,
                                      creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         self.file: queue.Queue = queue.Queue()
         self.erreurs: list[str] = []
@@ -246,6 +248,17 @@ class ProcessusClaude:
             self.proc.kill()
         except OSError:
             pass
+
+
+def message_claude_code(erreur: str) -> str:
+    """Erreur renvoyée par Claude Code, expliquée quand on sait quoi faire."""
+    e = erreur.lower()
+    if "credit balance" in e:
+        return ("Claude Code est connecté à un compte API sans crédit, pas à ton abonnement Claude. Dans PowerShell, "
+                "tape claude auth logout, puis claude auth login, et choisis le compte Claude avec abonnement.")
+    if "not logged in" in e or "/login" in e or "invalid api key" in e:
+        return "Claude Code n'est pas connecté. Dans PowerShell, tape claude auth login et choisis le compte Claude avec abonnement."
+    return "Claude Code : " + erreur[:200]
 
 
 class MoteurClaudeCode:
@@ -430,7 +443,7 @@ class MoteurClaudeCode:
                         sur_texte(b.get("text", ""))
             elif t == "result":
                 if obj.get("is_error"):
-                    raise ErreurCerveau("Claude Code : " + str(obj.get("result") or obj.get("subtype") or "erreur")[:200])
+                    raise ErreurCerveau(message_claude_code(str(obj.get("result") or obj.get("subtype") or "erreur")))
                 return True, obj.get("result", "") or "".join(morceaux).strip()
 
 

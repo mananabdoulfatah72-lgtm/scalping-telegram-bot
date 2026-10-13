@@ -272,3 +272,31 @@ def test_branchement_claude_desktop(tmp_path, capsys):
     assert (tmp_path / "Claude" / "claude_desktop_config.json.avant_jarvis").exists()
     f.write_text("{ cassé", encoding="utf-8")
     assert mode_claude_desktop(f) == 1 and f.read_text(encoding="utf-8") == "{ cassé"
+
+
+def test_claude_code_sans_cle_api_et_message_credit(tmp_path, monkeypatch):
+    """Une clé ANTHROPIC_API_KEY dans Windows ne passe pas à Claude Code ; l'erreur de crédit est expliquée."""
+    if sys.platform == "win32":
+        pytest.skip("faux programme en script shell")
+    script = textwrap.dedent('''\
+        #!{python}
+        import json, os, sys
+        for ligne in sys.stdin:
+            if os.environ.get("ANTHROPIC_API_KEY"):
+                print(json.dumps({{"type": "result", "is_error": True, "result": "Credit balance is too low"}}), flush=True)
+            else:
+                print(json.dumps({{"type": "result", "is_error": False, "result": "Abonnement."}}), flush=True)
+        ''').format(python=sys.executable)
+    exe = tmp_path / "claude"
+    exe.write_text(script, encoding="utf-8")
+    exe.chmod(exe.stat().st_mode | stat.S_IEXEC)
+    from jarvis.moteurs import ErreurCerveau, MoteurClaudeCode, message_claude_code
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-cle-sans-credit")
+    S.cfg.set("cerveau.reserve_claude_code", False, ecrire=False)
+    m = MoteurClaudeCode(S.cfg, executable=str(exe))
+    m.nouvelle_conversation("Tu es Jarvis.", [])
+    assert m.repondre([{"type": "text", "text": "Bonjour"}], lambda t: None, None) == "Abonnement."
+    m.arreter()
+    assert "claude auth login" in message_claude_code("Credit balance is too low")
+    with pytest.raises(ErreurCerveau, match="abonnement"):
+        raise ErreurCerveau(message_claude_code("Credit balance is too low"))
