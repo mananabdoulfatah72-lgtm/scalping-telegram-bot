@@ -30,14 +30,33 @@ $plateformes = @(foreach ($r in $racines) {
 }) | Sort-Object Bin -Unique
 if (-not $plateformes) { throw "Bibliotheque introuvable. Lance Quantower ou Optimus Flow une fois, puis relance ce script." }
 # 2. Kit .NET de la bonne version (Quantower et Optimus Flow recents sont en .NET 10), installe une seule fois
+try { [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 } catch { }
+$kitLocal = Join-Path $env:LOCALAPPDATA "Microsoft\dotnet"     # kit installe par le script de Microsoft (sans winget)
+if (Test-Path (Join-Path $kitLocal "dotnet.exe")) { $env:Path = "$kitLocal;" + $env:Path }
+function Kit-Present([int]$v) {
+    if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { return $false }
+    return [bool]((dotnet --list-sdks) -match "^$v\.")
+}
 function Assurer-Kit([int]$v) {
-    $ok = $false
-    if (Get-Command dotnet -ErrorAction SilentlyContinue) { $ok = [bool]((dotnet --list-sdks) -match "^$v\.") }
-    if (-not $ok) {
+    if (Kit-Present $v) { return }
+    if (Get-Command winget -ErrorAction SilentlyContinue) {
         Write-Host "Installation du kit .NET $v (une seule fois, quelques minutes)..."
-        winget install --id "Microsoft.DotNet.SDK.$v" --silent --accept-package-agreements --accept-source-agreements | Out-Host
+        $ancien = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+        try { winget install --id "Microsoft.DotNet.SDK.$v" --silent --accept-package-agreements --accept-source-agreements | Out-Host }
+        finally { $ErrorActionPreference = $ancien }
         $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+        if (Test-Path (Join-Path $kitLocal "dotnet.exe")) { $env:Path = "$kitLocal;" + $env:Path }
+        if (Kit-Present $v) { return }
     }
+    # pas de winget (Windows Server 2022 des serveurs loues, par exemple) ou echec : script officiel de Microsoft
+    Write-Host "Installation du kit .NET $v avec le script de Microsoft (une seule fois, quelques minutes)..."
+    $script = Join-Path $env:TEMP "dotnet-install.ps1"
+    $ProgressPreference = "SilentlyContinue"
+    try { Invoke-WebRequest "https://dot.net/v1/dotnet-install.ps1" -OutFile $script -UseBasicParsing }
+    catch { Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/install-scripts/main/src/dotnet-install.ps1" -OutFile $script -UseBasicParsing }
+    & $script -Channel "$v.0" -InstallDir $kitLocal -NoPath
+    $env:Path = "$kitLocal;" + $env:Path
+    if (-not (Kit-Present $v)) { throw "le kit .NET $v n'a pas pu etre installe" }
 }
 $projet = "$PSScriptRoot\Bot3en1.Quantower\Bot3en1.Quantower.csproj"
 # 3. Pour chaque plateforme : compilation contre sa bibliotheque et sa version de .NET, copie dans ses strategies

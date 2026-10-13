@@ -21,7 +21,7 @@ Taille : 1 MNQ par source. La position nette sur MNQ est la somme des deux (zone
 | `Bot3en1.TestQuantower/` | Joue l'adaptateur, transaction par transaction, contre une imitation de Quantower. |
 | `Bot3en1.TestPlafond/` | Contrôles du plafond du jour (système Static) sur le moteur seul, avec des prix fabriqués. |
 | `telecharger.ps1` | Installation en une ligne à coller dans PowerShell : télécharge seulement ce dossier, puis lance `installer.ps1`. Recoller la ligne met le bot à jour : `irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/keen-babbage-r686cl/bot3en1/telecharger.ps1 \| iex` |
-| `installer.bat`, `installer.ps1` | Installation sur le PC (double-clic) : dans Quantower et/ou Optimus Flow (une version de Quantower, gratuite avec la démo Optimus Futures). Si la plateforme n'est pas trouvée, glisser son dossier sur `installer.bat` ou coller son chemin quand le script le demande. |
+| `installer.bat`, `installer.ps1` | Installation sur le PC (double-clic) : dans Quantower et/ou Optimus Flow (une version de Quantower, gratuite avec la démo Optimus Futures). Si la plateforme n'est pas trouvée, glisser son dossier sur `installer.bat` ou coller son chemin quand le script le demande. Sans winget (Windows Server 2022 des serveurs loués), le kit .NET s'installe avec le script officiel de Microsoft. |
 
 ## Vérifications faites (3 octobre 2026)
 
