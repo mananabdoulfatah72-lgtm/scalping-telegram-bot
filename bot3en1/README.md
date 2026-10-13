@@ -137,7 +137,7 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | MNQ, MES, NQ | échéance du moment (ex. MNQZ6, MESZ6, NQZ6) | idem |
 | MNQ par source | **4** | **1** |
 | Plafond de gain du jour | 0 | **500** |
-| Limite de perte du jour | 1 050 (juste avant les 1 100 $ de Bulenox) | 1 050 |
+| Limite de perte du jour | **1 000** (100 $ de marge avant les 1 100 $ de Bulenox) | 1 000 |
 | Frein | **0** | **750** |
 | Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
 | Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |
@@ -189,8 +189,15 @@ tel quel n'y valide qu'environ 5 % des challenges.
   distributed » sont interdits : passer le dépôt GitHub en privé une fois le bot installé.
 - **100 $ par mois** si on se connecte à Rithmic par une API tierce ou un logiciel composite. Demander à Bulenox si
   Quantower avec Rithmic est concerné.
-- **Taille :** au plus 6 MNQ à la fois pendant le challenge (6 micros, soit 0,6 contrat standard), loin de la limite de
-  contrats du compte 50K.
+- **Taille (« EOD Dynamic Scaling Plan ») :** la limite de contrats monte avec le gain en fin de journée. Au premier
+  palier (gain de 0 à 1 500 $), 2 contrats standard, soit 20 micros (1 standard = 10 micros chez Bulenox). Le bot tient
+  au plus 6 MNQ à la fois pendant le challenge (vérifié sur le test de 30 jours), sous la limite dès le premier jour.
+- **Limite de perte du jour : 1 000 $ dans le bot (13 octobre 2026), pour 1 100 $ chez Bulenox.** Le bot ferme tout
+  après 3 secondes de confirmation : dans un marché rapide, la fermeture peut finir un peu plus loin que le réglage.
+  À 1 050 $, la marge n'était que de 6 points du NQ en 4 MNQ, 4 en 6 MNQ ; à 1 000 $, elle double. Simulation du
+  challenge de 30 jours (version D, sans RSI de nuit, filtre fort) : 54,4 % de validés avec la limite de Bulenox seule,
+  54,6 % à 1 050 $, 54,5 % à 1 000 $, 54,2 % à 950 $, 53,6 % à 900 $. Si la limite de Bulenox est touchée quand même,
+  le compte est suspendu pour le reste de la journée, sans être perdu (d'après Bulenox et les guides).
 - **Ce que le bot ne peut pas empêcher :** la perte maximale suivie en fin de journée (2 500 $). C'est elle qui fait
   perdre environ un tiers des challenges en simulation : ce n'est pas une infraction, c'est un challenge raté.
 

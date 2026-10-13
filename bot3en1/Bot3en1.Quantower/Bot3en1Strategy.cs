@@ -33,7 +33,7 @@ namespace Bot3en1
         [InputParameter("Dossier des donnees du bot", 40)] public string Dossier = @"C:\Bot3en1";
         [InputParameter("MNQ par source (Bulenox : 4 pendant le challenge de 30 jours, 1 sur le compte Master)", 50, 1, 6, 1, 0)] public int Taille = 1;
         [InputParameter("Plafond de gain du jour en $ (0 = aucun ; Bulenox : 500 sur le compte Master seulement, 0 pendant le challenge ; Static : 500 sur le compte Pro)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
-        [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1050, juste avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
+        [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1000, 100 $ de marge avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
         [InputParameter("Mode a plat : frein, zone sur MES quand le compte est a X $ ou plus sous son plus haut de fin de journee (0 = jamais ; Bulenox : 750)", 62, 0, 5000, 50, 0)] public double Frein = 750;
         [InputParameter("Mode a plat : solde de depart du compte (ex. 50000)", 63, 0, 1000000, 1000, 0)] public double SoldeDepart = 50000;
         [InputParameter("Mode a plat : perte max suivie en fin de journee (Bulenox 50K : 2500)", 64, 0, 100000, 100, 0)] public double PerteMax = 2500;
