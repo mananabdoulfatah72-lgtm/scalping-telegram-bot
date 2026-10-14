@@ -29,10 +29,10 @@ Cloture de la veille (16 h New York) : **30,789.00**. Apres l'ouverture de 9 h 3
 | 12h00 | 18h00 | 0.349% | 1.00349 | 0.99651 |
 | 12h30 | 18h30 | 0.342% | 1.00342 | 0.99658 |
 | 13h00 | 19h00 | 0.465% | 1.00465 | 0.99535 |
-| 13h30 | 19h30 | 0.446% | 1.00446 | 0.99554 |
+| 13h30 | 19h30 | 0.447% | 1.00447 | 0.99553 |
 | 14h00 | 20h00 | 0.425% | 1.00425 | 0.99575 |
 | 14h30 | 20h30 | 0.420% | 1.00420 | 0.99580 |
-| 15h00 | 21h00 | 0.427% | 1.00427 | 0.99573 |
+| 15h00 | 21h00 | 0.428% | 1.00428 | 0.99572 |
 | 15h30 | 21h30 | 0.435% | 1.00435 | 0.99565 |
 
 Taille : un jour normal = 207 $ de risque pour 1 MNQ. Sur un compte neuf : f = 0.15 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.25 -> Phidias (coussin 2 500 $) 3 MNQ, Topstep (coussin 2 000 $) 2 MNQ ; f = 0.35 -> Phidias (coussin 2 500 $) 4 MNQ, Topstep (coussin 2 000 $) 3 MNQ. **En cours de challenge : MNQ = f x (solde - limite de perte) / 207, arrondi en dessous, au moins 1 MNQ** (exemple : f = 0,25, coussin 1 500 $ -> 1 MNQ).
@@ -63,7 +63,7 @@ Pas encore de trade de zone mesure depuis le 2026-10-01.
 
 ## Second moteur : rebond apres forte baisse (suivi a part, hors compte)
 
-Pas d'achat le 2026-10-14. Derniere seance complete : +0.55% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.10%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
+Pas d'achat le 2026-10-14. Derniere seance complete : +0.56% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.10%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
 
 ## Derniers jours
 
