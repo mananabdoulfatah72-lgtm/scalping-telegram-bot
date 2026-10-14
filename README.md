@@ -7,13 +7,13 @@ Chaque robot suit un compte **virtuel** de 50 000 $ : aucun ordre reel, aucun ar
 | Melange tendance + achat | futures, 19 marches, garde la nuit | 2026-09-25 | 49,852 $ | +5 $ (2026-10-12) | -148 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
 | Tendance seule | futures, 19 marches, garde la nuit | 2026-09-25 | 50,336 $ | +267 $ (2026-10-12) | +336 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
 | Version 7 | 5 actions technologie par mois, 50 % investi | 2026-09-29 | 49,813 $ | -604 $ (2026-10-12) | -187 $ | [detail](version7/robot/TABLEAU_DE_BORD.md) |
-| Zone de bruit + challenge Phidias 50K | Nasdaq MNQ, intraday | 2026-09-28 | 49,918 $ (challenge n°1) | +0 $ (2026-10-09) | -82 $ | [detail](zone/robot/TABLEAU_DE_BORD.md) |
+| Zone de bruit + challenge Phidias 50K | Nasdaq MNQ, intraday | 2026-09-28 | 49,752 $ (challenge n°1) | -166 $ (2026-10-12) | -248 $ | [detail](zone/robot/TABLEAU_DE_BORD.md) |
 
 ## Resultat de chaque jour ($)
 
 | Date | Melange tendance + achat | Tendance seule | Version 7 | Zone de bruit + challenge Phidias 50K |
 |---|---|---|---|---|
-| 2026-10-12 | +5 | +267 | -604 |  |
+| 2026-10-12 | +5 | +267 | -604 | -166 |
 | 2026-10-09 | +81 | +112 | +43 | +0 |
 | 2026-10-08 | -154 | -336 | -633 | -54 |
 | 2026-10-07 | -210 | -7 | +74 | +0 |
