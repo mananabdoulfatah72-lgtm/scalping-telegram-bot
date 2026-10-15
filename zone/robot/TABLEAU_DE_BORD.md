@@ -18,12 +18,12 @@ Voyant VERT (fourchette normale) : +164 $ pour 1 MNQ apres 13 seance(s) ; le bac
 
 ## Trades du 2026-10-14
 
-- vente 11h30 a 30,392.75 -> sortie 16h00 a 30,185.75
-- RSI(2) : achat 15h50 a 30,175.75
+- vente 11h30 a 30,392.75 -> sortie 16h00 a 30,185.50
+- RSI(2) : achat 15h50 a 30,177.75
 
 ## Pour la seance du 2026-10-15 (a utiliser en direct)
 
-Cloture de la veille (16 h New York) : **30,185.75**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
+Cloture de la veille (16 h New York) : **30,185.50**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
 
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
@@ -32,7 +32,7 @@ Cloture de la veille (16 h New York) : **30,185.75**. Apres l'ouverture de 9 h 3
 | 11h00 | 17h00 | 0.324% | 1.00324 | 0.99676 |
 | 11h30 | 17h30 | 0.370% | 1.00370 | 0.99630 |
 | 12h00 | 18h00 | 0.396% | 1.00396 | 0.99604 |
-| 12h30 | 18h30 | 0.378% | 1.00378 | 0.99622 |
+| 12h30 | 18h30 | 0.377% | 1.00377 | 0.99623 |
 | 13h00 | 19h00 | 0.464% | 1.00464 | 0.99536 |
 | 13h30 | 19h30 | 0.478% | 1.00478 | 0.99522 |
 | 14h00 | 20h00 | 0.486% | 1.00486 | 0.99514 |
@@ -46,7 +46,7 @@ Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la 
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : EN POSITION (achat). Le 2026-10-15 a 15 h 50 New York : vente si le prix de 15 h 49 depasse 30,736.25 (moyenne des 5 clotures) ; sinon garder. Le jour d'un changement d'echeance : vente.
+RSI(2) : EN POSITION (achat). Le 2026-10-15 a 15 h 50 New York : vente si le prix de 15 h 49 depasse 30,736.50 (moyenne des 5 clotures) ; sinon garder. Le jour d'un changement d'echeance : vente.
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
