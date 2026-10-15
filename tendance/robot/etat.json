@@ -2,8 +2,8 @@
   "comptes": {
     "melange": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-10-13",
-      "solde": 49758.99855944157,
+      "derniere_date": "2026-10-14",
+      "solde": 49390.329259821476,
       "plus_haut": 50276.00947498293,
       "positions": {
         "Russell 2000": 1.0,
@@ -21,8 +21,8 @@
     },
     "tendance": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-10-13",
-      "solde": 50044.07024725767,
+      "derniere_date": "2026-10-14",
+      "solde": 49840.527075555394,
       "plus_haut": 50643.19587302805,
       "positions": {
         "Russell 2000": 1.0,
