@@ -18,25 +18,25 @@ Voyant VERT (fourchette normale) : +164 $ pour 1 MNQ apres 14 seance(s) ; le bac
 
 ## Trades du 2026-10-15
 
-- rebond (suivi a part, hors compte) : achat 9h30 a 29,746.00 -> sortie 16h00 a 30,141.25, +788 $ pour 1 MNQ
+- rebond (suivi a part, hors compte) : achat 9h30 a 29,745.50 -> sortie 16h00 a 30,141.00, +788 $ pour 1 MNQ
 
 ## Pour la seance du 2026-10-16 (a utiliser en direct)
 
-Cloture de la veille (16 h New York) : **30,141.25**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
+Cloture de la veille (16 h New York) : **30,141.00**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
 
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
-| 10h00 | 16h00 | 0.246% | 1.00246 | 0.99754 |
-| 10h30 | 16h30 | 0.319% | 1.00319 | 0.99681 |
+| 10h00 | 16h00 | 0.245% | 1.00245 | 0.99755 |
+| 10h30 | 16h30 | 0.320% | 1.00320 | 0.99680 |
 | 11h00 | 17h00 | 0.375% | 1.00375 | 0.99625 |
 | 11h30 | 17h30 | 0.421% | 1.00421 | 0.99579 |
 | 12h00 | 18h00 | 0.450% | 1.00450 | 0.99550 |
 | 12h30 | 18h30 | 0.394% | 1.00394 | 0.99606 |
 | 13h00 | 19h00 | 0.501% | 1.00501 | 0.99499 |
-| 13h30 | 19h30 | 0.516% | 1.00516 | 0.99484 |
+| 13h30 | 19h30 | 0.517% | 1.00517 | 0.99483 |
 | 14h00 | 20h00 | 0.537% | 1.00537 | 0.99463 |
 | 14h30 | 20h30 | 0.496% | 1.00496 | 0.99504 |
-| 15h00 | 21h00 | 0.533% | 1.00533 | 0.99467 |
+| 15h00 | 21h00 | 0.534% | 1.00534 | 0.99466 |
 | 15h30 | 21h30 | 0.543% | 1.00543 | 0.99457 |
 
 Taille : un jour normal = 213 $ de risque pour 1 MNQ. Sur un compte neuf : f = 0.15 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.25 -> Phidias (coussin 2 500 $) 2 MNQ, Topstep (coussin 2 000 $) 2 MNQ ; f = 0.35 -> Phidias (coussin 2 500 $) 4 MNQ, Topstep (coussin 2 000 $) 3 MNQ. **En cours de challenge : MNQ = f x (solde - limite de perte) / 213, arrondi en dessous, au moins 1 MNQ** (exemple : f = 0,25, coussin 1 500 $ -> 1 MNQ).
@@ -45,7 +45,7 @@ Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la 
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : EN POSITION (achat). Le 2026-10-16 a 15 h 50 New York : vente si le prix de 15 h 49 depasse 30,507.25 (moyenne des 5 clotures) ; sinon garder. Le jour d'un changement d'echeance : vente.
+RSI(2) : EN POSITION (achat). Le 2026-10-16 a 15 h 50 New York : vente si le prix de 15 h 49 depasse 30,507.38 (moyenne des 5 clotures) ; sinon garder. Le jour d'un changement d'echeance : vente.
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
