@@ -1,8 +1,8 @@
-Filtre H1, version Rithmic : 1 fichier(s), 12 seances exportees (2026-09-18 - 2026-10-05), 9 trades de zone sur ces seances
+Filtre H1, version Rithmic : 2 fichier(s), 23 seances exportees (2026-09-16 - 2026-10-16), 15 trades de zone sur ces seances
 
-Validation contre Databento : meme signe du delta 30 min sur 100.0% de 8 trades communs (seuil 95%) -> source ACCEPTEE
+Validation contre Databento (transactions_NQZ6_rithmic.csv) : meme signe du delta 30 min sur 100.0% de 8 trades communs (seuil 95%) -> source ACCEPTEE
 
-Test hors du 2026-04-01 - 2026-10-02 : 1 trades mesures (0 fenetres exclues, plus de 10 % sans cote)
-- gardes : 1 trades, +124.25 pt ; ecartes : 0, +nan pt ; t +nan
-- zone seule +124 pt (+248 $ pour 1 MNQ) ; zone filtree +124 pt (+248 $)
--> point d'etape, pas de decision (1 trades sur 150 ; source acceptee)
+Test hors du 2026-04-01 - 2026-10-02 : 7 trades mesures (0 fenetres exclues, plus de 10 % sans cote)
+- gardes : 6 trades, +36.71 pt ; ecartes : 1, +447.75 pt ; t +nan
+- zone seule +668 pt (+1,336 $ pour 1 MNQ) ; zone filtree +220 pt (+440 $)
+-> point d'etape, pas de decision (7 trades sur 150 ; source acceptee)

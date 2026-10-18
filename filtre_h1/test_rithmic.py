@@ -59,7 +59,17 @@ def main():
     fichiers = sorted(glob.glob(str(ICI / "donnees_rithmic" / "transactions_*.csv")))
     if not fichiers:
         raise SystemExit("aucun fichier dans filtre_h1/donnees_rithmic/ (exporter depuis Quantower, voir README.md)")
-    x = pd.concat([pd.read_csv(f) for f in fichiers], ignore_index=True)
+    # une seance exportee par plusieurs sources (Ironbeam, puis Rithmic de Bulenox) n'est comptee qu'une fois : celle du
+    # dernier fichier dans l'ordre des noms (transactions_NQZ6_rithmic.csv apres transactions_NQ.Z26.csv)
+    morceaux, source_du_jour = [], {}
+    for f in fichiers:
+        y = pd.read_csv(f)
+        y["source"] = Path(f).name
+        morceaux.append(y)
+        for j in y["jour"].unique():
+            source_du_jour[j] = Path(f).name
+    x = pd.concat(morceaux, ignore_index=True)
+    x = x[x["source"] == x["jour"].map(source_du_jour)]
     x = x.groupby(["jour", "minute"], as_index=False)[["achats", "ventes", "sans_cote"]].sum()
     par_jour = {j: g.set_index("minute") for j, g in x.groupby("jour")}
     z = trades_zone(minutes_nq())
@@ -79,10 +89,19 @@ def main():
     v = z.merge(of[["jour", "minute", "sens", "delta30"]], on=["jour", "minute", "sens"])
     v = v[(v["delta"] != 0) & (v["delta30"] != 0)]
     if len(v):
-        accord = float((np.sign(v["delta"]) == np.sign(v["delta30"])).mean())
-        source_ok = accord >= ACCORD_MIN
-        L.append(f"Validation contre Databento : meme signe du delta 30 min sur {accord:.1%} de {len(v)} trades communs"
-                 f" (seuil {ACCORD_MIN:.0%}) -> source {'ACCEPTEE' if source_ok else 'REFUSEE : test descriptif seulement'}")
+        # chaque source est validee sur ses propres seances ; toutes doivent passer le seuil
+        source_ok = True
+        for nom in sorted(set(source_du_jour.values())):
+            vs = v[v["jour"].map(source_du_jour) == nom]
+            if not len(vs):
+                L.append(f"Validation contre Databento ({nom}) : aucune seance commune")
+                continue
+            accord = float((np.sign(vs["delta"]) == np.sign(vs["delta30"])).mean())
+            source_ok = source_ok and accord >= ACCORD_MIN
+            L.append(f"Validation contre Databento ({nom}) : meme signe du delta 30 min sur {accord:.1%} de {len(vs)} trades"
+                     f" communs (seuil {ACCORD_MIN:.0%}) -> source {'ACCEPTEE' if accord >= ACCORD_MIN else 'REFUSEE'}")
+        if not source_ok:
+            L.append("-> une source est refusee : test descriptif seulement")
     else:
         source_ok = None
         L.append("Validation contre Databento : aucune seance commune exportee (exporter aussi juin - septembre 2026,"

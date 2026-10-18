@@ -258,3 +258,18 @@ Première exploration (`lse/resultats.txt`) :
   un petit nombre. C'est justement ce que lit le filtre.
 - Un delta juste à 85 % ressemble à l'approximation par le prix déjà testée sur 15 ans (t = 1,62, non confirmé) :
   un test descriptif avec cette source n'apprendrait presque rien de plus. Il n'est pas lancé.
+
+### Export Rithmic de Bulenox (18 octobre 2026) : `resultat_rithmic.txt`
+
+- Contrat NQZ6, 23 séances (16 septembre - 16 octobre 2026), exportées par l'utilisateur depuis son compte Bulenox
+  (Rithmic) avec « Export transactions NQ » : `donnees_rithmic/transactions_NQZ6_rithmic.csv`. Côté agresseur connu pour
+  100 % du volume.
+- **Validation fixée à l'avance : passée.** Même signe du delta des 30 minutes que Databento sur 8 trades de zone sur 8
+  (seuil 95 %). La source Rithmic est acceptée.
+- Changement du script (calcul seulement, règles inchangées) : une séance présente dans plusieurs fichiers n'est comptée
+  qu'une fois, celle du dernier fichier dans l'ordre des noms (ici Rithmic plutôt qu'Ironbeam), et chaque source est
+  validée sur ses propres séances.
+- **Point d'étape, pas de décision** (7 trades mesurés hors d'avril - octobre 2026, sur 150) : 6 gardés, +36,71 points
+  en moyenne ; 1 écarté, le 16 octobre 2026 (vente de 10 h, +447,75 points, delta des 30 minutes +72 sur environ
+  93 000 contrats, donc presque nul). Zone seule +668 points, zone filtrée +220 points. Un seul trade écarté ne dit
+  rien de la valeur du filtre ; il faut les contrats plus anciens (NQU6, NQM6, NQH6...) pour atteindre 150 trades.
