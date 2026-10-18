@@ -42,6 +42,7 @@ namespace Bot3en1
                 var lignes = new List<string> { "jour,minute,o,h,l,c,v,achats,ventes,sans_cote,contrat" };
                 int jours = 0, vides = 0;
                 double volCote = 0, volTotal = 0;
+                Log($"export de {nom} du {d0:yyyy-MM-dd} au {d1:yyyy-MM-dd} : une ligne par seance exportee (environ une minute chacune)", StrategyLoggingLevel.Info);
                 for (var j = d0.Date; j <= d1.Date; j = j.AddDays(1))
                 {
                     if (Calendrier.JourFerme(j)) continue;
@@ -84,7 +85,7 @@ namespace Bot3en1
                         lignes.Add(string.Join(",", new[] { j.ToString("yyyy-MM-dd"), kv.Key.ToString(inv) }
                             .Concat(b.Select(x => x.ToString("R", inv))).Concat(new[] { nom })));
                     }
-                    if (jours % 20 == 0) Log($"{jours} seances exportees (derniere : {j:yyyy-MM-dd})", StrategyLoggingLevel.Info);
+                    Log($"{j:yyyy-MM-dd} exportee ({m.Count} minutes) : {jours} seance(s) jusqu'ici", StrategyLoggingLevel.Info);
                 }
                 File.WriteAllLines(fichier, lignes);
                 Log($"Termine : {jours} seances avec des transactions, {vides} sans, cote agresseur connu pour "
