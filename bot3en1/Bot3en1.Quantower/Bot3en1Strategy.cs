@@ -71,6 +71,7 @@ namespace Bot3en1
         bool alerteSilence;
         DateTime demarrageUtc;                       // heure du lancement du bot (UTC)
         DateTime alerteAveugle = DateTime.MinValue;  // derniere alerte « aucune transaction NQ depuis le demarrage »
+        bool premierPrixANoter;                      // premiere transaction NQ depuis le lancement : confirmation au prochain tic
         // mode a plat
         double dernierPrixES;                        // dernier prix de l'ES (flux du MES)
         DateTime dernierTickES = DateTime.MinValue;
@@ -435,6 +436,7 @@ namespace Bot3en1
             var t = TimeZoneInfo.ConvertTimeFromUtc(last.Time, ny);
             lock (verrou)
             {
+                if (dernierTick == DateTime.MinValue) premierPrixANoter = true;
                 dernierTick = Maintenant();
                 dernierPrix = last.Price;
                 if (t.TimeOfDay < TimeSpan.FromHours(17)) prixAvantPause = last.Price;
@@ -477,6 +479,7 @@ namespace Bot3en1
                         DemarrerSeance(maintenant);
                     }
                     PasserJournee(maintenant);
+                    if (premierPrixANoter) { premierPrixANoter = false; Dire($"flux NQ recu ({dernierPrix:F2}) : le bot voit le marche"); }
                     if (etatASauver) { etatASauver = false; SauverEtat(); }
                     // plafond du jour atteint hors seance (verifie a chaque transaction, voir SurTransaction)
                     if (plafondANoter)
@@ -510,13 +513,19 @@ namespace Bot3en1
                         alerteSilence = true;
                         Dire("ALERTE : plus aucune transaction NQ recue depuis 3 minutes (connexion Rithmic ?)", true);
                     }
-                    if ((Maintenant() - dernierTick).TotalMinutes < 1) alerteSilence = false;
+                    if (alerteSilence && (Maintenant() - dernierTick).TotalMinutes < 1)
+                    {
+                        alerteSilence = false;
+                        Dire($"flux NQ revenu ({dernierPrix:F2})");
+                    }
                     // aucune transaction NQ depuis le lancement (16 octobre 2026 : bot aveugle toute la seance, sans aucune
-                    // alerte) : alerte 3 minutes apres l'ouverture ou le lancement, puis toutes les 15 minutes
-                    if (m >= 0 && m <= derniereMinute && dernierTick == DateTime.MinValue)
+                    // alerte) : alerte 3 minutes apres le lancement (des 8 h, le NQ s'echange avant l'ouverture) ou apres
+                    // l'ouverture, puis toutes les 15 minutes
+                    bool avantOuverture = m < 0 && maintenant.TimeOfDay >= TimeSpan.FromHours(8) && !Calendrier.JourFerme(jour);
+                    if (dernierTick == DateTime.MinValue && ((m >= 0 && m <= derniereMinute) || avantOuverture))
                     {
                         var ouverture = TimeZoneInfo.ConvertTimeToUtc(jour.AddMinutes(570), ny);
-                        var depuis = demarrageUtc > ouverture ? demarrageUtc : ouverture;
+                        var depuis = m >= 0 && ouverture > demarrageUtc ? ouverture : demarrageUtc;
                         if ((Maintenant() - depuis).TotalMinutes > 3 && (Maintenant() - alerteAveugle).TotalMinutes >= 15)
                         {
                             alerteAveugle = Maintenant();

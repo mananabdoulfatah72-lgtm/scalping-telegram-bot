@@ -14,6 +14,7 @@ using TradingPlatform.BusinessLayer;
 // seance suivante) pour faire passer l'adaptateur par 18 h et par le plafond hors seance.
 // SANS_FILTRE=1 : zone sans le filtre delta (pour faire passer des trades de zone sans le fichier des agresseurs).
 // SANS_NQ=1 : aucune transaction NQ pendant la seance (16 octobre 2026) : le bot doit donner l'alerte et ne rien trader.
+// LANCEMENT=09:10 : heure de lancement le premier jour (New York), horloge avancee minute par minute jusqu'a 9 h 29.
 // A_PLAT=1 : mode a plat (Bulenox) ; un flux MES est imite (prix du NQ / 4), et chaque soir des transactions a 18 h 00 30 font
 // passer l'adaptateur par l'achat du RSI(2) de nuit. SOLDE=49000 : solde du compte lu par la plateforme (frein).
 // Controles du mode a plat : a plat sur MNQ et MES a 16 h 00 30 chaque jour, pas de zone les jours de la Fed, liste des nuits
@@ -63,9 +64,15 @@ class Program
             strat.RsiDeNuit = Environment.GetEnvironmentVariable("RSI_NUIT") == "1";
         }
         var tic = typeof(Bot3en1Strategy).GetMethod("Tic", BindingFlags.NonPublic | BindingFlags.Instance);
-        horloge.DateTimeUtcNow = Utc(jours[0].AddHours(9).AddMinutes(29));
+        var lancement = TimeSpan.Parse(Environment.GetEnvironmentVariable("LANCEMENT") ?? "09:29", inv);
+        horloge.DateTimeUtcNow = Utc(jours[0].Add(lancement));
         strat.Lancer();
         ((IDisposable)typeof(Bot3en1Strategy).GetField("horloge", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat))?.Dispose();
+        for (var t = jours[0].Add(lancement).AddMinutes(1); t < jours[0].AddHours(9).AddMinutes(29); t = t.AddMinutes(1))
+        {
+            horloge.DateTimeUtcNow = Utc(t);
+            tic.Invoke(strat, null);
+        }
         if (strat.Arretee) { Console.WriteLine(string.Join("\n", strat.Logs)); return 1; }
         var moteur = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
         if (Environment.GetEnvironmentVariable("SANS_FILTRE") == "1") moteur.FiltreDelta = false;

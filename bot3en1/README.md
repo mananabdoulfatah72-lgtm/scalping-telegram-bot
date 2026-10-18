@@ -97,15 +97,20 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     MNQ) dans les réglages, quatre fois par an.
 - **Arrêt d'urgence :** créer un fichier nommé `STOP` dans `C:\Bot3en1` : le bot ferme tout et ne trade plus.
 - **Alerte « marché invisible » (18 octobre 2026) :**
-  - si aucune transaction du NQ n'est arrivée 3 minutes après l'ouverture (ou après le lancement, s'il est plus tard),
-    le bot écrit en rouge « ALERTE : aucune transaction NQ recue depuis le lancement », puis toutes les 15 minutes ;
+  - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
+    marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
+  - si aucune transaction n'est arrivée 3 minutes après le lancement (à partir de 8 h, le NQ s'échange avant
+    l'ouverture) ou après l'ouverture, le bot écrit en rouge « ALERTE : aucune transaction NQ recue depuis le
+    lancement », puis toutes les 15 minutes ;
+  - quand le flux revient après l'alerte de silence de 3 minutes, il écrit « flux NQ revenu » ;
   - pourquoi : le 16 octobre 2026, le bot a tourné toute la séance sans recevoir un seul prix du NQ, et sans rien dire
     (l'alerte de silence ne marchait qu'après une première transaction). Il a manqué une vente de 449 points. Signes
     dans le journal : aucune ligne de zone à 10 h, et une décision du RSI(2) de 15 h 50 faite sur la clôture de la
     veille. Le solde du compte était illisible le même jour ;
   - le message « solde du compte illisible » est désormais en rouge, lui aussi ;
   - contrôle : `SANS_NQ=1` dans `Bot3en1.TestQuantower` (première alerte à 9 h 33, puis toutes les 15 minutes, aucun
-    ordre). Les 5 modes du banc donnent les mêmes ordres et le même journal du moteur qu'avant.
+    ordre) ; `LANCEMENT=09:10` (alerte à 9 h 14, avant l'ouverture). Les 5 modes du banc donnent les mêmes ordres et le
+    même journal du moteur qu'avant, avec une seule ligne « flux NQ recu » et aucune alerte en 6 mois.
 - **Messages :** chaque ordre et chaque alerte vont dans `C:\Bot3en1\journal.txt`, et sur Telegram si le jeton et le
   numéro de conversation sont remplis (ils restent sur le PC, jamais dans le dépôt).
 - **Plafond du jour** (réglage, 0 par défaut) :
