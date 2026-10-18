@@ -40,6 +40,8 @@ namespace Bot3en1
         [InputParameter("Mode a plat : le plancher s'arrete a solde de depart + X (Bulenox : 100)", 65, 0, 10000, 50, 0)] public double Blocage = 100;
         [InputParameter("Mode a plat : jours de la Fed en plus (AAAA-MM-JJ separes par des virgules)", 66)] public string JoursFedEnPlus = "";
         [InputParameter("Mode a plat : plus haut de fin de journee deja atteint par ce compte (0 = inconnu ; compte neuf : 0)", 67, 0, 1000000, 100, 0)] public double PlusHautConnu = 0;
+        [InputParameter("Mode a plat : solde actuel du compte, seulement si le journal dit « solde du compte illisible » (0 = rien ; repris une seule fois par valeur, le bot le suit ensuite)", 67, 0, 1000000, 1, 0)]
+        public double SoldeManuel = 0;
         [InputParameter("Challenge : objectif, solde du compte a atteindre (Bulenox 50K : 53000). Des que le compte atteint l'objectif + 50 $, le bot ferme tout et ne trade plus (0 = aucun ; compte Master : 0)", 68, 0, 10000000, 500, 0)]
         public double ObjectifChallenge = 0;
         [InputParameter("Challenge : dernier jour ou le compte peut trader, AAAA-MM-JJ (date de fin donnee par Bulenox ; vide = aucune ; compte Master : vide)", 69)]
@@ -72,6 +74,10 @@ namespace Bot3en1
         DateTime demarrageUtc;                       // heure du lancement du bot (UTC)
         DateTime alerteAveugle = DateTime.MinValue;  // derniere alerte « aucune transaction NQ depuis le demarrage »
         bool premierPrixANoter;                      // premiere transaction NQ depuis le lancement : confirmation au prochain tic
+        bool soldeIllisible;                         // solde du compte illisible au lancement : relu chaque minute
+        DateTime derniereLectureSolde = DateTime.MinValue;
+        double soldeManuelApplique;                  // dernier SoldeManuel deja repris (garde dans l'etat : repris une seule fois)
+        string derniereErreurTelegram = "";          // derniere erreur d'envoi Telegram notee dans le journal
         // mode a plat
         double dernierPrixES;                        // dernier prix de l'ES (flux du MES)
         DateTime dernierTickES = DateTime.MinValue;
@@ -247,6 +253,15 @@ namespace Bot3en1
                 if (etat != null && !string.IsNullOrEmpty(etat.CompteNom))
                     Dire($"nouveau compte ({Compte.Name}) : plus haut de fin de journee repris a {picFinJour:F0} $");
             }
+            // solde illisible : solde donne dans les reglages, repris une seule fois par valeur (le bot le suit ensuite a 18 h)
+            soldeManuelApplique = etat != null && etat.CompteNom == (Compte.Name ?? "") ? etat.SoldeManuel : 0;
+            if (!reel.HasValue && SoldeManuel > 0 && Math.Abs(SoldeManuel - soldeManuelApplique) > 0.005)
+            {
+                soldeEstime = SoldeManuel;
+                if (SoldeManuel > picFinJour) picFinJour = SoldeManuel;
+                soldeManuelApplique = SoldeManuel;
+                Dire($"solde du compte repris des reglages : {SoldeManuel:F0} $ (le bot le suit ensuite avec ses propres trades)");
+            }
             if (reel.HasValue) soldeEstime = reel.Value;
             if (PlusHautConnu > picFinJour) picFinJour = PlusHautConnu;
             double solde = reel ?? soldeEstime;
@@ -254,6 +269,8 @@ namespace Bot3en1
                  + $" {RegleCompte.Plancher(picFinJour, SoldeDepart, PerteMax, Blocage):F0} $"
                  + $"{(reel.HasValue ? "" : " (ATTENTION : solde du compte illisible, estimation du bot. Verifie la connexion Rithmic :"
                        + " objectif, limite de perte et plancher sont calcules sur cette estimation)")}", !reel.HasValue);
+            soldeIllisible = !reel.HasValue;
+            if (soldeIllisible) Dire($"diagnostic du solde : {DiagnosticSolde()}");
             // taille de la journee : celle du RSI(2) de nuit deja achete s'il y en a un (comptes du bot = position reelle),
             // sinon celle du calendrier du challenge
             bot.Taille = bot.RsiNuit != 0 && etat != null && etat.CompteNom == (Compte.Name ?? "") && etat.TailleTenue > 0
@@ -295,6 +312,39 @@ namespace Bot3en1
         {
             var b = LireDouble(Compte, "Balance");
             return b.HasValue && b.Value > 0 && !double.IsNaN(b.Value) ? b : null;
+        }
+
+        /// <summary>Ce que la plateforme donne quand le solde est illisible : valeur brute de Account.Balance et champs du compte
+        /// qui ressemblent a un solde (noms et valeurs seulement), pour adapter la lecture.</summary>
+        string DiagnosticSolde()
+        {
+            string brut;
+            try
+            {
+                var p = Compte?.GetType().GetProperty("Balance");
+                brut = p == null ? "propriete Balance absente" : $"Balance = {Convert.ToString(p.GetValue(Compte), CultureInfo.InvariantCulture)}";
+            }
+            catch (Exception e) { brut = $"Balance illisible ({e.GetType().Name})"; }
+            var champs = new List<string>();
+            try
+            {
+                if (Compte?.GetType().GetProperty("AdditionalInfo")?.GetValue(Compte) is System.Collections.IEnumerable infos)
+                    foreach (var x in infos)
+                    {
+                        if (x == null) continue;
+                        var t = x.GetType();
+                        string nom = Convert.ToString(t.GetProperty("NameKey")?.GetValue(x) ?? t.GetProperty("Name")?.GetValue(x)
+                                                      ?? t.GetProperty("Id")?.GetValue(x), CultureInfo.InvariantCulture) ?? "";
+                        object v = t.GetProperty("Value")?.GetValue(x);
+                        string n = nom.ToLowerInvariant();
+                        if (v != null && (n.Contains("balance") || n.Contains("cash") || n.Contains("equity") || n.Contains("liquid")
+                                          || n.Contains("p&l") || n.Contains("pnl")))
+                            champs.Add($"{nom} = {Convert.ToString(v, CultureInfo.InvariantCulture)}");
+                        if (champs.Count >= 12) break;
+                    }
+            }
+            catch { }
+            return brut + (champs.Count > 0 ? " ; autres champs : " + string.Join(", ", champs) : " ; aucun autre champ de solde trouve");
         }
 
         /// <summary>Equite du compte : solde + gains latents des positions MNQ et MES (Position.GrossPnL.Value). null si illisible.</summary>
@@ -480,6 +530,12 @@ namespace Bot3en1
                     }
                     PasserJournee(maintenant);
                     if (premierPrixANoter) { premierPrixANoter = false; Dire($"flux NQ recu ({dernierPrix:F2}) : le bot voit le marche"); }
+                    if (soldeIllisible && (Maintenant() - derniereLectureSolde).TotalSeconds >= 60)
+                    {
+                        derniereLectureSolde = Maintenant();
+                        var lu = SoldeReel();
+                        if (lu.HasValue) { soldeIllisible = false; Dire($"solde du compte lu : {lu.Value:F0} $ (le bot utilise maintenant le vrai solde)"); }
+                    }
                     if (etatASauver) { etatASauver = false; SauverEtat(); }
                     // plafond du jour atteint hors seance (verifie a chaque transaction, voir SurTransaction)
                     if (plafondANoter)
@@ -743,6 +799,7 @@ namespace Bot3en1
             public bool NuitVoulue { get; set; }
             public string JourDecisionNuit { get; set; }
             public int TailleTenue { get; set; }            // MNQ par source des positions en cours (challenge : fin de course)
+            public double SoldeManuel { get; set; }         // dernier solde des reglages deja repris (solde illisible)
         }
 
         /// <summary>Fichier d'etat : etat.json (ancien mode) ; en mode a plat, un fichier par compte (challenge et Master peuvent
@@ -771,7 +828,7 @@ namespace Bot3en1
                                NuitJournee = nuitJournee, PicFinJour = picFinJour, SoldeEstime = soldeEstime, EquiteDebut = equiteDebut,
                                RealiseAPlat = Fini(bot.RealiseAPlat), FreinJournee = freinJournee, FreinActif = freinActif,
                                NuitVoulue = bot.NuitVoulue, JourDecisionNuit = bot.JourDecision == default ? null : bot.JourDecision.ToString("yyyy-MM-dd"),
-                               TailleTenue = bot.Taille };
+                               TailleTenue = bot.Taille, SoldeManuel = soldeManuelApplique };
             File.WriteAllText(FichierEtat(), JsonSerializer.Serialize(e));
         }
 
@@ -791,12 +848,45 @@ namespace Bot3en1
             Log(texte, erreur ? StrategyLoggingLevel.Error : StrategyLoggingLevel.Info);
             try { File.AppendAllText(Path.Combine(Dossier, "journal.txt"), $"{Maintenant():yyyy-MM-dd HH:mm:ss} UTC {texte}{Environment.NewLine}"); } catch { }
             if (string.IsNullOrWhiteSpace(JetonTelegram) || string.IsNullOrWhiteSpace(ChatTelegram)) return;
+            string jeton = JetonTelegram.Trim(), chat = ChatTelegram.Trim();
+            if (jeton.StartsWith("bot", StringComparison.OrdinalIgnoreCase)) jeton = jeton.Substring(3);
             try
             {
-                var contenu = new FormUrlEncodedContent(new Dictionary<string, string> { ["chat_id"] = ChatTelegram, ["text"] = "Bot 3 en 1 : " + texte });
-                http.PostAsync($"https://api.telegram.org/bot{JetonTelegram}/sendMessage", contenu);
+                var contenu = new FormUrlEncodedContent(new Dictionary<string, string> { ["chat_id"] = chat, ["text"] = "Bot 3 en 1 : " + texte });
+                http.PostAsync($"https://api.telegram.org/bot{jeton}/sendMessage", contenu).ContinueWith(t => NoterTelegram(t, jeton));
+            }
+            catch (Exception e) { NoterErreurTelegram(e.Message.Replace(jeton, "***"), 0); }
+        }
+
+        /// <summary>Resultat d'un envoi Telegram : une erreur est ecrite dans le journal (jamais sur Telegram, jamais le jeton),
+        /// une seule fois tant qu'elle ne change pas.</summary>
+        void NoterTelegram(System.Threading.Tasks.Task<HttpResponseMessage> t, string jeton)
+        {
+            try
+            {
+                if (t.IsFaulted) { NoterErreurTelegram((t.Exception?.GetBaseException().Message ?? "erreur").Replace(jeton, "***"), 0); return; }
+                if (t.IsCanceled) { NoterErreurTelegram("pas de reponse de Telegram en 20 s", 0); return; }
+                using var r = t.Result;
+                if (r.IsSuccessStatusCode) { derniereErreurTelegram = ""; return; }
+                string corps = "";
+                try { corps = r.Content.ReadAsStringAsync().GetAwaiter().GetResult(); } catch { }
+                var d = System.Text.RegularExpressions.Regex.Match(corps, "\"description\"\\s*:\\s*\"([^\"]*)\"");
+                NoterErreurTelegram($"code {(int)r.StatusCode}{(d.Success ? $", {d.Groups[1].Value}" : "")}", (int)r.StatusCode);
             }
             catch { }
+        }
+
+        void NoterErreurTelegram(string erreur, int code)
+        {
+            if (erreur == derniereErreurTelegram) return;
+            derniereErreurTelegram = erreur;
+            string conseil = code == 401 || code == 404 ? "jeton faux ou incomplet : recopie-le en entier depuis BotFather"
+                : code == 400 && erreur.Contains("chat not found") ? "numero de conversation faux, ou tu n'as pas appuye sur Demarrer dans ton bot"
+                : code == 403 ? "ouvre ton bot dans Telegram et appuie sur Demarrer (ou debloque-le)"
+                : "verifie la connexion internet du PC";
+            string texte = $"Telegram : message non envoye ({erreur}) : {conseil}";
+            Log(texte, StrategyLoggingLevel.Error);
+            try { File.AppendAllText(Path.Combine(Dossier, "journal.txt"), $"{Maintenant():yyyy-MM-dd HH:mm:ss} UTC {texte}{Environment.NewLine}"); } catch { }
         }
     }
 }

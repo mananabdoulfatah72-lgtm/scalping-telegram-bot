@@ -15,6 +15,8 @@ using TradingPlatform.BusinessLayer;
 // SANS_FILTRE=1 : zone sans le filtre delta (pour faire passer des trades de zone sans le fichier des agresseurs).
 // SANS_NQ=1 : aucune transaction NQ pendant la seance (16 octobre 2026) : le bot doit donner l'alerte et ne rien trader.
 // LANCEMENT=09:10 : heure de lancement le premier jour (New York), horloge avancee minute par minute jusqu'a 9 h 29.
+// SOLDE_MANUEL=51000 : solde des reglages, repris si le solde est illisible (SOLDE absent). TELEGRAM_JETON, TELEGRAM_CHAT : envoi
+// Telegram (avec un faux jeton, l'erreur doit etre notee dans le journal, sans le jeton).
 // A_PLAT=1 : mode a plat (Bulenox) ; un flux MES est imite (prix du NQ / 4), et chaque soir des transactions a 18 h 00 30 font
 // passer l'adaptateur par l'achat du RSI(2) de nuit. SOLDE=49000 : solde du compte lu par la plateforme (frein).
 // Controles du mode a plat : a plat sur MNQ et MES a 16 h 00 30 chaque jour, pas de zone les jours de la Fed, liste des nuits
@@ -53,7 +55,9 @@ class Program
             SeancesFin = int.Parse(Environment.GetEnvironmentVariable("SEANCES_FIN") ?? "5", inv)
         };
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";
-        bool sansNQ = Environment.GetEnvironmentVariable("SANS_NQ") == "1";     // flux NQ coupe pendant la seance (16 octobre 2026)
+        bool sansNQ = Environment.GetEnvironmentVariable("SANS_NQ") == "1";
+        strat.JetonTelegram = Environment.GetEnvironmentVariable("TELEGRAM_JETON") ?? "";
+        strat.ChatTelegram = Environment.GetEnvironmentVariable("TELEGRAM_CHAT") ?? "";     // flux NQ coupe pendant la seance (16 octobre 2026)
         if (aPlat)
         {
             strat.ModeAPlat = true;
@@ -62,6 +66,7 @@ class Program
             if (Environment.GetEnvironmentVariable("FREIN") is string fr) strat.Frein = double.Parse(fr, inv);
             if (Environment.GetEnvironmentVariable("LIMITE") is string li) strat.LimitePerteJour = double.Parse(li, inv);
             strat.RsiDeNuit = Environment.GetEnvironmentVariable("RSI_NUIT") == "1";
+            strat.SoldeManuel = double.Parse(Environment.GetEnvironmentVariable("SOLDE_MANUEL") ?? "0", inv);
         }
         var tic = typeof(Bot3en1Strategy).GetMethod("Tic", BindingFlags.NonPublic | BindingFlags.Instance);
         var lancement = TimeSpan.Parse(Environment.GetEnvironmentVariable("LANCEMENT") ?? "09:29", inv);
@@ -211,6 +216,7 @@ class Program
             var grosses = parJournee.Where(kv => kv.Value > strat.Taille).Select(kv => $"{kv.Key:MM-dd} ({kv.Value})").ToList();
             Console.WriteLine($"fin de course : journees a plus de {strat.Taille} par contrat : {(grosses.Count == 0 ? "aucune" : string.Join(", ", grosses))}");
         }
+        if (strat.JetonTelegram != "") System.Threading.Thread.Sleep(8000);   // reponses de Telegram (envois sans attente)
         Console.WriteLine($"erreurs : {strat.Logs.Count(l => l.StartsWith("[Error]"))}");
         if (sansNQ) Console.WriteLine($"flux NQ coupe : {strat.Logs.Count(l => l.Contains("aucune transaction NQ"))} alerte(s) « aucune transaction NQ »,"
                                       + $" {strat.Logs.Count(l => l.Contains("plus aucune transaction NQ"))} alerte(s) de silence ; ordres MNQ {Core.Instance.Ordres.Count(o => o.Contains(" MNQ"))}");

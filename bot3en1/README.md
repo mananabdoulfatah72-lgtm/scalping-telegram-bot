@@ -108,6 +108,15 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     dans le journal : aucune ligne de zone à 10 h, et une décision du RSI(2) de 15 h 50 faite sur la clôture de la
     veille. Le solde du compte était illisible le même jour ;
   - le message « solde du compte illisible » est désormais en rouge, lui aussi ;
+  - **solde illisible** : le bot écrit aussi une ligne « diagnostic du solde » (valeur brute de `Account.Balance` et
+    champs du compte qui ressemblent à un solde, noms et valeurs seulement), relit le solde chaque minute et écrit
+    « solde du compte lu » dès qu'il y arrive. Tant qu'il reste illisible, le réglage « solde actuel du compte » sert
+    de point de départ : il est repris une seule fois par valeur (gardé dans l'état), puis le bot le suit avec ses
+    propres trades à 18 h. Contrôle : `SOLDE_MANUEL=51000` (plancher 48 500 $, objectif atteint dès 2 050 $ de gain,
+    valeur non reprise au lancement suivant) ;
+  - **Telegram** : jeton et numéro nettoyés (espaces, « bot » devant le jeton) ; un envoi refusé est écrit dans le
+    journal avec la raison donnée par Telegram et un conseil (jeton faux, numéro faux ou bouton Démarrer pas appuyé,
+    bot bloqué, internet), une seule fois tant que l'erreur ne change pas, jamais avec le jeton ;
   - contrôle : `SANS_NQ=1` dans `Bot3en1.TestQuantower` (première alerte à 9 h 33, puis toutes les 15 minutes, aucun
     ordre) ; `LANCEMENT=09:10` (alerte à 9 h 14, avant l'ouverture). Les 5 modes du banc donnent les mêmes ordres et le
     même journal du moteur qu'avant, avec une seule ligne « flux NQ recu » et aucune alerte en 6 mois.
