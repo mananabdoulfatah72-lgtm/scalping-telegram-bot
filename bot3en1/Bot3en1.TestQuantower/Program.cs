@@ -13,6 +13,7 @@ using TradingPlatform.BusinessLayer;
 // PLAFOND=500 : plafond du jour active ; une transaction est alors emise chaque soir a 19 h (au prix d'ouverture de la
 // seance suivante) pour faire passer l'adaptateur par 18 h et par le plafond hors seance.
 // SANS_FILTRE=1 : zone sans le filtre delta (pour faire passer des trades de zone sans le fichier des agresseurs).
+// SANS_NQ=1 : aucune transaction NQ pendant la seance (16 octobre 2026) : le bot doit donner l'alerte et ne rien trader.
 // A_PLAT=1 : mode a plat (Bulenox) ; un flux MES est imite (prix du NQ / 4), et chaque soir des transactions a 18 h 00 30 font
 // passer l'adaptateur par l'achat du RSI(2) de nuit. SOLDE=49000 : solde du compte lu par la plateforme (frein).
 // Controles du mode a plat : a plat sur MNQ et MES a 16 h 00 30 chaque jour, pas de zone les jours de la Fed, liste des nuits
@@ -51,6 +52,7 @@ class Program
             SeancesFin = int.Parse(Environment.GetEnvironmentVariable("SEANCES_FIN") ?? "5", inv)
         };
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";
+        bool sansNQ = Environment.GetEnvironmentVariable("SANS_NQ") == "1";     // flux NQ coupe pendant la seance (16 octobre 2026)
         if (aPlat)
         {
             strat.ModeAPlat = true;
@@ -88,7 +90,7 @@ class Program
                     double reste = Math.Max(b[m].V - av.Item1 - av.Item2, 0);
                     void T(double p, double q, AggressorFlag f, int s)
                     {
-                        strat.SymboleNQ.Emettre(new Last { Time = Utc(t0.AddSeconds(s)), Price = p, Size = q, AggressorFlag = f });
+                        if (!sansNQ) strat.SymboleNQ.Emettre(new Last { Time = Utc(t0.AddSeconds(s)), Price = p, Size = q, AggressorFlag = f });
                         if (aPlat) strat.SymboleMES.Emettre(new Last { Time = Utc(t0.AddSeconds(s)), Price = p / 4, Size = 1, AggressorFlag = f });
                     }
                     T(b[m].O, reste, AggressorFlag.None, 1); T(b[m].H, av.Item1, AggressorFlag.Buy, 2);
@@ -203,6 +205,8 @@ class Program
             Console.WriteLine($"fin de course : journees a plus de {strat.Taille} par contrat : {(grosses.Count == 0 ? "aucune" : string.Join(", ", grosses))}");
         }
         Console.WriteLine($"erreurs : {strat.Logs.Count(l => l.StartsWith("[Error]"))}");
+        if (sansNQ) Console.WriteLine($"flux NQ coupe : {strat.Logs.Count(l => l.Contains("aucune transaction NQ"))} alerte(s) « aucune transaction NQ »,"
+                                      + $" {strat.Logs.Count(l => l.Contains("plus aucune transaction NQ"))} alerte(s) de silence ; ordres MNQ {Core.Instance.Ordres.Count(o => o.Contains(" MNQ"))}");
         foreach (var l in strat.Logs.Where(l => l.StartsWith("[Error]")).Take(5)) Console.WriteLine("  " + l);
         if (aPlat)
         {

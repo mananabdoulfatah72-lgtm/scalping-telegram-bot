@@ -96,6 +96,16 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
   - le bot prévient si les symboles choisis ne sont plus ceux du jour. Il faut alors choisir les nouveaux (NQ et
     MNQ) dans les réglages, quatre fois par an.
 - **Arrêt d'urgence :** créer un fichier nommé `STOP` dans `C:\Bot3en1` : le bot ferme tout et ne trade plus.
+- **Alerte « marché invisible » (18 octobre 2026) :**
+  - si aucune transaction du NQ n'est arrivée 3 minutes après l'ouverture (ou après le lancement, s'il est plus tard),
+    le bot écrit en rouge « ALERTE : aucune transaction NQ recue depuis le lancement », puis toutes les 15 minutes ;
+  - pourquoi : le 16 octobre 2026, le bot a tourné toute la séance sans recevoir un seul prix du NQ, et sans rien dire
+    (l'alerte de silence ne marchait qu'après une première transaction). Il a manqué une vente de 449 points. Signes
+    dans le journal : aucune ligne de zone à 10 h, et une décision du RSI(2) de 15 h 50 faite sur la clôture de la
+    veille. Le solde du compte était illisible le même jour ;
+  - le message « solde du compte illisible » est désormais en rouge, lui aussi ;
+  - contrôle : `SANS_NQ=1` dans `Bot3en1.TestQuantower` (première alerte à 9 h 33, puis toutes les 15 minutes, aucun
+    ordre). Les 5 modes du banc donnent les mêmes ordres et le même journal du moteur qu'avant.
 - **Messages :** chaque ordre et chaque alerte vont dans `C:\Bot3en1\journal.txt`, et sur Telegram si le jeton et le
   numéro de conversation sont remplis (ils restent sur le PC, jamais dans le dépôt).
 - **Plafond du jour** (réglage, 0 par défaut) :
@@ -287,7 +297,7 @@ A_PLAT=1 SANS_FILTRE=1 TAILLE=4 OBJECTIF=53000 DATE_FIN=2026-05-12 TAILLE_FIN=6 
 - Si le PC dort à 18 h, la nouvelle journée ne commence qu'au tic suivant après 18 h. Une nuit sans tic après 18 h fait
   manquer l'achat de nuit.
 - La lecture du solde (`Account.Balance`) et des gains latents (`Position.GrossPnL`) passe par réflexion, pour ne pas
-  bloquer la compilation si Quantower les nomme autrement. Au premier lancement, vérifier dans le journal que le message
+  bloquer la compilation si Quantower les nomme autrement. À chaque lancement, vérifier dans le journal que le message
   « mode a plat : solde ... » donne le vrai solde, et non « solde estimé ».
 - Le flux du MES doit arriver : sans transaction MES récente, le bot n'achète pas le RSI(2) de nuit.
 - RSI(2) de nuit coché seulement : PC (ou serveur) allumé de 18 h à 9 h 30 (New York), soit de minuit à 15 h 30 heure

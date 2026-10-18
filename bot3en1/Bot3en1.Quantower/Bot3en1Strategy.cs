@@ -69,6 +69,8 @@ namespace Bot3en1
         bool plafondANoter;                          // plafond atteint dans une transaction de nuit : message et etat au prochain tic
         bool etatASauver;                            // nouvelle journee de trading : etat a enregistrer au prochain tic
         bool alerteSilence;
+        DateTime demarrageUtc;                       // heure du lancement du bot (UTC)
+        DateTime alerteAveugle = DateTime.MinValue;  // derniere alerte « aucune transaction NQ depuis le demarrage »
         // mode a plat
         double dernierPrixES;                        // dernier prix de l'ES (flux du MES)
         DateTime dernierTickES = DateTime.MinValue;
@@ -101,6 +103,7 @@ namespace Bot3en1
                 Directory.CreateDirectory(Dossier);
                 var maintenant = HeureNY();
                 jour = maintenant.Date;
+                demarrageUtc = Maintenant();
                 VerifierEcheance();
                 PreparerMoteur();
                 DemarrerSeance(maintenant);
@@ -248,7 +251,8 @@ namespace Bot3en1
             double solde = reel ?? soldeEstime;
             Dire($"mode a plat : solde {(reel.HasValue ? "" : "estime ")}{solde:F0} $, plus haut de fin de journee {picFinJour:F0} $, plancher"
                  + $" {RegleCompte.Plancher(picFinJour, SoldeDepart, PerteMax, Blocage):F0} $"
-                 + $"{(reel.HasValue ? "" : " (solde du compte illisible : estimation du bot)")}");
+                 + $"{(reel.HasValue ? "" : " (ATTENTION : solde du compte illisible, estimation du bot. Verifie la connexion Rithmic :"
+                       + " objectif, limite de perte et plancher sont calcules sur cette estimation)")}", !reel.HasValue);
             // taille de la journee : celle du RSI(2) de nuit deja achete s'il y en a un (comptes du bot = position reelle),
             // sinon celle du calendrier du challenge
             bot.Taille = bot.RsiNuit != 0 && etat != null && etat.CompteNom == (Compte.Name ?? "") && etat.TailleTenue > 0
@@ -507,6 +511,20 @@ namespace Bot3en1
                         Dire("ALERTE : plus aucune transaction NQ recue depuis 3 minutes (connexion Rithmic ?)", true);
                     }
                     if ((Maintenant() - dernierTick).TotalMinutes < 1) alerteSilence = false;
+                    // aucune transaction NQ depuis le lancement (16 octobre 2026 : bot aveugle toute la seance, sans aucune
+                    // alerte) : alerte 3 minutes apres l'ouverture ou le lancement, puis toutes les 15 minutes
+                    if (m >= 0 && m <= derniereMinute && dernierTick == DateTime.MinValue)
+                    {
+                        var ouverture = TimeZoneInfo.ConvertTimeToUtc(jour.AddMinutes(570), ny);
+                        var depuis = demarrageUtc > ouverture ? demarrageUtc : ouverture;
+                        if ((Maintenant() - depuis).TotalMinutes > 3 && (Maintenant() - alerteAveugle).TotalMinutes >= 15)
+                        {
+                            alerteAveugle = Maintenant();
+                            Dire("ALERTE : aucune transaction NQ recue depuis le lancement : le bot ne voit pas le marche et ne peut pas"
+                                 + " trader. Verifie que la connexion Rithmic est verte et que le symbole NQ des reglages recoit des prix,"
+                                 + " puis relance le bot.", true);
+                        }
+                    }
                     Aligner();
                 }
             }
