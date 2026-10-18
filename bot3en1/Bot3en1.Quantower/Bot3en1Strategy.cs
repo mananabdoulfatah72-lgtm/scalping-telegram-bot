@@ -40,7 +40,7 @@ namespace Bot3en1
         [InputParameter("Mode a plat : le plancher s'arrete a solde de depart + X (Bulenox : 100)", 65, 0, 10000, 50, 0)] public double Blocage = 100;
         [InputParameter("Mode a plat : jours de la Fed en plus (AAAA-MM-JJ separes par des virgules)", 66)] public string JoursFedEnPlus = "";
         [InputParameter("Mode a plat : plus haut de fin de journee deja atteint par ce compte (0 = inconnu ; compte neuf : 0)", 67, 0, 1000000, 100, 0)] public double PlusHautConnu = 0;
-        [InputParameter("Mode a plat : solde actuel du compte, seulement si le journal dit « solde du compte illisible » (0 = rien ; repris une seule fois par valeur, le bot le suit ensuite)", 67, 0, 1000000, 1, 0)]
+        [InputParameter("Mode a plat : solde actuel du compte, seulement si le journal dit « solde du compte illisible » (0 = rien ; repris une seule fois par valeur, le bot le suit ensuite)", 70, 0, 1000000, 1, 0)]
         public double SoldeManuel = 0;
         [InputParameter("Challenge : objectif, solde du compte a atteindre (Bulenox 50K : 53000). Des que le compte atteint l'objectif + 50 $, le bot ferme tout et ne trade plus (0 = aucun ; compte Master : 0)", 68, 0, 10000000, 500, 0)]
         public double ObjectifChallenge = 0;
@@ -55,6 +55,7 @@ namespace Bot3en1
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
+        const string Version = "18 octobre 2026";     // ecrite au lancement : verifie que la mise a jour est bien chargee
         Moteur bot;
         TimeZoneInfo ny;
         Timer horloge;
@@ -117,7 +118,7 @@ namespace Bot3en1
                 SymboleNQ.NewLast += SurTransaction;
                 if (ModeAPlat) SymboleMES.NewLast += SurTransactionES;
                 horloge = new Timer(_ => Tic(), null, 500, 500);
-                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York). {EtatTexte()}");
+                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}. {EtatTexte()}");
             }
             catch (Exception e)
             {
