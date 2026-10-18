@@ -114,7 +114,7 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     de point de départ : il est repris une seule fois par valeur (gardé dans l'état), puis le bot le suit avec ses
     propres trades à 18 h. Contrôle : `SOLDE_MANUEL=51000` (plancher 48 500 $, objectif atteint dès 2 050 $ de gain,
     valeur non reprise au lancement suivant) ;
-  - **Telegram** : jeton et numéro nettoyés (espaces, « bot » devant le jeton) ; un envoi refusé est écrit dans le
+  - **Telegram** : jeton et numéro nettoyés (tous les espaces, même au milieu, et « bot » devant le jeton) ; un envoi refusé est écrit dans le
     journal avec la raison donnée par Telegram et un conseil (jeton faux, numéro faux ou bouton Démarrer pas appuyé,
     bot bloqué, internet), une seule fois tant que l'erreur ne change pas, jamais avec le jeton ;
   - contrôle : `SANS_NQ=1` dans `Bot3en1.TestQuantower` (première alerte à 9 h 33, puis toutes les 15 minutes, aucun

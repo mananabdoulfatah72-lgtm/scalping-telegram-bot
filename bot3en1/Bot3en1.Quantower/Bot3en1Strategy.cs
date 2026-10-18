@@ -39,7 +39,7 @@ namespace Bot3en1
         [InputParameter("Mode a plat : perte max suivie en fin de journee (Bulenox 50K : 2500)", 64, 0, 100000, 100, 0)] public double PerteMax = 2500;
         [InputParameter("Mode a plat : le plancher s'arrete a solde de depart + X (Bulenox : 100)", 65, 0, 10000, 50, 0)] public double Blocage = 100;
         [InputParameter("Mode a plat : jours de la Fed en plus (AAAA-MM-JJ separes par des virgules)", 66)] public string JoursFedEnPlus = "";
-        [InputParameter("Mode a plat : plus haut de fin de journee deja atteint par ce compte (0 = inconnu ; compte neuf : 0)", 67, 0, 1000000, 100, 0)] public double PlusHautConnu = 0;
+        [InputParameter("Mode a plat : plus haut de fin de journee deja atteint par ce compte (0 = inconnu ; compte neuf : 0)", 67, 0, 1000000, 1, 0)] public double PlusHautConnu = 0;
         [InputParameter("Mode a plat : solde actuel du compte, seulement si le journal dit « solde du compte illisible » (0 = rien ; repris une seule fois par valeur, le bot le suit ensuite)", 70, 0, 1000000, 1, 0)]
         public double SoldeManuel = 0;
         [InputParameter("Challenge : objectif, solde du compte a atteindre (Bulenox 50K : 53000). Des que le compte atteint l'objectif + 50 $, le bot ferme tout et ne trade plus (0 = aucun ; compte Master : 0)", 68, 0, 10000000, 500, 0)]
@@ -849,7 +849,9 @@ namespace Bot3en1
             Log(texte, erreur ? StrategyLoggingLevel.Error : StrategyLoggingLevel.Info);
             try { File.AppendAllText(Path.Combine(Dossier, "journal.txt"), $"{Maintenant():yyyy-MM-dd HH:mm:ss} UTC {texte}{Environment.NewLine}"); } catch { }
             if (string.IsNullOrWhiteSpace(JetonTelegram) || string.IsNullOrWhiteSpace(ChatTelegram)) return;
-            string jeton = JetonTelegram.Trim(), chat = ChatTelegram.Trim();
+            // un jeton ou un numero Telegram n'a jamais d'espace : ceux colles par erreur (ex. apres les deux-points) sont retires
+            string jeton = System.Text.RegularExpressions.Regex.Replace(JetonTelegram, "\\s", ""),
+                   chat = System.Text.RegularExpressions.Regex.Replace(ChatTelegram, "\\s", "");
             if (jeton.StartsWith("bot", StringComparison.OrdinalIgnoreCase)) jeton = jeton.Substring(3);
             try
             {
