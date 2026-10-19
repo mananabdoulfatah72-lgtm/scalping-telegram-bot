@@ -107,6 +107,11 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     (l'alerte de silence ne marchait qu'après une première transaction). Il a manqué une vente de 449 points. Signes
     dans le journal : aucune ligne de zone à 10 h, et une décision du RSI(2) de 15 h 50 faite sur la clôture de la
     veille. Le solde du compte était illisible le même jour ;
+  - **19 octobre 2026, cause probable** : un symbole ou un compte restauré depuis les réglages de Quantower peut être une
+    copie qui ne reçoit rien (d'où aussi un solde lu à 0). Au lancement, le bot reprend désormais les objets de la
+    connexion active (`Core.GetSymbol(symbole.CreateInfo())`, comme le modèle de stratégie Quantower ; compte de même Id
+    dans `Core.Accounts`), par réflexion. À chaque alerte de flux, il les reprend encore et refait l'abonnement. L'heure
+    d'une transaction est lue en UTC quel que soit son genre, et une heure illisible est signalée au lieu d'être ignorée ;
   - le message « solde du compte illisible » est désormais en rouge, lui aussi ;
   - **solde illisible** : le bot écrit aussi une ligne « diagnostic du solde » (valeur brute de `Account.Balance` et
     champs du compte qui ressemblent à un solde, noms et valeurs seulement), relit le solde chaque minute et écrit

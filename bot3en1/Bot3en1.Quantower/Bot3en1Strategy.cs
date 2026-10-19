@@ -55,7 +55,7 @@ namespace Bot3en1
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
-        const string Version = "18 octobre 2026";     // ecrite au lancement : verifie que la mise a jour est bien chargee
+        const string Version = "19 octobre 2026";     // ecrite au lancement : verifie que la mise a jour est bien chargee
         Moteur bot;
         TimeZoneInfo ny;
         Timer horloge;
@@ -75,6 +75,7 @@ namespace Bot3en1
         DateTime demarrageUtc;                       // heure du lancement du bot (UTC)
         DateTime alerteAveugle = DateTime.MinValue;  // derniere alerte « aucune transaction NQ depuis le demarrage »
         bool premierPrixANoter;                      // premiere transaction NQ depuis le lancement : confirmation au prochain tic
+        bool erreurHeureNotee;                       // heure d'une transaction illisible : notee une seule fois
         bool soldeIllisible;                         // solde du compte illisible au lancement : relu chaque minute
         DateTime derniereLectureSolde = DateTime.MinValue;
         double soldeManuelApplique;                  // dernier SoldeManuel deja repris (garde dans l'etat : repris une seule fois)
@@ -109,6 +110,9 @@ namespace Bot3en1
                     throw new Exception("mode a plat : choisis aussi le symbole MES dans les reglages");
                 ny = TrouverFuseau();
                 Directory.CreateDirectory(Dossier);
+                // symboles et compte restaures depuis les reglages : on reprend les objets de la connexion active
+                // (modele de strategie Quantower : Core.GetSymbol(symbole.CreateInfo())), sinon ils peuvent ne recevoir aucun prix
+                ReprendreObjetsVivants(false);
                 var maintenant = HeureNY();
                 jour = maintenant.Date;
                 demarrageUtc = Maintenant();
@@ -150,6 +154,79 @@ namespace Bot3en1
             }
             SauverEtat();
             Dire("arrete. Les positions ouvertes restent ouvertes (le RSI(2) peut tenir la nuit).");
+        }
+
+        /// <summary>Heure UTC d'une transaction, quel que soit le genre de DateTime donne par la plateforme.</summary>
+        static DateTime EnUtc(DateTime d) => d.Kind == DateTimeKind.Local ? d.ToUniversalTime()
+            : d.Kind == DateTimeKind.Unspecified ? DateTime.SpecifyKind(d, DateTimeKind.Utc) : d;
+
+        /// <summary>Remplace les symboles et le compte des reglages par les objets de la connexion active (Core.GetSymbol(info),
+        /// compte de meme Id dans Core.Accounts), puis refait l'abonnement aux transactions si on reabonne. Tout par reflexion :
+        /// rien ne depend du nom exact de ces methodes a la compilation.</summary>
+        void ReprendreObjetsVivants(bool reabonner)
+        {
+            try
+            {
+                if (reabonner)
+                {
+                    SymboleNQ.NewLast -= SurTransaction;
+                    if (ModeAPlat && SymboleMES != null) SymboleMES.NewLast -= SurTransactionES;
+                }
+                var avant = SymboleNQ;
+                SymboleNQ = Vivant(SymboleNQ);
+                SymboleMNQ = Vivant(SymboleMNQ);
+                if (SymboleMES != null) SymboleMES = Vivant(SymboleMES);
+                var compteAvant = Compte;
+                Compte = CompteVivant(Compte);
+                if (reabonner)
+                {
+                    SymboleNQ.NewLast += SurTransaction;
+                    if (ModeAPlat && SymboleMES != null) SymboleMES.NewLast += SurTransactionES;
+                }
+                Dire($"symboles {(reabonner ? "repris et abonnement refait" : "verifies")} : NQ {SymboleNQ.Name}"
+                     + $"{(ReferenceEquals(avant, SymboleNQ) ? "" : " (objet de la connexion active)")}, MNQ {SymboleMNQ.Name}"
+                     + $"{(SymboleMES != null ? $", MES {SymboleMES.Name}" : "")} ; compte"
+                     + $"{(ReferenceEquals(compteAvant, Compte) ? " inchange" : " repris de la connexion active")}");
+            }
+            catch (Exception e) { Dire($"ERREUR en reprenant les symboles ({e.Message})", true); }
+        }
+
+        static T Vivant<T>(T objet) where T : class
+        {
+            if (objet == null) return null;
+            try
+            {
+                var info = objet.GetType().GetMethod("CreateInfo", Type.EmptyTypes)?.Invoke(objet, null);
+                if (info == null) return objet;
+                var core = Core.Instance;
+                foreach (var m in core.GetType().GetMethods())
+                {
+                    if (m.Name != "GetSymbol") continue;
+                    var ps = m.GetParameters();
+                    if (ps.Length == 0 || !ps[0].ParameterType.IsInstanceOfType(info)) continue;
+                    var args = new object[ps.Length];
+                    args[0] = info;
+                    for (int i = 1; i < ps.Length; i++)
+                        args[i] = ps[i].HasDefaultValue ? ps[i].DefaultValue : ps[i].ParameterType.IsValueType ? Activator.CreateInstance(ps[i].ParameterType) : null;
+                    if (m.Invoke(core, args) is T vivant) return vivant;
+                }
+            }
+            catch { }
+            return objet;
+        }
+
+        static Account CompteVivant(Account compte)
+        {
+            if (compte == null) return null;
+            try
+            {
+                var id = compte.GetType().GetProperty("Id")?.GetValue(compte);
+                if (Core.Instance.GetType().GetProperty("Accounts")?.GetValue(Core.Instance) is System.Collections.IEnumerable comptes && id != null)
+                    foreach (var c in comptes)
+                        if (c is Account a && Equals(a.GetType().GetProperty("Id")?.GetValue(a), id)) return a;
+            }
+            catch { }
+            return compte;
         }
 
         static TimeZoneInfo TrouverFuseau()
@@ -474,7 +551,7 @@ namespace Bot3en1
                 });
                 for (int i = 0; i < ticks.Count; i++)
                     if (ticks[i, SeekOriginHistory.Begin] is HistoryItemLast t)
-                        Ajouter(TimeZoneInfo.ConvertTimeFromUtc(t.TimeLeft, ny), t.Price, t.Volume, t.AggressorFlag);
+                        Ajouter(TimeZoneInfo.ConvertTimeFromUtc(EnUtc(t.TimeLeft), ny), t.Price, t.Volume, t.AggressorFlag);
             }
             catch (Exception e) { Dire($"rattrapage des transactions impossible ({e.Message}) : la zone est coupee pour aujourd'hui", true); bot.ZoneAutorisee = false; }
             for (int m = 0; m < jusqua; m++) FermerMinute(m, executer: false);
@@ -484,12 +561,18 @@ namespace Bot3en1
         // ------------------------------------------------------------------ marche
         void SurTransaction(Symbol s, Last last)
         {
-            var t = TimeZoneInfo.ConvertTimeFromUtc(last.Time, ny);
             lock (verrou)
             {
                 if (dernierTick == DateTime.MinValue) premierPrixANoter = true;
                 dernierTick = Maintenant();
                 dernierPrix = last.Price;
+                DateTime t;
+                try { t = TimeZoneInfo.ConvertTimeFromUtc(EnUtc(last.Time), ny); }
+                catch (Exception e)
+                {
+                    if (!erreurHeureNotee) { erreurHeureNotee = true; Dire($"ERREUR : heure d'une transaction NQ illisible ({e.Message})", true); }
+                    return;
+                }
                 if (t.TimeOfDay < TimeSpan.FromHours(17)) prixAvantPause = last.Price;
                 PasserJournee(t);                        // une transaction de 18 h peut arriver avant le tic de l'horloge
                 // hors seance (apres la fin de la seance, ou avant 9 h 30) : plafond du jour verifie a chaque transaction
@@ -569,6 +652,7 @@ namespace Bot3en1
                     {
                         alerteSilence = true;
                         Dire("ALERTE : plus aucune transaction NQ recue depuis 3 minutes (connexion Rithmic ?)", true);
+                        ReprendreObjetsVivants(true);
                     }
                     if (alerteSilence && (Maintenant() - dernierTick).TotalMinutes < 1)
                     {
@@ -589,6 +673,7 @@ namespace Bot3en1
                             Dire("ALERTE : aucune transaction NQ recue depuis le lancement : le bot ne voit pas le marche et ne peut pas"
                                  + " trader. Verifie que la connexion Rithmic est verte et que le symbole NQ des reglages recoit des prix,"
                                  + " puis relance le bot.", true);
+                            ReprendreObjetsVivants(true);
                         }
                     }
                     Aligner();
