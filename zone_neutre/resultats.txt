@@ -1,0 +1,36 @@
+Zone neutre (seuil 1%) : 106 trades de zone mesures (99 Databento avril - 2026-10-02, 7 Rithmic apres)
+
+databento : zone sans filtre +982.2 pt sur 99 trades
+  filtre H1              gardes  79 ( +22.49 pt)  ecartes  20 ( -39.73 pt)  t +2.49  total  +1776.8 pt
+  variante N1 (1.0%)     gardes  87 ( +16.19 pt)  ecartes  12 ( -35.54 pt)  t +2.28  total  +1408.8 pt
+  descriptif (0.5%)      gardes  84 ( +17.64 pt)  ecartes  15 ( -33.28 pt)  t +1.94  total  +1481.5 pt
+  descriptif (2.0%)      gardes  91 ( +14.44 pt)  ecartes   8 ( -41.44 pt)  t +1.97  total  +1313.8 pt
+  descriptif (3.0%)      gardes  95 ( +11.28 pt)  ecartes   4 ( -22.44 pt)  t +0.85  total  +1072.0 pt
+
+rithmic : zone sans filtre +668.0 pt sur 7 trades
+  filtre H1              gardes   6 ( +36.71 pt)  ecartes   1 (+447.75 pt)  t  +nan  total   +220.2 pt
+  variante N1 (1.0%)     gardes   7 ( +95.43 pt)  ecartes   0 (   +nan pt)  t  +nan  total   +668.0 pt
+  descriptif (0.5%)      gardes   7 ( +95.43 pt)  ecartes   0 (   +nan pt)  t  +nan  total   +668.0 pt
+  descriptif (2.0%)      gardes   7 ( +95.43 pt)  ecartes   0 (   +nan pt)  t  +nan  total   +668.0 pt
+  descriptif (3.0%)      gardes   7 ( +95.43 pt)  ecartes   0 (   +nan pt)  t  +nan  total   +668.0 pt
+
+tout : zone sans filtre +1650.2 pt sur 106 trades
+  filtre H1              gardes  85 ( +23.49 pt)  ecartes  21 ( -16.51 pt)  t +1.21  total  +1997.0 pt
+  variante N1 (1.0%)     gardes  94 ( +22.09 pt)  ecartes  12 ( -35.54 pt)  t +2.57  total  +2076.8 pt
+  descriptif (0.5%)      gardes  91 ( +23.62 pt)  ecartes  15 ( -33.28 pt)  t +2.19  total  +2149.5 pt
+  descriptif (2.0%)      gardes  98 ( +20.22 pt)  ecartes   8 ( -41.44 pt)  t +2.19  total  +1981.8 pt
+  descriptif (3.0%)      gardes 102 ( +17.06 pt)  ecartes   4 ( -22.44 pt)  t +0.99  total  +1740.0 pt
+
+Trades repeches par N1 (ecartes par H1, |delta| < 1%) : 9
+  2026-05-04 minute 210 vente delta +0.227% -> -78.00 pt (databento)
+  2026-05-15 minute  30 vente delta +0.555% -> -156.00 pt (databento)
+  2026-05-28 minute  90 achat delta -0.031% -> +94.25 pt (databento)
+  2026-06-08 minute  90 achat delta -0.150% -> -89.75 pt (databento)
+  2026-06-09 minute 330 vente delta +0.868% -> -74.25 pt (databento)
+  2026-07-28 minute  30 vente delta +0.322% -> -107.25 pt (databento)
+  2026-07-30 minute 150 achat delta -0.998% -> +157.50 pt (databento)
+  2026-09-04 minute  30 achat delta -0.200% -> -114.50 pt (databento)
+  2026-10-16 minute  30 vente delta +0.077% -> +447.75 pt (rithmic)
+
+Ecartes par H1 : 21 ; delta fort (>= 1%) 12 trades, -35.54 pt en moyenne ; delta faible 9 trades, +8.86 pt
+-> PAS DE DECISION : 9 trades repeches sur 10 necessaires ; le bot garde le filtre H1
