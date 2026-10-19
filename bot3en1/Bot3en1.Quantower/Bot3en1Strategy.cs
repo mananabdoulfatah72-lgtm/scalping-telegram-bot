@@ -32,6 +32,8 @@ namespace Bot3en1
         [InputParameter("MES (mode a plat : RSI(2) de nuit et zone freinee), meme echeance, ex. MESZ6", 35)] public Symbol SymboleMES;
         [InputParameter("Dossier des donnees du bot", 40)] public string Dossier = @"C:\Bot3en1";
         [InputParameter("MNQ par source (Bulenox : 4 pendant le challenge de 30 jours, 1 sur le compte Master)", 50, 1, 6, 1, 0)] public int Taille = 1;
+        [InputParameter("Filtre delta : relance (un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens ; relance/README.md)", 55)]
+        public bool RelanceFiltre = true;
         [InputParameter("Plafond de gain du jour en $ (0 = aucun ; Bulenox : 500 sur le compte Master seulement, 0 pendant le challenge ; Static : 500 sur le compte Pro)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
         [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1000, 100 $ de marge avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
         [InputParameter("Mode a plat : frein, zone sur MES quand le compte est a X $ ou plus sous son plus haut de fin de journee (0 = jamais ; Bulenox : 750)", 62, 0, 5000, 50, 0)] public double Frein = 750;
@@ -55,7 +57,7 @@ namespace Bot3en1
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
-        const string Version = "19 octobre 2026";     // ecrite au lancement : verifie que la mise a jour est bien chargee
+        const string Version = "19 octobre 2026 (relance)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
         Moteur bot;
         TimeZoneInfo ny;
         Timer horloge;
@@ -270,6 +272,7 @@ namespace Bot3en1
                 Dire($"ATTENTION : l'historique s'arrete le {derniere:yyyy-MM-dd} (robot en retard ?). La zone utilise des parametres un peu anciens.", true);
             bot = Rejoueur.Preparer(seances, jour);
             bot.Taille = Math.Max(1, Taille);
+            bot.Relance = RelanceFiltre;
             bot.PlafondJour = ModeAPlat ? 0 : PlafondJour;     // mode a plat : plafond gere ici, sur la valeur reelle du compte
             bot.ModeAPlat = ModeAPlat;
             if (ModeAPlat)

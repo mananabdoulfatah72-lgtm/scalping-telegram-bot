@@ -1,0 +1,30 @@
+H1    P1  79 trades  +1776.8 pt (pire baisse  760.2) | P2  6 trades  +220.2 pt | relances 0, cassures fortes 0
+R     P1  83 trades  +1860.5 pt (pire baisse  760.2) | P2  7 trades  +657.8 pt | relances 5, cassures fortes 0
+S1    P1  82 trades  +1575.0 pt (pire baisse  867.5) | P2  7 trades  +668.0 pt | relances 0, cassures fortes 4
+RS1   P1  86 trades  +1658.8 pt (pire baisse  867.5) | P2  7 trades  +668.0 pt | relances 4, cassures fortes 4
+S05   P1  85 trades  +1460.2 pt (pire baisse  994.2) | P2  7 trades  +668.0 pt | relances 0, cassures fortes 7
+RS05  P1  88 trades  +1545.8 pt (pire baisse  994.2) | P2  7 trades  +668.0 pt | relances 3, cassures fortes 7
+SANS  P1  99 trades   +982.2 pt (pire baisse 1141.2) | P2  7 trades  +668.0 pt | relances 0, cassures fortes 0
+
+trades ajoutes par R : 5, +521.2 pt
+  2026-05-01 15h30 achat -55.00 pt (relance)
+  2026-05-28 11h30 achat +39.25 pt (relance)
+  2026-07-30 12h30 achat +101.25 pt (relance)
+  2026-09-23 11h30 vente -1.75 pt (relance)
+  2026-10-16 10h30 vente +437.50 pt (relance)
+
+trades ajoutes par S1 : 4, +246.0 pt
+  2026-06-09 14h30 vente -20.25 pt (cassure forte)
+  2026-06-09 15h00 vente -74.25 pt (cassure forte)
+  2026-07-28 10h00 vente -107.25 pt (cassure forte)
+  2026-10-16 10h00 vente +447.75 pt (cassure forte)
+
+trades ajoutes par RS1 : 8, +329.8 pt
+  2026-05-01 15h30 achat -55.00 pt (relance)
+  2026-05-28 11h30 achat +39.25 pt (relance)
+  2026-06-09 14h30 vente -20.25 pt (cassure forte)
+  2026-06-09 15h00 vente -74.25 pt (cassure forte)
+  2026-07-28 10h00 vente -107.25 pt (cassure forte)
+  2026-07-30 12h30 achat +101.25 pt (relance)
+  2026-09-23 11h30 vente -1.75 pt (relance)
+  2026-10-16 10h00 vente +447.75 pt (cassure forte)

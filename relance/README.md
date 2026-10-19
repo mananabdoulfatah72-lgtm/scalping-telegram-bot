@@ -48,3 +48,31 @@ Une variante remplace H1 dans le bot seulement si, à la fois :
 
 Si plusieurs passent : celle qui gagne le plus sur P1. Si aucune ne passe : le bot ne change pas, et les résultats
 sont publiés quand même.
+
+## Résultats (19 octobre 2026) : `resultats.txt`, `comparer.py`
+
+Moteur C# du bot (`Bot3en1.Replay`, réglages `RELANCE=1` et `FORCE=`), barres du robot, vrai delta Databento (P1) et
+Rithmic (P2). La référence H1 retrouve exactement les chiffres de `zone_neutre/` (106 trades, +1 997 points).
+
+| Variante | P1 : points | P1 : pire baisse | P2 : points | Décision |
+|---|---|---|---|---|
+| H1 (bot actuel) | +1 776,8 | 760,2 | +220,2 | référence |
+| **R, relance** | **+1 860,5** | **760,2** | **+657,8** | **passe les 3 critères** |
+| S, cassure forte (seuil 1) | +1 575,0 | 867,5 | +668,0 | rejetée (critère 1) |
+| R + S | +1 658,8 | 867,5 | +668,0 | rejetée (critère 1) |
+| S (0,5), descriptif | +1 460,2 | 994,2 | +668,0 | — |
+| Zone sans filtre | +982,2 | 1 141,2 | +668,0 | — |
+
+- **R ajoute 5 trades** : 4 sur P1 (−55,00 ; +39,25 ; +101,25 ; −1,75, soit +83,75 points) et le 16 octobre à
+  10 h 30 New York (+437,50 points). Elle ne retire aucun trade de H1 et n'aggrave pas la pire baisse.
+- **S écarte moins, mais ce qu'elle repêche perd sur P1** (3 trades, −201,75 points) : le 16 octobre mis à part, une
+  cassure forte contre le delta n'a pas été une bonne affaire. Le critère 4 (15 ans) n'a pas eu à être calculé.
+- **Décision fixée à l'avance : R remplace H1 dans le bot.** Réglage « Filtre delta : relance », coché par défaut.
+- **Contrôle dans l'adaptateur Quantower** (`Bot3en1.TestQuantower`, vrai delta, avril - 25 septembre 2026) : 4 relances,
+  les mêmes jours que le rejeu, +167,50 $ pour 1 MNQ par rapport à la relance éteinte (`RELANCE=0`). Sans filtre, les
+  5 modes du banc donnent les mêmes ordres qu'avant.
+- **Limites** : l'avantage mesuré sur P1 est petit (4 trades, 2 gagnants) ; le gros du gain vient du 16 octobre, qui a
+  motivé l'étude. La relance n'aggrave rien de mesurable et colle à l'idée du filtre (n'entrer qu'avec le flux), mais
+  ce n'est pas une preuve forte. Elle entre plus tard, donc à un prix moins bon que la cassure.
+- **En direct, effet de bord voulu** : après un redémarrage en pleine séance, un trade encore en cours peut être repris
+  à un contrôle suivant si le delta va dans son sens (avant, le bot attendait sa fin).

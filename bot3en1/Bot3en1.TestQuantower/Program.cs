@@ -81,6 +81,7 @@ class Program
         if (strat.Arretee) { Console.WriteLine(string.Join("\n", strat.Logs)); return 1; }
         var moteur = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
         if (Environment.GetEnvironmentVariable("SANS_FILTRE") == "1") moteur.FiltreDelta = false;
+        if (Environment.GetEnvironmentVariable("RELANCE") == "0") moteur.Relance = false;
         int Pos(Symbol sy) { var p = Core.Instance.Liste.FirstOrDefault(x => x.Symbol == sy); return p == null ? 0 : (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity; }
         var nuits = new List<string>();
         var violations = new List<string>();

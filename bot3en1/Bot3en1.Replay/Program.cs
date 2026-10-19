@@ -8,6 +8,7 @@ using Bot3en1;
 // (CSV : jour,minute,achats,ventes). Verifie que le moteur C# prend exactement les decisions du robot Python.
 // Usage : rejeu <minutes.csv[.gz]> <agresseurs.csv[.gz]|-> <debut AAAA-MM-JJ> <fin AAAA-MM-JJ> [historique_sortie.csv]
 // SANS_FILTRE=1 : zone sans le filtre delta. CONTRAT_CALENDRIER=1 : contrats de la regle du calendrier (comme en direct).
+// RELANCE=1, FORCE=1 : variantes de relance/README.md (trade ecarte repris si le delta tourne ; cassure forte prise).
 class Program
 {
     static int Main(string[] a)
@@ -30,7 +31,9 @@ class Program
         var suivant = new Dictionary<DateTime, string>();
         for (int i = 0; i < ok.Count; i++) suivant[ok[i]] = seances[i + 1 < ok.Count ? ok[i + 1] : ok[i]].contrat;
         var bot = new Moteur(new List<Resume>()) { ContratSuivant = (j, c) => suivant.TryGetValue(j, out var s) ? s : c,
-                                                    FiltreDelta = Environment.GetEnvironmentVariable("SANS_FILTRE") != "1" };
+                                                    FiltreDelta = Environment.GetEnvironmentVariable("SANS_FILTRE") != "1",
+                                                    Relance = Environment.GetEnvironmentVariable("RELANCE") == "1",
+                                                    SeuilForce = double.Parse(Environment.GetEnvironmentVariable("FORCE") ?? "0", inv) };
         var trades = new List<string>();
         double zone = 0, rsi = 0, entreeZ = 0, entreeR = 0; int sensZ = 0, nZone = 0, nEcartes = 0, nRsi = 0;
         bool demarre = false;

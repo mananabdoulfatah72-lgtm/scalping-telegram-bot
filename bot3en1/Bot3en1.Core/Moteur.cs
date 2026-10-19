@@ -61,6 +61,11 @@ namespace Bot3en1
         public int Taille = 1;                       // MNQ par source
         public double PlafondJour = 0;               // 0 : pas de plafond. Systeme Static (static50k/) : 500 $ sur le compte Pro
         public bool FiltreDelta = true;
+        // relance/README.md (eteints par defaut) : relance = un trade ecarte encore vivant est pris a un contrôle suivant si
+        // le delta va alors dans son sens ; SeuilForce > 0 = une cassure d'au moins SeuilForce fois la marge est prise
+        // quel que soit le delta
+        public bool Relance = false;
+        public double SeuilForce = 0;
         public bool ZoneAutorisee = true;            // le rejeu le met a faux pour une seance incomplete (le robot ne la trade pas)
 
         public readonly List<Resume> Historique;
@@ -309,26 +314,43 @@ namespace Bot3en1
         void Zone(int m, int k, double p, List<Signal> s)
         {
             double o0 = barres[0].O;
-            double haut = Math.Max(o0, Veille) * (1 + Sigma[k]), bas = Math.Min(o0, Veille) * (1 - Sigma[k]), vw = Vwap(m);
+            double refH = Math.Max(o0, Veille), refB = Math.Min(o0, Veille);
+            double haut = refH * (1 + Sigma[k]), bas = refB * (1 - Sigma[k]), vw = Vwap(m);
             if (ZoneVirtuelle > 0 && p <= Math.Max(haut, vw)) SortieZone(m, p, "sortie", s);
             else if (ZoneVirtuelle < 0 && p >= Math.Min(bas, vw)) SortieZone(m, p, "sortie", s);
+            else if (Relance && FiltreDelta && ZoneVirtuelle != 0 && ZoneTenue == 0 && !Arret)
+            {
+                // trade ecarte encore vivant (prix toujours hors de la zone et du bon cote du VWAP) : nouvelle chance
+                double dr = Delta(m);
+                if (Math.Sign(dr) == ZoneVirtuelle)
+                {
+                    ZoneTenue = ZoneVirtuelle; EntreeZone = p;
+                    if (ModeAPlat) entreeZoneES = PrixES;
+                    s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p,
+                        Texte = $"{(ZoneTenue > 0 ? "achat" : "vente")} {Heure(m)} a {p:F2} (relance : delta 30 min {dr:+0;-0;0}, GARDE)" });
+                }
+            }
             if (ZoneVirtuelle == 0 && (p > haut || p < bas))
             {
                 int sens = p > haut ? 1 : -1;
                 ZoneVirtuelle = sens;
                 double d = Delta(m);
-                bool garde = !FiltreDelta || Math.Sign(d) == sens;
+                double depasse = sens > 0 ? (p - haut) / (refH * Sigma[k]) : (bas - p) / (refB * Sigma[k]);
+                bool force = SeuilForce > 0 && depasse >= SeuilForce;
+                bool garde = !FiltreDelta || Math.Sign(d) == sens || force;
                 string h = Heure(m);
                 if (garde && !Arret)
                 {
                     ZoneTenue = sens; EntreeZone = p;
                     if (ModeAPlat) entreeZoneES = PrixES;
                     s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p,
-                        Texte = $"{(sens > 0 ? "achat" : "vente")} {h} a {p:F2} (delta 30 min {d:+0;-0;0}, GARDE)" });
+                        Texte = $"{(sens > 0 ? "achat" : "vente")} {h} a {p:F2} (delta 30 min {d:+0;-0;0}, GARDE{(force && Math.Sign(d) != sens ? ", cassure forte" : "")})"
+                              + $" [depassement {depasse.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}]" });
                 }
                 else
                     s.Add(new Signal { Minute = m, Source = "zone-ecarte", PrixReference = p,
-                        Texte = $"{(sens > 0 ? "achat" : "vente")} {h} a {p:F2} ecarte (delta 30 min {d:+0;-0;0})" });
+                        Texte = $"{(sens > 0 ? "achat" : "vente")} {h} a {p:F2} ecarte (delta 30 min {d:+0;-0;0})"
+                              + $" [depassement {depasse.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}]" });
             }
         }
 
