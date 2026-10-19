@@ -96,6 +96,11 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
   - le bot prévient si les symboles choisis ne sont plus ceux du jour. Il faut alors choisir les nouveaux (NQ et
     MNQ) dans les réglages, quatre fois par an.
 - **Arrêt d'urgence :** créer un fichier nommé `STOP` dans `C:\Bot3en1` : le bot ferme tout et ne trade plus.
+- **Message à chaque contrôle (19 octobre 2026)** : toutes les 30 minutes, le journal et Telegram donnent l'heure de Paris
+  et de New York, le prix, les limites d'achat et de vente, le VWAP, le delta des 30 minutes et la décision (achat,
+  vente, cassure écartée, en position avec son niveau de sortie, trade écarté en attente de relance, pas de signal).
+  Aucune décision ne change : mêmes ordres que sans message (banc et adaptateur avec le vrai delta).
+- **Relance du filtre (19 octobre 2026, `relance/README.md`)** : réglage « Filtre delta : relance », coché par défaut.
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;

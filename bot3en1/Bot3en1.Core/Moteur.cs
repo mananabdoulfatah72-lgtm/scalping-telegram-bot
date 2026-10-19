@@ -66,6 +66,10 @@ namespace Bot3en1
         // quel que soit le delta
         public bool Relance = false;
         public double SeuilForce = 0;
+        /// <summary>Message a chaque controle (prix, limites, VWAP, delta, decision) : source "controle". Heure de Paris
+        /// donnee par l'hote (minute de la seance -> "16h00"), sinon seulement l'heure de New York.</summary>
+        public bool MessageControle = false;
+        public Func<int, string> HeureParis;
         public bool ZoneAutorisee = true;            // le rejeu le met a faux pour une seance incomplete (le robot ne la trade pas)
 
         public readonly List<Resume> Historique;
@@ -312,6 +316,30 @@ namespace Bot3en1
         public double ValeurJour(double prix) => RealiseJour + Taille * 2 * (ZoneTenue * (prix - EntreeZone) + Rsi * (prix - RefRsi));
 
         void Zone(int m, int k, double p, List<Signal> s)
+        {
+            int avantTenue = ZoneTenue, avantVirt = ZoneVirtuelle, n0 = s.Count;
+            ZoneDecision(m, k, p, s);
+            if (!MessageControle) return;
+            double o0 = barres[0].O;
+            double haut = Math.Max(o0, Veille) * (1 + Sigma[k]), bas = Math.Min(o0, Veille) * (1 - Sigma[k]), vw = Vwap(m), d = Delta(m);
+            var neuf = s.Skip(n0).ToList();
+            string decision =
+                neuf.Any(x => x.Source == "zone-ecarte") ? "cassure ecartee : le delta va contre le trade"
+                : neuf.Any(x => x.Source == "zone" && !x.Texte.StartsWith("sortie")) ? (ZoneTenue > 0 ? "ACHAT" : "VENTE")
+                : neuf.Any(x => x.Source == "zone" && x.Texte.StartsWith("sortie")) ? "sortie du trade"
+                : avantVirt != 0 && ZoneVirtuelle == 0 && avantTenue == 0 ? "le trade ecarte est termine (prix revenu), plus de relance pour lui"
+                : ZoneTenue > 0 ? $"en position (achat) ; sortie a un controle si le prix passe sous {Math.Max(haut, vw):F2}"
+                : ZoneTenue < 0 ? $"en position (vente) ; sortie a un controle si le prix passe au-dessus de {Math.Min(bas, vw):F2}"
+                : Arret ? "plus de trade aujourd'hui (objectif ou limite du jour atteint)"
+                : ZoneVirtuelle != 0 ? $"trade ecarte toujours en cours : {(Relance ? "relance au prochain controle si le delta passe du bon cote" : "relance decochee, le bot attend sa fin")}"
+                : "pas de signal : prix dans la zone";
+            string paris = HeureParis?.Invoke(m);
+            s.Add(new Signal { Minute = m, Source = "controle", PrixReference = p,
+                Texte = $"controle {(paris != null ? paris + " Paris (" + Heure(m) + " New York)" : Heure(m) + " New York")} : prix {p:F2},"
+                      + $" achat au-dessus de {haut:F2}, vente sous {bas:F2}, VWAP {vw:F2}, delta 30 min {d:+0;-0;0} -> {decision}" });
+        }
+
+        void ZoneDecision(int m, int k, double p, List<Signal> s)
         {
             double o0 = barres[0].O;
             double refH = Math.Max(o0, Veille), refB = Math.Min(o0, Veille);

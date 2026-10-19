@@ -158,6 +158,22 @@ namespace Bot3en1
             Dire("arrete. Les positions ouvertes restent ouvertes (le RSI(2) peut tenir la nuit).");
         }
 
+        /// <summary>Heure de Paris d'une minute de la seance du jour (9 h 30 New York + m minutes), ex. "16h00".</summary>
+        string HeureDeParis(int m)
+        {
+            try
+            {
+                TimeZoneInfo paris = null;
+                foreach (var id in new[] { "Romance Standard Time", "Europe/Paris" })
+                    try { paris = TimeZoneInfo.FindSystemTimeZoneById(id); break; } catch { }
+                if (paris == null) return null;
+                var utc = TimeZoneInfo.ConvertTimeToUtc(jour.AddMinutes(570 + m), ny);
+                var t = TimeZoneInfo.ConvertTimeFromUtc(utc, paris);
+                return $"{t.Hour}h{t.Minute:00}";
+            }
+            catch { return null; }
+        }
+
         /// <summary>Heure UTC d'une transaction, quel que soit le genre de DateTime donne par la plateforme.</summary>
         static DateTime EnUtc(DateTime d) => d.Kind == DateTimeKind.Local ? d.ToUniversalTime()
             : d.Kind == DateTimeKind.Unspecified ? DateTime.SpecifyKind(d, DateTimeKind.Utc) : d;
@@ -273,6 +289,8 @@ namespace Bot3en1
             bot = Rejoueur.Preparer(seances, jour);
             bot.Taille = Math.Max(1, Taille);
             bot.Relance = RelanceFiltre;
+            bot.MessageControle = true;
+            bot.HeureParis = m => HeureDeParis(m);
             bot.PlafondJour = ModeAPlat ? 0 : PlafondJour;     // mode a plat : plafond gere ici, sur la valeur reelle du compte
             bot.ModeAPlat = ModeAPlat;
             if (ModeAPlat)
