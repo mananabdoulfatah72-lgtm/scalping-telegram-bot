@@ -1,0 +1,63 @@
+Mesure 2 : vrai delta, barres du robot (zone/robot/nq_1min.csv.gz). P1 = 1er avril - 1er octobre 2026 (Databento, secondes regroupees par minute), P2 = 2 - 16 octobre 2026 (Rithmic, transactions_NQZ6_rithmic.csv).
+Delta 30 min = achats - ventes des minutes max(0, m-29)..m de la seance (Moteur.cs Delta) ; delta nul : trade ecarte.
+Pire baisse = plus grande baisse du cumul des points des trades (relance/comparer.py). Pire seance = plus petite somme des points d'une journee ; pire latent = plus bas de (realise + latent aux plus bas / hauts des minutes).
+SANS = H1 sans filtre (reference de relance/resultats.txt). R et RL : pour information seulement.
+
+P1 (2026-04-01 - 2026-10-01) : 125 seances jouables
+var   trades    points   pire b.             pire seance  pire lat.  ecartes relances
+-------------------------------------------------------------------------------------
+H1        79   +1776.8     760.2    -223.75 (2026-06-25)    -348.25       20        0
+E1       110    +935.2     627.8    -381.50 (2026-06-10)    -524.50       42        0
+E2       256    +449.0    1092.8    -219.75 (2026-06-10)    -239.25      146        0
+S1       109    +495.5     692.0    -205.50 (2026-07-27)    -226.75       47        0
+L1        71    +853.5     526.0    -223.75 (2026-06-25)    -348.25       28        0
+R         83   +1860.5     760.2    -223.75 (2026-06-25)    -348.25       16        4
+      relance 2026-05-01 15h30 (achat, signal 15h00) -55.00 pt, depassement 0.94
+      relance 2026-05-28 11h30 (achat, signal 11h00) +39.25 pt, depassement 0.22
+      relance 2026-07-30 12h30 (achat, signal 12h00) +101.25 pt, depassement 0.48
+      relance 2026-09-23 11h30 (vente, signal 11h00) -1.75 pt, depassement 0.74
+RL        83   +1860.5     760.2    -223.75 (2026-06-25)    -348.25       16        4
+      relance 2026-05-01 15h30 (achat, signal 15h00) -55.00 pt, depassement 0.94
+      relance 2026-05-28 11h30 (achat, signal 11h00) +39.25 pt, depassement 0.22
+      relance 2026-07-30 12h30 (achat, signal 12h00) +101.25 pt, depassement 0.48
+      relance 2026-09-23 11h30 (vente, signal 11h00) -1.75 pt, depassement 0.74
+SANS      99    +982.2    1141.2    -233.00 (2026-07-28)    -348.25        0        0
+
+P2 (2026-10-02 - 2026-10-16) : 11 seances jouables
+var   trades    points   pire b.             pire seance  pire lat.  ecartes relances
+-------------------------------------------------------------------------------------
+H1         6    +220.2     109.8     -83.00 (2026-10-12)     -97.50        1        0
+E1         7    +112.5     117.2     -61.75 (2026-10-12)     -76.25        2        0
+E2        16    +469.2     110.8     -70.75 (2026-10-12)     -73.75        8        0
+S1        10    +567.2      95.0     -68.25 (2026-10-12)     -73.50        1        0
+L1         6    +220.2     109.8     -83.00 (2026-10-12)     -97.50        1        0
+R          7    +657.0     109.8     -83.00 (2026-10-12)    -130.75        0        1
+      relance 2026-10-16 10h30 (vente, signal 10h00) +436.75 pt, depassement 1.15
+RL         7    +664.2     109.8     -83.00 (2026-10-12)     -97.50        0        1
+      relance 2026-10-16 11h00 (vente, signal 10h00) +444.00 pt, depassement 0.77
+SANS       7    +669.5     109.8     -83.00 (2026-10-12)    -118.25        0        0
+
+Controle contre relance/resultats.txt (rejeu C# du bot) :
+  H1   P1 : reference 79 trades +1776.8 pt ; ici 79 trades +1776.8 pt -> identique
+  R    P1 : reference 83 trades +1860.5 pt ; ici 83 trades +1860.5 pt -> identique
+  SANS P1 : reference 99 trades +982.2 pt ; ici 99 trades +982.2 pt -> identique
+  H1   P2 : reference 6 trades +220.2 pt ; ici 6 trades +220.2 pt -> identique
+  R    P2 : reference 7 trades +657.8 pt ; ici 7 trades +657.0 pt -> ECART
+  SANS P2 : reference 7 trades +668.0 pt ; ici 7 trades +669.5 pt -> ECART
+-> ecarts : explication ci-dessous
+
+Explication : barres du robot de la version 8d8e099 (17 octobre, utilisee par relance/ le 19 octobre) contre la version actuelle : 321 minutes differentes jusqu'au 2026-10-16 (2026-10-16)
+    2026-10-16 10:00 cloture 29828.75 (avant) -> 29830.25 (maintenant)
+    2026-10-16 10:30 cloture 29818.50 (avant) -> 29817.75 (maintenant)
+  avec ces barres : H1   P1 79 trades +1776.8 pt (reference 79 trades +1776.8) -> identique
+  avec ces barres : R    P1 83 trades +1860.5 pt (reference 83 trades +1860.5) -> identique
+  avec ces barres : SANS P1 99 trades +982.2 pt (reference 99 trades +982.2) -> identique
+  avec ces barres : H1   P2 6 trades +220.2 pt (reference 6 trades +220.2) -> identique
+  avec ces barres : R    P2 7 trades +657.8 pt (reference 7 trades +657.8) -> identique
+  avec ces barres : SANS P2 7 trades +668.0 pt (reference 7 trades +668.0) -> identique
+
+Criteres 3 et 4 de la decision (P1 : au moins autant de points que H1 ; P2 : pas moins bien que H1) :
+  E1 : P1 +935.2 contre +1776.8 -> non ; P2 +112.5 contre +220.2 -> non
+  E2 : P1 +449.0 contre +1776.8 -> non ; P2 +469.2 contre +220.2 -> oui
+  S1 : P1 +495.5 contre +1776.8 -> non ; P2 +567.2 contre +220.2 -> oui
+  L1 : P1 +853.5 contre +1776.8 -> non ; P2 +220.2 contre +220.2 -> oui

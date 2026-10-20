@@ -1,0 +1,23 @@
+Validation : OK - robot.py zone_de_bruit : 3572 trades, +10721.25 pt nets ; H1 sans delta (ce moteur) : 3572 trades, +10721.25 pt ; trades differents 0 (robot seul) / 0 (moteur seul) ; ecart max par jour : points 0.00e+00, pire du jour brut 0.00e+00
+
+Mesure 1 : 15 ans, prix seuls, sans filtre delta (H1 = V1). Barres de la recherche 2011 - 25 septembre 2026, completees par celles du robot jusqu'au 19 octobre 2026.
+t = moyenne / ecart-type x racine(n) des gains quotidiens nets (points), sur TOUTES les seances jouables (0 sans trade).
+Perte du jour : plus bas de (realise + latent aux plus bas / plus hauts des minutes), 1,5 point compte a l'entree de chaque trade ; entre parenthese, sans les frais (comme robot.py 'pire').
+
+var  trades     points  gagn. | 2011-2022 : tr    points  gagn.      t | 2023-2026 : tr    points  gagn.      t | dep. moy |   jours <= -125    jours <= -83
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+H1     3572  +10721.25   1274 |           2734   +4894.2    941  +2.12 |            838   +5827.0    333  +1.86 |    0.484 |    130 (  128)     267 (  255)
+E1     5525   +3036.75   1659 |           4286    +585.2   1219  +0.22 |           1239   +2451.5    440  +0.65 |    0.241 |    182 (  169)     333 (  320)
+E2    13711   -9549.00   1903 |          10686  -11233.5   1325  -4.68 |           3025   +1684.5    578  +0.52 |    0.175 |    107 (   87)     244 (  192)
+S1     5188   +6092.75   1196 |           3982   +1582.2    850  +0.82 |           1206   +4510.5    346  +1.57 |    0.459 |     59 (   50)     151 (  133)
+L1     3090   +7618.75   1093 |           2361   +3456.8    801  +1.66 |            729   +4162.0    292  +1.47 |    0.299 |     96 (   96)     224 (  213)
+
+Seances jouables : 3856 (2927 en 2011-2022, 929 en 2023-2026)
+
+Critere 1 de la decision (t superieur a V1 sur 2011-2022 ET sur 2023-2026) :
+  E1 : t +0.22 / +0.65 contre V1 +2.12 / +1.86 -> ne passe pas
+  E2 : t -4.68 / +0.52 contre V1 +2.12 / +1.86 -> ne passe pas
+  S1 : t +0.82 / +1.57 contre V1 +2.12 / +1.86 -> ne passe pas
+  L1 : t +1.66 / +1.47 contre V1 +2.12 / +1.86 -> ne passe pas
+
+L1 : 482 cassures non prises (depassement > 1), gain moyen du virtuel +6.44 pt (somme +3102.5) ; prises 3090, moyenne +2.47 pt
