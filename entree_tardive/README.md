@@ -90,3 +90,82 @@ Si plusieurs passent : celle qui valide le plus souvent sur les départs 2012-20
 
 **À savoir avant d'y croire :** cette étude est lancée après une mauvaise journée. Une règle qui l'aurait évitée n'est pas
 une preuve. C'est pour cela que la décision repose sur 15 ans et sur le challenge, et non sur la journée du 20 octobre.
+
+## Résultats (20 octobre 2026) : `resultats_15ans.txt`, `resultats_delta.txt`, `resultats_challenge.txt`, `decision.txt`
+
+**Vérifications avant de lire les chiffres :**
+- H1 sans delta sur 15 ans donne exactement les trades de `zone/robot.py` : 3 572 trades, +10 721,25 points, aucun écart.
+- Sur P1, H1, R et la zone sans filtre retrouvent `relance/resultats.txt` : 79 trades et +1 776,8 points, 83 et +1 860,5,
+  99 et +982,2. Sur P2, les trois chiffres sont exacts avec les barres du robot du 17 octobre. Le 20 octobre, le robot a
+  retéléchargé la séance du 16 octobre, d'où R à +657,0 au lieu de +657,8 et la zone sans filtre à +669,5 au lieu de
+  +668,0.
+- Une deuxième version du banc, écrite séparément, donne les mêmes trades pour chaque variante et chaque période : mêmes
+  minutes, mêmes prix, mêmes points.
+- Avant d'y brancher ces trades, le moteur de la vague 13 redonne exactement `vague13.json`.
+
+**1. 15 ans, sans filtre**
+
+| Variante | Trades | Points | t 2011-2022 | t 2023-2026 | Séances à −125 points (1 000 $ en 4 MNQ) |
+|---|---|---|---|---|---|
+| **H1 (le bot, relance décochée)** | 3 572 | +10 721 | **+2,12** | **+1,86** | 130 |
+| E1, entrée à la cassure | 5 525 | +3 037 | +0,22 | +0,65 | 182 |
+| E2, tout à la minute | 13 711 | −9 549 | −4,68 | +0,52 | 107 |
+| S1, sortie à la minute | 5 188 | +6 093 | +0,82 | +1,57 | 59 |
+| L1, pas de poursuite | 3 090 | +7 619 | +1,66 | +1,47 | 96 |
+
+**2. Vrai delta**
+
+| Variante | P1 : trades | P1 : points | P1 : pire baisse | P2 : points |
+|---|---|---|---|---|
+| **H1** | 79 | **+1 776,8** | 760,2 | +220,2 |
+| E1 | 110 | +935,2 | 627,8 | +112,5 |
+| E2 | 256 | +449,0 | 1 092,8 | +469,2 |
+| S1 | 109 | +495,5 | 692,0 | +567,2 |
+| L1 | 71 | +853,5 | 526,0 | +220,2 |
+| R (information) | 83 | +1 860,5 | 760,2 | +657,0 |
+| RL (information) | 83 | +1 860,5 | 760,2 | +664,2 |
+
+**3. Challenge depuis 0 avec 16 séances** (chaque séance de 2012 à 2026 comme premier jour, sans filtre)
+
+| Variante | Validé | Perdu | Expiré | Validé (départs 2023-2026) | Séances coupées par la limite du jour |
+|---|---|---|---|---|---|
+| **H1** | **44,9 %** | 38,7 % | 16,4 % | 46,5 % | 11,1 % |
+| E1 | 44,4 % | 44,7 % | 11,0 % | 47,9 % | 13,3 % |
+| E2 | 38,4 % | 47,9 % | 13,7 % | 40,6 % | 9,2 % |
+| S1 | 41,0 % | 37,1 % | 21,9 % | 41,8 % | 7,1 % |
+| L1 | 40,3 % | 34,0 % | 25,7 % | 41,8 % | 9,1 % |
+
+**Décision fixée à l'avance : aucune variante ne passe** (aucune ne remplit même le critère 1, le 2 ou le 3). Le bot reste
+H1 : la zone telle qu'elle est, relance du filtre delta décochée.
+
+**Ce qu'il faut retenir :**
+- **Entrer dès la cassure (E1) fait prendre beaucoup plus de fausses cassures.** Le gain s'effondre (t +0,22 et +0,65),
+  et les journées à −1 000 $ sont plus nombreuses (182 contre 130). Tout décider à la minute (E2) est pire encore : la
+  moitié des trades durent moins de 4 minutes et paient les frais.
+- **En moyenne, une entrée « tardive » n'est pas une mauvaise entrée.** Les 482 cassures que L1 refuse (prix déjà à plus
+  d'une marge de la limite) auraient rapporté +6,44 points en moyenne, contre +2,47 pour celles qu'il garde. Les fortes
+  cassures sont les meilleurs trades de la zone. Le 20 octobre est un cas défavorable, pas la règle.
+- **Sortir à la minute (S1) divise par deux les journées à −1 000 $** (59 contre 130 sur 15 ans), mais coupe trop tôt
+  les bons trades : il valide moins souvent le challenge (41,0 % contre 44,9 %).
+- **En partant de 0 avec 16 séances, le bot actuel (H1) reste celui qui valide le plus souvent** : environ 45 % de
+  validés, 39 % de perdus, 16 % d'expirés.
+- **La relance** : 5 relances en 136 séances avec le vrai delta, trop peu pour juger. En challenge sur P1 (information,
+  départs qui se chevauchent), elle valide 39,4 % contre 41,7 % pour H1. Même la relance du 16 octobre, qui a motivé
+  son adoption, est descendue à −130,75 points avant de gagner : en 4 MNQ, la limite de 1 000 $ l'aurait coupée.
+
+**Limites :**
+- L'étude est lancée après une mauvaise journée. Ses règles ont été fixées avant tout calcul.
+- Sur 15 ans, la zone n'est pas filtrée : il n'existe pas de vrai delta avant avril 2026.
+- Pour le challenge :
+  - les prix sont ramenés au niveau d'aujourd'hui (facteur de la vague 4) ;
+  - l'arrêt à +3 050 $ suppose un ordre limite rempli dès que la minute touche ce niveau ;
+  - les départs se chevauchent, donc un écart de 1 ou 2 points ne veut rien dire.
+- La séance du 20 octobre n'est pas encore dans les données.
+
+**Relancer :**
+
+```
+git worktree add ../recherche origin/claude/keen-babbage-r686cl   # donnees de la branche de recherche (ou variable KB)
+python3 entree_tardive/etude.py       # mesures 1 et 2, environ 15 s
+python3 entree_tardive/challenge.py   # mesure 3, numba et scipy requis, environ 25 s
+```
