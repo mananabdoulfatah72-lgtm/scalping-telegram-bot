@@ -13,6 +13,7 @@ using TradingPlatform.BusinessLayer;
 // PLAFOND=500 : plafond du jour active ; une transaction est alors emise chaque soir a 19 h (au prix d'ouverture de la
 // seance suivante) pour faire passer l'adaptateur par 18 h et par le plafond hors seance.
 // SANS_FILTRE=1 : zone sans le filtre delta (pour faire passer des trades de zone sans le fichier des agresseurs).
+// RELANCE=1 / RELANCE=0 : relance du filtre cochee / decochee (sans la variable : reglage par defaut, decoche).
 // SANS_NQ=1 : aucune transaction NQ pendant la seance (16 octobre 2026) : le bot doit donner l'alerte et ne rien trader.
 // LANCEMENT=09:10 : heure de lancement le premier jour (New York), horloge avancee minute par minute jusqu'a 9 h 29.
 // SOLDE_MANUEL=51000 : solde des reglages, repris si le solde est illisible (SOLDE absent). TELEGRAM_JETON, TELEGRAM_CHAT : envoi
@@ -54,6 +55,7 @@ class Program
             TailleFin = int.Parse(Environment.GetEnvironmentVariable("TAILLE_FIN") ?? "0", inv),
             SeancesFin = int.Parse(Environment.GetEnvironmentVariable("SEANCES_FIN") ?? "5", inv)
         };
+        if (Environment.GetEnvironmentVariable("RELANCE") is string relance) strat.RelanceFiltre = relance == "1";   // sinon le reglage par defaut
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";
         bool sansNQ = Environment.GetEnvironmentVariable("SANS_NQ") == "1";
         strat.JetonTelegram = Environment.GetEnvironmentVariable("TELEGRAM_JETON") ?? "";
@@ -81,7 +83,6 @@ class Program
         if (strat.Arretee) { Console.WriteLine(string.Join("\n", strat.Logs)); return 1; }
         var moteur = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
         if (Environment.GetEnvironmentVariable("SANS_FILTRE") == "1") moteur.FiltreDelta = false;
-        if (Environment.GetEnvironmentVariable("RELANCE") == "0") moteur.Relance = false;
         int Pos(Symbol sy) { var p = Core.Instance.Liste.FirstOrDefault(x => x.Symbol == sy); return p == null ? 0 : (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity; }
         var nuits = new List<string>();
         var violations = new List<string>();

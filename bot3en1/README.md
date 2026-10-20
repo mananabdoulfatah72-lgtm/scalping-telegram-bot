@@ -100,7 +100,21 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
   et de New York, le prix, les limites d'achat et de vente, le VWAP, le delta des 30 minutes et la décision (achat,
   vente, cassure écartée, en position avec son niveau de sortie, trade écarté en attente de relance, pas de signal).
   Aucune décision ne change : mêmes ordres que sans message (banc et adaptateur avec le vrai delta).
-- **Relance du filtre (19 octobre 2026, `relance/README.md`)** : réglage « Filtre delta : relance », coché par défaut.
+- **Relance du filtre (19 octobre 2026, `relance/README.md`)** : réglage « Filtre delta : relance ». **Décoché par défaut
+  depuis le 20 octobre 2026**, à la demande de l'utilisateur :
+  - le 20 octobre, le bot a acheté après le mouvement, puis le prix a été rejeté et s'est retourné : −1 002 $, coupé par
+    la limite de perte du jour ;
+  - une relance entre plus tard que la cassure, donc plus loin de sa sortie. Jusqu'au contrôle suivant, seule la limite
+    de perte du jour la protège. Même la relance du 16 octobre, qui avait motivé son adoption, est descendue à
+    −130,75 points avant de gagner : en 4 MNQ, la limite de 1 000 $ l'aurait coupée ;
+  - 5 relances en 136 séances avec le vrai delta : trop peu pour juger. Étude `entree_tardive/` (branche
+    `claude/elegant-ptolemy-g94s8t`) : entrer dès la cassure, sortir à la minute ou refuser les entrées trop loin de la
+    limite font toutes moins bien que le bot sans relance, sur 15 ans comme dans le challenge de 16 séances ;
+  - au lancement, le bot écrit « relance du filtre decochee » ou « COCHEE ». Un réglage déjà enregistré dans Quantower
+    peut garder son ancienne valeur : vérifier cette ligne ;
+  - vérifié : réglage par défaut, ordres et journal du moteur identiques octet pour octet à l'ancienne version avec
+    `RELANCE=0` (avril - 25 septembre 2026, vrai delta : 164 ordres, +4 370,0 $ ; et en mode à plat avec les réglages du
+    challenge). Avec `RELANCE=1`, identiques à l'ancienne version par défaut (172 ordres, +4 537,5 $).
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;

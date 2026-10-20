@@ -76,3 +76,15 @@ Rithmic (P2). La référence H1 retrouve exactement les chiffres de `zone_neutre
   ce n'est pas une preuve forte. Elle entre plus tard, donc à un prix moins bon que la cassure.
 - **En direct, effet de bord voulu** : après un redémarrage en pleine séance, un trade encore en cours peut être repris
   à un contrôle suivant si le delta va dans son sens (avant, le bot attendait sa fin).
+
+## Suite (20 octobre 2026) : relance décochée par défaut
+
+- Le 20 octobre, le bot a acheté après le mouvement, puis le prix s'est retourné : −1 002 $, coupé par la limite de perte
+  du jour de 1 000 $ (challenge Bulenox, 4 MNQ).
+- À la demande de l'utilisateur, le réglage « Filtre delta : relance » est **décoché par défaut** dans le bot.
+- L'étude `entree_tardive/` (branche `claude/elegant-ptolemy-g94s8t`, règles fixées avant tout calcul) l'appuie :
+  - aucune autre façon d'entrer plus tôt ou de sortir plus vite ne fait mieux que le bot sans relance (H1) ;
+  - en challenge depuis 0 avec 16 séances, sur P1 avec le vrai delta (pour information) : la relance valide 39,4 %
+    contre 41,7 % pour H1 ;
+  - la relance du 16 octobre est descendue à −130,75 points avant de gagner. En 4 MNQ, la limite de 1 000 $ l'aurait
+    coupée.
