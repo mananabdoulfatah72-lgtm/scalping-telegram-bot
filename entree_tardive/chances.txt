@@ -1,0 +1,73 @@
+Chances de valider le challenge Bulenox Legacy 50K (version D : arret a +3 050 $, 6 MNQ les 5 dernieres seances),
+moteur et tirages du filtre de la vague 13, une chose changee a la fois. Valide / perdu / expire, en % des departs.
+
+== filtre aussi bon qu'en 2026
+1. vague 13 publiee : D, 30 jours calendaires, RSI(2) de nuit, limite du jour 1 100 $
+    choix 2012-2021                  25620 departs  valide  53.3  perdu  35.1  expire  11.5   (publie : 53.3 / 35.1 / 11.5)
+    verification 2023 - aout 2026     9410 departs  valide  55.4  perdu  37.4  expire   7.1   (publie : 55.4 / 37.4 / 7.1)
+    2025                              2570 departs  valide  44.7  perdu  43.1  expire  12.2   (publie : 44.7 / 43.1 / 12.2)
+2. sans le RSI(2) de nuit (decoche : Bulenox interdit la nuit)
+    choix 2012-2021                  25620 departs  valide  52.9  perdu  32.8  expire  14.3
+    verification 2023 - aout 2026     9410 departs  valide  56.0  perdu  36.5  expire   7.5
+    2025                              2570 departs  valide  41.5  perdu  46.1  expire  12.4
+3. limite du jour du bot a 1 000 $
+    choix 2012-2021                  25620 departs  valide  52.8  perdu  32.0  expire  15.1
+    verification 2023 - aout 2026     9410 departs  valide  56.1  perdu  36.6  expire   7.3
+    2025                              2570 departs  valide  42.1  perdu  46.1  expire  11.8
+4. depuis 0 avec 16 seances (situation du 20 octobre 2026)
+    choix 2012-2021                  25620 departs  valide  47.6  perdu  27.0  expire  25.4
+    verification 2023 - aout 2026     9410 departs  valide  51.7  perdu  32.6  expire  15.8
+    2025                              2570 departs  valide  40.8  perdu  36.1  expire  23.1
+
+== filtre deux fois plus faible
+1. vague 13 publiee : D, 30 jours calendaires, RSI(2) de nuit, limite du jour 1 100 $
+    choix 2012-2021                  25620 departs  valide  50.5  perdu  37.9  expire  11.6   (publie : 50.5 / 37.9 / 11.6)
+    verification 2023 - aout 2026     9410 departs  valide  52.7  perdu  39.9  expire   7.4   (publie : 52.7 / 39.9 / 7.4)
+    2025                              2570 departs  valide  42.4  perdu  46.0  expire  11.6   (publie : 42.4 / 46.0 / 11.6)
+2. sans le RSI(2) de nuit (decoche : Bulenox interdit la nuit)
+    choix 2012-2021                  25620 departs  valide  49.6  perdu  36.3  expire  14.2
+    verification 2023 - aout 2026     9410 departs  valide  52.8  perdu  39.2  expire   8.0
+    2025                              2570 departs  valide  38.8  perdu  48.8  expire  12.4
+3. limite du jour du bot a 1 000 $
+    choix 2012-2021                  25620 departs  valide  49.4  perdu  35.3  expire  15.2
+    verification 2023 - aout 2026     9410 departs  valide  53.1  perdu  39.0  expire   7.8
+    2025                              2570 departs  valide  39.6  perdu  48.8  expire  11.7
+4. depuis 0 avec 16 seances (situation du 20 octobre 2026)
+    choix 2012-2021                  25620 departs  valide  44.8  perdu  29.6  expire  25.7
+    verification 2023 - aout 2026     9410 departs  valide  48.7  perdu  34.7  expire  16.6
+    2025                              2570 departs  valide  38.7  perdu  38.1  expire  23.2
+
+== sans filtre
+1. vague 13 publiee : D, 30 jours calendaires, RSI(2) de nuit, limite du jour 1 100 $
+    choix 2012-2021                   2562 departs  valide  47.6  perdu  46.7  expire   5.7   (publie : 47.6 / 46.7 / 5.7)
+    verification 2023 - aout 2026      941 departs  valide  48.6  perdu  46.9  expire   4.6   (publie : 48.6 / 46.9 / 4.6)
+    2025                               257 departs  valide  40.1  perdu  50.6  expire   9.3   (publie : 40.1 / 50.6 / 9.3)
+2. sans le RSI(2) de nuit (decoche : Bulenox interdit la nuit)
+    choix 2012-2021                   2562 departs  valide  46.6  perdu  46.0  expire   7.4
+    verification 2023 - aout 2026      941 departs  valide  48.9  perdu  46.8  expire   4.4
+    2025                               257 departs  valide  37.4  perdu  53.7  expire   8.9
+3. limite du jour du bot a 1 000 $
+    choix 2012-2021                   2562 departs  valide  46.5  perdu  45.1  expire   8.4
+    verification 2023 - aout 2026      941 departs  valide  50.9  perdu  45.3  expire   3.8
+    2025                               257 departs  valide  38.1  perdu  54.9  expire   7.0
+4. depuis 0 avec 16 seances (situation du 20 octobre 2026)
+    choix 2012-2021                   2562 departs  valide  43.8  perdu  38.5  expire  17.8
+    verification 2023 - aout 2026      941 departs  valide  47.2  perdu  42.3  expire  10.5
+    2025                               257 departs  valide  38.1  perdu  44.4  expire  17.5
+
+5. comme 4, avec un plus haut de fin de journee deja atteint (plancher = plus haut - 2 500 $, bloque a 50 100 $), solde revenu a 50 000 $
+   (pic0 = 0 redonne exactement l'etape 4 : controle ci-dessous)
+== filtre aussi bon qu'en 2026
+    plus haut 50,000 $ (plancher 47,500 $) : choix 2012-2021 : valide  47.6  perdu  27.0  expire  25.4 | verification 2023 - aout 2026 : valide  51.7  perdu  32.6  expire  15.8
+    plus haut 50,500 $ (plancher 48,000 $) : choix 2012-2021 : valide  44.8  perdu  34.6  expire  20.7 | verification 2023 - aout 2026 : valide  48.7  perdu  39.7  expire  11.7
+    plus haut 51,000 $ (plancher 48,500 $) : choix 2012-2021 : valide  40.1  perdu  45.2  expire  14.7 | verification 2023 - aout 2026 : valide  43.9  perdu  48.2  expire   7.9
+    plus haut 51,500 $ (plancher 49,000 $) : choix 2012-2021 : valide  32.3  perdu  59.4  expire   8.2 | verification 2023 - aout 2026 : valide  35.6  perdu  60.0  expire   4.4
+    plus haut 52,000 $ (plancher 49,500 $) : choix 2012-2021 : valide  19.5  perdu  77.0  expire   3.5 | verification 2023 - aout 2026 : valide  21.1  perdu  76.6  expire   2.2
+
+== sans filtre
+    plus haut 50,000 $ (plancher 47,500 $) : choix 2012-2021 : valide  43.8  perdu  38.5  expire  17.8 | verification 2023 - aout 2026 : valide  47.2  perdu  42.3  expire  10.5
+    plus haut 50,500 $ (plancher 48,000 $) : choix 2012-2021 : valide  40.4  perdu  46.6  expire  13.0 | verification 2023 - aout 2026 : valide  43.5  perdu  48.5  expire   8.1
+    plus haut 51,000 $ (plancher 48,500 $) : choix 2012-2021 : valide  35.8  perdu  55.6  expire   8.6 | verification 2023 - aout 2026 : valide  39.2  perdu  55.6  expire   5.2
+    plus haut 51,500 $ (plancher 49,000 $) : choix 2012-2021 : valide  28.1  perdu  67.4  expire   4.5 | verification 2023 - aout 2026 : valide  31.5  perdu  66.2  expire   2.3
+    plus haut 52,000 $ (plancher 49,500 $) : choix 2012-2021 : valide  16.4  perdu  81.3  expire   2.3 | verification 2023 - aout 2026 : valide  18.6  perdu  80.0  expire   1.4
+

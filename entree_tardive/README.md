@@ -169,3 +169,25 @@ git worktree add ../recherche origin/claude/keen-babbage-r686cl   # donnees de l
 python3 entree_tardive/etude.py       # mesures 1 et 2, environ 15 s
 python3 entree_tardive/challenge.py   # mesure 3, numba et scipy requis, environ 25 s
 ```
+
+## Complément (20 octobre 2026) : d'où viennent les 55 % de la vague 13 ? `chances.py` → `chances.txt`
+
+Le moteur et les tirages du filtre de la vague 13 sont repris sans changement. On part du réglage publié, puis on change
+une chose à la fois. Le point de départ redonne exactement `vague13.json`.
+
+| Filtre aussi bon qu'en 2026 | Départs 2012-2021 | Départs 2023 - août 2026 |
+|---|---|---|
+| Vague 13 publiée (challenge neuf de 30 jours, RSI(2) de nuit, limite 1 100 $) | 53,3 % | 55,4 % |
+| Sans RSI(2) de nuit, limite du jour du bot à 1 000 $ | 52,8 % | 56,1 % |
+| **Depuis 0 avec 16 séances, plus haut de fin de journée à 50 000 $** | **47,6 %** | **51,7 %** |
+| Idem, plus haut déjà à 50 500 $ (plancher 48 000 $) | 44,8 % | 48,7 % |
+| Idem, plus haut déjà à 51 000 $ (plancher 48 500 $) | 40,1 % | 43,9 % |
+| Idem, plus haut déjà à 51 500 $ (plancher 49 000 $) | 32,3 % | 35,6 % |
+| Idem, plus haut déjà à 52 000 $ (plancher 49 500 $) | 19,5 % | 21,1 % |
+
+- Sans filtre, depuis 0 avec 16 séances et un plus haut à 50 000 $ : 43,8 % et 47,2 %. C'est le chiffre de la
+  mesure 3.
+- Le plancher pèse plus que tout le reste. Des gains rendus remontent le plancher : le coussin passe de 2 500 $ à
+  1 500 $ avec un plus haut à 51 000 $.
+- Le plus haut et le plancher figurent dans la ligne « mode a plat : solde …, plus haut de fin de journee …, plancher … »
+  du journal du bot.
