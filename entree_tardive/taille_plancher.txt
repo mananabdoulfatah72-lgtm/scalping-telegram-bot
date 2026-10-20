@@ -1,0 +1,35 @@
+Descriptif (aucune regle fixee a l'avance) : challenge Bulenox depuis 0 avec 16 seances, selon le plancher deja
+Valide / perdu / expire en % des departs (10 tirages du filtre aussi bon qu'en 2026).
+
+== plus haut de fin de journee 50,000 $, plancher 47,500 $, solde 50 000 $
+    4 MNQ, 6 les 5 dernieres (reglage actuel)            choix 2012-2  47.6 /  27.0 /  25.4  |  verification  51.7 /  32.6 /  15.8
+    4 MNQ sans fin de course                             choix 2012-2  43.2 /  22.6 /  34.2  |  verification  49.7 /  28.7 /  21.6
+    3 MNQ, 6 les 5 dernieres                             choix 2012-2  44.3 /  21.4 /  34.3  |  verification  46.1 /  27.9 /  26.0
+    3 MNQ sans fin de course                             choix 2012-2  34.7 /  12.6 /  52.7  |  verification  37.8 /  20.1 /  42.1
+    2 MNQ, 6 les 5 dernieres                             choix 2012-2  39.1 /  15.7 /  45.2  |  verification  39.1 /  23.4 /  37.5
+    4 MNQ, 2 sous 1 250 $ de coussin, 6 les 5 dernieres  choix 2012-2  44.6 /  14.1 /  41.3  |  verification  49.9 /  20.5 /  29.6
+
+== plus haut de fin de journee 50,500 $, plancher 48,000 $, solde 50 000 $
+    4 MNQ, 6 les 5 dernieres (reglage actuel)            choix 2012-2  44.8 /  34.6 /  20.7  |  verification  48.7 /  39.7 /  11.7
+    4 MNQ sans fin de course                             choix 2012-2  40.8 /  30.6 /  28.6  |  verification  47.2 /  36.3 /  16.5
+    3 MNQ, 6 les 5 dernieres                             choix 2012-2  42.8 /  27.6 /  29.6  |  verification  44.5 /  33.4 /  22.1
+    3 MNQ sans fin de course                             choix 2012-2  33.8 /  19.0 /  47.1  |  verification  37.0 /  26.5 /  36.5
+    2 MNQ, 6 les 5 dernieres                             choix 2012-2  38.3 /  20.9 /  40.8  |  verification  38.4 /  28.9 /  32.6
+    4 MNQ, 2 sous 1 250 $ de coussin, 6 les 5 dernieres  choix 2012-2  41.1 /  19.2 /  39.7  |  verification  46.0 /  26.2 /  27.8
+
+== plus haut de fin de journee 51,000 $, plancher 48,500 $, solde 50 000 $
+    4 MNQ, 6 les 5 dernieres (reglage actuel)            choix 2012-2  40.1 /  45.2 /  14.7  |  verification  43.9 /  48.2 /   7.9
+    4 MNQ sans fin de course                             choix 2012-2  37.6 /  41.8 /  20.6  |  verification  42.6 /  46.0 /  11.4
+    3 MNQ, 6 les 5 dernieres                             choix 2012-2  39.2 /  38.5 /  22.3  |  verification  40.5 /  42.7 /  16.8
+    3 MNQ sans fin de course                             choix 2012-2  32.1 /  30.5 /  37.4  |  verification  33.9 /  36.5 /  29.6
+    2 MNQ, 6 les 5 dernieres                             choix 2012-2  35.6 /  30.9 /  33.6  |  verification  36.3 /  37.2 /  26.5
+    4 MNQ, 2 sous 1 250 $ de coussin, 6 les 5 dernieres  choix 2012-2  36.7 /  28.4 /  34.8  |  verification  41.0 /  35.4 /  23.6
+
+== plus haut de fin de journee 51,500 $, plancher 49,000 $, solde 50 000 $
+    4 MNQ, 6 les 5 dernieres (reglage actuel)            choix 2012-2  32.3 /  59.4 /   8.2  |  verification  35.6 /  60.0 /   4.4
+    4 MNQ sans fin de course                             choix 2012-2  30.7 /  57.4 /  11.9  |  verification  35.0 /  58.8 /   6.2
+    3 MNQ, 6 les 5 dernieres                             choix 2012-2  32.0 /  54.2 /  13.8  |  verification  33.7 /  55.7 /  10.5
+    3 MNQ sans fin de course                             choix 2012-2  27.4 /  48.5 /  24.1  |  verification  30.0 /  51.9 /  18.1
+    2 MNQ, 6 les 5 dernieres                             choix 2012-2  30.9 /  46.4 /  22.7  |  verification  30.6 /  51.9 /  17.5
+    4 MNQ, 2 sous 1 250 $ de coussin, 6 les 5 dernieres  choix 2012-2  29.9 /  36.9 /  33.1  |  verification  30.6 /  44.2 /  25.2
+
