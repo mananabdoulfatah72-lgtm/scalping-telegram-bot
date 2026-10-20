@@ -18,7 +18,9 @@ sys.path.insert(0, str(ICI))
 import moteur_variantes as MV  # noqa: E402
 
 RB = MV.RB
-KB = Path(os.getenv("KB", "/tmp/claude-0/-home-user-scalping-telegram-bot/5d4978aa-d2c8-5ecc-8399-6a494818dcdd/scratchpad/kb"))
+# branche de recherche extraite a cote du depot :
+#   git worktree add ../recherche origin/claude/keen-babbage-r686cl   (ou variable KB)
+KB = Path(os.getenv("KB", str(Path(__file__).resolve().parent.parent.parent / "recherche")))
 ROBOT = ICI.parent / "zone" / "robot" / "nq_1min.csv.gz"
 RECHERCHE = KB / "intraday" / "donnees" / "nasdaq100_1min.csv.gz"
 DATABENTO = [KB / "orderflow" / "donnees" / f"nq_secondes_{i}.csv.gz" for i in (1, 2, 3)]

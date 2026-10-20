@@ -1,0 +1,24 @@
+Decision (README.md, section "Decision", appliquee a la lettre avec les chiffres verifies)
+
+Rappel V1 / H1 : t 15 ans +2.12 (2011-2022) / +1.86 (2023-2026) ; challenge 16 seances valide 44.87 % (departs 2012-2026)
+/ 46.47 % (departs 2023-2026) ; P1 +1776.75 pt ; P2 +220.25 pt.
+
+var | 1. t 15 ans (2011-22 / 2023-26)  | 2. challenge (ecart valide 2012-26 / 2023-26) | 3. P1 points        | 4. P2 points        | passe
+----+----------------------------------+-----------------------------------------------+---------------------+---------------------+------
+E1  | +0.22 / +0.65  -> non            | 44.37 % (-0.5) / 47.93 % (+1.5)   -> non      | +935.25   -> non    | +112.50   -> non    | NON
+E2  | -4.68 / +0.52  -> non            | 38.40 % (-6.5) / 40.56 % (-5.9)   -> non      | +449.00   -> non    | +469.25   -> oui    | NON
+S1  | +0.82 / +1.57  -> non            | 40.99 % (-3.9) / 41.80 % (-4.7)   -> non      | +495.50   -> non    | +567.25   -> oui    | NON
+L1  | +1.66 / +1.47  -> non            | 40.30 % (-4.6) / 41.80 % (-4.7)   -> non      | +853.50   -> non    | +220.25 (=) -> oui  | NON
+
+Aucune variante ne remplit les 4 criteres (aucune ne remplit meme le 1, le 2 ou le 3).
+-> Le bot reste H1 : la zone telle qu'elle est, relance du filtre delta DECOCHEE.
+R et RL (relance) : pour information seulement, aucune decision (P1 +1860.50 / +1860.50 ; P2 +657.00 / +664.25).
+
+Toutes les mesures du README sont calculees (mesures 1, 2, 3). Complement (information, calcule depuis jours_*.csv,
+perte du jour realisee + latente, 1,5 pt compte a l'entree) : seances ou la perte du jour atteint 125 pt / 83 pt
+
+            H1       E1       E2       S1       L1       R        RL       SANS
+2011-2022   42/96    66/140   45/103   16/52    30/79    -        -        -        (2927 seances)
+2023-2026   88/171   116/193  62/141   43/99    66/145   -        -        -        (929 seances)
+P1 delta    13/29    17/33    9/20     10/17    9/25     13/29    13/29    17/36    (125 seances)
+P2 delta    0/1      0/0      0/0      0/0      0/1      1/2      0/1      0/2      (11 seances)

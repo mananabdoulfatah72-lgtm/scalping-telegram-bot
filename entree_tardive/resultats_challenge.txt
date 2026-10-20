@@ -1,0 +1,65 @@
+Mesure 3 (README.md) : challenge Bulenox Legacy 50K option 2 depuis 0, 16 seances, moteur de la vague 13 (moteur13.defi13 / moteur4.seance4, sans changement).
+Objectif +3 000 $ (arret a +3 050 $ dans la journee), perte max 2 500 $ en fin de journee (plus haut de fin de journee depart 50 000 $, plancher bloque a 50 100 $), limite du jour du bot 1 000 $, 4 MNQ puis 6 MNQ les 5 dernieres seances, pas de zone les jours de la Fed, sans RSI(2) de nuit, 3 $ par MNQ et par aller-retour, prix au niveau d'aujourd'hui (facteur de la vague 4, derniere cloture du 19/10/2026).
+Trades : trades/<variante>_15ans.csv (sans filtre delta). Departs : chaque seance du 2012-01-03 au 2026-09-28 (les 16 seances dans les donnees).
+Limite touchee : part des seances jouees (tous departs confondus) ou la limite du jour de 1 000 $ a coupe le bot.
+
+     |                 departs 2012-2026                 |                 departs 2023-2026                
+var  | departs  valide   perdu  expire seances  limite | departs  valide   perdu  expire seances  limite
+--------------------------------------------------------------------------------------------------------
+H1   |    3784   44.9%   38.7%   16.4%       6   11.1% |     964   46.5%   40.9%   12.7%       7   12.8%
+E1   |    3784   44.4%   44.7%   11.0%       5   13.3% |     964   47.9%   41.5%   10.6%       6   13.7%
+E2   |    3784   38.4%   47.9%   13.7%       6    9.2% |     964   40.6%   47.4%   12.0%       6    9.9%
+S1   |    3784   41.0%   37.1%   21.9%       7    7.1% |     964   41.8%   41.3%   16.9%       7    8.2%
+L1   |    3784   40.3%   34.0%   25.7%       7    9.1% |     964   41.8%   36.1%   22.1%       7   11.0%
+(seances : mediane des seances pour valider ; limite : part des seances jouees ou la limite du jour a coupe)
+
+Pour comparaison, chaque seance jouee seule en 4 MNQ (sans plancher ni objectif) : part des seances ou la limite du jour de 1 000 $ coupe le bot (seances du 1er janvier de la periode au 19/10/2026) :
+- H1 : 14.3 % (2012-2026), 15.6 % (2023-2026) ; 3469 trades tenus hors jours de la Fed
+- E1 : 18.0 % (2012-2026), 18.1 % (2023-2026) ; 5358 trades tenus hors jours de la Fed
+- E2 : 12.6 % (2012-2026), 12.4 % (2023-2026) ; 13303 trades tenus hors jours de la Fed
+- S1 : 9.3 % (2012-2026), 9.1 % (2023-2026) ; 5051 trades tenus hors jours de la Fed
+- L1 : 11.4 % (2012-2026), 12.8 % (2023-2026) ; 3001 trades tenus hors jours de la Fed
+
+Critere 2 du README (au moins 2 points de valides de plus que V1 sur 2012-2026, et pas moins que V1 sur 2023-2026) :
+- E1 : -0.5 points sur 2012-2026, +1.5 points sur 2023-2026 -> ne passe pas
+- E2 : -6.5 points sur 2012-2026, -5.9 points sur 2023-2026 -> ne passe pas
+- S1 : -3.9 points sur 2012-2026, -4.7 points sur 2023-2026 -> ne passe pas
+- L1 : -4.6 points sur 2012-2026, -4.7 points sur 2023-2026 -> ne passe pas
+
+Pour information : P1 avec le vrai delta (Databento jusqu'au 01/10/2026, puis Rithmic P2 jusqu'au 16/10/2026 pour les seances qui suivent), departs du 2026-04-01 au 2026-09-25 (127 departs qui se chevauchent : tres peu de departs independants, aucune decision).
+var  | trades departs  valide   perdu  expire seances  limite
+------------------------------------------------------------------
+H1   |     83     127   41.7%   37.0%   21.3%       6    8.9%
+E1   |    113     127   43.3%   44.9%   11.8%       6    9.8%
+E2   |    260     127   50.4%   28.3%   21.3%       7    5.2%
+S1   |    115     127   45.7%   27.6%   26.8%       7    4.2%
+L1   |     75     127   41.7%   28.3%   29.9%      10    7.4%
+R    |     88     127   39.4%   37.8%   22.8%       6    9.3%
+RL   |     88     127   40.2%   37.8%   22.0%       6    9.2%
+SANS |    104     127   33.9%   51.2%   15.0%       6   11.4%
+(trades : trades tenus hors jours de la Fed sur P1 + P2 ; SANS : la zone sans filtre, pour comparaison)
+
+Controle du branchement : V1, Bulenox Legacy, version D de la vague 13 (arret a +3 050 $, 6 MNQ les 5 dernieres seances, limite de 30 jours calendaires, limite du jour 1 100 $), filtre 'aucun' (sans filtre delta), pas de zone les jours de la Fed.
+
+- vague13.json (publie) :
+    choix 2012-2021 : 2562 achats, valide 47.62 %, perdu 46.72 %, expire 5.66 %
+    verification 2023 - aout 2026 : 941 achats, valide 48.57 %, perdu 46.87 %, expire 4.57 %
+- a. moteur13.defi13, tableaux de la vague 13 (RSI(2) de nuit sur MES)
+    choix 2012-2021 : 2562 departs, valide 47.62 %, perdu 46.72 %, expire 5.66 %
+    verification 2023 - aout 2026 : 941 departs, valide 48.57 %, perdu 46.87 %, expire 4.57 %
+- zone V1 de la vague 13 = trades/H1_15ans.csv jusqu'au 2026-09-25 : True (3562 / 3562 trades)
+- b. idem, zone lue dans trades/H1_15ans.csv
+    choix 2012-2021 : 2562 departs, valide 47.62 %, perdu 46.72 %, expire 5.66 %
+    verification 2023 - aout 2026 : 941 departs, valide 48.57 %, perdu 46.87 %, expire 4.57 %
+- c. b sans le RSI(2) de nuit
+    choix 2012-2021 : 2562 departs, valide 46.64 %, perdu 45.98 %, expire 7.38 %
+    verification 2023 - aout 2026 : 941 departs, valide 48.88 %, perdu 46.76 %, expire 4.36 %
+- d. c avec les donnees de cette etude (barres jusqu'au 19/10/2026)
+    choix 2012-2021 : 2562 departs, valide 46.21 %, perdu 45.20 %, expire 8.59 %
+    verification 2023 - aout 2026 : 941 departs, valide 48.57 %, perdu 46.12 %, expire 5.31 %
+- e. d avec la limite du jour du bot a 1 000 $ (au lieu de 1 100 $)
+    choix 2012-2021 : 2562 departs, valide 45.78 %, perdu 44.73 %, expire 9.48 %
+    verification 2023 - aout 2026 : 941 departs, valide 49.84 %, perdu 45.38 %, expire 4.78 %
+- f. e avec 16 seances au lieu de 30 jours calendaires (reglages de la mesure 3)
+    choix 2012-2021 : 2562 departs, valide 42.66 %, perdu 37.98 %, expire 19.36 %
+    verification 2023 - aout 2026 : 941 departs, valide 45.91 %, perdu 41.87 %, expire 12.22 %
