@@ -60,3 +60,45 @@ Si plusieurs passent : celle qui valide le plus souvent sur 2012-2026. Sinon, la
 **Limites écrites d'avance :**
 - Une sortie à la minute se fait au marché. Dans un mouvement rapide, le glissement peut dépasser les 1,5 point comptés.
 - Sur 15 ans, il n'y a pas de delta : la question du filtre reste à part.
+
+## Résultats (21 octobre 2026) : `resultats.txt`, `etude.py`
+
+**Contrôles :** V1 est identique, trade par trade, à la zone de `delta_mesures/` (3 573 trades jusqu'au 20 octobre).
+Les contrôles de `delta_mesures/` portent sur la même zone et sur le même moteur de challenge : `entree_tardive/` trade par
+trade, et challenge depuis un compte neuf.
+
+**1. 15 ans, sans filtre** ($ pour 4 MNQ au prix d'aujourd'hui)
+
+| Variante | Trades | Points | Gagnants | Gain moyen | Perte moyenne | Durée médiane | t 2011-2022 | t 2023-2026 | Séances à −1 000 $ |
+|---|---|---|---|---|---|---|---|---|---|
+| **V1 (zone actuelle, sans filtre)** | 3 573 | **+10 582** | 35,7 % | +1 171 $ | −594 $ | 60 min | **+2,12** | **+1,82** | 14,4 % |
+| C1, cassure + retour dans la zone | 13 006 | −7 719 | 14,0 % | +946 $ | **−208 $** | 4 min | −4,11 | +0,72 | 12,8 % |
+| C2, contrôles + retour dans la zone | 4 568 | +7 065 | 23,1 % | +1 230 $ | −369 $ | 23 min | +1,17 | +1,61 | **9,8 %** |
+| C3, C1 sans allers-retours | 7 575 | +1 150 | 17,6 % | +1 100 $ | −271 $ | 7 min | −1,01 | +1,05 | 10,6 % |
+
+**2. Challenge depuis 0, 16 séances**
+
+| Variante | Validé 2012-2026 | Perdu | Expiré | Validé 2023-2026 |
+|---|---|---|---|---|
+| **V1** | **44,8 %** | 38,8 % | 16,4 % | **46,5 %** |
+| C1 | 38,8 % | 48,7 % | 12,5 % | 41,6 % |
+| C2 | 41,7 % | 37,6 % | 20,7 % | 42,9 % |
+| C3 | 40,1 % | 43,6 % | 16,2 % | 42,2 % |
+
+**Décision fixée à l'avance : aucune variante ne passe.** La zone ne change pas.
+
+**Ce qu'il faut retenir :**
+- **Couper dès le retour dans la zone réduit bien la perte moyenne** : −208 $ au lieu de −594 $ pour C1.
+- **Mais la part de gagnants s'effondre** : 14 % au lieu de 36 %. Après une cassure, le prix revient souvent toucher la
+  limite avant de repartir. C1 sort à ce moment-là, puis rachète plus haut à la cassure suivante. La moitié de ses
+  trades durent 3 minutes ou moins, avec 3,4 trades par séance. Au bout du compte : 14 % × 946 $ − 86 % × 208 $, soit
+  environ −47 $ par trade.
+- **C2 garde les entrées du bot et coupe vite** : moins de séances à −1 000 $ (9,8 % au lieu de 14,4 %), mais un gain
+  plus faible et moins de challenges validés. C'est le même constat que S1 dans `entree_tardive/`.
+- **Sur les dernières semaines, C1 aurait fait mieux** : +4 998 $ du 13 au 20 octobre au lieu de +3 816 $, et +2 $ le
+  20 octobre au lieu de −1 108 $. Mais 15 ans disent le contraire. Le 20 octobre est un cas favorable à cette règle.
+
+**3. Depuis la situation estimée** (486 $ de marge, 16 séances, réglage actuel) : 13,5 % de validés pour V1, 12,0 % pour
+C1, 13,4 % pour C2 et 12,0 % pour C3. Aucune sortie ne change la situation du challenge.
+
+**Relancer :** `python3 zone_retour/etude.py` (mêmes données et mêmes outils que `delta_mesures/`), environ 3 minutes.

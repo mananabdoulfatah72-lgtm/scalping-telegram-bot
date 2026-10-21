@@ -1,0 +1,48 @@
+Controle : V1 = zone de delta_mesures/etude.py trade par trade (3573 trades) -> identique
+
+Mesure 1 : 15 ans sans filtre (2011-01-24 - 2026-10-20), 3857 seances jouables
+$ pour 4 MNQ au niveau de la derniere cloture (29687.75) ; t sur toutes les seances jouables (0 sans trade)
+var  trades     points  gagn.  gain moy.  perte moy.  duree med.  t 2011-2022  t 2023-2026  limite 1000 $
+V1     3573  +10581.75  35.7%     +1171$       -594$        60 mn        +2.12        +1.82          14.4%
+C1    13006   -7719.25  14.0%      +946$       -208$         4 mn        -4.11        +0.72          12.8%
+C2     4568   +7064.50  23.1%     +1230$       -369$        23 mn        +1.17        +1.61           9.8%
+C3     7575   +1150.00  17.6%     +1100$       -271$         7 mn        -1.01        +1.05          10.6%
+  C1 : 50 % des trades durent 3 minutes ou moins ; 3.4 trades par seance jouable
+  C2 : 20 % des trades durent 3 minutes ou moins ; 1.2 trades par seance jouable
+  C3 : 38 % des trades durent 3 minutes ou moins ; 2.0 trades par seance jouable
+
+Mesure 2 : challenge depuis 0 (16 seances, 4 MNQ puis 6 MNQ les 5 dernieres, limite du jour 1 000 $)
+  V1 2012-2026 : 3785 departs, valide 44.8 %, perdu 38.8 %, expire 16.4 %, seances pour valider (mediane) 6
+  V1 2023-2026 : 965 departs, valide 46.5 %, perdu 40.8 %, expire 12.6 %, seances pour valider (mediane) 7
+  C1 2012-2026 : 3785 departs, valide 38.8 %, perdu 48.7 %, expire 12.5 %, seances pour valider (mediane) 6
+  C1 2023-2026 : 965 departs, valide 41.6 %, perdu 46.8 %, expire 11.6 %, seances pour valider (mediane) 6
+  C2 2012-2026 : 3785 departs, valide 41.7 %, perdu 37.6 %, expire 20.7 %, seances pour valider (mediane) 7
+  C2 2023-2026 : 965 departs, valide 42.9 %, perdu 39.5 %, expire 17.6 %, seances pour valider (mediane) 7
+  C3 2012-2026 : 3785 departs, valide 40.1 %, perdu 43.6 %, expire 16.2 %, seances pour valider (mediane) 6
+  C3 2023-2026 : 965 departs, valide 42.2 %, perdu 44.4 %, expire 13.5 %, seances pour valider (mediane) 7
+
+Decision fixee a l'avance :
+  C1 : t -4.11 / +0.72 contre V1 +2.12 / +1.82 -> non ; challenge -6.0 points (2012-2026), -5.0 (2023-2026) -> non
+  C2 : t +1.17 / +1.61 contre V1 +2.12 / +1.82 -> non ; challenge -3.1 points (2012-2026), -3.6 (2023-2026) -> non
+  C3 : t -1.01 / +1.05 contre V1 +2.12 / +1.82 -> non ; challenge -4.7 points (2012-2026), -4.4 (2023-2026) -> non
+  -> aucune variante ne passe, la zone ne change pas
+
+Mesure 3 : depuis la situation estimee (solde 49 158 $, plancher 48 672 $, 16 seances)
+  V1 1 MNQ                          : valide   0.8 %, perdu  46.1 %, expire  53.1 %
+  V1 2 MNQ                          : valide   6.1 %, perdu  70.7 %, expire  23.2 %
+  V1 4 MNQ puis 6 (reglage actuel)  : valide  13.5 %, perdu  83.4 %, expire   3.1 %
+  C1 1 MNQ                          : valide   0.7 %, perdu  53.9 %, expire  45.4 %
+  C1 2 MNQ                          : valide   5.8 %, perdu  75.1 %, expire  19.2 %
+  C1 4 MNQ puis 6 (reglage actuel)  : valide  12.0 %, perdu  85.6 %, expire   2.4 %
+  C2 1 MNQ                          : valide   0.3 %, perdu  41.7 %, expire  57.9 %
+  C2 2 MNQ                          : valide   5.0 %, perdu  67.4 %, expire  27.6 %
+  C2 4 MNQ puis 6 (reglage actuel)  : valide  13.4 %, perdu  82.5 %, expire   4.1 %
+  C3 1 MNQ                          : valide   0.7 %, perdu  48.3 %, expire  50.9 %
+  C3 2 MNQ                          : valide   5.4 %, perdu  72.1 %, expire  22.5 %
+  C3 4 MNQ puis 6 (reglage actuel)  : valide  12.0 %, perdu  85.1 %, expire   3.0 %
+
+Pour information : 2 - 16 octobre 2026 (points) et 13 - 20 octobre 2026 ($ pour 4 MNQ, sans limite du jour)
+  V1 : 2-16 oct. 7 trades +669.50 pt ; 13-20 oct. 4 trades, +3816 $ (14/10 +1646, 16/10 +3594, 19/10 -316, 20/10 -1108)
+  C1 : 2-16 oct. 24 trades +632.50 pt ; 13-20 oct. 7 trades, +4998 $ (14/10 +1772, 16/10 +3372, 19/10 -148, 20/10 +2)
+  C2 : 2-16 oct. 11 trades +476.00 pt ; 13-20 oct. 5 trades, +3906 $ (14/10 +1646, 16/10 +2822, 19/10 -316, 20/10 -246)
+  C3 : 2-16 oct. 17 trades +445.75 pt ; 13-20 oct. 7 trades, +4202 $ (14/10 +1772, 16/10 +2822, 19/10 -394, 20/10 +2)
