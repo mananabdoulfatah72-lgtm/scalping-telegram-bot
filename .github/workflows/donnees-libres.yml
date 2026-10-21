@@ -1,0 +1,106 @@
+name: Donnees gratuites (Alpaca ETF, Yahoo futures, HistData)
+
+# Sources gratuites seulement. Cles Alpaca lues uniquement dans les secrets du depot ALPACA_API_KEY_ID et
+# ALPACA_API_SECRET_KEY (offre gratuite). Lance par Claude en poussant donnees_libres/lancer.txt.
+
+on:
+  push:
+    branches: [claude/fervent-wright-21hspi]
+    paths:
+      - donnees_libres/lancer.txt
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  alpaca:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger les ETF (5 minutes, 2016 - aujourd'hui)
+        continue-on-error: true
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+        run: |
+          [ -n "$ALPACA_API_KEY_ID" ] && [ -n "$ALPACA_API_SECRET_KEY" ] || { echo "::error::Secrets Alpaca absents"; exit 1; }
+          pip install -q pandas requests
+          python3 donnees_libres/alpaca_etf.py
+      - name: Enregistrer sur la branche
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add donnees_libres/etf_5min 2>/dev/null || exit 0
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees gratuites : ETF des futures, 5 minutes (Alpaca)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 20))
+          done
+          exit 1
+
+  yahoo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger les futures et la volatilite (Yahoo)
+        continue-on-error: true
+        run: |
+          pip install -q pandas yfinance
+          python3 donnees_libres/yahoo_futures.py
+      - name: Enregistrer sur la branche
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add donnees_libres/yahoo 2>/dev/null || exit 0
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees gratuites : futures CME et volatilite (Yahoo)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 20))
+          done
+          exit 1
+
+  histdata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger argent, Brent, Nikkei, dollar, CAD, CHF, NZD (HistData)
+        continue-on-error: true
+        run: |
+          pip install -q pandas histdata
+          python3 donnees_libres/histdata_extra.py
+      - name: Enregistrer sur la branche
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add donnees_libres/histdata_5min 2>/dev/null || exit 0
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees gratuites : argent, Brent, Nikkei, dollar, CAD, CHF, NZD (HistData, 5 minutes)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 20))
+          done
+          exit 1
