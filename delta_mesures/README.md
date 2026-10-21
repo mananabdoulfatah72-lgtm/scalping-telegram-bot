@@ -75,3 +75,60 @@ Si P et Z passent toutes les deux : celle qui fait le plus de points sur P1 + P2
 
 **Limite écrite d'avance** : environ 80 trades gardés en tout. Même une variante qui passe ne serait pas prouvée. Elle
 serait seulement « pas pire sur les données qu'on a ».
+
+## Résultats (21 octobre 2026) : `resultats.txt`, `trades.csv`, `etude.py`
+
+**Contrôles avant de lire les chiffres :**
+- Le filtre brut B redonne exactement le rejeu C# du bot (`relance/resultats.txt`) : 79 trades et +1 776,75 points sur
+  P1, 6 trades et +220,25 points sur P2. La zone sans filtre aussi : 99 trades et +982,25 sur P1, 7 et +669,50 sur P2.
+- La zone sans filtre sur 15 ans redonne `entree_tardive/` trade par trade jusqu'au 16 octobre (3 571 trades,
+  +10 759,75 points). Le 19 octobre diffère d'un point : le robot a retéléchargé la barre de 11 h 30 le 20 octobre.
+- La boucle du challenge, recopiée avec un état de départ, redonne depuis un compte neuf le résultat publié par
+  `entree_tardive/` : 3 784 départs, 44,9 % validés, 38,7 % perdus, 16,4 % expirés.
+
+**1. Les trois filtres**
+
+| Filtre | P1 : trades | P1 : points | P2 : trades | P2 : points | P1 + P2 : points | Pire baisse |
+|---|---|---|---|---|---|---|
+| Sans filtre | 99 | +982 | 7 | +670 | +1 652 | 1 141 |
+| **B, brut (le bot)** | 79 | +1 777 | 6 | **+220** | +1 997 | 760 |
+| P, proportion ≥ 1 % | 72 | +1 978 | 4 | +19 | +1 997 | 646 |
+| Z, z-score ≥ 1 | 41 | **+2 076** | 2 | +98 | **+2 173** | 643 |
+
+**Décision fixée à l'avance : aucune variante ne passe.** P et Z font mieux que B sur P1, mais moins bien sur P2. Le
+bot garde B.
+- **P** n'écarte que 9 trades de plus que B, et leur somme est exactement nulle (critère 2 non rempli).
+- **Z** écarte 42 trades de plus que B, à −4,2 points en moyenne : c'est du bruit. Il garde à peu près **un trade sur
+  deux** du bot (43 contre 85).
+- **Les deux auraient écarté la vente du 14 octobre** (+205,75 points), le seul gros gain réel du challenge. Son delta
+  allait dans le bon sens, mais faiblement : −0,83 % du volume, z −0,24.
+- **Le mieux de P et Z sur P1 tient à quelques grosses pertes évitées** : −295,50 points le 2 juillet, −194,25 le
+  12 juin, −133,25 le 11 juin. P1 est aussi la période où le filtre delta a été trouvé.
+- Les séances du 19, 20 et 21 octobre ne sont pas mesurées : il manque l'export des transactions. Le delta des deux
+  achats du 21 octobre est connu par Telegram (+239 et +115), mais pas leur volume.
+
+**2. Depuis la situation estimée** (solde 49 158 $, plancher 48 672 $, 486 $ de marge, 16 séances, zone sans filtre,
+15 ans) :
+
+| Taille | Validé | Perdu | Expiré | Séances avant la perte (médiane) |
+|---|---|---|---|---|
+| 1 MNQ | 0,8 % | 46,1 % | 53,1 % | 6 |
+| 2 MNQ | 6,1 % | 70,7 % | 23,2 % | 4 |
+| 3 MNQ | 11,1 % | 79,2 % | 9,7 % | 2 |
+| 4 MNQ | 13,0 % | 82,6 % | 4,4 % | 2 |
+| **4 puis 6 MNQ (réglage actuel)** | **13,5 %** | **83,4 %** | 3,1 % | 2 |
+
+Départs 2023-2026 : 14,6 % validés et 83,1 % perdus avec le réglage actuel ; 0,0 % validés avec 1 MNQ.
+
+- Avec 486 $ de marge, aucune taille ne laisse une vraie chance de valider : il faut gagner 3 842 $ avant d'en perdre
+  486.
+- Une taille plus petite fait durer le compte, mais il expire presque toujours sans être validé.
+- Aucun filtre ne change cet écart : la meilleure variante mesurée ne gagne qu'environ 10 % de points de plus que B,
+  sur la période qui l'avantage.
+
+**Relancer :**
+
+```
+git worktree add ../recherche origin/claude/keen-babbage-r686cl   # donnees de la branche de recherche (ou variable KB)
+python3 delta_mesures/etude.py       # numba, scipy et pandas requis, environ 2 minutes
+```
