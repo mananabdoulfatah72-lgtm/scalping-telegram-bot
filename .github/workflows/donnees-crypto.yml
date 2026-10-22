@@ -1,0 +1,47 @@
+name: Donnees gratuites crypto (Coinbase, 5 minutes)
+
+# Sources gratuites sans cle : Coinbase Exchange (secours : Binance data.binance.vision).
+# Lance par Claude en poussant donnees_libres/crypto/lancer.txt.
+
+on:
+  push:
+    branches: [claude/affectionate-turing-tnz0mn]
+    paths:
+      - donnees_libres/crypto/lancer.txt
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        actif: [BTC, ETH]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Telecharger ${{ matrix.actif }} (5 minutes, 2017 - aujourd'hui)
+        run: |
+          pip install -q pandas requests
+          python3 donnees_libres/crypto.py ${{ matrix.actif }}
+      - name: Enregistrer sur la branche
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add donnees_libres/crypto 2>/dev/null || exit 0
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees gratuites : ${{ matrix.actif }} 5 minutes 2017 - 2026 (Coinbase)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((i * 20))
+          done
+          exit 1
