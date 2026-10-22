@@ -286,6 +286,7 @@ valider avec au plus 35 % de perdus), jugée sur 2023 - 2026 :
 | `bruit/` | Le complément de la zone : retour au VWAP à l'intérieur de la zone, stop sur sa limite (NQ, ES, 3 seuils) | **0 sur 6.** Rien à gagner avant frais à l'intérieur de la zone : c'est bien du bruit |
 | `annonces/` | Les annonces de 8 h 30, repérées par le saut du dollar : pas de zone, ou 2 MNQ, ces jours-là | **Aucune règle retenue** (placebos battus à 68 % et 23 %, il fallait 95 %) |
 | `pistes/` | 5 pistes choisies par 3 chercheurs et un juge (17 tests) : sortie au VWAP, heure de 16 h, renfort, or à Londres, zones décalées | **Aucune ne passe tout.** Le renfort (1 MNQ de plus quand le trade tient) passe la correction pour 17 tests, le coffre et les placebos, mais fait baisser la réussite des challenges (comme une taille plus grande). La sortie au VWAP du bot réel ne change rien : les backtests restent valables |
+| `taille/` | La taille selon l'état du compte, calculée par programmation dynamique | **Non retenue.** Bulenox : +2,2 points (52 % contre 50 %), sous le seuil de 3 ; plafond confirmé. Lucid : moins bien que 1 MNQ fixe, car les pertes de la zone viennent en séries |
 
 Ces trois vagues confirment le verdict : la zone du NQ, sans les jours de la Fed, reste la seule source d'avantage qui
 tienne. Ce qui change vraiment les chances, c'est le compte choisi (point 3 du verdict), pas un filtre de plus.

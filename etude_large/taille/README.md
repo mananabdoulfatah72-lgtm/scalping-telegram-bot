@@ -58,3 +58,25 @@ la donne.
 - Une politique qui change souvent de taille demande un réglage du bot chaque matin.
 - Une grande chance de valider ne veut pas dire un compte sûr : la politique peut accepter plus de comptes perdus si
   elle valide plus.
+
+## Résultats (22 octobre 2026) : `resultats.txt`, `etude.py`
+
+| Compte | Départs réels | Politique optimale : validé / perdu | Meilleure taille fixe | Version actuelle (4 puis 6) |
+|---|---|---|---|---|
+| Bulenox 50K | 2012 - 2021 (dans l'échantillon) | 46,2 / 47,3 % | 6 MNQ : 47,6 / 49,7 % | 46,3 / 44,9 % |
+| Bulenox 50K | **2023 - 2026 (vérification)** | **52,1 / 44,3 %** | 5 MNQ : 49,6 / 48,9 % | **49,9 / 45,3 %** |
+| Lucid Flex 50K | 2012 - 2021 (dans l'échantillon) | 40,1 / 42,0 % | 1 MNQ : 51,5 / 29,7 % | — |
+| Lucid Flex 50K | **2023 - 2026 (vérification)** | **48,8 / 46,1 %** | **1 MNQ : 54,6 / 35,2 %** | — |
+
+**Décision : non retenue, ni chez Bulenox ni chez Lucid.**
+- **Bulenox** : la politique valide 2,2 points de plus que la version actuelle (52,1 % contre 49,9 %) et perd un peu
+  moins, mais le seuil fixé était de 3 points. Elle confirme la partie D : avec 30 jours, environ 50 % est un plafond,
+  quelle que soit la façon de régler la taille.
+- **Lucid** : la politique fait **nettement moins bien** que 1 MNQ fixe, même sur les années où elle a été calculée
+  (40 % contre 51,5 %). Tirées au hasard, les séances lui disaient de commencer à 2 MNQ (49,8 % de chances). Sur les
+  vraies suites de séances, c'est faux : **les pertes de la zone viennent en séries**, et une taille plus grande se
+  fait prendre dans ces séries. C'est pour cela que 1 MNQ fixe reste le meilleur réglage sans limite de temps.
+
+Pour information, la table de la politique de Bulenox (taille selon le solde, le plancher et les séances restantes)
+est dans `resultats.txt` ; `python3 etude_large/taille/etude.py <solde> <plancher> <seances>` (en $ par rapport à
+50 000 $) donne la chance de valider et la taille conseillée depuis une situation donnée.

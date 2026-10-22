@@ -1,0 +1,126 @@
+Vague taille optimale (etude_large/taille/README.md, regles fixees le 22 octobre 2026 avant tout calcul)
+Seances de la zone (1 MNQ, prix d'aujourd'hui, jours de la Fed a 0) : 3624 ; politique calculee sur les 2448 seances 2012 - 2021 seulement.
+
+Bulenox Legacy 50K opt. 2 : chance de valider depuis un compte neuf selon la politique (tirages 2012 - 2021) : 50.2 % ; taille du premier jour : 5 MNQ
+  departs reels    | politique : valide perdu expire | meilleure taille fixe   | version actuelle
+  2012 - 2021 (2448) |  46.2  47.3    6.5       | 6 MNQ  47.6  49.7   2.7 |  46.3  44.9   8.8
+     tailles fixes (valide / perdu) : 1 MNQ 5/1, 2 MNQ 25/12, 3 MNQ 37/30, 4 MNQ 45/42, 5 MNQ 46/48, 6 MNQ 48/50
+  2023 - 2026 (908) |  52.1  44.3    3.6       | 5 MNQ  49.6  48.9   1.5 |  49.9  45.3   4.8
+     tailles fixes (valide / perdu) : 1 MNQ 1/0, 2 MNQ 22/22, 3 MNQ 45/31, 4 MNQ 49/44, 5 MNQ 50/49, 6 MNQ 49/50
+  DECISION : politique NON RETENUE (verification : 52.1 % valides / 44.3 % perdus contre 49.9 / 45.3 pour la meilleure reference)
+
+  Table de la politique (Bulenox) : taille en MNQ selon le solde (lignes, $ au-dessus de 50 000) et le plancher (colonnes, $ par rapport a 50 000), pour quelques nombres de seances restantes :
+   21 seances restantes ; plancher :  -2500  -2200  -1900  -1600  -1300  -1000   -700   -400   -100
+   solde  -2000                          1      1      .      .      .      .      .      .      .
+   solde  -1750                          2      1      1      .      .      .      .      .      .
+   solde  -1500                          2      2      1      1      .      .      .      .      .
+   solde  -1250                          2      2      1      1      1      .      .      .      .
+   solde  -1000                          2      2      2      1      1      .      .      .      .
+   solde   -750                          2      2      2      2      1      1      .      .      .
+   solde   -500                          5      2      2      2      1      1      1      .      .
+   solde   -250                          5      5      2      2      2      2      1      1      .
+   solde     +0                          5      5      3      2      2      2      1      1      1
+   solde   +250                          .      5      3      3      2      2      1      1      1
+   solde   +500                          .      .      4      3      2      2      1      1      1
+   solde   +750                          .      .      .      3      3      3      2      1      1
+   solde  +1000                          .      .      .      .      3      2      2      1      1
+   solde  +1250                          .      .      .      .      .      3      3      1      1
+   solde  +1500                          .      .      .      .      .      4      2      1      1
+   solde  +1750                          .      .      .      .      .      .      3      3      2
+   solde  +2000                          .      .      .      .      .      .      .      2      1
+   solde  +2250                          .      .      .      .      .      .      .      .      2
+   solde  +2500                          .      .      .      .      .      .      .      .      .
+   solde  +2750                          .      .      .      .      .      .      .      .      .
+   15 seances restantes ; plancher :  -2500  -2200  -1900  -1600  -1300  -1000   -700   -400   -100
+   solde  -2000                          2      1      .      .      .      .      .      .      .
+   solde  -1750                          2      1      1      .      .      .      .      .      .
+   solde  -1500                          3      2      1      6      .      .      .      .      .
+   solde  -1250                          3      3      2      1      4      .      .      .      .
+   solde  -1000                          5      3      2      1      1      .      .      .      .
+   solde   -750                          6      3      2      2      1      1      .      .      .
+   solde   -500                          6      5      3      2      2      1      1      .      .
+   solde   -250                          5      5      3      3      2      2      1      1      .
+   solde     +0                          5      5      5      3      3      2      2      1      1
+   solde   +250                          .      6      5      3      3      2      2      2      1
+   solde   +500                          .      .      6      4      3      3      2      2      1
+   solde   +750                          .      .      .      6      3      3      3      2      2
+   solde  +1000                          .      .      .      .      5      3      3      2      2
+   solde  +1250                          .      .      .      .      .      3      3      3      3
+   solde  +1500                          .      .      .      .      .      4      4      3      2
+   solde  +1750                          .      .      .      .      .      .      3      3      3
+   solde  +2000                          .      .      .      .      .      .      .      3      2
+   solde  +2250                          .      .      .      .      .      .      .      .      2
+   solde  +2500                          .      .      .      .      .      .      .      .      .
+   solde  +2750                          .      .      .      .      .      .      .      .      .
+   10 seances restantes ; plancher :  -2500  -2200  -1900  -1600  -1300  -1000   -700   -400   -100
+   solde  -2000                          6      3      .      .      .      .      .      .      .
+   solde  -1750                          6      6      5      .      .      .      .      .      .
+   solde  -1500                          6      5      6      6      .      .      .      .      .
+   solde  -1250                          6      6      5      6      4      .      .      .      .
+   solde  -1000                          6      5      6      4      6      .      .      .      .
+   solde   -750                          6      6      5      5      4      5      .      .      .
+   solde   -500                          6      6      6      5      5      4      4      .      .
+   solde   -250                          6      6      5      5      3      2      2      5      .
+   solde     +0                          6      6      5      5      5      3      2      3      2
+   solde   +250                          .      6      6      6      5      3      3      2      1
+   solde   +500                          .      .      6      6      6      4      3      2      1
+   solde   +750                          .      .      .      6      6      6      3      3      2
+   solde  +1000                          .      .      .      .      6      6      5      3      3
+   solde  +1250                          .      .      .      .      .      5      5      3      3
+   solde  +1500                          .      .      .      .      .      5      4      4      4
+   solde  +1750                          .      .      .      .      .      .      4      3      3
+   solde  +2000                          .      .      .      .      .      .      .      3      3
+   solde  +2250                          .      .      .      .      .      .      .      .      3
+   solde  +2500                          .      .      .      .      .      .      .      .      .
+   solde  +2750                          .      .      .      .      .      .      .      .      .
+   5 seances restantes ; plancher :  -2500  -2200  -1900  -1600  -1300  -1000   -700   -400   -100
+   solde  -2000                          6      6      .      .      .      .      .      .      .
+   solde  -1750                          6      6      6      .      .      .      .      .      .
+   solde  -1500                          6      6      6      6      .      .      .      .      .
+   solde  -1250                          6      6      6      6      4      .      .      .      .
+   solde  -1000                          6      6      6      6      6      .      .      .      .
+   solde   -750                          6      6      6      6      6      5      .      .      .
+   solde   -500                          6      6      6      6      6      6      6      .      .
+   solde   -250                          6      6      6      6      6      6      6      5      .
+   solde     +0                          6      6      6      6      6      6      5      6      4
+   solde   +250                          .      6      6      6      6      6      6      5      6
+   solde   +500                          .      .      6      6      6      6      6      6      6
+   solde   +750                          .      .      .      6      6      6      6      6      6
+   solde  +1000                          .      .      .      .      6      6      6      6      6
+   solde  +1250                          .      .      .      .      .      6      6      6      6
+   solde  +1500                          .      .      .      .      .      6      6      5      5
+   solde  +1750                          .      .      .      .      .      .      6      6      6
+   solde  +2000                          .      .      .      .      .      .      .      6      5
+   solde  +2250                          .      .      .      .      .      .      .      .      5
+   solde  +2500                          .      .      .      .      .      .      .      .      .
+   solde  +2750                          .      .      .      .      .      .      .      .      .
+   2 seances restantes ; plancher :  -2500  -2200  -1900  -1600  -1300  -1000   -700   -400   -100
+   solde  -2000                          6      6      .      .      .      .      .      .      .
+   solde  -1750                          6      6      6      .      .      .      .      .      .
+   solde  -1500                          6      6      6      6      .      .      .      .      .
+   solde  -1250                          6      6      6      6      6      .      .      .      .
+   solde  -1000                          6      6      6      6      6      .      .      .      .
+   solde   -750                          6      6      6      6      6      6      .      .      .
+   solde   -500                          6      6      6      6      6      6      6      .      .
+   solde   -250                          6      6      6      6      6      6      6      6      .
+   solde     +0                          6      6      6      6      6      6      6      6      6
+   solde   +250                          .      6      6      6      6      6      6      6      6
+   solde   +500                          .      .      6      6      6      6      6      6      6
+   solde   +750                          .      .      .      6      6      6      6      6      6
+   solde  +1000                          .      .      .      .      6      6      6      6      6
+   solde  +1250                          .      .      .      .      .      6      6      6      6
+   solde  +1500                          .      .      .      .      .      6      6      6      6
+   solde  +1750                          .      .      .      .      .      .      6      6      6
+   solde  +2000                          .      .      .      .      .      .      .      6      6
+   solde  +2250                          .      .      .      .      .      .      .      .      6
+   solde  +2500                          .      .      .      .      .      .      .      .      .
+   solde  +2750                          .      .      .      .      .      .      .      .      .
+
+Lucid Flex 50K : chance de valider depuis un compte neuf selon la politique (tirages 2012 - 2021) : 49.8 % ; taille du premier jour : 2 MNQ
+  departs reels    | politique : valide perdu expire | meilleure taille fixe   | version actuelle
+  2012 - 2021 (2448) |  40.1  42.0   18.0       | 1 MNQ  51.5  29.7  18.8 | -
+     tailles fixes (valide / perdu) : 1 MNQ 51/30, 2 MNQ 39/59, 3 MNQ 31/68, 4 MNQ 25/75, 5 MNQ 21/78, 6 MNQ 18/81
+  2023 - 2026 (804) |  48.8  46.1    5.1       | 1 MNQ  54.6  35.2  10.2 | -
+     tailles fixes (valide / perdu) : 1 MNQ 55/35, 2 MNQ 32/68, 3 MNQ 27/72, 4 MNQ 22/78, 5 MNQ 17/82, 6 MNQ 15/84
+  DECISION : politique NON RETENUE (verification : 48.8 % valides / 46.1 % perdus contre 54.6 / 35.2 pour la meilleure reference)
+
