@@ -158,3 +158,62 @@ vague 13 (53 % sur les achats 2012 - 2021, 55 % sur 2023 - 2026).
 - `partie_a.py` → `resultats_a.txt`, `essais_a.csv` (parties A et C).
 - `partie_b.py` → `resultats_b.txt`.
 - `partie_d.py` → `resultats_d.txt`.
+- `crypto/` : la vague bitcoin, lancée après ces résultats (protocole et décision fixés avant ses données).
+
+## Résultats (22 octobre 2026)
+
+### Contre-revue indépendante (#ultrareview)
+
+Un relecteur indépendant a repris le code et les chiffres. Il a **recalculé de son côté** 8 essais de A (identiques au
+centième), les chemins minute par minute de D (écart 2e-13) et le moteur des challenges (identique). **Aucun regard
+vers le futur, rien qui puisse créer ou cacher une survivante.** Il a trouvé des défauts, tous corrigés avant ces
+résultats :
+- **D** : le moteur ne lisait que les clôtures des minutes (le README annonçait les plus hauts et plus bas) et Bulenox
+  était limité à 22 séances au lieu de 30 jours calendaires (21 séances en médiane). Les deux rendaient Bulenox environ
+  5 points trop favorable. Corrigé.
+- **D** : Tradeify était compté 159 $ par mois ; le README dit 159 $. Corrigé (une fois).
+- **D** : le « plafond » de D1 s'arrêtait à 1 500 $ d'écart-type ; sans avantage, la chance de valider Bulenox monte
+  encore au-delà. Grille élargie à 5 000 $, 78 pas par séance au lieu de 26.
+- **D** : le contrôle fixé citait 53 % / 55 % pour la vague 13 ; ces chiffres comprennent le **filtre delta simulé**.
+  La référence comparable sans filtre est 49 % (achats 2023 - 2026). Les deux sont donnés dans `resultats_d.txt`.
+- **A** : les demi-séances n'étaient pas exclues (Alpaca garde des transactions après 13 h) ; le prix négatif du
+  pétrole du 20 avril 2020 donnait des frais négatifs. Corrigés. Les grains ferment à 14 h 20 et les ETF peu échangés
+  ont des prix figés : leurs chiffres avant frais ne sont pas des pistes (note dans `resultats_a.txt`).
+- **B** : la veille et la tendance utilisaient l'ancien contrat le lendemain d'un changement d'échéance. Corrigé.
+
+Aucune de ces corrections ne change une décision.
+
+### A : 0 survivante sur 189
+
+- **Contrôle** : la zone recalculée sur QQQ en 5 minutes suit celle du bot sur les minutes du NQ (corrélation 0,88) :
+  la méthode est acceptée.
+- **Aucun des 189 essais ne passe l'exploration** (t ≥ 2 et Benjamini-Hochberg à 10 %). Le seul t ≥ 2 est la zone
+  sur QQQ (+2,12, puis +2,57 au coffre), c'est-à-dire le bot lui-même ; seul parmi 189, il ne passe pas la correction
+  pour essais multiples (il faudrait t ≥ 3,27).
+- Après frais, presque tout est négatif : sur les taux, les devises, les grains et le gaz, le mouvement d'une
+  demi-heure est à peine plus grand que les frais du plus petit contrat CME (médiane des t de −5 à −18 selon la
+  stratégie).
+- **Avant frais, quelques phénomènes connus existent** : l'élan de fin de séance sur les obligations longues (A2b TLT,
+  t +3,2 puis +2,6) et sur l'or (+2,3 puis +3,0), comme dans Baltussen et al. (2021). Les frais du ZB et du MGC les
+  dépassent.
+- **Le plus proche du seuil après frais** : la cassure des 30 premières minutes sur le bitcoin (A3b BITO → MBT), t net
+  +1,64 puis +1,87. Il est étudié à part, sur des années jamais vues (`crypto/`).
+
+### C : pas de complément
+
+Aucune survivante. Pour information, la zone inversée gagne bien les jours où la zone perd (+26 pb sur QQQ), mais elle
+perd au total (t −5,6) : c'est le miroir de la zone, pas un complément.
+
+### B : la zone combinée sur 15 ans n'est pas adoptée
+
+Hors échantillon 2016 - 2026 (chaque année prédite par un modèle qui ne l'a pas vue) :
+
+| | t | 2016-2022 | 2023-2026 | $ pour 1 MNQ au prix d'aujourd'hui |
+|---|---|---|---|---|
+| Tous les trades (le bot sans filtre) | **+3,05** | +2,29 | +2,06 | **+48 427 $** |
+| Trades gardés par le modèle (43 %) | +2,60 | +2,38 | +1,13 | +29 855 $ |
+| Trades écartés (57 %) | | | | +18 573 $ |
+
+Les trois conditions échouent (t de la différence −1,59 ; différence négative sur les deux périodes ; 43 % gardés).
+Le modèle écarte surtout des trades gagnants. La seule information stable sur les deux périodes est l'écart
+d'ouverture dans le sens du trade (corrélation +0,08 puis +0,06 avec le résultat) : bien trop faible pour filtrer.
