@@ -519,3 +519,41 @@ Cette idée vient des données d'exploration : elle ne peut être jugée **que s
   taille de base, sans plus de 3 points de challenges perdus en plus.
 - Pour information : la même mesure pour B1 et B3, et pour les sous-périodes 2023 - 2024 et 2025 - 2026.
 - Retenue, R2x passe par la contre-vérification puis par l'argent virtuel, jamais directement en argent réel.
+
+## Résultats (22 octobre 2026)
+
+Les trois chercheurs et le juge ont travaillé en agents ; la limite d'utilisation a coupé les agents de test des
+pistes B, C et D. La piste A a été calculée par son agent ; B (script de l'agent, relancé sans changement), C et D ont
+été finies ensuite dans la session, sur les mêmes règles. Chaque moteur redonne la zone de `delta_mesures/` (3 571
+trades, +10 759,75 points jusqu'au 16 octobre) et les chemins de la partie D à l'identique ; aucun regard vers le futur
+(brouiller tout ce qui suit une décision ne change aucune décision), sauf pour la piste A (voir ci-dessous).
+
+| # | Test | t exploration | t coffre | Verdict |
+|---|---|---|---|---|
+| 1 | A1 pas de zone les soirs de résultats des 10 valeurs | −1,23 | +0,24 | échoue (**descriptif** : calendrier Yahoo inaccessible, remplacé par une détection qui regarde vers le futur) |
+| 2 | A2 pas de zone les soirs « lourds » | −1,19 | −0,79 | échoue (descriptif) |
+| 3 | A3 lendemain de résultats : zone dans le sens de la réaction | −1,43 | −1,31 | échoue (descriptif) |
+| 4 | B1 indice d'appétit pour le risque (5 marchés) | −1,53 | −1,08 | échoue |
+| 5 | B2 AUD/JPY résiduel | **−3,40** | −0,79 | échoue (sens contraire au prévu, voir plus bas) |
+| 6 | B3 VXX résiduel | −1,75 | +0,09 | échoue |
+| 7 | B4 TLT au signe du régime | −1,28 | −1,50 | échoue |
+| 8 | N1 nombres ronds, 15 minutes (contre le franchissement) | +1,22 | −2,45 | échoue |
+| 9 | N2 nombres ronds, 30 minutes (contre le franchissement) | +0,85 | −1,47 | échoue |
+| 10 | F1 cassure régulière seulement | −1,31 | −1,18 | échoue |
+| 11 | F2 pas de cassure faite d'un seul saut | −1,05 | −1,01 | échoue |
+
+**Benjamini-Hochberg à 10 % sur les 11 tests : aucun retenu** (plus petit p : 0,22). **Décision : rien n'entre au bot.**
+
+**L'hypothèse inversée de B2** (fixée après l'exploration, avant le coffre, commit 9a8ae2b : `confirmation_croisee/
+inverse.py`) : les entrées que l'AUD/JPY ne confirme pas gagnaient +47 $ par trade contre +17 $ en exploration (Welch
++1,85). **Au coffre, +23 $ contre +19 $, t +0,12 : non confirmée.** Le coffre a fait son travail : la piste la plus
+prometteuse de l'exploration n'était qu'un hasard de ces années-là.
+
+Ce qu'on apprend :
+- **La confirmation par les autres marchés n'aide pas la zone**, elle lui nuit plutôt : les cassures que le risque
+  global suit ne sont pas meilleures que les autres, et le filtre retire autant de bons trades que de mauvais.
+- **Les nombres ronds ne portent pas d'effet propre** : la grille ronde ne fait pas mieux que 74 à 78 des 99 grilles
+  décalées en exploration, 33 à 35 au coffre. Sur l'ES (niveaux de 50), même absence.
+- **La forme de la cassure (régulière ou d'un seul saut) ne trie pas les bons trades**, ni sur le NQ ni sur l'ES.
+- **Les soirs de résultats des grandes valeurs** ne sont pas des jours à éviter (avec la réserve du calendrier
+  approché).

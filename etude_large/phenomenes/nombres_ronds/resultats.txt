@@ -1,0 +1,33 @@
+Piste C : nombres ronds du NQ (etude_large/phenomenes/README.md, commit 929d05e, regles fixees avant tout calcul)
+3809 seances completes hors jours de la Fed (2011-01-03 - 2026-10-20) ; exploration 2894, coffre 915 ; prix de reference 29687.75 ; prix bruts du contrat du jour.
+Interpretation fixee avant tout calcul : un trade est ouvert jusqu'a sa minute de sortie comprise.
+
+CONTROLE a) premiers franchissements pris (N1, un trade a la fois) par annee : 2011 60, 2012 40, 2013 42, 2014 69, 2015 81, 2016 94, 2017 65, 2018 173, 2019 138, 2020 315, 2021 293, 2022 465, 2023 316, 2024 390, 2025 455, 2026 414
+REGARD VERS LE FUTUR : 200 seances, prix brouilles apres le premier evenement : 0 decision(s) changee(s) -> aucun regard vers le futur
+
+EXPLORATION 2011 - 2022 (coffre non ouvert)
+  N1 (CONTRE le sens du franchissement) : 1835 trades, brut moyen -1.25 pt ; t net +1.22 (p bilateral 0.2220) ; t a 3 points de frais +0.51 ; la grille ronde bat 74 grilles decalees sur 99 ; correlation avec la zone -0.14
+     controle c) achats : 845 trades, brut moyen -0.69 pt
+     controle c) ventes : 990 trades, brut moyen -1.72 pt
+     controle c) 2011 - 2017 : 451 trades, brut moyen -0.22 pt
+     controle c) 2018 - 2022 : 1384 trades, brut moyen -1.58 pt
+     controle c) par heure (trades, brut moyen) : 9 h 295 -0.22, 10 h 595 -2.05, 11 h 309 +0.25, 12 h 177 -0.41, 13 h 155 -3.33, 14 h 161 -2.01, 15 h 143 -1.20
+  N2 (CONTRE le sens du franchissement) : 1735 trades, brut moyen -0.48 pt ; t net +0.85 (p bilateral 0.3927) ; t a 3 points de frais +0.33 ; la grille ronde bat 78 grilles decalees sur 99 ; correlation avec la zone -0.22
+     controle c) achats : 797 trades, brut moyen -0.76 pt
+     controle c) ventes : 938 trades, brut moyen -0.24 pt
+     controle c) 2011 - 2017 : 441 trades, brut moyen -0.81 pt
+     controle c) 2018 - 2022 : 1294 trades, brut moyen -0.37 pt
+     controle c) par heure (trades, brut moyen) : 9 h 295 -0.52, 10 h 564 -0.59, 11 h 302 -0.52, 12 h 171 +0.32, 13 h 153 -4.97, 14 h 159 +1.56, 15 h 91 +3.00
+  controle b) N3, niveaux de 500, 15 minutes : 350 trades en exploration, brut moyen -0.72 pt
+
+COFFRE 2023 - 20 octobre 2026 (ouvert apres l'ecriture de l'exploration)
+  N1 : t net coffre -2.45 ; la grille ronde bat 33 grilles sur 99 au coffre ; Sharpe zone +1.19 -> zone + source -0.27 ; t a 3 points -3.32
+     challenges (departs 2023 - 2026, valide / perdu) : Lucid Flex 50K : zone 1 MNQ 54.6/35.2, zone 2 MNQ 31.7/68.3, zone + source 23.8/69.0 -> non ; Bulenox Legacy 50K opt. 2 : zone 3 MNQ 44.7/31.5, zone 6 MNQ 49.0/49.8, zone + source 30.3/55.3 -> non
+     criteres : 1 non, 2 non, 3 non, 4 non, 3 points non, 5 non -> criteres propres echec
+     controle e) pire trade du coffre : 2025-04-09 229 min, -741.25 pt
+  N2 : t net coffre -1.47 ; la grille ronde bat 35 grilles sur 99 au coffre ; Sharpe zone +1.19 -> zone + source +0.08 ; t a 3 points -2.00
+     challenges (departs 2023 - 2026, valide / perdu) : Lucid Flex 50K : zone 1 MNQ 54.6/35.2, zone 2 MNQ 31.7/68.3, zone + source 25.1/74.0 -> non ; Bulenox Legacy 50K opt. 2 : zone 3 MNQ 44.7/31.5, zone 6 MNQ 49.0/49.8, zone + source 32.9/52.0 -> non
+     criteres : 1 non, 2 non, 3 non, 4 non, 3 points non, 5 non -> criteres propres echec
+     controle e) pire trade du coffre : 2025-04-09 212 min, -983.25 pt
+  controle d) ES niveaux de 50, N1 (meme orientation) : t net exploration -1.74, coffre -2.31
+  controle d) ES niveaux de 50, N2 (meme orientation) : t net exploration -0.66, coffre -2.34

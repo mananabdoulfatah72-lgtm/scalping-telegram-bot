@@ -1,0 +1,221 @@
+Piste B : mouvement simultane des autres marches au controle de la zone (B1 a B4)
+Regles : etude_large/phenomenes/README.md (commit 929d05e, fixees avant tout calcul). Zone V1 (delta_mesures) sur
+les minutes du NQ de la recherche + robot, seances completes, pas de zone les jours de la Fed, 1 MNQ, 1,5 point par
+aller-retour. Un trade ecarte reste virtuel jusqu'a la sortie de V1 et bloque : les trades gardes sont ceux de V1.
+Serie de decision : Delta = zone filtree - V1, en $ par seance pour 1 MNQ au prix du 20 octobre 2026 (convention
+de partie_d.chemins_zone), 0 les seances sans difference ; t = moyenne / ecart-type x racine(seances).
+
+CONTROLE DE LA ZONE (obligatoire avant tout gain)
+  moteur jusqu'au 19 octobre 2026 : 3572 trades +10720.25 pt ; entree_tardive : 3 572 trades +10 721,25 pt. Jusqu'au 16 octobre : 3571 trades +10759.75 pt contre 3 571 et +10 759,75 (entree_tardive sans le 19, -38,50 pt) -> identique
+  le 19 octobre ici : 1 trade -39.50 pt (barre de 11 h 30 retelechargee par le robot le 20 octobre, deja note par delta_mesures et zones_decalees : 29 944,75 -> 29 945,75)
+  chemins des challenges recalcules ici avec tous les trades de V1 = partie_d.chemins_zone : oui ; serie de decision de V1 = derniere minute de ces chemins (2012-2026) : oui
+  V1 hors jours de la Fed jusqu'au 2026-10-20 : 3470 trades, +10714.00 pt nets ; 3748 seances de zone (109 jours de la Fed retires)
+
+DONNEES DES AUTRES MARCHES (presence des scores, seances completes du NQ)
+  2011 : 251 seances ; HistData a l'heure (delta = 0)   0.0 % (delta -60 : 0, +60 : 0, indecis : 251) ; z present (au moins un controle) : VXX   0 %, UUP   0 %, AUDJPY   0 %, BTC   0 %, TLT   0 %, IEF   0 %
+  2012 : 247 seances ; HistData a l'heure (delta = 0)  99.6 % (delta -60 : 0, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX   0 %, UUP   0 %, AUDJPY  89 %, BTC   0 %, TLT   0 %, IEF   0 %
+  2013 : 249 seances ; HistData a l'heure (delta = 0) 100.0 % (delta -60 : 0, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX   0 %, UUP   0 %, AUDJPY 100 %, BTC   0 %, TLT   0 %, IEF   0 %
+  2014 : 243 seances ; HistData a l'heure (delta = 0)  99.6 % (delta -60 : 0, +60 : 0, indecis : 1) ; z present (au moins un controle) : VXX   0 %, UUP   0 %, AUDJPY  99 %, BTC   0 %, TLT   0 %, IEF   0 %
+  2015 : 250 seances ; HistData a l'heure (delta = 0) 100.0 % (delta -60 : 0, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX   0 %, UUP   0 %, AUDJPY 100 %, BTC   0 %, TLT   0 %, IEF   0 %
+  2016 : 251 seances ; HistData a l'heure (delta = 0) 100.0 % (delta -60 : 0, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX   0 %, UUP  90 %, AUDJPY 100 %, BTC   0 %, TLT  90 %, IEF  90 %
+  2017 : 249 seances ; HistData a l'heure (delta = 0)  98.4 % (delta -60 : 0, +60 : 0, indecis : 4) ; z present (au moins un controle) : VXX   0 %, UUP 100 %, AUDJPY  98 %, BTC  90 %, TLT 100 %, IEF 100 %
+  2018 : 248 seances ; HistData a l'heure (delta = 0) 100.0 % (delta -60 : 0, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX   0 %, UUP 100 %, AUDJPY 100 %, BTC 100 %, TLT 100 %, IEF 100 %
+  2019 : 249 seances ; HistData a l'heure (delta = 0)  92.0 % (delta -60 : 20, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX  90 %, UUP 100 %, AUDJPY  92 %, BTC 100 %, TLT 100 %, IEF 100 %
+  2020 : 251 seances ; HistData a l'heure (delta = 0)  91.6 % (delta -60 : 20, +60 : 0, indecis : 1) ; z present (au moins un controle) : VXX 100 %, UUP 100 %, AUDJPY  91 %, BTC 100 %, TLT 100 %, IEF 100 %
+  2021 : 251 seances ; HistData a l'heure (delta = 0)  94.0 % (delta -60 : 15, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX 100 %, UUP 100 %, AUDJPY  94 %, BTC 100 %, TLT 100 %, IEF 100 %
+  2022 : 250 seances ; HistData a l'heure (delta = 0)  94.0 % (delta -60 : 15, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX 100 %, UUP 100 %, AUDJPY  94 %, BTC 100 %, TLT 100 %, IEF 100 %
+  2023 : 248 seances ; HistData a l'heure (delta = 0)  94.0 % (delta -60 : 15, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX 100 %, UUP 100 %, AUDJPY  55 %, BTC 100 %, TLT 100 %, IEF 100 %
+  2024 : 249 seances ; HistData a l'heure (delta = 0)  92.4 % (delta -60 : 19, +60 : 0, indecis : 0) ; z present (au moins un controle) : VXX 100 %, UUP 100 %, AUDJPY  92 %, BTC 100 %, TLT 100 %, IEF 100 %
+  2025 : 247 seances ; HistData a l'heure (delta = 0)  91.1 % (delta -60 : 21, +60 : 1, indecis : 0) ; z present (au moins un controle) : VXX 100 %, UUP 100 %, AUDJPY  91 %, BTC 100 %, TLT 100 %, IEF 100 %
+  2026 : 201 seances ; HistData a l'heure (delta = 0)  86.6 % (delta -60 : 15, +60 : 0, indecis : 13) ; z present (au moins un controle) : VXX 100 %, UUP 100 %, AUDJPY  86 %, BTC 100 %, TLT 100 %, IEF 100 %
+  prix P_X(t) relus a la main dans les barres brutes (7 marches, 1 050 tirages, 769 presents) : identiques ; regression des 720 fenetres refaite par moindres carres (z residuel, z brut, rho) : ecart max 1.2e-13
+
+REGARD VERS LE FUTUR
+  V1 (entrees) : 3600 cas (300 seances x 12 controles), tout ce qui suit le controle brouille -> 0 entree changee jusqu'au controle ; la suite change dans 3150 cas
+  filtre : 40 coupures (entree tiree au hasard) x 11 regles (4 tests, variantes, jumeaux) ; minutes du NQ apres la minute du controle, barres qui finissent apres tau et seances suivantes bruitees (10 % des barres retirees), chaine recalculee -> 0 regle-coupure avec une decision changee jusqu'a la coupure ; apres la coupure, decisions changees dans 440 cas (le brouillage agit)
+  le score lit les barres de 5 minutes qui finissent au plus tard a tau et la minute du NQ etiquetee tau - 1 ; V1
+  entre a la cloture de la minute etiquetee tau (une minute plus tard). Fenetres et seuil : seances precedentes.
+  -> aucun regard vers le futur
+
+CONTROLE b) le bot lirait les futures : accord de signe des rendements d'une heure (10 h - 16 h, 2016 -> 30 sept. 2026)
+  TLT contre ZN : 85.5 % (14296 heures ; 1769 heures ou l'un des deux ne bouge pas, retirees) -> MOINS DE 90 % : B4 (et le TLT de B1) seulement descriptif
+  AUD/JPY HistData contre 6A / 6J : 96.1 % (14533 heures ; 36 retirees) -> au moins 90 %
+  VXX et UUP ne sont pas des produits CME : le bot devrait les lire par l'API gratuite d'Alpaca (a verifier) ;
+  c'est rappele a cote des resultats de B1 et de B3.
+
+======================================================================================================================
+EXPLORATION (jusqu'au 2022-12-30) - ecrite dans le fichier avant l'ouverture du coffre
+======================================================================================================================
+
+=== TEST B1 : indice d'appetit pour le risque (VXX, UUP, AUD/JPY, bitcoin, TLT ; residus) (unilateral, sens predit Delta > 0) ===
+  exploration du 2016-03-31 (61e seance complete depuis le 2016-01-04) au 2022-12-30 : 1617 seances, 1524 entrees de V1, score present pour 1472 (96.6 %), 299 ecartees (20.3 % des entrees notees, 19.6 % de toutes)
+  V1 sur ces seances : +44,010 $ (+5773.00 pt nets), Sharpe +1.371 ; trades ecartes : +8,376 $ (+1029.50 pt nets, +3.44 pt par trade)
+  Delta = zone filtree - V1 : -8,376 $ (-1029.50 pt nets, information), t net -1.53, p unilateral 0.9376
+  1) t net >= 2 : non (Benjamini-Hochberg a 10 % : calcule ensuite sur les 11 tests de la vague)
+  3) placebo (200 tirages, 1472 entrees notees ; score du meme controle d'une autre seance de la meme annee, meme seuil q) : placebos moyenne -7,089 $, 95e centile +115 $ ; reel -8,376 $ fait mieux que 37.5 % -> non
+  4) Sharpe des seances, zone filtree contre V1 (exploration) : +1.224 contre +1.371 -> non
+  jumeau NQ (score = s r_NQ / ecart-type de r_NQ sur les 720 fenetres, memes entrees notees, meme regle de seuil) : 266 ecartees, Delta +87 $, t +0.02 -> le test fait MOINS BIEN
+     accord de decision avec le jumeau sur les entrees notees : 66.1 %
+  a) ecartees / notees par annee : 2016 20/144 (14 %) ; 2017 47/224 (21 %) ; 2018 42/209 (20 %) ; 2019 41/221 (19 %) ; 2020 45/215 (21 %) ; 2021 48/206 (23 %) ; 2022 56/253 (22 %)
+  d) achats : 163 ecartes sur 764 notes, Delta -6,741 $ (t -1.81) ; ventes : 136 ecartes sur 708 notes, Delta -1,635 $ (t -0.41)
+     par controle (ecartes / notes, Delta) : 10h00 148/425 -4,072 $ ; 10h30 39/170 +1,524 $ ; 11h00 29/115 +344 $ ; 11h30 20/122 -2,547 $ ; 12h00 17/122 +346 $ ; 12h30 10/102 +2 $ ; 13h00 11/72 +334 $ ; 13h30 6/71 +365 $ ; 14h00 5/71 +496 $ ; 14h30 5/71 -609 $ ; 15h00 5/68 -2,811 $ ; 15h30 4/63 -1,749 $
+     jours de chiffres de 8 h 30 : 75/291, Delta -6,919 $ (t -2.19) ; autres jours : 208/1116, Delta -1,395 $ (t -0.34) ; dollar absent : 16/65, Delta -62 $ (t -0.04)
+  c) rho_TLT < 0 : 260/1287, Delta -7,661 $ (t -1.52) ; rho_TLT > 0 : 39/185, Delta -715 $ (t -0.34) ; rho_TLT absent : 0/0, Delta +0 $ (t +0.00)
+  (controle b : ce test n'est que descriptif)
+  (VXX et UUP hors CME : lecture par l'API gratuite d'Alpaca a verifier)
+
+=== TEST B2 : AUD/JPY residuel (unilateral, sens predit Delta > 0) ===
+  exploration du 2012-03-29 (61e seance complete depuis le 2012-01-02) au 2022-12-30 : 2558 seances, 2372 entrees de V1, score present pour 2306 (97.2 %), 479 ecartees (20.8 % des entrees notees, 20.2 % de toutes)
+  V1 sur ces seances : +55,422 $ (+5265.00 pt nets), Sharpe +1.181 ; trades ecartes : +23,505 $ (+2675.50 pt nets, +5.59 pt par trade)
+  Delta = zone filtree - V1 : -23,505 $ (-2675.50 pt nets, information), t net -3.40, p unilateral 0.9997
+  1) t net >= 2 : non (Benjamini-Hochberg a 10 % : calcule ensuite sur les 11 tests de la vague)
+  3) placebo (200 tirages, 2306 entrees notees ; score du meme controle d'une autre seance de la meme annee, meme seuil q) : placebos moyenne -8,185 $, 95e centile -863 $ ; reel -23,505 $ fait mieux que 0.5 % -> non
+  4) Sharpe des seances, zone filtree contre V1 (exploration) : +0.772 contre +1.181 -> non
+  jumeau NQ (score = s r_NQ / ecart-type de r_NQ sur les 720 fenetres, memes entrees notees, meme regle de seuil) : 455 ecartees, Delta +3,224 $, t +0.79 -> le test fait MOINS BIEN
+     accord de decision avec le jumeau sur les entrees notees : 64.3 %
+  a) ecartees / notees par annee : 2012 46/173 (27 %) ; 2013 35/199 (18 %) ; 2014 44/217 (20 %) ; 2015 43/217 (20 %) ; 2016 44/237 (19 %) ; 2017 51/222 (23 %) ; 2018 49/209 (23 %) ; 2019 39/206 (19 %) ; 2020 33/190 (17 %) ; 2021 42/197 (21 %) ; 2022 53/239 (22 %)
+  d) achats : 238 ecartes sur 1133 notes, Delta -10,588 $ (t -2.33) ; ventes : 241 ecartes sur 1173 notes, Delta -12,917 $ (t -2.47)
+     par controle (ecartes / notes, Delta) : 10h00 230/665 -16,307 $ ; 10h30 63/261 -1,025 $ ; 11h00 56/201 -95 $ ; 11h30 32/173 -430 $ ; 12h00 24/186 -1,054 $ ; 12h30 14/148 +35 $ ; 13h00 13/114 -1,189 $ ; 13h30 8/122 +577 $ ; 14h00 12/115 -1,042 $ ; 14h30 9/113 -121 $ ; 15h00 9/107 -2,116 $ ; 15h30 9/101 -738 $
+     jours de chiffres de 8 h 30 : 94/465, Delta -9,535 $ (t -2.64) ; autres jours : 374/1802, Delta -12,442 $ (t -2.15) ; dollar absent : 11/39, Delta -1,529 $ (t -1.29)
+
+=== TEST B3 : VXX residuel (unilateral, sens predit Delta > 0) ===
+  exploration du 2019-03-29 (61e seance complete depuis le 2019-01-02) au 2022-12-30 : 905 seances, 852 entrees de V1, score present pour 852 (100.0 %), 178 ecartees (20.9 % des entrees notees, 20.9 % de toutes)
+  V1 sur ces seances : +23,270 $ (+4162.25 pt nets), Sharpe +1.185 ; trades ecartes : +9,082 $ (+1578.75 pt nets, +8.87 pt par trade)
+  Delta = zone filtree - V1 : -9,082 $ (-1578.75 pt nets, information), t net -1.75, p unilateral 0.9604
+  1) t net >= 2 : non (Benjamini-Hochberg a 10 % : calcule ensuite sur les 11 tests de la vague)
+  3) placebo (200 tirages, 852 entrees notees ; score du meme controle d'une autre seance de la meme annee, meme seuil q) : placebos moyenne -2,008 $, 95e centile +3,272 $ ; reel -9,082 $ fait mieux que 1.5 % -> non
+  4) Sharpe des seances, zone filtree contre V1 (exploration) : +0.818 contre +1.185 -> non
+  jumeau NQ (score = s r_NQ / ecart-type de r_NQ sur les 720 fenetres, memes entrees notees, meme regle de seuil) : 145 ecartees, Delta -370 $, t -0.10 -> le test fait MOINS BIEN
+     accord de decision avec le jumeau sur les entrees notees : 65.8 %
+  a) ecartees / notees par annee : 2019 44/178 (25 %) ; 2020 45/215 (21 %) ; 2021 40/206 (19 %) ; 2022 49/253 (19 %)
+  d) achats : 93 ecartes sur 436 notes, Delta -3,152 $ (t -1.03) ; ventes : 85 ecartes sur 416 notes, Delta -5,930 $ (t -1.41)
+     par controle (ecartes / notes, Delta) : 10h00 99/246 -5,879 $ ; 10h30 20/98 -332 $ ; 11h00 9/70 -645 $ ; 11h30 11/75 +1,266 $ ; 12h00 8/63 +162 $ ; 12h30 8/58 -971 $ ; 13h00 6/45 +363 $ ; 13h30 3/45 +744 $ ; 14h00 0/38 -0 $ ; 14h30 4/44 +224 $ ; 15h00 3/32 -2,406 $ ; 15h30 7/38 -1,607 $
+     jours de chiffres de 8 h 30 : 46/183, Delta -5,943 $ (t -1.86) ; autres jours : 120/619, Delta -2,149 $ (t -0.56) ; dollar absent : 12/50, Delta -990 $ (t -0.75)
+  (VXX et UUP hors CME : lecture par l'API gratuite d'Alpaca a verifier)
+
+=== TEST B4 : TLT brut au signe du regime (unilateral, sens predit Delta > 0) ===
+  exploration du 2016-03-31 (61e seance complete depuis le 2016-01-04) au 2022-12-30 : 1617 seances, 1524 entrees de V1, score present pour 1251 (82.1 %), 247 ecartees (19.7 % des entrees notees, 16.2 % de toutes)
+  V1 sur ces seances : +44,010 $ (+5773.00 pt nets), Sharpe +1.371 ; trades ecartes : +6,006 $ (+560.25 pt nets, +2.27 pt par trade)
+  Delta = zone filtree - V1 : -6,006 $ (-560.25 pt nets, information), t net -1.28, p unilateral 0.9002
+  1) t net >= 2 : non (Benjamini-Hochberg a 10 % : calcule ensuite sur les 11 tests de la vague)
+  3) placebo (200 tirages, 1251 entrees notees ; score du meme controle d'une autre seance de la meme annee, meme seuil q) : placebos moyenne -10,413 $, 95e centile -1,777 $ ; reel -6,006 $ fait mieux que 80.5 % -> non
+  4) Sharpe des seances, zone filtree contre V1 (exploration) : +1.257 contre +1.371 -> non
+  jumeau NQ (score = s r_NQ / ecart-type de r_NQ sur les 720 fenetres, memes entrees notees, meme regle de seuil) : 223 ecartees, Delta -68 $, t -0.02 -> le test fait MOINS BIEN
+     accord de decision avec le jumeau sur les entrees notees : 73.9 %
+  a) ecartees / notees par annee : 2016 26/144 (18 %) ; 2017 42/224 (19 %) ; 2018 37/209 (18 %) ; 2019 46/221 (21 %) ; 2020 40/210 (19 %) ; 2021 29/96 (30 %) ; 2022 27/147 (18 %)
+  d) achats : 133 ecartes sur 659 notes, Delta -5,795 $ (t -1.85) ; ventes : 114 ecartes sur 592 notes, Delta -211 $ (t -0.06)
+     par controle (ecartes / notes, Delta) : 10h00 69/351 +283 $ ; 10h30 32/149 -1,285 $ ; 11h00 18/93 -1,302 $ ; 11h30 23/102 -2,326 $ ; 12h00 16/110 +1,620 $ ; 12h30 19/88 -481 $ ; 13h00 10/60 +1,129 $ ; 13h30 15/62 -2,001 $ ; 14h00 16/59 +509 $ ; 14h30 9/63 +918 $ ; 15h00 10/57 -865 $ ; 15h30 10/57 -2,205 $
+     jours de chiffres de 8 h 30 : 49/232, Delta +16 $ (t +0.01) ; autres jours : 181/963, Delta -3,848 $ (t -1.21) ; dollar absent : 17/56, Delta -2,174 $ (t -0.77)
+  c) rho_TLT < 0 : 222/1141, Delta -7,137 $ (t -1.58) ; rho_TLT > 0 : 25/110, Delta +1,131 $ (t +0.96) ; rho_TLT absent : 0/0, Delta +0 $ (t +0.00)
+     information : B4 e=-1 : 322 ecartees, Delta -16,754 $, t -2.72 ; B4 e=+1 : 305 ecartees, Delta +3,217 $, t +0.50 ; B4 IEF : 253 ecartees, Delta -2,167 $, t -0.51
+  (controle b : ce test n'est que descriptif)
+
+FIN DE L'EXPLORATION : t net, p unilateral (Benjamini-Hochberg ensuite sur les 11 tests de la vague)
+  B1 : t -1.53, p 0.9376, placebo 37.5 %, Sharpe pas plus haut, jumeau NON battu
+  B2 : t -3.40, p 0.9997, placebo 0.5 %, Sharpe pas plus haut, jumeau NON battu
+  B3 : t -1.75, p 0.9604, placebo 1.5 %, Sharpe pas plus haut, jumeau NON battu
+  B4 : t -1.28, p 0.9002, placebo 80.5 %, Sharpe pas plus haut, jumeau NON battu
+
+======================================================================================================================
+COFFRE (2023-01-03 -> fin de chaque test), ouvert apres l'ecriture de l'exploration ci-dessus
+======================================================================================================================
+  V1 seule aux challenges (partie D, departs 2023-2026) : Lucid 1 MNQ valide 54.6 %, perdu 35.2 % (804 departs) ; Bulenox 3 MNQ valide 44.7 %, perdu 31.5 % (908 departs) ; Bulenox 4 puis 6 MNQ (information) valide 49.9 %, perdu 45.3 % (908 departs)
+
+=== TEST B1 : indice d'appetit pour le risque (VXX, UUP, AUD/JPY, bitcoin, TLT ; residus) - coffre 2023-01-03 -> 2026-10-20 ===
+  907 seances, 813 entrees, notees 813, ecartees 168 (20.7 % des notees) ; V1 +20,372 $, Sharpe +1.198
+  Delta : -6,962 $ (-2216.00 pt nets), t net -1.08
+  2) coffre meme signe, t net >= 1,5 : non
+  4) Sharpe au coffre : +1.023 contre +1.198 -> non ; sur les deux periodes : non
+  jumeau NQ au coffre : Delta -214 $, t -0.08 -> le test fait MOINS BIEN ; sur les deux periodes : non
+     information, meme placebo au coffre : reel -6,962 $ fait mieux que 7.0 % (moyenne -2,482, 95e centile +2,614)
+  5) Lucid 1 MNQ : valide 47.0 % (V1 54.6 %), perdu 30.7 % (V1 35.2 %) -> -7.6 points valides, -4.5 points perdus -> ne passe pas
+  5) Bulenox 3 MNQ : valide 39.3 % (V1 44.7 %), perdu 22.0 % (V1 31.5 %) -> -5.4 points valides, -9.5 points perdus -> ne passe pas
+  5) Bulenox 4 puis 6 MNQ (information) : valide 47.9 % (V1 49.9 %), perdu 40.5 % (V1 45.3 %) -> -2.0 points valides, -4.7 points perdus
+     -> critere 5 : non
+  a) ecartees / notees par annee : 2023 40/211 (19 %) ; 2024 37/206 (18 %) ; 2025 48/228 (21 %) ; 2026 43/168 (26 %)
+  d) achats : 97/382, Delta -7,593 $ (t -1.28) ; ventes : 71/431, Delta +631 $ (t +0.26)
+     par controle : 10h00 99/234 -208 $ ; 10h30 15/100 +1,467 $ ; 11h00 16/70 -1,938 $ ; 11h30 10/66 -790 $ ; 12h00 4/40 +294 $ ; 12h30 4/51 -6,373 $ ; 13h00 5/43 +194 $ ; 13h30 1/36 +148 $ ; 14h00 8/46 +79 $ ; 14h30 1/47 +59 $ ; 15h00 2/40 +165 $ ; 15h30 3/40 -60 $
+     jours de chiffres de 8 h 30 : 21/100, Delta -1,431 $ (t -0.87) ; autres jours : 128/595, Delta -4,655 $ (t -0.77) ; dollar absent : 19/118, Delta -876 $ (t -0.56)
+  c) rho_TLT < 0 : 42/265, Delta -4,892 $ (t -0.88) ; rho_TLT > 0 : 126/548, Delta -2,070 $ (t -0.63) ; rho_TLT absent : 0/0, Delta +0 $ (t +0.00)
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC (1 t>=2 non, 2 non, 3 non, 4 non, 5 non, jumeau non, controle b descriptif)
+
+=== TEST B2 : AUD/JPY residuel - coffre 2023-01-03 -> 2026-10-02 ===
+  895 seances, 804 entrees, notees 655, ecartees 126 (19.2 % des notees) ; V1 +19,414 $, Sharpe +1.157
+  Delta : -2,914 $ (-1144.50 pt nets), t net -0.79
+  2) coffre meme signe, t net >= 1,5 : non
+  4) Sharpe au coffre : +1.052 contre +1.157 -> non ; sur les deux periodes : non
+  jumeau NQ au coffre : Delta +2,142 $, t +0.99 -> le test fait MOINS BIEN ; sur les deux periodes : non
+     information, meme placebo au coffre : reel -2,914 $ fait mieux que 46.5 % (moyenne -2,945, 95e centile +1,601)
+  5) Lucid 1 MNQ : valide 27.0 % (V1 54.6 %), perdu 46.1 % (V1 35.2 %) -> -27.6 points valides, +10.9 points perdus -> ne passe pas
+  5) Bulenox 3 MNQ : valide 43.0 % (V1 44.7 %), perdu 30.4 % (V1 31.5 %) -> -1.8 points valides, -1.1 points perdus -> ne passe pas
+  5) Bulenox 4 puis 6 MNQ (information) : valide 47.0 % (V1 49.9 %), perdu 45.5 % (V1 45.3 %) -> -2.9 points valides, +0.2 points perdus
+     -> critere 5 : non
+  a) ecartees / notees par annee : 2023 18/98 (18 %) ; 2024 34/193 (18 %) ; 2025 44/216 (20 %) ; 2026 30/148 (20 %)
+  d) achats : 68/310, Delta +413 $ (t +0.18) ; ventes : 58/345, Delta -3,326 $ (t -1.15)
+     par controle : 10h00 67/189 +646 $ ; 10h30 13/75 -672 $ ; 11h00 18/60 -1,978 $ ; 11h30 4/53 +73 $ ; 12h00 3/33 -583 $ ; 12h30 8/40 -324 $ ; 13h00 1/31 -335 $ ; 13h30 3/29 +201 $ ; 14h00 5/35 -146 $ ; 14h30 1/39 +124 $ ; 15h00 0/37 -0 $ ; 15h30 3/34 +80 $
+     jours de chiffres de 8 h 30 : 16/92, Delta -1,238 $ (t -0.80) ; autres jours : 108/559, Delta -1,689 $ (t -0.50) ; dollar absent : 2/4, Delta +13 $ (t +0.09)
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC (1 t>=2 non, 2 non, 3 non, 4 non, 5 non, jumeau non, controle b oui)
+
+=== TEST B3 : VXX residuel - coffre 2023-01-03 -> 2026-10-20 ===
+  907 seances, 813 entrees, notees 813, ecartees 165 (20.3 % des notees) ; V1 +20,372 $, Sharpe +1.198
+  Delta : +340 $ (-7.50 pt nets), t net +0.09
+  2) coffre meme signe, t net >= 1,5 : non
+  4) Sharpe au coffre : +1.306 contre +1.198 -> oui ; sur les deux periodes : non
+  jumeau NQ au coffre : Delta -214 $, t -0.08 -> le test fait mieux ; sur les deux periodes : non
+     information, meme placebo au coffre : reel +340 $ fait mieux que 75.5 % (moyenne -1,726, 95e centile +3,248)
+  5) Lucid 1 MNQ : valide 52.9 % (V1 54.6 %), perdu 30.5 % (V1 35.2 %) -> -1.7 points valides, -4.7 points perdus -> ne passe pas
+  5) Bulenox 3 MNQ : valide 37.1 % (V1 44.7 %), perdu 24.6 % (V1 31.5 %) -> -7.6 points valides, -6.9 points perdus -> ne passe pas
+  5) Bulenox 4 puis 6 MNQ (information) : valide 44.4 % (V1 49.9 %), perdu 38.8 % (V1 45.3 %) -> -5.5 points valides, -6.5 points perdus
+     -> critere 5 : non
+  a) ecartees / notees par annee : 2023 40/211 (19 %) ; 2024 46/206 (22 %) ; 2025 40/228 (18 %) ; 2026 39/168 (23 %)
+  d) achats : 91/382, Delta -2,048 $ (t -0.80) ; ventes : 74/431, Delta +2,388 $ (t +0.95)
+     par controle : 10h00 102/234 -536 $ ; 10h30 16/100 -419 $ ; 11h00 11/70 -800 $ ; 11h30 7/66 -284 $ ; 12h00 8/40 +444 $ ; 12h30 1/51 +21 $ ; 13h00 2/43 +22 $ ; 13h30 5/36 +732 $ ; 14h00 6/46 +1,078 $ ; 14h30 2/47 +59 $ ; 15h00 3/40 +98 $ ; 15h30 2/40 -77 $
+     jours de chiffres de 8 h 30 : 23/100, Delta -206 $ (t -0.16) ; autres jours : 119/595, Delta +1,000 $ (t +0.34) ; dollar absent : 23/118, Delta -453 $ (t -0.29)
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC (1 t>=2 non, 2 non, 3 non, 4 non, 5 non, jumeau non, controle b oui)
+
+=== TEST B4 : TLT brut au signe du regime - coffre 2023-01-03 -> 2026-10-20 ===
+  907 seances, 813 entrees, notees 498, ecartees 99 (19.9 % des notees) ; V1 +20,372 $, Sharpe +1.198
+  Delta : -5,213 $ (-1668.75 pt nets), t net -1.50
+  2) coffre meme signe, t net >= 1,5 : non
+  4) Sharpe au coffre : +0.877 contre +1.198 -> non ; sur les deux periodes : non
+  jumeau NQ au coffre : Delta -469 $, t -0.25 -> le test fait MOINS BIEN ; sur les deux periodes : non
+     information, meme placebo au coffre : reel -5,213 $ fait mieux que 31.0 % (moyenne -4,073, 95e centile +1,357)
+  5) Lucid 1 MNQ : valide 44.5 % (V1 54.6 %), perdu 22.8 % (V1 35.2 %) -> -10.1 points valides, -12.4 points perdus -> ne passe pas
+  5) Bulenox 3 MNQ : valide 35.4 % (V1 44.7 %), perdu 29.1 % (V1 31.5 %) -> -9.4 points valides, -2.4 points perdus -> ne passe pas
+  5) Bulenox 4 puis 6 MNQ (information) : valide 45.2 % (V1 49.9 %), perdu 45.3 % (V1 45.3 %) -> -4.7 points valides, +0.0 points perdus
+     -> critere 5 : non
+  a) ecartees / notees par annee : 2023 33/157 (21 %) ; 2024 25/144 (17 %) ; 2025 13/65 (20 %) ; 2026 28/132 (21 %)
+  d) achats : 52/241, Delta -2,133 $ (t -0.87) ; ventes : 47/257, Delta -3,080 $ (t -1.26)
+     par controle : 10h00 37/147 +521 $ ; 10h30 18/74 -87 $ ; 11h00 13/48 -2,626 $ ; 11h30 8/42 -1,713 $ ; 12h00 3/27 +208 $ ; 12h30 3/29 -550 $ ; 13h00 4/24 -301 $ ; 13h30 0/17 -0 $ ; 14h00 7/20 +637 $ ; 14h30 4/27 -1,204 $ ; 15h00 1/23 -239 $ ; 15h30 1/20 +141 $
+     jours de chiffres de 8 h 30 : 12/61, Delta -1,113 $ (t -0.91) ; autres jours : 67/368, Delta -466 $ (t -0.17) ; dollar absent : 20/69, Delta -3,634 $ (t -2.14)
+  c) rho_TLT < 0 : 20/125, Delta +469 $ (t +0.26) ; rho_TLT > 0 : 79/373, Delta -5,681 $ (t -1.93) ; rho_TLT absent : 0/0, Delta +0 $ (t +0.00)
+     information : B4 e=-1 : 159 ecartees, Delta -5,202 $, t -1.24 ; B4 e=+1 : 166 ecartees, Delta -9,720 $, t -2.11 ; B4 IEF : 119 ecartees, Delta -9,804 $, t -1.59
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC (1 t>=2 non, 2 non, 3 non, 4 non, 5 non, jumeau non, controle b descriptif)
+
+CONTROLE e) accord avec le vrai filtre delta (delta_mesures/trades.csv : 99 trades de P1, 7 de P2 ; barres du robot)
+  P1 : 99 trades, 97 retrouves dans V1 ici (meme jour, minute, sens), 77 gardes par le vrai delta
+     B1 : 97 notes, 32 ecartes ; accord avec le vrai delta 51 % ; ecartes par les deux 2, par le test seul 30, par le delta seul 18
+     B2 : 95 notes, 15 ecartes ; accord avec le vrai delta 67 % ; ecartes par les deux 2, par le test seul 13, par le delta seul 18
+     B3 : 97 notes, 29 ecartes ; accord avec le vrai delta 54 % ; ecartes par les deux 2, par le test seul 27, par le delta seul 18
+     B4 : 96 notes, 20 ecartes ; accord avec le vrai delta 65 % ; ecartes par les deux 3, par le test seul 17, par le delta seul 17
+  P2 : 7 trades, 7 retrouves dans V1 ici (meme jour, minute, sens), 6 gardes par le vrai delta
+     B1 : 7 notes, 2 ecartes ; accord avec le vrai delta 86 % ; ecartes par les deux 1, par le test seul 1, par le delta seul 0
+     B2 : aucun score (marche absent)
+     B3 : 7 notes, 1 ecartes ; accord avec le vrai delta 100 % ; ecartes par les deux 1, par le test seul 0, par le delta seul 0
+     B4 : 7 notes, 3 ecartes ; accord avec le vrai delta 71 % ; ecartes par les deux 1, par le test seul 2, par le delta seul 0
+
+CONTROLE f) ES en replication (information) : zone V1 de l'ES (sp500_1min, -> 25 sept. 2026), 0,9 point,
+  residus contre r_ES, memes marches et memes regles ; Delta en points ES nets par seance
+  B1 : exploration +8.20 pt (t +0.03) ; coffre +60.50 pt (t +0.19) ; signe du NQ : - / -
+  B2 : exploration -621.75 pt (t -1.90) ; coffre +436.80 pt (t +1.83) ; signe du NQ : - / -
+  B3 : exploration -587.50 pt (t -2.05) ; coffre +95.70 pt (t +0.30) ; signe du NQ : - / +
+  B4 : exploration -104.30 pt (t -0.43) ; coffre +42.50 pt (t +0.17) ; signe du NQ : - / -
+
+BILAN (Benjamini-Hochberg a 10 % : calcule ensuite sur les 11 tests de la vague)
+  test  t explo  p unilateral  t coffre  1 2 3 4 5 jumeau  b)          criteres propres
+  B1      -1.53        0.9376     -1.08  n n n n n n       descriptif  echec
+  B2      -3.40        0.9997     -0.79  n n n n n n       oui         echec
+  B3      -1.75        0.9604     +0.09  n n n n n n       oui         echec
+  B4      -1.28        0.9002     -1.50  n n n n n n       descriptif  echec
+  controles : zone identique, regard vers le futur : aucun ; a) c) d) e) f) publies ; b) TLT/ZN 85.5 %, AUD/JPY / 6A÷6J 96.1 %
+  Decision : aucun filtre croise n'est retenu ; le bot garde la zone filtree par le seul delta.

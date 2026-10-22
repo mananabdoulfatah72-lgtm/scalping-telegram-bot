@@ -1,0 +1,20 @@
+Hypothese inversee de B2 (commit 9a8ae2b, fixee apres l'exploration de B, avant l'ouverture de son coffre)
+
+B2 (test I1, principal) :
+  exploration 2012 - 2022 : non confirmees 487 trades +47.0 $, confirmees 1857 trades +17.4 $, t de Welch +1.85
+  coffre 2023 - 2 oct. 2026 : non confirmees 126 trades +23.1 $, confirmees 529 trades +19.2 $, t de Welch +0.12
+  coffre 2023 - 2024 : non confirmees 52 trades +19.4 $, confirmees 239 trades +23.7 $, t de Welch -0.09
+  coffre 2025 - 2 oct. 2026 : non confirmees 74 trades +25.7 $, confirmees 290 trades +15.6 $, t de Welch +0.22
+B1 (information) :
+  exploration 2012 - 2022 : non confirmees 301 trades +27.5 $, confirmees 1189 trades +30.0 $, t de Welch -0.12
+  coffre 2023 - 2 oct. 2026 : non confirmees 166 trades +36.9 $, confirmees 638 trades +20.8 $, t de Welch +0.35
+  coffre 2023 - 2024 : non confirmees 77 trades -0.7 $, confirmees 340 trades +37.5 $, t de Welch -1.09
+  coffre 2025 - 2 oct. 2026 : non confirmees 89 trades +69.4 $, confirmees 298 trades +1.8 $, t de Welch +0.85
+B3 (information) :
+  exploration 2012 - 2022 : non confirmees 179 trades +50.1 $, confirmees 697 trades +20.7 $, t de Welch +0.89
+  coffre 2023 - 2 oct. 2026 : non confirmees 164 trades -7.5 $, confirmees 640 trades +32.3 $, t de Welch -1.54
+  coffre 2023 - 2024 : non confirmees 86 trades +19.6 $, confirmees 331 trades +33.3 $, t de Welch -0.43
+  coffre 2025 - 2 oct. 2026 : non confirmees 78 trades -37.4 $, confirmees 309 trades +31.2 $, t de Welch -1.65
+
+DECISION I1 : t de Welch au coffre +0.12 -> NON CONFIRMEE (t < 2,0)
+La regle R2x n'est pas testee (fixe d'avance : seulement si I1 est confirme).

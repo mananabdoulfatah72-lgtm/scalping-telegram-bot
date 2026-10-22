@@ -1,0 +1,27 @@
+Piste D : forme de la cassure (etude_large/phenomenes/README.md, commit 929d05e, regles fixees avant tout calcul)
+Zone V1 sans les jours de la Fed : 3470 entrees 2011 - 2026-10-20 ; seances de decision 3523 (exploration 2616, coffre 907) ; prix de reference 29687.75.
+
+CONTROLE moteur : jusqu'au 16 octobre 2026, 3571 trades +10759.75 points (Fed comprise) ; reference 3571 / +10759.75 -> identique
+CONTROLE chemins : zone recomposee contre partie_d.chemins_zone, ecart maximal 0.00e+00 $
+REGARD VERS LE FUTUR : 300 entrees, prix brouilles apres le controle : 0 ID change(nt) -> aucun regard vers le futur ; seuils calcules sur les 252 seances jouables strictement precedentes
+
+EXPLORATION 2012 - 2022 (coffre non ouvert)
+  F1 : trades gardes 55.0 % ; Delta -12,417 $ (t -1.31, p unilateral 0.9051) ; Sharpe filtre +1.137 contre V1 +1.144 ; bat 95.5 % des 200 placebos
+  F2 : trades gardes 79.9 % ; Delta -6,821 $ (t -1.05, p unilateral 0.8534) ; Sharpe filtre +1.122 contre V1 +1.144 ; bat 66.5 % des 200 placebos
+  controle c) F1, Delta par sens (exploration) : achats -3,261 $, ventes -9,156 $
+  controle c) F2, Delta par sens (exploration) : achats -3,822 $, ventes -2,999 $
+  controle c) part des entrees de 10 h ecartees par F2 (exploration) : 18.8 % (toutes heures : 20.1 %)
+  controle d) entrees de 10 h, jours ISM (1er et 3e jour de seance du mois) : 74, ecartees par F2 32.4 %, gain moyen +89.2 $
+  controle d) entrees de 10 h, autres jours : 621, ecartees par F2 17.2 %, gain moyen +35.4 $
+  controle b) accord de decision F1 / filtre P4 (sens du mouvement des 30 minutes) : 58.0 % des trades d'exploration 
+
+COFFRE 2023 - 20 octobre 2026 (ouvert apres l'ecriture de l'exploration)
+  F1 : Delta coffre -5,483 $ (t -1.18) ; Sharpe filtre +0.903 contre V1 +1.198 ; trades gardes au coffre 56.8 %
+     challenges (departs 2023 - 2026) : Lucid Flex 50K 1 MNQ : zone 54.6 / 35.2 %, filtre 39.8 / 53.0 % -> non ; Bulenox Legacy 50K opt. 2 3 MNQ : zone 44.7 / 31.5 %, filtre 31.6 / 29.4 % -> non
+     criteres : 1 non, 2 non, 3 oui, 4 non, 5 non, 6 oui -> criteres propres echec
+  F2 : Delta coffre -3,987 $ (t -1.01) ; Sharpe filtre +1.029 contre V1 +1.198 ; trades gardes au coffre 79.0 %
+     challenges (departs 2023 - 2026) : Lucid Flex 50K 1 MNQ : zone 54.6 / 35.2 %, filtre 29.1 / 34.7 % -> non ; Bulenox Legacy 50K opt. 2 3 MNQ : zone 44.7 / 31.5 %, filtre 39.5 / 30.0 % -> non
+     criteres : 1 non, 2 non, 3 non, 4 non, 5 non, 6 oui -> criteres propres echec
+  controle e) ES F1 : Delta exploration t -1.83, coffre t +0.07
+  controle e) ES F2 : Delta exploration t +0.42, coffre t -0.32
+  controle a) 104 trades avec le vrai delta (P1, P2) : correlation ID / delta dans le sens du trade -0.15, J / delta +0.09

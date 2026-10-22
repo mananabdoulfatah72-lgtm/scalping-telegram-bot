@@ -1,0 +1,188 @@
+Piste A : resultats des mega-capitalisations (etude_large/phenomenes/README.md, commit 929d05e, regles fixees avant tout calcul)
+Dossier etude_large/phenomenes/resultats_megacaps/, 3 tests unilateraux (sens predit : Delta = regle - zone seule > 0)
+
+ETAT DU CALENDRIER DES RESULTATS (constate avant tout calcul)
+  donnees_libres/resultats/calendrier.csv : ABSENT. Yahoo repond 403 depuis le conteneur (query1, query2, finance.yahoo.com), yfinance n'est pas installe ;
+  l'etape de .github/workflows/donnees-libres.yml exigee par le README demande de modifier un autre fichier et de pousser sur git, interdit par la consigne de
+  cette piste ; aucune branche du depot ne contient ce fichier ; les autres sources gratuites essayees (SEC EDGAR, Nasdaq, Alpha Vantage, FMP) sont refusees par le proxy.
+  -> REGLE DU README : « Si le calendrier Yahoo ne peut pas etre telecharge, la piste A n'est que descriptive : la detection par l'ecart regarde la reaction
+     d'apres la seance et jusqu'a 30 seances plus tard, ce qui est un regard vers le futur. »
+  -> Le calendrier defini par le README est donc la detection par l'ecart pour 100 % des trimestres. Tous les chiffres ci-dessous sont DESCRIPTIFS :
+     aucune regle de cette piste ne peut etre retenue, quels que soient les t (critere de regard vers le futur en echec, mesure plus bas).
+
+CHOIX D'INTERPRETATION (fixes avant tout calcul, detail dans l'en-tete d'etude.py)
+  - detection : mediane des |g| finies des 250 seances precedentes de la valeur (premiere detection possible en janvier 2017), maximum de [t - 30, t + 30] tronque aux bords ;
+  - deux detections dans un meme trimestre civil : celle du plus grand |g| (une date par valeur et par trimestre) ;
+  - jour E de la Fed : reste un jour de la Fed (difference nulle), ni remplace dans les placebos, ni candidat ;
+  - jour I : seance precedente des valeurs (verifiee contre le NQ) jour E pour une des six ; g de la nuit t - 1 -> t, QQQ deduit, |g| >= 0,02 ;
+  - placebo A3 : candidats non I, hors Fed, ecart d'ouverture du NQ non nul, meme annee et meme quintile de l'annee, tirage sans remise par case ;
+  - statistique des placebos : t net de la serie Delta d'exploration (zeros compris) ; place de la somme en information ;
+  - controle d) : reference = ouverture de 9 h 30 ; E3 : zone a 0,2 x sa taille les jours E (seule definition ecrite : difference = 0,8 x celle de E1).
+
+Donnees : minutes du NQ 2011-01-03 - 2026-10-21 (recherche + robot, 4059 seances, 3857 jouables) ; vague4/donnees/grandes.csv.gz : 2701 seances 2016-01-04 - 2026-09-30 par valeur ; QQQ 5 minutes ; 159 jours de la Fed.
+Niveau de prix de reference : cloture du NQ du 2026-10-20 a 15 h 59 = 29687.75 ; serie de decision en $ pour 1 MNQ (convention de partie_d.chemins_zone), 1.5 point par aller-retour.
+
+Controle du moteur de la zone (avant tout gain) : jusqu'au 16 octobre 2026 3571 trades +10759.75 points ; reference 3571 trades +10759.75 -> identique
+  jusqu'au 19 octobre : 3572 trades +10720.25 points (README : 3 572 et +10 721,25 ; le 19 octobre vaut ici -39.50 contre -38,50 : barre de 11 h 30 retelechargee par le robot le 20 octobre, deja note par delta_mesures/ et pistes/)
+
+Regard vers le futur, zone : 3600 essais (300 seances x 12 controles), prix, VWAP et sigma brouilles apres le controle : 0 decisions changees -> aucun regard vers le futur
+  Les filtres A1 / A2 ne dependent que du calendrier ; A3 du calendrier et de l'ouverture de 9 h 30 (g de la nuit, connu avant le controle de 10 h).
+Regard vers le futur, calendrier (detection par l'ecart) : g qui suivent la decision remplaces par une permutation des g de la valeur, chaque soir 2017 - 2026 de chaque valeur
+  A1/A2 (decision avant 10 h de t)   : 24510 soirs, 394 detections ; brouillees : 380 detections perdues (96.4 %), 420 nouvelles -> REGARD VERS LE FUTUR (attendu, README)
+  A3 (decision a 9 h 30 de t + 1)    : 24510 soirs, 394 detections ; brouillees : 129 detections perdues (32.7 %), 112 nouvelles -> REGARD VERS LE FUTUR (attendu, README)
+  -> la detection decide avec la reaction d'apres la seance (A1, A2) et avec les 29 a 30 seances suivantes (A1, A2, A3) : piste DESCRIPTIVE.
+
+CONTROLE a) accord Yahoo / detection : impossible (pas de calendrier Yahoo) ; part des trimestres combles par la detection : 100 %.
+  valeur  detections  dates gardees (1 par trimestre)  trimestres a 2 detections  nuits de split retirees
+  AAPL            37           35                              2   2020-08-28
+  MSFT            40           39                              1   -
+  NVDA            40           36                              4   2021-07-19, 2024-06-07
+  AMZN            39           38                              1   2022-06-03
+  GOOGL           41           39                              2   2022-07-15
+  META            39           38                              1   -
+  AVGO            41           34                              7   2024-07-12
+  TSLA            37           31                              6   2020-08-28, 2022-08-24
+  COST            39           33                              6   -
+  NFLX            41           36                              5   2025-11-14
+  359 dates sur 430 trimestres-valeurs 2016T1 - 2026T3 (83 %) ; aucune detection en 2016 (il faut 250 seances de mediane).
+
+CONTROLE b) jours E, E lourds et I par an (seances jouables du NQ ; aucun gain) ; jours E de la Fed
+  annee :       2016  2017  2018  2019  2020  2021  2022  2023  2024  2025  2026
+  jours E          0    30    31    34    27    27    30    31    29    28    19
+  E lourds         0    20    20    21    17    19    18    22    18    18    10
+  jours I          0    13    17    16    14    16    17    18    17    17     9
+  E et Fed         0     3     1     2     2     3     0     3     2     3     3
+  I et E           0     2     4     5     4     5     6     3     6     2     3
+  soirs de publication hors seances jouables du NQ (pas des jours E) : 0 ; jours I dont la seance precedente du NQ differe de celle des valeurs : 0
+  jours E sur toute la periode : 286 ; README : environ 33 par an, 18 lourds, 25 a 30 jours I.
+
+====================================================================================================
+EXPLORATION 2016-01-04 - 2022-12-30 : 1721 seances jouables ; zone seule +43,709 $, Sharpe +1.280
+
+=== A1 pas de zone les jours E (10 valeurs) (unilateral) ===
+  jours actifs hors Fed : 168 (et 11 jours de la Fed, difference nulle) ; trades retires : 164 (sur 1565) ; gain des trades retires +7,656 $ (+46.7 $ par trade)
+  Delta = regle - zone seule : -7,656 $ (-994.25 points nets non ajustes), t net -1.23, p unilateral 0.8900
+  1) t net >= 2 : non (Benjamini-Hochberg : sur les 11 tests de la vague)
+  4) Sharpe exploration : zone seule +1.280, regle +1.200 -> non (coffre plus bas)
+  3) placebo (1000 tirages, meme mois, ni E ni Fed) : t reel -1.23, placebos mediane -1.66, 95e centile -0.35 ; fait mieux que 72.7 % -> non
+     information : somme reelle -7,656 $ ; placebos mediane -7,000 $ ; place de la somme 41.3 %
+  c) 2016-2019 : Delta -7,820 $, t -1.98
+  c) 2020-2022 : Delta +164 $, t +0.03
+  c) par valeur (2016 - 2022, jours partages comptes pour chaque valeur) : AAPL 20 j -926 $ (t -0.62) ; MSFT 24 j -2,641 $ (t -0.96) ; NVDA 22 j -5,165 $ (t -1.59) ; AMZN 23 j +195 $ (t +0.16) ; GOOGL 24 j -1,733 $ (t -1.13) ; META 23 j +2,146 $ (t +1.29) ; AVGO 21 j +1,039 $ (t +0.36) ; TSLA 19 j +80 $ (t +0.06) ; COST 21 j -961 $ (t -0.51) ; NFLX 21 j -760 $ (t -0.59)
+  c) trades retires par heure d'entree : 10h00 41 tr +98 $ ; 10h30 16 tr +141 $ ; 11h00 15 tr +17 $ ; 11h30 9 tr +162 $ ; 12h00 14 tr +138 $ ; 12h30 10 tr -68 $ ; 13h00 10 tr -111 $ ; 13h30 13 tr +38 $ ; 14h00 7 tr +115 $ ; 14h30 7 tr -149 $ ; 15h00 15 tr -90 $ ; 15h30 7 tr +90 $
+  c) achats retires : 83 trades, gain moyen +15.1 $, Delta -1,254 $, t -0.37
+  c) ventes retires : 81 trades, gain moyen +79.0 $, Delta -6,402 $, t -1.22
+
+=== A2 pas de zone les jours E lourds (une des six, ou 2 des 10) (unilateral) ===
+  jours actifs hors Fed : 105 (et 10 jours de la Fed, difference nulle) ; trades retires : 112 (sur 1565) ; gain des trades retires +6,041 $ (+53.9 $ par trade)
+  Delta = regle - zone seule : -6,041 $ (-574.50 points nets non ajustes), t net -1.19, p unilateral 0.8839
+  1) t net >= 2 : non (Benjamini-Hochberg : sur les 11 tests de la vague)
+  4) Sharpe exploration : zone seule +1.280, regle +1.195 -> non (coffre plus bas)
+  3) placebo (1000 tirages, meme mois, ni E ni Fed) : t reel -1.19, placebos mediane -1.37, 95e centile +0.06 ; fait mieux que 59.0 % -> non
+     information : somme reelle -6,041 $ ; placebos mediane -4,471 $ ; place de la somme 30.9 %
+  c) 2016-2019 : Delta -5,989 $, t -1.57
+  c) 2020-2022 : Delta -52 $, t -0.02
+  c) par valeur (2016 - 2022, jours partages comptes pour chaque valeur) : AAPL 20 j -926 $ (t -0.62) ; MSFT 24 j -2,641 $ (t -0.96) ; NVDA 22 j -5,165 $ (t -1.59) ; AMZN 23 j +195 $ (t +0.16) ; GOOGL 24 j -1,733 $ (t -1.13) ; META 23 j +2,146 $ (t +1.29) ; AVGO 3 j +492 $ (t +1.00) ; TSLA 6 j +277 $ (t +0.40) ; COST 8 j +604 $ (t +0.59) ; NFLX 1 j -362 $ (t -1.00)
+  c) trades retires par heure d'entree : 10h00 29 tr +56 $ ; 10h30 11 tr +206 $ ; 11h00 9 tr +75 $ ; 11h30 5 tr +159 $ ; 12h00 10 tr +211 $ ; 12h30 8 tr -97 $ ; 13h00 7 tr -71 $ ; 13h30 8 tr -29 $ ; 14h00 5 tr -104 $ ; 14h30 6 tr -156 $ ; 15h00 9 tr +113 $ ; 15h30 5 tr +102 $
+  c) achats retires : 57 trades, gain moyen +24.6 $, Delta -1,401 $, t -0.70
+  c) ventes retires : 55 trades, gain moyen +84.4 $, Delta -4,640 $, t -1.00
+
+=== A3 lendemain : zone seulement dans le sens d de la reaction (unilateral) ===
+  jours actifs hors Fed : 82 (et 11 jours de la Fed, difference nulle) ; trades retires : 39 (sur 1565) ; gain des trades retires +3,742 $ (+96.0 $ par trade)
+  Delta = regle - zone seule : -3,742 $ (-475.75 points nets non ajustes), t net -1.43, p unilateral 0.9243
+  1) t net >= 2 : non (Benjamini-Hochberg : sur les 11 tests de la vague)
+  4) Sharpe exploration : zone seule +1.280, regle +1.199 -> non (coffre plus bas)
+  3) placebo (1000 tirages, meme annee, meme quintile de l ecart d ouverture du NQ, d = signe de l ecart) : t reel -1.43, placebos mediane -0.15, 95e centile +1.71 ; fait mieux que 6.6 % -> non
+     information : somme reelle -3,742 $ ; placebos mediane -230 $ ; place de la somme 2.3 %
+  c) 2016-2019 : Delta -1,187 $, t -0.88
+  c) 2020-2022 : Delta -2,555 $, t -1.14
+  c) par valeur (2016 - 2022, jours partages comptes pour chaque valeur) : AAPL 17 j -644 $ (t -0.48) ; MSFT 15 j -245 $ (t -1.00) ; NVDA 21 j +789 $ (t +0.55) ; AMZN 21 j -3,983 $ (t -2.20) ; GOOGL 18 j -1,326 $ (t -1.63) ; META 19 j -156 $ (t -0.51)
+  c) trades retires par heure d'entree : 10h00 12 tr +192 $ ; 10h30 7 tr -80 $ ; 11h00 3 tr +256 $ ; 11h30 2 tr +449 $ ; 12h00 2 tr +58 $ ; 12h30 5 tr -69 $ ; 13h00 2 tr +19 $ ; 13h30 1 tr -68 $ ; 14h00 2 tr +231 $ ; 14h30 1 tr +245 $ ; 15h00 1 tr +296 $ ; 15h30 1 tr -413 $
+  c) achats retires : 18 trades, gain moyen +148.2 $, Delta -2,667 $, t -1.47
+  c) ventes retires : 21 trades, gain moyen +51.2 $, Delta -1,075 $, t -0.57
+
+CONTROLE d) mecanisme, exploration : amplitude (plus haut - plus bas de 10 h a 15 h 59) / (sigma de 15 h 59 x ouverture du jour)
+  jours E (hors Fed) : 168 jours, moyenne 2.024, mediane 1.646 ; jours placebo (1 000 tirages de A1) : moyenne 1.788, mediane 1.541 ; autres jours : moyenne 1.809
+  gain de la zone : jours E +45.6 $ par seance (164 trades, +46.7 $ par trade) ; autres seances +23.2 $ (1401 trades, +25.7 $ par trade) ; jours placebo +42.9 $ par seance
+
+CONTROLE e) A3, 2016 - 2022 : trades pris contre d (retires) et dans le sens de d
+  contre d (retires)   : 39 trades, gain moyen +96.0 $, t des trades +1.45
+  dans le sens de d    : 55 trades, gain moyen -35.7 $, t des trades -0.58
+  |g| de 2 a 5 %  (plus grand |g| des publiantes) : 50 jours I, 26 trades retires, gain moyen +30.0 $, Delta -780 $, t -0.48
+  |g| > 5 %       (plus grand |g| des publiantes) : 43 jours I, 13 trades retires, gain moyen +227.9 $, Delta -2,962 $, t -1.44
+  jours I : 93, dont jours E aussi : 26 ; d = +1 : 57, d = -1 : 36
+
+CONTROLE f) ES en replication (MES, 0.9 point, memes jours ; minutes ES jusqu'au 2026-09-25), exploration, information
+  A1 : Delta -3,139 $ (1 MES), t -1.00 ; Sharpe zone ES +0.778 -> regle +0.678
+  A2 : Delta -1,673 $ (1 MES), t -0.63 ; Sharpe zone ES +0.778 -> regle +0.741
+  A3 : Delta -1,477 $ (1 MES), t -1.13 ; Sharpe zone ES +0.778 -> regle +0.709
+
+####################################################################################################
+COFFRE (ouvert une seule fois, apres l'ecriture de l'exploration ci-dessus)
+####################################################################################################
+Controle du moteur des challenges : chemins recopies = partie_d.chemins_zone : oui ; zone seule, departs 2023 - 2026 : Bulenox 3 MNQ (908, 45, 31), 4 puis 6 MNQ (908, 50, 45), Lucid 1 MNQ (804, 55, 35) (departs, valide %, perdu %) ; partie D [(908, 45, 31), (908, 50, 45), (804, 55, 35)] -> identique
+
+=== A1 pas de zone les jours E (10 valeurs) : coffre 2023-01-03 - 2026-10-20 (930 seances) ===
+  trades retires : 91, gain -556 $ ; Delta +556 $ (+215.75 points nets non ajustes), t net +0.24
+  2) coffre meme signe, t >= 1,5 : non (exploration -1.23, coffre +0.24)
+  4) Sharpe zone seule / regle : exploration +1.280 / +1.200, coffre +1.183 / +1.257 -> non
+     information, meme placebo au coffre : t reel +0.24 fait mieux que 92.5 % (95e centile +0.48)
+  5) Lucid Flex 50K, 1 MNQ (804 departs 2023 - 2026) : zone seule valide 54.6 % perdu 35.2 % ; regle valide 54.5 % perdu 30.5 % -> -0.1 points valides, -4.7 perdus -> ne passe pas
+  5) Bulenox 50K, 3 MNQ (908 departs 2023 - 2026) : zone seule valide 44.7 % perdu 31.5 % ; regle valide 44.1 % perdu 29.0 % -> -0.7 points valides, -2.5 perdus -> ne passe pas
+     information, Bulenox 4 puis 6 MNQ (version 30 jours) : zone seule 49.9 / 45.3 % ; regle 49.4 / 43.8 %
+     -> critere 5 : non
+  c) 2023-2026 : Delta +556 $, t +0.24
+  c) par valeur (2023 - 2026, jours partages comptes pour chaque valeur) : AAPL 15 j -320 $ (t -0.36) ; MSFT 15 j +107 $ (t +0.13) ; NVDA 14 j -277 $ (t -0.34) ; AMZN 15 j -89 $ (t -0.12) ; GOOGL 15 j -692 $ (t -0.79) ; META 15 j +771 $ (t +1.53) ; AVGO 13 j +940 $ (t +0.91) ; TSLA 12 j +700 $ (t +0.99) ; COST 12 j +83 $ (t +0.11) ; NFLX 15 j +586 $ (t +0.91)
+  c) trades retires par heure d'entree : 10h00 31 tr +10 $ ; 10h30 7 tr -77 $ ; 11h00 5 tr +261 $ ; 11h30 8 tr -35 $ ; 12h00 2 tr +164 $ ; 12h30 8 tr +60 $ ; 13h00 4 tr -271 $ ; 13h30 4 tr -80 $ ; 14h00 5 tr -157 $ ; 14h30 6 tr +38 $ ; 15h00 6 tr -24 $ ; 15h30 5 tr -14 $
+  c) achats retires : 38 trades, gain moyen +43.4 $, Delta -1,651 $, t -0.97
+  c) ventes retires : 53 trades, gain moyen -41.6 $, Delta +2,207 $, t +1.22
+  f) ES (MES), 2023-01-03 - 2026-09-25 : Delta +1,388 $, t +0.99 ; Sharpe zone ES -0.231 -> regle -0.052
+
+=== A2 pas de zone les jours E lourds (une des six, ou 2 des 10) : coffre 2023-01-03 - 2026-10-20 (930 seances) ===
+  trades retires : 54, gain +1,388 $ ; Delta -1,388 $ (-543.25 points nets non ajustes), t net -0.79
+  2) coffre meme signe, t >= 1,5 : non (exploration -1.19, coffre -0.79)
+  4) Sharpe zone seule / regle : exploration +1.280 / +1.195, coffre +1.183 / +1.124 -> non
+     information, meme placebo au coffre : t reel -0.79 fait mieux que 51.8 % (95e centile +0.88)
+  5) Lucid Flex 50K, 1 MNQ (804 departs 2023 - 2026) : zone seule valide 54.6 % perdu 35.2 % ; regle valide 52.6 % perdu 36.1 % -> -2.0 points valides, +0.9 perdus -> ne passe pas
+  5) Bulenox 50K, 3 MNQ (908 departs 2023 - 2026) : zone seule valide 44.7 % perdu 31.5 % ; regle valide 43.5 % perdu 31.6 % -> -1.2 points valides, +0.1 perdus -> ne passe pas
+     information, Bulenox 4 puis 6 MNQ (version 30 jours) : zone seule 49.9 / 45.3 % ; regle 49.2 / 45.4 %
+     -> critere 5 : non
+  c) 2023-2026 : Delta -1,388 $, t -0.79
+  c) par valeur (2023 - 2026, jours partages comptes pour chaque valeur) : AAPL 15 j -320 $ (t -0.36) ; MSFT 15 j +107 $ (t +0.13) ; NVDA 14 j -277 $ (t -0.34) ; AMZN 15 j -89 $ (t -0.12) ; GOOGL 15 j -692 $ (t -0.79) ; META 15 j +771 $ (t +1.53) ; AVGO 1 j -50 $ (t -1.00) ; TSLA 3 j +0 $ (t +0.00) ; COST 6 j +140 $ (t +0.26) ; NFLX 3 j +274 $ (t +1.00)
+  c) trades retires par heure d'entree : 10h00 17 tr +71 $ ; 10h30 5 tr -207 $ ; 11h00 4 tr +275 $ ; 11h30 5 tr +31 $ ; 12h00 1 tr +336 $ ; 12h30 4 tr +42 $ ; 13h00 4 tr -271 $ ; 13h30 2 tr +46 $ ; 14h00 2 tr -66 $ ; 14h30 4 tr +99 $ ; 15h00 3 tr -67 $ ; 15h30 3 tr +130 $
+  c) achats retires : 26 trades, gain moyen +48.3 $, Delta -1,256 $, t -0.93
+  c) ventes retires : 28 trades, gain moyen +4.7 $, Delta -132 $, t -0.09
+  f) ES (MES), 2023-01-03 - 2026-09-25 : Delta +453 $, t +0.38 ; Sharpe zone ES -0.231 -> regle -0.180
+
+=== A3 lendemain : zone seulement dans le sens d de la reaction : coffre 2023-01-03 - 2026-09-30 (916 seances) ===
+  trades retires : 20, gain +1,741 $ ; Delta -1,741 $ (-493.00 points nets non ajustes), t net -1.31
+  2) coffre meme signe, t >= 1,5 : non (exploration -1.43, coffre -1.31)
+  4) Sharpe zone seule / regle : exploration +1.280 / +1.199, coffre +1.143 / +1.046 -> non
+     information, meme placebo au coffre : t reel -1.31 fait mieux que 8.4 % (95e centile +1.54)
+  5) Lucid Flex 50K, 1 MNQ (804 departs 2023 - 2026) : zone seule valide 54.6 % perdu 35.2 % ; regle valide 52.0 % perdu 34.6 % -> -2.6 points valides, -0.6 perdus -> ne passe pas
+  5) Bulenox 50K, 3 MNQ (908 departs 2023 - 2026) : zone seule valide 44.7 % perdu 31.5 % ; regle valide 44.2 % perdu 31.2 % -> -0.6 points valides, -0.3 perdus -> ne passe pas
+     information, Bulenox 4 puis 6 MNQ (version 30 jours) : zone seule 49.9 / 45.3 % ; regle 50.4 / 44.7 %
+     -> critere 5 : non
+  c) 2023-2026 : Delta -1,741 $, t -1.31
+  c) par valeur (2023 - 2026, jours partages comptes pour chaque valeur) : AAPL 12 j +49 $ (t +1.39) ; MSFT 14 j +335 $ (t +0.76) ; NVDA 14 j -1,151 $ (t -1.31) ; AMZN 15 j -308 $ (t -1.00) ; GOOGL 15 j +0 $ (t +0.00) ; META 14 j -610 $ (t -0.61)
+  c) trades retires par heure d'entree : 10h00 3 tr -164 $ ; 10h30 2 tr +291 $ ; 11h00 2 tr +425 $ ; 11h30 2 tr +140 $ ; 12h00 3 tr +247 $ ; 12h30 1 tr +38 $ ; 13h30 1 tr -32 $ ; 14h00 2 tr +8 $ ; 14h30 1 tr -1 $ ; 15h00 1 tr -6 $ ; 15h30 2 tr -118 $
+  c) achats retires : 8 trades, gain moyen +44.0 $, Delta -352 $, t -1.12
+  c) ventes retires : 12 trades, gain moyen +115.8 $, Delta -1,389 $, t -1.07
+
+CONTROLE e) A3, 2023 - 2026 : trades pris contre d (retires) et dans le sens de d
+  contre d (retires)   : 20 trades, gain moyen +87.1 $, t des trades +1.23
+  dans le sens de d    : 26 trades, gain moyen +83.3 $, t des trades +1.19
+  |g| de 2 a 5 %  (plus grand |g| des publiantes) : 23 jours I, 5 trades retires, gain moyen +0.2 $, Delta -1 $, t -0.01
+  |g| > 5 %       (plus grand |g| des publiantes) : 38 jours I, 15 trades retires, gain moyen +116.0 $, Delta -1,740 $, t -1.31
+  jours I : 61, dont jours E aussi : 14 ; d = +1 : 32, d = -1 : 29
+  f) ES (MES), 2023-01-03 - 2026-09-25 : Delta -557 $, t -0.89 ; Sharpe zone ES -0.231 -> regle -0.307
+
+E3 (information, README : « difference = 0,8 x celle de E1 jour par jour » : zone a 0,2 x sa taille les jours E) :
+  Lucid 1 MNQ : valide 55.2 % perdu 30.5 % ; Bulenox 3 MNQ : 43.2 / 29.8 % ; Bulenox 4 puis 6 : 49.9 / 43.4 %
+
+====================================================================================================
+SYNTHESE (Benjamini-Hochberg a 10 % sur les 11 tests de la vague : calcule ensuite ; p unilateral du t d'exploration)
+  A1 : t exploration -1.23 (p 0.8900), t coffre +0.24 ; 1 t>=2 non ; 2 coffre non ; 3 placebo non (72.7 %) ; 4 Sharpe non ; 5 challenges non ; criteres chiffres hors BH : non
+  A2 : t exploration -1.19 (p 0.8839), t coffre -0.79 ; 1 t>=2 non ; 2 coffre non ; 3 placebo non (59.0 %) ; 4 Sharpe non ; 5 challenges non ; criteres chiffres hors BH : non
+  A3 : t exploration -1.43 (p 0.9243), t coffre -1.31 ; 1 t>=2 non ; 2 coffre non ; 3 placebo non (6.6 %) ; 4 Sharpe non ; 5 challenges non ; criteres chiffres hors BH : non
+DECISION : aucune regle retenue. Calendrier Yahoo absent : la piste A est DESCRIPTIVE (regard vers le futur de la detection par l'ecart, README).
