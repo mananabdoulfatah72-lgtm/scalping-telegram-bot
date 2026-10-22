@@ -19,8 +19,8 @@ Voyant VERT (fourchette normale) : +340 $ pour 1 MNQ apres 18 seance(s) ; le bac
 ## Trades du 2026-10-21
 
 - achat 13h00 a 30,080.25 -> sortie 14h00 a 30,046.25
-- achat 14h30 a 30,088.00 -> sortie 15h00 a 29,942.00
-- RSI(2) : vente 15h50 a 30,057.25 (+740 $ ce jour pour 1 MNQ)
+- achat 14h30 a 30,088.00 -> sortie 15h00 a 29,942.75
+- RSI(2) : vente 15h50 a 30,058.00 (+742 $ ce jour pour 1 MNQ)
 
 ## Pour la seance du 2026-10-22 (a utiliser en direct)
 
@@ -33,7 +33,7 @@ Cloture de la veille (16 h New York) : **29,997.75**. Apres l'ouverture de 9 h 3
 | 11h00 | 17h00 | 0.356% | 1.00356 | 0.99644 |
 | 11h30 | 17h30 | 0.431% | 1.00431 | 0.99569 |
 | 12h00 | 18h00 | 0.493% | 1.00493 | 0.99507 |
-| 12h30 | 18h30 | 0.450% | 1.00450 | 0.99550 |
+| 12h30 | 18h30 | 0.451% | 1.00451 | 0.99549 |
 | 13h00 | 19h00 | 0.523% | 1.00523 | 0.99477 |
 | 13h30 | 19h30 | 0.642% | 1.00642 | 0.99358 |
 | 14h00 | 20h00 | 0.670% | 1.00670 | 0.99330 |
@@ -47,7 +47,7 @@ Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la 
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : pas de position. Le 2026-10-22 a 15 h 50 New York : ACHAT si le prix de 15 h 49 est entre 27,954.38 (moyenne des 200) et 27,960.72 (RSI(2) sous 10), sauf jour de changement d'echeance.
+RSI(2) : pas de position. Le 2026-10-22 a 15 h 50 New York : ACHAT si le prix de 15 h 49 est entre 27,954.38 (moyenne des 200) et 27,961.59 (RSI(2) sous 10), sauf jour de changement d'echeance.
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
