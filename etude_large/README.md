@@ -217,3 +217,63 @@ Hors échantillon 2016 - 2026 (chaque année prédite par un modèle qui ne l'a 
 Les trois conditions échouent (t de la différence −1,59 ; différence négative sur les deux périodes ; 43 % gardés).
 Le modèle écarte surtout des trades gagnants. La seule information stable sur les deux périodes est l'écart
 d'ouverture dans le sens du trade (corrélation +0,08 puis +0,06 avec le résultat) : bien trop faible pour filtrer.
+
+### D : ce que les règles de chaque challenge laissent à un avantage
+
+**D1, séances tirées au hasard** : la meilleure chance de valider, pour la meilleure prise de risque, selon la
+qualité de la stratégie (Sharpe annuel). Validé / perdu :
+
+| Compte | Sans avantage (Sharpe 0) | Sharpe 1 (≈ le bot) | Sharpe 2 | Sharpe 3 |
+|---|---|---|---|---|
+| **Bulenox 50K (30 jours)** | **50 % / 50 %** | 52 % / 48 % | 55 % / 45 % | 61 % / 35 % |
+| Topstep 50K | 28 % / 72 % | 43 % / 55 % | 63 % / 36 % | 83 % / 8 % |
+| Lucid Flex 50K | 27 % / 73 % | 43 % / 56 % | 63 % / 37 % | 82 % / 8 % |
+| Tradeify Select 50K | 25 % / 75 % | 43 % / 56 % | 63 % / 37 % | 82 % / 8 % |
+| MyFundedFutures 50K | 27 % / 73 % | 43 % / 56 % | 63 % / 37 % | 82 % / 8 % |
+| Phidias Fundamental 50K | 40 % / 60 % | 42 % / 58 % | 63 % / 28 % | 82 % / 14 % |
+
+**Chez Bulenox, l'avantage ne compte presque pas.** Avec 30 jours, la meilleure façon de valider est de prendre
+beaucoup de risque, et une stratégie sans aucun avantage valide déjà une fois sur deux. Même un avantage exceptionnel
+(Sharpe 3, trois fois le bot) ne ferait que 61 %. **Sans limite de temps, c'est l'inverse** : sans avantage on ne
+valide qu'une fois sur quatre, et chaque point de Sharpe ajoute environ 20 points de challenges validés.
+
+**D2, le bot réel** (zone sans filtre, pas de zone les jours de la Fed, 2012 - 2026, au prix d'aujourd'hui : Sharpe
+1,14, 287 $ d'écart-type par jour pour 1 MNQ). Taille choisie sur les départs 2012 - 2021 (la plus haute chance de
+valider avec au plus 35 % de perdus), jugée sur 2023 - 2026 :
+
+| Compte | Taille | Validé | Perdu | Séances (médiane) | Coût par validation | Validé selon l'année de départ (2023 / 24 / 25 / 26) | Bots |
+|---|---|---|---|---|---|---|---|
+| Bulenox 50K | 3 MNQ | 45 % | 31 % | 10 | **191 $** | 61 / 44 / 32 / 41 % | permis |
+| Bulenox 50K, version 30 jours | 4 → 6 MNQ | 50 % | 45 % | 7 | 187 $ | | permis |
+| **Lucid Flex 50K** | **1 MNQ** | **55 %** | 35 % | 68 | **256 $** | 80 / 59 / 16 / 83 % | permis |
+| Phidias Fundamental 50K | 1 MNQ | 46 % | **20 %** | 72 | 401 $ | 60 / 50 / 27 / 50 % | ? |
+| Tradeify Select 50K | 1 MNQ | 36 % | 35 % | 59 | 441 $ | 80 / 35 / 0 / 10 % | sous conditions |
+| Topstep 50K | 1 MNQ | 48 % | 41 % | 66 | 534 $ | 73 / 53 / 8 / 83 % | Combine seulement |
+| MyFundedFutures 50K | 1 MNQ | 55 % | 35 % | 68 | 856 $ | 80 / 59 / 16 / 83 % | permis, supervisé |
+
+- **Contrôle** : la version 30 jours de Bulenox valide 50 % sur 2023 - 2026, comme le moteur exact de la vague 13 sans
+  filtre (49 %). Le contrôle écrit dans le README (53 % / 55 %) échoue, mais il citait par erreur les chiffres avec le
+  filtre simulé.
+- **Le bot chez Bulenox ne fait pas mieux que le hasard** (45 à 50 % contre 50 % sans avantage). Bulenox arrive
+  premier sur le coût seulement parce qu'il est très peu cher (19 $ + 148 $ d'activation).
+- **Chez Lucid Flex, le bot double sa chance par rapport au hasard** (55 % contre 27 %), avec 1 MNQ seulement, mais il
+  lui faut environ 3 mois (68 séances).
+- **Les années comptent énormément** : un challenge commencé en 2025 ne validait que 16 % du temps chez Lucid, 32 %
+  chez Bulenox. Un écart de moins de 10 points entre deux comptes n'est pas significatif.
+- Prix de Lucid (140 $ une fois) et de MyFundedFutures (125 $ par mois) : hypothèses à vérifier. La phase financée
+  (retraits) n'est pas simulée ici (vagues 5 à 13).
+
+## Verdict
+
+1. **Aucune nouvelle source d'avantage** sur 22 nouveaux marchés et 7 familles de stratégies (189 essais), aucun
+   modèle qui améliore la zone sur 15 ans, aucun complément. La zone du NQ reste la seule source qui tienne, et elle
+   tient bien : t +3,05 hors échantillon sur 2016 - 2026.
+2. **Ce n'est pas le bot qui fait perdre les challenges Bulenox, ce sont leurs 30 jours** : à ce délai, n'importe
+   quelle stratégie valide environ une fois sur deux. Perdre un challenge sur deux y est normal, et aucun filtre ne
+   peut le changer.
+3. **Les challenges qui conviennent au bot** : ceux **sans limite de temps**, à perte max de fin de journée, qui
+   permettent les bots. C'est là que l'avantage du bot compte. Lucid Flex 50K, en 1 MNQ, valide 55 % des challenges
+   (contre 27 % au hasard) pour environ 256 $ par validation, mais met environ 3 mois. Bulenox reste le moins cher par
+   validation, mais c'est un pile ou face. Apex, Take Profit Trader et Alpha Futures interdisent les bots.
+4. **À confirmer par écrit avant tout achat** : bots permis (au challenge **et** au compte financé), délai, prix, règle
+   du meilleur jour.
