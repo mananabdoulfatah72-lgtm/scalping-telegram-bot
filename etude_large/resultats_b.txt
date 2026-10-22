@@ -1,0 +1,39 @@
+Etude large, partie B (etude_large/README.md, regles fixees le 22 octobre 2026 avant tout calcul)
+Zone du bot V1 sans filtre, NQ minute, sans les jours de la Fed : 3459 trades du 2011-01-24 au 2026-09-23.
+
+Walk-forward (apprentissage sur toutes les annees precedentes, depuis 2011) :
+  annee  apprentissage  trades  gardes  points tous  points gardes  difference
+  2016          1092     237      76       -422.0         -102.8      +319.2
+  2017          1329     224      28        -51.8         +339.8      +391.5
+  2018          1553     209      69      +1948.0         +914.2     -1033.8
+  2019          1762     221      94       -104.5          -68.0       +36.5
+  2020          1983     215      88      +1253.5         +970.0      -283.5
+  2021          2198     206      96       +737.0         +940.5      +203.5
+  2022          2404     253     147      +2343.2         +938.2     -1405.0
+  2023          2657     211      73      +1967.5         +431.0     -1536.5
+  2024          2868     206     125      +1057.2         +882.2      -175.0
+  2025          3074     228     120      +1270.8         +268.0     -1002.8
+  2026          3302     157     100      +1106.0        +1240.2      +134.2
+
+Hors echantillon 2016 - 2026 (series quotidiennes en rendement) :
+  tous les trades : t +3.05 (2016-2022 +2.29, 2023-2026 +2.06), +48,427 $ pour 1 MNQ au prix d'aujourd'hui
+  trades gardes   : t +2.77 (2016-2022 +2.50, 2023-2026 +1.25), +31,442 $
+  trades ecartes  : 1351, +16,985 $
+
+Decision fixee d'avance :
+  1. t de la difference quotidienne -1.46 >= 2,0 : NON
+  2. difference positive sur 2016-2022 (-1123.3 pb) et 2023-2026 (-1737.4 pb) : NON
+  3. trades gardes 42.9 % >= 50 % : NON
+  -> NON ADOPTE : la zone reste telle quelle
+
+Pour information, coefficients du modele appris sur 2011 - 2025 (informations centrees reduites) et correlation de chaque information avec le resultat (2011 - 2015 | 2016 - 2026) :
+  10 h                 +0.0123   +0.075 | +0.010
+  10 h 30 - 11 h 30    -0.0035   -0.036 | +0.011
+  12 h - 13 h 30       -0.0050   -0.008 | -0.016
+  force                +0.0115   +0.061 | +0.019
+  volatilite           +0.0242   +0.002 | +0.040
+  ES hors zone         +0.0015   +0.044 | +0.000
+  ecart d'ouverture    +0.0409   +0.077 | +0.062
+  tendance 20 j        -0.0129   -0.034 | -0.005
+  VIX                  -0.0020   +0.003 | +0.003
+  premier trade        +0.0241   +0.049 | +0.033

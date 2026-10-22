@@ -1,0 +1,102 @@
+Etude large, partie D (etude_large/README.md, regles fixees le 22 octobre 2026 avant tout calcul)
+Regles des firmes : sites d'avis d'octobre 2026, a confirmer au panier (README).
+
+D1 : plafond theorique (meilleur ecart-type quotidien pour chaque compte ; valide / perdu, seances medianes pour valider)
+  compte                           Sharpe 0             Sharpe 1             Sharpe 2             Sharpe 3          
+  Bulenox Legacy 50K opt. 2       43 % /  57 % (1500 $)    49 % /  51 % (1500 $)    55 % /  44 % (1000 $)    63 % /  35 % ( 900 $)  
+  Topstep 50K                     30 % /  70 % ( 800 $)    45 % /  54 % ( 300 $)    64 % /  35 % ( 300 $)    83 % /   8 % ( 200 $)  
+  Tradeify Select 50K             27 % /  73 % ( 400 $)    44 % /  55 % ( 300 $)    63 % /  36 % ( 300 $)    83 % /   8 % ( 200 $)  
+  Lucid Flex 50K                  28 % /  72 % ( 700 $)    44 % /  55 % ( 300 $)    63 % /  36 % ( 300 $)    83 % /   8 % ( 200 $)  
+  MyFundedFutures 50K             28 % /  72 % ( 700 $)    44 % /  55 % ( 300 $)    63 % /  36 % ( 300 $)    83 % /   8 % ( 200 $)  
+  Phidias Fundamental 50K         30 % /  70 % (1500 $)    42 % /  57 % ( 400 $)    64 % /  28 % ( 300 $)    82 % /  14 % ( 300 $)  
+  (entre parentheses : l'ecart-type quotidien qui valide le plus souvent)
+
+D2 : la zone du bot, 3624 seances 2012-01-03 - 2026-10-20 ; 1 MNQ : +74,804 $ au niveau d'aujourd'hui, Sharpe 1.14, ecart-type quotidien 287 $
+
+Bulenox Legacy 50K opt. 2 (bots : permis) : 2448 departs de choix, 909 de verification
+  taille                            choix : valide perdu expire | verification : valide perdu expire  seances  cout par validation
+  1 MNQ                               5.7   1.5   92.8 |    1.0   0.3   98.7       14       2,092 $
+  2 MNQ                              25.7  12.7   61.5 |   23.8  24.6   51.6       13         229 $
+  3 MNQ                              38.7  28.9   32.4 |   45.8  33.8   20.5       10         190 $ <- retenue
+  4 MNQ                              45.2  42.3   12.5 |   53.0  40.6    6.4        7         184 $
+  5 MNQ                              47.9  47.3    4.8 |   53.1  45.0    1.9        5         184 $
+  6 MNQ                              49.8  48.3    1.9 |   55.1  43.8    1.1        4         183 $
+  7 MNQ                              50.5  48.4    1.1 |   51.7  47.6    0.7        4         185 $
+  8 MNQ                              49.2  50.4    0.4 |   53.7  45.8    0.6        3         184 $
+  9 MNQ                              48.0  51.7    0.4 |   51.0  49.0    0.0        3         186 $
+  10 MNQ                             47.6  52.2    0.2 |   50.4  49.6    0.0        3         186 $
+  4 puis 6 MNQ (version 30 jours)    46.5  45.2    8.3 |   53.8  41.6    4.6        7         184 $
+  CONTROLE : version 30 jours sur les departs 2023 - 2026 : 53.8 % valides ; vague 13 (moteur exact, sans filtre) 49 % -> conforme (+-5 points)
+
+Topstep 50K (bots : Combine oui) : 2448 departs de choix, 805 de verification
+  taille                            choix : valide perdu expire | verification : valide perdu expire  seances  cout par validation
+  1 MNQ                              50.9  28.8   20.2 |   48.0  40.6   11.4       67         540 $ <- retenue
+  2 MNQ                              42.8  57.0    0.2 |   36.0  64.0    0.0       23         370 $
+  3 MNQ                              37.1  62.9    0.0 |   36.9  63.1    0.0       16         322 $
+  4 MNQ                              32.4  67.4    0.2 |   31.7  68.3    0.0       13         336 $
+  5 MNQ                              29.7  70.1    0.3 |   30.1  69.9    0.0       12         333 $
+  6 MNQ                              27.1  72.4    0.5 |   24.7  74.9    0.4       11         373 $
+  7 MNQ                              26.1  73.4    0.5 |   22.9  77.1    0.0       12         400 $
+  8 MNQ                              25.0  74.3    0.7 |   17.6  82.4    0.0       11         461 $
+  9 MNQ                              23.1  76.2    0.7 |   19.1  80.9    0.0       12         442 $
+  10 MNQ                             21.0  78.5    0.5 |   20.6  79.4    0.0       12         426 $
+
+Tradeify Select 50K (bots : sous conditions) : 2448 departs de choix, 805 de verification
+  taille                            choix : valide perdu expire | verification : valide perdu expire  seances  cout par validation
+  1 MNQ                              47.0  29.8   23.2 |   47.3  35.2   17.5       68       1,317 $ <- retenue
+  2 MNQ                              37.2  60.7    2.1 |   31.8  68.0    0.2       23         845 $
+  3 MNQ                              30.6  68.1    1.3 |   29.9  69.7    0.4       19         719 $
+  4 MNQ                              24.1  74.8    1.1 |   22.6  77.0    0.4       16         860 $
+  5 MNQ                              21.4  77.7    0.9 |   20.2  79.4    0.4       15         936 $
+  6 MNQ                              18.6  80.6    0.8 |   18.5  81.1    0.4       14         982 $
+  7 MNQ                              17.3  82.0    0.7 |   15.3  84.7    0.0       13       1,147 $
+  8 MNQ                              15.6  83.7    0.7 |   14.8  85.2    0.0       13       1,173 $
+  9 MNQ                              14.8  84.6    0.6 |   14.3  85.7    0.0       12       1,210 $
+  10 MNQ                             13.5  85.9    0.6 |   14.0  86.0    0.0       12       1,227 $
+
+Lucid Flex 50K (bots : permis) : 2448 departs de choix, 805 de verification
+  taille                            choix : valide perdu expire | verification : valide perdu expire  seances  cout par validation
+  1 MNQ                              52.2  28.8   19.0 |   54.4  35.2   10.4       68         257 $ <- retenue
+  2 MNQ                              41.7  58.0    0.3 |   36.6  63.4    0.0       21         382 $
+  3 MNQ                              34.4  65.4    0.1 |   36.9  63.1    0.0       14         379 $
+  4 MNQ                              28.6  71.3    0.1 |   27.7  72.3    0.0       11         505 $
+  5 MNQ                              26.1  73.7    0.1 |   25.5  74.5    0.0       11         550 $
+  6 MNQ                              23.0  76.9    0.1 |   23.7  76.3    0.0       10         590 $
+  7 MNQ                              21.3  78.6    0.1 |   19.9  80.1    0.0        9         704 $
+  8 MNQ                              19.8  80.1    0.1 |   19.3  80.7    0.0        9         727 $
+  9 MNQ                              18.4  81.5    0.1 |   19.5  80.5    0.0        9         718 $
+  10 MNQ                             17.4  82.5    0.1 |   19.4  80.6    0.0        9         722 $
+
+MyFundedFutures 50K (bots : permis, supervise) : 2448 departs de choix, 805 de verification
+  taille                            choix : valide perdu expire | verification : valide perdu expire  seances  cout par validation
+  1 MNQ                              52.2  28.8   19.0 |   54.4  35.2   10.4       68         863 $ <- retenue
+  2 MNQ                              41.7  58.0    0.3 |   36.6  63.4    0.0       21         536 $
+  3 MNQ                              34.4  65.4    0.1 |   36.9  63.1    0.0       14         420 $
+  4 MNQ                              28.6  71.3    0.1 |   27.7  72.3    0.0       11         512 $
+  5 MNQ                              26.1  73.7    0.1 |   25.5  74.5    0.0       11         538 $
+  6 MNQ                              23.0  76.9    0.1 |   23.7  76.3    0.0       10         553 $
+  7 MNQ                              21.3  78.6    0.1 |   19.9  80.1    0.0        9         653 $
+  8 MNQ                              19.8  80.1    0.1 |   19.3  80.7    0.0        9         671 $
+  9 MNQ                              18.4  81.5    0.1 |   19.5  80.5    0.0        9         660 $
+  10 MNQ                             17.4  82.5    0.1 |   19.4  80.6    0.0        9         663 $
+
+Phidias Fundamental 50K (bots : ?) : 2448 departs de choix, 805 de verification
+  taille                            choix : valide perdu expire | verification : valide perdu expire  seances  cout par validation
+  1 MNQ                              35.0  20.0   45.1 |   45.6  20.1   34.3       73         403 $ <- retenue
+  2 MNQ                              44.9  54.9    0.2 |   40.5  59.5    0.0       36         435 $
+  3 MNQ                              42.3  57.7    0.0 |   45.1  54.9    0.0       17         406 $
+  4 MNQ                              39.0  61.0    0.0 |   45.3  54.7    0.0       10         405 $
+  5 MNQ                              38.8  61.2    0.0 |   45.6  54.4    0.0        7         403 $
+  6 MNQ                              39.6  60.4    0.0 |   46.0  54.0    0.0        5         401 $
+  7 MNQ                              40.4  59.6    0.0 |   46.5  53.5    0.0        4         399 $
+  8 MNQ                              40.2  59.8    0.0 |   47.5  52.5    0.0        3         393 $
+  9 MNQ                              40.6  59.4    0.0 |   44.3  55.7    0.0        3         411 $
+  10 MNQ                             40.6  59.4    0.0 |   43.6  56.4    0.0        2         415 $
+
+CLASSEMENT (verification 2023 - 2026, taille choisie sur 2012 - 2021) : cout moyen d'un challenge valide
+  Bulenox Legacy 50K opt. 2  3 MNQ   valide  45.8 %, perdu  33.8 %,      190 $ par validation (bots : permis)
+  Lucid Flex 50K             1 MNQ   valide  54.4 %, perdu  35.2 %,      257 $ par validation (bots : permis)
+  Phidias Fundamental 50K    1 MNQ   valide  45.6 %, perdu  20.1 %,      403 $ par validation (bots : ?)
+  Topstep 50K                1 MNQ   valide  48.0 %, perdu  40.6 %,      540 $ par validation (bots : Combine oui)
+  MyFundedFutures 50K        1 MNQ   valide  54.4 %, perdu  35.2 %,      863 $ par validation (bots : permis, supervise)
+  Tradeify Select 50K        1 MNQ   valide  47.3 %, perdu  35.2 %,    1,317 $ par validation (bots : sous conditions)
