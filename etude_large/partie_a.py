@@ -22,6 +22,8 @@ ETF = RACINE / "donnees_libres" / "etf_5min"
 YAHOO = RACINE / "donnees_libres" / "yahoo" / "jour"
 sys.path.insert(0, str(ICI))
 from marches import MARCHES  # noqa: E402
+sys.path.insert(0, str(RACINE / "zone"))
+import robot as RB  # noqa: E402  (jour_court : demi-seances et fetes a 13 h)
 
 NB = 78                                   # barres de 5 minutes, 9 h 30 - 16 h
 CONTROLES = list(range(5, 72, 6))         # cloture de la barre de 10 h, 10 h 30, ..., 15 h 30
@@ -35,13 +37,14 @@ STRATEGIES = ["A1 zone", "A2a Gao", "A2b Baltussen", "A3a OPR 5 min", "A3b OPR 3
 
 # ----------------------------------------------------------------------------- donnees
 def calendrier():
-    """Seances completes de la bourse americaine : celles ou SPY a sa barre de 15 h 55 (les demi-seances sont exclues,
-    comme seances_completes du bot)."""
+    """Seances completes de la bourse americaine : celles ou SPY a sa barre de 15 h 55, sans les demi-seances
+    (RB.jour_court, comme le bot : Alpaca garde des transactions apres la cloture de 13 h, contre-revue du 22 octobre)."""
     d = pd.read_csv(ETF / "SPY.csv.gz", usecols=["t"])
     t = pd.to_datetime(d["t"])
     j = t.dt.normalize()
     der = t.groupby(j).max()
-    return pd.DatetimeIndex(der.index[(der.dt.hour == 15) & (der.dt.minute == 55)])
+    jours = pd.DatetimeIndex(der.index[(der.dt.hour == 15) & (der.dt.minute == 55)])
+    return jours[[not RB.jour_court(x) for x in jours]]
 
 
 def tableaux(etf, jours):
@@ -281,7 +284,7 @@ def main():
     lignes, toutes = [], {}
     for etf, fut, yah, contrat, mult, tick, comm, decide in MARCHES:
         F = niveau_future(yah, jours)
-        cout = (2 * comm + 2 * tick * mult) / (F * mult)
+        cout = (2 * comm + 2 * tick * mult) / (np.abs(F) * mult)     # |F| : petrole negatif du 20 avril 2020
         r, nt, x = series(etf, jours, cout)
         rb, _, _ = series(etf, jours, np.zeros_like(cout))          # avant frais (information)
         for s in STRATEGIES:
@@ -365,6 +368,15 @@ def ecrire(df, toutes, zb, ntz, e, c, jours):
     for _, l in dec.sort_values("moy_jours_zone_perd_pb", ascending=False).head(10).iterrows():
         L.append(f"  {l['strategie']:<18} {l['etf']:>5} : {l['moy_jours_zone_perd_pb']:+.2f} pb ces jours-la, corr "
                  f"{l['corr_zone']:+.2f}, t explo {l['t_explo']:+.2f}, t coffre {l['t_coffre']:+.2f}")
+    L += ["", "A savoir (contre-revue du 22 octobre 2026) :",
+          "- Grains (CORN, SOYB, WEAT) : le future ferme a 14 h 20. A2a, A2b et les parties de A1, A4, A5 apres 14 h 20 ne",
+          "  sont pas tradables sur le future ; leurs chiffres (par exemple A2a CORN) sont des artefacts de l'ETF.",
+          "- ETF peu echanges (FXA, FXF, FXB, FXC, SOYB, UGA, PALL, CPER : 44 a 76 % des controles sans transaction) : prix",
+          "  figes. Les t avant frais de ces ETF (par exemple A3b FXA, A5 CPER) et ceux de SHY (mouvement d'une demi-heure",
+          "  proche du tick d'un cent) ne se transposent pas au future : ce ne sont pas des pistes.",
+          "- Le coffre de tous les essais est imprime dans ce meme calcul, apres les decisions mecaniques de l'exploration.",
+          "  Pour un essai qui echoue a l'exploration, son coffre est seulement descriptif : ne pas y chercher de piste",
+          "  (par exemple A3a UGA, +0,47 en exploration et +2,32 au coffre)."]
     (ICI / "resultats_a.txt").write_text("\n".join(L) + "\n")
     print("\n".join(L[:20]))
 

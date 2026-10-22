@@ -41,8 +41,9 @@ def informations(z, tr, z_es, ies, vix):
     jouables[z["jouables"]] = True
     s30 = z["sigma"][:, DM.PAS]
     med = pd.Series(np.where(jouables, s30, np.nan)).rolling(252, min_periods=100).median().shift(1).values
-    clot = np.where(jouables, C[:, DM.N - 1], np.nan)
-    cl = pd.Series(clot).ffill()
+    # cloture de chaque seance (jouable ou non) : la veille d'un lendemain de changement d'echeance est la cloture du
+    # nouveau contrat (contre-revue du 22 octobre 2026) ; la tendance de 20 seances peut encore traverser un changement
+    cl = pd.Series(C[:, DM.N - 1])
     veille = cl.shift(1).values
     il_y_a_20 = cl.shift(21).values
     X, premier, vu = [], [], set()
