@@ -496,3 +496,26 @@ de la vague 9 et les 33 de zone_optimisation ne portent pas sur la forme du chem
 | 11 | D | F2 pas de cassure faite d'un seul saut (J < 80e centile) | précision | unilatéral | 2012 - 2022 | 2023 → 20 oct. 2026 |
 
 Fichiers attendus : `<dossier>/etude.py` → `<dossier>/resultats.txt`, l'exploration écrite avant l'ouverture du coffre.
+
+## Hypothèse ajoutée après l'exploration de B, avant l'ouverture de son coffre (22 octobre 2026)
+
+**Ce qui l'a fait naître (exploration 2012 - 2022, déjà vue)** : B2 va fortement **contre** le sens prédit. Les 479
+entrées que l'AUD/JPY résiduel ne confirme pas (score ≤ q) gagnaient +5,59 points nets par trade, contre environ
+2,2 en moyenne : t −3,40, plus extrême que 99,5 % des placebos. B3 (VXX) va dans le même sens (t −1,75). Lecture
+possible : une cassure du Nasdaq que le risque global ne suit pas est un mouvement propre à la tech (nouvelles des
+grandes valeurs), qui tend mieux ; c'était l'argument « contre » écrit pour la piste B.
+
+Cette idée vient des données d'exploration : elle ne peut être jugée **que sur le coffre de B, jamais ouvert**
+(3 janvier 2023 → 2 octobre 2026, fin de l'AUD/JPY HistData). Scores, seuils et décisions exactement ceux de B2
+(`confirmation_croisee/etude.py`), sans aucun changement.
+
+- **Test I1 (principal)** : sur le coffre, gain moyen par trade (en $, convention de la série de décision) des entrées
+  non confirmées (écartées par B2) moins celui des entrées confirmées (gardées et notées). Test de Welch unilatéral.
+  **Confirmé si t ≥ 2,0.**
+- **Règle R2x (seulement si I1 est confirmé)** : taille doublée sur les entrées non confirmées, taille normale sinon.
+  Retenue si, sur le coffre : t de Δ (= gain des entrées non confirmées) ≥ 2,0, Sharpe de R2x plus haut que celui de la
+  zone seule, et challenges (moteur de `partie_d.py`, départs 2023 - 2026) : Lucid Flex 1 MNQ (2 sur les non
+  confirmées) ou Bulenox 3 MNQ (6 sur les non confirmées) valide au moins 2 points de plus que la zone seule à la même
+  taille de base, sans plus de 3 points de challenges perdus en plus.
+- Pour information : la même mesure pour B1 et B3, et pour les sous-périodes 2023 - 2024 et 2025 - 2026.
+- Retenue, R2x passe par la contre-vérification puis par l'argent virtuel, jamais directement en argent réel.
