@@ -114,3 +114,20 @@ Départs réels, zone sans filtre, moteur de la partie D (chiffres décrits pour
 
 Le réglage actuel valide un peu plus souvent en moyenne, mais il perd plus de comptes, et sur les départs de 2026 il
 perd plus souvent qu'il ne valide. 3 MNQ (puis 4) valide plus souvent qu'il ne perd sur chacune des 15 années.
+
+**Taille selon la confiance (idée de l'utilisateur, 22 octobre 2026, même situation)** : 4 MNQ puis 6 sur les trades
+« confiants », 3 puis 4 sur les autres. Confiance = trade dans le sens de l'écart d'ouverture (69 % des trades), la
+seule information restée stable sur les deux périodes dans `etude_large/` partie B (choisie en regardant toutes les
+années : chiffre un peu flatteur).
+
+| Réglage | 2012 - 2026 | 2023 - 2026 | Départs 2026 | Années où valider ≥ perdre |
+|---|---|---|---|---|
+| 4 puis 6 partout (actuel) | 54,1 / 36,5 % | 56,6 / 36,1 % | 41 / 52 % | 12 sur 15 |
+| Mélange (confiant 4/6, sinon 3/4) | 54,2 / 33,1 % | 57,8 / 33,9 % | 44 / 48 % | 12 sur 15 |
+| Mélange inversé (contrôle) | 50,9 / 31,2 % | 53,0 / 31,7 % | 45 / 39 % | 13 sur 15 |
+| 3 puis 4 partout | 49,9 / 26,3 % | 53,1 / 28,5 % | 44 / 37 % | 15 sur 15 |
+
+Le mélange valide autant que le réglage actuel avec 2 à 3 points de comptes perdus en moins, mais l'écart reste dans le
+bruit, il demande de changer le code du bot, et il perd encore plus qu'il ne valide sur les départs de 2026. Conseil
+pour le challenge en cours : 3 puis 4 (deux réglages, pas de code). Le mélange est à coder et à suivre en argent virtuel
+avant un prochain challenge.
