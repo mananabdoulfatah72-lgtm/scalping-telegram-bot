@@ -1,0 +1,14 @@
+Vague le bruit dans la zone (etude_large/bruit/README.md, regles fixees le 22 octobre 2026 avant tout calcul)
+3748 seances du NQ hors jours de la Fed (2011-01-24 - 2026-10-20) ; exploration 2841, coffre 907. ES jusqu'au 25 septembre 2026 (0 ensuite).
+Zone du bot (reference) : t exploration +0.99, coffre +2.13, Sharpe coffre +1.12
+
+  marche  seuil  trades  gagnants  duree (min)  t explo  t coffre  | avant frais : explo  coffre  | corr zone  jours ou la zone perd (pb)
+  NQ      0.50    7417     37.4 %           6   -11.91     +0.39  |              -0.63   +1.93  |     -0.01      -15.86
+  NQ      0.75    6408     26.7 %           4   -14.72     -0.87  |              -2.36   +0.73  |     -0.02      -13.53
+  NQ      0.90    5571     20.0 %           3   -14.68     -0.38  |              -1.78   +1.28  |     -0.01      -11.01
+  ES      0.50    7572     33.2 %           5   -17.41     -4.77  |              +0.43   -0.46  |     -0.09      -10.78
+  ES      0.75    6696     24.6 %           4   -18.11     -5.13  |              +0.51   -0.36  |     -0.09       -8.80
+  ES      0.90    5840     18.4 %           2   -20.62     -4.64  |              -1.21   +0.65  |     -0.05       -8.39
+
+DECISION 1 : 0 essai(s) passent l'exploration, 0 survivent au coffre.
+DECISION 2 et 3 : non faites (aucune survivante, regle fixee d'avance).

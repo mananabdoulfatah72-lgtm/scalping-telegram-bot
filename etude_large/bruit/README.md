@@ -59,3 +59,21 @@ Pour information : corrélation avec la zone, et gain moyen les jours où la zon
 
 - 2023 - 2026 a servi souvent pour la zone du NQ ; pour cette stratégie, c'est la première mesure.
 - Exécution à la clôture de la minute qui décide, sans glissement en plus des frais comptés.
+
+## Résultats (22 octobre 2026) : `resultats.txt`, `etude.py`
+
+| Marché | Seuil | Trades | Gagnants | Durée médiane | t net exploration | t net coffre | t avant frais (explo / coffre) | Corr. zone |
+|---|---|---|---|---|---|---|---|---|
+| NQ | 0,5 | 7 417 | 37 % | 6 min | −11,9 | +0,4 | −0,6 / +1,9 | −0,01 |
+| NQ | 0,75 | 6 408 | 27 % | 4 min | −14,7 | −0,9 | −2,4 / +0,7 | −0,02 |
+| NQ | 0,9 | 5 571 | 20 % | 3 min | −14,7 | −0,4 | −1,8 / +1,3 | −0,01 |
+| ES | 0,5 | 7 572 | 33 % | 5 min | −17,4 | −4,8 | +0,4 / −0,5 | −0,09 |
+| ES | 0,75 | 6 696 | 25 % | 4 min | −18,1 | −5,1 | +0,5 / −0,4 | −0,09 |
+| ES | 0,9 | 5 840 | 18 % | 2 min | −20,6 | −4,6 | −1,2 / +0,7 | −0,05 |
+
+**Décision : aucune survivante** (0 sur 6 en exploration). Décisions 2 et 3 non faites.
+
+Ce qu'on en tire : **avant frais, le retour au VWAP à l'intérieur de la zone ne gagne rien** (t proche de 0 sur les
+deux marchés et les deux périodes). C'est ce que dit la théorie de la zone : à l'intérieur, les mouvements sont du
+bruit, sans sens prévisible ; au-delà, la tendance existe, et c'est elle que le bot joue. Il n'y a pas d'argent caché
+à l'intérieur de la zone, et les trades très courts (2 à 6 minutes) ne paient que les frais.
