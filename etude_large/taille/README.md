@@ -80,3 +80,20 @@ la donne.
 Pour information, la table de la politique de Bulenox (taille selon le solde, le plancher et les séances restantes)
 est dans `resultats.txt` ; `python3 etude_large/taille/etude.py <solde> <plancher> <seances>` (en $ par rapport à
 50 000 $) donne la chance de valider et la taille conseillée depuis une situation donnée.
+
+## Le challenge en cours (situation donnée le 22 octobre 2026) : `situation.py`
+
+Solde 48 891 $, plancher 48 488 $ (**403 $ de marge**), objectif 53 000 $ (**+4 109 $ à faire**), dernier jour le
+12 novembre : **16 séances**. Départs réels 2023 - 2026 (914), zone sans filtre :
+
+| Réglage | Validé | Perdu | Expiré | Perte en (médiane) |
+|---|---|---|---|---|
+| 1 MNQ | 0,0 % | 55,1 % | 44,9 % | 5 séances |
+| 2 MNQ | 2,0 % | 77,4 % | 20,7 % | 3 |
+| 3 MNQ | 7,5 % | 85,0 % | 7,4 % | 2 |
+| 4 MNQ | 10,6 % | 86,9 % | 2,5 % | 2 |
+| **4 puis 6 MNQ (le bot)** | **10,8 %** | 87,7 % | 1,4 % | 2 |
+| Politique optimale (commence à 1 MNQ) | 10,2 % | 86,4 % | 3,4 % | 5 |
+
+Environ une chance sur dix de valider, au mieux, quel que soit le réglage. Le réglage actuel est déjà presque le
+meilleur ; la politique optimale fait seulement durer le compte plus longtemps.
