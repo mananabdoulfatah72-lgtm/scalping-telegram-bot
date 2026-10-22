@@ -64,3 +64,41 @@ réglage trouvé après coup.
   jour (17 h - 18 h), en dehors de la fenêtre étudiée.
 - Les frais du MBT chez les prop firms ne sont pas connus avec précision : d'où la sensibilité à frais doublés.
 - Certaines prop firms limitent ou interdisent les futures crypto : à vérifier avant tout essai.
+
+## Résultats (22 octobre 2026) : `resultats.txt`, `etude.py`
+
+**Contrôle** : la cassure calculée sur Coinbase suit celle de BITO de la partie A (corrélation des séances 0,95 sur
+2021 - 2026) : les données sont acceptées. Frais du MBT au prix du 20 octobre 2026 (82 504 $) : 7,3 pb par aller-retour.
+
+| | P0, 2017 - sept. 2021 (jamais vue) | P1, oct. 2021 - 2026 |
+|---|---|---|
+| **Test 1 : règle inchangée, t net** | **+0,70** | +2,37 |
+| t avant frais | +2,08 | +4,00 |
+| t à frais doublés | −0,68 | +0,74 |
+| t à 1 $ par ordre (pour information) | +1,39 | +3,19 |
+
+Par année (t net) : 2017 +1,22, 2018 −1,13, 2019 +1,05, 2020 +0,01, 2021 +0,32, 2022 +1,81, 2023 +2,65, 2024 +1,49,
+**2025 −0,29, 2026 −1,07**.
+
+**Test 1 : non confirmée** (t +0,70 < 2,0 sur les années jamais vues).
+
+**Test 2 : réglage en walk-forward, non retenu.** La série hors échantillon 2018 - 2026 fait t +0,73, moins que la
+règle fixe sur les mêmes années (+1,76) ; elle perd sur 2018 - 2021. Le meilleur réglage du passé change presque chaque
+année (range de 60, puis 15, puis 30 minutes) et fait souvent moins bien l'année suivante : c'est exactement le piège
+qu'évite le walk-forward. Choisie après coup sur tout 2017 - 2026, la meilleure variante est la règle actuelle (range de
+30 minutes, t +2,13), mais seulement grâce à 2022 - 2024.
+
+**Test 3, placebo d'heure** : la même règle à minuit, 6 h, 12 h et 13 h perd nettement (t −3,4 à −4,5) ; à 3 h
+(Londres) +0,84 ; à 9 h 30 +2,10. **L'effet est bien lié à l'ouverture américaine.**
+
+**Test 4** : non fait (règle fixée d'avance).
+
+**ETH (descriptif)** : même phénomène avant frais (t +1,92 puis +4,17), mais le Micro Ether coûte 2 % par aller-retour :
+intradable.
+
+## Décision
+
+**La cassure du bitcoin n'entre pas au bot.** Ce qu'on en retient : l'ouverture américaine crée un vrai élan sur le
+bitcoin et l'ether, visible avant frais sur 10 ans et absent aux autres heures. Mais après les frais du MBT, il
+n'est pas assez fort sur les années jamais vues, et il disparaît en 2025 - 2026. À revoir seulement si les frais du MBT
+baissent nettement (ou sur un compte où ils sont plus bas), et sur les données de 2027.
