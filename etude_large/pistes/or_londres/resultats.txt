@@ -1,0 +1,128 @@
+Piste 4 (etude_large/pistes/README.md, regles fixees le 22 octobre 2026, commit a6e791f) : cassures de l'ouverture de Londres sur l'or et l'argent, F3-30 et F4-16:30.
+Code de la machine 5 inchange (kb/sessions24/machine5.py). Barres HistData de 5 min (UTC -> Europe/London), jours de semaine. Rendements en points de base (pb) du prix ; t = t de la machine 5 (jours avec un trade).
+Frais principaux : or 0.96 pb (MGC), argent 2.1 pb (SIL) ; sensibilite 2.0 / 3.0 pb ; fixes : 4 $ (MGC) et 12 $ (SIL) au prix d'entree du jour.
+
+CONTROLE a) l'or en exploration 2012 - 2022 doit redonner les chiffres publies (sessions24/README.md)
+  F3-30 or : avant frais +2.84 pb par jour, t +3.14 ; a 2 pb t +0.92 (2830 jours) ; publie +2.84 pb, t +3.14, t +0.92 a 2 pb -> identique
+  F4-16:30 or : avant frais +3.20 pb par jour, t +2.82 ; a 2 pb t +1.06 (2721 jours) ; publie +3.20 pb, t +2.82, t +1.06 a 2 pb -> identique
+CONTROLE b) correlation des rendements de 3 h a 11 h (New York), HistData contre Yahoo une heure (2024-05-30 -> 2026-10-21), seuil 0.95
+  or HistData / GC Yahoo : 0.978 sur 580 jours (2024-05-30 -> 2026-10-02) -> passe
+  or HistData / MGC Yahoo : 0.977 sur 580 jours (2024-05-30 -> 2026-10-02) (information)
+  argent HistData / SI Yahoo : 0.976 sur 590 jours (2024-05-30 -> 2026-10-16) -> passe
+CONTROLE c) barres manquantes par annee et changement d'heure a Londres
+  or : annee | jours de semaine | jours avec des barres | barres presentes 0 h - 16 h 30 (Londres) sur les jours avec barres
+    2012 :  261 |  259 |  99.6 % (   226 barres manquantes)
+    2013 :  261 |  259 |  99.4 % (   328 barres manquantes)
+    2014 :  261 |  257 |  99.9 % (    38 barres manquantes)
+    2015 :  261 |  259 |  99.6 % (   207 barres manquantes)
+    2016 :  261 |  258 | 100.0 % (    12 barres manquantes)
+    2017 :  260 |  257 | 100.0 % (     9 barres manquantes)
+    2018 :  261 |  258 | 100.0 % (     0 barres manquantes)
+    2019 :  261 |  258 |  99.7 % (   135 barres manquantes)
+    2020 :  262 |  259 |  99.7 % (   162 barres manquantes)
+    2021 :  261 |  258 |  99.7 % (   162 barres manquantes)
+    2022 :  260 |  258 | 100.0 % (    13 barres manquantes)
+    2023 :  260 |  257 |  91.0 % (  4556 barres manquantes)
+    2024 :  262 |  259 | 100.0 % (    24 barres manquantes)
+    2025 :  261 |  258 | 100.0 % (    20 barres manquantes)
+    2026 :  197 |  195 |  99.5 % (   198 barres manquantes)
+  argent : annee | jours de semaine | jours avec des barres | barres presentes 0 h - 16 h 30 (Londres) sur les jours avec barres
+    2012 :  261 |  259 |  99.4 % (   330 barres manquantes)
+    2013 :  261 |  259 |  99.3 % (   360 barres manquantes)
+    2014 :  261 |  257 |  99.7 % (   154 barres manquantes)
+    2015 :  261 |  259 |  99.4 % (   293 barres manquantes)
+    2016 :  261 |  258 |  99.9 % (    54 barres manquantes)
+    2017 :  260 |  257 |  99.5 % (   264 barres manquantes)
+    2018 :  261 |  258 | 100.0 % (    21 barres manquantes)
+    2019 :  261 |  258 |  99.8 % (   125 barres manquantes)
+    2020 :  262 |  259 |  99.6 % (   189 barres manquantes)
+    2021 :  261 |  258 |  99.7 % (   163 barres manquantes)
+    2022 :  260 |  258 | 100.0 % (    13 barres manquantes)
+    2023 :  260 |  257 |  90.9 % (  4615 barres manquantes)
+    2024 :  262 |  259 |  99.9 % (    54 barres manquantes)
+    2025 :  261 |  258 |  99.9 % (    34 barres manquantes)
+    2026 :  207 |  205 |  99.4 % (   253 barres manquantes)
+  conversion : 2024-01-15 08:00 Londres = 08:00 UTC = 03:00 New York ; 2024-07-15 08:00 Londres = 07:00 UTC = 03:00 New York ; 2024-03-12 08:00 Londres = 08:00 UTC = 04:00 New York ; 2024-10-29 16:30 Londres = 16:30 UTC = 12:30 New York
+  or : |rendement| moyen de la barre de 5 min (pb) ; semaines normales (3590 j) : 12 h 30 3.82, 13 h 30 10.75 ; semaines decalees (260 j) : 12 h 30 9.31, 13 h 30 7.21 ; repere 12 h 00 4.18 -> pic de 8 h 30 (New York) a sa place : oui
+  argent : |rendement| moyen de la barre de 5 min (pb) ; semaines normales (3600 j) : 12 h 30 7.32, 13 h 30 19.52 ; semaines decalees (260 j) : 12 h 30 18.75, 13 h 30 13.41 ; repere 12 h 00 10.44 -> pic de 8 h 30 (New York) a sa place : oui
+  -> changement d'heure : verifie
+
+EXPLORATION 2012 - 2022 (or : deja vue avant frais, rejugee aux nouveaux frais ; argent : jamais testee)
+  test              jours  avant frais (pb, t)   net (pb, t)      t net (0 sans trade)  t sensibilite  t frais fixes $  p unilateral
+  F3-30    or       2830    +2.84 (+3.14)       +1.88 (+2.07)    +2.07                 +0.92           +0.02         0.0190
+  F4-16:30 or       2721    +3.20 (+2.82)       +2.24 (+1.97)    +1.97                 +1.06           +0.33         0.0242
+  F3-30    argent   2828    -2.07 (-1.28)       -4.17 (-2.58)    -2.58                 -3.14           -5.15         0.9951
+  F4-16:30 argent   2698    +1.23 (+0.58)       -0.87 (-0.41)    -0.41                 -0.84           -2.37         0.6594
+  placebo (1 000 tirages du sens, memes heures, machine5.placebo, frais principaux) :
+    F3-30 or : part des placebos au moins aussi bons 0.2 % (1000) (information : l or est juge au coffre)
+    F4-16:30 or : part des placebos au moins aussi bons 0.1 % (1000) (information : l or est juge au coffre)
+    F3-30 argent : part des placebos au moins aussi bons 89.6 % (1000) (critere 4)
+    F4-16:30 argent : part des placebos au moins aussi bons 25.6 % (1000) (critere 4)
+CONTROLE d) par sous-periode (pb par jour avant frais / net aux frais principaux, t net, jours)
+  F3-30 or : 2012-15 +4.60 / +3.64 (t +2.17, 1027 j) ; 2016-19 +2.66 / +1.70 (t +1.47, 1030 j) ; 2020-22 +0.72 / -0.24 (t -0.12, 773 j)
+  F4-16:30 or : 2012-15 +5.36 / +4.40 (t +2.20, 988 j) ; 2016-19 +1.08 / +0.12 (t +0.08, 984 j) ; 2020-22 +3.13 / +2.17 (t +0.86, 749 j)
+  F3-30 argent : 2012-15 -2.20 / -4.30 (t -1.58, 1028 j) ; 2016-19 -0.04 / -2.14 (t -1.08, 1030 j) ; 2020-22 -4.62 / -6.72 (t -1.74, 770 j)
+  F4-16:30 argent : 2012-15 +0.23 / -1.87 (t -0.53, 988 j) ; 2016-19 +1.86 / -0.24 (t -0.09, 980 j) ; 2020-22 +1.73 / -0.37 (t -0.07, 730 j)
+  achats et ventes (exploration, net pb par trade) : F3-30 or achats -0.21, ventes +3.96 ; F4-16:30 or achats +0.01, ventes +4.44 ; F3-30 argent achats -5.35, ventes -2.89 ; F4-16:30 argent achats -0.34, ventes -1.38
+  part des trades sortis au stop (exploration) : F3-30 or 64 % ; F4-16:30 or 36 % ; F3-30 argent 70 % ; F4-16:30 argent 36 %
+
+COFFRE (ouvert une seule fois) : or 2023-01-01 -> 2026-10-02, argent 2023-01-01 -> 2026-10-16
+  test              jours  avant frais (pb, t)   net (pb, t)      t net (0 sans trade)  t sensibilite  t frais fixes $  annees 2023/24/25/26 (pb nets)
+  F3-30    or        965    +1.65 (+0.92)       +0.69 (+0.38)    +0.38                 -0.20           +0.09         -414 / -500 / +584 / +992
+  F4-16:30 or        900    +4.23 (+1.93)       +3.27 (+1.49)    +1.49                 +1.02           +1.24         -941 / +545 / +750 / +2586
+  F3-30    argent    975    -2.41 (-0.72)       -4.51 (-1.34)    -1.34                 -1.61           -1.80         -3082 / -2145 / +999 / -166
+  F4-16:30 argent    915    +2.04 (+0.46)       -0.06 (-0.01)    -0.01                 -0.21           -0.37         -3433 / -681 / +2180 / +1882
+  placebo de l'or au coffre (critere 4) :
+    F3-30 or : part des placebos au moins aussi bons 19.3 % (1000)
+    F4-16:30 or : part des placebos au moins aussi bons 2.8 % (1000)
+  achats et ventes (coffre, net pb par trade) : F3-30 or achats -2.84, ventes +4.64 ; F4-16:30 or achats +2.83, ventes +3.79 ; F3-30 argent achats -7.06, ventes -1.53 ; F4-16:30 argent achats -0.22, ventes +0.13
+  ECART DE TEXTE F4-16:30 (comptage seulement, aucun calcul de gain) : trades dont la cloture de cassure tombe a 12 h 00 (Londres) ou apres : or exploration 377 sur 2721 ; or coffre 173 sur 900 ; argent exploration 445 sur 2698 ; argent coffre 199 sur 915
+
+CRITERE 6 (partie C) : correlation avec la zone du bot (NQ minute, sans les jours de la Fed) sur 2016 - 2022, Sharpe zone + metal a risque egal (ecart-type 2016 - 2022) contre la zone seule au coffre de l'or
+  F3-30 or : 2775 seances, corr +0.044, Sharpe coffre zone +1.04 -> zone + or +0.77 (Sharpe du metal seul au coffre +0.20) : echoue
+  F4-16:30 or : 2775 seances, corr -0.030, Sharpe coffre zone +1.04 -> zone + or +1.21 (Sharpe du metal seul au coffre +0.76) : passe
+  F3-30 argent : 2775 seances, corr +0.049, Sharpe coffre zone +1.04 -> zone + argent +0.07 (Sharpe du metal seul au coffre -0.69) : echoue (information : le critere porte sur le MGC)
+  F4-16:30 argent : 2775 seances, corr +0.043, Sharpe coffre zone +1.04 -> zone + argent +0.56 (Sharpe du metal seul au coffre -0.07) : echoue (information : le critere porte sur le MGC)
+
+CRITERE 7 : Lucid Flex 50K (moteur de la partie D), 1 MNQ + 1 MGC contre 1 MNQ seul, gains au prix d'aujourd'hui
+  controle : zone seule sur le calendrier de la partie D (3624 seances jusqu'au 2026-10-20), departs 2023 - 2026 : 804 departs, valide 55 %, perdu 35 % ; partie D : 804 departs, 55 % / 35 % -> identique
+  F3-30 + 1 MGC : 3804 seances ; departs 2023 -> 2026-10-02 (842) : zone seule valide 51.7 % / perdu 34.2 %, zone + metal 38.6 % / 57.5 % -> echoue ; departs 2012 - 2021 (2578, information) : 49.3 / 28.5 -> 53.3 / 42.8
+     MGC seul : 3795 jours de trade, gain moyen +6.52 $ par trade, pire jour -675 $, ecart-type 208 $ (zone 1 MNQ : 287 $)
+  F3-30 + 1 SIL (information) : 3803 seances ; departs 2023 -> 2026-10-02 (842) : zone seule valide 51.7 % / perdu 34.2 %, zone + metal 10.1 % / 89.9 % -> echoue ; departs 2012 - 2021 (2578, information) : 49.2 / 28.6 -> 28.2 / 71.8
+  F4-16:30 + 1 MGC : 3776 seances ; departs 2023 -> 2026-10-02 (831) : zone seule valide 52.2 % / perdu 34.4 %, zone + metal 42.4 % / 52.8 % -> echoue ; departs 2012 - 2021 (2563, information) : 49.7 / 28.7 -> 50.6 / 47.5
+     MGC seul : 3621 jours de trade, gain moyen +10.33 $ par trade, pire jour -1201 $, ecart-type 252 $ (zone 1 MNQ : 287 $)
+  F4-16:30 + 1 SIL (information) : 3776 seances ; departs 2023 -> 2026-10-02 (834) : zone seule valide 51.9 % / perdu 34.5 %, zone + metal 18.9 % / 80.6 % -> echoue ; departs 2012 - 2021 (2561, information) : 49.7 / 28.7 -> 28.8 / 71.2
+
+==============================================================================================================
+CRITERES PAR TEST (BH a 10 % calcule ensuite sur les 17 tests des 5 pistes ; p unilateral du t d'exploration)
+  test               t explo  bilateral  p        t coffre  criteres propres
+  F3-30    or         +2.07   non        0.0190    +0.38    echec
+      1 t explo >= 2 oui ; 2 coffre t >= 1,5 non ; 2 coffre 3 annees sur 4 positives non ; 4 placebo coffre (or) < 5 % non ; 5 sensibilite t > 0 (explo et coffre) non ; 5 frais fixes $ t > 0 (coffre) oui ; 3 la regle passe aussi sur l'argent non ; 6 partie C (MGC) non ; 7 Lucid Flex zone + MGC non
+  F3-30    argent     -2.58   non        0.9951    -1.34    echec
+      1 t explo >= 2 non ; 2 coffre t >= 1,5 non ; 4 placebo exploration (argent) < 5 % non ; 5 sensibilite t > 0 (explo et coffre) non ; 5 frais fixes $ t > 0 (coffre) non ; 3 la regle passe aussi sur l'or non ; 6 partie C (MGC) non ; 7 Lucid Flex zone + MGC non
+  F4-16:30 or         +1.97   non        0.0242    +1.49    echec
+      1 t explo >= 2 non ; 2 coffre t >= 1,5 non ; 2 coffre 3 annees sur 4 positives oui ; 4 placebo coffre (or) < 5 % oui ; 5 sensibilite t > 0 (explo et coffre) oui ; 5 frais fixes $ t > 0 (coffre) oui ; 3 la regle passe aussi sur l'argent non ; 6 partie C (MGC) oui ; 7 Lucid Flex zone + MGC non
+  F4-16:30 argent     -0.41   non        0.6594    -0.01    echec
+      1 t explo >= 2 non ; 2 coffre t >= 1,5 non ; 4 placebo exploration (argent) < 5 % non ; 5 sensibilite t > 0 (explo et coffre) non ; 5 frais fixes $ t > 0 (coffre) non ; 3 la regle passe aussi sur l'or non ; 6 partie C (MGC) oui ; 7 Lucid Flex zone + MGC non
+
+REGARD VERS LE FUTUR (verifie dans le code, assertions de detail()) : la fourchette ne lit que les barres [debut, fin de fourchette) ; le signal est la cloture d'une barre apres la fourchette ; l'entree est a
+  l'ouverture de la barre suivante ; le stop est l'autre extreme de la fourchette (connu a l'entree) ; la sortie est au stop ou a l'ouverture de 16 h 30 (Londres) ; les frais fixes en $ utilisent le prix d'entree ;
+  le poids a risque egal (critere 6) vient de 2016 - 2022 seulement ; le jour de trade (machine 5 : jour CME de la barre de sortie) est le jour de Londres de la fourchette pour tous les trades.
+CONTROLE e) (metaux permis chez Bulenox et Lucid, commission reelle, ecart a 3 h du matin sur le MGC) : sans objet tant qu'aucune regle ne passe. Recherche web du 22 octobre 2026 : Lucid, guides tiers seulement
+  (proptradingvibes.com) : GC, MGC, SI, SIL, PL, HG dans la liste des produits permis ; Bulenox, un guide tiers seulement : metaux du COMEX (GC, SI et micros) permis. Aucune page officielle lue : A CONFIRMER.
+  Commission reelle et ecart du MGC a 3 h du matin : non verifiables avec les donnees du depot (pas de prix acheteur et vendeur) ; le tick du SIL (0,005 $ = 5 $, README) n'a pas ete reverifie.
+
+CHOIX D'INTERPRETATION (fixes avant tout calcul) :
+  - t net = t de la machine 5 (jours avec un trade, chiffres publies du controle a) ; t avec 0 sans trade publie pour information ;
+  - frais principaux 0,96 pb et 2,1 pb (chiffres ecrits dans le README) ; frais fixes : 0,40 $ par once (MGC) et 0,012 $ par once (SIL) divises par le prix d'entree (Marche.cout, unite 'pt') ;
+  - sensibilite exigee sur l'exploration ET le coffre ; frais fixes exiges sur le coffre ;
+  - critere 3 : chaque test exige que sa regle passe aussi sur l'autre metal ; criteres 6 et 7 calcules avec le MGC pour la regle (SIL publie pour information) ;
+  - critere 7 : departs 2023 -> fin du coffre de l'or (2 octobre 2026), calendrier = seances jouables de la zone + jours de trade du metal, 126 seances au plus (partie D) ;
+  - controle b : ouverture de la barre de 3 h et de la barre de 11 h (New York) des deux sources ; seuil exige sur GC et SI, MGC pour information ;
+  - F4-16:30 : le README dit « cassure cherchee de 7 h 00 a 12 h 00 », mais aussi « code de la machine 5 inchange » et exige (controle a) qu'il redonne les chiffres publies ; machine5.cassures cherche la
+    cassure jusqu'a la sortie (16 h 30). Le code inchange est garde (c'est lui qui redonne +3,20 pb et t 2,82) ; le nombre de trades touches est publie ci-dessus, sans autre calcul.
+
+DECISION fixee a l'avance (critere 3), avant Benjamini-Hochberg :
+  F3-30 : non retenue (l'or ne passe pas ses criteres, l'argent non plus)
+  F4-16:30 : non retenue (l'or ne passe pas ses criteres, l'argent non plus)
+CONCLUSION : 0 test(s) sur 4 passent leurs criteres propres (avant Benjamini-Hochberg).

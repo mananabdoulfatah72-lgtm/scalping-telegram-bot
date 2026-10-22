@@ -1,0 +1,177 @@
+Piste 2 : l'heure 16 h 00 - 16 h 59 (etude_large/pistes/README.md, regles fixees le 22 octobre 2026, commit a6e791f, avant tout calcul)
+
+Donnees : minutes NQ 2011-01-03 - 2026-10-20 (4058 seances, recherche + robot), minutes ES 2011-01-03 - 2026-09-25 (4041 seances) ; barres d'une heure NQ et ES jusqu'au 2026-09-28 11:00 ; 159 jours de la Fed.
+  seances ES absentes du calendrier NQ : 0 ; seances NQ sans ES : 17 (le calendrier des series est celui du NQ)
+
+CONTROLE a) alignement des barres de 16 h (avant tout gain)
+  NQ : 4063 barres de 16 h en tout, 3918 sur 2011-2026, dont 3918 jointes aux minutes ; meme contrat 100.00 % ; avec la minute de 15 h 59 presente (3917) : |O16 - C15:59| <= 2 points 99.8 %, mediane 0.25 point, pire 6.25
+     volume median de la barre de 16 h : 24 % de celui de la barre de 15 h
+  ES : 4063 barres de 16 h en tout, 3918 sur 2011-2026, dont 3918 jointes aux minutes ; meme contrat 100.00 % ; avec la minute de 15 h 59 presente (3917) : |O16 - C15:59| <= 2 points 100.0 %, mediane 0.00 point, pire 16.25
+     volume median de la barre de 16 h : 31 % de celui de la barre de 15 h
+
+Controle du moteur de la zone (delta_mesures) : jusqu'au 16 octobre 2026 3571 trades +10759.75 points ; reference 3571 trades +10759.75 -> identique
+
+CONTROLES b) et c) HistData usatechidxusd (UTC -> New York), 2012-2018
+  b) correlation rendement HistData 16 h 00 -> 16 h 55 / barre Databento de 16 h : 0.979 sur 1667 seances -> H5 gardee (>= 0,9)
+  c) correlation sortie a 16 h 55 / sortie a 17 h 00 (depuis 16 h 00) : 0.986 sur 1664 seances ; ecart absolu median entre les deux sorties 0.50 point (1.29 pb), moyen 0.95 point
+
+Controle du moteur des challenges (zone seule jusqu'au 20 octobre, departs 2023-2026) : Bulenox 3 MNQ (908, 45, 31), 4 MNQ (908, 49, 44), Lucid 1 MNQ (804, 55, 35) (departs, valide %, perdu %) ; partie D [(908, 45, 31), (908, 49, 44), (804, 55, 35)] -> identique
+
+====================================================================================================
+H1 : prolonger la zone (position V1 ouverte a 15 h 59 gardee jusqu'a la cloture de la barre de 16 h), test bilateral
+  seances en position a 15 h 59 (hors Fed, jours courts, seances sans barre) : exploration 864, coffre 281
+  gain ajoute (sans frais) : exploration -216.8 points, -0.251 point par seance en position, t -0.36 (p bilateral 0.7225) ; coffre +974.0 points, t +1.49
+  retournement -s x (C16 - O16) - 1,5 : t exploration -1.81, coffre -2.17
+  sens de l'exploration : retournement (gain ajoute negatif) ; criteres jugés sur cette regle
+  1) |t| exploration >= 2 et retournement t >= 2 : non
+  2) coffre meme signe, |t| >= 1,5 et retournement t >= 1,5 : non (t coffre +1.49)
+  4) placebo (200 tirages, s d'une autre seance de la meme annee, exploration) : t reel -1.81, 95e centile -0.85, mediane -2.33, fait mieux que 69.0 % -> non
+     temoin d'heure (position de zone ouverte a 12 h 59, barre de 13 h) : t exploration -2.27 (873 seances), coffre -1.24 -> doit faire moins bien que -1.81 : oui
+  5) frais de sensibilite (3 points) : t exploration -3.91, coffre -2.80 -> non
+  6) Sharpe zone seule / zone + retournement : exploration +0.28 / -0.02, coffre +1.04 / +0.82 -> non
+  7) Bulenox 3 MNQ, 895 departs 2023-2026 : zone seule valide 43.9 % perdu 32.0 % ; zone + H1 valide 42.1 % perdu 36.0 %
+  7) Bulenox 4 MNQ, 895 departs 2023-2026 : zone seule valide 48.5 % perdu 44.4 % ; zone + H1 valide 52.5 % perdu 42.1 %
+     (seances H1 hors du calendrier de la zone de la partie D : 80) -> non
+  e) achats (zone acheteuse)  exploration :  466 seances, gain ajoute moyen -0.274 point, total   -127.8, t -0.30
+  e) achats (zone acheteuse)  coffre      :  152 seances, gain ajoute moyen +1.492 point, total   +226.8, t +0.53
+  e) ventes (zone vendeuse)   exploration :  398 seances, gain ajoute moyen -0.224 point, total    -89.0, t -0.20
+  e) ventes (zone vendeuse)   coffre      :  129 seances, gain ajoute moyen +5.793 point, total   +747.2, t +1.51
+  e) 2011-14 :  290 seances, gain ajoute moyen +0.304 point, t +0.94
+  e) 2015-18 :  278 seances, gain ajoute moyen -0.547 point, t -0.61
+  e) 2019-22 :  296 seances, gain ajoute moyen -0.517 point, t -0.28
+  e) 2023-26 :  281 seances, gain ajoute moyen +3.466 point, t +1.49
+  d) pire seance (gain ajoute) : 2022-04-28 -155.00 points ; 5 plus grands |gain ajoute| : 2025-10-10 +214.2, 2022-04-26 +193.5, 2024-02-01 +187.8, 2026-06-05 +186.5, 2023-08-23 +157.8
+
+====================================================================================================
+H2 retour de la journee (NQ)
+  seances actives : exploration 543 (premiere 2012-03-26), coffre 159
+  exploration 2011-2022 : net -0.626 point par trade (-1.53 pb), brut +0.874, t net -0.49 (p unilateral 0.6874), t brut +0.68
+  coffre 2023 - 2026-09-28 : net -0.882 point par trade (-0.32 pb), t net -0.20
+  1) t net exploration >= 2 : non
+  2) coffre t net >= 1,5 (meme signe) : non
+  3) mecanisme, exploration avant frais : achats +353.5 points (265 trades), ventes +121.0 points (278 trades) -> oui
+  4) placebo (1 000 sens au hasard, memes seances, exploration) : 95e centile +0.45, fait mieux que 76.1 % -> non
+     temoin d'heure (signal a 12 h 59, barre de 13 h) : 556 trades, t exploration -2.68, coffre +0.03 -> doit faire moins bien que -0.49 : oui
+  5) frais de sensibilite (3.0 points) : t exploration -1.66, coffre -0.54 -> non
+  6) correlation avec la zone 2016-2022 +0.068 ; Sharpe coffre zone +1.04 -> zone + piste a risque egal (poids 3.53) +0.87 -> non
+  7) Bulenox 3 MNQ, 895 departs 2023 - 2026-09-28 : zone seule valide 43.9 % perdu 32.0 % ; zone + H2 valide 44.5 % perdu 33.4 %
+  7) Bulenox 4 MNQ, 895 departs 2023 - 2026-09-28 : zone seule valide 48.5 % perdu 44.4 % ; zone + H2 valide 52.1 % perdu 43.5 %
+     (trades H2 hors du calendrier de la zone de la partie D : 0) -> oui
+  e) achats  exploration :  265 trades, brut moyen +1.334, net moyen -0.166 point, t net -0.08
+  e) achats  coffre      :   79 trades, brut moyen -1.456, net moyen -2.956 point, t net -0.39
+  e) ventes  exploration :  278 trades, brut moyen +0.435, net moyen -1.065 point, t net -0.73
+  e) ventes  coffre      :   80 trades, brut moyen +2.666, net moyen +1.166 point, t net +0.26
+  e) 2011-14 :  107 trades, net moyen -1.603 point, t net -2.88
+  e) 2015-18 :  227 trades, net moyen +0.020 point, t net +0.02
+  e) 2019-22 :  209 trades, net moyen -0.828 point, t net -0.27
+  e) 2023-26 :  159 trades, net moyen -0.882 point, t net -0.20
+  d) pire trade : 2022-01-25 achat -230.25 points ; 5 plus grands |brut| : 2022-02-03 +300.0, 2025-10-30 +277.2, 2022-01-25 -228.8, 2025-10-10 -214.5, 2026-02-05 -213.2
+
+====================================================================================================
+H3 retour de la derniere demi-heure (NQ)
+  seances actives : exploration 503 (premiere 2012-01-26), coffre 147
+  exploration 2011-2022 : net -2.917 point par trade (-4.69 pb), brut -1.417, t net -2.12 (p unilateral 0.9831), t brut -1.03
+  coffre 2023 - 2026-09-28 : net -11.420 point par trade (-4.46 pb), t net -1.96
+  1) t net exploration >= 2 : non
+  2) coffre t net >= 1,5 (meme signe) : non
+  3) mecanisme, exploration avant frais : achats -530.8 points (258 trades), ventes -181.8 points (245 trades) -> non
+  4) placebo (1 000 sens au hasard, memes seances, exploration) : 95e centile +0.71, fait mieux que 13.7 % -> non
+     temoin d'heure (signal a 12 h 59, barre de 13 h) : 545 trades, t exploration -0.71, coffre -0.82 -> doit faire moins bien que -2.12 : non
+  5) frais de sensibilite (3.0 points) : t exploration -3.20, coffre -2.21 -> non
+  6) correlation avec la zone 2016-2022 +0.047 ; Sharpe coffre zone +1.04 -> zone + piste a risque egal (poids 3.46) +0.22 -> non
+  7) Bulenox 3 MNQ, 895 departs 2023 - 2026-09-28 : zone seule valide 43.9 % perdu 32.0 % ; zone + H3 valide 42.1 % perdu 33.3 %
+  7) Bulenox 4 MNQ, 895 departs 2023 - 2026-09-28 : zone seule valide 48.5 % perdu 44.4 % ; zone + H3 valide 48.6 % perdu 46.0 %
+     (trades H3 hors du calendrier de la zone de la partie D : 11) -> non
+  e) achats  exploration :  258 trades, brut moyen -2.057, net moyen -3.557 point, t net -1.56
+  e) achats  coffre      :   67 trades, brut moyen -8.791, net moyen -10.291 point, t net -1.47
+  e) ventes  exploration :  245 trades, brut moyen -0.742, net moyen -2.242 point, t net -1.52
+  e) ventes  coffre      :   80 trades, brut moyen -10.866, net moyen -12.366 point, t net -1.38
+  e) 2011-14 :  107 trades, net moyen -2.439 point, t net -3.43
+  e) 2015-18 :  200 trades, net moyen -3.243 point, t net -2.50
+  e) 2019-22 :  196 trades, net moyen -2.844 point, t net -0.88
+  e) 2023-26 :  147 trades, net moyen -11.420 point, t net -1.96
+  d) pire trade : 2026-06-24 vente -582.50 points ; 5 plus grands |brut| : 2026-06-24 -581.0, 2022-02-03 +300.0, 2022-01-25 -228.8, 2025-10-10 -214.5, 2025-04-30 -206.0
+
+====================================================================================================
+H4 retour de la journee (ES, MES)
+  seances actives : exploration 532 (premiere 2012-04-10), coffre 147
+  exploration 2011-2022 : net -0.702 point par trade (-3.22 pb), brut +0.198, t net -2.22 (p unilateral 0.9869), t brut +0.63
+  coffre 2023 - 2026-09-28 : net -1.381 point par trade (-2.44 pb), t net -1.60
+  1) t net exploration >= 2 : non
+  2) coffre t net >= 1,5 (meme signe) : non
+  3) mecanisme, exploration avant frais : achats +59.2 points (254 trades), ventes +46.0 points (278 trades) -> oui
+  4) placebo (1 000 sens au hasard, memes seances, exploration) : 95e centile -1.21, fait mieux que 72.8 % -> non
+     temoin d'heure (signal a 12 h 59, barre de 13 h) : 542 trades, t exploration -3.28, coffre +0.91 -> doit faire moins bien que -2.22 : oui
+  5) frais de sensibilite (1.8 points) : t exploration -4.99, coffre -2.62 -> non
+  6) correlation avec la zone 2016-2022 +0.042 ; Sharpe coffre zone +1.04 -> zone + piste a risque egal (poids 4.59) +0.45 -> non
+  7) Bulenox 3 MNQ + 3 MES, 895 departs 2023 - 2026-09-28 : zone seule valide 43.9 % perdu 32.0 % ; zone + H4 valide 43.5 % perdu 33.1 %
+  7) Bulenox 4 MNQ + 4 MES, 895 departs 2023 - 2026-09-28 : zone seule valide 48.5 % perdu 44.4 % ; zone + H4 valide 48.8 % perdu 44.6 %
+     (trades H4 hors du calendrier de la zone de la partie D : 0) -> non
+  e) achats  exploration :  254 trades, brut moyen +0.233, net moyen -0.667 point, t net -1.28
+  e) achats  coffre      :   71 trades, brut moyen +0.141, net moyen -0.759 point, t net -0.49
+  e) ventes  exploration :  278 trades, brut moyen +0.165, net moyen -0.735 point, t net -1.97
+  e) ventes  coffre      :   76 trades, brut moyen -1.062, net moyen -1.963 point, t net -2.36
+  e) 2011-14 :  104 trades, net moyen -1.398 point, t net -4.77
+  e) 2015-18 :  217 trades, net moyen -0.246 point, t net -0.69
+  e) 2019-22 :  211 trades, net moyen -0.829 point, t net -1.20
+  e) 2023-26 :  147 trades, net moyen -1.381 point, t net -1.60
+  d) pire trade : 2022-01-25 achat -45.65 points ; 5 plus grands |brut| : 2022-02-03 +50.2, 2020-03-17 +47.0, 2022-01-25 -44.8, 2025-10-10 -43.2, 2025-10-30 +40.2
+
+====================================================================================================
+H5 retour de la journee, sortie 16 h 15 (HistData, Lucid)
+  seances actives : exploration 522 (premiere 2012-03-26), coffre 143
+  exploration 2012-2022 : net +0.588 point par trade (-0.59 pb), brut +2.088, t net +0.61 (p unilateral 0.2705), t brut +2.16
+  coffre 2023 - 2026-10-02 : net +0.569 point par trade (+0.89 pb), t net +0.18
+  1) t net exploration >= 2 : non
+  2) coffre t net >= 1,5 (meme signe) : non
+  3) mecanisme, exploration avant frais : achats +594.2 points (254 trades), ventes +495.8 points (268 trades) -> oui
+  4) placebo (1 000 sens au hasard, memes seances, exploration) : 95e centile +0.12, fait mieux que 98.6 % -> oui
+     temoin d'heure (signal a 12 h 59, 13 h 00 - 13 h 15 HistData) : 556 trades, t exploration -1.83, coffre +0.81 -> doit faire moins bien que +0.61 : oui
+  5) frais de sensibilite (3.0 points) : t exploration -0.95, coffre -0.30 -> non
+  6) correlation avec la zone 2016-2022 +0.054 ; Sharpe coffre zone +1.04 -> zone + piste a risque egal (poids 4.53) +1.06 -> oui
+  7) Lucid Flex 1 MNQ, 792 departs 2023 - 2026-10-02 : zone seule valide 54.8 % perdu 34.8 % ; zone + H5 valide 54.5 % perdu 36.0 %
+     (trades H5 hors du calendrier de la zone de la partie D : 0) -> non
+  e) achats  exploration :  254 trades, brut moyen +2.339, net moyen +0.839 point, t net +0.59
+  e) achats  coffre      :   68 trades, brut moyen +5.057, net moyen +3.557 point, t net +0.67
+  e) ventes  exploration :  268 trades, brut moyen +1.850, net moyen +0.350 point, t net +0.27
+  e) ventes  coffre      :   75 trades, brut moyen -0.640, net moyen -2.140 point, t net -0.63
+  e) 2011-14 :  107 trades, net moyen -0.895 point, t net -1.83
+  e) 2015-18 :  227 trades, net moyen -0.724 point, t net -0.69
+  e) 2019-22 :  188 trades, net moyen +3.017 point, t net +1.29
+  e) 2023-26 :  143 trades, net moyen +0.569 point, t net +0.18
+  d) pire trade : 2026-06-05 achat -184.44 points ; 5 plus grands |brut| : 2022-02-03 +192.1, 2026-06-05 -182.9, 2022-04-28 +171.5, 2022-04-19 +145.3, 2024-07-30 -144.7
+
+====================================================================================================
+SYNTHESE (p tire du t d'exploration ; Benjamini-Hochberg a 10 % calcule ensuite sur les 17 tests des 5 pistes)
+  test                                                        t explo        p bilat.  t coffre  criteres propres
+  H1 prolonger la zone (bilateral)                              -0.36   0.7225    oui     +1.49  echec
+      sens retournement ; 1 |t|>=2 non ; 2 coffre non ; 4 placebo non (69.0 %) ; temoin 13 h oui (t -2.27) ; 5 sensibilite non ; 6 Sharpe zone+H1 non (+0.28/-0.02, +1.04/+0.82) ; 7 Bulenox non
+  H2 retour de la journee (NQ)                                  -0.49   0.6874    non     -0.20  echec
+      1 t>=2 non ; 2 coffre non ; 3 mecanisme oui (achats +354, ventes +121 pts bruts) ; 4 placebo non (76.1 %) ; temoin 13 h oui (t -2.68) ; 5 sensibilite non ; 6 source non (corr +0.07, Sharpe +1.04 -> +0.87) ; 7 Bulenox oui
+  H3 retour de la derniere demi-heure (NQ)                      -2.12   0.9831    non     -1.96  echec
+      1 t>=2 non ; 2 coffre non ; 3 mecanisme non (achats -531, ventes -182 pts bruts) ; 4 placebo non (13.7 %) ; temoin 13 h non (t -0.71) ; 5 sensibilite non ; 6 source non (corr +0.05, Sharpe +1.04 -> +0.22) ; 7 Bulenox non
+  H4 retour de la journee (ES, MES)                             -2.22   0.9869    non     -1.60  echec
+      1 t>=2 non ; 2 coffre non ; 3 mecanisme oui (achats +59, ventes +46 pts bruts) ; 4 placebo non (72.8 %) ; temoin 13 h oui (t -3.28) ; 5 sensibilite non ; 6 source non (corr +0.04, Sharpe +1.04 -> +0.45) ; 7 Bulenox non
+  H5 retour de la journee, sortie 16 h 15 (HistData, Lucid)     +0.61   0.2705    non     +0.18  echec
+      1 t>=2 non ; 2 coffre non ; 3 mecanisme oui (achats +594, ventes +496 pts bruts) ; 4 placebo oui (98.6 %) ; temoin 13 h oui (t -1.83) ; 5 sensibilite non ; 6 source oui (corr +0.05, Sharpe +1.04 -> +1.06) ; 7 Lucid Flex non ; controle b oui
+
+CONTROLE f) regles des firmes (recherche web du 22 octobre 2026) : Lucid (article d'aide officiel support.lucidtrading.com « Allowed trading times », lu par le moteur de recherche) : positions LucidPro,
+  LucidFlex et LucidDirect fermees a 16 h 45 (heure de New York), fermeture automatique, pas d'echec du compte. Bulenox : seuls des guides tiers disent « toutes les positions fermees a 15 h 59 CT » (16 h 59 a
+  New York) ; la page officielle bulenox.com/help n'a pas pu etre ouverte (nom de domaine non resolu depuis cette machine) : A CONFIRMER au panier avant tout usage.
+CONTROLE d) : aucun calendrier des resultats des grandes valeurs dans les donnees gratuites du depot ; les seances aux plus grands mouvements sont publiees a la place (souvent des soirs de resultats).
+
+REGARD VERS LE FUTUR (verifie dans le code) : S et L n'utilisent que les clotures de 15 h 59 (et 15 h 29) du jour et de la veille ; le seuil ne lit que les 252 seances completes STRICTEMENT avant le jour ; la position
+  de zone de H1 est celle de 15 h 59 ; l'entree se fait a l'ouverture de 16 h 00 (barre d'une heure ou barre HistData), apres le signal. Le jour du signal n'a pas besoin d'etre complet (seule sa minute de signal est
+  exigee), pour que le temoin de 13 h n'utilise rien d'apres 12 h 59 ; le temoin de H1 garde la limite du moteur V1 (la zone ne joue que les seances completes, comme le bot).
+
+CHOIX D'INTERPRETATION (fixes avant tout calcul, a relire) :
+  - series quotidiennes sur toutes les seances des minutes du NQ (0 sans trade) ; ES ramene au calendrier NQ ;
+  - placebo (signes au hasard, ou s d'une autre seance de la meme annee en position a 15 h 59) sur l'exploration ;
+  - temoin de 13 h : barre d'une heure de 13 h du meme fichier (H5 : barres HistData 13 h 00 -> 13 h 10), signal de 12 h 59 calcule comme celui de 15 h 59 ; 'moins bien' = t net d'exploration plus bas, du cote gagnant ;
+  - H1 : t du gain ajoute (bilateral) ; le sens de l'exploration choisit la regle jugee (prolonger si t >= 0, sinon retourner : -s x (C16 - O16) - 1,5 doit passer les memes criteres) ;
+  - frais de sensibilite exiges sur l'exploration ET le coffre ; H1 prolonger : +0,75 point par seance ;
+  - critere 6 en rendements (points / prix d'entree ; zone : points / ouverture), poids a risque egal sur l'exploration de chaque test ; H1 : Sharpe de zone + regle H1 contre zone seule ;
+  - critere 7 (pas de seuil dans le README) : la zone + la piste doit valider au moins autant que la zone seule, departs 2023 - fin du coffre, a 3 ET 4 MNQ (Bulenox, H1 a H4 ; MES pour H4), 1 MNQ chez Lucid (H5) ;
+  - controle b : prix de 16 h 55 = cloture de la barre HistData de 16 h 50 ; controle c : 17 h 00 = cloture de la barre de 16 h 55.
+
+CONCLUSION : 0 test(s) sur 5 passent leurs criteres propres (avant Benjamini-Hochberg). L'heure de 16 h n'apporte ni precision a la zone (H1) ni source independante (H2 a H5) apres frais.

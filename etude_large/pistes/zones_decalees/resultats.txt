@@ -1,0 +1,237 @@
+Piste 5 : copies decalees de la zone (D15, D10, D20 ; ensembles E2 et E3)
+Regles : etude_large/pistes/README.md (commit a6e791f, fixees avant tout calcul). NQ minute, chaque copie
+1 MNQ, 1,5 point par aller-retour, memes regles que V1 (sigma de la minute du controle sur 14 seances
+completes, limites max/min(ouverture, veille) x (1 +- sigma), sortie au VWAP ou a la limite, rachat au meme
+controle), seule la grille des controles change ; a plat a 15 h 59. Pas de zone les jours de la Fed ni les
+jours courts. Exploration 2011-2022, coffre 2023 -> 20 oct. 2026. Series en points nets par seance (0 sans
+trade) ; t = moyenne / ecart-type x racine(seances) ; Sharpe = moyenne / ecart-type x racine(252).
+
+  D0  : 12 controles 10h00, 10h30 ... 15h30 (derniere entree possible 15h30), sortie forcee 15h59
+  D10 : 12 controles 10h10, 10h40 ... 15h40 (derniere entree possible 15h40), sortie forcee 15h59
+  D15 : 12 controles 10h15, 10h45 ... 15h45 (derniere entree possible 15h45), sortie forcee 15h59
+  D20 : 12 controles 10h20, 10h50 ... 15h50 (derniere entree possible 15h50), sortie forcee 15h59
+
+BASE : minutes de la recherche + robot jusqu'au 2026-10-20 ; 3748 seances de zone (109 jours de la Fed retires, 0 jour court parmi les seances completes) : exploration 2841, coffre 907
+
+CONTROLE a) D0 recalculee = V1
+  D0 (moteur decale, k = 0) contre delta_mesures trades_zone (V1, tous les jours jouables) : 3573 et 3573 trades, +10581.75 et +10581.75 pt -> trade par trade identique
+  jusqu'au 16 octobre 2026 : 3571 trades +10759.75 pt ; entree_tardive 3 572 trades +10 721,25 pt jusqu'au 19 octobre, dont -38,50 pt le 19 (barre de 11 h 30 retelechargee depuis par le robot, voir delta_mesures) -> 3571 trades +10759.75 : identique
+  le 19 octobre ici : 1 trade(s) -39.50 pt ; le 20 octobre : -138,50 pt ; total jusqu'au 2026-10-20 : 3573 trades +10581,75 pt
+  repere du README (V1, jours de la Fed compris, 2927 et 930 seances) : t exploration +2,12 (entree_tardive +2,12), coffre +1,82 (entree_tardive +1,86 jusqu'au 19 octobre, avec l'ancienne barre)
+  -> controle a) PASSE
+
+REGARD VERS LE FUTUR
+  300 cas (seance, copie et controle m tires au hasard) : la fenetre de 45 seances redonne les trades du calcul complet dans 300 cas sur 300 ; tout ce qui suit m est brouille -> 0 decision changee jusqu'a m ; la suite change dans 272 cas (le brouillage agit) ; ecart max de sigma, VWAP (minutes <= m) et references : 0.0e+00
+  chaque decision au controle m utilise la cloture de m, le sigma de la minute m (moyenne des 14 seances
+  completes precedentes, shift(1)), le VWAP des minutes <= m, l'ouverture du jour et la cloture de la veille ;
+  l'execution se fait a la cloture de la minute du controle, comme V1 et le bot. Jours de la Fed : dates
+  publiees a l'avance ; jours courts : calendrier. Herite de V1 : la liste des seances completes (>= 370
+  minutes, derniere minute presente) est connue le soir ; elle ne retire que des feries et demi-seances.
+  -> aucun regard vers le futur
+  chemins des challenges (partie_d generalisee, position nette des copies) avec D0 seule = partie_d.chemins_zone : oui (ecart max 0.0e+00 $)
+
+LES QUATRE COPIES SEULES (1 MNQ, points nets)
+  copie | explo : trades     points   t net  Sharpe  t brut | coffre : trades     points   t net  Sharpe  t brut
+  D0    |           2657   +4959.25   +2.17  +0.645   +3.92 |             813   +5754.75   +1.88  +0.989   +2.28
+  D10   |           2647   +3459.75   +1.52  +0.452   +3.27 |             825   +5742.75   +1.80  +0.947   +2.19
+  D15   |           2632   +2439.75   +1.09  +0.324   +2.86 |             801   +3696.75   +1.16  +0.610   +1.53
+  D20   |           2615   +2916.00   +1.32  +0.394   +3.12 |             782   +4858.50   +1.55  +0.819   +1.93
+  (D0 = V1 sans les jours de la Fed : la reference des comparaisons de la piste)
+
+ENSEMBLES (critere 2 : Sharpe quotidien plus haut que V1 a la meme taille sur les deux periodes ; V1 a 2 ou
+3 MNQ a le meme Sharpe que V1 a 1 MNQ, frais compris, puisque tout est multiplie par 2 ou 3)
+  E2 = D0 + D15 : exploration +7399.00 pt, Sharpe +0.510 contre V1 a 2 MNQ +9918.50 pt, Sharpe +0.645 ; coffre +9451.50 pt, Sharpe +0.828 contre +11509.50 pt, Sharpe +0.989 -> non
+     ecart-type quotidien : exploration 81.04 contre 85.94 pt ; coffre 199.83 contre 203.60 pt
+  E3 = D0 + D10 + D20 : exploration +11335.00 pt, Sharpe +0.533 contre V1 a 3 MNQ +14877.75 pt, Sharpe +0.645 ; coffre +16356.00 pt, Sharpe +0.960 contre +17264.25 pt, Sharpe +0.989 -> non
+     ecart-type quotidien : exploration 118.92 contre 128.92 pt ; coffre 298.19 contre 305.39 pt
+
+CHALLENGES (moteur de la partie D : plus hauts et plus bas des minutes, niveau de prix du 20 octobre 2026,
+departs 2023-2026 dont la fenetre tient dans les donnees ; position nette des copies dans le meme compte)
+  Lucid Flex 50K :
+     V1 1 MNQ               valide  54.6 %, perdu  35.2 %, expire  10.2 % (804 departs)
+     V1 2 MNQ               valide  31.7 %, perdu  68.3 %, expire   0.0 % (804 departs)
+     V1 3 MNQ               valide  27.5 %, perdu  71.9 %, expire   0.6 % (804 departs)
+     E2 (D0 + D15)          valide  31.7 %, perdu  66.5 %, expire   1.7 % (804 departs)
+     E3 (D0 + D10 + D20)    valide  27.4 %, perdu  72.6 %, expire   0.0 % (804 departs)
+  Bulenox Legacy 50K opt. 2 (30 jours, publie) :
+     V1 1 MNQ               valide   1.0 %, perdu   0.3 %, expire  98.7 % (908 departs)
+     V1 2 MNQ               valide  22.2 %, perdu  22.2 %, expire  55.5 % (908 departs)
+     V1 3 MNQ               valide  44.7 %, perdu  31.5 %, expire  23.8 % (908 departs)
+     E2 (D0 + D15)          valide  19.6 %, perdu  17.7 %, expire  62.7 % (908 departs)
+     E3 (D0 + D10 + D20)    valide  42.6 %, perdu  34.1 %, expire  23.2 % (908 departs)
+  critere 3 (Lucid Flex) : E2 valide 31.7 % contre la meilleure de V1 a 1 et 2 MNQ (V1 1 MNQ, 54.6 %) -> -22.9 points valides (au moins +2) ; perdus 66.5 % contre 35.2 % -> +31.3 points (au plus +2) -> non
+  information (le README ne fixe le critere 3 que pour E2) : E3 valide 27.4 % (perdu 72.6 %) ; meilleure de V1 a 1, 2 et 3 MNQ : V1 1 MNQ 54.6 % (perdu 35.2 %)
+
+TESTS (dans l'ordre du README ; unilateraux ; Benjamini-Hochberg calcule ensuite sur les 17 tests)
+=== D15 seule ===
+  1) exploration : t net +1,09 (p unilateral 0.1383) -> t >= 2 : non ; coffre : t net +1,16 -> t >= 1,5 : non
+  2) Sharpe de E2 (D0 + D15) plus haut que V1 a 2 MNQ sur les deux periodes : non
+  3) Lucid Flex, E2 : non
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC
+=== D10 seule ===
+  1) exploration : t net +1,52 (p unilateral 0.0646) -> t >= 2 : non ; coffre : t net +1,80 -> t >= 1,5 : oui
+  2) Sharpe de E3 (D0 + D10 + D20) plus haut que V1 a 3 MNQ sur les deux periodes : non
+  3) Lucid Flex : non fixe par le README pour E3 (publie ci-dessus, sans decision)
+     (E3 demande aussi que D10 ET D20 passent chacune seule)
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC
+=== D20 seule ===
+  1) exploration : t net +1,32 (p unilateral 0.0928) -> t >= 2 : non ; coffre : t net +1,55 -> t >= 1,5 : oui
+  2) Sharpe de E3 (D0 + D10 + D20) plus haut que V1 a 3 MNQ sur les deux periodes : non
+  3) Lucid Flex : non fixe par le README pour E3 (publie ci-dessus, sans decision)
+     (E3 demande aussi que D10 ET D20 passent chacune seule)
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC
+
+CONTROLE b) correlations quotidiennes (points nets, seances de zone)
+  exploration : D0/D10 0,78 ; D0/D15 0,82 ; D0/D20 0,81 ; D10/D15 0,88 ; D10/D20 0,84 ; D15/D20 0,89
+  coffre : D0/D10 0,87 ; D0/D15 0,85 ; D0/D20 0,85 ; D10/D15 0,92 ; D10/D20 0,89 ; D15/D20 0,91
+  (gain de Sharpe possible seulement si la correlation est nettement sous 1)
+  exploration : D10 fait exactement le meme gain que D0 dans 0.8 % des 1820 seances ou l'une des deux trade
+  exploration : D15 fait exactement le meme gain que D0 dans 0.8 % des 1820 seances ou l'une des deux trade
+  exploration : D20 fait exactement le meme gain que D0 dans 0.5 % des 1826 seances ou l'une des deux trade
+  coffre : D10 fait exactement le meme gain que D0 dans 0.2 % des 546 seances ou l'une des deux trade
+  coffre : D15 fait exactement le meme gain que D0 dans 0.0 % des 555 seances ou l'une des deux trade
+  coffre : D20 fait exactement le meme gain que D0 dans 0.0 % des 543 seances ou l'une des deux trade
+
+CONTROLE c) resultats par heure du controle d'entree (trades, points nets, moyenne par trade)
+  D0 :
+     10h00  exploration  758 trades  +2868.00 pt ( +3.78) | coffre  234 trades   +648.50 pt ( +2.77)
+     10h30  exploration  304 trades   -858.75 pt ( -2.82) | coffre  100 trades  +1765.00 pt (+17.65)
+     11h00  exploration  235 trades   +196.00 pt ( +0.83) | coffre   70 trades  +1429.75 pt (+20.43)
+     11h30  exploration  202 trades   +572.75 pt ( +2.84) | coffre   66 trades    -51.75 pt ( -0.78)
+     12h00  exploration  205 trades    -71.25 pt ( -0.35) | coffre   40 trades   -176.00 pt ( -4.40)
+     12h30  exploration  169 trades   +154.75 pt ( +0.92) | coffre   51 trades  +2669.75 pt (+52.35)
+     13h00  exploration  130 trades   -191.75 pt ( -1.48) | coffre   43 trades   -242.50 pt ( -5.64)
+     13h30  exploration  141 trades   +623.00 pt ( +4.42) | coffre   36 trades   +178.50 pt ( +4.96)
+     14h00  exploration  136 trades   +558.25 pt ( +4.10) | coffre   46 trades   -403.50 pt ( -8.77)
+     14h30  exploration  128 trades    -33.25 pt ( -0.26) | coffre   47 trades   +237.50 pt ( +5.05)
+     15h00  exploration  126 trades   +411.75 pt ( +3.27) | coffre   40 trades   +116.00 pt ( +2.90)
+     15h30  exploration  123 trades   +729.75 pt ( +5.93) | coffre   40 trades   -416.50 pt (-10.41)
+  D10 :
+     10h10  exploration  760 trades  +2328.25 pt ( +3.06) | coffre  241 trades  +2251.50 pt ( +9.34)
+     10h40  exploration  271 trades   -736.75 pt ( -2.72) | coffre   97 trades  +1333.00 pt (+13.74)
+     11h10  exploration  225 trades   -250.25 pt ( -1.11) | coffre   73 trades  +1385.25 pt (+18.98)
+     11h40  exploration  206 trades   +587.50 pt ( +2.85) | coffre   65 trades   +487.50 pt ( +7.50)
+     12h10  exploration  212 trades   -154.50 pt ( -0.73) | coffre   48 trades   -499.50 pt (-10.41)
+     12h40  exploration  151 trades   -181.75 pt ( -1.20) | coffre   50 trades  +1696.75 pt (+33.94)
+     13h10  exploration  133 trades   +735.00 pt ( +5.53) | coffre   41 trades   -428.25 pt (-10.45)
+     13h40  exploration  147 trades   -347.25 pt ( -2.36) | coffre   42 trades   +394.00 pt ( +9.38)
+     14h10  exploration  118 trades   +652.25 pt ( +5.53) | coffre   41 trades   -469.75 pt (-11.46)
+     14h40  exploration  148 trades    -27.25 pt ( -0.18) | coffre   46 trades    -47.25 pt ( -1.03)
+     15h10  exploration  131 trades   +223.75 pt ( +1.71) | coffre   41 trades   -131.25 pt ( -3.20)
+     15h40  exploration  145 trades   +630.75 pt ( +4.35) | coffre   40 trades   -229.25 pt ( -5.73)
+  D15 :
+     10h15  exploration  769 trades   +946.50 pt ( +1.23) | coffre  240 trades  -1129.25 pt ( -4.71)
+     10h45  exploration  258 trades   -265.75 pt ( -1.03) | coffre   92 trades  +1601.75 pt (+17.41)
+     11h15  exploration  223 trades   -291.25 pt ( -1.31) | coffre   69 trades   +967.75 pt (+14.03)
+     11h45  exploration  212 trades   +478.75 pt ( +2.26) | coffre   59 trades   +769.25 pt (+13.04)
+     12h15  exploration  199 trades    +67.50 pt ( +0.34) | coffre   48 trades  +1136.00 pt (+23.67)
+     12h45  exploration  135 trades   -295.50 pt ( -2.19) | coffre   51 trades   +590.00 pt (+11.57)
+     13h15  exploration  147 trades    +79.25 pt ( +0.54) | coffre   37 trades   +209.50 pt ( +5.66)
+     13h45  exploration  148 trades   +102.75 pt ( +0.69) | coffre   46 trades   +127.00 pt ( +2.76)
+     14h15  exploration  145 trades  +1075.25 pt ( +7.42) | coffre   36 trades    -36.25 pt ( -1.01)
+     14h45  exploration  135 trades   -241.75 pt ( -1.79) | coffre   46 trades   +186.50 pt ( +4.05)
+     15h15  exploration  133 trades   +156.00 pt ( +1.17) | coffre   43 trades   -371.00 pt ( -8.63)
+     15h45  exploration  128 trades   +628.00 pt ( +4.91) | coffre   34 trades   -354.50 pt (-10.43)
+  D20 :
+     10h20  exploration  790 trades   +172.00 pt ( +0.22) | coffre  238 trades   +705.25 pt ( +2.96)
+     10h50  exploration  240 trades  +1146.25 pt ( +4.78) | coffre   81 trades  +1781.25 pt (+21.99)
+     11h20  exploration  226 trades   +653.25 pt ( +2.89) | coffre   64 trades  +1011.25 pt (+15.80)
+     11h50  exploration  216 trades   +188.75 pt ( +0.87) | coffre   58 trades   -189.00 pt ( -3.26)
+     12h20  exploration  179 trades  -1022.00 pt ( -5.71) | coffre   47 trades  +2742.25 pt (+58.35)
+     12h50  exploration  138 trades   -326.75 pt ( -2.37) | coffre   45 trades   -187.75 pt ( -4.17)
+     13h20  exploration  142 trades    -41.25 pt ( -0.29) | coffre   28 trades    +71.50 pt ( +2.55)
+     13h50  exploration  159 trades   +730.25 pt ( +4.59) | coffre   46 trades   -526.50 pt (-11.45)
+     14h20  exploration  118 trades   +198.75 pt ( +1.68) | coffre   39 trades    +61.50 pt ( +1.58)
+     14h50  exploration  125 trades    +59.25 pt ( +0.47) | coffre   50 trades   +107.25 pt ( +2.15)
+     15h20  exploration  136 trades   +517.50 pt ( +3.81) | coffre   38 trades  -1030.00 pt (-27.11)
+     15h50  exploration  146 trades   +640.00 pt ( +4.38) | coffre   48 trades   +311.50 pt ( +6.49)
+  premier controle de chaque copie (annonces de 10 h : D0 decide a 10 h 00 pile) :
+     exploration : D0 10h00 758 trades +2868,00 pt ; D10 10h10 760 trades +2328,25 pt ; D15 10h15 769 trades +946,50 pt ; D20 10h20 790 trades +172,00 pt
+     coffre : D0 10h00 234 trades +648,50 pt ; D10 10h10 241 trades +2251,50 pt ; D15 10h15 240 trades -1129,25 pt ; D20 10h20 238 trades +705,25 pt
+  sorties forcees a 15 h 59 et entrees au dernier controle :
+     D0 : 163 entrees a 15h30 (+313,25 pt, toutes periodes) ; 1150 trades sortis a 15h59 (+54792,25 pt)
+     D10 : 185 entrees a 15h40 (+401,50 pt, toutes periodes) ; 1160 trades sortis a 15h59 (+52454,00 pt)
+     D15 : 162 entrees a 15h45 (+273,50 pt, toutes periodes) ; 1145 trades sortis a 15h59 (+51939,50 pt)
+     D20 : 194 entrees a 15h50 (+951,50 pt, toutes periodes) ; 1147 trades sortis a 15h59 (+52033,25 pt)
+
+PAR ANNEE (information, points nets, 1 MNQ par copie)
+  annee         D0       D10       D15       D20        E2        E3    3 x D0
+  2011      -191.0    -284.8    -216.0    -304.5    -407.0    -780.2    -573.0
+  2012       -62.8    -115.8    -187.5    -138.2    -250.2    -316.8    -188.2
+  2013      -155.8    -266.5    -295.8    -221.5    -451.5    -643.8    -467.2
+  2014      -240.2    -145.0    -123.8    -162.8    -364.0    -548.0    -720.8
+  2015       -94.5    +192.8      -7.8     +82.8    -102.2    +181.0    -283.5
+  2016      -422.0    -432.2    -246.8    -303.2    -668.8   -1157.5   -1266.0
+  2017       -51.8     -83.5     -66.2    -184.8    -118.0    -320.0    -155.2
+  2018     +1948.0   +1855.2   +1664.0   +1862.2   +3612.0   +5665.5   +5844.0
+  2019      -104.5    -215.0    -298.5    -546.8    -403.0    -866.2    -313.5
+  2020     +1253.5    +500.8    +739.2    +638.5   +1992.8   +2392.8   +3760.5
+  2021      +737.0    +484.0     -77.2    -298.8    +659.8    +922.2   +2211.0
+  2022     +2343.2   +1969.8   +1556.0   +2493.0   +3899.2   +6806.0   +7029.8
+  2023     +1967.5   +1686.8   +1058.5   +1701.8   +3026.0   +5356.0   +5902.5
+  2024     +1057.2    +587.5   +1182.8   +1275.5   +2240.0   +2920.2   +3171.8
+  2025     +1270.8   +1544.0     +74.0    +570.2   +1344.8   +3385.0   +3812.2
+  2026     +1459.2   +1924.5   +1381.5   +1311.0   +2840.8   +4694.8   +4377.8
+
+CONTROLE d) P1 (Databento 1er avril - 1er oct. 2026) et P2 (Rithmic 2 - 16 oct. 2026), vrai delta : description
+  controle : D0 sur les barres du robot (tous les jours) redonne relance/resultats.txt (B P1 79 trades +1 776,75 ; sans filtre P1 99 / +982,25 ; B P2 6 / +220,25 ; sans filtre P2 7 / +669,50) : identique
+  filtre B de chaque copie : delta des 30 minutes qui finissent a SON controle d'entree, dans le sens du trade ;
+  un trade ecarte reste virtuel jusqu'a sa sortie (comme Moteur.cs). Regle de la piste : sans les jours de la Fed.
+       copie  sans filtre : trades    points |  garde par B : trades    points
+  P1   D0                       97  +1106.75 |                    77  +1901.25
+  P1   D10                      95   +964.50 |                    71  +1558.00
+  P1   D15                      87   +907.25 |                    66   +526.75
+  P1   D20                      88  +1072.00 |                    70   -176.25
+  P1   E2 (D0 + D15) sans filtre +2014.00, avec B +2428.00 ; E3 sans filtre +3143.25, avec B +3283.00 ; V1 x 2 avec B +3802.50, x 3 +5703.75
+  P2   D0                        7   +669.50 |                     6   +220.25
+  P2   D10                       7   +624.75 |                     4     +4.50
+  P2   D15                       8   +751.00 |                     5   +254.50
+  P2   D20                       9   +519.50 |                     6   +414.00
+  P2   E2 (D0 + D15) sans filtre +1420.50, avec B +474.75 ; E3 sans filtre +1813.75, avec B +638.75 ; V1 x 2 avec B +440.50, x 3 +660.75
+  (6 mois et 2 semaines : description seulement, aucune decision)
+
+CONTROLE e) rapprochement avec la grille de robustesse (kb/robustesse/robustesse.json)
+  grille : 180 zones (jours de moyenne x pas de controle x largeur x sortie), 2012-01-03 - 2026-09-25, $ par seance au prix d'aujourd'hui, jours de la Fed a 0 ; reglage du bot (14 j, 30 min, x 1, VWAP) Sharpe +1,119, au-dessus de 94.4 % des 180 zones (le rang de 99 % du README est celui des 14 400 bots zone + RSI(2) : 98.7 %)
+  mediane des 180 zones +0,857 ; zones a 30 minutes : mediane +0,974
+  D0 : Sharpe +1,109 sur 3783 seances -> au-dessus de  93.9 % des 180 zones
+     validation de l'unite : correlation quotidienne D0 / serie zone_brut de robustesse (3783 seances communes) : 1,0000
+  D10 : Sharpe +0,941 sur 3783 seances -> au-dessus de  69.4 % des 180 zones
+  D15 : Sharpe +0,789 sur 3783 seances -> au-dessus de  28.3 % des 180 zones
+  D20 : Sharpe +0,906 sur 3783 seances -> au-dessus de  62.8 % des 180 zones
+  (meme periode et meme unite que la grille ; petit ecart de D0 avec le reglage du bot : robustesse ramene le
+  niveau de prix par son propre facteur quotidien, ici par la cloture de la premiere minute du jour comme la partie D)
+
+SYNTHESE
+  D15  : t exploration +1,09, t coffre +1,16 -> criteres propres ECHEC (explo >= 2 non, coffre >= 1,5 non, Sharpe de l'ensemble non, Lucid non)
+  D10  : t exploration +1,52, t coffre +1,80 -> criteres propres ECHEC (explo >= 2 non, coffre >= 1,5 oui, Sharpe de l'ensemble non, Lucid non fixe pour E3)
+  D20  : t exploration +1,32, t coffre +1,55 -> criteres propres ECHEC (explo >= 2 non, coffre >= 1,5 oui, Sharpe de l'ensemble non, Lucid non fixe pour E3)
+  Decision : une copie decalee n'entre au robot virtuel que si elle passe ses criteres ET Benjamini-Hochberg a
+  10 % sur les 17 tests, puis la contre-verification adverse.
+
+LECTURE
+  - Les trois copies decalees gagnent avant et apres frais, mais moins que D0 en exploration (t +1,52,
+    +1,09, +1,32 contre +2,17) ; aucune n'atteint t >= 2. Elles sont tres
+    correlees a D0 (0,78 a 0,87), si bien que E2 et E3 ont un Sharpe plus bas que V1 a la meme taille sur les deux
+    periodes : la diversification ne compense pas la perte d'esperance des copies.
+  - Controle e) : D0 est au-dessus de 94 % des 180 zones de la grille, les copies decalees entre 28 et 69 % :
+    une partie du resultat de V1 tient a l'horaire :00 / :30. En exploration, le premier controle pese lourd
+    (10h00 +2868,00 pt ; 10h10 +2328,25 ; 10h15 +946,50 ; 10h20 +172,00) ; au coffre l'ordre change (10h00 +648,50 ; 10h10 +2251,50 ; 10h15 -1129,25 ; 10h20 +705,25).
+  - Chez Lucid Flex, E2 (2 MNQ) valide comme V1 a 2 MNQ et bien moins que V1 a 1 MNQ : l'exposition double pese plus
+    que le gain de diversification.
+
+ECARTS ET INTERPRETATIONS (aucun reglage apres les chiffres)
+  - Derniere entree : V1 permet une entree a son dernier controle (15 h 30). La meme regle exacte permet donc une
+    entree a 15 h 40 (D10), 15 h 45 (D15) et 15 h 50 (D20), tenue jusqu'a 15 h 59 (voir le controle c).
+  - Controle a) : les chiffres du README (3 572 trades, +10 721 pt) viennent des barres du 20 octobre au matin,
+    jusqu'au 19 octobre ; la barre de 11 h 30 du 19 octobre a ete retelechargee depuis (delta_mesures). D0 est donc
+    comparee trade par trade a delta_mesures trades_zone, et a entree_tardive jusqu'au 16 octobre (identique).
+  - Critere 2 : V1 a 2 ou 3 MNQ a le Sharpe de V1 a 1 MNQ. Series en points nets, comme le repere de V1.
+  - Critere 3 : le README ne le fixe que pour E2 (donc pour D15) ; pour E3 (D10, D20), Lucid est publie sans
+    decision. "Sans plus de 2 points de perdus en plus" est lu contre la meme meilleure V1 (ici V1 a 1 MNQ) ;
+    E2 echoue aussi contre V1 a 2 MNQ (valides +0,0 point, il en faut +2).
+  - Challenges a plusieurs copies : moteur de la partie D, plus haut et plus bas de chaque minute pris sur la
+    position nette des copies (D0 seule redonne partie_d.chemins_zone a 0 $ pres). Frais de chaque copie comptes.
+  - Controle d) : regle de la piste sans les jours de la Fed ; la verification de D0 contre relance/ garde tous les
+    jours, comme delta_mesures.
+  - Controle e) : la grille de robustesse classe des zones seules (180) ; le rang de 99 % cite par le README est
+    celui des 14 400 bots zone + RSI(2). Les copies sont placees dans la grille des zones, meme periode et unite.

@@ -345,3 +345,56 @@ Contre : V1 est au 99e centile de la grille, donc une partie de son résultat pe
 **Pourquoi ce n'est pas déjà testé**
 
 zone_optimisation/README.md (lu) : l'intervalle de 15 minutes (t 0,98) est UNE position contrôlée deux fois plus souvent, pas une seconde grille au rythme de 30 minutes. G3 réunissait 10 réglages différents choisis sur le passé (t 1,29 au coffre). robustesse/ fait varier l'intervalle, pas le décalage de départ. Aucun README ne contient de grille décalée (cherché : décalage, :15, 10 h 15).
+
+## Résultats (22 octobre 2026)
+
+Cinq agents ont codé chacun une piste selon les règles ci-dessus (`<dossier>/etude.py` → `<dossier>/resultats.txt`),
+avec les contrôles demandés. Chaque moteur redonne la zone de `delta_mesures/` trade par trade, et le moteur des
+challenges redonne la partie D. Chaque agent a fait un recalcul indépendant et un test de regard vers le futur
+(brouiller tout ce qui suit la décision ne change aucune décision). Benjamini-Hochberg à 10 % sur les 17 tests :
+seuil p ≤ 0,0052, **2 tests retenus** (R1 et R2).
+
+| Piste | Test | t exploration | t coffre | BH | Autres critères | Verdict |
+|---|---|---|---|---|---|---|
+| 1 Sortie VWAP | ZW − ZL (sortir pour de bon, contre tenir) | −0,37 | +0,78 | non | non | échoue |
+| | ZW+ − ZL | −0,62 | +0,24 | non | non | échoue |
+| 2 Heure de 16 h | H1 prolonger la zone | −0,36 (retourner : −1,81) | +1,49 | non | non | échoue |
+| | H2 retour de la journée, NQ | −0,49 | −0,20 | non | non | échoue |
+| | H3 retour de la dernière demi-heure | −2,12 | −1,96 | non | non | échoue |
+| | H4 retour de la journée, ES | −2,22 | −1,60 | non | non | échoue |
+| | H5 version Lucid (16 h - 16 h 15) | +0,61 | +0,18 | non | placebo oui, le reste non | échoue |
+| **3 Renfort** | **R1 : 1 MNQ de plus au premier contrôle tenu** | **+2,65** | **+1,72** | **oui** | coffre, Sharpe, placebo (98 %) oui ; **challenge Lucid non** | **échoue au critère 5** |
+| | **R2 : renfort aux deux premiers contrôles tenus** | **+2,56** | **+1,76** | **oui** | coffre, Sharpe, placebo (100 %) oui ; **challenge Lucid non** | **échoue au critère 5** |
+| | R3 : renfort si le gain latent ≥ 0,5 σ | +1,04 | +0,23 | non | non | échoue |
+| 4 Or à Londres | F3-30 or (MGC) | +2,07 | +0,38 | non | non | échoue |
+| | F4-16:30 or (MGC) | +1,97 | +1,49 | non | placebo du coffre 2,8 %, Sharpe zone + MGC 1,21 contre 1,04 ; argent et Lucid non | échoue de justesse |
+| | F3-30 argent (SIL) | −2,58 | −1,34 | non | non | échoue |
+| | F4-16:30 argent (SIL) | −0,41 | −0,01 | non | non | échoue |
+| 5 Zones décalées | D15 | +1,09 | +1,16 | non | non | échoue |
+| | D10 | +1,52 | +1,80 | non | non | échoue |
+| | D20 | +1,32 | +1,55 | non | non | échoue |
+
+**Décision fixée d'avance : aucune piste ne passe tous ses critères.** Rien n'entre au bot. La contre-vérification
+adverse n'a pas eu lieu, puisqu'aucun test ne l'atteignait.
+
+### Ce qu'on apprend quand même
+
+1. **Le renfort est la seule idée qui tienne au niveau des trades.** Ajouter 1 MNQ au premier contrôle où la zone tient
+   rapporte +3,0 points nets par renfort sur 2011 - 2022 (1 511 renforts), puis +10 points au coffre (469 renforts).
+   Il bat 98 % des placebos, qui ajoutent un renfort à un contrôle tiré au hasard. **Mais il échoue au challenge** :
+   - chez Lucid Flex, 1 + 1 MNQ valide 30,5 % des challenges (68 % de perdus), contre 54,6 % pour le bot à 1 MNQ et
+     31,7 % à 2 MNQ ;
+   - le renfort ajoute de l'avantage, mais il ajoute surtout du risque, comme une taille plus grande ;
+   - en rendement (points ÷ prix), son t d'exploration tombe à +1,37 : il vient surtout de 2018 - 2022, quand un point
+     du NQ valait le plus, et seules 5 années d'exploration sur 12 sont positives.
+2. **La sortie au VWAP n'a pas d'effet mesurable.** Le juge avait trouvé que le bot réel (filtre delta) sort vraiment
+   dans ces cas, alors que les backtests tiennent la position (382 cas en 15 ans). Les deux font la même chose à
+   peu près (t −0,37 et +0,78) : **les backtests restent valables pour le bot réel**. Sur avril - octobre 2026, les
+   11 rachats de ce type ont tous été écartés par le filtre ; sans filtre, ils auraient coûté 340 points.
+3. **L'or à l'ouverture de Londres passe près du seuil** (F4 : +1,97 puis +1,49, coffre jamais ouvert jusqu'ici, bat
+   97 % des placebos au coffre), mais il ne se réplique pas sur l'argent et il fait baisser la réussite chez Lucid.
+   Ambiguïté signalée : le code inchangé de la machine 5 cherche la cassure jusqu'à 16 h 30 (Londres), le README
+   écrivait 12 h ; la version coupée à 12 h n'a pas été calculée pour ne pas ajouter de variante.
+4. **L'heure de 16 h à 16 h 59 ne donne rien**, ni pour prolonger la zone, ni pour jouer le retour de la clôture.
+5. **Les copies décalées sont moins bonnes que la zone** (t +1,1 à +1,5 contre +2,17) : les contrôles à :00 et :30
+   ne sont pas une chance de l'horaire à diversifier.

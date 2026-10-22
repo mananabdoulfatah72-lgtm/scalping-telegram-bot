@@ -1,0 +1,115 @@
+Piste 1 : sortie VWAP de la zone, tenir (ZL) ou sortir pour de bon (ZW, ZW+)
+Regles : etude_large/pistes/README.md (commit a6e791f, fixees avant tout calcul). NQ minute, 1 MNQ, 1,5 point
+par aller-retour, pas de zone les jours de la Fed ni les jours courts. Exploration 2011-2022, coffre 2023 -> 20 oct. 2026.
+
+CONTROLE a) recomptage du juge (minutes de la recherche seules, 2011 -> 25 sept. 2026, tous les jours)
+  V1 recalculee ici = delta_mesures trades_zone trade par trade : oui (3562 trades ; juge 3 562)
+  rachats dans le meme sens au meme controle : 382 (juge 382) ; cas vises vus par la seance : 382 ; 210 seances (juge 210) ; de 10 a 43 par an (juge 10 a 43)
+  V1 +10228,50 pt ; ZL +10801,50 pt ; ZL - V1 = +573,00 = 1,5 x 382 (+573,00) : exact ; seance par seance (ZL = V1 + 1,5 x cas du jour) : exact
+  -> controle a) PASSE
+
+BASE : minutes de la recherche + robot jusqu'au 2026-10-20 ; 3748 seances de zone (109 jours de la Fed retires, 0 jour court parmi les seances completes) : exploration 2841, coffre 907
+  V1 ici = delta_mesures trades_zone sur ces seances : oui (3470 trades)
+  regard vers le futur : 300 seances x 12 controles x 3 regles, tout ce qui suit le controle brouille -> 0 decision changee jusqu'au controle (la suite change dans 10055 cas sur 10 800, le brouillage agit) ;
+  sigma recalcule a la main (14 seances completes AVANT le jour) ecart max 0.0e+00 ; VWAP recalcule (minutes <= controle) ecart max 2.9e-11 -> aucun regard vers le futur
+  chemins des challenges (recopie de partie_d.chemins_zone) avec les trades de V1 = original : oui
+
+Cas vises (V1 / ZL : ub < C <= VWAP en position ; ZW et ZW+ : sorties VWAP effectives sur leur propre chemin)
+  exploration : V1 280 cas (154 seances), ZW 160, ZW+ 178
+  coffre      : V1 97 cas (53 seances), ZW 53, ZW+ 61
+
+Totaux (points nets, 1 MNQ)            trades   points   t seances   Sharpe
+  exploration V1                            2657  +4959.25    +2.17    +0.64
+  exploration ZL                            2377  +5379.25    +2.35    +0.70
+  exploration ZW                            2377  +5191.00    +2.33    +0.69
+  exploration ZW+                           2451  +5150.50    +2.29    +0.68
+  coffre      V1                             813  +5754.75    +1.88    +0.99
+  coffre      ZL                             716  +5900.25    +1.93    +1.02
+  coffre      ZW                             716  +6343.00    +2.11    +1.11
+  coffre      ZW+                            743  +6010.50    +1.97    +1.04
+
+=== TEST ZW - ZL (bilateral) ===
+  exploration : delta   -188.25 pt sur 2841 seances, 160 cas (-1.18 pt par cas), seances touchees 154, t -0.37 (p bilateral 0.709)
+  coffre      : delta   +442.75 pt sur 907 seances, 53 cas (+8.35 pt par cas), seances touchees 53, t +0.78 (p bilateral 0.433)
+  1) exploration |t| >= 2 : t -0.37 -> non (Benjamini-Hochberg : calcule sur les 17 tests)
+  2) coffre meme signe et |t| >= 1,5 : t +0.78 -> non
+  3) Sharpe du gagnant (ZL, sens de l'exploration) > perdant (ZW) sur les deux periodes : exploration +0.700 contre +0.695 ; coffre +1.015 contre +1.112 -> non
+  4) placebo (exploration, 200 tirages, 160 sorties forcees par tirage, meme nombre par an, blocage de ZW) : placebos moyenne -249.1 pt, 5e-95e centile -1051.0 / +535.5 ; reel -188.2 plus extreme du cote gagnant que 45.5 % -> non
+  5) challenges, departs 2023-2026, le gagnant valide au plus 1 point de moins que le perdant :
+     Bulenox (delta_mesures challenge, 16 seances depuis 0, 4 puis 6 MNQ (reglage actuel), 965 departs) : ZL valide 46.6 % (perdu 40.6 %), ZW 45.9 % (perdu 40.4 %) -> oui
+     Lucid Flex 50K (partie D, 1 MNQ, 804 departs) : ZL valide 54.7 % (perdu 35.1 %), ZW 55.7 % (perdu 35.4 %) -> oui
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC (1 non, 2 non, 3 non, 4 non, 5 oui)
+
+=== TEST ZW+ - ZL (bilateral) ===
+  exploration : delta   -228.75 pt sur 2841 seances, 178 cas (-1.29 pt par cas), seances touchees 154, t -0.62 (p bilateral 0.538)
+  coffre      : delta   +110.25 pt sur 907 seances, 61 cas (+1.81 pt par cas), seances touchees 53, t +0.24 (p bilateral 0.813)
+  1) exploration |t| >= 2 : t -0.62 -> non (Benjamini-Hochberg : calcule sur les 17 tests)
+  2) coffre meme signe et |t| >= 1,5 : t +0.24 -> non
+  3) Sharpe du gagnant (ZL, sens de l'exploration) > perdant (ZW+) sur les deux periodes : exploration +0.700 contre +0.683 ; coffre +1.015 contre +1.039 -> non
+  4) placebo (exploration, 200 tirages, 178 sorties forcees par tirage, meme nombre par an, blocage de ZW+) : placebos moyenne -311.7 pt, 5e-95e centile -727.9 / +111.8 ; reel -228.8 plus extreme du cote gagnant que 37.0 % -> non
+  5) challenges, departs 2023-2026, le gagnant valide au plus 1 point de moins que le perdant :
+     Bulenox (delta_mesures challenge, 16 seances depuis 0, 4 puis 6 MNQ (reglage actuel), 965 departs) : ZL valide 46.6 % (perdu 40.6 %), ZW+ 46.5 % (perdu 39.5 %) -> oui
+     Lucid Flex 50K (partie D, 1 MNQ, 804 departs) : ZL valide 54.7 % (perdu 35.1 %), ZW+ 55.2 % (perdu 35.6 %) -> oui
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC (1 non, 2 non, 3 non, 4 non, 5 oui)
+  lecture de ZW+ : la condition 'au-dela du VWAP' vaut pour la prochaine entree dans le meme sens ; entrees qu'une condition valable toute la seance aurait refusees : 2
+
+CONTROLE c) achats et ventes, heure du cas (chaque seance est rangee selon son premier cas)
+  ZW - ZL
+    exploration achats :  53 seances,    -0.25 pt,  -0.00 par seance
+    exploration ventes : 101 seances,  -188.00 pt,  -1.86 par seance
+    exploration par heure (seances / points) : 10h30 15 / +206, 11h00 21 / +114, 11h30 15 / -160, 12h00 21 / +102, 12h30 20 / -72, 13h00 7 / +106, 13h30 10 / -122, 14h00 14 / +44, 14h30 5 / -60, 15h00 14 / -289, 15h30 12 / -57
+    exploration seances avec plus d'un cas : 6
+    coffre      achats :  15 seances,  -270.00 pt, -18.00 par seance
+    coffre      ventes :  38 seances,  +712.75 pt, +18.76 par seance
+    coffre      par heure (seances / points) : 10h30 9 / +108, 11h00 10 / -16, 11h30 3 / +66, 12h00 7 / +26, 12h30 3 / +22, 13h00 1 / +78, 13h30 6 / +196, 14h00 5 / -106, 14h30 2 / -61, 15h00 4 / -69, 15h30 3 / +199
+    coffre      seances avec plus d'un cas : 0
+  ZW+ - ZL
+    exploration achats :  53 seances,   +90.00 pt,  +1.70 par seance
+    exploration ventes : 101 seances,  -318.75 pt,  -3.16 par seance
+    exploration par heure (seances / points) : 10h30 15 / +162, 11h00 21 / +50, 11h30 15 / -78, 12h00 21 / -46, 12h30 20 / -132, 13h00 7 / +64, 13h30 10 / +6, 14h00 14 / +57, 14h30 5 / -20, 15h00 14 / -234, 15h30 12 / -57
+    exploration seances avec plus d'un cas : 21
+    coffre      achats :  15 seances,  -367.75 pt, -24.52 par seance
+    coffre      ventes :  38 seances,  +478.00 pt, +12.58 par seance
+    coffre      par heure (seances / points) : 10h30 9 / -126, 11h00 10 / -16, 11h30 3 / -11, 12h00 7 / +16, 12h30 3 / -3, 13h00 1 / +78, 13h30 6 / +184, 14h00 5 / +28, 14h30 2 / -121, 15h00 4 / -118, 15h30 3 / +199
+    coffre      seances avec plus d'un cas : 7
+
+CONTROLE d) ES minute en replication (information, 0,9 point par aller-retour, donnees jusqu'au 25 sept. 2026)
+  ZW - ZL : exploration +105.00 pt ES, 152 cas, t +0.81 ; coffre +104.25 pt ES, 42 cas, t +1.20 -> meme signe que le NQ en exploration : non
+  ZW+ - ZL : exploration +17.30 pt ES, 167 cas, t +0.16 ; coffre -89.30 pt ES, 53 cas, t -0.84 -> meme signe que le NQ en exploration : non
+
+CONTROLES b) et e) : P1 (Databento, avril - 1er oct. 2026) et P2 (Rithmic, 2 - 16 oct. 2026), vrai delta
+  P1 : trades.csv = zone recalculee sur les barres du robot : oui (99 trades) ; rachats du cas vise : 11, ecartes par le filtre B : 11 (100 %), points de ces rachats (sans filtre) -340.00
+     2026-04-07 12h00 vente   -76.25 pt, delta des 30 minutes +560 -> ecarte
+     2026-05-01 15h00 achat   +15.00 pt, delta des 30 minutes -792 -> ecarte
+     2026-05-14 13h30 achat   +24.00 pt, delta des 30 minutes -1135 -> ecarte
+     2026-06-09 14h30 vente   -20.25 pt, delta des 30 minutes +441 -> ecarte
+     2026-06-09 15h00 vente   -74.25 pt, delta des 30 minutes +294 -> ecarte
+     2026-07-28 11h00 vente  -125.75 pt, delta des 30 minutes +1669 -> ecarte
+     2026-07-30 11h00 achat   -21.25 pt, delta des 30 minutes -1968 -> ecarte
+     2026-08-24 10h30 vente   -30.25 pt, delta des 30 minutes +577 -> ecarte
+     2026-08-24 11h00 vente   -62.75 pt, delta des 30 minutes +977 -> ecarte
+     2026-09-22 11h30 achat   -10.50 pt, delta des 30 minutes -310 -> ecarte
+     2026-09-23 11h00 vente   +42.25 pt, delta des 30 minutes +1840 -> ecarte
+  P1 : H1 (filtre B, relance decochee) 79 trades +1776.75 pt (attendu 79, +1 776,75) ; 11 rachats tous ecartes : oui -> controle b) PASSE
+  P2 : trades.csv = zone recalculee sur les barres du robot : oui (7 trades) ; rachats du cas vise : 0, ecartes par le filtre B : 0 (0 %), points de ces rachats (sans filtre) +0.00
+  P2 : aucun rachat de ce type sur les 7 trades : la part ecartee n'est pas mesurable sur P2.
+
+RESUME DES 2 TESTS (t d'exploration et de coffre ; critere 1 sans Benjamini-Hochberg, calcule ensuite sur 17 tests)
+  ZW - ZL   t explo -0.37 (bilateral, p 0.709), t coffre +0.78, gagnant de l'exploration ZL ; criteres 1-5 : 1:non 2:non 3:non 4:non 5:oui -> echoue
+  ZW+ - ZL  t explo -0.62 (bilateral, p 0.538), t coffre +0.24, gagnant de l'exploration ZL ; criteres 1-5 : 1:non 2:non 3:non 4:non 5:oui -> echoue
+Controles : a) passe ; b) passe ; c) publie ; d) ES meme signe : non, non ; e) publie ; regard vers le futur : aucun
+DECISION fixee d'avance : aucun vainqueur net -> ZL passe dans le robot virtuel (frais economises, environ 1,5 point par cas) et l'ecart entre backtest et bot est publie.
+
+LECTURES DES REGLES (choisies avant les chiffres, au plus pres du README) :
+- series quotidiennes sur les seances ou la zone joue (jours de la Fed retires, aucun jour court parmi les seances
+  completes), 0 les seances sans cas ; Sharpe = moyenne / ecart-type x racine(252) de ces series (partie_a.sharpe).
+- ZW+ : la condition 'C au-dela du VWAP' porte sur la prochaine entree dans le meme sens apres la sortie VWAP
+  (elle n'est pas levee par un retour dans la zone) ; la lecture 'toute la seance' n'aurait change que 2 entrees.
+- placebo : en exploration (periode du test) ; les controles candidats sont ceux ou ZL tient avec C au-dela de
+  max(ub, VWAP) (vente : min(lb, VWAP)) ; nombre de sorties forcees effectives par an = nombre de sorties VWAP de la
+  regle testee ; 'meme blocage' = celui de la regle testee (ZW : pas de rachat dans le meme sens avant C <= ub ;
+  ZW+ : pas de rachat a ce controle, puis rachat seulement au-dela du VWAP). Ecart compare : somme des points nets.
+- Bulenox : delta_mesures challenge() depuis un compte neuf (0 $), 16 seances, a la taille de l'appel 'depuis 0' de
+  ce code, qui est le reglage actuel du bot (4 MNQ puis 6) ; Lucid Flex : partie D a 1 MNQ comme le README.
+- P1 et P2 : delta reel lu dans delta_mesures/trades.csv (filtre B), apres verification que ses trades sont ceux de
+  la zone recalculee sur les barres du robot.

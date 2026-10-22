@@ -1,0 +1,161 @@
+Piste 3 : renfort sur le trade qui tient (R1, R2, R3)
+Regles : etude_large/pistes/README.md (commit a6e791f, fixees avant tout calcul). NQ minute, base V1 a 1 MNQ
+(sans filtre sur 15 ans), +1 MNQ par renfort, 1,5 point par aller-retour et par unite ; pas de zone les jours
+de la Fed ni les jours courts. Exploration 2011-2022, coffre 2023 -> 20 oct. 2026. Series en points nets par
+seance (1 MNQ), 0 les seances sans renfort ; t = moyenne / ecart-type x racine(seances).
+
+BASE : minutes de la recherche + robot jusqu'au 2026-10-20 ; 3748 seances de zone (109 jours de la Fed retires, 0 jour court parmi les seances completes) : exploration 2841, coffre 907
+  V1 recalculee ici = delta_mesures trades_zone, trade par trade : oui (3470 trades)
+  V1 : exploration +4959.25 pt, t +2.17, Sharpe +0.64 ; coffre +5754.75 pt, t +1.88, Sharpe +0.99
+  placement des renforts (controle tenu, apres l'entree, avant la sortie, 10 h 30 - 15 h 00, meme sens, meme sortie que V1) : conforme
+
+CONTROLE a) les trades qui passent le premier controle (kb/zone_failles/autopsie.txt)
+  moteur de l'autopsie (zone_failles/journal.py, V0, 2011-2022, jours sans changement d'echeance) : 2789 trades, 1655 passent le premier controle (duree > 30 min), 1134 durent 30 min ; autopsie 2 789 et 1 655 -> retrouve
+  base de la piste (V1, sans les jours de la Fed), exploration : 2657 trades, 1582 passent le premier controle, dont 1511 avec un premier controle tenu entre 10 h 30 et 15 h 00 (renforts R1 possibles ; README : environ 1 655) ; coffre : 469 (README : environ 500)
+  -> controle a) PASSE
+
+REGARD VERS LE FUTUR
+  3600 cas (300 seances x 12 controles) : tout ce qui suit le controle m est brouille -> 0 decision changee jusqu'a m (entrees, sorties, renforts R1-R3 et seuil de R3) ; la suite change dans 3153 cas (le brouillage agit)
+  sigma recalcule a la main (14 seances completes avant le jour) : ecart max 0.0e+00 ; VWAP (minutes <= m) : 3.3e-11 ; references max/min(ouverture, veille) : 0.0e+00
+  renfort : entree a la cloture de la minute du controle, apres la decision de V1 a ce controle ; seuil R3 avec le
+  sigma et le prix de cette minute ; sortie = sortie de V1, decidee plus tard avec les memes regles.
+  -> aucun regard vers le futur
+  chemins des challenges (recopie de partie_d.chemins_zone) avec les trades de V1 = original : oui (ecart max 0.0e+00 $)
+
+=== TEST R1 (unilateral : t net >= 2 en exploration) ===
+  exploration : 1511 renforts (1281 seances), renfort seul +4551.00 pt nets (+3.01 par renfort), t net +2.65 (p unilateral 0.0040) ; avant frais +6817.50 pt, t +3.97
+  coffre      : 469 renforts (389 seances), renfort seul +4699.25 pt nets (+10.02 par renfort), t net +1.72 ; avant frais +5402.75 pt, t +1.98
+  information (ne sert a aucune decision ; unite du t, voir ecarts) : meme serie en rendement (points / ouverture du jour) : t exploration +1.37, coffre +1.90
+  1) exploration t net >= 2 : t +2.65 -> oui (Benjamini-Hochberg : calcule sur les 17 tests ensemble)
+  2) coffre t net >= 1,5, meme signe : t +1.72 -> oui
+  3) Sharpe de V1 + renfort (x 0.606, meme ecart-type que V1 sur 2011-2022) contre V1 : exploration +0.750 contre +0.645 ; coffre +0.991 contre +0.989 -> oui (le facteur ne change pas le Sharpe)
+  4) placebo (exploration, 200 tirages, 1511 renforts par tirage, meme nombre par an, tires parmi 8495 controles de 10 h 30 a 15 h 00 en position, meme sens, meme sortie) : placebos moyenne +1256.9 pt, 95e centile +3646.7 ; reel +4551.0 fait mieux que 98.0 % -> oui
+     information, meme placebo au coffre : reel +4699.2 pt fait mieux que 78.5 % (moyenne +3041.2, 95e centile +6128.1)
+  5) Lucid Flex 50K (partie D, departs 2023-2026, 804 departs) : 1 MNQ + renforts valide 30.5 % (perdu 68.0 %, expire 1.5 %)
+     contre V1 a 1 MNQ : valide 54.6 %, perdu 35.2 % -> -24.1 points valides, +32.8 points perdus -> non
+     contre V1 a 2 MNQ : valide 31.7 %, perdu 68.3 % -> -1.2 points valides, -0.2 points perdus -> non
+     -> non (au moins +3 points valides et au plus +3 points perdus contre chaque comparaison)
+     Bulenox Legacy 50K (partie D, 30 jours, publie) : 1 MNQ + renforts valide 16.3 % (perdu 9.5 %, 908 departs) ; V1 1 MNQ 1.0 % (perdu 0.3 %), 2 MNQ 22.2 % (perdu 22.2 %)
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC (1 oui, 2 oui, 3 oui, 4 oui, 5 non)
+
+=== TEST R2 (unilateral : t net >= 2 en exploration) ===
+  exploration : 2650 renforts (1281 seances), renfort seul +7787.25 pt nets (+2.94 par renfort), t net +2.56 (p unilateral 0.0052) ; avant frais +11762.25 pt, t +3.87
+  coffre      : 816 renforts (389 seances), renfort seul +8348.75 pt nets (+10.23 par renfort), t net +1.76 ; avant frais +9572.75 pt, t +2.01
+  information (ne sert a aucune decision ; unite du t, voir ecarts) : meme serie en rendement (points / ouverture du jour) : t exploration +1.35, coffre +1.84
+  1) exploration t net >= 2 : t +2.56 -> oui (Benjamini-Hochberg : calcule sur les 17 tests ensemble)
+  2) coffre t net >= 1,5, meme signe : t +1.76 -> oui
+  3) Sharpe de V1 + renfort (x 0.459, meme ecart-type que V1 sur 2011-2022) contre V1 : exploration +0.760 contre +0.645 ; coffre +0.990 contre +0.989 -> oui (le facteur ne change pas le Sharpe)
+  4) placebo (exploration, 200 tirages, 2650 renforts par tirage, meme nombre par an, tires parmi 8495 controles de 10 h 30 a 15 h 00 en position, meme sens, meme sortie) : placebos moyenne +1999.9 pt, 95e centile +4892.2 ; reel +7787.2 fait mieux que 100.0 % -> oui
+     information, meme placebo au coffre : reel +8348.8 pt fait mieux que 82.0 % (moyenne +5889.3, 95e centile +11029.7)
+  5) Lucid Flex 50K (partie D, departs 2023-2026, 804 departs) : 1 MNQ + renforts valide 30.3 % (perdu 69.0 %, expire 0.6 %)
+     contre V1 a 1 MNQ : valide 54.6 %, perdu 35.2 % -> -24.3 points valides, +33.8 points perdus -> non
+     contre V1 a 2 MNQ : valide 31.7 %, perdu 68.3 % -> -1.4 points valides, +0.7 points perdus -> non
+     contre V1 a 3 MNQ : valide 27.5 %, perdu 71.9 % -> +2.9 points valides, -2.9 points perdus -> non
+     -> non (au moins +3 points valides et au plus +3 points perdus contre chaque comparaison ; R2 : aussi contre V1 a 3 MNQ, meme exposition maximale)
+     Bulenox Legacy 50K (partie D, 30 jours, publie) : 1 MNQ + renforts valide 28.4 % (perdu 21.9 %, 908 departs) ; V1 1 MNQ 1.0 % (perdu 0.3 %), 2 MNQ 22.2 % (perdu 22.2 %), 3 MNQ 44.7 % (perdu 31.5 %)
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC (1 oui, 2 oui, 3 oui, 4 oui, 5 non)
+
+=== TEST R3 (unilateral : t net >= 2 en exploration) ===
+  exploration : 433 renforts (408 seances), renfort seul +1156.25 pt nets (+2.67 par renfort), t net +1.04 (p unilateral 0.1498) ; avant frais +1805.75 pt, t +1.62
+  coffre      : 130 renforts (121 seances), renfort seul +300.50 pt nets (+2.31 par renfort), t net +0.23 ; avant frais +495.50 pt, t +0.38
+  information (ne sert a aucune decision ; unite du t, voir ecarts) : meme serie en rendement (points / ouverture du jour) : t exploration +0.28, coffre +0.52
+  1) exploration t net >= 2 : t +1.04 -> non (Benjamini-Hochberg : calcule sur les 17 tests ensemble)
+  2) coffre t net >= 1,5, meme signe : t +0.23 -> non
+  3) Sharpe de V1 + renfort (x 0.760, meme ecart-type que V1 sur 2011-2022) contre V1 : exploration +0.604 contre +0.645 ; coffre +0.847 contre +0.989 -> non (le facteur ne change pas le Sharpe)
+  4) placebo (exploration, 200 tirages, 433 renforts par tirage, meme nombre par an, tires parmi 8495 controles de 10 h 30 a 15 h 00 en position, meme sens, meme sortie) : placebos moyenne +298.8 pt, 95e centile +1542.9 ; reel +1156.2 fait mieux que 82.5 % -> non
+     information, meme placebo au coffre : reel +300.5 pt fait mieux que 30.5 % (moyenne +693.2, 95e centile +2719.8)
+  5) Lucid Flex 50K (partie D, departs 2023-2026, 804 departs) : 1 MNQ + renforts valide 52.1 % (perdu 43.7 %, expire 4.2 %)
+     contre V1 a 1 MNQ : valide 54.6 %, perdu 35.2 % -> -2.5 points valides, +8.5 points perdus -> non
+     contre V1 a 2 MNQ : valide 31.7 %, perdu 68.3 % -> +20.4 points valides, -24.6 points perdus -> oui
+     -> non (au moins +3 points valides et au plus +3 points perdus contre chaque comparaison)
+     Bulenox Legacy 50K (partie D, 30 jours, publie) : 1 MNQ + renforts valide 7.9 % (perdu 4.6 %, 908 departs) ; V1 1 MNQ 1.0 % (perdu 0.3 %), 2 MNQ 22.2 % (perdu 22.2 %)
+  -> criteres propres (hors Benjamini-Hochberg) : ECHEC (1 non, 2 non, 3 non, 4 non, 5 non)
+
+CONTROLE b) ES minute (2011 -> 25 sept. 2026), meme regle, avant frais : meme signe que le NQ avant frais
+  R1 : exploration ES +1473.00 pt (t +2.87), NQ +6817.50 pt (t +3.97) -> meme signe ; coffre ES -245.75 pt (t -0.54), NQ +5402.75 pt (t +1.98) -> SIGNE OPPOSE
+  R2 : exploration ES +2534.25 pt (t +2.73), NQ +11762.25 pt (t +3.87) -> meme signe ; coffre ES -523.25 pt (t -0.63), NQ +9572.75 pt (t +2.01) -> SIGNE OPPOSE
+  R3 : exploration ES +554.00 pt (t +1.72), NQ +1805.75 pt (t +1.62) -> meme signe ; coffre ES -57.75 pt (t -0.20), NQ +495.50 pt (t +0.38) -> SIGNE OPPOSE
+  (3729 seances ES hors Fed : exploration 2836, coffre 893)
+  -> controle b) ECHEC (meme signe sur les deux periodes)
+
+CONTROLE c) resultats par annee et par heure du renfort (points nets des seules unites ajoutees)
+  R1 par annee (renforts / points / par renfort) :
+    2011 133 / -234 / -1.76 ; 2012 123 / -58 / -0.47 ; 2013 122 / -108 / -0.89 ; 2014 126 / -56 / -0.44 ; 2015 126 / +125 / +0.99 ; 2016 129 / -98 / -0.76 ; 2017 124 / -0 / -0.00 ; 2018 123 / +1415 / +11.51 ; 2019 126 / -469 / -3.72 ; 2020 124 / +358 / +2.89 ; 2021 118 / +897 / +7.60 ; 2022 137 / +2778 / +20.28 ; 2023 126 / +950 / +7.54 ; 2024 124 / +795 / +6.41 ; 2025 117 / +2506 / +21.42 ; 2026 102 / +447 / +4.38
+    annees positives : exploration 5 sur 12, coffre 4 sur 4
+    exploration par heure : 10h30 489 / +2166 / +4.43 ; 11h00 180 / +70 / +0.39 ; 11h30 151 / +526 / +3.49 ; 12h00 141 / +18 / +0.12 ; 12h30 132 / -174 / -1.32 ; 13h00 106 / +482 / +4.55 ; 13h30 74 / +83 / +1.12 ; 14h00 86 / +697 / +8.10 ; 14h30 80 / +464 / +5.80 ; 15h00 72 / +219 / +3.04
+    coffre par heure : 10h30 162 / +746 / +4.60 ; 11h00 65 / +1352 / +20.81 ; 11h30 43 / +398 / +9.26 ; 12h00 42 / -40 / -0.94 ; 12h30 29 / -139 / -4.78 ; 13h00 33 / +2227 / +67.49 ; 13h30 28 / -304 / -10.84 ; 14h00 20 / +319 / +15.94 ; 14h30 21 / -188 / -8.98 ; 15h00 26 / +328 / +12.60
+  R2 par annee (renforts / points / par renfort) :
+    2011 237 / -384 / -1.62 ; 2012 216 / -95 / -0.44 ; 2013 214 / -160 / -0.75 ; 2014 220 / -133 / -0.61 ; 2015 219 / +264 / +1.20 ; 2016 229 / -290 / -1.27 ; 2017 221 / -68 / -0.31 ; 2018 210 / +2791 / +13.29 ; 2019 222 / -883 / -3.98 ; 2020 218 / +118 / +0.54 ; 2021 209 / +1081 / +5.17 ; 2022 235 / +5548 / +23.61 ; 2023 219 / +1200 / +5.48 ; 2024 211 / +1112 / +5.27 ; 2025 205 / +4363 / +21.28 ; 2026 181 / +1674 / +9.25
+    annees positives : exploration 5 sur 12, coffre 4 sur 4
+    exploration par heure : 10h30 489 / +2166 / +4.43 ; 11h00 568 / +1009 / +1.78 ; 11h30 283 / +966 / +3.41 ; 12h00 268 / +261 / +0.97 ; 12h30 250 / +138 / +0.55 ; 13h00 217 / +362 / +1.67 ; 13h30 152 / +734 / +4.83 ; 14h00 148 / +314 / +2.12 ; 14h30 139 / +1226 / +8.82 ; 15h00 136 / +612 / +4.50
+    coffre par heure : 10h30 162 / +746 / +4.60 ; 11h00 182 / +2626 / +14.43 ; 11h30 96 / +1470 / +15.32 ; 12h00 76 / +334 / +4.39 ; 12h30 63 / -390 / -6.19 ; 13h00 60 / +1989 / +33.15 ; 13h30 56 / +866 / +15.46 ; 14h00 41 / +272 / +6.64 ; 14h30 36 / +227 / +6.31 ; 15h00 44 / +210 / +4.77
+  R3 par annee (renforts / points / par renfort) :
+    2011 43 / -160 / -3.72 ; 2012 42 / -16 / -0.39 ; 2013 35 / -47 / -1.35 ; 2014 33 / +34 / +1.05 ; 2015 40 / -30 / -0.76 ; 2016 28 / -108 / -3.87 ; 2017 31 / +52 / +1.67 ; 2018 36 / +470 / +13.06 ; 2019 39 / -275 / -7.05 ; 2020 32 / -4 / -0.11 ; 2021 36 / +330 / +9.18 ; 2022 38 / +910 / +23.95 ; 2023 41 / +466 / +11.37 ; 2024 40 / -546 / -13.64 ; 2025 22 / +1232 / +55.98 ; 2026 27 / -852 / -31.54
+    annees positives : exploration 5 sur 12, coffre 2 sur 4
+    exploration par heure : 10h30 210 / +966 / +4.60 ; 11h00 54 / -42 / -0.79 ; 11h30 39 / +213 / +5.46 ; 12h00 37 / -295 / -7.97 ; 12h30 28 / +86 / +3.07 ; 13h00 17 / +115 / +6.76 ; 13h30 14 / -353 / -25.21 ; 14h00 10 / +42 / +4.15 ; 14h30 14 / +204 / +14.54 ; 15h00 10 / +222 / +22.18
+    coffre par heure : 10h30 61 / -330 / -5.41 ; 11h00 23 / +344 / +14.98 ; 11h30 18 / +58 / +3.24 ; 12h00 5 / +14 / +2.80 ; 12h30 6 / -60 / -10.08 ; 13h00 8 / +54 / +6.75 ; 13h30 3 / -49 / -16.42 ; 14h00 1 / +18 / +18.25 ; 14h30 2 / +241 / +120.62 ; 15h00 3 / +10 / +3.25
+
+CONTROLE d) pire seance avec renfort (1 MNQ de base + 1 MNQ par renfort, 2 $ par point)
+  R1 : pire seance aux prix d'epoque -1074 $ (2024-11-20) ; au prix du 20 oct. 2026 : pire cloture -2438 $, pire creux dans la seance -4057 $ (2020-03-12) ; unites au plus 2 MNQ
+     limite du jour de Bulenox (1000 $), aux prix d'epoque et 1 MNQ de base : depassee ; au prix d'aujourd'hui, le pire creux reste sous la limite jusqu'a 0.25 MNQ de base seulement ; a la taille du bot chez Bulenox (4 MNQ puis 6) : 8 a 12 MNQ au plus, creux -16228 a -24342 $
+  R2 : pire seance aux prix d'epoque -1406 $ (2024-08-06) ; au prix du 20 oct. 2026 : pire cloture -3612 $, pire creux dans la seance -4842 $ (2018-02-09) ; unites au plus 3 MNQ
+     limite du jour de Bulenox (1000 $), aux prix d'epoque et 1 MNQ de base : depassee ; au prix d'aujourd'hui, le pire creux reste sous la limite jusqu'a 0.21 MNQ de base seulement ; a la taille du bot chez Bulenox (4 MNQ puis 6) : 12 a 18 MNQ au plus, creux -19368 a -29051 $
+  R3 : pire seance aux prix d'epoque -866 $ (2024-11-20) ; au prix du 20 oct. 2026 : pire cloture -1898 $, pire creux dans la seance -2505 $ (2020-03-17) ; unites au plus 2 MNQ
+     limite du jour de Bulenox (1000 $), aux prix d'epoque et 1 MNQ de base : pas depassee ; au prix d'aujourd'hui, le pire creux reste sous la limite jusqu'a 0.40 MNQ de base seulement ; a la taille du bot chez Bulenox (4 MNQ puis 6) : 8 a 12 MNQ au plus, creux -10021 a -15032 $
+  V1 seule, aux prix d'epoque : pire seance -705 $ a 1 MNQ, -1410 $ a 2 MNQ (2025-11-18) ; au prix du 20 oct. 2026 (2012-2026) : pire cloture -1898 $ a 1 MNQ, -3797 $ a 2 MNQ ; pire creux -2328 / -4656 $
+  (prix du 20 oct. 2026 : chemins de la partie D, seances 2012-2026, chaque seance ramenee au niveau du jour)
+  nombre maximal de contrats d'un compte Bulenox 50K : non documente dans le depot ; guides tiers d'octobre 2026 :
+  6 ou 7 contrats (60 a 70 micros), a confirmer sur le tableau de bord Bulenox. Le renfort reste en dessous a 1 MNQ
+  et aux tailles du bot ; c'est la limite du jour qui borne la taille.
+
+CONTROLE e) base ZL (information) : la piste sortie_vwap ne passe pas ses criteres propres (sortie_vwap/resultats.txt) ;
+  sa decision prevue est alors de mettre ZL (tenir, sortie seulement a la limite) dans le robot virtuel. Renfort
+  recalcule sur ZL, ou le controle du cas VWAP devient un controle tenu :
+  ZL - V1 = +565.50 pt pour 377 rachats evites (1,5 x 377 = +565.50)
+  R1 sur ZL : exploration 1462 renforts +4777.75 pt, t +2.70 ; coffre 456 renforts +4527.25 pt, t +1.64
+  R2 sur ZL : exploration 2582 renforts +8394.75 pt, t +2.67 ; coffre 802 renforts +7676.75 pt, t +1.57
+  R3 sur ZL : exploration 401 renforts +1621.00 pt, t +1.39 ; coffre 121 renforts +323.25 pt, t +0.24
+
+CONTROLE f) P1 (Databento, avril - 1er oct. 2026) et P2 (Rithmic, 2 - 16 oct. 2026), vrai delta, filtre B du bot
+  (trades de zone gardes si le delta des 30 minutes va dans leur sens ; barres du robot, comme delta_mesures) :
+  P1 : 79 trades gardes +1776.75 pt (reference 79 trades +1776.75 -> identique) ; dont 2 un jour de la Fed
+     R1 : 56 renforts sur les trades gardes, +548.50 pt nets (22 gagnants, moyenne +9.79, pire -264.75, meilleur +831.75) ; hors Fed 55 renforts +801.75 pt
+     R2 : 98 renforts sur les trades gardes, +1508.00 pt nets (41 gagnants, moyenne +15.39, pire -283.50, meilleur +831.75) ; hors Fed 96 renforts +2021.00 pt
+     R3 : 17 renforts sur les trades gardes, -789.25 pt nets (6 gagnants, moyenne -46.43, pire -253.75, meilleur +258.50) ; hors Fed 16 renforts -536.00 pt
+  P2 : 6 trades gardes +220.25 pt (reference 6 trades +220.25 -> identique) ; dont 0 un jour de la Fed
+     R1 : 5 renforts sur les trades gardes, +65.50 pt nets (2 gagnants, moyenne +13.10, pire -131.00, meilleur +152.50) ; hors Fed 5 renforts +65.50 pt
+     R2 : 10 renforts sur les trades gardes, +6.75 pt nets (4 gagnants, moyenne +0.68, pire -131.00, meilleur +152.50) ; hors Fed 10 renforts +6.75 pt
+     R3 : 1 renforts sur les trades gardes, -131.00 pt nets (0 gagnants, moyenne -131.00, pire -131.00, meilleur -131.00) ; hors Fed 1 renforts -131.00 pt
+
+BILAN (Benjamini-Hochberg a 10 % : calcule ensuite sur les 17 tests des 5 pistes)
+  test  t explo  p unilateral  t coffre  1 2 3 4 5  criteres propres
+  R1      +2.65        0.0040     +1.72  o o o o n  echec
+  R2      +2.56        0.0052     +1.76  o o o o n  echec
+  R3      +1.04        0.1498     +0.23  n n n n n  echec
+  controles : a) passe, b) echec, c) publie, d) publie, e) publie (information), f) publie ; regard vers le futur : aucun ; moteur des challenges : identique
+  Decision : aucun renfort n'est retenu ; le bot garde une taille fixee a l'entree.
+
+INTERPRETATIONS FIXEES AVANT LE CALCUL (le README ne tranche pas)
+  - base sur 15 ans : V1 sans filtre (pas de delta avant 2026), sans les jours de la Fed ni les jours courts,
+    comme le bot (reglages Bulenox de cerveau/savoir.json) et toutes les vagues de l'etude large ; P1 et P2 avec le
+    filtre B en description (controle f).
+  - t en points nets par seance (1 MNQ), comme les autres pistes et delta_mesures ; le t en rendement est donne a
+    titre d'information seulement.
+  - R3 : gain latent = sens x (cloture du controle - prix d'entree), avant frais ; sigma de la minute du controle.
+  - R2 : si le deuxieme controle tenu est 15 h 30, un seul renfort ; premier controle tenu a 15 h 30 : aucun.
+  - placebo : reserve = controles de 10 h 30 a 15 h 00 ou V1 est en position apres sa decision (entrees, rachats
+    et controles tenus) ; tirage sans remise par annee ; juge sur le total net de l'exploration (le coffre en
+    information) ; 'faire mieux' = total reel strictement au-dessus d'au moins 95 % des placebos.
+  - Lucid : +3 points valides ET au plus +3 points perdus contre chaque comparaison (V1 a 1 MNQ et a 2 MNQ ; pour R2,
+    aussi V1 a 3 MNQ, meme exposition maximale). Bulenox publie avec le moteur de la partie D (30 jours) : le moteur
+    de delta_mesures ne tient qu'une position de zone a la fois et ne peut pas porter d'unite ajoutee.
+  - controle b) : signe du total avant frais de l'ES contre celui du NQ, sur chaque periode.
+
+LECTURE
+  R1 et R2 passent les criteres 1 a 4 en points (t 2,65 et 2,56 ; coffre 1,72 et 1,76 ; placebo 98 % et 100 %),
+  mais pas le critere 5 : chez Lucid, 1 MNQ + renfort valide autant que V1 a 2 MNQ (30,5 % contre 31,7 %), bien
+  moins que V1 a 1 MNQ (54,6 %), et perd deux fois plus souvent. Le renfort ajoute du risque au moment ou la zone
+  gagne deja, ce qui ne sert pas un challenge. Trois signaux de fragilite : en rendement (points / prix), le t
+  d'exploration tombe a 1,37 et 1,35 (le gain vient des annees 2018-2022, ou le point du NQ vaut le plus) ; 5
+  annees positives sur 12 en exploration ; l'ES, positif en exploration, est negatif avant frais au coffre. R3 echoue
+  partout. Aucun renfort n'entre au robot virtuel.
