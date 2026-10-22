@@ -1,0 +1,16 @@
+Vague annonces de 8 h 30 (etude_large/annonces/README.md, regles fixees le 22 octobre 2026 avant tout calcul)
+3624 seances 2012-01-03 - 2026-10-20 (zone du bot, 1 MNQ, $ au prix d'aujourd'hui, jours de la Fed a 0) ; dollar a 8 h 30 connu 3563 seances ; jours de choc 686 (19 %), dont 157 au coffre.
+CONTROLE : premiers vendredis du mois (emploi) marques jours de choc : 59 % -> ECART (< 60 %)
+
+  zone, jours de choc  : exploration t +1.73, moyenne  +28.2 $ ; coffre t +1.54, moyenne  +36.9 $
+  zone, autres jours   : exploration t +3.30, moyenne  +18.3 $ ; coffre t +1.79, moyenne  +18.9 $
+  zone seule : Sharpe exploration +1.13, coffre +1.18
+
+  S (pas de zone les jours de choc) : Sharpe exploration +1.01, coffre +0.93 ; bat 68 % des placebos -> non retenue
+  D (2 MNQ les jours de choc) : Sharpe exploration +1.01, coffre +1.23 ; bat 23 % des placebos -> non retenue
+
+DECISION : aucune regle retenue
+
+Pour information, challenges (departs 2023 - 2026, moteur corrige de la partie D) : valide / perdu
+  Lucid Flex 50K (1 MNQ) : zone 55 / 35 % ; S 28 / 30 % ; D 37 / 48 %
+  Bulenox Legacy 50K opt. 2 (3 MNQ) : zone 45 / 31 % ; S 40 / 26 % ; D 48 / 40 %

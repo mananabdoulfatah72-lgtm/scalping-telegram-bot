@@ -277,3 +277,14 @@ valider avec au plus 35 % de perdus), jugée sur 2023 - 2026 :
    validation, mais c'est un pile ou face. Apex, Take Profit Trader et Alpha Futures interdisent les bots.
 4. **À confirmer par écrit avant tout achat** : bots permis (au challenge **et** au compte financé), délai, prix, règle
    du meilleur jour.
+
+## Vagues suivantes (22 octobre 2026), chacune avec ses règles fixées avant ses données
+
+| Vague | Idée | Résultat |
+|---|---|---|
+| `crypto/` | La cassure des 30 minutes du bitcoin (la plus proche du seuil en A), confirmée sur 2017 - 2021 jamais vu, puis réglée en walk-forward (24 variantes) | **Non confirmée** (t +0,70 sur les années jamais vues ; walk-forward +0,73). Vrai élan avant frais à l'ouverture américaine (BTC et ETH, absent aux autres heures), mangé par les frais du MBT et absent en 2025 - 2026 |
+| `bruit/` | Le complément de la zone : retour au VWAP à l'intérieur de la zone, stop sur sa limite (NQ, ES, 3 seuils) | **0 sur 6.** Rien à gagner avant frais à l'intérieur de la zone : c'est bien du bruit |
+| `annonces/` | Les annonces de 8 h 30, repérées par le saut du dollar : pas de zone, ou 2 MNQ, ces jours-là | **Aucune règle retenue** (placebos battus à 68 % et 23 %, il fallait 95 %) |
+
+Ces trois vagues confirment le verdict : la zone du NQ, sans les jours de la Fed, reste la seule source d'avantage qui
+tienne. Ce qui change vraiment les chances, c'est le compte choisi (point 3 du verdict), pas un filtre de plus.

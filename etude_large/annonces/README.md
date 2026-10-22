@@ -42,3 +42,26 @@ les autres jours (t, gain moyen), et l'effet sur les challenges Lucid Flex (1 MN
 - Le dollar saute aussi pour d'autres raisons (banques centrales étrangères, géopolitique) : le choc mesure « une
   nouvelle à 8 h 30 », pas un calendrier exact.
 - Environ 20 % des séances sont des jours de choc : environ 700 séances, dont environ 190 au coffre.
+
+## Résultats (22 octobre 2026) : `resultats.txt`, `etude.py`
+
+686 jours de choc sur 3 624 séances (19 %), dont 157 au coffre.
+
+**Contrôle : 59 % des premiers vendredis du mois sont des jours de choc, pour 60 % demandés : échec d'un point.** Une
+partie des chiffres de l'emploi tombe le deuxième vendredi, et certains premiers vendredis bougent peu le dollar.
+Sans effet sur la décision : aucune règle ne passe.
+
+| | Exploration 2012 - 2022 | Coffre 2023 - 2026 |
+|---|---|---|
+| Zone les jours de choc (t, moyenne par séance) | +1,73, +28 $ | +1,54, +37 $ |
+| Zone les autres jours | +3,30, +18 $ | +1,79, +19 $ |
+| Sharpe de la zone seule | 1,13 | 1,18 |
+| **S** (pas de zone les jours de choc) | 1,01 (bat 68 % des placebos) | 0,93 |
+| **D** (2 MNQ les jours de choc) | 1,01 (bat 23 % des placebos) | 1,23 |
+
+**Décision : aucune règle retenue.** La zone gagne un peu plus par séance les jours d'annonce de 8 h 30, mais avec
+plus de variance : la couper ou la doubler ces jours-là ne fait pas mieux que des jours tirés au hasard.
+
+Pour information (challenges, départs 2023 - 2026, validé / perdu) :
+- Lucid Flex 1 MNQ : zone 55 / 35 %, S 28 / 30 %, D 37 / 48 % ;
+- Bulenox 3 MNQ : zone 45 / 31 %, S 40 / 26 %, D 48 / 40 %.
