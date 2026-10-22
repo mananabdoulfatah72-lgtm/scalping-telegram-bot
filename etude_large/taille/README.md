@@ -97,3 +97,20 @@ Solde 48 891 $, plancher 48 488 $ (**403 $ de marge**), objectif 53 000 $ (**+4 
 
 Environ une chance sur dix de valider, au mieux, quel que soit le réglage. Le réglage actuel est déjà presque le
 meilleur ; la politique optimale fait seulement durer le compte plus longtemps.
+
+## Mise à jour du challenge en cours (22 octobre 2026, après un gain de 1 800 $)
+
+Solde environ 50 750 $ (+750 $), plancher toujours 48 488 $ (plus haut de fin de journée 50 988 $), **environ 2 250 $
+de marge** et 2 250 $ à faire, **15 séances** (23 octobre → 12 novembre ; 28 octobre = jour de la Fed, pas de zone).
+Départs réels, zone sans filtre, moteur de la partie D (chiffres décrits pour aider à choisir, pas une règle testée) :
+
+| Réglage | 2012 - 2026 : validé / perdu | 2023 - 2026 : validé / perdu | Départs 2026 | Années où valider ≥ perdre |
+|---|---|---|---|---|
+| 3 MNQ | 46,0 / 23,2 % | 50,7 / 24,6 % | 46 / 32 % | 15 sur 15 |
+| **3 MNQ puis 4 (5 dernières séances)** | **49,9 / 26,3 %** | **53,1 / 28,5 %** | 44 / 37 % | **15 sur 15** |
+| 3 puis 5 | 51,8 / 29,0 % | 54,6 / 30,6 % | 45 / 40 % | 13 sur 15 |
+| 3 puis 6 | 52,8 / 31,3 % | 55,4 / 32,7 % | 45 / 44 % | 13 sur 15 |
+| 4 puis 6 (réglage actuel) | 54,1 / 36,5 % | 56,6 / 36,1 % | 41 / 52 % | 12 sur 15 |
+
+Le réglage actuel valide un peu plus souvent en moyenne, mais il perd plus de comptes, et sur les départs de 2026 il
+perd plus souvent qu'il ne valide. 3 MNQ (puis 4) valide plus souvent qu'il ne perd sur chacune des 15 années.
