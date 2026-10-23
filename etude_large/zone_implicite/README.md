@@ -112,3 +112,37 @@ VXN actuel et largeur que chaque variante donnerait aujourd'hui.
 - T1 chez Lucid : 2 MNQ seulement si le VXN tombe sous les deux tiers de sa médiane d'un an, ce qui est rare ; la règle y
   sera presque toujours 1 MNQ.
 - Exécution à la clôture de la minute qui décide, sans glissement en plus des frais comptés.
+
+## Résultats (23 octobre 2026) : `resultats.txt`, `etude.py`
+
+VXN : fichier officiel du Cboe (97,8 % des séances du NQ couvertes ; accord avec Yahoo à 0,1 point près sur 99,8 % des
+jours ; FRED n'a rien renvoyé). Contrôles passés : V1 redonne 3 571 trades et +10 759,75 points jusqu'au 16 octobre
+2026, le moteur rapide redonne `partie_d.chemins_zone` séance par séance, et les chemins des variantes redonnent le
+moteur rapide. Exploration commitée avant l'ouverture du coffre.
+
+| Test | Exploration 2012 - 2022 : t | Placebos battus | Coffre 2023 - 2026 : t | Placebos battus | Sharpe explo / coffre (V1 : 1,14 / 1,20) | Lucid 1 MNQ (V1 : 54,6 / 35,2 %) | Bulenox 3 MNQ (V1 : 44,7 / 31,5 %) |
+|---|---|---|---|---|---|---|---|
+| I1 zone implicite, rapport | −1,08 | 33 % | −1,62 | 12,5 % | 1,07 / 0,99 | 39,8 / 38,1 % | 43,1 / 33,0 % |
+| I2 zone implicite pure | +0,02 | 11 % | −1,75 | 91,5 % | 1,14 / 0,83 | 36,9 / 50,1 % | 36,5 / 35,2 % |
+| I3 élargir seulement | −1,02 | 38 % | −1,63 | 16,5 % | 1,11 / 1,03 | 36,1 / 38,2 % | 43,7 / 32,2 % |
+| T1 ciblage de volatilité | +0,03 | 51,5 % | +1,62 | 97 % | 1,11 / 1,41 | 54,6 / 35,2 % | 45,4 / 33,5 % |
+| T2 plus gros quand ça bouge | −0,72 | 24,5 % | −1,24 | 7 % | 1,05 / 0,91 | 47,8 / 42,8 % | 42,3 / 33,9 % |
+
+(I1 à I3 : t de la différence avec V1 ; T1 et T2 : t de l'alpha. Challenges : validé / perdu, départs 2023 - 2026.)
+
+**Décision : aucun test retenu** (0 sur 5 au critère 1).
+
+- **La zone implicite fait moins bien que la zone actuelle**, sur les deux périodes et pour les trois versions : la
+  différence avec V1 est négative au coffre (t −1,6 à −1,75), et chez Lucid elle valide 15 à 18 points de moins. La
+  largeur mesurée sur les 14 dernières séances réellement jouées décrit mieux le bruit du NQ que ce que les options
+  annoncent. Le VXN contient aussi la prime de volatilité (il surestime presque toujours) et le risque de la nuit, que
+  la zone ne joue pas.
+- **Le ciblage de volatilité (T1) n'a marché que sur 2023 - 2026** : alpha t +1,62 et Sharpe 1,41 contre 1,20 au coffre,
+  mais rien sur onze ans d'exploration (t +0,03, Sharpe plus bas que V1). Au challenge, il ne change rien chez Lucid
+  (1 MNQ presque toujours) et perd 2 points de comptes de plus chez Bulenox pour 0,7 point validé de plus. C'est le piège
+  de la vérification seule, déjà vu avec le GEX de `zone_failles/`. Il confirme quand même, à l'envers de la vague 9,
+  que **grossir quand le VXN est haut (T2) n'aide pas**.
+
+Pour information : le VXN a fini à 28,72 le 22 octobre 2026 (24,42 la veille), soit une zone plus large et des pertes
+possibles plus grandes en $ par trade dans les jours qui viennent. Rien ici ne justifie de changer la taille du
+challenge en cours.
