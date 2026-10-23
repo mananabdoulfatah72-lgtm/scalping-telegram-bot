@@ -1,11 +1,11 @@
 # Robot multi-marches : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-10-21**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
+Mis a jour le **2026-10-22**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
 
 | Compte | Solde | Gain | Etat |
 |---|---|---|---|
-| Melange 50/50 (tendance + achat permanent) | 49,249 $ | -751 $ | 🟡 Dans la zone normale |
-| Tendance seule | 48,962 $ | -1,038 $ | 🟡 Dans la zone normale |
+| Melange 50/50 (tendance + achat permanent) | 48,966 $ | -1,034 $ | 🟡 Dans la zone normale |
+| Tendance seule | 48,057 $ | -1,943 $ | 🔴 En dessous de la zone normale |
 
 La zone bleue de chaque graphique montre ou tombaient 8 resultats sur 10 dans l'historique 2007-2026, au meme risque. Tant que la ligne reste dedans, le compte se comporte comme prevu. Des semaines negatives sont normales : il faut plusieurs mois pour juger.
 
@@ -17,11 +17,11 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **49,249 $** (depart 50 000 $) |
-| Gain depuis le depart | -751 $ (-1.5%) |
-| Baisse depuis le plus haut | -2.0% |
-| Zone normale a ce stade (8 cas sur 10) | de -1,721 $ a +2,389 $ (moyenne +334 $) |
-| Challenge Phidias 50K virtuel | en cours : -751 $ sur +4 000 $, marge restante 1,473 $ |
+| Solde virtuel | **48,966 $** (depart 50 000 $) |
+| Gain depuis le depart | -1,034 $ (-2.1%) |
+| Baisse depuis le plus haut | -2.6% |
+| Zone normale a ce stade (8 cas sur 10) | de -1,747 $ a +2,441 $ (moyenne +347 $) |
+| Challenge Phidias 50K virtuel | en cours : -1,034 $ sur +4 000 $, marge restante 1,190 $ |
 
 ![Gain du compte et zone normale](courbe_melange.svg)
 
@@ -37,6 +37,7 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-10-22 | -283 $ | 48,966 $ |
 | 2026-10-21 | +64 $ | 49,249 $ |
 | 2026-10-20 | -22 $ | 49,184 $ |
 | 2026-10-19 | +204 $ | 49,206 $ |
@@ -46,7 +47,6 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 | 2026-10-13 | -93 $ | 49,759 $ |
 | 2026-10-12 | +5 $ | 49,852 $ |
 | 2026-10-09 | +81 $ | 49,846 $ |
-| 2026-10-08 | -154 $ | 49,768 $ |
 
 Journal complet : [journal_melange.csv](journal_melange.csv)
 
@@ -56,15 +56,15 @@ Journal complet : [journal_melange.csv](journal_melange.csv)
 
 Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, environ +7 %/an en moyenne, pire baisse -23 %, 13 annees sur 20 positives.
 
-**🟡 Dans la zone normale : se comporte comme sur les 20 ans d'historique.**
+**🔴 En dessous de la zone normale : pire que 9 cas sur 10 de l'historique. A surveiller.**
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **48,962 $** (depart 50 000 $) |
-| Gain depuis le depart | -1,038 $ (-2.1%) |
-| Baisse depuis le plus haut | -3.3% |
-| Zone normale a ce stade (8 cas sur 10) | de -1,815 $ a +2,295 $ (moyenne +240 $) |
-| Challenge Phidias 50K virtuel | en cours : -1,038 $ sur +4 000 $, marge restante 819 $ |
+| Solde virtuel | **48,057 $** (depart 50 000 $) |
+| Gain depuis le depart | -1,943 $ (-3.9%) |
+| Baisse depuis le plus haut | -5.1% |
+| Zone normale a ce stade (8 cas sur 10) | de -1,845 $ a +2,344 $ (moyenne +249 $) |
+| Challenge Phidias 50K virtuel | perdu le 2026-10-22 |
 
 ![Gain du compte et zone normale](courbe.svg)
 
@@ -80,6 +80,7 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-10-22 | -905 $ | 48,057 $ |
 | 2026-10-21 | +40 $ | 48,962 $ |
 | 2026-10-20 | -113 $ | 48,922 $ |
 | 2026-10-19 | +360 $ | 49,034 $ |
@@ -89,7 +90,6 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 | 2026-10-13 | -292 $ | 50,044 $ |
 | 2026-10-12 | +267 $ | 50,336 $ |
 | 2026-10-09 | +112 $ | 50,069 $ |
-| 2026-10-08 | -336 $ | 49,963 $ |
 
 Journal complet : [journal.csv](journal.csv)
 

@@ -2,8 +2,8 @@
   "comptes": {
     "melange": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-10-21",
-      "solde": 49248.55794618231,
+      "derniere_date": "2026-10-22",
+      "solde": 48965.62126811576,
       "plus_haut": 50276.00947498293,
       "positions": {
         "Taux 10 ans": -1.0,
@@ -20,8 +20,8 @@
     },
     "tendance": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-10-21",
-      "solde": 48962.08709920634,
+      "derniere_date": "2026-10-22",
+      "solde": 48056.614123932624,
       "plus_haut": 50643.19587302805,
       "positions": {
         "Taux 2 ans": -2.0,
@@ -31,9 +31,9 @@
         "Ether": 8.0
       },
       "phidias": {
-        "etat": "en cours",
+        "etat": "perdu",
         "plus_haut": 50643.19587302805,
-        "date": null
+        "date": "2026-10-22"
       }
     }
   }
