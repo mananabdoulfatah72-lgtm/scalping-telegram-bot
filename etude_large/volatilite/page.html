@@ -1,0 +1,558 @@
+<title>Relief de la volatilité implicite</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75,600;75,800;100,500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout : une colonne de lecture, et deux écrans de desk d'options pleine largeur pour les reliefs 3D */
+:root {
+  --bg: #f4f6f9;
+  --panel: #ffffff;
+  --ink: #12161d;
+  --ink-2: #485062;
+  --ink-3: #737c8f;
+  --line: #dde2ea;
+  --grid: #c3cad6;
+  --accent: #2a78d6;
+  --warm: #eb6834;
+  --neg: #e34948;
+  --mid: #cfd2d8;
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1016; --panel: #141922; --ink: #eef1f6; --ink-2: #b3bbca; --ink-3: #8790a3; --line: #252c38;
+    --grid: #2f3745; --accent: #3987e5; --warm: #d95926; --neg: #e66767; --mid: #4a4e57; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1016; --panel: #141922; --ink: #eef1f6; --ink-2: #b3bbca; --ink-3: #8790a3; --line: #252c38;
+  --grid: #2f3745; --accent: #3987e5; --warm: #d95926; --neg: #e66767; --mid: #4a4e57; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+.page { max-width: 1120px; margin: 0 auto; display: grid; gap: 40px; }
+.lire { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--font-display); font-stretch: 75%; text-wrap: balance; margin: 0; letter-spacing: 0.005em; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 800; line-height: 1.02; }
+h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); font-weight: 800; line-height: 1.1; }
+h3 { font-size: 1.2rem; font-weight: 600; }
+p { margin: 0; }
+.stack { display: grid; gap: 14px; }
+.surtitre { font-family: var(--font-data); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.chapo { font-size: 1.15rem; color: var(--ink-2); max-width: 62ch; }
+.donnees { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.bande { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1px; background: var(--line);
+  border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.bande > div { background: var(--panel); padding: 14px 16px; display: grid; gap: 4px; min-width: 0; }
+.bande .val { font-family: var(--font-data); font-size: 1.5rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bande .lib { font-size: 0.92rem; color: var(--ink-2); line-height: 1.4; }
+.ecran { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.ecran-tete { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.ecran-tete h3 { font-size: 1.05rem; }
+.boutons { display: flex; flex-wrap: wrap; gap: 6px; }
+button { font-family: var(--font-data); font-size: 0.78rem; color: var(--ink); background: transparent; border: 1px solid var(--grid);
+  border-radius: 4px; padding: 5px 9px; cursor: pointer; }
+button:hover { border-color: var(--accent); color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.scene { position: relative; height: clamp(340px, 58vw, 580px); touch-action: none; }
+.scene canvas { display: block; width: 100%; height: 100%; }
+.etiquettes { position: absolute; inset: 0; pointer-events: none; }
+.etiquettes span { position: absolute; transform: translate(-50%, -50%); font-family: var(--font-data); font-size: 0.7rem;
+  color: var(--ink-3); white-space: nowrap; }
+.etiquettes span.fort { color: var(--ink); font-weight: 600; background: var(--panel); padding: 1px 5px; border-radius: 3px;
+  box-shadow: 0 0 0 1px var(--line); }
+.lecture { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 18px; padding: 12px 16px;
+  border-top: 1px solid var(--line); font-family: var(--font-data); font-size: 0.82rem; font-variant-numeric: tabular-nums; min-height: 64px; }
+.lecture div { display: grid; gap: 2px; min-width: 0; }
+.lecture .k { color: var(--ink-3); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.legende { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 10px 16px 14px; font-size: 0.85rem; color: var(--ink-2); align-items: center; }
+.rampe { width: 120px; height: 10px; border-radius: 2px; }
+.pastille { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; }
+.aide { font-size: 0.82rem; color: var(--ink-3); padding: 0 16px 14px; }
+.colonnes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px 40px; }
+.colonnes > div { min-width: 0; }
+.carte { border-top: 2px solid var(--ink); padding-top: 12px; display: grid; gap: 8px; }
+.carte p { font-size: 0.98rem; }
+.tag { font-family: var(--font-data); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.tag.non { color: var(--neg); }
+.tag.oui { color: var(--accent); }
+.table-zone { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-family: var(--font-data); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--ink-3); font-weight: 400; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+details summary { cursor: pointer; font-family: var(--font-data); font-size: 0.85rem; color: var(--ink-2); }
+details[open] summary { margin-bottom: 10px; }
+.barres svg { width: 100%; height: auto; display: block; }
+.note { font-size: 0.85rem; color: var(--ink-3); }
+.sanswebgl { padding: 40px 16px; color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="page">
+  <header class="stack">
+    <span class="surtitre">S&amp;P 500 · options · 2011 – 2026</span>
+    <h1>Relief de la volatilité implicite</h1>
+    <p class="chapo">Chaque semaine depuis 2011, ce que le marché des options prévoit comme agitation du S&amp;P 500 dans
+      9 jours, 30 jours et 3 mois. Et ce que ces régimes ont changé, ou pas, pour ta zone de bruit sur le Nasdaq.</p>
+  </header>
+
+  <section class="bande" aria-label="Chiffres clés">
+    <div><span class="val" id="k-actuel">—</span><span class="lib" id="k-actuel-lib">Dernière semaine</span></div>
+    <div><span class="val">93 %</span><span class="lib">des semaines en « contango » : la volatilité à 3 mois au-dessus de celle à 30 jours</span></div>
+    <div><span class="val">+3,4 pts</span><span class="lib">écart moyen entre la volatilité implicite (VIX) et celle réalisée le mois suivant ; positif 83 % du temps</span></div>
+    <div><span class="val">non</span><span class="lib">lien stable entre le régime de volatilité et les gains de ta zone (2012 – 2022 contre 2023 – 2026)</span></div>
+  </section>
+
+  <section class="ecran" aria-labelledby="t-surface">
+    <div class="ecran-tete">
+      <h3 id="t-surface">Structure par échéance du VIX, semaine par semaine</h3>
+      <div class="boutons" role="group" aria-label="Aller à une période">
+        <button type="button" data-aller="2011-08-05">Août 2011</button>
+        <button type="button" data-aller="2018-02-09">Février 2018</button>
+        <button type="button" data-aller="2020-03-20">Mars 2020</button>
+        <button type="button" data-aller="2022-06-17">2022</button>
+        <button type="button" data-aller="2025-04-11">Avril 2025</button>
+        <button type="button" data-aller="fin">Aujourd'hui</button>
+        <button type="button" data-aller="tout">Tout</button>
+      </div>
+    </div>
+    <div class="scene" id="scene1"><div class="etiquettes" id="lab1"></div></div>
+    <div class="lecture" id="lecture1" aria-live="polite">
+      <div><span class="k">Semaine</span><span id="l1-date">survole le relief</span></div>
+      <div><span class="k">9 jours (VIX9D)</span><span id="l1-9">—</span></div>
+      <div><span class="k">30 jours (VIX)</span><span id="l1-30">—</span></div>
+      <div><span class="k">3 mois (VIX3M)</span><span id="l1-93">—</span></div>
+      <div><span class="k">Réalisée 21 j</span><span id="l1-rv">—</span></div>
+      <div><span class="k">VVIX</span><span id="l1-vv">—</span></div>
+      <div><span class="k">Forme</span><span id="l1-forme">—</span></div>
+    </div>
+    <div class="legende">
+      <span>Volatilité implicite annualisée</span>
+      <span class="donnees">10</span><span class="rampe" id="rampe1" aria-hidden="true"></span><span class="donnees">40 et plus</span>
+      <span><span class="pastille" style="background: var(--warm)"></span>bande orange : semaine en déport (30 jours ≥ 3 mois)</span>
+    </div>
+    <p class="aide">Glisse pour tourner, molette ou pincement pour zoomer. Devant : 9 jours. Au fond : 3 mois. La hauteur est la volatilité implicite.</p>
+  </section>
+
+  <section class="colonnes">
+    <div class="stack lire">
+      <h2>Ce que montre le relief</h2>
+      <p>La volatilité implicite est le prix de l'assurance. Elle se lit dans le prix des options : plus elles coûtent
+        cher, plus le marché s'attend à de grands mouvements. Le VIX en donne la mesure à 30 jours, le VIX9D à 9 jours, le
+        VIX3M à 3 mois.</p>
+      <p>Par temps calme, la surface monte vers le fond. Le marché paie plus cher l'incertitude lointaine que celle de la
+        semaine : c'est le contango, 93 % des semaines depuis 2011. Dans une panique, la surface se renverse. Le devant
+        jaillit au-dessus du fond, en mars 2020 jusqu'à 83 à 9 jours : c'est le déport, marqué en orange.</p>
+    </div>
+    <div class="stack lire">
+      <h2>La prime de volatilité</h2>
+      <p>Le VIX a dépassé en moyenne de 3,4 points la volatilité réellement observée le mois suivant, et dans 83 % des cas.
+        Les vendeurs d'options encaissent cet écart : c'est la prime de risque de volatilité, la source de revenu la plus
+        étudiée du monde des options.</p>
+      <p>Le revers est connu. Les semaines rares où la volatilité explose, le vendeur perd en quelques heures des mois de
+        primes : le 5 février 2018, le fonds XIV, qui vendait la volatilité, a perdu 96 % en une séance.</p>
+    </div>
+  </section>
+
+  <section class="stack">
+    <div class="stack lire">
+      <h2>Les vraies stratégies de volatilité implicite</h2>
+      <p>Voici ce que font les desks d'options et les fonds de volatilité, et ce que chacune donnerait sur ton compte.</p>
+    </div>
+    <div class="colonnes">
+      <div class="carte"><span class="tag non">options : interdites sur ton compte</span><h3>Vendre la volatilité</h3>
+        <p>Vendre des straddles, des strangles ou des iron condors sur le S&amp;P 500 ou le Nasdaq. On encaisse la prime de
+          volatilité presque tous les mois, et on perd très gros lors des chocs (février 2018, mars 2020, août 2024).</p></div>
+      <div class="carte"><span class="tag non">options : interdites sur ton compte</span><h3>Jouer la pente</h3>
+        <p>Les calendar spreads achètent une échéance et vendent l'autre. Ils parient que la pente du relief revient à la
+          normale après un choc, ou qu'elle se creuse avant un événement.</p></div>
+      <div class="carte"><span class="tag non">futures VIX : bourse CFE, hors des prop firms</span><h3>Le roulement des futures VIX</h3>
+        <p>En contango, un future VIX baisse en approchant de son échéance. Le vendre rapporte souvent, jusqu'au jour où le
+          relief se renverse. C'est exactement le pari qui a coulé le XIV.</p></div>
+      <div class="carte"><span class="tag oui">possible : un réglage de ta zone</span><h3>La volatilité comme régime</h3>
+        <p>Lire le relief pour décider quand et combien trader un autre signal. C'est la seule voie ouverte chez Bulenox ou
+          Topstep, qui n'offrent que des futures. Elle est testée juste en dessous.</p></div>
+    </div>
+  </section>
+
+  <section class="ecran" aria-labelledby="t-relief2">
+    <div class="ecran-tete">
+      <h3 id="t-relief2">Ta zone selon le régime de volatilité de la veille</h3>
+      <span class="note donnees">3 614 séances, 2012 – 2026, 1 MNQ au prix d'aujourd'hui</span>
+    </div>
+    <div class="scene" id="scene2"><div class="etiquettes" id="lab2"></div></div>
+    <div class="lecture" id="lecture2" aria-live="polite">
+      <div><span class="k">VIX de la veille</span><span id="l2-vix">survole une colonne</span></div>
+      <div><span class="k">Pente VIX ÷ VIX3M</span><span id="l2-pente">—</span></div>
+      <div><span class="k">Séances</span><span id="l2-n">—</span></div>
+      <div><span class="k">Gain moyen par séance</span><span id="l2-moy">—</span></div>
+      <div><span class="k">t</span><span id="l2-t">—</span></div>
+    </div>
+    <div class="legende">
+      <span><span class="pastille" style="background: var(--accent)"></span>gain moyen positif</span>
+      <span><span class="pastille" style="background: var(--neg)"></span>perte moyenne</span>
+      <span>colonnes pâles : moins de 30 séances</span>
+    </div>
+    <p class="aide">De gauche à droite : VIX de plus en plus haut (six groupes de même taille). De l'avant vers le fond : pente
+      de plus en plus proche du déport. La hauteur est le gain moyen de la zone par séance.</p>
+  </section>
+
+  <section class="colonnes">
+    <div class="stack lire">
+      <h2>Le relief ne tient pas dans le temps</h2>
+      <p>Sur 2012 – 2022, la zone gagnait nettement plus quand le VIX de la veille était haut : +37 à +42 $ par séance
+        au-dessus de 16, contre +1 à +7 $ sous 14,4. On se dit qu'il suffirait de trader plus gros les jours agités.</p>
+      <p>Sur 2023 – 2026, le lien disparaît. La zone gagne +29 à +33 $ par séance quand le VIX est au plus bas, et perd
+        5 $ par séance entre 18,4 et 22,3. Aucune colonne du relief n'atteint un t de 2 avec assez de séances. C'est ce
+        qu'avait déjà trouvé la vague 9 : la condition « VIX haut » aidait sur le passé et échouait sur la vérification.</p>
+    </div>
+    <div class="stack barres">
+      <h3>Gain moyen par séance selon le VIX de la veille</h3>
+      <div class="legende" style="padding: 0">
+        <span><span class="pastille" style="background: var(--accent)"></span>2012 – 2022</span>
+        <span><span class="pastille" style="background: var(--warm)"></span>2023 – 2026</span>
+      </div>
+      <svg id="barres" viewBox="0 0 520 300" role="img" aria-label="Gain moyen de la zone par séance selon le groupe de VIX, deux périodes"></svg>
+      <p class="note" id="barres-lecture">Survole une barre pour lire sa valeur.</p>
+    </div>
+  </section>
+
+  <section class="stack lire">
+    <h2>Une idée qui reste à tester : la zone implicite</h2>
+    <p>Ta zone mesure sa largeur sur les 14 séances passées. Après un choc, elle reste trop étroite pendant des jours et
+      prend de fausses cassures. Le VIX, lui, s'ajuste dès la première minute. Une zone qui prendrait sa largeur dans la
+      volatilité implicite (le mouvement attendu par les options) plutôt que dans le passé serait en avance sur le marché.</p>
+    <p>Ce n'est pas encore testé. Elle se testerait comme les autres : règles écrites avant le calcul, puis années jamais
+      vues, placebos et challenges. Le VXN, la volatilité implicite du Nasdaq, serait le bon ingrédient.</p>
+  </section>
+
+  <section class="stack">
+    <details>
+      <summary>Les moyennes par année (tableau)</summary>
+      <div class="table-zone"><table id="table-ans">
+        <thead><tr><th>Année</th><th>9 jours</th><th>30 jours</th><th>3 mois</th><th>Semaines en déport</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </details>
+    <p class="note">Données gratuites : clôtures quotidiennes de Yahoo (VIX9D, VIX, VIX3M, VVIX ; future ES pour la volatilité
+      réalisée), dernière clôture de chaque semaine. Zone du bot sans filtre delta, sans les jours de la Fed, minute par minute
+      sur le NQ (recherche du dépôt), 1 MNQ au prix du 20 octobre 2026, frais compris. Une vraie surface par prix d'exercice
+      demanderait l'historique des chaînes d'options, payant : ici, la surface est faite des échéances.</p>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const D = /*DONNEES*/null;
+(function () {
+  const fmt = (x, d = 1) => (x == null || x < 0) ? "—" : x.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const signe = x => (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toLocaleString("fr-FR", { maximumFractionDigits: 1 });
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const N = D.semaines.length;
+  const dateFr = s => new Date(s + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+
+  // ---------------------------------------------------------------- chiffres et tableau
+  const i0 = N - 1;
+  document.getElementById("k-actuel").textContent = fmt(D.v30[i0]);
+  document.getElementById("k-actuel-lib").textContent = `VIX la semaine du ${dateFr(D.semaines[i0])} ; 9 jours ${fmt(D.v9[i0])}, 3 mois ${fmt(D.v93[i0])} : ${D.v30[i0] >= D.v93[i0] ? "déport" : "contango"}`;
+  const tb = document.querySelector("#table-ans tbody");
+  const ans = [...new Set(D.semaines.map(s => s.slice(0, 4)))];
+  for (const a of ans) {
+    const ix = D.semaines.map((s, i) => s.startsWith(a) ? i : -1).filter(i => i >= 0);
+    const m = k => ix.reduce((s, i) => s + D[k][i], 0) / ix.length;
+    const dep = ix.filter(i => D.v30[i] >= D.v93[i]).length / ix.length * 100;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${a}</td><td>${fmt(m("v9"))}</td><td>${fmt(m("v30"))}</td><td>${fmt(m("v93"))}</td><td>${fmt(dep, 0)} %</td>`;
+    tb.appendChild(tr);
+  }
+
+  // ---------------------------------------------------------------- couleurs selon le theme
+  const RAMPE_CLAIR = ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"];
+  const RAMPE_SOMBRE = ["#184f95", "#1c5cab", "#256abf", "#3987e5", "#6da7ec", "#9ec5f4", "#cde2fb"];
+  const sombre = () => {
+    const t = document.documentElement.getAttribute("data-theme");
+    return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  };
+  const rampe = () => (sombre() ? RAMPE_SOMBRE : RAMPE_CLAIR).map(h => new THREE.Color(h));
+  function couleurIV(v, r) {
+    const x = Math.min(Math.max((Math.log(v) - Math.log(10)) / (Math.log(40) - Math.log(10)), 0), 1) * (r.length - 1);
+    const k = Math.min(Math.floor(x), r.length - 2);
+    return r[k].clone().lerp(r[k + 1], x - k);
+  }
+  function peindreRampe() {
+    const c = (sombre() ? RAMPE_SOMBRE : RAMPE_CLAIR);
+    document.getElementById("rampe1").style.background = `linear-gradient(90deg, ${c.join(",")})`;
+  }
+  peindreRampe();
+
+  if (!window.THREE || !(function () { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl") || c.getContext("experimental-webgl")); } catch (e) { return false; } })()) {
+    for (const id of ["scene1", "scene2"]) {
+      document.getElementById(id).innerHTML = '<p class="sanswebgl">Ce navigateur n\'affiche pas la 3D (WebGL). Le tableau par année, plus bas, donne les mêmes chiffres.</p>';
+    }
+    dessinerBarres();
+    return;
+  }
+
+  function creerScene(hote, labHote) {
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    hote.insertBefore(renderer.domElement, labHote);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 400);
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    controls.dampingFactor = 0.08;
+    scene.add(new THREE.AmbientLight(0xffffff, 0.62));
+    const sun = new THREE.DirectionalLight(0xffffff, 0.55);
+    sun.position.set(-6, 14, 10);
+    scene.add(sun);
+    const etiquettes = [];
+    function ajouterEtiquette(texte, pos, fort) {
+      const s = document.createElement("span");
+      s.textContent = texte;
+      if (fort) s.className = "fort";
+      labHote.appendChild(s);
+      etiquettes.push({ s, pos });
+    }
+    function taille() {
+      const w = hote.clientWidth, h = hote.clientHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    function placerEtiquettes() {
+      const w = hote.clientWidth, h = hote.clientHeight;
+      for (const e of etiquettes) {
+        const p = e.pos.clone().project(camera);
+        const vis = p.z < 1 && p.x > -1.1 && p.x < 1.1 && p.y > -1.1 && p.y < 1.1;
+        e.s.style.display = vis ? "" : "none";
+        e.s.style.left = ((p.x + 1) / 2 * w) + "px";
+        e.s.style.top = ((1 - p.y) / 2 * h) + "px";
+      }
+    }
+    let sale = true;
+    controls.addEventListener("change", () => { sale = true; });
+    function boucle() {
+      requestAnimationFrame(boucle);
+      const bouge = controls.update();
+      if (sale || bouge) { renderer.render(scene, camera); placerEtiquettes(); sale = false; }
+    }
+    new ResizeObserver(() => { taille(); sale = true; }).observe(hote);
+    taille();
+    boucle();
+    return { renderer, scene, camera, controls, ajouterEtiquette, redessiner: () => { sale = true; } };
+  }
+
+  // ---------------------------------------------------------------- relief 1 : structure par echeance
+  const W = 24, PROF = 4.5, H = 0.085;
+  const xDe = i => (i / (N - 1) - 0.5) * W;
+  const ech = [["v9", "9 jours"], ["v30", "30 jours"], ["v93", "3 mois"]];
+  const zDe = j => (1 - j) * PROF;               // 9 jours devant, 3 mois au fond
+  const S1 = creerScene(document.getElementById("scene1"), document.getElementById("lab1"));
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(N * 3 * 3), col = new Float32Array(N * 3 * 3);
+  for (let i = 0; i < N; i++) for (let j = 0; j < 3; j++) {
+    const k = (i * 3 + j) * 3;
+    pos[k] = xDe(i); pos[k + 1] = D[ech[j][0]][i] * H; pos[k + 2] = zDe(j);
+  }
+  const idx = [];
+  for (let i = 0; i < N - 1; i++) for (let j = 0; j < 2; j++) {
+    const a = i * 3 + j, b = (i + 1) * 3 + j, c = i * 3 + j + 1, d = (i + 1) * 3 + j + 1;
+    idx.push(a, b, c, b, d, c);
+  }
+  geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+  const mat1 = new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide });
+  const surface = new THREE.Mesh(geo, mat1);
+  S1.scene.add(surface);
+  // lignes de chaque echeance
+  const lignes = [];
+  for (let j = 0; j < 3; j++) {
+    const pts = [];
+    for (let i = 0; i < N; i++) pts.push(new THREE.Vector3(xDe(i), D[ech[j][0]][i] * H + 0.01, zDe(j)));
+    const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ transparent: true, opacity: 0.55 }));
+    S1.scene.add(l); lignes.push(l);
+  }
+  // bande de deport, socle et graduations
+  const depGeo = new THREE.BufferGeometry(), dp = [];
+  const z0 = zDe(0) + 0.9;
+  for (let i = 0; i < N - 1; i++) if (D.v30[i] >= D.v93[i]) {
+    const x1 = xDe(i), x2 = xDe(i + 1);
+    dp.push(x1, 0.01, z0, x2, 0.01, z0, x1, 0.01, z0 + 0.5, x2, 0.01, z0, x2, 0.01, z0 + 0.5, x1, 0.01, z0 + 0.5);
+  }
+  depGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(dp), 3));
+  const matDep = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide });
+  S1.scene.add(new THREE.Mesh(depGeo, matDep));
+  const grilleMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.7 });
+  const gp = [];
+  for (const v of [10, 20, 40, 80]) { gp.push(-W / 2, v * H, zDe(2), W / 2, v * H, zDe(2)); }
+  for (let j = 0; j < 3; j++) gp.push(-W / 2, 0, zDe(j), W / 2, 0, zDe(j));
+  gp.push(-W / 2, 0, zDe(0) + 1.5, -W / 2, 0, zDe(2), -W / 2, 0, zDe(2), -W / 2, 80 * H, zDe(2));
+  const gg = new THREE.BufferGeometry(); gg.setAttribute("position", new THREE.BufferAttribute(new Float32Array(gp), 3));
+  S1.scene.add(new THREE.LineSegments(gg, grilleMat));
+  for (const v of [10, 20, 40, 80]) S1.ajouterEtiquette(String(v), new THREE.Vector3(-W / 2 - 0.7, v * H, zDe(2)));
+  for (let a = 2012; a <= 2026; a += 2) {
+    const i = D.semaines.findIndex(s => s.startsWith(String(a)));
+    if (i >= 0) S1.ajouterEtiquette(String(a), new THREE.Vector3(xDe(i), 0, z0 + 1.1));
+  }
+  ech.forEach((e, j) => S1.ajouterEtiquette(e[1], new THREE.Vector3(W / 2 + 1.6, 0, zDe(j)), true));
+  const repere = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+    new THREE.LineBasicMaterial({ linewidth: 2 }));
+  repere.visible = false; S1.scene.add(repere);
+  // vue d'ensemble : on recule la camera quand l'ecran est etroit pour garder les 16 ans dans le cadre
+  function vueEnsemble() {
+    const k = Math.max(1, 1.8 / S1.camera.aspect), t = new THREE.Vector3(0, 1.6, 0);
+    S1.controls.target.copy(t);
+    S1.camera.position.set(-5, 10.4, 23).multiplyScalar(k).add(t);
+    S1.redessiner();
+  }
+  vueEnsemble();
+
+  function peindre1() {
+    const r = rampe();
+    for (let i = 0; i < N; i++) for (let j = 0; j < 3; j++) {
+      const c = couleurIV(D[ech[j][0]][i], r), k = (i * 3 + j) * 3;
+      col[k] = c.r; col[k + 1] = c.g; col[k + 2] = c.b;
+    }
+    geo.attributes.color.needsUpdate = true;
+    const grid = new THREE.Color(css("--grid")), ink = new THREE.Color(css("--ink-2"));
+    grilleMat.color = grid; lignes.forEach(l => l.material.color = ink);
+    matDep.color = new THREE.Color(css("--warm"));
+    repere.material.color = new THREE.Color(css("--ink"));
+    S1.redessiner();
+  }
+  peindre1();
+
+  const ray = new THREE.Raycaster(), souris = new THREE.Vector2();
+  function lire1(i) {
+    document.getElementById("l1-date").textContent = dateFr(D.semaines[i]);
+    document.getElementById("l1-9").textContent = fmt(D.v9[i]);
+    document.getElementById("l1-30").textContent = fmt(D.v30[i]);
+    document.getElementById("l1-93").textContent = fmt(D.v93[i]);
+    document.getElementById("l1-rv").textContent = fmt(D.rv[i]);
+    document.getElementById("l1-vv").textContent = fmt(D.vvix[i]);
+    document.getElementById("l1-forme").textContent = D.v30[i] >= D.v93[i] ? "déport" : "contango";
+    const x = xDe(i), top = Math.max(D.v9[i], D.v30[i], D.v93[i]) * H + 0.3;
+    repere.geometry.setFromPoints([new THREE.Vector3(x, 0, z0 + 0.5), new THREE.Vector3(x, top, zDe(0))]);
+    repere.visible = true; S1.redessiner();
+  }
+  S1.renderer.domElement.addEventListener("pointermove", ev => {
+    const b = S1.renderer.domElement.getBoundingClientRect();
+    souris.set((ev.clientX - b.left) / b.width * 2 - 1, -(ev.clientY - b.top) / b.height * 2 + 1);
+    ray.setFromCamera(souris, S1.camera);
+    const h = ray.intersectObject(surface)[0];
+    if (h) lire1(Math.round((h.point.x / W + 0.5) * (N - 1)));
+  });
+  document.querySelectorAll("[data-aller]").forEach(btn => btn.addEventListener("click", () => {
+    const v = btn.dataset.aller;
+    if (v === "tout") { vueEnsemble(); return; }
+    let i = v === "fin" ? N - 1 : D.semaines.findIndex(s => s >= v);
+    if (i < 0) i = N - 1;
+    const x = xDe(i);
+    S1.controls.target.set(x, 1.6, 0);
+    S1.camera.position.set(-2.5, 3.6, 10.5).multiplyScalar(Math.max(1, 1.8 / S1.camera.aspect)).add(S1.controls.target);
+    lire1(i);
+  }));
+
+  // ---------------------------------------------------------------- relief 2 : zone par regime
+  const G = D.grille, S2 = creerScene(document.getElementById("scene2"), document.getElementById("lab2"));
+  const PAS2 = 1.25, H2 = 0.022, barres = [];
+  const base = new THREE.Mesh(new THREE.PlaneGeometry(6 * PAS2 + 0.6, 6 * PAS2 + 0.6), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.35, side: THREE.DoubleSide }));
+  base.rotation.x = -Math.PI / 2; S2.scene.add(base);
+  for (let a = 0; a < 6; a++) for (let b = 0; b < 6; b++) {
+    const m = G.moy[a][b], n = G.n[a][b];
+    if (n === 0) continue;
+    const h = Math.max(Math.abs(m) * H2, 0.04);
+    const g = new THREE.BoxGeometry(PAS2 * 0.78, h, PAS2 * 0.78);
+    const mesh = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ transparent: n < 30, opacity: n < 30 ? 0.35 : 1 }));
+    mesh.position.set((a - 2.5) * PAS2, m >= 0 ? h / 2 : -h / 2, (2.5 - b) * PAS2);
+    mesh.userData = { a, b, m, n, t: G.t[a][b] };
+    S2.scene.add(mesh); barres.push(mesh);
+  }
+  const bv = G.bornes_vix, bp = G.bornes_pente;
+  for (let a = 0; a < 6; a++) S2.ajouterEtiquette(`${fmt(bv[a])}–${fmt(bv[a + 1])}`, new THREE.Vector3((a - 2.5) * PAS2, 0, 3 * PAS2 + 0.9));
+  for (let b = 0; b < 6; b++) S2.ajouterEtiquette(`${fmt(bp[b], 2)}–${fmt(bp[b + 1], 2)}`, new THREE.Vector3(3 * PAS2 + 2.2, 0, (2.5 - b) * PAS2));
+  S2.ajouterEtiquette("VIX de la veille →", new THREE.Vector3(0, 0, 3 * PAS2 + 1.8), true);
+  S2.ajouterEtiquette("pente vers le déport →", new THREE.Vector3(3 * PAS2 + 2.4, 0, -3 * PAS2 - 0.9), true);
+  const k2 = Math.max(1, 1.5 / S2.camera.aspect);
+  S2.controls.target.set(0.6, 0.6, 0);
+  S2.camera.position.set(-6.5, 7.5, 11.5).multiplyScalar(k2).add(S2.controls.target);
+  function peindre2() {
+    const pos_ = new THREE.Color(css("--accent")), neg = new THREE.Color(css("--neg")), mid = new THREE.Color(css("--mid"));
+    for (const m of barres) {
+      const v = m.userData.m, x = Math.min(Math.abs(v) / 90, 1);
+      m.material.color = mid.clone().lerp(v >= 0 ? pos_ : neg, 0.35 + 0.65 * x);
+    }
+    base.material.color = new THREE.Color(css("--grid"));
+    S2.redessiner();
+  }
+  peindre2();
+  let survol = null;
+  S2.renderer.domElement.addEventListener("pointermove", ev => {
+    const b = S2.renderer.domElement.getBoundingClientRect();
+    souris.set((ev.clientX - b.left) / b.width * 2 - 1, -(ev.clientY - b.top) / b.height * 2 + 1);
+    ray.setFromCamera(souris, S2.camera);
+    const h = ray.intersectObjects(barres)[0];
+    if (survol && (!h || h.object !== survol)) { survol.material.emissive.setHex(0x000000); survol = null; S2.redessiner(); }
+    if (h && h.object !== survol) {
+      survol = h.object; survol.material.emissive.setHex(0x222222);
+      const u = survol.userData;
+      document.getElementById("l2-vix").textContent = `${fmt(bv[u.a])} à ${fmt(bv[u.a + 1])}`;
+      document.getElementById("l2-pente").textContent = `${fmt(bp[u.b], 3)} à ${fmt(bp[u.b + 1], 3)}`;
+      document.getElementById("l2-n").textContent = u.n.toLocaleString("fr-FR");
+      document.getElementById("l2-moy").textContent = signe(u.m) + " $";
+      document.getElementById("l2-t").textContent = (u.t >= 0 ? "+" : "−") + Math.abs(u.t).toLocaleString("fr-FR", { minimumFractionDigits: 2 });
+      S2.redessiner();
+    }
+  });
+
+  // ---------------------------------------------------------------- barres 2D par periode
+  dessinerBarres();
+  const reteindre = () => { peindreRampe(); peindre1(); peindre2(); dessinerBarres(); };
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", reteindre);
+  new MutationObserver(reteindre).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  function dessinerBarres() {
+    const svg = document.getElementById("barres"), P = D.par_periode, ns = "http://www.w3.org/2000/svg";
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    const L = 46, R = 10, T = 14, B = 52, w = 520 - L - R, h = 300 - T - B, vmin = -20, vmax = 80;
+    const y = v => T + (vmax - v) / (vmax - vmin) * h;
+    const el = (n, a) => { const e = document.createElementNS(ns, n); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+    for (const v of [-20, 0, 20, 40, 60, 80]) {
+      el("line", { x1: L, x2: L + w, y1: y(v), y2: y(v), stroke: css("--grid"), "stroke-width": v === 0 ? 1.4 : 0.8 });
+      const t = el("text", { x: L - 8, y: y(v) + 4, "text-anchor": "end", fill: css("--ink-3"), "font-size": 11, "font-family": "JetBrains Mono, monospace" });
+      t.textContent = (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v) + " $";
+    }
+    const gw = w / 6, bw = (gw - 18) / 2;
+    const series = [["2012-2022", "--accent"], ["2023-2026", "--warm"]];
+    for (let a = 0; a < 6; a++) {
+      series.forEach(([k, c], s) => {
+        const v = P[k].vix[a], x = L + a * gw + 9 + s * (bw + 2);
+        const y1 = y(Math.max(v, 0)), y2 = y(Math.min(v, 0));
+        const r = el("rect", { x, y: y1, width: bw, height: Math.max(y2 - y1, 1), rx: 2, fill: css(c) });
+        const hit = el("rect", { x: x - 1, y: T, width: bw + 2, height: h, fill: "transparent" });
+        const txt = `${k.replace("-", " – ")}, VIX ${fmt(D.grille.bornes_vix[a])} à ${fmt(D.grille.bornes_vix[a + 1])} : ${signe(v)} $ par séance`;
+        hit.addEventListener("pointerenter", () => { document.getElementById("barres-lecture").textContent = txt; r.setAttribute("opacity", 0.75); });
+        hit.addEventListener("pointerleave", () => r.setAttribute("opacity", 1));
+      });
+      const t = el("text", { x: L + a * gw + gw / 2, y: T + h + 18, "text-anchor": "middle", fill: css("--ink-2"), "font-size": 11, "font-family": "JetBrains Mono, monospace" });
+      t.textContent = `${fmt(D.grille.bornes_vix[a])}–${fmt(D.grille.bornes_vix[a + 1])}`;
+    }
+    const tl = el("text", { x: L + w / 2, y: T + h + 40, "text-anchor": "middle", fill: css("--ink-3"), "font-size": 11, "font-family": "JetBrains Mono, monospace" });
+    tl.textContent = "VIX de la veille (six groupes de même taille)";
+  }
+})();
+</script>
