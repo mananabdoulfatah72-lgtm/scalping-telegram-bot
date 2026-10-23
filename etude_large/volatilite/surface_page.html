@@ -1,0 +1,635 @@
+<title>Surface de volatilité implicite</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75,600;75,800;100,500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Une colonne de lecture ; deux maquettes 3D pleine largeur : la surface du marché, puis le labo des stratégies */
+:root {
+  --bg: #f4f6f9;
+  --panel: #ffffff;
+  --ink: #12161d;
+  --ink-2: #485062;
+  --ink-3: #737c8f;
+  --line: #dde2ea;
+  --grid: #c3cad6;
+  --socle: #b9c0cc;
+  --accent: #2a78d6;
+  --warm: #eb6834;
+  --neg: #e34948;
+  --mid: #cfd2d8;
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1016; --panel: #141922; --ink: #eef1f6; --ink-2: #b3bbca; --ink-3: #8790a3; --line: #252c38;
+    --grid: #2f3745; --socle: #39414f; --accent: #3987e5; --warm: #d95926; --neg: #e66767; --mid: #4a4e57; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1016; --panel: #141922; --ink: #eef1f6; --ink-2: #b3bbca; --ink-3: #8790a3; --line: #252c38;
+  --grid: #2f3745; --socle: #39414f; --accent: #3987e5; --warm: #d95926; --neg: #e66767; --mid: #4a4e57; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+.page { max-width: 1120px; margin: 0 auto; display: grid; gap: 40px; }
+.lire { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--font-display); font-stretch: 75%; text-wrap: balance; margin: 0; letter-spacing: 0.005em; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 800; line-height: 1.02; }
+h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); font-weight: 800; line-height: 1.1; }
+h3 { font-size: 1.2rem; font-weight: 600; }
+p { margin: 0; }
+.stack { display: grid; gap: 14px; }
+.surtitre { font-family: var(--font-data); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.chapo { font-size: 1.15rem; color: var(--ink-2); max-width: 64ch; }
+.bande { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1px; background: var(--line);
+  border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.bande > div { background: var(--panel); padding: 14px 16px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.bande .val { font-family: var(--font-data); font-size: 1.5rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bande .lib { font-size: 0.92rem; color: var(--ink-2); line-height: 1.4; }
+.ecran { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.ecran-tete { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.ecran-tete h3 { font-size: 1.05rem; }
+.boutons { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+button { font-family: var(--font-data); font-size: 0.78rem; color: var(--ink); background: transparent; border: 1px solid var(--grid);
+  border-radius: 4px; padding: 5px 9px; cursor: pointer; }
+button:hover { border-color: var(--accent); color: var(--accent); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+.reglage { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 10px 16px; border-bottom: 1px solid var(--line);
+  font-family: var(--font-data); font-size: 0.8rem; color: var(--ink-2); }
+.reglage input[type="range"] { width: min(260px, 100%); accent-color: var(--accent); }
+.reglage output { color: var(--ink); font-weight: 600; min-width: 7ch; }
+.scene { position: relative; height: clamp(360px, 60vw, 620px); touch-action: none; }
+.scene canvas { display: block; width: 100%; height: 100%; }
+.etiquettes { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.etiquettes span { position: absolute; transform: translate(-50%, -50%); font-family: var(--font-data); font-size: 0.7rem;
+  color: var(--ink-3); white-space: nowrap; }
+.etiquettes span.fort { color: var(--ink); font-weight: 600; background: var(--panel); padding: 1px 5px; border-radius: 3px;
+  box-shadow: 0 0 0 1px var(--line); }
+.lecture { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px 18px; padding: 12px 16px;
+  border-top: 1px solid var(--line); font-family: var(--font-data); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+.lecture div { display: grid; gap: 2px; min-width: 0; }
+.lecture .k { color: var(--ink-3); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.legende { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 10px 16px 14px; font-size: 0.85rem; color: var(--ink-2); align-items: center; }
+.donnees { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.rampe { width: 120px; height: 10px; border-radius: 2px; }
+.pastille { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; }
+.trait { display: inline-block; width: 18px; height: 0; border-top: 2px solid; vertical-align: 3px; margin-right: 6px; }
+.aide { font-size: 0.82rem; color: var(--ink-3); padding: 0 16px 14px; }
+.explication { padding: 14px 16px; border-top: 1px solid var(--line); font-size: 0.98rem; max-width: 80ch; }
+.colonnes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px 40px; }
+.colonnes > div { min-width: 0; }
+.carte { border-top: 2px solid var(--ink); padding-top: 12px; display: grid; gap: 8px; }
+.carte p { font-size: 0.98rem; }
+.tag { font-family: var(--font-data); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--neg); }
+.table-zone { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-family: var(--font-data); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--ink-3); font-weight: 400; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+details summary { cursor: pointer; font-family: var(--font-data); font-size: 0.85rem; color: var(--ink-2); }
+details[open] summary { margin-bottom: 10px; }
+.note { font-size: 0.85rem; color: var(--ink-3); }
+.sanswebgl { padding: 40px 16px; color: var(--ink-2); }
+</style>
+
+<div class="page">
+  <header class="stack">
+    <span class="surtitre" id="surtitre">Nasdaq 100 · S&amp;P 500 · options</span>
+    <h1>Surface de volatilité implicite</h1>
+    <p class="chapo">Pour chaque prix d'exercice et chaque échéance, la volatilité que le marché des options fait payer. Elle
+      est recalculée cotation par cotation sur les vraies chaînes d'options du QQQ (Nasdaq 100) et du SPY (S&amp;P 500), puis
+      lissée comme sur un desk d'options. En dessous, les vraies stratégies de volatilité, posées sur cette surface.</p>
+  </header>
+
+  <section class="bande" aria-label="Chiffres clés" id="bande"></section>
+
+  <section class="ecran" aria-labelledby="t-surface">
+    <div class="ecran-tete">
+      <h3 id="t-surface">La surface du marché</h3>
+      <div class="boutons">
+        <div class="boutons" role="group" aria-label="Sous-jacent">
+          <button type="button" data-sj="QQQ" aria-pressed="true">QQQ · Nasdaq 100</button>
+          <button type="button" data-sj="SPY" aria-pressed="false">SPY · S&amp;P 500</button>
+        </div>
+        <button type="button" id="b-points" aria-pressed="true">Cotations</button>
+        <button type="button" id="b-vue1">Vue de départ</button>
+      </div>
+    </div>
+    <div class="scene" id="scene1"><div class="etiquettes" id="lab1"></div></div>
+    <div class="lecture" aria-live="polite">
+      <div><span class="k">Échéance</span><span id="l1-ech">survole la surface</span></div>
+      <div><span class="k">Prix d'exercice</span><span id="l1-k">—</span></div>
+      <div><span class="k">Volatilité implicite</span><span id="l1-iv">—</span></div>
+      <div><span class="k">Prix du put</span><span id="l1-put">—</span></div>
+      <div><span class="k">Prix du call</span><span id="l1-call">—</span></div>
+      <div><span class="k">Cotée ?</span><span id="l1-cote">—</span></div>
+    </div>
+    <div class="legende">
+      <span>Volatilité implicite annualisée</span>
+      <span class="donnees">10 %</span><span class="rampe" id="rampe1" aria-hidden="true"></span><span class="donnees">60 % et plus</span>
+      <span><span class="trait" style="border-color: var(--warm)"></span>prix d'exercice au cours</span>
+      <span><span class="pastille" style="background: var(--ink-2); border-radius: 50%"></span>cotations réelles</span>
+    </div>
+    <p class="aide">Glisse pour tourner, molette ou pincement pour zoomer. Devant : l'échéance la plus courte (7 jours). Au
+      fond : un an. À gauche : les prix d'exercice sous le cours (les puts). La forme découpée suit les prix d'exercice que
+      le marché cote vraiment.</p>
+  </section>
+
+  <section class="colonnes">
+    <div class="stack lire">
+      <h2>Lire la surface</h2>
+      <p><strong>Le sourire, de gauche à droite.</strong> Les options 10 ou 20 % sous le cours coûtent plus cher en
+        volatilité que celles au cours. C'est le prix de l'assurance contre la chute : depuis le krach de 1987, les grands
+        gérants paient cher leurs puts, et les vendeurs exigent une prime pour porter ce risque.</p>
+      <p><strong>La pente, de l'avant vers le fond.</strong> Par temps calme, la surface monte vers le fond : l'incertitude
+        lointaine coûte plus cher. Quand le marché a peur, c'est l'inverse, le devant se dresse au-dessus du fond.</p>
+    </div>
+    <div class="stack lire">
+      <h2 id="t-ce-soir">Ce que dit la surface ce soir</h2>
+      <p id="ce-soir-1"></p>
+      <p id="ce-soir-2"></p>
+    </div>
+  </section>
+
+  <section class="ecran" aria-labelledby="t-labo">
+    <div class="ecran-tete">
+      <h3 id="t-labo">Le labo des stratégies de volatilité</h3>
+      <div class="boutons" role="group" aria-label="Stratégie">
+        <button type="button" data-strat="vente" aria-pressed="true">Vendre un straddle</button>
+        <button type="button" data-strat="condor" aria-pressed="false">Iron condor</button>
+        <button type="button" data-strat="calendar" aria-pressed="false">Calendar</button>
+        <button type="button" data-strat="achat" aria-pressed="false">Acheter un straddle</button>
+      </div>
+    </div>
+    <div class="reglage">
+      <label for="choc">Choc de volatilité sur toute la surface</label>
+      <input type="range" id="choc" min="-10" max="15" step="1" value="0">
+      <output id="choc-val" for="choc">0 pt</output>
+      <span id="jambes"></span>
+    </div>
+    <div class="scene" id="scene2"><div class="etiquettes" id="lab2"></div></div>
+    <div class="lecture" aria-live="polite">
+      <div><span class="k">Au jour</span><span id="l2-t">survole la maquette</span></div>
+      <div><span class="k">Mouvement</span><span id="l2-x">—</span></div>
+      <div><span class="k">Gain ou perte</span><span id="l2-pnl">—</span></div>
+    </div>
+    <div class="lecture">
+      <div><span class="k" id="s-prime-k">Prime</span><span id="s-prime">—</span></div>
+      <div><span class="k">Le temps, 1er jour</span><span id="s-theta">—</span></div>
+      <div><span class="k">+1 pt de volatilité</span><span id="s-vega">—</span></div>
+      <div><span class="k" id="s-choc-k">Si −10 % demain</span><span id="s-choc">—</span></div>
+      <div><span class="k">Points morts à l'échéance</span><span id="s-morts">—</span></div>
+    </div>
+    <div class="legende">
+      <span><span class="pastille" style="background: var(--accent)"></span>gain</span>
+      <span><span class="pastille" style="background: var(--neg)"></span>perte</span>
+      <span><span class="trait" style="border-color: var(--ink)"></span>point mort (ni gain ni perte)</span>
+      <span><span class="pastille" style="background: var(--grid); opacity: 0.6"></span>plan zéro</span>
+    </div>
+    <p class="explication" id="explication"></p>
+    <p class="aide">Une stratégie = 1 lot (100 titres par option), ouverte aux prix de ce soir. Devant : aujourd'hui ; au fond :
+      l'échéance de 30 jours. De gauche à droite : le mouvement du sous-jacent, de −12 % à +12 %. La hauteur est le gain ou
+      la perte en dollars. Chaque option garde la volatilité de son prix d'exercice sur la surface, plus le choc choisi.</p>
+  </section>
+
+  <section class="stack">
+    <div class="stack lire">
+      <h2>Ce que ça veut dire pour toi</h2>
+    </div>
+    <div class="colonnes">
+      <div class="carte"><span class="tag">options : interdites chez Bulenox et Topstep</span><h3>Aucune de ces stratégies sur ton compte</h3>
+        <p>Les prop firms de futures n'acceptent que les futures du CME. Ces quatre maquettes demandent un compte d'options,
+          avec la marge qui va avec : vendre un straddle sur le QQQ peut demander plusieurs dizaines de milliers de dollars.</p></div>
+      <div class="carte"><span class="tag">testé : ne s'ajoute pas à ta zone</span><h3>La surface ne règle pas mieux la zone</h3>
+        <p>La vague « zone implicite » a tiré la largeur de la zone et la taille du VXN : aucune des 5 règles ne passe, et la
+          largeur implicite fait moins bien que les 14 séances passées. La surface sert à comprendre le marché, pas à régler le bot.</p></div>
+      <div class="carte"><span class="tag">utile : le risque du jour en dollars</span><h3>Le mouvement que le marché attend</h3>
+        <p id="carte-mouvement"></p></div>
+    </div>
+  </section>
+
+  <section class="stack">
+    <details>
+      <summary>La surface en tableau (volatilité implicite par échéance)</summary>
+      <div class="table-zone"><table id="table-surface">
+        <thead><tr><th>Échéance</th><th>Jours</th><th>80 %</th><th>90 %</th><th>95 %</th><th>Au cours</th><th>105 %</th><th>110 %</th><th>Cotations</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </details>
+    <p class="note" id="note-donnees"></p>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const D = /*DONNEES*/null;
+(function () {
+  // ---------------------------------------------------------------- outils
+  const nf = (x, d = 1) => x.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const pc = (x, d = 1) => nf(x * 100, d) + " %";
+  const sg = (x, d = 0) => (x > 0 ? "+" : x < 0 ? "−" : "") + nf(Math.abs(x), d);
+  const usd = x => sg(Math.round(x)) + " $";
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const dateFr = s => new Date(s + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+  const dateCourt = s => new Date(s + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+  const GM = D.grille_m, NM = GM.length;
+  const reduit = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let sj = "QQQ", strat = "vente", choc = 0;
+  const S_ = () => D.sj[sj];
+
+  function ncdf(x) {
+    const z = Math.abs(x) / Math.SQRT2, t = 1 / (1 + 0.3275911 * z);
+    const y = 1 - ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-z * z);
+    return x >= 0 ? 0.5 * (1 + y) : 0.5 * (1 - y);
+  }
+  // Black-Scholes avec portage b (taux moins dividendes, tiré du forward de l'échéance)
+  function prix(call, S, K, tau, sig, b) {
+    if (tau <= 1e-9) return Math.max(call ? S - K : K - S, 0);
+    const F = S * Math.exp(b * tau), v = Math.max(sig, 0.01) * Math.sqrt(tau);
+    const d1 = Math.log(F / K) / v + v / 2, d2 = d1 - v, act = Math.exp(-D.taux * tau);
+    return act * (call ? F * ncdf(d1) - K * ncdf(d2) : K * ncdf(-d2) - F * ncdf(-d1));
+  }
+  function ivA(e, m) {        // volatilité de la surface lissée, échéance e, prix d'exercice m (part du cours)
+    const row = S_().echeances[e].iv, x = (m - GM[0]) / (GM[1] - GM[0]);
+    const j = Math.min(Math.max(Math.floor(x), 0), NM - 2), f = Math.min(Math.max(x - j, 0), 1);
+    return row[j] * (1 - f) + row[j + 1] * f;
+  }
+  const portage = e => { const x = S_().echeances[e]; return Math.log(x.F / S_().spot) / (x.jours / 365); };
+  const proche = j => S_().echeances.reduce((b, x, i, a) => Math.abs(x.jours - j) < Math.abs(a[b].jours - j) ? i : b, 0);
+
+  // ---------------------------------------------------------------- chiffres clés, textes, tableau
+  function textes() {
+    const s = S_(), e30 = proche(30), e7 = 0, eL = s.echeances.length - 1, x30 = s.echeances[e30];
+    const atm = ivA(e30, 1), skew = ivA(e30, 0.9) - atm, a7 = ivA(e7, 1), aL = ivA(eL, 1);
+    const mvt = atm * Math.sqrt(x30.jours / 365), jour = atm / Math.sqrt(252);
+    const nom = sj === "QQQ" ? "le Nasdaq 100" : "le S&P 500";
+    document.getElementById("surtitre").textContent = `${sj} · options · photo du ${dateFr(D.date)} au soir`;
+    document.getElementById("bande").innerHTML = `
+      <div><span class="val">${pc(atm)}</span><span class="lib">volatilité implicite au cours, ${sj}, échéance du ${dateCourt(x30.date)} (${x30.jours} jours) : un mouvement attendu de ±${pc(mvt)} sur la période</span></div>
+      <div><span class="val">${sg(skew * 100, 1)} pts</span><span class="lib">le put 10 % sous le cours coûte plus cher en volatilité que l'option au cours : le prix de l'assurance contre la chute</span></div>
+      <div><span class="val">${pc(a7)} / ${pc(aL)}</span><span class="lib">au cours, à 7 jours contre ${s.echeances[eL].jours} jours : ${a7 > aL ? "le devant au-dessus du fond, signe de stress" : "le fond au-dessus du devant, temps calme"}</span></div>
+      <div><span class="val">${nf(D.vxn[1], 2)}</span><span class="lib">VXN, volatilité implicite du Nasdaq 100 à 30 jours, clôture du ${dateFr(D.vxn[0])}</span></div>`;
+    const q = D.sj.QQQ, p = D.sj.SPY, iq = q.echeances.reduce((b, x, i, a) => Math.abs(x.jours - 30) < Math.abs(a[b].jours - 30) ? i : b, 0);
+    const ip = p.echeances.reduce((b, x, i, a) => Math.abs(x.jours - 30) < Math.abs(a[b].jours - 30) ? i : b, 0);
+    const interp = (o, e, m) => { const r = o.echeances[e].iv, x = (m - GM[0]) / (GM[1] - GM[0]), j = Math.min(Math.max(Math.floor(x), 0), NM - 2), f = x - j; return r[j] * (1 - f) + r[j + 1] * f; };
+    document.getElementById("ce-soir-1").innerHTML = `Le ${dateFr(D.date)}, le QQQ a fini vers ${nf(q.spot, 0)} $ et le SPY vers ${nf(p.spot, 0)} $. À 30 jours, le marché fait payer <strong>${pc(interp(q, iq, 1))}</strong> de volatilité sur le Nasdaq 100 contre <strong>${pc(interp(p, ip, 1))}</strong> sur le S&amp;P 500 : la peur se concentre sur les valeurs technologiques.`;
+    document.getElementById("ce-soir-2").innerHTML = `Sur ${nom}, la volatilité à 7 jours (${pc(a7)}) est ${a7 > aL ? "au-dessus" : "en dessous"} de celle à un an (${pc(aL)}). ${a7 > aL ? "Le devant de la surface se dresse : le marché craint surtout les prochains jours. C'est le profil des lendemains de forte baisse ; il se résorbe souvent en quelques semaines, mais pas toujours." : "La pente est normale : rien de particulier ce soir."}`;
+    const nq = sj === "QQQ" ? "Nasdaq 100" : "S&P 500";
+    document.getElementById("carte-mouvement").textContent = `Ce soir, les options du ${sj} annoncent environ ±${pc(jour)} par jour sur le ${nq} (un écart type). Pour ton bot sur le NQ : des séances plus agitées que d'habitude. La zone s'élargit d'elle-même, et chaque MNQ porte plus de dollars de risque par trade.`;
+    const tb = document.querySelector("#table-surface tbody");
+    tb.innerHTML = "";
+    s.echeances.forEach((x, e) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${dateCourt(x.date)} ${x.date.slice(0, 4)}</td><td>${x.jours}</td>` +
+        [0.8, 0.9, 0.95, 1, 1.05, 1.1].map(m => `<td>${pc(ivA(e, m))}</td>`).join("") + `<td>${x.n}</td>`;
+      tb.appendChild(tr);
+    });
+    document.getElementById("note-donnees").textContent = `Données gratuites : chaînes d'options du QQQ et du SPY chez Yahoo, cotations de clôture du ${dateFr(D.date)} (milieu entre le prix d'achat et le prix de vente ; cotations nulles et fourchettes trop larges retirées). Le cours de clôture manquait chez Yahoo : il est tiré de la parité call-put de l'échéance du lendemain. Forward de chaque échéance par la parité call-put, actualisation au taux à 13 semaines (${pc(D.taux, 2)}), volatilité recalculée par la formule de Black sur les options hors de la monnaie, puis lissage SVI par échéance. Options américaines traitées comme européennes (écart négligeable hors de la monnaie). Une photo d'un soir, pas un historique : l'historique des chaînes d'options est payant.`;
+  }
+
+  // ---------------------------------------------------------------- couleurs
+  const RAMPE_CLAIR = ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"];
+  const RAMPE_SOMBRE = ["#184f95", "#1c5cab", "#256abf", "#3987e5", "#6da7ec", "#9ec5f4", "#cde2fb"];
+  const sombre = () => { const t = document.documentElement.getAttribute("data-theme"); return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; };
+  const rampeHex = () => sombre() ? RAMPE_SOMBRE : RAMPE_CLAIR;
+  function couleurIV(v, r) {
+    const x = Math.min(Math.max((Math.log(v) - Math.log(0.10)) / (Math.log(0.60) - Math.log(0.10)), 0), 1) * (r.length - 1);
+    const k = Math.min(Math.floor(x), r.length - 2);
+    return r[k].clone().lerp(r[k + 1], x - k);
+  }
+  const peindreRampe = () => { document.getElementById("rampe1").style.background = `linear-gradient(90deg, ${rampeHex().join(",")})`; };
+
+  textes();
+  peindreRampe();
+  const webgl = (() => { try { const c = document.createElement("canvas"); return !!(window.THREE && (c.getContext("webgl") || c.getContext("experimental-webgl"))); } catch (e) { return false; } })();
+  if (!webgl) {
+    for (const id of ["scene1", "scene2"]) document.getElementById(id).innerHTML = '<p class="sanswebgl">Ce navigateur n\'affiche pas la 3D (WebGL). Le tableau plus bas donne la surface en chiffres.</p>';
+    return;
+  }
+
+  // ---------------------------------------------------------------- scène commune : lumière, ombre portée, sol
+  function creerScene(hote, labHote) {
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    hote.insertBefore(renderer.domElement, labHote);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 500);
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = !reduit;
+    controls.dampingFactor = 0.08;
+    controls.maxPolarAngle = Math.PI * 0.49;
+    controls.autoRotate = !reduit;
+    controls.autoRotateSpeed = 0.5;
+    controls.addEventListener("start", () => { controls.autoRotate = false; });
+    const ciel = new THREE.HemisphereLight(0xffffff, 0x8a93a3, 0.55);
+    scene.add(ciel);
+    const soleil = new THREE.DirectionalLight(0xffffff, 0.75);
+    soleil.position.set(-5, 16, 11);
+    soleil.castShadow = true;
+    soleil.shadow.mapSize.set(2048, 2048);
+    Object.assign(soleil.shadow.camera, { left: -14, right: 14, top: 14, bottom: -14, near: 1, far: 50 });
+    soleil.shadow.radius = 4;
+    soleil.shadow.bias = -0.0008;
+    soleil.shadow.normalBias = 0.03;
+    scene.add(soleil);
+    const sol = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.ShadowMaterial({ opacity: 0.16 }));
+    sol.rotation.x = -Math.PI / 2;
+    sol.receiveShadow = true;
+    scene.add(sol);
+    const etiquettes = [];
+    const ajouterEtiquette = (texte, pos, fort) => {
+      const s = document.createElement("span"); s.textContent = texte; if (fort) s.className = "fort";
+      labHote.appendChild(s); etiquettes.push({ s, pos });
+    };
+    const vider = () => { etiquettes.forEach(e => e.s.remove()); etiquettes.length = 0; };
+    function taille() {
+      const w = hote.clientWidth, h = hote.clientHeight;
+      renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+    }
+    function placer() {
+      const w = hote.clientWidth, h = hote.clientHeight;
+      for (const e of etiquettes) {
+        const p = e.pos.clone().project(camera);
+        const vis = p.z < 1 && Math.abs(p.x) < 1.05 && Math.abs(p.y) < 1.05;
+        e.s.style.display = vis ? "" : "none";
+        e.s.style.left = ((p.x + 1) / 2 * w) + "px"; e.s.style.top = ((1 - p.y) / 2 * h) + "px";
+      }
+    }
+    let sale = true, visible = true;
+    controls.addEventListener("change", () => { sale = true; });
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(hote);
+    (function boucle() {
+      requestAnimationFrame(boucle);
+      if (!visible) return;
+      const bouge = controls.update();
+      if (sale || bouge) { renderer.render(scene, camera); placer(); sale = false; }
+    })();
+    new ResizeObserver(() => { taille(); sale = true; }).observe(hote);
+    taille();
+    return { renderer, scene, camera, controls, sol, ajouterEtiquette, vider, redessiner: () => { sale = true; } };
+  }
+  function jeter(o) { if (!o) return; o.traverse(c => { if (c.geometry) c.geometry.dispose(); if (c.material) [].concat(c.material).forEach(m => m.dispose()); }); o.parent && o.parent.remove(o); }
+  const lignes = (pts, couleur, opacite) => new THREE.LineSegments(
+    new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(new Float32Array(pts), 3)),
+    new THREE.LineBasicMaterial({ color: couleur, transparent: opacite < 1, opacity: opacite }));
+
+  // ---------------------------------------------------------------- maquette 1 : la surface du marché
+  const W1 = 12, P1 = 9, H1 = 14;
+  const S1 = creerScene(document.getElementById("scene1"), document.getElementById("lab1"));
+  let groupe1 = null, mesh1 = null, points1 = null, voirPoints = true;
+  const x1 = m => (m - GM[0]) / (GM[NM - 1] - GM[0]) * W1 - W1 / 2;
+  const sq = j => Math.sqrt(j);
+  const z1 = j => { const e = S_().echeances; return P1 / 2 - (sq(j) - sq(e[0].jours)) / (sq(e[e.length - 1].jours) - sq(e[0].jours)) * P1; };
+  function construire1() {
+    jeter(groupe1); S1.vider();
+    const s = S_(), E = s.echeances, NE = E.length, r = rampeHex().map(h => new THREE.Color(h));
+    groupe1 = new THREE.Group();
+    const pos = new Float32Array(NE * NM * 3), col = new Float32Array(NE * NM * 3), ok = [];
+    E.forEach((x, e) => GM.forEach((m, j) => {
+      const k = (e * NM + j) * 3, iv = x.iv[j];
+      pos[k] = x1(m); pos[k + 1] = iv * H1; pos[k + 2] = z1(x.jours);
+      const c = couleurIV(iv, r); col[k] = c.r; col[k + 1] = c.g; col[k + 2] = c.b;
+      ok[e * NM + j] = m >= x.m_min - 0.015 && m <= x.m_max + 0.015;
+    }));
+    const idx = [];
+    for (let e = 0; e < NE - 1; e++) for (let j = 0; j < NM - 1; j++) {
+      const a = e * NM + j, b = a + 1, c = a + NM, d = c + 1;
+      if (ok[a] && ok[c] && ok[b]) idx.push(a, c, b);
+      if (ok[b] && ok[c] && ok[d]) idx.push(b, c, d);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    g.setAttribute("color", new THREE.BufferAttribute(col, 3));
+    g.setIndex(idx); g.computeVertexNormals();
+    mesh1 = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.42, metalness: 0.08, side: THREE.DoubleSide }));
+    mesh1.castShadow = true;
+    groupe1.add(mesh1);
+    // les sourires de chaque échéance, et la ligne du cours
+    const sour = [], cours = [];
+    E.forEach((x, e) => { for (let j = 0; j < NM - 1; j++) if (ok[e * NM + j] && ok[e * NM + j + 1]) sour.push(x1(GM[j]), x.iv[j] * H1 + 0.015, z1(x.jours), x1(GM[j + 1]), x.iv[j + 1] * H1 + 0.015, z1(x.jours)); });
+    for (let e = 0; e < NE - 1; e++) cours.push(x1(1), ivA(e, 1) * H1 + 0.03, z1(E[e].jours), x1(1), ivA(e + 1, 1) * H1 + 0.03, z1(E[e + 1].jours));
+    groupe1.add(lignes(sour, css("--ink"), 0.35));
+    groupe1.add(lignes(cours, css("--warm"), 1));
+    // cotations réelles
+    const geoP = new THREE.SphereGeometry(0.045, 8, 6);
+    points1 = new THREE.InstancedMesh(geoP, new THREE.MeshStandardMaterial({ color: css("--ink-2"), roughness: 0.6 }), s.points.length);
+    const mtx = new THREE.Matrix4();
+    s.points.forEach(([m, j, iv], i) => { mtx.makeTranslation(x1(m), iv * H1, z1(j)); points1.setMatrixAt(i, mtx); });
+    points1.visible = voirPoints;
+    groupe1.add(points1);
+    // cadre : sol gradué, axes
+    const gr = [], y0 = 0;
+    for (const m of [0.8, 0.9, 1.0, 1.1]) gr.push(x1(m), y0, P1 / 2 + 0.4, x1(m), y0, -P1 / 2);
+    for (const j of [7, 30, 91, 182, 365]) if (j <= E[NE - 1].jours + 25) { const z = z1(Math.min(j, E[NE - 1].jours)); gr.push(-W1 / 2, y0, z, W1 / 2 + 0.4, y0, z); }
+    for (const v of [0.1, 0.2, 0.4, 0.6]) gr.push(-W1 / 2, v * H1, -P1 / 2, W1 / 2 + 0.2, v * H1, -P1 / 2);
+    gr.push(W1 / 2, 0, -P1 / 2, W1 / 2, 0.6 * H1, -P1 / 2);
+    groupe1.add(lignes(gr, css("--grid"), 0.9));
+    for (const m of [0.8, 0.9, 1.0, 1.1]) S1.ajouterEtiquette(m === 1 ? "au cours" : `${Math.round(m * 100)} %`, new THREE.Vector3(x1(m), 0, P1 / 2 + 0.9), m === 1);
+    for (const [j, t] of [[7, "7 jours"], [30, "1 mois"], [91, "3 mois"], [182, "6 mois"], [365, "1 an"]]) if (j <= E[NE - 1].jours + 25) S1.ajouterEtiquette(t, new THREE.Vector3(W1 / 2 + 1.3, 0, z1(Math.min(j, E[NE - 1].jours))));
+    for (const v of [0.1, 0.2, 0.4, 0.6]) S1.ajouterEtiquette(`${v * 100} %`, new THREE.Vector3(W1 / 2 + 0.9, v * H1, -P1 / 2));
+    S1.scene.add(groupe1);
+    S1.redessiner();
+  }
+  function vue1() {
+    const k = Math.max(1, 1.6 / S1.camera.aspect), t = new THREE.Vector3(-0.5, 2.4, 0);
+    S1.controls.target.copy(t);
+    S1.camera.position.set(8, 10.5, 19).multiplyScalar(k).add(t);
+    S1.redessiner();
+  }
+  construire1(); vue1();
+  const ray = new THREE.Raycaster(), souris = new THREE.Vector2();
+  function viser(ev, S, objet) {
+    const b = S.renderer.domElement.getBoundingClientRect();
+    souris.set((ev.clientX - b.left) / b.width * 2 - 1, -(ev.clientY - b.top) / b.height * 2 + 1);
+    ray.setFromCamera(souris, S.camera);
+    return ray.intersectObject(objet)[0];
+  }
+  S1.renderer.domElement.addEventListener("pointermove", ev => {
+    const h = viser(ev, S1, mesh1); if (!h) return;
+    const s = S_(), E = s.echeances;
+    const m = Math.round(((h.point.x + W1 / 2) / W1 * (GM[NM - 1] - GM[0]) + GM[0]) * 100) / 100;
+    let e = 0; E.forEach((x, i) => { if (Math.abs(z1(x.jours) - h.point.z) < Math.abs(z1(E[e].jours) - h.point.z)) e = i; });
+    const x = E[e], iv = ivA(e, m), K = m * s.spot, T = x.jours / 365, b = portage(e);
+    document.getElementById("l1-ech").textContent = `${dateFr(x.date)} (${x.jours} j)`;
+    document.getElementById("l1-k").textContent = `${nf(K, 0)} $ (${Math.round(m * 100)} % du cours)`;
+    document.getElementById("l1-iv").textContent = pc(iv);
+    document.getElementById("l1-put").textContent = `${nf(prix(false, s.spot, K, T, iv, b), 2)} $`;
+    document.getElementById("l1-call").textContent = `${nf(prix(true, s.spot, K, T, iv, b), 2)} $`;
+    document.getElementById("l1-cote").textContent = m >= x.m_min && m <= x.m_max ? `oui (${x.n} options cotées)` : "prolongée par le lissage";
+  });
+  document.getElementById("b-vue1").addEventListener("click", vue1);
+  document.getElementById("b-points").addEventListener("click", ev => {
+    voirPoints = !voirPoints; ev.currentTarget.setAttribute("aria-pressed", String(voirPoints));
+    points1.visible = voirPoints; S1.redessiner();
+  });
+
+  // ---------------------------------------------------------------- maquette 2 : le labo des stratégies
+  const W2 = 12, P2 = 8, H2 = 3.2, NX = 61, XMAX = 0.12;
+  const S2 = creerScene(document.getElementById("scene2"), document.getElementById("lab2"));
+  let groupe2 = null, mesh2 = null, echelle = 1;
+  const EXPLI = {
+    vente: "<strong>Vendre un straddle</strong> : vendre le call et le put au cours, échéance 30 jours. Tu encaisses la prime, et le temps travaille pour toi : le plateau bleu monte vers le fond. C'est la prime de volatilité de la première page, sous sa forme la plus pure. Mais si le marché bouge fort, la perte n'a pas de fond : ce sont les deux versants rouges. Monte le choc de volatilité : la maquette s'enfonce dès aujourd'hui, avant même que le prix bouge.",
+    condor: "<strong>Iron condor</strong> : vendre le put à 95 % et le call à 105 %, et racheter le put à 90 % et le call à 110 % pour couper la falaise. Le gain est plus petit, et la perte est bornée : les versants rouges s'arrêtent net en paliers. C'est la version « assurée » de la vente de volatilité, celle que les gérants prudents utilisent.",
+    calendar: "<strong>Calendar</strong> : vendre le call au cours de l'échéance de 30 jours, acheter le même call à 60 jours. Tu paries que le marché reste près du cours (la bosse bleue au centre, au fond) et que la volatilité lointaine tient. Celle qu'on vend s'use plus vite que celle qu'on garde. Un choc de volatilité vers le haut l'aide, parce que l'option lointaine y est plus sensible.",
+    achat: "<strong>Acheter un straddle</strong> : l'inverse de la vente. Tu paies la prime, et le temps joue contre toi : le centre s'enfonce vers le fond. Tu gagnes seulement si le mouvement dépasse ce que les options faisaient déjà payer. C'est un pari sur une volatilité réalisée plus forte que l'implicite, le contraire de la prime de volatilité, donc perdant la plupart du temps.",
+  };
+  function jambes() {
+    const s = S_(), e30 = proche(30), e60 = proche(60), K0 = Math.round(s.spot), R = m => Math.round(s.spot * m);
+    return {
+      vente: [[true, K0, e30, -1], [false, K0, e30, -1]],
+      condor: [[false, R(0.95), e30, -1], [false, R(0.90), e30, 1], [true, R(1.05), e30, -1], [true, R(1.10), e30, 1]],
+      calendar: [[true, K0, e30, -1], [true, K0, e60, 1]],
+      achat: [[true, K0, e30, 1], [false, K0, e30, 1]],
+    }[strat].map(([call, K, e, q]) => {
+      const x = S_().echeances[e], sig = ivA(e, K / s.spot), b = portage(e);
+      return { call, K, e, q, jours: x.jours, sig, b, p0: prix(call, s.spot, K, x.jours / 365, sig, b) };
+    });
+  }
+  let J = jambes();
+  const T1 = () => S_().echeances[proche(30)].jours;
+  function pnl(x, t, c) {
+    const S = S_().spot * (1 + x);
+    let v = 0;
+    for (const l of J) v += l.q * (prix(l.call, S, l.K, (l.jours - t) / 365, l.sig + c / 100, l.b) - l.p0) * 100;
+    return v;
+  }
+  const x2 = i => i / (NX - 1) * W2 - W2 / 2;
+  const mv = i => (i / (NX - 1) * 2 - 1) * XMAX;
+  const z2 = (t, T) => P2 / 2 - t / T * P2;
+  function construire2() {
+    jeter(groupe2); S2.vider();
+    J = jambes();
+    const T = T1(), NT = T + 1;
+    // échelle fixée sans choc, pour comparer les chocs entre eux
+    let mx = 1;
+    for (let t = 0; t < NT; t += 1) for (let i = 0; i < NX; i += 2) mx = Math.max(mx, Math.abs(pnl(mv(i), t, 0)));
+    echelle = H2 / mx;
+    const val = new Float32Array(NT * NX), pos = new Float32Array(NT * NX * 3), col = new Float32Array(NT * NX * 3);
+    let ymin = 0;
+    for (let t = 0; t < NT; t++) for (let i = 0; i < NX; i++) {
+      const v = pnl(mv(i), t, choc), k = t * NX + i, y = v * echelle;
+      val[k] = v; pos[k * 3] = x2(i); pos[k * 3 + 1] = y; pos[k * 3 + 2] = z2(t, T);
+      ymin = Math.min(ymin, y);
+    }
+    const gain = new THREE.Color(css("--accent")), perte = new THREE.Color(css("--neg")), neutre = new THREE.Color(css("--mid"));
+    for (let k = 0; k < NT * NX; k++) {
+      const f = Math.min(Math.abs(val[k]) / mx, 1), c = neutre.clone().lerp(val[k] >= 0 ? gain : perte, 0.25 + 0.75 * Math.sqrt(f));
+      col[k * 3] = c.r; col[k * 3 + 1] = c.g; col[k * 3 + 2] = c.b;
+    }
+    const idx = [];
+    for (let t = 0; t < NT - 1; t++) for (let i = 0; i < NX - 1; i++) { const a = t * NX + i, b = a + 1, c = a + NX, d = c + 1; idx.push(a, c, b, b, c, d); }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(pos, 3)); g.setAttribute("color", new THREE.BufferAttribute(col, 3));
+    g.setIndex(idx); g.computeVertexNormals();
+    groupe2 = new THREE.Group();
+    mesh2 = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.45, metalness: 0.06, side: THREE.DoubleSide }));
+    mesh2.castShadow = true;
+    groupe2.add(mesh2);
+    // socle : la maquette posée sur un bloc, comme un relief en plâtre
+    const base = ymin - 0.35, murs = [], bord = [];
+    for (let i = 0; i < NX; i++) bord.push([i, 0]);
+    for (let t = 1; t < NT; t++) bord.push([NX - 1, t]);
+    for (let i = NX - 2; i >= 0; i--) bord.push([i, NT - 1]);
+    for (let t = NT - 2; t >= 0; t--) bord.push([0, t]);
+    for (let n = 0; n < bord.length; n++) {
+      const [i, t] = bord[n], [i2, t2] = bord[(n + 1) % bord.length];
+      const a = [x2(i), val[t * NX + i] * echelle, z2(t, T)], b = [x2(i2), val[t2 * NX + i2] * echelle, z2(t2, T)];
+      murs.push(...a, ...b, a[0], base, a[2], ...b, b[0], base, b[2], a[0], base, a[2]);
+    }
+    const gm = new THREE.BufferGeometry(); gm.setAttribute("position", new THREE.BufferAttribute(new Float32Array(murs), 3)); gm.computeVertexNormals();
+    const socle = new THREE.Mesh(gm, new THREE.MeshStandardMaterial({ color: css("--socle"), roughness: 0.85, side: THREE.DoubleSide }));
+    socle.castShadow = true; groupe2.add(socle);
+    S2.sol.position.y = base;
+    // plan zéro
+    const plan = new THREE.Mesh(new THREE.PlaneGeometry(W2, P2), new THREE.MeshBasicMaterial({ color: css("--grid"), transparent: true, opacity: 0.28, depthWrite: false, side: THREE.DoubleSide }));
+    plan.rotation.x = -Math.PI / 2; groupe2.add(plan);
+    // point mort : courbe de niveau zéro (carrés marchants)
+    const cz = [];
+    const P = (i, t) => [x2(i), 0.02, z2(t, T)];
+    const lerpP = (p, q, a, b) => { const f = a / (a - b); return [p[0] + (q[0] - p[0]) * f, 0.03, p[2] + (q[2] - p[2]) * f]; };
+    for (let t = 0; t < NT - 1; t++) for (let i = 0; i < NX - 1; i++) {
+      const c = [[i, t], [i + 1, t], [i + 1, t + 1], [i, t + 1]], v = c.map(([a, b]) => val[b * NX + a]), pts = [];
+      for (let n = 0; n < 4; n++) { const a = v[n], b = v[(n + 1) % 4]; if ((a < 0) !== (b < 0)) pts.push(lerpP(P(...c[n]), P(...c[(n + 1) % 4]), a, b)); }
+      for (let n = 0; n + 1 < pts.length; n += 2) cz.push(...pts[n], ...pts[n + 1]);
+    }
+    groupe2.add(lignes(cz, css("--ink"), 1));
+    // aujourd'hui et l'échéance, en traits
+    const bords = [];
+    for (const t of [0, NT - 1]) for (let i = 0; i < NX - 1; i++) bords.push(x2(i), val[t * NX + i] * echelle + 0.02, z2(t, T), x2(i + 1), val[t * NX + i + 1] * echelle + 0.02, z2(t, T));
+    groupe2.add(lignes(bords, css("--ink-2"), 0.8));
+    for (const m of [-0.12, -0.08, -0.04, 0, 0.04, 0.08, 0.12]) S2.ajouterEtiquette(m === 0 ? "0" : `${sg(m * 100)} %`, new THREE.Vector3(m / XMAX * W2 / 2, base, P2 / 2 + 0.7));
+    S2.ajouterEtiquette("aujourd'hui", new THREE.Vector3(W2 / 2 + 1.4, base, P2 / 2), true);
+    S2.ajouterEtiquette(`échéance (${T} j)`, new THREE.Vector3(W2 / 2 + 1.6, base, -P2 / 2), true);
+    for (const v of [-mx, -mx / 2, mx / 2, mx]) S2.ajouterEtiquette(usd(v), new THREE.Vector3(-W2 / 2 - 1.1, v * echelle, -P2 / 2));
+    const ax = [-W2 / 2, base, -P2 / 2, -W2 / 2, H2 * 1.1, -P2 / 2];
+    for (const v of [-mx, -mx / 2, mx / 2, mx]) ax.push(-W2 / 2 - 0.25, v * echelle, -P2 / 2, -W2 / 2, v * echelle, -P2 / 2);
+    groupe2.add(lignes(ax, css("--grid"), 1));
+    S2.scene.add(groupe2);
+    stats();
+    S2.redessiner();
+  }
+  function stats() {
+    const T = T1(), s = S_();
+    const prime = J.reduce((a, l) => a - l.q * l.p0 * 100, 0);
+    document.getElementById("s-prime-k").textContent = prime >= 0 ? "Prime encaissée" : "Prime payée";
+    document.getElementById("s-prime").textContent = `${nf(Math.abs(prime), 0)} $`;
+    document.getElementById("s-theta").textContent = usd(pnl(0, 1, choc) - pnl(0, 0, choc)) + " par jour";
+    document.getElementById("s-vega").textContent = usd(pnl(0, 0, choc + 1) - pnl(0, 0, choc));
+    document.getElementById("s-choc-k").textContent = `Si ${sj} fait −10 % demain`;
+    document.getElementById("s-choc").textContent = usd(pnl(-0.10, 1, choc));
+    const morts = [];
+    let prev = pnl(-0.3, T, choc);
+    for (let x = -0.3 + 0.001; x <= 0.3; x += 0.001) { const v = pnl(x, T, choc); if ((v < 0) !== (prev < 0)) morts.push(x); prev = v; }
+    document.getElementById("s-morts").textContent = morts.length ? morts.map(x => `${sg(x * 100, 1)} % (${nf(s.spot * (1 + x), 0)} $)`).join(", ") : "aucun entre −30 % et +30 %";
+    document.getElementById("explication").innerHTML = EXPLI[strat];
+    document.getElementById("jambes").textContent = J.map(l => `${l.q > 0 ? "achat" : "vente"} ${l.call ? "call" : "put"} ${l.K} $ ${dateCourt(S_().echeances[l.e].date)} (${pc(l.sig)})`).join(" · ");
+  }
+  function vue2() {
+    const k = Math.max(1, 1.6 / S2.camera.aspect), t = new THREE.Vector3(0, -1.6, -0.3);
+    S2.controls.target.copy(t);
+    S2.camera.position.set(-4.5, 11, 18.5).multiplyScalar(k).add(t);
+    S2.redessiner();
+  }
+  construire2(); vue2();
+  S2.renderer.domElement.addEventListener("pointermove", ev => {
+    const h = viser(ev, S2, mesh2); if (!h) return;
+    const T = T1(), x = (h.point.x / W2 * 2) * XMAX, t = Math.round((P2 / 2 - h.point.z) / P2 * T);
+    document.getElementById("l2-t").textContent = t === 0 ? "aujourd'hui" : t >= T ? `échéance (+${T} j)` : `+${t} jours`;
+    document.getElementById("l2-x").textContent = `${sg(x * 100, 1)} % (${nf(S_().spot * (1 + x), 0)} $)`;
+    document.getElementById("l2-pnl").textContent = usd(pnl(x, t, choc));
+  });
+
+  // ---------------------------------------------------------------- commandes
+  document.querySelectorAll("[data-sj]").forEach(b => b.addEventListener("click", () => {
+    sj = b.dataset.sj;
+    document.querySelectorAll("[data-sj]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    textes(); construire1(); construire2();
+  }));
+  document.querySelectorAll("[data-strat]").forEach(b => b.addEventListener("click", () => {
+    strat = b.dataset.strat;
+    document.querySelectorAll("[data-strat]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    construire2();
+  }));
+  const curseur = document.getElementById("choc");
+  curseur.addEventListener("input", () => {
+    choc = +curseur.value;
+    document.getElementById("choc-val").textContent = `${sg(choc)} pt${Math.abs(choc) > 1 ? "s" : ""}`;
+    construire2();
+  });
+  const reteindre = () => { peindreRampe(); construire1(); construire2(); };
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", reteindre);
+  new MutationObserver(reteindre).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>

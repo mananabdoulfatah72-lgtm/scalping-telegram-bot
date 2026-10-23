@@ -35,3 +35,19 @@ Bulenox ou Topstep (futures du CME seulement) : les stratégies classiques de vo
 spreads, roulement des futures VIX) ne sont pas accessibles au compte. Idée non testée : une largeur de zone tirée de
 la volatilité implicite (VXN) plutôt que des 14 séances passées ; à pré-enregistrer avant tout calcul si elle est
 retenue.
+
+## Surface de volatilité implicite (23 octobre 2026) : `surface.py`, `surface_page.html`, `surface.html`
+
+Deuxième page, demandée par l'utilisateur (« un meilleur visuel physique 3D ») : la vraie surface par prix d'exercice et
+par échéance, et un labo 3D des stratégies de volatilité posées dessus (vendre un straddle, iron condor, calendar,
+acheter un straddle ; gain ou perte selon le mouvement et les jours, avec un choc de volatilité réglable).
+
+- Données gratuites : chaînes d'options du QQQ et du SPY chez Yahoo (`donnees_libres/options/`, workflow
+  `donnees-options.yml`), cotations de clôture du 22 octobre 2026. Une photo, pas un historique.
+- Méthode : milieu de fourchette ; forward de chaque échéance par la parité call-put ; volatilité recalculée (Black sur le
+  forward, taux ^IRX) sur les options hors de la monnaie ; lissage SVI par échéance (erreur médiane 1,2 % de la variance).
+  La clôture du 22 octobre manquait chez Yahoo : le cours est tiré de la parité de l'échéance du lendemain (QQQ 704,88 ;
+  SPY 764,17).
+- Ce soir-là : QQQ au cours à 30 jours 25,5 % contre SPY 15,1 % ; put à 90 % +8,8 points au-dessus du cours ; QQQ à 7 jours
+  29,1 % contre 24,2 % à un an (le devant au-dessus du fond, profil de lendemain de forte baisse).
+- Lancer : `python3 etude_large/volatilite/surface.py` (écrit `surface.json` et `surface.html`).
