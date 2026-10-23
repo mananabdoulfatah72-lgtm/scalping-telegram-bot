@@ -1,0 +1,36 @@
+Vague zone implicite (regles : README, commit da634ef)
+
+VXN, sources : cboe 4306 jours 2009-09-14 -> 2026-10-22 ; yahoo 6476 jours 2001-01-23 -> 2026-10-22
+  accord cboe / yahoo depuis 2011 : 3975 jours communs, ecart > 0,1 point sur 0.18 % des jours
+  couverture des seances du NQ 2011 - 2026 par cboe : 97.8 %
+  -> source utilisee : cboe
+Controle a) V1 jusqu'au 2026-10-16 (jours de la Fed compris) : 3571 trades +10759.75 pt, attendu 3571 et +10759.75 -> PASSE
+Controle b) moteur rapide contre partie_d.chemins_zone (gain du jour, 3522 seances) : identique ; trades 3237
+
+EXPLORATION : 2615 seances (2012-01-04 -> 2022-12-30), V1 2424 trades, +20,8 $ par seance, t +3,69, Sharpe +1,14
+  I1 : 2472 trades, largeur moyenne x 1.00 a 10 h, +18,9 $ par seance, Sharpe +1,07, t de la difference avec V1 -1,08, bat 33.0 % des placebos
+  I2 : 2377 trades, largeur moyenne x 1.05 a 10 h, +20,9 $ par seance, Sharpe +1,14, t de la difference avec V1 +0,02, bat 11.0 % des placebos
+  I3 : 2335 trades, largeur moyenne x 1.04 a 10 h, +19,3 $ par seance, Sharpe +1,11, t de la difference avec V1 -1,02, bat 38.0 % des placebos
+  T1 : poids moyen 0.99 (min 0.50, max 1.57), +17,4 $ par seance, Sharpe +1,11, alpha +0,0 $ (t +0,03), beta 0.83, bat 51.5 % des placebos
+  T2 : poids moyen 1.06 (min 0.64, max 2.00), +25,4 $ par seance, Sharpe +1,05, alpha -1,4 $ (t -0,72), beta 1.29, bat 24.5 % des placebos
+
+Critere 1 (t >= 2,0 et Benjamini-Hochberg 10 % sur les 5 tests, p unilateral) :
+  I1 : t -1,08, p 0.8588, BH non -> echec
+  I2 : t +0,02, p 0.4900, BH non -> echec
+  I3 : t -1,02, p 0.8453, BH non -> echec
+  T1 : t +0,03, p 0.4875, BH non -> echec
+  T2 : t -0,72, p 0.7652, BH non -> echec
+  par annee (V1 $ par seance ; I1 I2 I3 : difference $ par seance ; T1 T2 : serie ponderee moins V1) :
+    2012 : V1 +23,0 ; I1 -8,0 ; I2 +8,9 ; I3 -6,7 ; T1 -0,2 ; T2 +0,9
+    2013 : V1 +8,7 ; I1 -6,0 ; I2 -1,8 ; I3 -3,9 ; T1 -1,9 ; T2 +1,7
+    2014 : V1 +4,4 ; I1 +4,5 ; I2 +7,0 ; I3 +0,3 ; T1 -1,7 ; T2 +1,5
+    2015 : V1 +9,4 ; I1 -4,3 ; I2 -6,3 ; I3 -0,7 ; T1 +0,4 ; T2 -1,0
+    2016 : V1 -6,1 ; I1 +5,1 ; I2 +0,7 ; I3 +7,5 ; T1 -1,5 ; T2 -0,4
+    2017 : V1 +8,9 ; I1 -6,9 ; I2 -0,8 ; I3 -6,2 ; T1 +0,3 ; T2 -0,0
+    2018 : V1 +79,4 ; I1 -14,6 ; I2 +3,8 ; I3 -9,5 ; T1 -21,6 ; T2 +31,5
+    2019 : V1 +5,9 ; I1 +0,6 ; I2 -6,0 ; I3 -3,1 ; T1 -3,3 ; T2 +4,4
+    2020 : V1 +33,5 ; I1 +9,5 ; I2 -4,1 ; I3 -0,6 ; T1 -6,4 ; T2 +8,2
+    2021 : V1 +15,1 ; I1 +7,1 ; I2 +2,9 ; I3 +7,9 ; T1 +4,7 ; T2 -3,8
+    2022 : V1 +46,4 ; I1 -8,7 ; I2 -3,0 ; I3 -1,8 ; T1 -6,6 ; T2 +7,6
+
+Pour information : VXN au 2026-10-22 28.72 ; le 2026-10-20, rapport de I1 1.14, largeur I2 / V1 a 10 h 1.41, poids T1 0.91
