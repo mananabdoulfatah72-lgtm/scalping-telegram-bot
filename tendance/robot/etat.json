@@ -2,15 +2,16 @@
   "comptes": {
     "melange": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-10-22",
-      "solde": 48965.62126811576,
+      "derniere_date": "2026-10-23",
+      "solde": 49037.06222174162,
       "plus_haut": 50276.00947498293,
       "positions": {
         "Taux 10 ans": -1.0,
-        "Taux 30 ans": -1.0,
         "Dollar australien": 2.0,
+        "Livre sterling": -1.0,
+        "Dollar canadien": 1.0,
         "Bitcoin": 1.0,
-        "Ether": -1.0
+        "Ether": -3.0
       },
       "phidias": {
         "etat": "en cours",
@@ -20,15 +21,17 @@
     },
     "tendance": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-10-22",
-      "solde": 48056.614123932624,
+      "derniere_date": "2026-10-23",
+      "solde": 48322.15372107663,
       "plus_haut": 50643.19587302805,
       "positions": {
-        "Taux 2 ans": -2.0,
+        "Taux 2 ans": -1.0,
         "Taux 10 ans": -3.0,
-        "Yen": -1.0,
+        "Euro": -1.0,
+        "Dollar australien": -1.0,
+        "Livre sterling": 1.0,
         "Franc suisse": -2.0,
-        "Ether": 8.0
+        "Ether": 6.0
       },
       "phidias": {
         "etat": "perdu",
