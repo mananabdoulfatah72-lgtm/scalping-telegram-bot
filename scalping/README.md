@@ -207,7 +207,8 @@ janvier 2018), validation 2021 - 2022.
 - **Modèle** : régression logistique avec pénalité L2 fixée (λ = 1 sur variables centrées réduites sur l'apprentissage),
   apprise sur une minute sur cinq, de 9 h 45 à 15 h 30, de toutes les séances jouables des années précédentes (depuis
   2016 ; bitcoin depuis 2018).
-- **Trading** : de 9 h 45 à 15 h 30, sans position : achat au marché si p ≥ 0,55, vente si p ≤ 0,45 ; sortie à la
+- **Trading** : de 9 h 45 à 15 h 30 (pour l'or, le pétrole et l'euro : de 15 minutes après l'ouverture à 30 minutes
+  avant la fin, précisé avant tout calcul), sans position : achat au marché si p ≥ 0,55, vente si p ≤ 0,45 ; sortie à la
   clôture de t + 15 ou au stop de 2 u (ordre le plus défavorable). Le modèle de l'année Y est appris sur les années
   avant Y.
 - **Exploration** 2017 - 2022 (bitcoin : 2019 - 2022) : t ≥ 2, Benjamini-Hochberg à 10 % sur les 8 marchés, et bat 95 %
