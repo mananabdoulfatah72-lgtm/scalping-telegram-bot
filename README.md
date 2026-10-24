@@ -4,8 +4,8 @@ Chaque robot suit un compte **virtuel** de 50 000 $ : aucun ordre reel, aucun ar
 
 | Robot | Ce qu'il fait | Demarre le | Solde virtuel | Dernier jour | Depuis le depart | Detail |
 |---|---|---|---|---|---|---|
-| Melange tendance + achat | futures, 19 marches, garde la nuit | 2026-09-25 | 48,966 $ | -283 $ (2026-10-22) | -1,034 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
-| Tendance seule | futures, 19 marches, garde la nuit | 2026-09-25 | 48,057 $ | -905 $ (2026-10-22) | -1,943 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
+| Melange tendance + achat | futures, 19 marches, garde la nuit | 2026-09-25 | 49,037 $ | +88 $ (2026-10-23) | -963 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
+| Tendance seule | futures, 19 marches, garde la nuit | 2026-09-25 | 48,322 $ | +288 $ (2026-10-23) | -1,678 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
 | Version 7 | 5 actions technologie par mois, 50 % investi | 2026-09-29 | 47,413 $ | -1,067 $ (2026-10-22) | -2,587 $ | [detail](version7/robot/TABLEAU_DE_BORD.md) |
 | Zone de bruit + challenge Phidias 50K | Nasdaq MNQ, intraday | 2026-09-28 | 50,452 $ (challenge n°1) | +364 $ (2026-10-22) | +452 $ | [detail](zone/robot/TABLEAU_DE_BORD.md) |
 
@@ -13,6 +13,7 @@ Chaque robot suit un compte **virtuel** de 50 000 $ : aucun ordre reel, aucun ar
 
 | Date | Melange tendance + achat | Tendance seule | Version 7 | Zone de bruit + challenge Phidias 50K |
 |---|---|---|---|---|
+| 2026-10-23 | +88 | +288 |  |  |
 | 2026-10-22 | -283 | -905 | -1,067 | +364 |
 | 2026-10-21 | +64 | +40 | +349 | +378 |
 | 2026-10-20 | -22 | -113 | -36 | -500 |
@@ -27,7 +28,6 @@ Chaque robot suit un compte **virtuel** de 50 000 $ : aucun ordre reel, aucun ar
 | 2026-10-07 | -210 | -7 | +74 | +0 |
 | 2026-10-06 | -144 | -336 | +186 | +0 |
 | 2026-10-05 | +351 | +296 | -2 | +248 |
-| 2026-10-02 | +285 | +259 | +209 | +0 |
 
 Pour juger un robot, il faut plusieurs mois : des jours et des semaines negatifs sont normaux. Le detail de chaque robot compare son resultat a ce que donnait son historique.
 
