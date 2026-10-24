@@ -180,6 +180,62 @@ séance source pour la même minute), ce qui garde leur lien au même instant et
 Corrélation quotidienne avec la zone ; challenges Lucid Flex 50K (1 et 2 contrats) et Bulenox 50K 30 jours (3 contrats,
 et 4 puis 6), seule et avec la zone, départs du coffre, moteur minute par minute (plus hauts et plus bas compris).
 
+## Version 2 des règles (24 octobre 2026, avant tout calcul) : trois pistes de plus
+
+L'utilisateur demande d'explorer toutes les pistes qui pourraient donner un scalping gagnant. Rien n'a encore été
+calculé sur les vraies données (seuls des contrôles du moteur sur données bruitées ou fabriquées ont tourné). Les
+parties A et B ne changent pas. Trois pistes s'ajoutent, et **le coffre n'est ouvert qu'une fois, pour toutes les
+parties ensemble**, après toutes les explorations : m = nombre total de finalistes (A, B, B2, C, D), un seul seuil de
+Bonferroni.
+
+### Partie B2 : le bitcoin CME (micro MBT), 8e marché de la machine
+
+Minutes du bitcoin CME (`tournoi5/donnees/bitcoin_1min.csv.gz`, depuis décembre 2017), séance 9 h 30 - 16 h, micro MBT
+(0,1 bitcoin : 0,1 $ par point, tick de 5 points), frais 3 $ par aller-retour (2 $ de commission et 2 ticks, comme
+`tournoi6/`), prix de référence 84 000, niveaux ronds de 1 000. Même machine que la partie B (familles F0 à F9 sans F7,
+4 graines réelles et 4 sur bruit, mêmes critères). Entraînement de février 2018 à 2020 (préparation : décembre 2017 et
+janvier 2018), validation 2021 - 2022.
+
+### Partie C : un modèle appris, réentraîné chaque année sur le passé seulement
+
+- Marchés : les 8 de B et B2.
+- **Variables à la clôture de la minute t** (toutes connues à t) : mouvements de 1, 5, 15 et 30 minutes en unités σ ;
+  écart au VWAP en unités σ √30 ; position dans l'amplitude du jour ; distances au plus haut, au plus bas et à la
+  clôture de la veille en unités u ; volume rapporté à la médiane de la même minute ; régime rg ; heure (t / N et son
+  carré) ; corps de la bougie rapporté à son amplitude ; pour NQ et ES, mouvement de 5 minutes de l'autre indice.
+- **Cible** : signe de ln(clôture de t + 15 ÷ ouverture de t + 1).
+- **Modèle** : régression logistique avec pénalité L2 fixée (λ = 1 sur variables centrées réduites sur l'apprentissage),
+  apprise sur une minute sur cinq, de 9 h 45 à 15 h 30, de toutes les séances jouables des années précédentes (depuis
+  2016 ; bitcoin depuis 2018).
+- **Trading** : de 9 h 45 à 15 h 30, sans position : achat au marché si p ≥ 0,55, vente si p ≤ 0,45 ; sortie à la
+  clôture de t + 15 ou au stop de 2 u (ordre le plus défavorable). Le modèle de l'année Y est appris sur les années
+  avant Y.
+- **Exploration** 2017 - 2022 (bitcoin : 2019 - 2022) : t ≥ 2, Benjamini-Hochberg à 10 % sur les 8 marchés, et bat 95 %
+  de 20 jumeaux de bruit (tout le procédé refait sur données bruitées). Les survivants sont finalistes.
+- **Coffre** : modèles des années 2023 à 2026 appris sur toutes les années d'avant (coffre compris pour les années
+  suivantes : c'est le fonctionnement réel d'un modèle réentraîné chaque année).
+
+### Partie D : la nuit (18 h - 9 h 25, New York), barres de 5 minutes
+
+- Données : HistData 5 minutes (`sessions24/annees/`, cotations du comptant et des CFD, en UTC, converties en heure de
+  New York), 2012 - 2026. Marchés : Nasdaq 100 (usatechidxusd → MNQ), S&P 500 (usa500idxusd → MES), or (xauusd → MGC),
+  euro (eurusd → M6E), livre (gbpusd → M6B), dollar australien (audusd → M6A). Le yen (pas de micro aux mêmes
+  conditions) et le pétrole (données arrêtées en 2023) sont exclus.
+- **Séance** : de 18 h à 9 h 25 le lendemain (184 barres), datée du matin ; le dimanche soir ouvre la séance du lundi.
+  Complète : première et dernière barre présentes, au plus 18 barres manquantes. Pas de volume dans ces données :
+  VWAP remplacé par la moyenne des prix typiques, familles F6 (volume) et F7 (autre indice) retirées.
+- **Frais** des micros au prix d'aujourd'hui (dernière cotation des fichiers) : MNQ 3 $, MES 4,50 $, MGC 4 $, M6E 4,50 $,
+  M6B 3,25 $, M6A 4 $ par aller-retour.
+- **Même moteur et même machine**, l'unité de temps étant la barre de 5 minutes : durées de 1 à 30 barres (5 minutes à
+  2 h 30) ; fenêtres d'entrée et minutes d'événement en barres depuis 18 h : 19 h, 20 h, 21 h, 2 h, 3 h, 4 h, 7 h, 8 h,
+  8 h 30, 9 h (ouvertures de Tokyo, Francfort, Londres, chiffres américains), plus les mêmes décalages fixes que F9.
+- Entraînement 2013 - 2018 (préparation 2012), validation 2019 - 2022, coffre 2023 - octobre 2026. Mêmes critères,
+  4 graines réelles et 4 sur bruit par marché, 2 finalistes par marché, placebos.
+
+### Contre-revue
+
+Le code des parties B2, C et D est relu par un relecteur indépendant avant d'être lancé, comme celui des parties A et B.
+
 ## Contre-revue indépendante (#ultrareview)
 
 1. **Avant l'exploration** : un relecteur indépendant reprend le code (données, moteur, bruit, exécution, coupure du
