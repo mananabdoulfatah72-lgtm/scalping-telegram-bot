@@ -956,3 +956,30 @@ chaque journée est tiré à pile ou face, 20 tirages), à 2 et 4 MNQ.
 2. il fait au moins 3 points de mieux que le témoin sans avantage de même taille, et que la zone plus grosse, sur 2012 - 2026 ;
 3. il ne fait pas monter la part de challenges perdus de plus que la part validée gagnée.
 Sinon, le bot ne change pas. Rappel : le filtre delta du bot n'est pas simulable sur 15 ans.
+
+### Résultats de la partie I (25 octobre 2026) : `resultats/i/challenge_ajouts.txt`
+
+Contrôles : les trades rejoués de chaque ajout redonnent exactement les gains du banc ; la zone seule valide 48,0 %
+(2012 - 2026) et 49,9 % (2023 - 2026), contre 44,8 % et 46,5 % pour le moteur exact (écart dans la marge de ±5 points
+fixée). 3 761 départs, dont 941 en 2023 - 2026.
+
+| Configuration | Validé 2012-2026 | Perdu | Validé 2023-2026 | Perdu |
+|---|---|---|---|---|
+| **zone seule (4 puis 6 MNQ)** | **48,0 %** | **45,2 %** | **49,9 %** | **46,1 %** |
+| témoin : zone 5 puis 7 / 6 puis 8 | 47,2 % / 48,5 % | 49,3 % / 49,6 % | 48,4 % / 48,2 % | 49,9 % / 50,3 % |
+| + Supertrend 2 / 4 MNQ | 46,9 % / 46,4 % | 52,8 % / 53,6 % | 42,9 % / 43,6 % | 56,7 % / 56,4 % |
+| + ORB 5 min 2 / 4 MNQ | 50,2 % / 49,4 % | 48,7 % / 50,5 % | 51,3 % / 49,9 % | 48,6 % / 50,1 % |
+| + cassure de la veille 2 / 4 MNQ | 48,3 % / 50,2 % | 50,2 % / 49,6 % | 47,9 % / 50,7 % | 50,4 % / 49,0 % |
+| + pivots 2 / 4 MNQ | 47,0 % / 46,7 % | 52,1 % / 53,3 % | 47,6 % / 46,4 % | 52,3 % / 53,6 % |
+| + les quatre à 1 MNQ chacun | 48,5 % | 51,3 % | 46,7 % | 53,3 % |
+| témoin : ajout sans avantage 2 / 4 MNQ | 41,3 % / 40,5 % | 57,9 % / 59,4 % | 39,9 % / 39,3 % | 59,8 % / 60,7 % |
+
+**Décision fixée à l'avance : aucun ajout n'entre dans le bot.** Le meilleur (ORB 5 min à 2 MNQ) ne gagne que +2,2 et +1,4
+points de challenges validés, sous les 3 exigés, et fait monter la part de comptes perdus (48,7 % contre 45,2 %). Le
+Supertrend fait moins bien que la zone seule, surtout depuis 2023 (42,9 % contre 49,9 %).
+
+- Les ajouts ont bien un avantage : un ajout sans avantage de même volatilité fait perdre 7 points (41 %). Mais dans un
+  challenge de 30 jours, leur avantage ne compense pas le risque qu'ils ajoutent : ils remplacent surtout des
+  challenges expirés par des challenges perdus.
+- C'est le constat de `etude_large/` (partie D) : sur Bulenox 30 jours, la réussite tourne autour de 50 % quelle que soit
+  la stratégie ; ajouter des stratégies ou grossir la taille n'y change presque rien.
