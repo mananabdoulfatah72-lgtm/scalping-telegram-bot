@@ -354,6 +354,79 @@ cotations, ne peut pas démasquer. Règles fixées avant d'ouvrir le coffre :
    corrélation avec un simple achat de la nuit (la dérive de nuit connue), pour savoir si une finaliste ne fait
    qu'acheter cette dérive.
 
+## Résultats (25 octobre 2026) : aucune stratégie de scalping ne tient
+
+### Ce qui a été cherché
+
+| Piste | Stratégies distinctes sur les vraies données | Sur les deux bruits |
+|---|---|---|
+| B, jour, 7 marchés | 296 488 | 592 540 |
+| B2, bitcoin CME | 42 510 | 84 578 |
+| D, nuit, 6 marchés | 254 127 | 508 291 |
+| A, règles des études | 12 tests | 960 jumeaux |
+| C, modèle appris chaque année | 8 marchés | 320 jumeaux |
+
+Soit **593 125 stratégies de scalping sur les vraies données** et 1 185 409 sur bruit.
+
+### Exploration (jusqu'au 31 décembre 2022) : `resultats/exploration.txt`, `partie_a.txt`, `appris.txt`
+
+- **Partie A : 0 survivante sur 12.** Aucune règle publiée n'atteint t ≥ 2 après frais (la meilleure, A4 sur NQ : t 1,10).
+- **Partie C : 0 sur 8.** Le modèle appris perd sur tous les marchés (t de −2,4 à −29,8).
+- **Jour (B)** : le NQ et l'ES ont plus d'éligibles que le bruit par permutation, mais le bruit par signe en a autant ou
+  plus sur le NQ (barrière 4,64 contre un meilleur réel de 4,28). RTY, YM, GC, CL, 6E : rien de plus que le bruit.
+- **Bitcoin (B2)** : 2,2 éligibles par graine contre 0,5 et 0,2 sur bruit, meilleur score 3,01.
+- **Nuit (D)** : le Nasdaq sort nettement du bruit (1 160 éligibles par graine contre 204 et 256 ; 336 au-dessus
+  d'un score de 4,5 contre 0 sur bruit ; meilleur 6,54). Les autres marchés de nuit, non.
+- Analyse avant coffre (`analyse_nuit.txt`) : la meilleure de nuit n'achète que, mais n'est corrélée qu'à +0,17 avec
+  un simple achat de la nuit ; la deuxième ne fait que vendre (−0,26). Réalisme (`realisme_nuit.txt`) : à l'échelle de
+  l'heure, le CFD de nuit suit le future (corrélation 0,92 sur le NQ, même volatilité, pas d'autocorrélation en trop).
+
+### Coffre 2023 - 2026, ouvert une fois pour toutes les parties : `resultats/coffre.txt`
+
+m = 16 finalistes, seuil de Bonferroni t ≥ 2,73. **0 retenue, 0 intéressante. Placebos : 0 sur 29.**
+
+| Finaliste | Exploration | Coffre (t) | Gain au coffre, 1 contrat |
+|---|---|---|---|
+| D NQ, micro-compression puis cassure, achats seuls (nuit) | 6,54 | 0,40 | +1 522 $ |
+| D NQ, série de 3 barres, ventes seules (nuit) | 4,37 | 0,01 | +13 $ |
+| B NQ, choc d'une minute, ventes seules | 4,28 | −1,51 | −3 453 $ |
+| B ES, avalement de 3 minutes, contre | 4,21 | −1,89 | −2 343 $ |
+| B ES, mouvement de 10 minutes, contre | 4,15 | −1,25 | −807 $ |
+| B YM, choc d'une minute, suivre | 3,86 | −1,40 | −975 $ |
+| D ES, micro-compression, achats seuls (nuit) | 3,72 | −0,06 | −62 $ |
+| B NQ, mouvement de 3 minutes, ventes seules | 3,27 | 0,11 | +162 $ |
+| D GC, série de 3 barres, ventes seules (nuit) | 3,08 | −0,24 | −344 $ |
+| B2 BTC, niveau rond franchi, contre | 3,01 | −0,39 | −514 $ |
+| D GC, mouvement de 10 barres, contre (nuit) | 2,86 | −0,50 | −1 407 $ |
+| B2 BTC, pic de volume, suivre | 2,45 | 0,21 | +242 $ |
+| B RTY (2), B YM, B GC | 2,17 à 2,42 | −3,23 à −0,51 | −2 613 à −820 $ |
+
+### Après le coffre (descriptif, pas un test) : `resultats/apres_coffre.txt`
+
+Toutes les stratégies éligibles en exploration, jouées sur le coffre :
+- **Nuit du NQ** : les 4 639 choisies sur les vraies données font t médian 0,14 au coffre, contre 0,66 pour celles
+  choisies sur le bruit par permutation et −0,49 sur le bruit par signe. **L'avance de la nuit en exploration était
+  un régime de 2013 - 2022, pas une structure qui dure.**
+- **Jour du NQ** : les 498 choisies sur le vrai gardent un t médian de 0,77 au coffre (75 % positives), contre 0,12 et
+  0,03 pour celles choisies sur bruit, mais **aucune n'atteint le seuil** (0 % à t ≥ 2,73). C'est la continuation du
+  Nasdaq, déjà exploitée par la zone de bruit, trop faible ici pour faire une stratégie.
+- ES et YM de jour, ES de nuit : rien.
+
+### Ce qu'on retient
+
+- **Aucune stratégie de scalping ne passe**, ni publiée, ni trouvée par 593 125 essais, ni apprise : sur ces
+  marchés, en barres d'une minute ou de cinq, après frais réels, le gain disparaît hors échantillon. C'est ce que
+  disent aussi `ordres/` et `orderflow/` (l'information de très court terme vaut moins qu'un aller-retour) et l'étude
+  des day traders du mini-Ibovespa (97 % perdent).
+- **Relancer des milliers de vagues sur les mêmes données ne changerait pas cette conclusion** : les jumeaux de bruit
+  montrent que plus on cherche, plus on trouve du hasard qui ressemble à un avantage, et le coffre 2023 - 2026 est
+  maintenant utilisé pour ces familles.
+- **Ce qui pourrait encore changer la réponse, avec d'autres données** :
+  1. le carnet d'ordres complet (MBO) pour un scalping à cours limite qui capte l'écart, au lieu de le payer
+     (environ 100 $ par jour de données) ;
+  2. de vraies transactions de nuit du future, pour regarder la nuit sans les cotations CFD ;
+  3. le temps : les mois après octobre 2026, que personne n'a vus.
+
 ## Contre-revue indépendante (#ultrareview)
 
 1. **Avant l'exploration** : un relecteur indépendant reprend le code (données, moteur, bruit, exécution, coupure du
