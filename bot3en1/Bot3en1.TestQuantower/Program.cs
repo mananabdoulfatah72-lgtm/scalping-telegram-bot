@@ -10,6 +10,20 @@ using TradingPlatform.BusinessLayer;
 // Joue l'adaptateur Quantower sur des journees reelles : chaque minute devient 4 transactions (ouverture, plus haut avec
 // les achats agressifs, plus bas avec les ventes agressives, cloture), l'horloge avance minute par minute, les ordres sont
 // remplis tout de suite. Usage : test <dossier avec nq_1min.csv.gz> <minutes.csv.gz> <agresseurs.csv.gz> <debut> <fin>
+// PLAFOND=500 : plafond du jour active ; une transaction est alors emise chaque soir a 19 h (au prix d'ouverture de la
+// seance suivante) pour faire passer l'adaptateur par 18 h et par le plafond hors seance.
+// SANS_FILTRE=1 : zone sans le filtre delta (pour faire passer des trades de zone sans le fichier des agresseurs).
+// RELANCE=1 / RELANCE=0 : relance du filtre cochee / decochee (sans la variable : reglage par defaut, decoche).
+// SANS_NQ=1 : aucune transaction NQ pendant la seance (16 octobre 2026) : le bot doit donner l'alerte et ne rien trader.
+// LANCEMENT=09:10 : heure de lancement le premier jour (New York), horloge avancee minute par minute jusqu'a 9 h 29.
+// SOLDE_MANUEL=51000 : solde des reglages, repris si le solde est illisible (SOLDE absent). TELEGRAM_JETON, TELEGRAM_CHAT : envoi
+// Telegram (avec un faux jeton, l'erreur doit etre notee dans le journal, sans le jeton).
+// A_PLAT=1 : mode a plat (Bulenox) ; un flux MES est imite (prix du NQ / 4), et chaque soir des transactions a 18 h 00 30 font
+// passer l'adaptateur par l'achat du RSI(2) de nuit. SOLDE=49000 : solde du compte lu par la plateforme (frein).
+// Controles du mode a plat : a plat sur MNQ et MES a 16 h 00 30 chaque jour, pas de zone les jours de la Fed, liste des nuits
+// achetees ecrite dans test_nuits.txt (seance qui suit).
+// Challenge de 30 jours (vague 13) : TAILLE=4 (MNQ par source), OBJECTIF=53000 (arret a l'objectif + 50 $), DATE_FIN=AAAA-MM-JJ,
+// TAILLE_FIN=6, SEANCES_FIN=5, FREIN=0, LIMITE=1050. Controles : plus aucun ordre apres l'objectif ; journees jouees a plus de TAILLE (fin de course).
 class Program
 {
     static int Main(string[] a)
@@ -33,16 +47,50 @@ class Program
         var strat = new Bot3en1Strategy
         {
             Compte = new Account(), SymboleNQ = new Symbol { Name = Nom(jours[0], "NQ") }, SymboleMNQ = new Symbol { Name = Nom(jours[0], "MNQ") },
-            Dossier = dossier, AdresseHistorique = "http://127.0.0.1:9/absent"
+            Dossier = dossier, AdresseHistorique = "http://127.0.0.1:9/absent",
+            PlafondJour = double.Parse(Environment.GetEnvironmentVariable("PLAFOND") ?? "0", inv),
+            Taille = int.Parse(Environment.GetEnvironmentVariable("TAILLE") ?? "1", inv),
+            ObjectifChallenge = double.Parse(Environment.GetEnvironmentVariable("OBJECTIF") ?? "0", inv),
+            DateFinChallenge = Environment.GetEnvironmentVariable("DATE_FIN") ?? "",
+            TailleFin = int.Parse(Environment.GetEnvironmentVariable("TAILLE_FIN") ?? "0", inv),
+            SeancesFin = int.Parse(Environment.GetEnvironmentVariable("SEANCES_FIN") ?? "5", inv)
         };
+        if (Environment.GetEnvironmentVariable("RELANCE") is string relance) strat.RelanceFiltre = relance == "1";   // sinon le reglage par defaut
+        bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";
+        bool sansNQ = Environment.GetEnvironmentVariable("SANS_NQ") == "1";
+        strat.JetonTelegram = Environment.GetEnvironmentVariable("TELEGRAM_JETON") ?? "";
+        strat.ChatTelegram = Environment.GetEnvironmentVariable("TELEGRAM_CHAT") ?? "";     // flux NQ coupe pendant la seance (16 octobre 2026)
+        if (aPlat)
+        {
+            strat.ModeAPlat = true;
+            strat.SymboleMES = new Symbol { Name = Nom(jours[0], "MES") };
+            strat.Compte.Balance = double.Parse(Environment.GetEnvironmentVariable("SOLDE") ?? "0", inv);
+            if (Environment.GetEnvironmentVariable("FREIN") is string fr) strat.Frein = double.Parse(fr, inv);
+            if (Environment.GetEnvironmentVariable("LIMITE") is string li) strat.LimitePerteJour = double.Parse(li, inv);
+            strat.RsiDeNuit = Environment.GetEnvironmentVariable("RSI_NUIT") == "1";
+            strat.SoldeManuel = double.Parse(Environment.GetEnvironmentVariable("SOLDE_MANUEL") ?? "0", inv);
+        }
         var tic = typeof(Bot3en1Strategy).GetMethod("Tic", BindingFlags.NonPublic | BindingFlags.Instance);
-        horloge.DateTimeUtcNow = Utc(jours[0].AddHours(9).AddMinutes(29));
+        var lancement = TimeSpan.Parse(Environment.GetEnvironmentVariable("LANCEMENT") ?? "09:29", inv);
+        horloge.DateTimeUtcNow = Utc(jours[0].Add(lancement));
         strat.Lancer();
         ((IDisposable)typeof(Bot3en1Strategy).GetField("horloge", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat))?.Dispose();
+        for (var t = jours[0].Add(lancement).AddMinutes(1); t < jours[0].AddHours(9).AddMinutes(29); t = t.AddMinutes(1))
+        {
+            horloge.DateTimeUtcNow = Utc(t);
+            tic.Invoke(strat, null);
+        }
         if (strat.Arretee) { Console.WriteLine(string.Join("\n", strat.Logs)); return 1; }
+        var moteur = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
+        if (Environment.GetEnvironmentVariable("SANS_FILTRE") == "1") moteur.FiltreDelta = false;
+        int Pos(Symbol sy) { var p = Core.Instance.Liste.FirstOrDefault(x => x.Symbol == sy); return p == null ? 0 : (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity; }
+        var nuits = new List<string>();
+        var violations = new List<string>();
         foreach (var j in jours)
         {
             strat.SymboleNQ.Name = Nom(j, "NQ"); strat.SymboleMNQ.Name = Nom(j, "MNQ");
+            if (aPlat) strat.SymboleMES.Name = Nom(j, "MES");
+            int n0 = moteur.Journal.Count;
             horloge.DateTimeUtcNow = Utc(j.AddHours(9).AddMinutes(29).AddSeconds(30));
             tic.Invoke(strat, null);
             var b = seances[j].b;
@@ -54,8 +102,11 @@ class Program
                 {
                     agr.TryGetValue((j, m), out var av);
                     double reste = Math.Max(b[m].V - av.Item1 - av.Item2, 0);
-                    void T(double p, double q, AggressorFlag f, int s) =>
-                        strat.SymboleNQ.Emettre(new Last { Time = Utc(t0.AddSeconds(s)), Price = p, Size = q, AggressorFlag = f });
+                    void T(double p, double q, AggressorFlag f, int s)
+                    {
+                        if (!sansNQ) strat.SymboleNQ.Emettre(new Last { Time = Utc(t0.AddSeconds(s)), Price = p, Size = q, AggressorFlag = f });
+                        if (aPlat) strat.SymboleMES.Emettre(new Last { Time = Utc(t0.AddSeconds(s)), Price = p / 4, Size = 1, AggressorFlag = f });
+                    }
                     T(b[m].O, reste, AggressorFlag.None, 1); T(b[m].H, av.Item1, AggressorFlag.Buy, 2);
                     T(b[m].L, av.Item2, AggressorFlag.Sell, 3); T(b[m].C, 0, AggressorFlag.None, 4);
                 }
@@ -64,27 +115,129 @@ class Program
             }
             horloge.DateTimeUtcNow = Utc(j.AddHours(16).AddSeconds(30));
             tic.Invoke(strat, null);
+            horloge.DateTimeUtcNow = Utc(j.AddHours(16).AddSeconds(50));
+            tic.Invoke(strat, null);
+            int i = jours.IndexOf(j);
+            if (aPlat)
+            {
+                if (Pos(strat.SymboleMNQ) != 0 || Pos(strat.SymboleMES) != 0)
+                    violations.Add($"{j:yyyy-MM-dd} 16h00 : pas a plat (MNQ {Pos(strat.SymboleMNQ)}, MES {Pos(strat.SymboleMES)})");
+                var jour = moteur.Journal.Skip(n0).ToList();
+                if (Calendrier.JoursFed.Contains(j) && jour.Any(x => x.Source == "zone"))
+                    violations.Add($"{j:yyyy-MM-dd} : trade de zone un jour de la Fed");
+                if (i + 1 < jours.Count && seances[jours[i + 1]].b[0].Presente)
+                {
+                    var soir = jours[i + 1].AddDays(-1).AddHours(18).AddSeconds(30);   // reouverture : la veille de la seance (dimanche avant un lundi)
+                    double px = seances[jours[i + 1]].b[0].O;
+                    foreach (var dt in new[] { 0, 20, 40 })
+                    {
+                        horloge.DateTimeUtcNow = Utc(soir.AddSeconds(dt));
+                        strat.SymboleNQ.Emettre(new Last { Time = Utc(soir.AddSeconds(dt)), Price = px, Size = 1, AggressorFlag = AggressorFlag.None });
+                        strat.SymboleMES.Emettre(new Last { Time = Utc(soir.AddSeconds(dt)), Price = px / 4, Size = 1, AggressorFlag = AggressorFlag.None });
+                        tic.Invoke(strat, null);
+                    }
+                    if (Pos(strat.SymboleMES) > 0) nuits.Add($"{jours[i + 1]:yyyy-MM-dd}");
+                    if (Pos(strat.SymboleMNQ) != 0) violations.Add($"{j:yyyy-MM-dd} 18h : MNQ tenu la nuit");
+                }
+                continue;
+            }
+            if (strat.PlafondJour > 0 && i + 1 < jours.Count && seances[jours[i + 1]].b[0].Presente)
+            {
+                var soir = j.AddHours(19);
+                horloge.DateTimeUtcNow = Utc(soir);
+                strat.SymboleNQ.Emettre(new Last { Time = Utc(soir), Price = seances[jours[i + 1]].b[0].O, Size = 1, AggressorFlag = AggressorFlag.None });
+                horloge.DateTimeUtcNow = Utc(soir.AddSeconds(1));
+                tic.Invoke(strat, null);
+                horloge.DateTimeUtcNow = Utc(soir.AddSeconds(20));
+                tic.Invoke(strat, null);
+            }
         }
-        var bot = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
-        double zone = 0, rsi = 0, eZ = 0, eR = 0; int sZ = 0, nZ = 0, nE = 0, nR = 0;
+        var bot = moteur;
+        if (aPlat)
+        {
+            File.WriteAllLines(Path.Combine(dossier, "test_nuits.txt"), nuits);
+            if (!strat.RsiDeNuit && nuits.Count > 0) violations.Add($"RSI(2) de nuit decoche mais {nuits.Count} nuit(s) achetee(s)");
+            Console.WriteLine($"mode a plat : {nuits.Count} nuits achetees ; ordres MES {Core.Instance.Ordres.Count(o => o.Contains(" MES"))} ;"
+                              + $" a plat chaque jour a 16 h et sans MNQ la nuit : {(violations.Count == 0 ? "oui" : "NON")}");
+            foreach (var v in violations.Take(10)) Console.WriteLine("  " + v);
+        }
+        double zone = 0, rsi = 0, eZ = 0, eR = 0; int sZ = 0, nZ = 0, nE = 0, nR = 0, nP = 0;
+        bool zOuv = false, rOuv = false;
         foreach (var s in bot.Journal)
         {
-            if (s.Source == "rsi2") { if (s.Texte.Contains("achat")) { eR = s.PrixReference; rsi -= 1.5; nR++; } else rsi += (s.PrixReference - eR) * 2 - 1.5; }
+            if (s.Source == "rsi2")
+            {
+                if (s.Texte.Contains("achat")) { eR = s.PrixReference; rsi -= 1.5; nR++; rOuv = true; }
+                else { rsi += (s.PrixReference - eR) * 2 - 1.5; rOuv = false; }
+            }
             else if (s.Source == "zone-ecarte") nE++;
             else if (s.Source == "zone")
             {
-                if (s.Texte.StartsWith("sortie")) zone += (sZ * (s.PrixReference - eZ) - 1.5) * 2;
-                else { sZ = s.Texte.StartsWith("achat") ? 1 : -1; eZ = s.PrixReference; nZ++; }
+                if (s.Texte.StartsWith("sortie")) { zone += (sZ * (s.PrixReference - eZ) - 1.5) * 2; zOuv = false; }
+                else { sZ = s.Texte.StartsWith("achat") ? 1 : -1; eZ = s.PrixReference; nZ++; zOuv = true; }
+            }
+            else if (s.Source == "plafond")                        // tout ferme au prix du declenchement
+            {
+                nP++;
+                if (zOuv) { zone += (sZ * (s.PrixReference - eZ) - 1.5) * 2; zOuv = false; }
+                if (rOuv) { rsi += (s.PrixReference - eR) * 2 - 1.5; rOuv = false; }
             }
         }
         File.WriteAllLines(Path.Combine(dossier, "test_journal.txt"), bot.Journal.Select(s => s.Texte));
         File.WriteAllLines(Path.Combine(dossier, "test_ordres.txt"), Core.Instance.Ordres);
         File.WriteAllLines(Path.Combine(dossier, "test_logs.txt"), strat.Logs);
         Console.WriteLine($"Zone : {nZ} trades gardes, {nE} ecartes, {zone:+0.0;-0.0} $ ; RSI(2) : {nR} entrees, {rsi:+0.0;-0.0} $ ;"
-                          + $" total {zone + rsi:+0.0;-0.0} $ ; ordres envoyes {Core.Instance.Ordres.Count} ; position finale {strat_pos()}");
+                          + $" total {zone + rsi:+0.0;-0.0} $ ; plafonds {nP} ; ordres envoyes {Core.Instance.Ordres.Count} ; position finale {strat_pos()}");
         int strat_pos() { var p = Core.Instance.Liste.FirstOrDefault(); return p == null ? 0 : (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity; }
+        // challenge : ordres apres l'objectif, et journees jouees a plus de TAILLE (heure de New York, journee de 18 h a 17 h)
+        DateTime NY(string date, string heure) => TimeZoneInfo.ConvertTimeFromUtc(DateTime.Parse($"{date} {heure}", inv), ny);
+        if (strat.ObjectifChallenge > 0)
+        {
+            var obj = File.ReadAllLines(Path.Combine(dossier, "journal.txt")).FirstOrDefault(l => l.Contains("OBJECTIF DU CHALLENGE ATTEINT"));
+            if (obj == null) Console.WriteLine("objectif : jamais atteint");
+            else
+            {
+                var x = obj.Split(' ');
+                var t = DateTime.Parse($"{x[0]} {x[1]}", inv);
+                int apres = Core.Instance.Ordres.Count(o => DateTime.Parse(o.Substring(0, 19), inv) > t.AddSeconds(20));
+                Console.WriteLine($"objectif : atteint le {TimeZoneInfo.ConvertTimeFromUtc(t, ny):yyyy-MM-dd HH:mm} (New York) ; ordres ensuite : {apres}");
+                Console.WriteLine("  " + obj.Substring(24));
+            }
+        }
+        if (strat.TailleFin > 0)
+        {
+            var parJournee = new SortedDictionary<DateTime, int>();
+            foreach (var o in Core.Instance.Ordres)
+            {
+                var x = o.Split(' ');
+                var t = NY(x[0], x[1]);
+                var jt = t.TimeOfDay >= TimeSpan.FromHours(18) ? t.Date.AddDays(1) : t.Date;
+                int q = Math.Abs(int.Parse(x[7], inv));
+                parJournee[jt] = Math.Max(parJournee.TryGetValue(jt, out var v) ? v : 0, q);
+            }
+            var grosses = parJournee.Where(kv => kv.Value > strat.Taille).Select(kv => $"{kv.Key:MM-dd} ({kv.Value})").ToList();
+            Console.WriteLine($"fin de course : journees a plus de {strat.Taille} par contrat : {(grosses.Count == 0 ? "aucune" : string.Join(", ", grosses))}");
+        }
+        if (strat.JetonTelegram != "") System.Threading.Thread.Sleep(8000);   // reponses de Telegram (envois sans attente)
         Console.WriteLine($"erreurs : {strat.Logs.Count(l => l.StartsWith("[Error]"))}");
+        if (sansNQ) Console.WriteLine($"flux NQ coupe : {strat.Logs.Count(l => l.Contains("aucune transaction NQ"))} alerte(s) « aucune transaction NQ »,"
+                                      + $" {strat.Logs.Count(l => l.Contains("plus aucune transaction NQ"))} alerte(s) de silence ; ordres MNQ {Core.Instance.Ordres.Count(o => o.Contains(" MNQ"))}");
         foreach (var l in strat.Logs.Where(l => l.StartsWith("[Error]")).Take(5)) Console.WriteLine("  " + l);
+        if (aPlat)
+        {
+            // apres les chiffres ci-dessus : filet de 16 h 30 (position prise a la main apres la seance), puis arret du bot
+            // avec une position ouverte ; dans les deux cas, plus rien ne doit rester ouvert
+            var dj = jours[^1];
+            horloge.DateTimeUtcNow = Utc(dj.AddHours(16).AddMinutes(35));
+            Core.Instance.PlaceOrder(new PlaceOrderRequestParameters { Account = strat.Compte, Symbol = strat.SymboleMNQ, Side = Side.Buy, Quantity = 2, OrderTypeId = OrderType.Market });
+            tic.Invoke(strat, null);
+            bool filet = Pos(strat.SymboleMNQ) == 0;
+            horloge.DateTimeUtcNow = Utc(dj.AddHours(16).AddMinutes(40));
+            Core.Instance.PlaceOrder(new PlaceOrderRequestParameters { Account = strat.Compte, Symbol = strat.SymboleMES, Side = Side.Sell, Quantity = 3, OrderTypeId = OrderType.Market });
+            strat.Arreter();
+            bool arret = Pos(strat.SymboleMNQ) == 0 && Pos(strat.SymboleMES) == 0;
+            Console.WriteLine($"filet de 16 h 30 : {(filet ? "ok" : "NON")} ; arret du bot avec une position ouverte : tout ferme {(arret ? "ok" : "NON")}");
+        }
         return 0;
     }
 }
