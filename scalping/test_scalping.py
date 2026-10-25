@@ -9,12 +9,9 @@ import machine as MA
 import moteur as M
 
 
-def _seance_seule(f, s):
-    return M.jouer
-
-
 def test_coupure():
-    for nom in K.MARCHES:
+    import nuit as NU
+    for nom in list(K.MARCHES) + [f"nuit_{x}" for x in NU.MARCHES_NUIT]:
         r = np.load(K.CACHE / f"recherche_{nom}.npz")
         c = np.load(K.CACHE / f"complet_{nom}.npz")
         assert r["jours"].max() <= K.FIN_RECHERCHE, nom
@@ -27,12 +24,14 @@ def test_coupure():
 def test_pas_de_futur(n_essais=150):
     """Changer les minutes apres T d'une seance ne change aucune decision prise jusqu'a T."""
     rng = np.random.default_rng(11)
-    for nom in ("NQ", "GC"):
-        d = dict(np.load(K.CACHE / f"recherche_{nom}.npz"))
+    for nom, piste in (("NQ", "B"), ("GC", "B"), ("BTC", "B2"), ("6E", "D")):
+        d = dict(np.load(MA.fichier(piste, nom)))
+        if nom == "NQ":
+            d["autre_c"] = np.load(K.CACHE / "recherche_ES.npz")["c"].copy()
         f = M.indicateurs(d)
-        s0, _, s1 = MA.bornes(d["jours"])
+        s0, _, s1 = MA.bornes(d["jours"], piste)
         jouables = np.flatnonzero(f["jouable"][s0:s1]) + s0
-        familles = list(range(10)) if nom in K.AUTRE_INDICE else [x for x in range(10) if x != 7]
+        familles = MA.familles(piste, nom)
         verifies = 0
         for i in range(n_essais):
             g = G.aleatoire(rng, familles) if i < n_essais - 6 else np.r_[[10 + i - (n_essais - 6)], np.zeros(M.NG - 1)]
@@ -44,7 +43,12 @@ def test_pas_de_futur(n_essais=150):
             base = d["c"][s, T]
             for k, fac in (("o", 1.0), ("h", 1.003), ("l", 0.997), ("c", 1.0)):
                 d2[k][s, T + 1:] = np.round(base * pas * fac / d["tick"]) * d["tick"]
+                d2[k][s + 1:] = d2[k][s + 1:] * rng.uniform(0.9, 1.1)            # seances suivantes changees aussi
             d2["v"][s, T + 1:] = rng.integers(1, 5000, n - T - 1)
+            d2["v"][s + 1:] = rng.integers(1, 5000, d2["v"][s + 1:].shape)
+            if "autre_c" in d2:
+                d2["autre_c"][s, T + 1:] *= rng.uniform(0.98, 1.02)
+                d2["autre_c"][s + 1:] *= rng.uniform(0.9, 1.1)
             f2 = M.indicateurs(d2)
             _, _, _, _, j1 = M.jouer(g, f, s, s + 1, journal=500)
             _, _, _, _, j2 = M.jouer(g, f2, s, s + 1, journal=500)
@@ -82,6 +86,8 @@ def test_execution_a_la_main():
     u = f["sig"][s, 29] * np.sqrt(15) * f["C"][s, 29]
     stp = ent - sens * max(u, 0.5)
     tgt = ent + sens * max(u, 0.5)
+    stp = np.floor(stp / 0.25 + 1e-6) * 0.25 if sens == 1 else np.ceil(stp / 0.25 - 1e-6) * 0.25     # vers la perte
+    tgt = np.ceil(tgt / 0.25 - 1e-6) * 0.25 if sens == 1 else np.floor(tgt / 0.25 + 1e-6) * 0.25     # en s'eloignant
     # rejoue a la main
     t = 30
     while True:
@@ -169,7 +175,22 @@ def test_bruit():
     ie = np.searchsorted(je, communs)
     for m in (1, 50, 389):
         assert np.array_equal(jq[q2["src"][iq, m]], je[e2["src"][ie, m]])
-    print("bruit : ok (permutation par annee et par minute, prix au tick, meme source pour NQ et ES)")
+    q3, e3 = B.bruiter_paire(q, e, 8, sorte="signe")
+    for d, d3 in ((q, q3), (e, e3)):
+        cpl = d["complete"]
+        r_vrai = np.abs(np.log(d["c"][cpl, 1:] / d["c"][cpl, :-1]))
+        r_bruit = np.abs(np.log(d3["c"][cpl, 1:] / d3["c"][cpl, :-1]))
+        assert np.median(np.abs(r_vrai - r_bruit)) < 1e-4                      # meme taille de mouvement (au tick pres)
+        sg = d3["signes"][cpl, 1:]
+        assert 0.45 < np.mean(sg < 0) < 0.55
+    ic = np.searchsorted(q["jours"], communs)
+    jc = np.searchsorted(e["jours"], communs)
+    assert np.array_equal(q3["signes"][ic], e3["signes"][jc])
+    e6 = dict(np.load(K.CACHE / "recherche_6E.npz"))
+    e6b = B.bruiter(e6, 3)
+    assert np.allclose(np.round(e6b["c"] / 0.00005) * 0.00005, e6b["c"])     # 6E : grille des donnees (0,00005)
+    print("bruit : ok (permutation par annee et par minute, signe au hasard, grille des donnees, meme tirage pour NQ "
+          "et ES)")
 
 
 def marche_aleatoire(rng, d, pas=30):

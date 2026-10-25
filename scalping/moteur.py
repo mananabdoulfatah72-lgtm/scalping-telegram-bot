@@ -53,8 +53,7 @@ def indicateurs(d):
     pc = np.where(prec_meme >= 0, C[np.maximum(prec_meme, 0), N - 1], np.nan)
     idx_c = np.flatnonzero(complete)
     vm = np.full(C.shape, np.nan)
-    med20 = np.full(S, np.nan)
-    sd_jour = np.sqrt(var_jour)
+    medsig = np.full(C.shape, np.nan)
     # partie A : seuils connus avant la seance (seances completes precedentes seulement)
     a1 = np.abs(np.log(C[:, 14] / O[:, 0]))
     a3 = np.abs(lr[:, 30]) if N > 31 else np.zeros(S)
@@ -72,25 +71,25 @@ def indicateurs(d):
             vm[s] = np.median(V[idx_c[k - 10:k]], axis=0)
         if k >= 20:
             p = idx_c[k - 20:k]
-            med20[s] = np.median(sd_jour[p])
+            medsig[s] = np.median(sig[p], axis=0)          # regime : sigma a la meme minute des 20 seances d'avant
             q999[s] = np.quantile(np.abs(lr[p, 1:]).ravel(), 0.999)
             sd10[s] = r10[p].std(ddof=1)
-        if k >= 100:
-            p = idx_c[max(0, k - 252):k]
+        if k >= 252:
+            p = idx_c[k - 252:k]
             thr1[s] = np.quantile(a1[p], 0.90)
             thr3[s] = np.quantile(a3[p], 0.90)
-    cum = np.cumsum(lr ** 2, axis=1) / np.arange(1, N + 1)
-    rg = np.sqrt(cum) / med20[:, None]
-    jouable = complete & ~d["ech"] & np.isfinite(init) & np.isfinite(med20) & np.isfinite(vm[:, 0])
+    rg = sig / medsig
+    jouable = complete & ~d["ech"] & np.isfinite(init) & np.isfinite(medsig[:, 0]) & np.isfinite(vm[:, 0])
     f = dict(O=O, H=H, L=L, C=C, V=V, lr=lr, sig=sig, sigp=sigp, vwap=vwap, hh=hh, ll=ll, ph=ph, pl=pl, pc=pc, vm=vm,
              rg=rg, jouable=jouable, echelle=d["pref"] / O[:, 0], thr1=thr1, thr3=thr3, q999=q999, sd10=sd10,
              pt=float(d["pt"]), tick=float(d["tick"]), frais=float(d["frais"]), rond=float(d["rond"]),
-             jours=d["jours"])
+             pas=float(d["pas"]) if "pas" in d else float(d["tick"]),
+             evts=np.asarray(d["evenements"], np.int64) if "evenements" in d else EVENEMENTS, jours=d["jours"])
     if "autre_c" in d:
         X = d["autre_c"]
         lx = np.zeros_like(X)
         lx[:, 1:] = np.log(X[:, 1:] / X[:, :-1])
-        vx = np.nanmean(lx ** 2, axis=1)
+        vx = np.where(np.isfinite(X).all(axis=1), (lx ** 2).mean(axis=1), np.nan)   # seance absente : NaN
         initx = np.where(prec_tout >= 0, vx[np.maximum(prec_tout, 0)], np.nan)
         _, sxp = _ewma(np.nan_to_num(lx), initx)
         f["X"] = X
@@ -118,7 +117,7 @@ def _ewma(lr, init):
 
 # --- signaux --------------------------------------------------------------------------------------------------------
 @njit(cache=True)
-def _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond):
+def _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond, evts):
     """Direction du signal brut de la famille a la cloture de la minute t (0 : rien), avant le gene 'sens'."""
     fam = int(g[FAM])
     sp = sigp[s, t]
@@ -184,9 +183,9 @@ def _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, ro
         conf = int(g[PW])
         marge = g[PZ] * sp * C[s, t]
         if typ == 11:
-            r0 = np.floor(C[s, t - 1] / rond)
+            r0 = np.floor(C[s, t - 1] / rond + 1e-9)
             if conf == 0:
-                r1 = np.floor(C[s, t] / rond)
+                r1 = np.floor(C[s, t] / rond + 1e-9)
                 if r1 > r0 and C[s, t] - r1 * rond >= marge:
                     return 1
                 if r1 < r0 and (r1 + 1.0) * rond - C[s, t] >= marge:
@@ -297,7 +296,7 @@ def _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, ro
             return -1
         return 0
     if fam == 9:
-        e = EVENEMENTS[int(g[PX])]
+        e = evts[int(g[PX])]
         if t != e - 1:
             return 0
         k = K_F9[int(g[PK])]
@@ -311,8 +310,24 @@ def _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, ro
 
 # --- execution -------------------------------------------------------------------------------------------------------
 @njit(cache=True)
+def _vers_perte(x, sens, pas):
+    """Prix sur la grille, arrondi du cote defavorable pour une position de sens `sens` (stop, limite d'achat ou de
+    vente : plus bas pour un achat, plus haut pour une vente)."""
+    if sens == 1:
+        return np.floor(x / pas + 1e-6) * pas
+    return np.ceil(x / pas - 1e-6) * pas
+
+
+@njit(cache=True)
+def _vers_loin(x, sens, pas):
+    """Objectif sur la grille, arrondi en s'eloignant du prix d'entree (prudent)."""
+    if sens == 1:
+        return np.ceil(x / pas - 1e-6) * pas
+    return np.floor(x / pas + 1e-6) * pas
+
+@njit(cache=True)
 def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, vm, rg, jouable, echelle, thr1, thr3,
-            q999, sd10, X, sxp, pt, tick, frais, rond, journal):
+            q999, sd10, X, sxp, pt, tick, frais, rond, evts, pas, journal):
     """Joue le genome g sur les seances [s0, s1). Renvoie (gain $ par seance, NaN si la seance n'est pas jouable ;
     nombre de trades ; trades gagnants ; somme des gains avant frais). journal (n, 6) : si n > 1, les n premiers trades
     (seance, minute d'entree, minute de sortie, sens, prix d'entree, prix de sortie)."""
@@ -328,6 +343,7 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
     if fin < 0:
         fin = N + fin
     croisement = fam == 1 or fam == 4 or fam == 7
+    h = 0.5 * pas                 # demi-maille de la grille des prix : comparaisons sans erreur d'arrondi
     pause = PAUSES[int(g[PAUSE])] if fam < 10 else 0
     for s in range(s0, s1):
         if not jouable[s]:
@@ -350,9 +366,11 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
         lim_fill = False
         prochain = 0
         touche = np.zeros(401 if fam == 14 else 1, np.bool_)
-        base_rond = np.floor(O[s, 0] / rond) - 200.0
+        base_rond = np.floor(O[s, 0] / rond + 1e-9) - 200.0
         for t in range(N):
             # 1) ordre en attente, execute pendant la minute t
+            if attente != 0 and pos == 0 and t > N - 3:
+                attente = 0                              # pas de remplissage dans les 2 dernieres minutes
             if attente != 0 and pos == 0:
                 rempli = False
                 if attente == 1:
@@ -360,20 +378,20 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                     rempli = True
                     lim_fill = False
                 elif a_dir == 1:
-                    if O[s, t] <= a_lim:
+                    if O[s, t] < a_lim - h:                  # ouverture strictement au-dela de la limite
                         ent = O[s, t]
                         rempli = True
-                        lim_fill = False
-                    elif L[s, t] <= a_lim - tick:
+                        lim_fill = True
+                    elif L[s, t] <= a_lim - tick + h:        # limite traversee d'au moins un tick
                         ent = a_lim
                         rempli = True
                         lim_fill = True
                 else:
-                    if O[s, t] >= a_lim:
+                    if O[s, t] > a_lim + h:
                         ent = O[s, t]
                         rempli = True
-                        lim_fill = False
-                    elif H[s, t] >= a_lim + tick:
+                        lim_fill = True
+                    elif H[s, t] >= a_lim + tick - h:
                         ent = a_lim
                         rempli = True
                         lim_fill = True
@@ -384,13 +402,13 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                     if a_stop_abs != 0.0:
                         stp = a_stop_abs
                     elif a_ds > 0.0:
-                        stp = ent - pos * a_ds
+                        stp = _vers_perte(ent - pos * a_ds, pos, pas)
                     else:
                         stp = np.nan
                     if a_tr > 0.0:
-                        tgt = ent * (1.0 + pos * a_tr)
+                        tgt = _vers_loin(ent * (1.0 + pos * a_tr), pos, pas)
                     elif a_dt > 0.0:
-                        tgt = ent + pos * a_dt
+                        tgt = _vers_loin(ent + pos * a_dt, pos, pas)
                     else:
                         tgt = np.nan
                 elif attente == 2 and t >= a_exp:
@@ -398,13 +416,15 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                     prochain = t
             # 1b) A5a : premier contact d'un niveau rond, ordre limite pose sur le niveau
             if fam == 14 and t >= 1:
-                lo_k = max(int(np.floor(L[s, t] / rond) - base_rond), 0)
-                hi_k = min(int(np.floor(H[s, t] / rond) - base_rond) + 1, 401)
+                bas_ = min(L[s, t], C[s, t - 1])            # un niveau saute par un ecart compte comme touche
+                haut_ = max(H[s, t], C[s, t - 1])
+                lo_k = max(int(np.floor(bas_ / rond - 1e-9) - base_rond), 0)
+                hi_k = min(int(np.floor(haut_ / rond + 1e-9) - base_rond) + 1, 401)
                 choix = -1
                 dist = 1e18
                 for kk in range(lo_k, hi_k):
                     nv = (kk + base_rond) * rond
-                    if nv < L[s, t] or nv > H[s, t] or touche[kk]:
+                    if nv < bas_ - h or nv > haut_ + h or touche[kk]:
                         continue
                     touche[kk] = True
                     dd = abs(nv - C[s, t - 1])
@@ -413,42 +433,42 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                         choix = kk
                 if choix >= 0 and pos == 0 and attente == 0 and t >= 30 and t <= 360 and t <= N - 3:
                     nv = (choix + base_rond) * rond
-                    if C[s, t - 1] < nv and H[s, t] >= nv + tick:
+                    if C[s, t - 1] < nv - h and L[s, t] <= nv + h and H[s, t] >= nv + tick - h:
                         pos = -1
-                    elif C[s, t - 1] > nv and L[s, t] <= nv - tick:
+                    elif C[s, t - 1] > nv + h and H[s, t] >= nv - h and L[s, t] <= nv - tick + h:
                         pos = 1
                     if pos != 0:
                         ent = nv
                         e = t
                         lim_fill = True
-                        stp = ent * (1.0 - pos * 0.0015)
-                        tgt = ent * (1.0 + pos * 0.003)
+                        stp = _vers_perte(ent * (1.0 - pos * 0.0015), pos, pas)
+                        tgt = _vers_loin(ent * (1.0 + pos * 0.003), pos, pas)
                         hmax = 30
             elif fam == 14:
-                lo_k = max(int(np.floor(L[s, 0] / rond) - base_rond), 0)
-                hi_k = min(int(np.floor(H[s, 0] / rond) - base_rond) + 1, 401)
+                lo_k = max(int(np.floor(L[s, 0] / rond - 1e-9) - base_rond), 0)
+                hi_k = min(int(np.floor(H[s, 0] / rond + 1e-9) - base_rond) + 1, 401)
                 for kk in range(lo_k, hi_k):
                     nv = (kk + base_rond) * rond
-                    if L[s, 0] <= nv <= H[s, 0]:
+                    if L[s, 0] - h <= nv <= H[s, 0] + h:
                         touche[kk] = True
             # 2) gestion de la position pendant la minute t (ordre le plus defavorable)
             if pos != 0 and t >= e:
                 sortie = np.nan
-                if t == e and np.isfinite(stp) and pos * (ent - stp) <= 0.0:
+                if t == e and np.isfinite(stp) and pos * (ent - stp) <= h:
                     sortie = ent                         # entree deja au-dela du stop : sortie immediate
                 elif pos == 1:
-                    if t > e and np.isfinite(stp) and O[s, t] <= stp:
+                    if t > e and np.isfinite(stp) and O[s, t] <= stp + h:
                         sortie = O[s, t]
-                    elif np.isfinite(stp) and L[s, t] <= stp:
+                    elif np.isfinite(stp) and L[s, t] <= stp + h:
                         sortie = stp
-                    elif (not (lim_fill and t == e)) and np.isfinite(tgt) and H[s, t] >= tgt + tick:
+                    elif (not (lim_fill and t == e)) and np.isfinite(tgt) and H[s, t] >= tgt + tick - h:
                         sortie = tgt
                 else:
-                    if t > e and np.isfinite(stp) and O[s, t] >= stp:
+                    if t > e and np.isfinite(stp) and O[s, t] >= stp - h:
                         sortie = O[s, t]
-                    elif np.isfinite(stp) and H[s, t] >= stp:
+                    elif np.isfinite(stp) and H[s, t] >= stp - h:
                         sortie = stp
-                    elif (not (lim_fill and t == e)) and np.isfinite(tgt) and L[s, t] <= tgt - tick:
+                    elif (not (lim_fill and t == e)) and np.isfinite(tgt) and L[s, t] <= tgt - tick + h:
                         sortie = tgt
                 if not np.isfinite(sortie) and (t >= e + hmax - 1 or t == N - 1):
                     sortie = C[s, t]
@@ -477,11 +497,11 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                 reg = int(g[REGIME])
                 if (reg == 1 and not (rg[s, t] > 1.2)) or (reg == 2 and not (rg[s, t] < 0.8)):
                     continue
-                d = _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond)
+                d = _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond, evts)
                 if d == 0:
                     continue
                 if croisement and t >= 1:
-                    if _cond(g, s, t - 1, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond) == d:
+                    if _cond(g, s, t - 1, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond, evts) == d:
                         continue
                 if g[INV] > 0.5:
                     d = -d
@@ -505,7 +525,7 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                 else:
                     attente = 2
                     a_lim = C[s, t] - d * j * u
-                    a_lim = np.floor(a_lim / tick) * tick if d == 1 else np.ceil(a_lim / tick) * tick
+                    a_lim = _vers_perte(a_lim, d, pas)     # limite arrondie en s'eloignant du marche (prudent)
                     a_exp = t + FENETRES[int(g[FENETRE])]
             elif fam != 14:
                 if pos != 0 or attente != 0 or t + 1 > N - 3:
@@ -537,8 +557,8 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                             hmax = 10
                 elif fam == 15:                    # A5b : cassure d'un niveau rond
                     if t >= 1 and t + 1 >= 30 and t + 1 <= 360:
-                        r0 = np.floor(C[s, t - 1] / rond)
-                        r1 = np.floor(C[s, t] / rond)
+                        r0 = np.floor(C[s, t - 1] / rond + 1e-9)
+                        r1 = np.floor(C[s, t] / rond + 1e-9)
                         if r1 > r0 and C[s, t] >= r1 * rond * 1.0005:
                             d = 1
                             a_stop_abs = r1 * rond
@@ -557,7 +577,7 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
 def arguments(f):
     return (f["O"], f["H"], f["L"], f["C"], f["V"], f["lr"], f["sig"], f["sigp"], f["vwap"], f["hh"], f["ll"], f["ph"],
             f["pl"], f["pc"], f["vm"], f["rg"], f["jouable"], f["echelle"], f["thr1"], f["thr3"], f["q999"], f["sd10"],
-            f["X"], f["sxp"], f["pt"], f["tick"], f["frais"], f["rond"])
+            f["X"], f["sxp"], f["pt"], f["tick"], f["frais"], f["rond"], f["evts"], f["pas"])
 
 
 def jouer(g, f, s0, s1, journal=0):

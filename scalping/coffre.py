@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Selection des finalistes (README.md) puis ouverture unique du coffre 2023 - fin des donnees.
-  python3 scalping/coffre.py exploration  -> resultats/exploration.txt, resultats/finalistes.json (cache de recherche seul)
-  python3 scalping/coffre.py ouvrir       -> resultats/coffre.txt (une seule fois)"""
+  python3 scalping/coffre.py exploration  -> resultats/exploration.txt, resultats/finalistes.json (resultats de
+                                             l'exploration seulement)
+  python3 scalping/coffre.py ouvrir       -> resultats/coffre.txt (une seule fois, toutes les parties ensemble)"""
+import hashlib
 import json
 import sys
-from math import erf, sqrt
 from statistics import NormalDist
 
 import numpy as np
@@ -60,11 +61,13 @@ def decrire(g):
             f"duree {M.DUREES[int(g[M.DUREE])]} min ; pause {M.PAUSES[int(g[M.PAUSE])]} min")
 
 
-def lire(marche, sorte):
+def lire(piste, marche, sorte):
     out = []
     for gr in range(1, MA.GRAINES + 1):
-        z = np.load(MA.SORTIE / f"machine_{marche}_{sorte}_{gr}.npz")
-        out.append({k: z[k] for k in z.files})
+        f = MA.SORTIE / f"machine_{piste}_{marche}_{sorte}_{gr}.npz"
+        if f.exists():
+            z = np.load(f)
+            out.append({k: z[k] for k in z.files})
     return out
 
 
@@ -94,67 +97,81 @@ def deux_meilleures(liste):
     return out
 
 
+def empreinte(chemin):
+    return hashlib.sha256(chemin.read_bytes()).hexdigest()
+
+
 def exploration():
-    L = ["Machine scalping, exploration 2017-2022 (README.md). Score = t des gains nets quotidiens 2017-2022 au prix "
-         "d'aujourd'hui. Eligible : t entrainement >= 2 avec 200 trades, t validation >= 1 avec 50 trades.", ""]
+    L = ["Machine scalping, exploration jusqu'au 31 decembre 2022 (README.md). Score = t des gains nets quotidiens sur "
+         "entrainement + validation, au prix d'aujourd'hui. Eligible : t entrainement >= 2 avec 200 trades, t validation "
+         ">= 1 avec 50 trades. Barriere = meilleur score eligible trouve sur les deux bruits (permutation et signe).", ""]
     finalistes, placebos = [], []
-    total_reel = total_bruit = 0
-    L.append("marche  distinctes reel / bruit   eligibles reel / bruit (moyenne par graine)   barriere du bruit   "
-             "meilleur score reel")
     seuils = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5]
-    table = []
-    for marche in K.MARCHES:
-        reel, bruit = lire(marche, "reel"), lire(marche, "bruit")
-        nr = sum(len(r["genomes"]) for r in reel)
-        nb = sum(len(r["genomes"]) for r in bruit)
-        total_reel += nr
-        total_bruit += nb
-        er = [r["score"][eligibles(r)] for r in reel]
-        eb = [r["score"][eligibles(r)] for r in bruit]
-        barriere = max([x.max() for x in eb if len(x)], default=-np.inf)
-        ur = union_eligibles(reel)
-        ub = union_eligibles(bruit)
-        meilleur = ur[0]["score"] if ur else float("nan")
-        L.append(f"{marche:<6}  {nr:9d} / {nb:9d}   {np.mean([len(x) for x in er]):10.1f} / "
-                 f"{np.mean([len(x) for x in eb]):6.1f}                       {barriere:8.2f}          {meilleur:8.2f}")
-        table.append((marche, [np.mean([np.sum(x >= s) for x in er]) for s in seuils],
-                      [np.mean([np.sum(x >= s) for x in eb]) for s in seuils]))
-        for x in deux_meilleures(ur):
-            x.update(marche=marche, partie="B", barriere=float(barriere), au_dessus=bool(x["score"] > barriere),
-                     description=decrire(x["genome"]))
-            finalistes.append(x)
-        for x in deux_meilleures(ub):
-            x.update(marche=marche, partie="placebo", description=decrire(x["genome"]))
-            placebos.append(x)
-    L.append(f"total : {total_reel} strategies distinctes sur les vraies donnees, {total_bruit} sur bruit")
-    L.append("")
-    L.append("Fausses pistes : eligibles au-dessus de chaque score, moyenne par graine, vraies donnees / bruit")
-    L.append("marche  " + "".join(f"   >= {s:<4}       " for s in seuils))
-    for marche, a, b in table:
-        L.append(f"{marche:<6}  " + "".join(f"  {x:6.1f} / {y:6.1f}" for x, y in zip(a, b)))
-    pa = json.loads((MA.SORTIE / "partie_a.json").read_text())
-    for x in pa:
-        if x["survivante"]:
-            g = np.zeros(M.NG)
-            g[M.FAM] = x["regle"]
-            finalistes.append(dict(genome=g.tolist(), score=x["t"], marche=x["marche"], partie="A", au_dessus=True,
-                                   description=x["nom"], net_trade=x["net_trade"], gagnants=x["gagnants"],
-                                   n_tr=x["trades"]))
-    L.append("")
-    L.append(f"Partie A : {sum(x['survivante'] for x in pa)} survivante(s) sur {len(pa)} (resultats/partie_a.txt)")
+    for piste in ("B", "B2", "D"):
+        lignes, table = [], []
+        tot = {"reel": 0, "bruit": 0, "signe": 0}
+        for marche in MA.marches(piste):
+            runs = {so: lire(piste, marche, so) for so in MA.SORTES}
+            if not all(runs.values()):
+                continue
+            for so in MA.SORTES:
+                tot[so] += sum(len(r["genomes"]) for r in runs[so])
+            sc = {so: [r["score"][eligibles(r)] for r in runs[so]] for so in MA.SORTES}
+            barriere = max([x.max() for so in ("bruit", "signe") for x in sc[so] if len(x)], default=-np.inf)
+            ur = union_eligibles(runs["reel"])
+            lignes.append(f"{marche:<5} eligibles par graine : reel {np.mean([len(x) for x in sc['reel']]):7.1f}, "
+                          f"permutation {np.mean([len(x) for x in sc['bruit']]):7.1f}, signe "
+                          f"{np.mean([len(x) for x in sc['signe']]):7.1f} ; barriere {barriere:5.2f} ; meilleur reel "
+                          f"{(ur[0]['score'] if ur else float('nan')):5.2f}")
+            table.append((marche, {so: [np.mean([np.sum(x >= v) for x in sc[so]]) for v in seuils] for so in MA.SORTES}))
+            for x in deux_meilleures(ur):
+                x.update(piste=piste, marche=marche, partie=piste, barriere=float(barriere),
+                         au_dessus=bool(x["score"] > barriere), description=decrire(x["genome"]))
+                finalistes.append(x)
+            for so in ("bruit", "signe"):
+                for x in deux_meilleures(union_eligibles(runs[so])):
+                    x.update(piste=piste, marche=marche, partie=f"placebo {so}", description=decrire(x["genome"]))
+                    placebos.append(x)
+        if not lignes:
+            continue
+        L.append(f"=== Partie {piste} : {tot['reel']} strategies distinctes sur les vraies donnees, {tot['bruit']} sur le "
+                 f"bruit par permutation, {tot['signe']} sur le bruit par signe")
+        L += lignes
+        L.append("  eligibles au-dessus de chaque score, moyenne par graine : reel / permutation / signe")
+        L.append("        " + "".join(f"   >= {v:<4}             " for v in seuils))
+        for marche, d in table:
+            L.append(f"  {marche:<5} " + "".join(f"  {a:5.1f}/{b:5.1f}/{c:5.1f}  " for a, b, c in
+                                                zip(d["reel"], d["bruit"], d["signe"])))
+        L.append("")
+    for nom, fich, partie in (("A", "partie_a.json", "A"), ("C", "appris.json", "C")):
+        f = MA.SORTIE / fich
+        if not f.exists():
+            L.append(f"Partie {nom} : pas encore calculee")
+            continue
+        res = json.loads(f.read_text())
+        L.append(f"Partie {nom} : {sum(x['survivante'] for x in res)} survivante(s) sur {len(res)} (resultats/{fich})")
+        for x in res:
+            if x["survivante"]:
+                g = np.zeros(M.NG)
+                if partie == "A":
+                    g[M.FAM] = x["regle"]
+                finalistes.append(dict(genome=g.tolist(), score=x["t"], marche=x["marche"], partie=partie,
+                                       piste=partie, au_dessus=True,
+                                       description=x.get("nom", "modele appris (partie C)"),
+                                       net_trade=x["net_trade"], gagnants=x["gagnants"], n_tr=x["trades"]))
     L.append("")
     L.append(f"FINALISTES ({len(finalistes)}) :")
     for x in finalistes:
-        L.append(f"  {x['marche']} [{x['partie']}] score {x['score']:.2f}"
+        L.append(f"  {x['partie']} {x['marche']} score {x['score']:.2f}"
                  + (f" (t entrainement {x['t_tr']:.2f}, validation {x['t_v']:.2f}, {x['n_tr']} + {x['n_v']} trades)"
-                    if x["partie"] == "B" else "")
+                    if x["partie"] in ("B", "B2", "D") else "")
                  + f", net {x['net_trade']:.2f} $ par trade, gagnants {x['gagnants']:.0%}, "
                  + ("au-dessus de la barriere du bruit" if x["au_dessus"] else "SOUS la barriere du bruit"))
         L.append(f"      {x['description']}")
     L.append("")
     L.append(f"PLACEBOS ({len(placebos)}, choisis sur bruit, joues sur le vrai coffre) :")
     for x in placebos:
-        L.append(f"  {x['marche']} score sur bruit {x['score']:.2f} : {x['description']}")
+        L.append(f"  {x['partie']} {x['piste']} {x['marche']} score sur bruit {x['score']:.2f} : {x['description']}")
     txt = "\n".join(L)
     (MA.SORTIE / "exploration.txt").write_text(txt + "\n")
     (MA.SORTIE / "finalistes.json").write_text(json.dumps(dict(finalistes=finalistes, placebos=placebos), indent=1,
@@ -162,54 +179,81 @@ def exploration():
     print(txt)
 
 
+def _gains_coffre(x, cache):
+    """Gains quotidiens d'une finaliste ou d'un placebo sur le coffre (seances du 1er janvier 2023 a la fin)."""
+    import appris as AP
+    piste, marche = x["piste"], x["marche"]
+    cle_ = (piste if piste in ("D", "C") else "B", marche)
+    if cle_ not in cache:
+        if piste == "D":
+            d = dict(np.load(MA.fichier("D", marche, "complet")))
+        elif piste == "C":
+            d = AP.charger(marche, quoi="complet")
+        else:
+            d = dict(np.load(K.CACHE / f"complet_{marche}.npz"))
+        cache[cle_] = (d, M.indicateurs(d))
+    d, f = cache[cle_]
+    s0 = int(np.searchsorted(d["jours"], K.DEBUT_COFFRE))
+    s1 = len(d["jours"])
+    if piste == "C":
+        _, prem = AP.periode(marche)
+        p = AP.walk_forward(f, [2023, 2024, 2025, 2026], prem)
+        gain, n, w = AP.executer(p, s0, s1, f["O"], f["H"], f["L"], f["C"], f["sig"], f["jouable"], f["echelle"],
+                                 f["pt"], f["tick"], f["frais"], AP.SEUIL, AP.T0, f["C"].shape[1] - AP.FIN_AVANT,
+                                 AP.H_CIBLE, np.zeros((1, 6)))
+    else:
+        gain, n, w, _, _ = M.jouer(np.asarray(x["genome"], float), f, s0, s1)
+    return gain, n, w, d["jours"][s0:]
+
+
 def ouvrir():
     drapeau = MA.SORTIE / "coffre_ouvert.txt"
-    if drapeau.exists() and "--relire" not in sys.argv:
-        sys.exit("Le coffre a deja ete ouvert (resultats/coffre_ouvert.txt). --relire pour refaire le meme calcul.")
-    sel = json.loads((MA.SORTIE / "finalistes.json").read_text())
+    sel_f = MA.SORTIE / "finalistes.json"
+    emp = empreinte(sel_f)
+    if drapeau.exists():
+        avant = drapeau.read_text().split()[-1]
+        if "--relire" not in sys.argv or avant != emp:
+            sys.exit("Le coffre a deja ete ouvert (resultats/coffre_ouvert.txt). --relire refait le meme calcul, et "
+                     "seulement si finalistes.json n'a pas change.")
+    sel = json.loads(sel_f.read_text())
     fin, plac = sel["finalistes"], sel["placebos"]
     m = max(len(fin), 1)
     seuil = NormalDist().inv_cdf(1 - 0.05 / m)
-    drapeau.write_text("coffre ouvert\n")
+    drapeau.write_text(f"coffre ouvert ; empreinte sha256 de finalistes.json : {emp}\n")
     cache = {}
 
-    def jouer(marche, g):
-        if marche not in cache:
-            d = dict(np.load(K.CACHE / f"complet_{marche}.npz"))
-            f = M.indicateurs(d)
-            s0 = int(np.searchsorted(d["jours"], K.DEBUT_COFFRE))
-            cache[marche] = (d, f, s0)
-        d, f, s0 = cache[marche]
-        gain, n, w, brut, _ = M.jouer(np.asarray(g, float), f, s0, len(d["jours"]))
-        jours = d["jours"][s0:]
+    def jouer(x):
+        gain, n, w, jours = _gains_coffre(x, cache)
         ok = np.isfinite(gain)
-        ans = {int(a): float(np.nansum(gain[jours.astype("datetime64[Y]").astype(int) + 1970 == a]))
-               for a in (2023, 2024, 2025, 2026)}
+        an = jours.astype("datetime64[Y]").astype(int) + 1970
+        ans = {a: float(np.nansum(gain[an == a])) for a in (2023, 2024, 2025, 2026)}
         return dict(t=K.t_stat(gain[ok]), trades=int(n), net_trade=float(np.nansum(gain) / max(n, 1)),
                     gagnants=float(w / max(n, 1)), total=float(np.nansum(gain)), annees=ans,
                     positives=int(sum(v > 0 for v in ans.values())), fin=str(jours[ok][-1]))
 
-    L = [f"Coffre {K.DEBUT_COFFRE} - fin des donnees, ouvert une fois. m = {len(fin)} finalistes, seuil de "
-         f"Bonferroni t >= {seuil:.2f} ; palier interessant : t >= 1,65 ; et au moins 3 annees positives sur 4.", ""]
+    L = [f"Coffre {K.DEBUT_COFFRE} - fin des donnees, ouvert une fois pour toutes les parties. m = {len(fin)} finalistes,"
+         f" seuil de Bonferroni t >= {seuil:.2f} ; palier interessant : t >= 1,65 ; et au moins 3 annees positives sur "
+         f"4. Gains pour 1 contrat micro, au prix d'aujourd'hui, frais compris.", ""]
     res_f, res_p = [], []
     for x in fin:
-        r = jouer(x["marche"], x["genome"])
+        r = jouer(x)
         r["retenue"] = bool(x["au_dessus"] and r["t"] >= seuil and r["positives"] >= 3)
         r["interessante"] = bool(r["t"] >= 1.65 and r["positives"] >= 3)
         res_f.append(r)
-        L.append(f"{x['marche']} [{x['partie']}] exploration {x['score']:.2f} -> coffre t {r['t']:.2f}, {r['trades']} trades,"
-                 f" net {r['net_trade']:.2f} $ par trade, total {r['total']:,.0f} $ pour 1 contrat, annees "
+        L.append(f"{x['partie']} {x['marche']} exploration {x['score']:.2f} -> coffre t {r['t']:.2f}, {r['trades']} trades,"
+                 f" net {r['net_trade']:.2f} $ par trade, total {r['total']:,.0f} $, annees "
                  + ", ".join(f"{a} {v:+,.0f}" for a, v in r["annees"].items())
                  + f" -> {'RETENUE' if r['retenue'] else ('interessante' if r['interessante'] else 'rejetee')}")
         L.append(f"      {x['description']}")
     L.append("")
     for x in plac:
-        r = jouer(x["marche"], x["genome"])
+        r = jouer(x)
         r["interessante"] = bool(r["t"] >= 1.65 and r["positives"] >= 3)
         r["bonferroni"] = bool(r["t"] >= seuil and r["positives"] >= 3)
         res_p.append(r)
-        L.append(f"placebo {x['marche']} : coffre t {r['t']:.2f}, {r['trades']} trades, total {r['total']:,.0f} $, "
-                 f"{r['positives']} annees positives -> {'passe le palier interessant' if r['interessante'] else 'non'}")
+        L.append(f"{x['partie']} {x['piste']} {x['marche']} : coffre t {r['t']:.2f}, {r['trades']} trades, total "
+                 f"{r['total']:,.0f} $, {r['positives']} annees positives -> "
+                 f"{'passe le palier interessant' if r['interessante'] else 'non'}")
     L.append("")
     L.append(f"Bilan : {sum(r['retenue'] for r in res_f)} retenue(s), {sum(r['interessante'] for r in res_f)} "
              f"interessante(s) sur {len(fin)} finalistes ; placebos : {sum(r['interessante'] for r in res_p)} sur "

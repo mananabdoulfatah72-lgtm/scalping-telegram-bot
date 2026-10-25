@@ -22,7 +22,7 @@ T0 = 15                       # 15 minutes apres l'ouverture (9 h 45 pour les in
 FIN_AVANT = 30                # jusqu'a 30 minutes avant la fin (15 h 30 pour les indices)
 SEUIL = 0.55
 LAMBDA = 1.0
-JUMEAUX = 20
+JUMEAUX = 20                  # par sorte de bruit
 GRAINE = 3000
 NV = 15
 
@@ -195,47 +195,51 @@ def resultat(f, p, annees):
 
 
 def periode(marche):
-    if marche == "BTC":
-        return list(range(2019, 2023)), 2018
+    if marche == "BTC":                       # version 3 : seances completes rares avant 2020
+        return list(range(2021, 2023)), 2020
     return list(range(2017, 2023)), 2016
 
 
-def charger(marche, graine=None):
-    d = dict(np.load(K.CACHE / f"recherche_{marche}.npz"))
-    assert d["jours"].max() <= K.FIN_RECHERCHE
+def charger(marche, graine=None, sorte="permutation", quoi="recherche"):
+    d = dict(np.load(K.CACHE / f"{quoi}_{marche}.npz"))
+    if quoi == "recherche":
+        assert d["jours"].max() <= K.FIN_RECHERCHE
     if graine is not None:
         if marche in K.AUTRE_INDICE:
-            q = dict(np.load(K.CACHE / "recherche_NQ.npz"))
-            e = dict(np.load(K.CACHE / "recherche_ES.npz"))
-            q, e = B.bruiter_paire(q, e, graine)
+            q = dict(np.load(K.CACHE / f"{quoi}_NQ.npz"))
+            e = dict(np.load(K.CACHE / f"{quoi}_ES.npz"))
+            q, e = B.bruiter_paire(q, e, graine, sorte=sorte)
             q["autre_c"] = D.aligner_autre(q, e)
             e["autre_c"] = D.aligner_autre(e, q)
             d = q if marche == "NQ" else e
         else:
-            d = B.bruiter(d, graine)
+            d = B.bruiter(d, graine, sorte=sorte)
     return d
 
 
 def tache(args):
-    marche, graine = args
-    f = M.indicateurs(charger(marche, graine))
+    marche, graine, sorte = args
+    f = M.indicateurs(charger(marche, graine, sorte))
     annees, prem = periode(marche)
-    return marche, graine, resultat(f, walk_forward(f, annees, prem), annees)
+    return marche, graine, sorte, resultat(f, walk_forward(f, annees, prem), annees)
 
 
 def exploration():
     marches = list(K.MARCHES)
-    taches = [(m, None) for m in marches] + [(m, GRAINE + k) for m in marches for k in range(1, JUMEAUX + 1)]
+    taches = [(m, None, "reel") for m in marches] + [(m, GRAINE + (0 if s == "permutation" else 500) + k, s)
+                                                     for m in marches for s in ("permutation", "signe")
+                                                     for k in range(1, JUMEAUX + 1)]
     with mp.get_context("fork").Pool(4) as pool:
         res = pool.map(tache, taches)
-    reel = {m: r for m, g, r in res if g is None}
-    bruit = {m: [r["t"] for mm, g, r in res if mm == m and g is not None] for m in marches}
+    reel = {m: r for m, g, s, r in res if g is None}
     tests = []
     for m in marches:
         r = reel[m]
-        tb = np.array(bruit[m])
+        tb = np.array([x["t"] for mm, g, s, x in res if mm == m and s == "permutation"])
+        ts = np.array([x["t"] for mm, g, s, x in res if mm == m and s == "signe"])
         tests.append(dict(marche=m, p=0.5 * (1 - erf(r["t"] / sqrt(2))), bruit_95=float(np.quantile(tb, 0.95)),
-                          bat_bruit=float(np.mean(r["t"] > tb)), **r))
+                          signe_95=float(np.quantile(ts, 0.95)),
+                          bat_bruit=float(min(np.mean(r["t"] > tb), np.mean(r["t"] > ts))), **r))
     ordre = np.argsort([x["p"] for x in tests])
     kmax = 0
     for rang, i in enumerate(ordre, start=1):
@@ -248,12 +252,12 @@ def exploration():
     out = K.ICI / "resultats"
     out.mkdir(exist_ok=True)
     (out / "appris.json").write_text(json.dumps(tests, indent=1))
-    L = ["Partie C, modele appris chaque annee sur le passe, exploration 2017-2022 (bitcoin 2019-2022), 20 jumeaux de "
-         "bruit, Benjamini-Hochberg a 10 % sur 8 marches", "",
-         "marche  trades    t    net/trade  gagnants  bruit 95e  bat le bruit  BH  survivante"]
+    L = ["Partie C, modele appris chaque annee sur le passe, exploration 2017-2022 (bitcoin 2019-2022), 20 jumeaux par "
+         "permutation et 20 par signe, Benjamini-Hochberg a 10 % sur 8 marches", "",
+         "marche  trades    t    net/trade  gagnants  95e perm. 95e signe  bat le bruit  BH  survivante"]
     for x in tests:
         L.append(f"{x['marche']:<6} {x['trades']:7d} {x['t']:6.2f} {x['net_trade']:9.2f} $ {x['gagnants']:7.0%} "
-                 f"{x['bruit_95']:9.2f} {x['bat_bruit']:10.0%}   {'oui' if x['bh'] else 'non'}  "
+                 f"{x['bruit_95']:9.2f} {x['signe_95']:9.2f} {x['bat_bruit']:10.0%}   {'oui' if x['bh'] else 'non'}  "
                  f"{'OUI' if x['survivante'] else 'non'}")
     txt = "\n".join(L)
     (out / "appris.txt").write_text(txt + "\n")

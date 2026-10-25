@@ -19,7 +19,17 @@ MARCHES = {
     "GC": ("zone_multi/donnees/or_1min.csv.gz", 10.0, 0.10, 500, 810, 4.00, 4178.0, 10.0),
     "CL": ("zone_multi/donnees/petrole_1min.csv.gz", 100.0, 0.01, 540, 870, 4.00, 92.2, 1.0),
     "6E": ("zone_multi/donnees/euro_1min.csv.gz", 12500.0, 0.0001, 500, 900, 4.50, 1.142, 0.005),
+    "BTC": ("tournoi5/donnees/bitcoin_1min.csv.gz", 0.1, 5.0, 570, 960, 3.00, 84000.0, 1000.0),       # partie B2
 }
+# grille des prix des donnees quand elle differe du tick du micro (relecture du 25 octobre 2026) : le 6E standard cote
+# par 0,00005 ; le tick traverse et les frais restent ceux du micro
+PAS = {"6E": 0.00005}
+PISTES = {"B": ["NQ", "ES", "RTY", "YM", "GC", "CL", "6E"], "B2": ["BTC"]}     # la partie D est dans nuit.py
+# bitcoin (version 3) : avant le micro MBT (mai 2021), seul le contrat de 5 bitcoins existait et beaucoup de minutes sont
+# sans transaction ; seance complete = premiere et derniere minute presentes et au moins 300 minutes sur 390 echangees
+DEBUT_ENTRAINEMENT_B2 = np.datetime64("2020-01-01")
+DEBUT_VALIDATION_B2 = np.datetime64("2021-07-01")
+MINUTES_MIN = {"BTC": 300}
 AUTRE_INDICE = {"NQ": "ES", "ES": "NQ"}       # famille F7
 
 DEBUT_DONNEES = np.datetime64("2016-01-01")

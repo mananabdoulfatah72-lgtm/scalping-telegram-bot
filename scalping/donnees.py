@@ -33,7 +33,7 @@ def minutes(nom):
     for col in "ohl":
         tab[col] = np.where(np.isnan(tab[col]), C, tab[col])      # minute manquante : recopiee a plat, volume 0
     contrat = d.groupby(ij)["contrat"].last().reindex(range(len(jours))).values
-    complete = present[:, 0] & present[:, n - 1] & (present.sum(axis=1) >= n - 20)
+    complete = present[:, 0] & present[:, n - 1] & (present.sum(axis=1) >= K.MINUTES_MIN.get(nom, n - 20))
     ech = np.r_[False, contrat[1:] != contrat[:-1]]                # changement de contrat : pas de trade ce jour-la
     # seance complete precedente, du meme contrat (niveaux de la veille), et quel que soit le contrat (ecart d'ouverture)
     prec_meme = np.full(len(jours), -1, np.int64)
@@ -48,7 +48,7 @@ def minutes(nom):
     return dict(jours=jours.astype("datetime64[D]"), o=tab["o"], h=tab["h"], l=tab["l"], c=C, v=tab["v"],
                 complete=complete, ech=ech, contrat=contrat.astype(np.int64), prec_meme=prec_meme, prec_tout=prec_tout,
                 pt=np.float64(pt), tick=np.float64(tick), m0=np.int64(m0), n=np.int64(n), frais=np.float64(frais),
-                pref=np.float64(pref), rond=np.float64(rond))
+                pref=np.float64(pref), rond=np.float64(rond), pas=np.float64(K.PAS.get(nom, tick)))
 
 
 def aligner_autre(d, a):

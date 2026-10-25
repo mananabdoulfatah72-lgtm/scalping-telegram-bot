@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Partie A (README.md) : les 6 regles des etudes, sur NQ et ES, exploration 2017-2022, 40 jumeaux de bruit,
-Benjamini-Hochberg a 10 % sur les 12 tests. Ecrit resultats/partie_a.json et resultats/partie_a.txt."""
+"""Partie A (README.md) : les 6 regles des etudes, sur NQ et ES, exploration 2017-2022, 40 jumeaux de bruit par
+permutation et 40 par signe (version 3), Benjamini-Hochberg a 10 % sur les 12 tests. Ecrit resultats/partie_a.json et
+resultats/partie_a.txt."""
 import json
 import multiprocessing as mp
 from math import erf, sqrt
@@ -32,15 +33,16 @@ def mesures(f, s0, s1):
     return out
 
 
-def jumeau(k):
+def jumeau(args):
+    sorte, k = args
     q = dict(np.load(K.CACHE / "recherche_NQ.npz"))
     e = dict(np.load(K.CACHE / "recherche_ES.npz"))
-    q, e = B.bruiter_paire(q, e, GRAINE + k)
+    q, e = B.bruiter_paire(q, e, (GRAINE if sorte == "permutation" else GRAINE + 500) + k, sorte=sorte)
     res = {}
     for nom, d in (("NQ", q), ("ES", e)):
         s0, _, s1 = MA.bornes(d["jours"])
         res[nom] = {fam: v["t"] for fam, v in mesures(M.indicateurs(d), s0, s1).items()}
-    return res
+    return sorte, res
 
 
 def main():
@@ -48,17 +50,19 @@ def main():
     for nom in ("NQ", "ES"):
         d = dict(np.load(K.CACHE / f"recherche_{nom}.npz"))
         assert d["jours"].max() <= K.FIN_RECHERCHE
-        s0, _, s1 = MA.bornes(d["jours"])
+        s0, _, s1 = MA.bornes(d["jours"], "B")
         reel[nom] = mesures(M.indicateurs(d), s0, s1)
     with mp.get_context("fork").Pool(4) as pool:
-        bruits = pool.map(jumeau, range(1, JUMEAUX + 1))
+        bruits = pool.map(jumeau, [(s, k) for s in ("permutation", "signe") for k in range(1, JUMEAUX + 1)])
     tests = []
     for nom in ("NQ", "ES"):
         for fam, v in reel[nom].items():
-            tb = np.array([b[nom][fam] for b in bruits])
+            tb = np.array([b[nom][fam] for s, b in bruits if s == "permutation"])
+            ts = np.array([b[nom][fam] for s, b in bruits if s == "signe"])
             p = 0.5 * (1 - erf(v["t"] / sqrt(2)))
             tests.append(dict(marche=nom, regle=fam, nom=REGLES[fam], p=p, bruit_95=float(np.quantile(tb, 0.95)),
-                              bat_bruit=float(np.mean(v["t"] > tb)), **v))
+                              signe_95=float(np.quantile(ts, 0.95)),
+                              bat_bruit=float(min(np.mean(v["t"] > tb), np.mean(v["t"] > ts))), **v))
     # Benjamini-Hochberg a 10 %
     ordre = np.argsort([x["p"] for x in tests])
     m = len(tests)
@@ -72,13 +76,14 @@ def main():
         x["survivante"] = bool(x["t"] >= 2 and x["bh"] and x["bat_bruit"] >= 0.95)
     (MA.SORTIE).mkdir(exist_ok=True)
     (MA.SORTIE / "partie_a.json").write_text(json.dumps(tests, indent=1, ensure_ascii=False))
-    L = ["Partie A, exploration 2017-2022 (gains au prix d'aujourd'hui, frais compris), 40 jumeaux de bruit, "
-         "Benjamini-Hochberg a 10 % sur 12 tests", "",
+    L = ["Partie A, exploration 2017-2022 (gains au prix d'aujourd'hui, frais compris), 40 jumeaux par permutation et "
+         "40 par signe, Benjamini-Hochberg a 10 % sur 12 tests ; 'bat le bruit' = le plus faible des deux", "",
          "marche  regle                                                  trades   t     net/trade  brut/trade  gagnants"
-         "  bruit 95e  bat le bruit  BH  survivante"]
+         "  95e perm. 95e signe  bat le bruit  BH  survivante"]
     for x in tests:
         L.append(f"{x['marche']:<6}  {x['nom']:<54} {x['trades']:6d} {x['t']:6.2f} {x['net_trade']:9.2f} $ "
-                 f"{x['brut_trade']:9.2f} $ {x['gagnants']:8.0%} {x['bruit_95']:9.2f} {x['bat_bruit']:10.0%}   "
+                 f"{x['brut_trade']:9.2f} $ {x['gagnants']:8.0%} {x['bruit_95']:9.2f} {x['signe_95']:9.2f} "
+                 f"{x['bat_bruit']:10.0%}   "
                  f"{'oui' if x['bh'] else 'non'}  {'OUI' if x['survivante'] else 'non'}")
     txt = "\n".join(L)
     (MA.SORTIE / "partie_a.txt").write_text(txt + "\n")

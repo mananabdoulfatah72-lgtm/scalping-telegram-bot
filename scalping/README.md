@@ -237,6 +237,57 @@ janvier 2018), validation 2021 - 2022.
 
 Le code des parties B2, C et D est relu par un relecteur indépendant avant d'être lancé, comme celui des parties A et B.
 
+## Version 3 (25 octobre 2026) : corrections de la contre-revue, avant tout calcul sur les vraies données
+
+Le relecteur indépendant (commit da57d3a) n'a trouvé **aucun défaut bloquant, aucun regard vers le futur ni aucune fuite du
+coffre**. Ses recalculs indépendants donnent 0 écart sur 26 897 trades de la partie B et 19 565 de la partie A, une fois le
+défaut 4 reproduit. Corrections apportées avant toute exploration :
+
+| # | Défaut | Correction |
+|---|---|---|
+| 1 | Ordre limite rempli quand l'ouverture **touche** la limite | rempli seulement si l'ouverture est **strictement** au-delà, ou si la limite est traversée d'un tick |
+| 2 | Stops hors de la grille des prix (sortie à un prix impossible, environ 0,1 à 0,25 $ offerts par trade) | stops arrondis vers la perte, objectifs en s'éloignant de l'entrée, sur la grille des données |
+| 3 | Bruit du 6E arrondi à 0,0001 alors que les données cotent par 0,00005 (bruit plus grossier que le vrai) | bruit arrondi à la grille des données (`pas`) ; le tick traversé et les frais restent ceux du micro |
+| 4 | σ de l'autre indice démarré à 0 le lendemain d'une séance absente (F7 trop facile, 24 séances) | NaN : pas de signal F7 tant que σ n'est pas connu |
+| 5 | Objectif permis dans la minute d'un remplissage limite à l'ouverture | jamais d'objectif dans la minute d'un remplissage limite |
+| 6 | Ordre limite rempli dans les 2 dernières minutes | ordre annulé |
+| 7 | Comparaisons de prix en virgule flottante (RTY, GC, CL, 6E) | comparaisons à une demi-maille de la grille ; niveaux ronds en pas entiers |
+| 9 | Niveau rond sauté par un écart non marqué « touché » (A5a) | niveaux entre la clôture précédente et la barre marqués touchés |
+| 10 | Seuils de A1 et A3 calculés dès 100 séances | 252 séances complètes, comme écrit |
+| 11 | Test sans regard vers le futur trop étroit | il change aussi les séances suivantes et l'autre indice (NQ, GC, BTC, 6E de nuit : ok) |
+| 12 | Coffre rouvrable avec `--relire` et une liste de finalistes modifiée | empreinte sha256 de `finalistes.json` gardée ; `--relire` refusé si elle change |
+
+**Règles précisées ou changées (avant tout calcul)** :
+- **Second jumeau de bruit, par signe** (le relecteur a montré que la permutation détruit le regroupement de la
+  volatilité : la corrélation des |r| successifs passe de 0,37 à 0,13 sur le NQ, et l'espace de recherche est plus
+  large sur le vrai, ce qui peut abaisser la barrière). Chaque minute garde sa barre mais est retournée avec la
+  probabilité 1/2 : volatilité, regroupement, volume et saisonnalité gardés, sens détruit (NQ et ES reçoivent les
+  mêmes signes). **Machines** : 4 graines de plus sur ce bruit par marché ; la **barrière** est le meilleur score
+  éligible des deux bruits. **Parties A et C** : il faut battre 95 % des jumeaux de **chacun** des deux bruits
+  (40 + 40 pour A, 20 + 20 pour C). **Placebos** : les 2 meilleurs de chaque bruit par marché.
+- **Régime** : rg = σ_t ÷ médiane de σ à la même minute des 20 séances complètes d'avant (au lieu de σ du jour depuis
+  l'ouverture, que le pic d'ouverture rendait presque toujours « agité »). Seuils 1,2 et 0,8 inchangés.
+- **Bitcoin (B2 et C)** : avant le micro MBT (mai 2021), seul le contrat de 5 bitcoins existait et la plupart des
+  minutes sont sans transaction (moins de 2 % de séances complètes en 2018 - 2019). Séance complète = première et dernière
+  minute présentes et au moins 300 minutes échangées sur 390. B2 : entraînement janvier 2020 - juin 2021, validation
+  juillet 2021 - décembre 2022. C : années jouées 2021 - 2022, modèle appris depuis 2020.
+- **Choix du code rendus explicites** (relevés par le relecteur, identiques sur le vrai et sur le bruit) :
+  - F1, F4 et F7 ne donnent un signal qu'au **croisement** du seuil (la minute précédente ne le remplissait pas) ;
+  - F2 exige en plus un mouvement total ≥ Z σ √n ; F5 une marge ≥ Z σ × prix au-delà du niveau franchi ;
+  - les signaux utilisent σ connu avant la minute t (σ_{t−1}) ; l'unité u des stops utilise σ_t ;
+  - la limite d'entrée est arrondie en s'éloignant du marché ;
+  - la fenêtre de 10 h à 15 h 30 s'applique aussi à A5b ;
+  - mutation : la famille change avec la probabilité 0,125 (nouveaux paramètres), chaque autre gène avec 0,25 ; les
+    enfants d'un croisement sont aussi mutés.
+
+**Limites signalées par le relecteur, sans changement** : au prix d'aujourd'hui, un tick de 2017 pèse 3 à 5 fois plus
+qu'au coffre (règle du tick traversé et arrondis plus sévères en exploration, donc prudent) ; 4 des 15 minutes
+d'événement de F9 tombent hors de la séance de l'or et du pétrole (gènes inertes).
+
+Une seconde contre-revue relit ces corrections et le code des parties B2, C et D avant leur lancement. Les machines sur
+**bruit seulement** sont lancées pendant cette relecture (elles ne disent rien des vraies données) ; les vraies données,
+les parties A et C et le coffre attendent la fin de la relecture.
+
 ## Contre-revue indépendante (#ultrareview)
 
 1. **Avant l'exploration** : un relecteur indépendant reprend le code (données, moteur, bruit, exécution, coupure du

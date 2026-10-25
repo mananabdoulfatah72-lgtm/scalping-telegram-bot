@@ -7,14 +7,15 @@ import pandas as pd
 
 import commun as K
 
-# marche : (fichier HistData, $ par point du micro, tick, frais par aller-retour, pas des niveaux ronds)
+# marche : (fichier HistData, $ par point du micro, tick, frais par aller-retour, pas des niveaux ronds, grille des
+# prix des donnees : cotations du comptant et des CFD, plus fines que le tick des futures)
 MARCHES_NUIT = {
-    "NQ": ("usatechidxusd", 2.0, 0.25, 3.00, 100.0),
-    "ES": ("usa500idxusd", 5.0, 0.25, 4.50, 25.0),
-    "GC": ("xauusd", 10.0, 0.10, 4.00, 10.0),
-    "6E": ("eurusd", 12500.0, 0.0001, 4.50, 0.005),
-    "6B": ("gbpusd", 6250.0, 0.0001, 3.25, 0.005),
-    "6A": ("audusd", 10000.0, 0.0001, 4.00, 0.005),
+    "NQ": ("usatechidxusd", 2.0, 0.25, 3.00, 100.0, 0.001),
+    "ES": ("usa500idxusd", 5.0, 0.25, 4.50, 25.0, 0.001),
+    "GC": ("xauusd", 10.0, 0.10, 4.00, 10.0, 0.001),
+    "6E": ("eurusd", 12500.0, 0.0001, 4.50, 0.005, 0.00001),
+    "6B": ("gbpusd", 6250.0, 0.0001, 3.25, 0.005, 0.00001),
+    "6A": ("audusd", 10000.0, 0.0001, 4.00, 0.005, 0.00001),
 }
 N_NUIT = 184                       # 18 h 00 -> 9 h 20 (derniere barre, finit a 9 h 25)
 DEBUT_NUIT = np.datetime64("2012-01-01")
@@ -26,7 +27,7 @@ EVENEMENTS_NUIT = np.array([1, 5, 12, 15, 24, 30, 31, 36, 96, 108, 120, 156, 168
 
 
 def seances(nom):
-    fichier, pt, tick, frais, rond = MARCHES_NUIT[nom]
+    fichier, pt, tick, frais, rond, pas = MARCHES_NUIT[nom]
     morceaux = sorted((K.KB / "sessions24" / "annees").glob(f"{fichier}_*_5m.csv.gz"))
     d = pd.concat([pd.read_csv(f) for f in morceaux], ignore_index=True)
     t = pd.to_datetime(d["t"]).dt.tz_localize("UTC").dt.tz_convert("America/New_York").dt.tz_localize(None)
@@ -67,7 +68,7 @@ def seances(nom):
                 v=np.ones_like(C), complete=complete, ech=np.zeros(len(jours), bool),
                 contrat=np.zeros(len(jours), np.int64), prec_meme=prec, prec_tout=prec.copy(), pt=np.float64(pt),
                 tick=np.float64(tick), m0=np.int64(18 * 60), n=np.int64(N_NUIT), frais=np.float64(frais),
-                pref=np.float64(pref), rond=np.float64(rond), evenements=EVENEMENTS_NUIT)
+                pref=np.float64(pref), rond=np.float64(rond), pas=np.float64(pas), evenements=EVENEMENTS_NUIT)
 
 
 def main():
