@@ -1010,3 +1010,18 @@ sha256 `3aee9308e03cb6f526a7f1faaf05d065be881f2b773578ed58250bb847c61b0e`** (éc
   dans le bot.**
 - Suivi à partir du 2 novembre : le NQ est relevé chaque jour par le robot de `main` ; l'or, le pétrole et le Russell
   demandent un relevé des minutes de Yahoo au moins toutes les 4 semaines (outil à écrire, sur accord de l'utilisateur).
+
+### Suivi virtuel (25 octobre 2026) : `suivi5.py`
+
+Demande de l'utilisateur : passer les candidates en mode virtuel. Plutôt que de traduire le moteur dans le bot C# (qui ne
+garde pas les 20 séances de volatilité minute par minute dont elles ont besoin, et qu'il vaut mieux ne pas toucher pendant
+le challenge en cours), le suivi joue **le moteur de la recherche lui-même** sur les minutes du NQ que le robot de la zone
+enregistre chaque jour sur `main`. Aucun ordre.
+- Suivies : les 2 candidates NQ et les 2 placebos NQ de la version 5, H12, H1, H5 et F3. Or, pétrole, Russell : pas de
+  relevé de minutes pour l'instant.
+- **Contrôle** : sur janvier - septembre 2026, le suivi redonne les trades de la recherche à l'identique (mêmes entrées,
+  sorties et gains) pour les 4 génomes.
+- Aperçu sur les 20 séances jamais vues du 28 septembre au 23 octobre 2026 (pour information) : candidate 3,28 : 3 trades,
+  −131 $ ; candidate 2,81 : aucun trade ; H12 +217 $, H1 +825 $, H5 +281 $, F3 +839 $ (1 MNQ). Bien trop tôt pour conclure.
+- Lancement chaque jour de semaine par `workflow_suivi_scalping.yml`, à placer sur `main` avec l'accord de l'utilisateur ;
+  résumé sur Telegram chaque samedi.

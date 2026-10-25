@@ -10,12 +10,14 @@ import pandas as pd
 import commun as K
 
 
-def minutes(nom):
+def minutes(nom, chemin=None, debut=None):
+    """chemin : autre fichier de minutes au meme format (suivi virtuel : fichier du robot de la zone) ; debut : autre
+    premiere date que K.DEBUT_DONNEES."""
     fichier, pt, tick, m0, m1, frais, pref, rond = K.MARCHES[nom]
     n = m1 - m0
-    d = pd.read_csv(K.KB / fichier)
+    d = pd.read_csv(chemin if chemin is not None else K.KB / fichier)
     t = pd.to_datetime(d["t"])
-    garde = t >= pd.Timestamp(K.DEBUT_DONNEES)
+    garde = t >= pd.Timestamp(debut if debut is not None else K.DEBUT_DONNEES)
     d, t = d[garde], t[garde]
     minute = (t.dt.hour * 60 + t.dt.minute - m0).values
     garde = (minute >= 0) & (minute < n)
