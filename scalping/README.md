@@ -752,3 +752,31 @@ dans une même minute, stop avant objectif. Barres de 5 minutes pour la nuit (m�
 - Pour information : avec les 15 réunions de la Fed tombées un jour de changement de contrat, E2 fait t 0,57.
 - Relecture indépendante arrêtée à la demande de l'utilisateur (économiser la limite de session) ; le code a passé les
   tests de non-regard vers le futur et une vérification à la main de trades E2, E3, E5 et E8.
+
+## Partie F (25 octobre 2026) : les pistes encore inexplorées sur le NQ (règles fixées avant tout calcul)
+
+Demande de l'utilisateur : « si aucune ne passe, cherche les pistes inexplorées sur le NQ ». Source : les trous listés
+par l'agent d'audit (`agents/audit.md`) qui ont un mécanisme connu et des données disponibles. Même cadre que la partie
+E (NQ depuis 2011, 1 MNQ au prix d'aujourd'hui, frais, exécution, séances complètes hors changement de contrat,
+40 + 40 jumeaux de bruit). Les niveaux sur plusieurs jours ne sont calculés que si toutes les séances de référence sont
+du même contrat que le jour (sinon pas de trade).
+
+| # | Règle | Idée, source |
+|---|---|---|
+| F1 | **Cassure du plus haut ou du plus bas de la semaine précédente** (au moins 3 séances) : de 9 h 31 à 15 h, première minute qui clôture au-delà → position dans le sens de la cassure, sortie à 15 h 55 ; 1 trade par jour ; rien si l'ouverture est déjà au-delà | cascades de stops sur les niveaux évidents (Osler 2005) ; jamais testé au-delà de la veille |
+| F2 | **Même règle avec le mois précédent** (au moins 15 séances) | idem |
+| F3 | **Pivots de parquet, version tendance** : P = (H + B + C) / 3 de la veille, R1 = 2P − B, S1 = 2P − H ; première clôture au-dessus de R1 → achat, sous S1 → vente ; sortie 15 h 55 ; 1 trade par jour | pivots en usage « inversé » (thèse de Lund) ; usage classique déjà sans preuve |
+| F4 | **« Turtle Soup » (Raschke et Connors 1995)** : plus bas des 20 séances précédentes, fait il y a au moins 4 séances ; si le prix passe dessous (d'un tick) puis une minute clôture au-dessus, achat à la minute suivante (au plus tard 15 h 30), stop au plus bas du jour − 1 tick, sortie à 16 h ; symétrique en vente | faux départ sur un extrême de 20 jours |
+| F5 | **Retournement d'un grand mouvement à fort volume** (Campbell, Grossman, Wang 1993) : à 10 h, 10 h 30 … 15 h 30, r = rendement des 30 dernières minutes, V = volume des 30 minutes / moyenne de la même fenêtre sur les 14 séances complètes précédentes ; si V ≥ 1,5 et \|r\| dans les 20 % les plus forts de la même fenêtre sur les 60 séances complètes précédentes → position contre r pendant 30 minutes | un mouvement poussé par un afflux de liquidité se résorbe |
+| F6 | **Régime du matin (ratio de variance de Lo et MacKinlay)** : à 12 h, VR = variance des rendements de 10 minutes / (10 × variance des rendements d'une minute) depuis 9 h 30 ; si VR > 1, position dans le sens du matin (9 h 30 → 12 h), sinon contre ; sortie 15 h 55 | journée de tendance ou de retour |
+| F7 | **« Frog in the pan » (Da, Gurun, Warachka 2014)** : à 10 h 30, r = rendement depuis 9 h 30 ; ID = signe(r) × (part des minutes en baisse − part des minutes en hausse) ; si ID < 0 (mouvement fait de nombreux petits pas), position dans le sens de r, sortie 15 h 55 | l'information diffusée petit à petit est sous-estimée |
+| F8 | **« Open-Drive » (Dalton)** : si pendant les 15 premières minutes le prix ne repasse jamais sous l'ouverture (d'un tick) et clôture au-dessus à 9 h 45 → achat ; symétrique en vente ; sortie 15 h 55 | type d'ouverture le plus « directionnel » de Market Profile |
+
+**Décision** (comme la partie E, pour 8 tests) : **retenue** si t ≥ 2,50 (Bonferroni), positive avant et après 2023 et
+au-dessus de 95 % des jumeaux de chaque bruit ; **intéressante** si t ≥ 1,65, positive sur les deux périodes et
+au-dessus de 90 % des jumeaux. Une règle retenue ou intéressante va dans le coffre de l'avenir (argent virtuel).
+
+**Ce qui reste hors de portée, et pourquoi** : murs d'options et 0DTE (intérêt ouvert payant), carnet d'ordres complet
+(environ 100 $ par jour), indicateur TICK (pas d'historique), apprentissage non linéaire (un essai publié sur le MNQ en
+2026 ne bat pas le hasard), avance d'autres actifs à la minute (aucune preuve publiée, test de 84 combinaisons déjà
+pire que le hasard).
