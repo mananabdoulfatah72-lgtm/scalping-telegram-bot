@@ -855,3 +855,39 @@ les deux périodes et au-dessus de 90 % des jumeaux. Pour information : corréla
 exactement quand la zone est en position. À l'intérieur de la bande, il n'y a pas d'élan, ni avant ni après 2023. La zone
 capte donc déjà tout l'élan intraday mesurable du NQ ; une autre stratégie d'élan ne ferait que la doubler (c'est aussi
 ce que montraient les cassures F2, F3, E9 et le « frog in the pan », corrélés à la zone).
+
+## Partie H (25 octobre 2026) : le banc des stratégies simples d'analyse technique (règles fixées avant tout calcul)
+
+Demande de l'utilisateur : « basons-nous sur plus simple : ORB, breakout, analyse technique, des schémas qui se répètent ».
+Ces familles ont déjà été testées (`tournoi/`, `tournoi2/`, `evolution3/`, machine de scalping : 0 survivante), mais
+jusqu'en 2022 et avec les frais de l'époque. Ici : un seul banc, NQ 2011 - 2026, frais d'aujourd'hui, paramètres
+standard, sans aucun réglage.
+
+**Cadre** : comme les parties E à G (1 MNQ au prix d'aujourd'hui, 1 $ + 1 tick par ordre, signal à la clôture d'une
+barre, entrée à l'ouverture suivante, stops dans l'ordre le plus défavorable, séances complètes hors changement de
+contrat, à plat à 15 h 55 au plus tard, entrées jusqu'à 15 h 30, une position à la fois). Barres de 5 minutes de la séance
+(9 h 30 - 16 h), indicateurs calculés en continu d'une séance à l'autre (graphique de séance).
+
+| # | Stratégie (paramètres standard) |
+|---|---|
+| H1 | ORB 5 min (Zarattini et Aziz 2023) : sens de la 1re barre de 5 min, entrée 9 h 35, stop à l'autre extrême de la barre, objectif 10 fois le risque, sortie 15 h 55 |
+| H2 | ORB 15 min : première clôture (1 min) au-delà du range 9 h 30 - 9 h 45, stop à l'autre bord, sortie 15 h 55 |
+| H3 | ORB 30 min : même règle avec 9 h 30 - 10 h |
+| H4 | ORB 60 min (initial balance) : même règle avec 9 h 30 - 10 h 30 |
+| H5 | Cassure du plus haut ou du plus bas de la veille : première clôture au-delà, stop à l'ouverture du jour, sortie 15 h 55 |
+| H6 | Donchian 20 / 10 (5 min) : clôture au-dessus du plus haut des 20 barres précédentes → achat ; sortie à la clôture sous le plus bas des 10 barres précédentes ; symétrique |
+| H7 | Croisement EMA 9 / EMA 21 (5 min) : achat au croisement haussier, vente au baissier, retournement à chaque croisement |
+| H8 | MACD (12, 26, 9) (5 min) : achat quand le MACD croise sa ligne de signal vers le haut, vente vers le bas, retournement |
+| H9 | Bollinger (20, 2) retour à la moyenne (5 min) : clôture sous la bande basse → achat, sortie à la moyenne ; symétrique |
+| H10 | Bollinger (20, 2) cassure (5 min) : clôture au-dessus de la bande haute → achat, sortie à la moyenne ; symétrique |
+| H11 | RSI(2) intraday (5 min) : RSI < 10 → achat, sortie quand RSI > 70 ; RSI > 90 → vente, sortie quand RSI < 30 |
+| H12 | Supertrend (10, 3) (5 min) : position dans le sens du Supertrend, retournement à chaque changement |
+| H13 | Gap and go : écart d'ouverture d'au moins 0,5 % avec la clôture de la veille → position dans le sens de l'écart à 9 h 31, sortie 15 h 55 |
+| H14 | Comblement de gap : même écart → position contre l'écart, objectif la clôture de la veille, sortie 15 h 55 |
+| H15 | Jour intérieur : si le range de la veille est à l'intérieur de celui de l'avant-veille, première clôture au-delà du range de la veille → position dans ce sens, sortie 15 h 55 |
+| H16 | NR7 + ORB 30 : si la veille a le plus petit range des 7 dernières séances, règle H3 |
+
+**Décision** (comme E et F, pour 16 tests) : retenue si t ≥ 2,73 (Bonferroni), positive avant et après 2023, au-dessus de
+95 % des jumeaux de chaque bruit (40 + 40) ; intéressante si t ≥ 1,65, positive sur les deux périodes, au-dessus de 90 %.
+Pour information : la zone dans les mêmes conventions (partie G : t 4,21), et la corrélation de chaque stratégie avec
+elle.
