@@ -806,3 +806,33 @@ pire que le hasard).
 Conformément à la règle fixée, F3 entre dans le coffre de l'avenir en argent virtuel, sans attente particulière. Les
 cassures (F2, F3, E9) et le « frog in the pan » (F7, suivre un mouvement fait de petits pas) sont toutes légèrement
 positives : elles redisent ce que la zone exploite déjà, l'élan intraday du NQ.
+
+## Partie G (25 octobre 2026) : l'élan intraday du NQ, là où la zone ne le prend pas (règles fixées avant tout calcul)
+
+Demande de l'utilisateur : « creuse l'élan intraday sur le NQ ». Les réglages, sorties et filtres de la zone ont déjà
+été épuisés (`zone_optimisation/`, 108 réglages ; voir plus haut). La seule question nouvelle : **l'élan existe-t-il là
+où la zone est à plat ?** Si oui, c'est un complément ; sinon, la zone capte déjà tout ce qu'il y a.
+
+**Moteur.** La zone sans filtre recalculée sur les minutes de la partie E (NQ depuis 2011), avec les mêmes règles que
+le bot : σ_m = moyenne de \|clôture_m / ouverture − 1\| sur les 14 séances complètes précédentes ; bande haute =
+max(ouverture, clôture de la veille du même contrat) × (1 + σ_m), bande basse = min(…) × (1 − σ_m) ; contrôles de 10 h à
+15 h 30 ; sortie à un contrôle si le prix repasse max(bande, VWAP). **Contrôle obligatoire avant tout calcul** : elle doit
+redonner les trades de la zone vérifiée (`delta_mesures/etude.py`) sur la période commune.
+
+**Carte (descriptif).** À chaque contrôle, après la décision de la zone : sa position (en position, ou à plat) et
+l'élan du jour e = (prix − ouverture) / (σ_m × ouverture). Gain des 30 minutes suivantes dans le sens de l'élan, par
+case (zone en position ; zone à plat avec \|e\| < 0,5 ; à plat avec 0,5 ≤ \|e\| < 1 ; à plat avec \|e\| ≥ 1), avant et
+après 2023.
+
+**Les 3 règles testées** (exécution des parties E et F : entrée à l'ouverture de la minute suivante, 1 MNQ au prix
+d'aujourd'hui, frais 1 $ + 1 tick par ordre) :
+
+| # | Règle |
+|---|---|
+| G1 | À chaque contrôle (10 h - 15 h 30) où la zone est à plat et le prix à l'intérieur de sa bande avec \|e\| ≥ 0,5 : position dans le sens de l'élan pendant 30 minutes (jusqu'à 16 h pour le dernier) |
+| G2 | Même condition, première fois de la journée seulement, tenue jusqu'à 15 h 55 |
+| G3 | À 12 h, si la zone n'a pas tradé de la matinée et \|e\| ≥ 0,5 : position dans le sens de l'élan jusqu'à 15 h 55 (la tendance lente que la zone ne voit pas) |
+
+**Décision** (comme E et F, pour 3 tests) : retenue si t ≥ 2,13 (Bonferroni), positive avant et après 2023 et au-dessus de
+95 % des jumeaux de chaque bruit (40 + 40, la zone recalculée sur chaque jumeau) ; intéressante si t ≥ 1,65, positive sur
+les deux périodes et au-dessus de 90 % des jumeaux. Pour information : corrélation avec la zone.
