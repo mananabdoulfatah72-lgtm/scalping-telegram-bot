@@ -459,3 +459,103 @@ coffre (corrigée plus haut).
   être rempli en entier.
 - Environ 670 000 évaluations : des centaines de « bonnes » stratégies apparaîtront par hasard. C'est le rôle du jumeau
   de bruit et du coffre.
+
+## Version 5 (25 octobre 2026) : nouvelle vague sur tout l'historique, coffre = l'avenir (règles fixées avant tout calcul de cette vague)
+
+### Demande de l'utilisateur (25 octobre 2026)
+
+- Nouvelle vague de recherche sur toutes les données jusqu'à aujourd'hui, mêmes familles, mêmes faux marchés.
+- Nouveau coffre : l'avenir, à partir du 1er novembre 2026, en argent virtuel.
+- Pas d'export de transactions de nuit : cette piste est abandonnée.
+- Diversifier les marchés ; si possible, des options de scalping « avec un score raisonnable qui ne s'effondre pas au
+  coffre ».
+
+### Ce qui change, et pourquoi
+
+Le coffre 2023 - 2026 a été ouvert une fois (version 4). Il devient une période de **contrôle** connue ; le seul juge
+neuf est l'avenir. Ce que la version 4 a appris : un t d'exploration élevé ne prédit rien (0 finaliste sur 16 au
+coffre). D'où trois changements, et seulement ceux-là :
+1. **on choisit sur la tenue en 2023 - 2026**, période que la machine ne voit jamais pendant qu'elle cherche, et non sur
+   le t d'entraînement ;
+2. **chaque chiffre réel est comparé au même chiffre obtenu sur les deux bruits**, passés par exactement la même
+   chaîne (machine, admission, contrôle, sélection) ;
+3. **le panier** : la moyenne de toutes les stratégies admises d'un marché, pour voir si une structure faible mais
+   réelle, invisible stratégie par stratégie, ressort quand on en met beaucoup ensemble.
+
+Honnêteté sur le point 3 : l'idée vient de la lecture de `apres_coffre.txt` (t médian 0,77 au coffre pour les éligibles
+du NQ de jour, contre 0,03 et 0,12 sur bruit). Un calcul descriptif du même panier sur les stratégies de la version 4
+(`ensemble_v4.py`) est lancé au moment où ces règles sont écrites ; son résultat n'est pas encore lu. Le panier de la
+version 5 sera de toute façon jugé par l'avenir.
+
+### Données et périodes
+
+Caches complets (`cache/complet_*.npz`), déjà relus par la contre-revue finale. Rien de neuf n'est téléchargé.
+
+| Piste | Marchés | Entraînement (seul vu par la machine) | Contrôle (choix) | Coffre |
+|---|---|---|---|---|
+| B, jour | NQ, ES, RTY, YM, GC, CL, 6E | 2017-01-01 - 2022-12-31 | 2023-01-01 - fin des données (25 au 28 septembre 2026) | l'avenir |
+| B2, bitcoin CME | BTC | 2020-01-01 - 2022-12-31 | 2023-01-01 - 30 septembre 2026 | l'avenir |
+| D, nuit (CFD HistData) | NQ, ES, GC, 6E, 6B, 6A | 2013-01-01 - 2022-12-31 | 2023-01-01 - 2 octobre 2026 | l'avenir |
+
+### Diversifier les marchés : ce qui est possible
+
+Les 22 autres marchés CME (taux, métaux, énergie, devises, grains, gaz, bitcoin) ont déjà été testés en intraday par
+`etude_large/` (branche `claude/affectionate-turing-tnz0mn`, ETF en 5 minutes, 7 familles, 189 essais) : **tout est
+négatif après les frais du plus petit contrat CME**, qui y valent 1,5 à 84 points de base par aller-retour contre 1,2 sur
+MNQ. Un scalping de quelques minutes y serait encore plus écrasé par les frais, et il n'existe pas de minutes gratuites
+de ces futures. `couts.py` (descriptif, sans décision) donne pour chaque marché le coût d'un aller-retour divisé par le
+mouvement médian de 15 minutes, sur 2023 - 2026. La machine reste sur ses 14 couples piste-marché.
+
+### La machine
+
+Identique à la version 4 (familles F0 à F9, génome, 60 générations de 200, exécution, frais, prix d'aujourd'hui, deux
+bruits). Seules les périodes changent. **6 graines par sorte** (vrai, bruit par permutation, bruit par signe), numérotées
+11 à 16, nouvelles (la version 4 utilisait 1 à 4). Les jumeaux de bruit sont fabriqués sur les caches complets : le
+bruit couvre aussi la période de contrôle. Fichiers `resultats/v5/machine_<piste>_<marche>_<sorte>_<graine>.npz`.
+
+### Admission, contrôle, sélection
+
+- **Admise** : sur l'entraînement, t ≥ 2 et au moins 200 trades (génomes distincts, toutes graines réunies).
+- **Contrôle** (2023 - fin des données) pour chaque admise : t_c des gains quotidiens nets, trades n_c, gain de chaque
+  année 2023, 2024, 2025, 2026.
+- **Candidate** (une stratégie) : t_c ≥ 1,65 ; n_c ≥ 100 ; au moins 3 années positives sur 4 ; **et t_c strictement
+  au-dessus de la barrière du bruit**, le plus haut t_c des admises trouvées sur les deux bruits du même couple
+  piste-marché qui remplissent les trois premières conditions (1,65 s'il n'y en a aucune). Au plus 2 candidates par
+  couple : les meilleurs t_c, de familles différentes.
+- **Placebos** : par couple, les 2 meilleures admises de bruit (familles différentes) qui remplissent les trois premières
+  conditions. Elles sont suivies dans l'avenir comme les candidates, sur les vraies données.
+- **Panier** (par couple et par sorte) : la moyenne des gains quotidiens de toutes les admises, chacune pour 1/N contrat
+  avec ses propres frais (positions non compensées : prudent). **Panier candidat** si son t au contrôle est ≥ 2, avec
+  au moins 3 années positives sur 4, et au-dessus des paniers des deux bruits du même couple.
+- Pour information : corrélation quotidienne de chaque candidate et de chaque panier avec la zone du bot (trades de
+  `filtre_h1/trades_zone.csv`, jusqu'à mars 2026).
+
+### Le coffre : l'avenir
+
+- **Liste figée** dans `resultats/v5/candidats.json` (candidates, placebos, paniers), avec son empreinte sha256 écrite
+  ici avant le 1er novembre 2026.
+- **Premières séances** : nuit du dimanche 1er novembre 2026 (18 h, New York), séance du lundi 2 novembre 2026.
+- **Sources** : NQ de jour, `zone/robot/nq_1min.csv.gz` de `main` (le robot de la zone l'enrichit chaque jour) ; autres
+  marchés de jour et bitcoin, minutes de Yahoo (contrats continus), qui ne garde que 30 jours : elles devront être
+  relevées au moins toutes les 4 semaines ; nuit, HistData (même source que l'exploration), mois par mois. L'outil de
+  relevé n'est écrit que pour les marchés qui ont une candidate, un placebo ou un panier candidat. Une séance manquante
+  est sautée, jamais remplacée par une autre source choisie après coup.
+- **Points de lecture** : 1er février, 1er mai, 1er août et 1er novembre 2027, puis tous les 3 mois.
+- **Écartée** : t du coffre ≤ −1 avec au moins 50 trades, à un point de lecture.
+- **Retenue** (peut aller vers le robot, sur décision de l'utilisateur) : t du coffre ≥ seuil de Bonferroni pour m
+  (z unilatéral 0,05/m, m = candidates + paniers candidats), au moins 150 trades, et gain positif sur au moins 2
+  trimestres sur 3.
+- **Intéressante** (argent virtuel) : t du coffre ≥ 1,65 et au moins 100 trades.
+- Les placebos sont lus de la même façon : s'ils passent aussi souvent que les candidates, le palier ne prouve rien.
+- La nuit garde la règle de réalisme de la version 4 : jamais dans le robot sans confirmation sur de vraies
+  transactions de nuit du future.
+
+**Correction d'une promesse.** Avant ces règles, j'avais écrit que 3 mois (200 à 300 trades) suffiraient pour juger.
+C'est faux pour un avantage de la taille de celui de la zone : son t monte d'environ 1 par année, donc 3 mois donnent un
+t d'environ 0,5. Trois mois servent à **écarter** ce qui perd nettement ; **confirmer** un tel avantage demande 2 à 4
+ans. Seule une stratégie nettement plus forte que la zone se confirmerait en quelques mois.
+
+### Contre-revue
+
+Code de la vague et de la sélection relu par un relecteur indépendant avant la lecture du contrôle ; ses défauts sont
+corrigés et listés ici.
