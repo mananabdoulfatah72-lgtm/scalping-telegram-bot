@@ -927,3 +927,32 @@ cassure de la veille, EMA jusqu'en 2022) et celles de **retour à la moyenne** p
 comblement de gap). C'est le même message que la partie G : le NQ en séance est un marché d'élan, et la zone est la
 meilleure façon connue de le prendre. H12, H1 et H5 rejoignent le coffre de l'avenir en argent virtuel (avec F3) ; aucune
 ne devrait s'ajouter à la zone sur un même compte, puisque la combinaison fait moins bien que la zone seule.
+
+## Partie I (25 octobre 2026) : ajouter le Supertrend, l'ORB 5 min, la cassure de la veille ou les pivots à la zone, dans le challenge Bulenox 50K (règles fixées avant tout calcul)
+
+Demande de l'utilisateur : backtester tout de suite ces ajouts dans le challenge Bulenox 50K où trade la zone, au lieu
+d'attendre le suivi virtuel.
+
+**Simulateur** (minute par minute, NQ 2011 - 2026, au prix d'aujourd'hui, frais 1 $ + 1 tick par ordre) :
+- compte de 50 000 $, objectif 53 000 $ (le bot s'arrête dès +50 $ au-dessus) ; perte maximale de 2 500 $ sous le plus
+  haut de fin de journée, bloquée à 50 100 $ ; perdu si le compte, au pire de chaque minute (plus bas pour un achat,
+  plus haut pour une vente), touche ce plancher ; limite de perte du jour 1 000 $ (le bot coupe tout et s'arrête pour la
+  journée) ; 30 jours calendaires ;
+- zone sans filtre (pas d'historique du delta), 4 MNQ puis 6 MNQ les 5 dernières séances, pas de zone les jours de la Fed ;
+- ajouts : H12 Supertrend 10-3, H1 ORB 5 min, H5 cassure de la veille, F3 pivots, avec les règles exactes des parties F
+  et H, en parallèle de la zone sur le même compte ;
+- départ à chaque séance de 2012 à fin septembre 2026 (et à part : départs 2023 - 2026).
+
+**Contrôle du simulateur** : la zone seule doit donner une part de challenges validés proche de celle du moteur exact
+de `zone_retour/` et `delta_mesures/` (44,8 % sur 2012 - 2026, 46,5 % sur 2023 - 2026, à ±5 points).
+
+**Configurations** : zone seule ; zone + chaque ajout à 2 MNQ et à 4 MNQ ; zone + les quatre à 1 MNQ chacun.
+**Témoins** (pour séparer l'avantage du simple surcroît de risque, qui aide parfois sur 30 jours) : zone seule plus
+grosse (5 puis 7 MNQ, et 6 puis 8) ; zone + un ajout **sans avantage** de même volatilité (le Supertrend dont le sens de
+chaque journée est tiré à pile ou face, 20 tirages), à 2 et 4 MNQ.
+
+**Décision** : un ajout entre dans le bot seulement si, à la fois :
+1. il valide au moins **3 points** de plus que la zone seule sur les départs 2012 - 2026 **et** sur 2023 - 2026 ;
+2. il fait au moins 3 points de mieux que le témoin sans avantage de même taille, et que la zone plus grosse, sur 2012 - 2026 ;
+3. il ne fait pas monter la part de challenges perdus de plus que la part validée gagnée.
+Sinon, le bot ne change pas. Rappel : le filtre delta du bot n'est pas simulable sur 15 ans.
