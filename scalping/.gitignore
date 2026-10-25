@@ -4,3 +4,4 @@ __pycache__/
 resultats/*.log
 resultats/lancer.log
 resultats/v5/*.log
+resultats/e/*.log
