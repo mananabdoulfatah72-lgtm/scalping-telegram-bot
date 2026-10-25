@@ -780,3 +780,29 @@ au-dessus de 90 % des jumeaux. Une règle retenue ou intéressante va dans le co
 (environ 100 $ par jour), indicateur TICK (pas d'historique), apprentissage non linéaire (un essai publié sur le MNQ en
 2026 ne bat pas le hasard), avance d'autres actifs à la minute (aucune preuve publiée, test de 84 combinaisons déjà
 pire que le hasard).
+
+### Résultats de la partie F (25 octobre 2026) : `resultats/f/partie_f.txt`
+
+**0 retenue, 1 intéressante (F3), 7 rejetées.** Tests sans regard vers le futur passés avant le calcul.
+
+| Règle | Séances tradées | t | Net par trade | ≤ 2022 | ≥ 2023 | Bat le bruit | Verdict |
+|---|---|---|---|---|---|---|---|
+| F1 cassure de la semaine précédente | 787 | +0,20 | +3,6 $ | −0,22 | +0,96 | 57 % | non |
+| F2 cassure du mois précédent | 173 | +1,13 | +39,6 $ | +0,63 | +1,35 | 95 % | non (sous 1,65) |
+| F3 pivots R1/S1, tendance | 1 912 | **+1,69** | +20,6 $ | +1,83 | +0,21 | 98 % | **intéressante** |
+| F4 Turtle Soup | 133 | −0,71 | −18,4 $ | −1,78 | +1,11 | 42 % | non |
+| F5 retournement à fort volume | 1 343 | −1,41 | −11,3 $ | −1,63 | −0,02 | 8 % | non |
+| F6 régime du matin | 3 840 | −1,22 | −8,3 $ | −0,74 | −1,16 | 28 % | non |
+| F7 frog in the pan | 2 862 | +1,45 | +14,0 $ | +0,80 | +1,64 | 100 % | non (sous 1,65) |
+| F8 Open-Drive | 138 | +1,20 | +41,5 $ | +1,05 | +0,76 | 78 % | non |
+
+**Lecture honnête de F3** (descriptif, après le calcul) :
+- elle passe le palier « intéressante » de justesse, mais **depuis 2023 elle est presque nulle** (t 0,21, +5 $ par trade) ;
+- son gain vient surtout d'**une seule année** : 2022 fait +31 779 $ sur environ +39 000 $ au total (1 MNQ, 2011 - 2026) ;
+  sans 2022, elle est à peu près plate ;
+- elle est **corrélée à +0,35 avec la zone** : c'est la même idée (suivre une cassure intraday du NQ), pas un complément ;
+- avec 8 tests, en trouver un au-dessus de 1,65 arrive souvent par hasard.
+
+Conformément à la règle fixée, F3 entre dans le coffre de l'avenir en argent virtuel, sans attente particulière. Les
+cassures (F2, F3, E9) et le « frog in the pan » (F7, suivre un mouvement fait de petits pas) sont toutes légèrement
+positives : elles redisent ce que la zone exploite déjà, l'élan intraday du NQ.
