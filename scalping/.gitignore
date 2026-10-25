@@ -3,3 +3,4 @@ __pycache__/
 *.npz
 resultats/*.log
 resultats/lancer.log
+resultats/v5/*.log
