@@ -547,6 +547,9 @@ bruit couvre aussi la période de contrôle. Fichiers `resultats/v5/machine_<pis
   trimestres sur 3.
 - **Intéressante** (argent virtuel) : t du coffre ≥ 1,65 et au moins 100 trades.
 - Les placebos sont lus de la même façon : s'ils passent aussi souvent que les candidates, le palier ne prouve rien.
+  Précision (25 octobre, avant le calcul de la sélection) : un placebo n'est suivi que sur un couple piste-marché qui a
+  une candidate ou un panier candidat, puisqu'il sert de comparaison sur le même marché ; les autres sont listés, pas
+  suivis.
 - La nuit garde la règle de réalisme de la version 4 : jamais dans le robot sans confirmation sur de vraies
   transactions de nuit du future.
 
