@@ -891,3 +891,39 @@ contrat, à plat à 15 h 55 au plus tard, entrées jusqu'à 15 h 30, une positio
 95 % des jumeaux de chaque bruit (40 + 40) ; intéressante si t ≥ 1,65, positive sur les deux périodes, au-dessus de 90 %.
 Pour information : la zone dans les mêmes conventions (partie G : t 4,21), et la corrélation de chaque stratégie avec
 elle.
+
+### Résultats de la partie H (25 octobre 2026) : `resultats/h/partie_h.txt`
+
+**1 retenue (H12 Supertrend), 2 intéressantes (H1 ORB 5 min, H5 cassure de la veille), 13 rejetées.**
+
+| Stratégie | t | Net par séance | ≤ 2022 | ≥ 2023 | Corr. zone | Verdict |
+|---|---|---|---|---|---|---|
+| H12 Supertrend 10-3 (5 min) | **+2,92** | +28,6 $ | +2,69 | +1,18 | +0,44 | **retenue** |
+| H1 ORB 5 min (Zarattini-Aziz) | +2,25 | +12,9 $ | +2,42 | +0,19 | +0,39 | intéressante |
+| H5 cassure de la veille | +1,97 | +9,9 $ | +1,32 | +1,68 | +0,50 | intéressante |
+| H7 EMA 9 / 21 | +1,53 | +13,0 $ | +2,44 | −1,10 | +0,38 | non |
+| H2, H3, H4 ORB 15 / 30 / 60 | +0,18 à +0,67 | | −0,61 à +0,10 | +0,94 à +1,45 | +0,53 à +0,55 | non |
+| H10, H13, H15, H16 | +0,39 à +0,72 | | | | | non |
+| H6 Donchian | −0,51 | | | | | non |
+| H14 comblement de gap | −0,93 | −15,7 $ | | | | non |
+| H8 MACD | −2,51 | −21,0 $ | | | | non |
+| H11 RSI(2) intraday | −2,69 | −18,2 $ | | | | non |
+| H9 Bollinger retour à la moyenne | −2,74 | −19,5 $ | | | | non |
+
+**Vérifications de H12 après le calcul** (`verif_h12.py`) :
+- le Supertrend du code est identique, à 100 %, à une version écrite indépendamment ;
+- 2,4 allers-retours par séance en moyenne ; +35,9 $ avant frais et 7,3 $ de frais par séance ; positive 12 années sur 16
+  (pertes en 2013, 2016 et 2017) ;
+- **les frais expliquent l'écart avec `tournoi2/`** (t −0,57 en 2011 - 2022) : avec 1,5 point par aller-retour au prix de
+  l'époque, 2011 - 2016 fait t −3,13 ; aux frais d'aujourd'hui, t +1,83. Depuis 2023, les deux conventions donnent
+  presque la même chose (t +0,95 et +1,18) ;
+- **avec la zone, il n'apporte rien** : sur 2011 - 2026, zone seule t 4,21, Supertrend seul 2,92, les deux ensemble 3,87 ;
+  sur 2023 - 2026 : 2,16, 1,18 et 1,72 (corrélation +0,44 à +0,50). C'est une version plus faible du même élan ;
+- sur l'ensemble des tests du jour (37 : parties E à H), le seuil de Bonferroni serait 2,99 : H12 (2,92) passerait
+  juste en dessous.
+
+**Ce qu'on retient** : sur le NQ, les stratégies simples de **suivi de tendance** sont positives (Supertrend, ORB 5 min,
+cassure de la veille, EMA jusqu'en 2022) et celles de **retour à la moyenne** perdent toutes (Bollinger, RSI(2), MACD,
+comblement de gap). C'est le même message que la partie G : le NQ en séance est un marché d'élan, et la zone est la
+meilleure façon connue de le prendre. H12, H1 et H5 rejoignent le coffre de l'avenir en argent virtuel (avec F3) ; aucune
+ne devrait s'ajouter à la zone sur un même compte, puisque la combinaison fait moins bien que la zone seule.
