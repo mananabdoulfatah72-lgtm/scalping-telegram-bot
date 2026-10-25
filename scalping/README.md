@@ -222,7 +222,7 @@ janvier 2018), validation 2021 - 2022.
   New York), 2012 - 2026. Marchés : Nasdaq 100 (usatechidxusd → MNQ), S&P 500 (usa500idxusd → MES), or (xauusd → MGC),
   euro (eurusd → M6E), livre (gbpusd → M6B), dollar australien (audusd → M6A). Le yen (pas de micro aux mêmes
   conditions) et le pétrole (données arrêtées en 2023) sont exclus.
-- **Séance** : de 18 h à 9 h 25 le lendemain (184 barres), datée du matin ; le dimanche soir ouvre la séance du lundi.
+- **Séance** : de 18 h à 9 h 20 le lendemain (184 barres, la dernière de 9 h 15 à 9 h 20), datée du matin ; le dimanche soir ouvre la séance du lundi.
   Complète : première et dernière barre présentes, au plus 18 barres manquantes. Pas de volume dans ces données :
   VWAP remplacé par la moyenne des prix typiques, familles F6 (volume) et F7 (autre indice) retirées.
 - **Frais** des micros au prix d'aujourd'hui (dernière cotation des fichiers) : MNQ 3 $, MES 4,50 $, MGC 4 $, M6E 4,50 $,
@@ -252,6 +252,7 @@ défaut 4 reproduit. Corrections apportées avant toute exploration :
 | 5 | Objectif permis dans la minute d'un remplissage limite à l'ouverture | jamais d'objectif dans la minute d'un remplissage limite |
 | 6 | Ordre limite rempli dans les 2 dernières minutes | ordre annulé |
 | 7 | Comparaisons de prix en virgule flottante (RTY, GC, CL, 6E) | comparaisons à une demi-maille de la grille ; niveaux ronds en pas entiers |
+| 8 | Choix du code absents du README (croisement, marges, σ des signaux, mutation…) | décrits plus bas (« choix du code rendus explicites ») |
 | 9 | Niveau rond sauté par un écart non marqué « touché » (A5a) | niveaux entre la clôture précédente et la barre marqués touchés |
 | 10 | Seuils de A1 et A3 calculés dès 100 séances | 252 séances complètes, comme écrit |
 | 11 | Test sans regard vers le futur trop étroit | il change aussi les séances suivantes et l'autre indice (NQ, GC, BTC, 6E de nuit : ok) |
@@ -287,6 +288,38 @@ d'événement de F9 tombent hors de la séance de l'or et du pétrole (gènes in
 Une seconde contre-revue relit ces corrections et le code des parties B2, C et D avant leur lancement. Les machines sur
 **bruit seulement** sont lancées pendant cette relecture (elles ne disent rien des vraies données) ; les vraies données,
 les parties A et C et le coffre attendent la fin de la relecture.
+
+## Version 4 (25 octobre 2026) : seconde contre-revue, avant tout calcul sur les vraies données
+
+Le second relecteur (commit 638f865) n'a trouvé **ni regard vers le futur, ni fuite du coffre, ni défaut bloquant** ;
+ses recalculs indépendants donnent **0 écart** sur 17 597 trades de B, B2 et D (marché et limite), 20 327 de A et
+16 197 de C. Corrections :
+
+| # | Défaut | Correction |
+|---|---|---|
+| 1 | Le bruit par signe perd le niveau des prix (il dérive au hasard : NQ 0,69 à 0,92 fois le vrai, NQ de nuit 0,39 à 0,58), donc le tick y pèse plus lourd : ce bruit était plus dur que le vrai et pouvait abaisser la barrière | chaque mois, les minutes retournées sont décalées d'une même constante pour que le mouvement du mois soit le vrai : le niveau est exactement le vrai à chaque fin de mois (dans le mois : NQ de 0,89 à 1,15) |
+| 2 | Rien n'empêchait d'ouvrir le coffre avant la fin de toutes les explorations | `exploration` inscrit la complétude (4 graines × 3 sortes par marché, parties A et C) ; `ouvrir` refuse si quelque chose manque ; `exploration` refuse une fois le coffre ouvert |
+| 3 | Nuit : la barre de 18 h manque souvent en 2023 - 2025 (43 % des nuits du coffre incomplètes) | une nuit est complète si une barre existe avant 18 h 15 ; les premières barres manquantes sont recopiées à plat (décidé sur la seule présence des barres) |
+| 4 | Rejet d'un niveau rond comparé en virgule flottante (F5, devises : +8 % à +35 % de signaux) | comparaison à une demi-maille |
+| 5 | Stop de la partie C ni arrondi ni comparé à une demi-maille | même règle que le moteur |
+| 6 | Partie C : apprise sur les minutes de signal 15 à 360, jouée sur 14 à 359 | une seule convention : minutes de décision 14 à 359 (entrée de 9 h 45 à 15 h 30) |
+| 7 | Partie C : pas de modèle 2017 pour le Russell (données depuis juillet 2017) | Russell joué de 2018 à 2022 |
+| 8 | Séance de nuit annoncée jusqu'à 9 h 25 | 18 h - 9 h 20 (184 barres) |
+| 9 | Libellés (minutes d'événement de nuit, années du bitcoin en C) | corrigés |
+| 10 | Test sans regard vers le futur trop faible, sans la partie C | génomes actifs seulement ; test de C ajouté (1 287 probabilités comparées) |
+
+**Règle précisée** (signalée par le relecteur) : stops, objectifs et limites sont arrondis **au tick du micro-contrat**
+(un future ne se traite qu'à ce pas), les comparaisons se font à la demi-maille des données. Cela ne change rien quand
+les deux grilles sont égales ; c'est plus prudent pour le 6E (données à 0,00005, micro à 0,0001) et pour la nuit
+(cotations au millième ou au cent-millième).
+
+**Limites signalées, sans changement** : le bruit par signe efface la dérive de la nuit à l'intérieur de chaque mois
+(Boyarchenko et coll.) ; λ = 1 sur ≈ 10⁵ lignes revient presque à ne pas pénaliser le modèle de la partie C ; le
+recalage mensuel du bruit par signe laisse dans ce bruit une petite dérive connue sur le mois, présente aussi dans les
+vraies données.
+
+Les vraies données, les parties A et C et les machines sont lancées après ces corrections ; le relecteur vérifie les
+corrections pendant le calcul, et le coffre ne s'ouvre qu'après sa réponse.
 
 ## Contre-revue indépendante (#ultrareview)
 

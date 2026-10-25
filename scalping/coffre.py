@@ -22,7 +22,7 @@ NIV = ["plus haut veille", "plus bas veille", "cloture veille", "haut 5 premiere
        "plus haut du jour", "plus bas du jour", "niveau rond"]
 
 
-def decrire(g):
+def decrire(g, piste="B"):
     g = np.asarray(g)
     fam = int(g[M.FAM])
     if fam >= 10:
@@ -49,7 +49,12 @@ def decrire(g):
         p = (f"{'meche' if int(g[M.PX]) == 0 else 'avalement'} sur {M.TAILLE_F8[int(g[M.PW])]} min, W {g[M.PY]:.2f}, "
              f"apres k = {M.K_F8[int(g[M.PK])]}, z >= {g[M.PZ]:.2f}")
     elif fam == 9:
-        p = f"minute {M.EVENEMENTS[int(g[M.PX])]}, k = {M.K_F9[int(g[M.PK])]}, z >= {g[M.PZ]:.2f}"
+        if piste == "D":
+            import nuit as NU
+            b = int(NU.EVENEMENTS_NUIT[int(g[M.PX])])
+            p = f"barre {b} ({(18 * 60 + 5 * b) // 60 % 24} h {(5 * b) % 60:02d}), k = {M.K_F9[int(g[M.PK])]} barres, z >= {g[M.PZ]:.2f}"
+        else:
+            p = f"minute {M.EVENEMENTS[int(g[M.PX])]}, k = {M.K_F9[int(g[M.PK])]}, z >= {g[M.PZ]:.2f}"
     fin = M.FINS[int(g[M.FIN])]
     ent = M.LIMITES[int(g[M.ENTREE])]
     return (f"{NOMS_F[fam]} ({p}) ; {'contre' if g[M.INV] > 0.5 else 'suivre'} ; "
@@ -102,6 +107,9 @@ def empreinte(chemin):
 
 
 def exploration():
+    if (MA.SORTIE / "coffre_ouvert.txt").exists():
+        sys.exit("Le coffre est deja ouvert : la selection des finalistes ne peut plus changer.")
+    manque = []
     L = ["Machine scalping, exploration jusqu'au 31 decembre 2022 (README.md). Score = t des gains nets quotidiens sur "
          "entrainement + validation, au prix d'aujourd'hui. Eligible : t entrainement >= 2 avec 200 trades, t validation "
          ">= 1 avec 50 trades. Barriere = meilleur score eligible trouve sur les deux bruits (permutation et signe).", ""]
@@ -112,6 +120,9 @@ def exploration():
         tot = {"reel": 0, "bruit": 0, "signe": 0}
         for marche in MA.marches(piste):
             runs = {so: lire(piste, marche, so) for so in MA.SORTES}
+            for so in MA.SORTES:
+                if len(runs[so]) < MA.GRAINES:
+                    manque.append(f"{piste} {marche} {so} : {len(runs[so])} graine(s) sur {MA.GRAINES}")
             if not all(runs.values()):
                 continue
             for so in MA.SORTES:
@@ -126,11 +137,12 @@ def exploration():
             table.append((marche, {so: [np.mean([np.sum(x >= v) for x in sc[so]]) for v in seuils] for so in MA.SORTES}))
             for x in deux_meilleures(ur):
                 x.update(piste=piste, marche=marche, partie=piste, barriere=float(barriere),
-                         au_dessus=bool(x["score"] > barriere), description=decrire(x["genome"]))
+                         au_dessus=bool(x["score"] > barriere), description=decrire(x["genome"], piste))
                 finalistes.append(x)
             for so in ("bruit", "signe"):
                 for x in deux_meilleures(union_eligibles(runs[so])):
-                    x.update(piste=piste, marche=marche, partie=f"placebo {so}", description=decrire(x["genome"]))
+                    x.update(piste=piste, marche=marche, partie=f"placebo {so}",
+                             description=decrire(x["genome"], piste))
                     placebos.append(x)
         if not lignes:
             continue
@@ -147,6 +159,7 @@ def exploration():
         f = MA.SORTIE / fich
         if not f.exists():
             L.append(f"Partie {nom} : pas encore calculee")
+            manque.append(f"partie {nom}")
             continue
         res = json.loads(f.read_text())
         L.append(f"Partie {nom} : {sum(x['survivante'] for x in res)} survivante(s) sur {len(res)} (resultats/{fich})")
@@ -172,9 +185,13 @@ def exploration():
     L.append(f"PLACEBOS ({len(placebos)}, choisis sur bruit, joues sur le vrai coffre) :")
     for x in placebos:
         L.append(f"  {x['partie']} {x['piste']} {x['marche']} score sur bruit {x['score']:.2f} : {x['description']}")
+    L.append("")
+    L.append("Exploration COMPLETE." if not manque else "Exploration INCOMPLETE, le coffre ne peut pas etre ouvert : "
+             + " ; ".join(manque))
     txt = "\n".join(L)
     (MA.SORTIE / "exploration.txt").write_text(txt + "\n")
-    (MA.SORTIE / "finalistes.json").write_text(json.dumps(dict(finalistes=finalistes, placebos=placebos), indent=1,
+    (MA.SORTIE / "finalistes.json").write_text(json.dumps(dict(finalistes=finalistes, placebos=placebos,
+                                                               complet=not manque, manque=manque), indent=1,
                                                           ensure_ascii=False))
     print(txt)
 
@@ -199,7 +216,7 @@ def _gains_coffre(x, cache):
         _, prem = AP.periode(marche)
         p = AP.walk_forward(f, [2023, 2024, 2025, 2026], prem)
         gain, n, w = AP.executer(p, s0, s1, f["O"], f["H"], f["L"], f["C"], f["sig"], f["jouable"], f["echelle"],
-                                 f["pt"], f["tick"], f["frais"], AP.SEUIL, AP.T0, f["C"].shape[1] - AP.FIN_AVANT,
+                                 f["pt"], f["tick"], f["pas"], f["frais"], AP.SEUIL, AP.T0, f["C"].shape[1] - AP.FIN_AVANT,
                                  AP.H_CIBLE, np.zeros((1, 6)))
     else:
         gain, n, w, _, _ = M.jouer(np.asarray(x["genome"], float), f, s0, s1)
@@ -216,6 +233,8 @@ def ouvrir():
             sys.exit("Le coffre a deja ete ouvert (resultats/coffre_ouvert.txt). --relire refait le meme calcul, et "
                      "seulement si finalistes.json n'a pas change.")
     sel = json.loads(sel_f.read_text())
+    if not sel.get("complet"):
+        sys.exit("Exploration incomplete (" + " ; ".join(sel.get("manque", ["?"])) + ") : le coffre reste ferme.")
     fin, plac = sel["finalistes"], sel["placebos"]
     m = max(len(fin), 1)
     seuil = NormalDist().inv_cdf(1 - 0.05 / m)

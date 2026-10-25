@@ -117,7 +117,7 @@ def _ewma(lr, init):
 
 # --- signaux --------------------------------------------------------------------------------------------------------
 @njit(cache=True)
-def _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond, evts):
+def _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond, evts, h):
     """Direction du signal brut de la famille a la cloture de la minute t (0 : rien), avant le gene 'sens'."""
     fam = int(g[FAM])
     sp = sigp[s, t]
@@ -191,11 +191,11 @@ def _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, ro
                 if r1 < r0 and (r1 + 1.0) * rond - C[s, t] >= marge:
                     return -1
                 return 0
-            nv = (r0 + 1) * rond                 # rejet du niveau rond au-dessus ou au-dessous
-            if H[s, t] > nv and C[s, t] < nv:
+            nv = (r0 + 1) * rond                 # rejet du niveau rond au-dessus ou au-dessous (a une demi-maille pres)
+            if H[s, t] > nv + h and C[s, t] < nv - h:
                 return -1
             nv = r0 * rond
-            if L[s, t] < nv and C[s, t] > nv and C[s, t - 1] > nv:
+            if L[s, t] < nv - h and C[s, t] > nv + h and C[s, t - 1] > nv + h:
                 return 1
             return 0
         if typ == 9 or typ == 10:
@@ -402,13 +402,13 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                     if a_stop_abs != 0.0:
                         stp = a_stop_abs
                     elif a_ds > 0.0:
-                        stp = _vers_perte(ent - pos * a_ds, pos, pas)
+                        stp = _vers_perte(ent - pos * a_ds, pos, tick)
                     else:
                         stp = np.nan
                     if a_tr > 0.0:
-                        tgt = _vers_loin(ent * (1.0 + pos * a_tr), pos, pas)
+                        tgt = _vers_loin(ent * (1.0 + pos * a_tr), pos, tick)
                     elif a_dt > 0.0:
-                        tgt = _vers_loin(ent + pos * a_dt, pos, pas)
+                        tgt = _vers_loin(ent + pos * a_dt, pos, tick)
                     else:
                         tgt = np.nan
                 elif attente == 2 and t >= a_exp:
@@ -441,8 +441,8 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                         ent = nv
                         e = t
                         lim_fill = True
-                        stp = _vers_perte(ent * (1.0 - pos * 0.0015), pos, pas)
-                        tgt = _vers_loin(ent * (1.0 + pos * 0.003), pos, pas)
+                        stp = _vers_perte(ent * (1.0 - pos * 0.0015), pos, tick)
+                        tgt = _vers_loin(ent * (1.0 + pos * 0.003), pos, tick)
                         hmax = 30
             elif fam == 14:
                 lo_k = max(int(np.floor(L[s, 0] / rond - 1e-9) - base_rond), 0)
@@ -497,11 +497,11 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                 reg = int(g[REGIME])
                 if (reg == 1 and not (rg[s, t] > 1.2)) or (reg == 2 and not (rg[s, t] < 0.8)):
                     continue
-                d = _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond, evts)
+                d = _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond, evts, h)
                 if d == 0:
                     continue
                 if croisement and t >= 1:
-                    if _cond(g, s, t - 1, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond, evts) == d:
+                    if _cond(g, s, t - 1, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, rond, evts, h) == d:
                         continue
                 if g[INV] > 0.5:
                     d = -d
@@ -525,7 +525,7 @@ def evaluer(g, s0, s1, O, H, L, C, V, lr, sig, sigp, vwap, hh, ll, ph, pl, pc, v
                 else:
                     attente = 2
                     a_lim = C[s, t] - d * j * u
-                    a_lim = _vers_perte(a_lim, d, pas)     # limite arrondie en s'eloignant du marche (prudent)
+                    a_lim = _vers_perte(a_lim, d, tick)    # limite au tick du micro, en s'eloignant du marche
                     a_exp = t + FENETRES[int(g[FENETRE])]
             elif fam != 14:
                 if pos != 0 or attente != 0 or t + 1 > N - 3:

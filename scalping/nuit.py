@@ -17,7 +17,7 @@ MARCHES_NUIT = {
     "6B": ("gbpusd", 6250.0, 0.0001, 3.25, 0.005, 0.00001),
     "6A": ("audusd", 10000.0, 0.0001, 4.00, 0.005, 0.00001),
 }
-N_NUIT = 184                       # 18 h 00 -> 9 h 20 (derniere barre, finit a 9 h 25)
+N_NUIT = 184                       # barres de 18 h 00 a 9 h 15 (la derniere finit a 9 h 20)
 DEBUT_NUIT = np.datetime64("2012-01-01")
 DEBUT_ENTRAINEMENT_NUIT = np.datetime64("2013-01-01")
 DEBUT_VALIDATION_NUIT = np.datetime64("2019-01-01")
@@ -53,10 +53,19 @@ def seances(nom):
         a[ij, pos] = d[col].values.astype(float)
         tab[col] = a
     present = ~np.isnan(tab["c"])
+    # version 4 (seconde relecture, d'apres la seule presence des barres) : la barre de 18 h manque souvent en 2023 -
+    # 2025 ; une seance reste complete si une barre existe avant 18 h 15 ; les premieres barres manquantes sont
+    # recopiees a plat sur l'ouverture de la premiere barre presente
+    debut_ok = present[:, :3].any(axis=1)
+    prem = np.argmax(present, axis=1)
+    for col in "ohlc":
+        a = tab[col]
+        for i in np.flatnonzero(debut_ok & ~present[:, 0]):
+            a[i, :prem[i]] = tab["o"][i, prem[i]]
     C = pd.DataFrame(tab["c"]).ffill(axis=1).values
     for col in "ohl":
         tab[col] = np.where(np.isnan(tab[col]), C, tab[col])
-    complete = present[:, 0] & present[:, N_NUIT - 1] & (present.sum(axis=1) >= N_NUIT - 18)
+    complete = debut_ok & present[:, N_NUIT - 1] & (present.sum(axis=1) >= N_NUIT - 18)
     prec = np.full(len(jours), -1, np.int64)
     der = -1
     for i in range(len(jours)):

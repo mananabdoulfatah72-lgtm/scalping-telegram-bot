@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Partie C (README.md, regles v2) : regression logistique reapprise chaque annee sur les annees precedentes seulement,
 signe du mouvement des 15 minutes suivantes, trading de 9 h 45 a 15 h 30 au marche, sortie a 15 minutes ou au stop
-de 2 u. Exploration 2017-2022 (bitcoin 2019-2022), 20 jumeaux de bruit, Benjamini-Hochberg sur les 8 marches.
+de 2 u. Exploration 2017-2022 (Russell 2018-2022, bitcoin 2021-2022), 20 jumeaux par permutation et 20 par signe,
+Benjamini-Hochberg sur les 8 marches.
   python3 scalping/appris.py exploration   -> resultats/appris.txt, resultats/appris.json
 Le coffre est joue par coffre.py (fonction jouer_appris) avec les memes fonctions."""
 import json
@@ -95,7 +96,7 @@ def probas(X, modele):
 
 
 @njit(cache=True)
-def executer(p, s0, s1, O, H, L, C, sig, jouable, echelle, pt, tick, frais, seuil, t0, t1, hmax, journal):
+def executer(p, s0, s1, O, H, L, C, sig, jouable, echelle, pt, tick, pas, frais, seuil, t0, t1, hmax, journal):
     """Trading de la partie C sur [s0, s1) : sans position, achat au marche a t + 1 si p >= seuil, vente si
     p <= 1 - seuil (t + 1 entre t0 et t1) ; stop 2 u (ordre le plus defavorable) ; sortie a la cloture de t_entree + hmax - 1."""
     S, N = C.shape
@@ -103,6 +104,7 @@ def executer(p, s0, s1, O, H, L, C, sig, jouable, echelle, pt, tick, frais, seui
     ntr = 0
     nwin = 0
     nj = 0
+    h = 0.5 * pas
     for s in range(s0, s1):
         if not jouable[s]:
             gain[s - s0] = np.nan
@@ -118,19 +120,19 @@ def executer(p, s0, s1, O, H, L, C, sig, jouable, echelle, pt, tick, frais, seui
                 pos = attente
                 ent = O[s, t]
                 e = t
-                stp = ent - pos * ds
+                stp = M._vers_perte(ent - pos * ds, pos, tick)       # stop au tick, vers la perte
                 attente = 0
             if pos != 0:
                 sortie = np.nan
                 if pos == 1:
-                    if t > e and O[s, t] <= stp:
+                    if t > e and O[s, t] <= stp + h:
                         sortie = O[s, t]
-                    elif L[s, t] <= stp:
+                    elif L[s, t] <= stp + h:
                         sortie = stp
                 else:
-                    if t > e and O[s, t] >= stp:
+                    if t > e and O[s, t] >= stp - h:
                         sortie = O[s, t]
-                    elif H[s, t] >= stp:
+                    elif H[s, t] >= stp - h:
                         sortie = stp
                 if not np.isfinite(sortie) and (t >= e + hmax - 1 or t == N - 1):
                     sortie = C[s, t]
@@ -168,7 +170,7 @@ def walk_forward(f, annees, premiere_annee):
     S, N = f["C"].shape
     ans = f["jours"].astype("datetime64[Y]").astype(int) + 1970
     p = np.full((S, N), np.nan)
-    tgrid = np.arange(T0, N - FIN_AVANT + 1, 5)
+    tgrid = np.arange(T0 - 1, N - FIN_AVANT, 5)        # minutes de decision t (entree a t + 1, de T0 a N - 30)
     for a in annees:
         app = np.flatnonzero(f["jouable"] & (ans >= premiere_annee) & (ans < a))
         Xa = X[app][:, tgrid].reshape(-1, NV)
@@ -188,7 +190,7 @@ def resultat(f, p, annees):
     s1 = int(np.flatnonzero(ans <= annees[-1])[-1]) + 1
     jr = np.zeros((1, 6))
     gain, n, w = executer(p, s0, s1, f["O"], f["H"], f["L"], f["C"], f["sig"], f["jouable"], f["echelle"], f["pt"],
-                          f["tick"], f["frais"], SEUIL, T0, f["C"].shape[1] - FIN_AVANT, H_CIBLE, jr)
+                          f["tick"], f["pas"], f["frais"], SEUIL, T0, f["C"].shape[1] - FIN_AVANT, H_CIBLE, jr)
     x = gain[np.isfinite(gain)]
     return dict(t=K.t_stat(x), trades=int(n), net_trade=float(np.nansum(gain) / max(n, 1)), gagnants=float(w / max(n, 1)),
                 total=float(np.nansum(gain)))
@@ -197,6 +199,8 @@ def resultat(f, p, annees):
 def periode(marche):
     if marche == "BTC":                       # version 3 : seances completes rares avant 2020
         return list(range(2021, 2023)), 2020
+    if marche == "RTY":                       # version 4 : donnees depuis juillet 2017, pas de modele 2017
+        return list(range(2018, 2023)), 2017
     return list(range(2017, 2023)), 2016
 
 
@@ -252,7 +256,8 @@ def exploration():
     out = K.ICI / "resultats"
     out.mkdir(exist_ok=True)
     (out / "appris.json").write_text(json.dumps(tests, indent=1))
-    L = ["Partie C, modele appris chaque annee sur le passe, exploration 2017-2022 (bitcoin 2019-2022), 20 jumeaux par "
+    L = ["Partie C, modele appris chaque annee sur le passe, exploration 2017-2022 (Russell 2018-2022, bitcoin "
+         "2021-2022), 20 jumeaux par "
          "permutation et 20 par signe, Benjamini-Hochberg a 10 % sur 8 marches", "",
          "marche  trades    t    net/trade  gagnants  95e perm. 95e signe  bat le bruit  BH  survivante"]
     for x in tests:
