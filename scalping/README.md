@@ -403,13 +403,14 @@ m = 16 finalistes, seuil de Bonferroni t ≥ 2,73. **0 retenue, 0 intéressante.
 
 ### Après le coffre (descriptif, pas un test) : `resultats/apres_coffre.txt`
 
-Toutes les stratégies éligibles en exploration, jouées sur le coffre :
-- **Nuit du NQ** : les 4 639 choisies sur les vraies données font t médian 0,14 au coffre, contre 0,66 pour celles
-  choisies sur le bruit par permutation et −0,49 sur le bruit par signe. **L'avance de la nuit en exploration était
-  un régime de 2013 - 2022, pas une structure qui dure.**
-- **Jour du NQ** : les 498 choisies sur le vrai gardent un t médian de 0,77 au coffre (75 % positives), contre 0,12 et
-  0,03 pour celles choisies sur bruit, mais **aucune n'atteint le seuil** (0 % à t ≥ 2,73). C'est la continuation du
-  Nasdaq, déjà exploitée par la zone de bruit, trop faible ici pour faire une stratégie.
+Toutes les stratégies éligibles en exploration ont été jouées sur le coffre.
+- **Nuit du NQ** : **aucune des 4 639 choisies sur les vraies données n'atteint t ≥ 2,73 au coffre** (la meilleure
+  2,65), et la part qui ferait le palier « intéressant » (t ≥ 1,65 et 3 années positives) est la même que pour celles
+  choisies sur bruit : 3,5 % contre 3,8 % (permutation) et 3,3 % (signe). **L'avance de la nuit en exploration était un
+  régime de 2013 - 2022, pas une structure qui dure.** (Les médianes, 0,14 contre 0,66 et −0,49, sont tirées par des
+  grappes de quasi-clones d'une seule graine : le relecteur final les juge fragiles.)
+- **Jour du NQ** : les 498 choisies sur le vrai ont un t médian de 0,77 au coffre, mais **aucune n'atteint le seuil**
+  (la meilleure 2,08), et 456 d'entre elles sont des variantes d'une même famille (choc d'une minute) issues de 2 graines.
 - ES et YM de jour, ES de nuit : rien.
 
 ### Ce qu'on retient
@@ -426,6 +427,22 @@ Toutes les stratégies éligibles en exploration, jouées sur le coffre :
      (environ 100 $ par jour de données) ;
   2. de vraies transactions de nuit du future, pour regarder la nuit sans les cotations CFD ;
   3. le temps : les mois après octobre 2026, que personne n'a vus.
+
+## Contre-revue finale, après le coffre (25 octobre 2026)
+
+Un troisième relecteur indépendant a tout recalculé avec son propre code (sans `moteur.py`) :
+- **les 16 finalistes et les 29 placebos au coffre : identiques** (t, trades, gains, années) ;
+- **la sélection, recomptée depuis les fichiers** sur les 14 couples piste-marché : finalistes, placebos et barrières
+  conformes ; **toutes les éligibles réelles ont été jouées au coffre, aucune n'atteint t ≥ 2,73** : aucune survivante
+  n'a pu être oubliée ;
+- parties A et C refaites (A3, A4 sur NQ et ES ; modèle appris sur NQ par une autre méthode) : identiques ;
+- caches du coffre relus directement dans les fichiers bruts (≈ 1,9 million de barres, 0 prix différent), caches
+  identiques avant 2023, frais, échelle et empreinte de `finalistes.json` conformes ;
+- sans l'année 2023 (nuits complètes à 55 %), les finalistes de nuit restent à t ≤ 0,43.
+
+**Verdict du relecteur : la conclusion est juste.** Défauts mineurs relevés, sans effet sur les calculs : libellés de
+la nuit (« minute » pour des barres de 5 minutes, fins de fenêtre au-delà de 9 h 20) ; lecture des médianes après le
+coffre (corrigée plus haut).
 
 ## Contre-revue indépendante (#ultrareview)
 
