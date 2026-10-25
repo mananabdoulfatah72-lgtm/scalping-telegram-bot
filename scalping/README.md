@@ -666,3 +666,62 @@ son avantage a environ diminué de moitié depuis 2024**, comme le dit la second
    bot enregistre lui-même chaque jour le delta de chaque minute, comme il le lit déjà en direct (non fait : à décider).
 3. **Les vrais leviers restent ceux déjà trouvés** : un compte sans limite de temps (où l'avantage compte), une petite
    taille sur le compte financé, pas de zone les jours de la Fed.
+
+## Partie E (25 octobre 2026) : ce que font les institutions, les chercheurs et les praticiens (règles fixées avant tout calcul)
+
+### Demande de l'utilisateur
+
+« Lance plusieurs agents en même temps qui repassent tout, y compris les portefeuilles des grands traders,
+institutions, banques, hedge funds : qu'est-ce qui est efficace sur le NQ pour du scalping, hors la zone et le filtre
+delta ? »
+
+### Les 5 agents (rapports dans `agents/`)
+
+| Agent | Angle | Conclusion |
+|---|---|---|
+| Flux institutionnels (`agents/flux_institutionnels.md`) | couverture gamma des teneurs de marché, 0DTE, ETF à levier, MOC, fonds de pension, CTA, dérive de nuit, Fed | aucun flux ne donne un scalping fréquent après frais ; Kurth, Eisler, Rej et Bouchaud (2026) montrent que, depuis 2009, le suivi de tendance de court terme ne rapporte plus rien sur les contrats à petit tick comme le NQ, parce que les teneurs de marché rapides neutralisent les flux prévisibles. Restent le régime gamma et quelques fenêtres de calendrier |
+| Recherche académique (`agents/academique.md`) | prévisibilité intraday des futures d'indices, avance-retard, saisonnalités, apprentissage automatique, réplications | aucune règle directionnelle quotidienne ne tient après frais et après publication ; un apprentissage automatique sur le MNQ (2021-2025) ne bat pas le hasard ; ce qui reste crédible est événementiel (Fed, annonces) |
+| Praticiens (`agents/praticiens.md`) | order flow, Market Profile, ICT, pivots, VWAP, initial balance, gaps, méthodes des prop firms | presque rien n'a de preuve indépendante ; la plupart des « statistiques NQ » vendues sont celles d'une marche aléatoire ; seules la règle des 80 % de Market Profile, le « Oops » de Larry Williams et la cassure des extrêmes de la nuit restent à tester |
+| Fonds et HFT (`agents/fonds_hft.md`) | tenue de marché, arbitrage de latence, stat arb, CTA, données sur les day traders | ce que gagnent les pros en scalping demande des microsecondes et des frais 5 à 20 fois plus bas ; moins de 1 % des day traders gagnent de façon durable ; restent les primes autour d'événements programmés, tenues plusieurs heures |
+| Audit de toute la recherche passée | tous les dossiers de recherche | inventaire et trous : niveaux multi-jours, calendrier jamais joué en intraday (FOMC), régime, pas d'options ni de carnet |
+
+### Les 10 règles testées (paramètres tels que publiés ou fixés ici, sans réglage)
+
+NQ, 1 contrat micro, gain au prix d'aujourd'hui (comme la machine), frais 1 $ + 1 tick par ordre. Minutes du NQ de la
+séance 9 h 30 - 16 h depuis 2011 (même source que la machine) ; nuit : barres de 5 minutes du CFD (HistData), datées
+du matin qui suit. Une séance n'est jouée que complète et hors jour de changement de contrat.
+
+| # | Règle | Source |
+|---|---|---|
+| E1 | **Gamma, d'heure en heure** : à 10 h 30, 11 h 30, 12 h 30, 13 h 30, 14 h 30 et 15 h 30, r = rendement des 60 dernières minutes. Si le GEX du S&P 500 de la veille (SqueezeMetrics) est positif : position **contre** r ; s'il est négatif : **avec** r. Tenue 60 minutes (30 pour la dernière), sans stop | Dim, Eraker, Vilkov (2023-2024) ; Adams et al. (2025) ; Barbon et Buraschi |
+| E1b | **Gamma en fin de séance** : à 15 h 30, r = clôture de la veille → 15 h 30 ; si GEX de la veille > 0, position contre r jusqu'à 16 h (sinon pas de trade : le cas « avec » est Baltussen, déjà testé) | Barbon, Beckmeyer, Buraschi, Moerke |
+| E2 | **Conférence de presse de la Fed** : jours de réunion programmée avec conférence (2013 - 2018 : mars, juin, septembre, décembre ; depuis 2019 : toutes), r = 13 h 59 → 14 h 29 ; à 14 h 30, position **dans le sens** de r ; sortie à 15 h 30 | Gómez-Cram et Grotteria (JFE 2022) |
+| E3 | **Retournement de l'annonce de la Fed** : toutes les réunions programmées depuis 2013 ; à 13 h 50, position **contre** le rendement des 24 h précédentes (13 h 50 la veille → 13 h 50) ; sortie à 16 h | Baglioni et Ribeiro (2022) |
+| E4 | **Rééquilibrage 60/40 de fin de mois** : à la clôture de chacun des 5 derniers jours de séance du mois, w = 0,6 (1 + R_actions) / [0,6 (1 + R_actions) + 0,4 (1 + R_obligations)], rendements depuis la dernière clôture du mois précédent (SPY et IEF, clôtures de 16 h des ETF) ; séance suivante du NQ, de 9 h 30 à 16 h : vente si w > 0,6, achat si w < 0,6 | Harvey, Mazzoleni, Melone (NBER 2025) |
+| E5 | **Avant les annonces** : la veille d'un rapport sur l'emploi (NFP, 8 h 30) ou d'un ISM manufacturier (10 h), achat à 18 h (réouverture) ; sortie à 8 h 30 (NFP) ou 9 h 20 (ISM, dernière barre de nuit). Dates : NFP = 3e vendredi après la semaine du 12 (règle du BLS) ; ISM = 1er jour de séance du mois | Hu, Pan, Wang, Zhu (JFE 2022) |
+| E6 | **Dérive de nuit après une fin de séance vendeuse** : si le rendement de 15 h à 16 h de la veille est dans le tiers le plus bas des 252 séances précédentes, achat de 2 h à 3 h | Boyarchenko, Larsen, Whelan (RFS 2023) |
+| E7 | **Règle des 80 % (Market Profile)** : profil TPO de la veille (13 périodes de 30 min, cases de 0,02 % de la clôture de la veille, value area de 70 % construite depuis le POC en ajoutant à chaque pas la case voisine la plus remplie, au-dessus en cas d'égalité). Si l'ouverture est hors de la value area et que deux périodes de 30 min consécutives clôturent dedans : position vers le bord opposé à la clôture de la 2e période (au plus tard 15 h 30) ; objectif = le bord opposé (ordre limite) ; stop au-delà de l'extrême des deux périodes (1 tick) ; sortie à 15 h 55 sinon ; 1 trade par jour | Dalton, *Mind Over Markets* |
+| E8 | **« Oops » de Larry Williams** : ouverture sous le plus bas de la veille → achat stop au plus bas de la veille + 1 tick ; ouverture au-dessus du plus haut → vente stop au plus haut − 1 tick ; déclenchement jusqu'à 15 h 30 ; sortie à la clôture de 16 h, sans stop | Williams (1999) |
+| E9 | **Cassure des extrêmes de la nuit** : plus haut et plus bas de la nuit (CFD, 18 h - 9 h 20), ramenés au future par le rapport à la dernière clôture de nuit appliqué à l'ouverture de 9 h 30 ; de 9 h 31 à 15 h, première minute qui clôture au-delà : position dans le sens de la cassure ; sortie à 15 h 55 ; 1 trade par jour ; pas de trade si l'ouverture est déjà hors du range | Osler (2005), Mahadzva (2026) |
+
+Exécution : signal à la clôture d'une minute, entrée à l'ouverture de la minute suivante ; ordres stop remplis au
+niveau du stop ou à l'ouverture si elle le dépasse ; objectif limite rempli seulement si le prix le traverse d'un tick ;
+dans une même minute, stop avant objectif. Barres de 5 minutes pour la nuit (mêmes règles).
+
+### Décision (fixée maintenant)
+
+- Mesure : gains nets par séance où la règle trade ; t de leur moyenne.
+- Périodes : depuis le début des données (2011 ; E2 et E3 : 2013 ; E4 : 2016 ; E1 : mai 2011, début du GEX) jusqu'à
+  fin 2022, puis 2023 - fin des données. Aussi, pour information : depuis la publication de chaque source.
+- Bruit : 40 jumeaux par permutation et 40 par signe (comme la partie A), sur les minutes du NQ et sur la nuit.
+- **Retenue** (suivie dans le coffre de l'avenir, puis peut-être le robot, sur décision de l'utilisateur) : t sur toute
+  la période ≥ 2,58 (Bonferroni, 10 tests, unilatéral 5 %), gain moyen positif sur les deux périodes, et t au-dessus de
+  95 % des jumeaux de chaque bruit.
+- **Intéressante** (coffre de l'avenir, argent virtuel) : t ≥ 1,65, positif sur les deux périodes, au-dessus de 90 %
+  des jumeaux de chaque bruit.
+- Les règles de nuit (E5, E6, E9 en partie) gardent la règle de réalisme de la nuit (CFD, pas de robot sans
+  confirmation sur de vraies transactions).
+- Ce qui n'est pas testé, et pourquoi : ICT « silver bullet » et FVG (aucune définition mécanique admise ; les tests
+  publiés sont négatifs), pivots, bandes de VWAP, initial balance, comblement de gap (preuves nulles ou statistiques de
+  marche aléatoire ; voisins de familles déjà testées), dérive pré-FOMC (morte depuis 2015), ETF à levier, MOC,
+  0DTE, tenue de marché, arbitrage (données ou latence hors de portée).
