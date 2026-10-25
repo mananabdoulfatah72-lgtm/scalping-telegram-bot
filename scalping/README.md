@@ -559,3 +559,15 @@ ans. Seule une stratégie nettement plus forte que la zone se confirmerait en qu
 
 Code de la vague et de la sélection relu par un relecteur indépendant avant la lecture du contrôle ; ses défauts sont
 corrigés et listés ici.
+
+### Lu après l'écriture de ces règles (descriptif)
+
+- **Panier de la version 4** (`ensemble_v4.py` → `resultats/ensemble_v4.txt`, coffre déjà ouvert) : il ne sauve rien.
+  NQ de jour : t 5,05 en exploration, **0,74** au coffre (paniers de bruit 0,11 et 0,22) ; NQ de nuit 5,95 → 0,25 (bruit
+  par permutation 0,73) ; ES de jour 4,75 → −2,90 ; YM 3,53 → −1,07 ; ES de nuit 3,16 → −0,81. La tendance positive du NQ
+  de jour vient de stratégies très liées entre elles (corrélation moyenne 0,38), donc d'une seule idée.
+- **Coûts par marché** (`couts.py` → `resultats/v5/couts.txt`) : rapport du coût d'un aller-retour au mouvement médian de
+  15 minutes, 2023 - 2026. NQ (MNQ) **0,09**, de loin le plus favorable des marchés à contrat micro ; YM, or, ES, bitcoin,
+  Russell 0,23 à 0,28 ; argent 0,34 ; pétrole 0,40 ; devises 0,71 à 1,70 ; taux 1,06 à 1,64 ; gaz 1,78. Seuls l'essence
+  (RB, 0,06), le platine (0,24) et le Brent (0,25), en contrats standard, rejoindraient la machine, mais il n'existe pas
+  de minutes gratuites de ces futures, et `etude_large/` n'y a trouvé aucun avantage intraday même avant frais.
