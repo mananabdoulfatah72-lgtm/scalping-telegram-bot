@@ -36,7 +36,7 @@ def decrire(g, piste="B"):
     elif fam == 2:
         p = f"n = {int(g[M.PK])}, z >= {g[M.PZ]:.2f}"
     elif fam == 3:
-        p = f"k = {M.K_F3[int(g[M.PK])]}, Q = {g[M.PY]:.2f}"
+        p = f"k = {M.K_F3[int(g[M.PK])]}{' barres' if piste == 'D' else ''}, Q = {g[M.PY]:.2f}"
     elif fam == 4:
         p = f"z >= {g[M.PZ]:.2f}"
     elif fam == 5:
@@ -57,13 +57,20 @@ def decrire(g, piste="B"):
             p = f"minute {M.EVENEMENTS[int(g[M.PX])]}, k = {M.K_F9[int(g[M.PK])]}, z >= {g[M.PZ]:.2f}"
     fin = M.FINS[int(g[M.FIN])]
     ent = M.LIMITES[int(g[M.ENTREE])]
+    if piste == "D":                     # la nuit compte en barres de 5 minutes depuis 18 h
+        u_ = "barres"
+        hm = lambda b: f"{(18 * 60 + 5 * b) // 60 % 24} h {(5 * b) % 60:02d}"     # noqa: E731
+        fen = (f"entrees de la barre {M.DEBUTS[int(g[M.DEBUT])]} ({hm(M.DEBUTS[int(g[M.DEBUT])])}) a "
+               + ("5 barres avant la fin" if fin < 0 else f"{fin} ({hm(fin)})"))
+    else:
+        u_ = "min"
+        fen = f"entrees de la minute {M.DEBUTS[int(g[M.DEBUT])]} a {'5 avant la fin' if fin < 0 else fin}"
     return (f"{NOMS_F[fam]} ({p}) ; {'contre' if g[M.INV] > 0.5 else 'suivre'} ; "
-            f"{['achats et ventes', 'achats seuls', 'ventes seules'][int(g[M.COTES])]} ; entrees de la minute "
-            f"{M.DEBUTS[int(g[M.DEBUT])]} a {'5 avant la fin' if fin < 0 else fin} ; "
+            f"{['achats et ventes', 'achats seuls', 'ventes seules'][int(g[M.COTES])]} ; {fen} ; "
             f"regime {['tous', 'agite', 'calme'][int(g[M.REGIME])]} ; tendance {['toute', 'avec', 'contre'][int(g[M.TEND])]} ; "
-            f"{'au marche' if ent == 0 else f'limite {ent} u pendant {M.FENETRES[int(g[M.FENETRE])]} min'} ; "
+            f"{'au marche' if ent == 0 else f'limite {ent} u pendant {M.FENETRES[int(g[M.FENETRE])]} {u_}'} ; "
             f"stop {g[M.STOP]:.2f} u ; objectif {'aucun' if g[M.OBJ] <= 0 else f'{g[M.OBJ]:.2f} u'} ; "
-            f"duree {M.DUREES[int(g[M.DUREE])]} min ; pause {M.PAUSES[int(g[M.PAUSE])]} min")
+            f"duree {M.DUREES[int(g[M.DUREE])]} {u_} ; pause {M.PAUSES[int(g[M.PAUSE])]} {u_}")
 
 
 def lire(piste, marche, sorte):

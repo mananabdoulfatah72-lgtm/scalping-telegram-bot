@@ -1,0 +1,11 @@
+Partie C, modele appris chaque annee sur le passe, exploration 2017-2022 (Russell 2018-2022, bitcoin 2021-2022), 20 jumeaux par permutation et 20 par signe, Benjamini-Hochberg a 10 % sur 8 marches
+
+marche  trades    t    net/trade  gagnants  95e perm. 95e signe  bat le bruit  BH  survivante
+NQ       10437  -2.37     -2.90 $     51%      0.61      0.91         5%   non  non
+ES       11483  -6.55     -3.92 $     47%     -2.04     -0.98         0%   non  non
+RTY       5936  -7.67     -2.89 $     44%     -2.31     -3.07         0%   non  non
+YM       10415  -7.39     -2.95 $     47%     -1.95      0.50         0%   non  non
+GC        8350  -8.02     -5.34 $     48%     -0.13     -1.25         0%   non  non
+CL        6773  -6.80     -3.26 $     46%      0.04      0.03         0%   non  non
+6E        8147 -29.79     -4.55 $     27%     -3.94     -2.71         0%   non  non
+BTC       4262  -5.60     -4.55 $     46%     -0.48     -0.37         0%   non  non

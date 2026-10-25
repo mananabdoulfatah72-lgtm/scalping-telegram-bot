@@ -338,6 +338,22 @@ Restes corrigés pendant le calcul :
 - Aucun fichier de la version 3 n'est réutilisé : les 43 fichiers de bruit v3 ont été retirés avant le lancement, et
   tous les fichiers de résultats sont postérieurs à 0 h 52.
 
+## Réalisme de la partie D (fixé le 25 octobre 2026, après l'exploration, avant l'ouverture du coffre)
+
+L'exploration de nuit sort nettement du bruit sur le Nasdaq. Mais les données de nuit sont des **cotations de CFD**
+(HistData), pas des transactions du future : le bruit de cotation (aller-retour acheteur-vendeur, prix figés aux heures
+creuses) peut créer de faux retours à la moyenne, que les deux bruits détruisent et que le coffre, fait des mêmes
+cotations, ne peut pas démasquer. Règles fixées avant d'ouvrir le coffre :
+1. **Contrôle descriptif** (`realisme_nuit.py`, 2013 - 2022 seulement) : corrélation des rendements horaires de nuit du
+   CFD et du vrai future (barres d'une heure Databento du NQ et de l'ES), et autocorrélation d'une heure à la suivante
+   dans chaque source.
+2. **Une finaliste de nuit retenue ou intéressante au coffre reste en argent virtuel**, jamais dans le robot, tant que
+   le même génome n'a pas été confirmé sur de **vraies transactions de nuit du future** (export de nuit de la plateforme
+   de l'utilisateur, ou données achetées), avec ses règles de confirmation écrites avant de lire ces transactions.
+3. **Descriptif** (`analyse_nuit.py`, exploration seulement) : part des achats et des ventes dans le gain, et
+   corrélation avec un simple achat de la nuit (la dérive de nuit connue), pour savoir si une finaliste ne fait
+   qu'acheter cette dérive.
+
 ## Contre-revue indépendante (#ultrareview)
 
 1. **Avant l'exploration** : un relecteur indépendant reprend le code (données, moteur, bruit, exécution, coupure du

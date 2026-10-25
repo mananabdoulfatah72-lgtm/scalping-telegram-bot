@@ -1,0 +1,111 @@
+Machine scalping, exploration jusqu'au 31 decembre 2022 (README.md). Score = t des gains nets quotidiens sur entrainement + validation, au prix d'aujourd'hui. Eligible : t entrainement >= 2 avec 200 trades, t validation >= 1 avec 50 trades. Barriere = meilleur score eligible trouve sur les deux bruits (permutation et signe).
+
+=== Partie B : 296488 strategies distinctes sur les vraies donnees, 296360 sur le bruit par permutation, 296180 sur le bruit par signe
+NQ    eligibles par graine : reel   124.5, permutation    13.5, signe   324.0 ; barriere  4.64 ; meilleur reel  4.28
+ES    eligibles par graine : reel    73.8, permutation     0.0, signe     7.2 ; barriere  3.00 ; meilleur reel  4.21
+RTY   eligibles par graine : reel     0.5, permutation     0.0, signe     0.8 ; barriere  3.19 ; meilleur reel  2.42
+YM    eligibles par graine : reel    46.8, permutation    47.0, signe     8.8 ; barriere  3.89 ; meilleur reel  3.86
+GC    eligibles par graine : reel     0.2, permutation    24.0, signe     1.5 ; barriere  3.25 ; meilleur reel  2.17
+CL    eligibles par graine : reel     0.0, permutation    39.0, signe     0.2 ; barriere  2.80 ; meilleur reel   nan
+6E    eligibles par graine : reel     0.0, permutation     0.0, signe     0.0 ; barriere  -inf ; meilleur reel   nan
+  eligibles au-dessus de chaque score, moyenne par graine : reel / permutation / signe
+           >= 2.0                 >= 2.5                 >= 3.0                 >= 3.5                 >= 4.0                 >= 4.5              
+  NQ      124.5/ 13.5/324.0    117.2/  9.5/302.5     75.2/  0.5/213.2     28.2/  0.0/108.2      3.8/  0.0/ 36.8      0.0/  0.0/  2.5  
+  ES       73.8/  0.0/  7.2     68.8/  0.0/  6.5     47.2/  0.0/  0.0     24.5/  0.0/  0.0      6.5/  0.0/  0.0      0.0/  0.0/  0.0  
+  RTY       0.5/  0.0/  0.8      0.0/  0.0/  0.8      0.0/  0.0/  0.2      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+  YM       46.8/ 47.0/  8.8     40.2/ 40.2/  7.5     11.8/ 16.0/  2.5      0.8/  3.8/  0.8      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+  GC        0.2/ 24.0/  1.5      0.0/ 22.5/  1.2      0.0/  0.2/  0.2      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+  CL        0.0/ 39.0/  0.2      0.0/  7.8/  0.2      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+  6E        0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+
+=== Partie B2 : 42510 strategies distinctes sur les vraies donnees, 42347 sur le bruit par permutation, 42231 sur le bruit par signe
+BTC   eligibles par graine : reel     2.2, permutation     0.5, signe     0.2 ; barriere  2.71 ; meilleur reel  3.01
+  eligibles au-dessus de chaque score, moyenne par graine : reel / permutation / signe
+           >= 2.0                 >= 2.5                 >= 3.0                 >= 3.5                 >= 4.0                 >= 4.5              
+  BTC       2.2/  0.5/  0.2      1.8/  0.2/  0.2      0.5/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+
+=== Partie D : 254127 strategies distinctes sur les vraies donnees, 254466 sur le bruit par permutation, 253825 sur le bruit par signe
+NQ    eligibles par graine : reel  1159.8, permutation   203.8, signe   256.0 ; barriere  4.32 ; meilleur reel  6.54
+ES    eligibles par graine : reel    40.5, permutation     8.2, signe     1.2 ; barriere  2.83 ; meilleur reel  3.72
+GC    eligibles par graine : reel     4.2, permutation     2.2, signe    12.2 ; barriere  3.27 ; meilleur reel  3.08
+6E    eligibles par graine : reel     0.0, permutation     0.0, signe     0.0 ; barriere  -inf ; meilleur reel   nan
+6B    eligibles par graine : reel     0.0, permutation     0.0, signe     0.0 ; barriere  -inf ; meilleur reel   nan
+6A    eligibles par graine : reel     0.0, permutation     0.0, signe     0.0 ; barriere  -inf ; meilleur reel   nan
+  eligibles au-dessus de chaque score, moyenne par graine : reel / permutation / signe
+           >= 2.0                 >= 2.5                 >= 3.0                 >= 3.5                 >= 4.0                 >= 4.5              
+  NQ      1158.0/203.2/255.2    1094.8/155.5/214.0    928.5/ 75.0/130.8    726.5/ 10.8/ 75.8    498.0/  0.2/ 21.5    335.8/  0.0/  0.0  
+  ES       40.5/  8.0/  1.2     30.5/  3.2/  0.0      8.5/  0.0/  0.0      0.8/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+  GC        4.2/  2.2/ 12.2      3.5/  0.8/  9.8      0.8/  0.2/  1.5      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+  6E        0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+  6B        0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+  6A        0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0      0.0/  0.0/  0.0  
+
+Partie A : 0 survivante(s) sur 12 (resultats/partie_a.json)
+Partie C : 0 survivante(s) sur 8 (resultats/appris.json)
+
+FINALISTES (16) :
+  B NQ score 4.28 (t entrainement 3.99, validation 1.78, 860 + 369 trades), net 9.38 $ par trade, gagnants 49%, SOUS la barriere du bruit
+      choc d'une minute (|r1| >= 2.63 sigma) ; suivre ; ventes seules ; entrees de la minute 15 a 210 ; regime tous ; tendance toute ; limite 0.1 u pendant 1 min ; stop 1.71 u ; objectif 1.90 u ; duree 3 min ; pause 5 min
+  B NQ score 3.27 (t entrainement 2.57, validation 2.03, 277 + 95 trades), net 15.42 $ par trade, gagnants 50%, SOUS la barriere du bruit
+      mouvement de k minutes (k = 3, z >= 2.72) ; suivre ; ventes seules ; entrees de la minute 1 a 5 avant la fin ; regime tous ; tendance contre ; limite 0.25 u pendant 1 min ; stop 1.54 u ; objectif 1.71 u ; duree 5 min ; pause 5 min
+  B ES score 4.21 (t entrainement 3.71, validation 2.19, 242 + 199 trades), net 23.25 $ par trade, gagnants 57%, au-dessus de la barriere du bruit
+      bougie (avalement sur 3 min, W 0.57, apres k = 30, z >= 1.62) ; contre ; achats et ventes ; entrees de la minute 180 a 5 avant la fin ; regime tous ; tendance toute ; limite 0.25 u pendant 5 min ; stop 2.35 u ; objectif 1.86 u ; duree 30 min ; pause 0 min
+  B ES score 4.15 (t entrainement 2.86, validation 3.55, 206 + 106 trades), net 12.60 $ par trade, gagnants 79%, au-dessus de la barriere du bruit
+      mouvement de k minutes (k = 10, z >= 2.45) ; contre ; achats et ventes ; entrees de la minute 1 a 120 ; regime agite ; tendance contre ; au marche ; stop 2.84 u ; objectif 0.30 u ; duree 10 min ; pause 0 min
+  B RTY score 2.42 (t entrainement 2.17, validation 1.10, 208 + 134 trades), net 6.94 $ par trade, gagnants 49%, SOUS la barriere du bruit
+      micro-compression puis cassure (k = 30, Q = 1.02) ; suivre ; achats et ventes ; entrees de la minute 15 a 210 ; regime agite ; tendance avec ; au marche ; stop 0.72 u ; objectif 1.95 u ; duree 15 min ; pause 5 min
+  B RTY score 2.40 (t entrainement 2.18, validation 1.03, 245 + 142 trades), net 6.93 $ par trade, gagnants 54%, SOUS la barriere du bruit
+      mouvement de k minutes (k = 10, z >= 2.62) ; contre ; achats et ventes ; entrees de la minute 1 a 5 avant la fin ; regime agite ; tendance contre ; au marche ; stop 2.95 u ; objectif 3.33 u ; duree 10 min ; pause 15 min
+  B YM score 3.86 (t entrainement 3.17, validation 2.21, 225 + 136 trades), net 10.42 $ par trade, gagnants 58%, SOUS la barriere du bruit
+      choc d'une minute (|r1| >= 3.54 sigma) ; suivre ; achats et ventes ; entrees de la minute 1 a 300 ; regime agite ; tendance toute ; limite 0.5 u pendant 5 min ; stop 2.65 u ; objectif 1.29 u ; duree 10 min ; pause 0 min
+  B YM score 2.32 (t entrainement 2.03, validation 1.12, 388 + 232 trades), net 5.97 $ par trade, gagnants 41%, SOUS la barriere du bruit
+      micro-compression puis cassure (k = 10, Q = 0.89) ; contre ; achats seuls ; entrees de la minute 1 a 210 ; regime agite ; tendance toute ; au marche ; stop 0.52 u ; objectif 1.06 u ; duree 30 min ; pause 15 min
+  B GC score 2.17 (t entrainement 2.01, validation 1.13, 220 + 139 trades), net 8.34 $ par trade, gagnants 51%, SOUS la barriere du bruit
+      niveau franchi ou rejete (haut 15 premieres min, rejete, marge 0.45) ; suivre ; achats et ventes ; entrees de la minute 1 a 5 avant la fin ; regime agite ; tendance avec ; au marche ; stop 2.36 u ; objectif aucun ; duree 15 min ; pause 0 min
+  B2 BTC score 3.01 (t entrainement 2.95, validation 1.08, 231 + 282 trades), net 9.41 $ par trade, gagnants 56%, au-dessus de la barriere du bruit
+      niveau franchi ou rejete (niveau rond, franchi, marge 0.41) ; contre ; achats et ventes ; entrees de la minute 120 a 5 avant la fin ; regime agite ; tendance toute ; au marche ; stop 2.14 u ; objectif 1.43 u ; duree 20 min ; pause 5 min
+  B2 BTC score 2.45 (t entrainement 2.23, validation 1.13, 212 + 223 trades), net 8.26 $ par trade, gagnants 51%, SOUS la barriere du bruit
+      pic de volume (volume >= 7.56 x mediane) ; suivre ; achats et ventes ; entrees de la minute 1 a 60 ; regime tous ; tendance toute ; au marche ; stop 1.17 u ; objectif 2.95 u ; duree 20 min ; pause 5 min
+  D NQ score 6.54 (t entrainement 4.11, validation 5.11, 1562 + 1025 trades), net 16.80 $ par trade, gagnants 54%, au-dessus de la barriere du bruit
+      micro-compression puis cassure (k = 10 barres, Q = 1.27) ; contre ; achats seuls ; entrees de la barre 60 (23 h 00) a 210 (11 h 30) ; regime tous ; tendance contre ; au marche ; stop 1.22 u ; objectif 3.72 u ; duree 20 barres ; pause 15 barres
+  D NQ score 4.37 (t entrainement 2.59, validation 3.52, 752 + 546 trades), net 12.79 $ par trade, gagnants 49%, au-dessus de la barriere du bruit
+      serie de barres (n = 3, z >= 2.92) ; suivre ; ventes seules ; entrees de la barre 15 (19 h 15) a 5 barres avant la fin ; regime tous ; tendance avec ; au marche ; stop 1.30 u ; objectif 2.40 u ; duree 5 barres ; pause 5 barres
+  D ES score 3.72 (t entrainement 2.83, validation 2.48, 323 + 278 trades), net 14.14 $ par trade, gagnants 55%, au-dessus de la barriere du bruit
+      micro-compression puis cassure (k = 5 barres, Q = 0.92) ; contre ; achats seuls ; entrees de la barre 60 (23 h 00) a 300 (19 h 00) ; regime agite ; tendance contre ; au marche ; stop 1.94 u ; objectif 2.17 u ; duree 20 barres ; pause 5 barres
+  D GC score 3.08 (t entrainement 2.49, validation 1.85, 239 + 188 trades), net 13.08 $ par trade, gagnants 51%, SOUS la barriere du bruit
+      serie de barres (n = 3, z >= 2.10) ; suivre ; ventes seules ; entrees de la barre 15 (19 h 15) a 5 barres avant la fin ; regime calme ; tendance avec ; au marche ; stop 1.28 u ; objectif 3.21 u ; duree 30 barres ; pause 5 barres
+  D GC score 2.86 (t entrainement 2.82, validation 1.15, 561 + 382 trades), net 12.40 $ par trade, gagnants 55%, SOUS la barriere du bruit
+      mouvement de k minutes (k = 10, z >= 1.18) ; contre ; achats seuls ; entrees de la barre 120 (4 h 00) a 210 (11 h 30) ; regime agite ; tendance toute ; au marche ; stop 2.84 u ; objectif 3.87 u ; duree 15 barres ; pause 5 barres
+
+PLACEBOS (29, choisis sur bruit, joues sur le vrai coffre) :
+  placebo bruit B NQ score sur bruit 3.20 : niveau franchi ou rejete (haut 15 premieres min, rejete, marge 0.38) ; suivre ; achats et ventes ; entrees de la minute 120 a 210 ; regime tous ; tendance avec ; au marche ; stop 2.52 u ; objectif 0.83 u ; duree 30 min ; pause 15 min
+  placebo bruit B NQ score sur bruit 2.99 : micro-compression puis cassure (k = 30, Q = 1.30) ; contre ; achats et ventes ; entrees de la minute 120 a 210 ; regime tous ; tendance toute ; limite 0.5 u pendant 5 min ; stop 2.01 u ; objectif 1.42 u ; duree 20 min ; pause 0 min
+  placebo signe B NQ score sur bruit 4.64 : pic de volume (volume >= 4.02 x mediane) ; contre ; achats et ventes ; entrees de la minute 30 a 5 avant la fin ; regime agite ; tendance contre ; limite 0.5 u pendant 5 min ; stop 2.12 u ; objectif 1.12 u ; duree 15 min ; pause 5 min
+  placebo signe B NQ score sur bruit 4.31 : ecart au VWAP (z >= 1.19) ; suivre ; achats et ventes ; entrees de la minute 30 a 5 avant la fin ; regime tous ; tendance contre ; limite 0.5 u pendant 5 min ; stop 2.32 u ; objectif 1.36 u ; duree 20 min ; pause 15 min
+  placebo signe B ES score sur bruit 3.00 : choc d'une minute (|r1| >= 3.28 sigma) ; contre ; ventes seules ; entrees de la minute 15 a 5 avant la fin ; regime agite ; tendance toute ; limite 0.25 u pendant 3 min ; stop 2.65 u ; objectif 4.31 u ; duree 30 min ; pause 5 min
+  placebo signe B RTY score sur bruit 3.19 : ecart au VWAP (z >= 1.00) ; contre ; ventes seules ; entrees de la minute 60 a 210 ; regime agite ; tendance toute ; au marche ; stop 3.00 u ; objectif 1.74 u ; duree 30 min ; pause 0 min
+  placebo bruit B YM score sur bruit 3.89 : serie de barres (n = 4, z >= 2.84) ; contre ; achats et ventes ; entrees de la minute 60 a 300 ; regime agite ; tendance toute ; au marche ; stop 2.20 u ; objectif 1.02 u ; duree 10 min ; pause 15 min
+  placebo bruit B YM score sur bruit 3.85 : bougie (avalement sur 1 min, W 0.55, apres k = 5, z >= 1.59) ; suivre ; ventes seules ; entrees de la minute 1 a 60 ; regime tous ; tendance contre ; au marche ; stop 1.60 u ; objectif 1.76 u ; duree 20 min ; pause 5 min
+  placebo signe B YM score sur bruit 3.66 : mouvement de k minutes (k = 5, z >= 2.84) ; contre ; achats et ventes ; entrees de la minute 1 a 5 avant la fin ; regime agite ; tendance contre ; au marche ; stop 2.42 u ; objectif 1.62 u ; duree 30 min ; pause 0 min
+  placebo bruit B GC score sur bruit 3.02 : ecart au VWAP (z >= 4.01) ; suivre ; achats et ventes ; entrees de la minute 120 a 300 ; regime tous ; tendance avec ; au marche ; stop 2.32 u ; objectif 5.00 u ; duree 30 min ; pause 0 min
+  placebo bruit B GC score sur bruit 2.41 : bougie (meche sur 3 min, W 0.49, apres k = 10, z >= 0.19) ; suivre ; achats seuls ; entrees de la minute 15 a 210 ; regime agite ; tendance toute ; limite 0.1 u pendant 5 min ; stop 2.68 u ; objectif 2.61 u ; duree 15 min ; pause 15 min
+  placebo signe B GC score sur bruit 3.25 : serie de barres (n = 3, z >= 2.48) ; suivre ; ventes seules ; entrees de la minute 1 a 5 avant la fin ; regime agite ; tendance avec ; au marche ; stop 2.11 u ; objectif 1.02 u ; duree 20 min ; pause 5 min
+  placebo signe B GC score sur bruit 2.99 : mouvement de k minutes (k = 5, z >= 2.26) ; suivre ; ventes seules ; entrees de la minute 60 a 300 ; regime agite ; tendance avec ; au marche ; stop 2.46 u ; objectif 1.23 u ; duree 30 min ; pause 5 min
+  placebo bruit B CL score sur bruit 2.80 : choc d'une minute (|r1| >= 5.44 sigma) ; contre ; ventes seules ; entrees de la minute 30 a 5 avant la fin ; regime agite ; tendance contre ; au marche ; stop 3.00 u ; objectif 5.00 u ; duree 30 min ; pause 5 min
+  placebo bruit B CL score sur bruit 2.65 : mouvement de k minutes (k = 2, z >= 3.19) ; contre ; achats et ventes ; entrees de la minute 120 a 5 avant la fin ; regime agite ; tendance contre ; limite 0.1 u pendant 5 min ; stop 3.00 u ; objectif 3.91 u ; duree 30 min ; pause 5 min
+  placebo signe B CL score sur bruit 2.57 : pic de volume (volume >= 3.60 x mediane) ; contre ; achats et ventes ; entrees de la minute 15 a 120 ; regime agite ; tendance contre ; limite 0.5 u pendant 3 min ; stop 1.89 u ; objectif 4.25 u ; duree 30 min ; pause 15 min
+  placebo bruit B2 BTC score sur bruit 2.71 : choc d'une minute (|r1| >= 1.92 sigma) ; suivre ; ventes seules ; entrees de la minute 30 a 120 ; regime tous ; tendance avec ; au marche ; stop 1.07 u ; objectif 5.00 u ; duree 15 min ; pause 5 min
+  placebo signe B2 BTC score sur bruit 2.71 : pic de volume (volume >= 6.19 x mediane) ; suivre ; achats et ventes ; entrees de la minute 15 a 120 ; regime tous ; tendance toute ; au marche ; stop 0.59 u ; objectif 4.82 u ; duree 20 min ; pause 15 min
+  placebo bruit D NQ score sur bruit 4.02 : micro-compression puis cassure (k = 10 barres, Q = 0.93) ; suivre ; achats seuls ; entrees de la barre 30 (20 h 30) a 120 (4 h 00) ; regime tous ; tendance avec ; au marche ; stop 2.73 u ; objectif 2.79 u ; duree 30 barres ; pause 0 barres
+  placebo bruit D NQ score sur bruit 3.34 : serie de barres (n = 3, z >= 1.10) ; suivre ; achats seuls ; entrees de la barre 1 (18 h 05) a 210 (11 h 30) ; regime calme ; tendance toute ; au marche ; stop 0.59 u ; objectif 3.34 u ; duree 30 barres ; pause 0 barres
+  placebo signe D NQ score sur bruit 4.32 : micro-compression puis cassure (k = 5 barres, Q = 1.29) ; suivre ; achats et ventes ; entrees de la barre 120 (4 h 00) a 300 (19 h 00) ; regime agite ; tendance contre ; au marche ; stop 2.67 u ; objectif 2.63 u ; duree 30 barres ; pause 15 barres
+  placebo signe D NQ score sur bruit 4.07 : choc d'une minute (|r1| >= 2.36 sigma) ; contre ; achats seuls ; entrees de la barre 60 (23 h 00) a 120 (4 h 00) ; regime agite ; tendance contre ; au marche ; stop 3.00 u ; objectif 1.85 u ; duree 20 barres ; pause 15 barres
+  placebo bruit D ES score sur bruit 2.83 : minute d'evenement (barre 96 (2 h 00), k = 5 barres, z >= 0.30) ; suivre ; achats seuls ; entrees de la barre 30 (20 h 30) a 5 barres avant la fin ; regime tous ; tendance avec ; au marche ; stop 2.44 u ; objectif aucun ; duree 20 barres ; pause 15 barres
+  placebo bruit D ES score sur bruit 2.83 : choc d'une minute (|r1| >= 3.97 sigma) ; suivre ; achats seuls ; entrees de la barre 1 (18 h 05) a 60 (23 h 00) ; regime tous ; tendance avec ; au marche ; stop 0.34 u ; objectif 1.83 u ; duree 30 barres ; pause 15 barres
+  placebo signe D ES score sur bruit 2.28 : serie de barres (n = 6, z >= 0.62) ; suivre ; achats seuls ; entrees de la barre 30 (20 h 30) a 300 (19 h 00) ; regime tous ; tendance toute ; au marche ; stop 1.65 u ; objectif aucun ; duree 30 barres ; pause 0 barres
+  placebo bruit D GC score sur bruit 3.27 : choc d'une minute (|r1| >= 4.73 sigma) ; contre ; ventes seules ; entrees de la barre 120 (4 h 00) a 5 barres avant la fin ; regime agite ; tendance toute ; au marche ; stop 0.52 u ; objectif 2.25 u ; duree 20 barres ; pause 15 barres
+  placebo bruit D GC score sur bruit 2.43 : serie de barres (n = 6, z >= 0.86) ; suivre ; achats et ventes ; entrees de la barre 60 (23 h 00) a 210 (11 h 30) ; regime agite ; tendance toute ; au marche ; stop 2.39 u ; objectif 3.58 u ; duree 30 barres ; pause 5 barres
+  placebo signe D GC score sur bruit 3.24 : niveau franchi ou rejete (haut 30 premieres min, franchi, marge 0.07) ; suivre ; ventes seules ; entrees de la barre 120 (4 h 00) a 300 (19 h 00) ; regime agite ; tendance toute ; au marche ; stop 2.91 u ; objectif 3.02 u ; duree 15 barres ; pause 15 barres
+  placebo signe D GC score sur bruit 3.05 : ecart au VWAP (z >= 1.49) ; suivre ; ventes seules ; entrees de la barre 120 (4 h 00) a 210 (11 h 30) ; regime agite ; tendance avec ; au marche ; stop 1.22 u ; objectif 5.00 u ; duree 15 barres ; pause 15 barres
+
+Exploration COMPLETE.

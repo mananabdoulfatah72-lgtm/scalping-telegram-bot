@@ -1,0 +1,15 @@
+Partie A, exploration 2017-2022 (gains au prix d'aujourd'hui, frais compris), 40 jumeaux par permutation et 40 par signe, Benjamini-Hochberg a 10 % sur 12 tests ; 'bat le bruit' = le plus faible des deux
+
+marche  regle                                                  trades   t     net/trade  brut/trade  gagnants  95e perm. 95e signe  bat le bruit  BH  survivante
+NQ      A1 retournement apres une grande ouverture (Grant, Wolf, Yu)    188  -1.52   -111.28 $   -108.28 $      43%      1.58      1.31         2%   non  non
+NQ      A2 minute extreme, contre 1 minute                       1022  -2.31     -7.80 $     -4.80 $      48%     -0.22      1.01         8%   non  non
+NQ      A3 saut de 10 h 00, suivi de 10 h 01 a 10 h 02            193   0.92      5.04 $      8.04 $      55%      0.60      0.61        95%   non  non
+NQ      A4 mouvement de 10 minutes extreme, contre 10 minutes    3414   1.10      3.09 $      6.09 $      50%      0.34      0.50       100%   non  non
+NQ      A5a niveau rond, rebond (ordre limite)                   1109  -1.94     -6.99 $     -3.99 $      36%     -0.16      0.14        25%   non  non
+NQ      A5b niveau rond, cassure                                 4748  -1.72     -2.79 $      0.21 $      26%     -0.66     -1.41        75%   non  non
+ES      A1 retournement apres une grande ouverture (Grant, Wolf, Yu)    193  -0.61    -25.47 $    -20.97 $      49%      1.20      1.16        25%   non  non
+ES      A2 minute extreme, contre 1 minute                       1141  -2.81     -5.63 $     -1.13 $      45%     -3.44     -0.51        28%   non  non
+ES      A3 saut de 10 h 00, suivi de 10 h 01 a 10 h 02            190  -1.84     -5.58 $     -1.08 $      44%      0.04     -0.60        42%   non  non
+ES      A4 mouvement de 10 minutes extreme, contre 10 minutes    3438  -2.06     -3.11 $      1.39 $      47%     -2.69     -1.33        75%   non  non
+ES      A5a niveau rond, rebond (ordre limite)                    946  -5.89    -12.74 $     -8.24 $      34%     -1.35     -2.13         2%   non  non
+ES      A5b niveau rond, cassure                                 3745  -5.08     -5.56 $     -1.06 $      24%     -4.58     -3.53        40%   non  non
