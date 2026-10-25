@@ -571,3 +571,60 @@ corrigés et listés ici.
   Russell 0,23 à 0,28 ; argent 0,34 ; pétrole 0,40 ; devises 0,71 à 1,70 ; taux 1,06 à 1,64 ; gaz 1,78. Seuls l'essence
   (RB, 0,06), le platine (0,24) et le Brent (0,25), en contrats standard, rejoindraient la machine, mais il n'existe pas
   de minutes gratuites de ces futures, et `etude_large/` n'y a trouvé aucun avantage intraday même avant frais.
+
+## La zone de bruit filtrée : peut-on encore l'optimiser ? (25 octobre 2026, descriptif, aucun nouveau réglage testé)
+
+Demande de l'utilisateur : « une recherche profonde pour optimiser la zone de bruit filtre delta ».
+
+### Tout ce qui a déjà été essayé
+
+| Étude (branche) | Ce qui a été testé | Résultat |
+|---|---|---|
+| `zone_optimisation/` (recherche) | 108 réglages (largeur 0,75 à 1,5, 7 à 28 jours, contrôles de 15, 30 ou 60 min, 3 stops), choisis en walk-forward de 3 façons | aucune ne bat la zone d'origine hors échantillon ; même le meilleur réglage choisi après coup sur 2023 - 2026 ne fait que t 2,24 contre 2,00 |
+| `zone_failles/` (recherche) | données propres (adopté), 1 trade par jour, filtre GEX, achats seuls, stop sur le VWAP | seule la correction des données reste |
+| `zone_sources/` (recherche) | confirmation par l'ES, par le volume, tendance de fond, sortie du range de nuit, rebond après forte baisse | aucune retenue |
+| `zone_multi/` (recherche) | la zone sur ES, RTY, YM, or, pétrole, euro | toutes négatives après frais ; NQ seul |
+| `etude_large/` (affectionate-turing) | un modèle qui combine 10 informations (heure, force de la cassure, volatilité, ES, écart d'ouverture, tendance, VIX, rang du trade), walk-forward sur 2016 - 2026 ; la zone sur 27 marchés | modèle rejeté (il écarte surtout des gagnants) ; aucun autre marché |
+| `pistes/`, `phenomenes/`, `zone_implicite/`, `annonces/` (affectionate-turing) | sortie au VWAP, sortie à 16 h, renfort, zones décalées, soirs de résultats, confirmation par VIX, AUD/JPY, taux, dollar, bitcoin, nombres ronds, forme de la cassure, largeur tirée du VXN, ciblage de volatilité, annonces de 8 h 30 | rien ne passe tout ; « pas de zone les jours de la Fed » reste |
+| `entree_tardive/` (elegant-ptolemy), `zone_retour/` (affectionate-turing) | entrées en retard, sorties plus rapides, sortie au retour dans la zone | moins bien que le bot |
+| `filtre_h1/`, `zone_neutre/`, `relance/`, `delta_mesures/` | le filtre delta : approximations sur 15 ans (t 1,62, non confirmé), delta du QQQ et de London Strategic Edge (refusés), seuil de 1 %, proportion du volume, z-score, relance | le filtre brut reste ; aucune variante ne passe ; **106 trades seulement mesurés avec le vrai delta** |
+
+### Ce que disent les publications (recherche du 25 octobre 2026)
+
+- L'article d'origine (Zarattini, Aziz et Barbon, « Beat the Market », SPY, 2007 - 2024) n'a pas de suite publiée par
+  ses auteurs. Il a fini 4e des Quantpedia Awards 2025.
+- Une réplication indépendante sur les futures (NQ et ES, Databento, 2010 - 2026, frais réels) trouve la même chose
+  que nous : NQ t 2,74 sur toute la période, gagné surtout après 2018 ; ES nul ; après la publication (585 séances),
+  NQ t 1,37, non significatif.
+- Une autre réplication (SPY et ES) dit que l'avantage s'est comprimé depuis 2025 et que l'optimisation ne survit pas
+  au walk-forward (chiffres de son auteur, non vérifiés).
+- Un article qui règle tous les paramètres et les sorties (VWAP, « ladder ») annonce un Sharpe au-dessus de 3, mais
+  sur l'échantillon où il a réglé : c'est exactement ce que le walk-forward de `zone_optimisation/` a démenti.
+- Concretum (même équipe) compare 4 sorties sur un autre ETF : la sortie au VWAP, celle du bot, arrive première.
+
+### Ce que montrent les chiffres jusqu'au 20 octobre 2026 (`zone_annees.py` → `resultats/v5/zone_annees.txt`)
+
+Zone du bot sans filtre, 1 MNQ au prix d'aujourd'hui, frais compris :
+
+| Période | t | $ par séance |
+|---|---|---|
+| 2011 - 2017 | −2,31 | −13,8 |
+| 2018 - 2022 | +2,96 | +29,4 |
+| 2023 - 2026 | +2,07 | +20,3 |
+| 2025 - 2026 | +0,87 | +14,2 |
+| depuis la publication (juin 2024, 582 séances) | +1,05 | +14,4 |
+
+Par année : 2023 t +2,23 ; 2024 +1,02 ; 2025 +0,58 ; 2026 (jusqu'au 20 octobre) +0,74. **La zone gagne toujours, mais
+son avantage a environ diminué de moitié depuis 2024**, comme le dit la seconde réplication.
+
+### Conclusion
+
+1. **Aucun réglage ni filtre de prix à ajouter.** Les 108 réglages forment un plateau : le meilleur choisi après coup
+   ne gagne presque rien, et ce qui gagnait dans le passé perd ensuite. Avec un avantage qui faiblit, ajouter des
+   réglages ajoute surtout du risque de se tromper.
+2. **Le filtre delta est le seul levier encore ouvert, mais il manque de données** : 106 trades mesurés avec le vrai
+   delta. Sans export, il ne peut être jugé que par les trades réels, au fil de l'eau (environ 220 trades de zone par
+   an : la décision fixée à 150 trades arriverait vers fin 2027). Une possibilité sans effort pour l'utilisateur : que le
+   bot enregistre lui-même chaque jour le delta de chaque minute, comme il le lit déjà en direct (non fait : à décider).
+3. **Les vrais leviers restent ceux déjà trouvés** : un compte sans limite de temps (où l'avantage compte), une petite
+   taille sur le compte financé, pas de zone les jours de la Fed.

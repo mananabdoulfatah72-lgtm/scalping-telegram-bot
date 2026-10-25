@@ -1,0 +1,26 @@
+Zone du bot sans filtre, 1 MNQ au prix d'aujourd'hui (29688), frais 1,5 point par aller-retour, seances jouables (0 sans trade) ; derniere seance 2026-10-20
+
+2011  seances 233  trades 237     -5124 $  t -1.01
+2012  seances 243  trades 227     -1460 $  t -0.41
+2013  seances 245  trades 208     -3764 $  t -1.26
+2014  seances 239  trades 223     -3138 $  t -0.87
+2015  seances 246  trades 223     -2831 $  t -0.70
+2016  seances 247  trades 243     -5779 $  t -1.35
+2017  seances 245  trades 232     -1323 $  t -0.46
+2018  seances 244  trades 218    +15938 $  t +2.68
+2019  seances 245  trades 227     -1039 $  t -0.33
+2020  seances 247  trades 219     +6276 $  t +1.02
+2021  seances 247  trades 219     +3368 $  t +0.84
+2022  seances 246  trades 258    +11586 $  t +1.65
+2023  seances 244  trades 219     +8455 $  t +2.23
+2024  seances 245  trades 218     +4177 $  t +1.02
+2025  seances 243  trades 232     +3658 $  t +0.58
+2026  seances 198  trades 170     +2597 $  t +0.74
+
+2011-2017 : t -2.31, -23421 $, -13.79 $ par seance
+2018-2022 : t +2.96, +36130 $, +29.40 $ par seance
+2023-2026 : t +2.07, +18886 $, +20.31 $ par seance
+2024-2026 : t +1.25, +10431 $, +15.21 $ par seance
+2025-2026 : t +0.87, +6254 $, +14.18 $ par seance
+depuis la publication de l'article (juin 2024) : t +1.05, +8353 $, 582 seances
+t sur 252 seances glissantes : min -2.68 (2017-06-01), max +2.80 (2019-01-08), dernier +0.73 (2026-10-20)
