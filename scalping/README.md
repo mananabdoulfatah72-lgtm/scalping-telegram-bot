@@ -725,3 +725,30 @@ dans une même minute, stop avant objectif. Barres de 5 minutes pour la nuit (m�
   publiés sont négatifs), pivots, bandes de VWAP, initial balance, comblement de gap (preuves nulles ou statistiques de
   marche aléatoire ; voisins de familles déjà testées), dérive pré-FOMC (morte depuis 2015), ETF à levier, MOC,
   0DTE, tenue de marché, arbitrage (données ou latence hors de portée).
+
+### Résultats de la partie E (25 octobre 2026) : `resultats/e/partie_e.txt`
+
+**Aucune des 10 règles n'est retenue, aucune n'est intéressante.** NQ, 1 MNQ au prix d'aujourd'hui, frais compris.
+
+| Règle | Trades | t | Net par trade | ≤ 2022 | ≥ 2023 | Après publication | Bat le bruit | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| E1 gamma d'heure en heure | 3 773 séances | **−3,92** | −32,5 $ | −3,70 | −1,40 | −0,50 | 2 % | non (les frais de 6 trades par jour écrasent tout) |
+| E1b gamma en fin de séance | 3 432 | −1,48 | −4,0 $ | −2,74 | +1,74 | +0,79 | 25 % | non |
+| E2 conférence de presse de la Fed | 70 | +1,10 | +75,8 $ | +0,68 | +1,06 | +0,14 | 85 % | non |
+| E3 retournement de la Fed | 94 | +0,42 | +29,5 $ | +1,32 | −1,39 | −0,45 | 52 % | non |
+| E4 rééquilibrage 60/40 | 569 | +1,24 | +37,6 $ | +1,40 | +0,01 | +0,44 | 95 % | non |
+| E5 nuit avant NFP et ISM | 318 | +0,57 | +13,0 $ | +0,70 | −0,06 | +0,24 | 25 % | non |
+| E6 dérive de 2 h à 3 h | 1 171 | **+2,75** | +9,5 $ | **+3,25** | **−0,26** | +0,86 | 95 % | non : morte depuis 2023 |
+| E7 règle des 80 % | 885 | +0,35 | +3,2 $ | +0,61 | −0,47 | — | 78 % | non |
+| E8 « Oops » de Williams | 1 001 | +1,16 | +20,0 $ | +1,02 | +0,57 | — | 92 % | non (sous 1,65) |
+| E9 cassure des extrêmes de la nuit | 3 252 | +1,13 | +11,2 $ | +1,00 | +0,54 | — | 90 % | non (sous 1,65) |
+
+- **E6 confirme ce que ses propres auteurs ont publié en 2026** : la dérive de nuit entre 2 h et 3 h existait (t 3,25
+  jusqu'en 2022), puis a disparu (t −0,26 depuis 2023).
+- **Le régime gamma (E1)** est la pire : changer de sens chaque heure coûte 6 allers-retours par jour, et le proxy GEX
+  du S&P 500 ne donne rien.
+- **E2, E8 et E9 sont légèrement positives sur les deux périodes** (t 1,1 à 1,2), mais pas plus que ce que donne un
+  faux marché sur 10 : ce n'est pas assez pour en faire des candidates.
+- Pour information : avec les 15 réunions de la Fed tombées un jour de changement de contrat, E2 fait t 0,57.
+- Relecture indépendante arrêtée à la demande de l'utilisateur (économiser la limite de session) ; le code a passé les
+  tests de non-regard vers le futur et une vérification à la main de trades E2, E3, E5 et E8.
