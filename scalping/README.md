@@ -983,3 +983,30 @@ Supertrend fait moins bien que la zone seule, surtout depuis 2023 (42,9 % contre
   challenges expirés par des challenges perdus.
 - C'est le constat de `etude_large/` (partie D) : sur Bulenox 30 jours, la réussite tourne autour de 50 % quelle que soit
   la stratégie ; ajouter des stratégies ou grossir la taille n'y change presque rien.
+
+### Résultats de la version 5 (25 octobre 2026) : `resultats/v5/selection.txt`, `resultats/v5/candidats.json`
+
+252 machines (14 couples piste-marché × 3 sortes × 6 graines), environ 890 000 stratégies distinctes sur les vraies
+données et 1,78 million sur les deux bruits. **Empreinte de la liste figée pour le coffre de l'avenir : `candidats.json`
+sha256 `3aee9308e03cb6f526a7f1faaf05d065be881f2b773578ed58250bb847c61b0e`** (écrite le 25 octobre, avant le 1er novembre 2026).
+
+| Couple | Admises aux trois conditions : vrai (6 graines) / bruits (12 graines) | Barrière du bruit | Candidates (t au contrôle 2023 - 2026) |
+|---|---|---|---|
+| B NQ | 113 / 69 | 2,76 | **3,28** (micro-compression, contre, ventes seules, 133 trades) et **2,81** (mouvement de 15 min, suivre, ventes seules, 104 trades) |
+| B GC (or) | 51 / 2 | 2,00 | 2,07 (mouvement de 30 min, suivre, achats seuls) et 2,03 (série de 7 barres, suivre) |
+| B CL (pétrole) | 9 / 6 | 2,06 | 2,30 (niveau rond franchi, suivre, ventes seules) |
+| B RTY | 1 / 0 | 1,65 | 1,95 (pic de volume, suivre, achats seuls) |
+| B ES, YM, 6E ; B2 BTC ; nuit (6 marchés) | — | 1,65 à 3,81 | aucune |
+
+- **6 candidates, 0 panier candidat, 4 placebos suivis** (sur les 4 marchés qui ont une candidate). m = 6 : le seuil
+  de « retenue » dans l'avenir sera t ≥ 2,39.
+- Toutes les candidates sont **sans lien avec la zone** (corrélation de −0,07 à +0,03) : si l'une d'elles se
+  confirmait, ce serait un vrai complément.
+- **Nuit : rien.** Les bruits y produisent des scores plus hauts que le vrai (barrière 3,81 sur le NQ de nuit).
+- Les paniers ne valent rien, comme en version 4 (NQ de jour : t −0,50).
+- **À lire avec prudence** : ces candidates ont été choisies parmi des milliers d'admises sur 2023 - 2026, qui devient
+  ainsi leur période de choix ; leur t au contrôle est gonflé par ce choix (la barrière du bruit corrige en partie). Elles
+  tradent peu (30 à 55 trades par an) : même vraies, elles ne se confirmeront qu'en 2 à 4 ans de suivi. **Aucune n'entre
+  dans le bot.**
+- Suivi à partir du 2 novembre : le NQ est relevé chaque jour par le robot de `main` ; l'or, le pétrole et le Russell
+  demandent un relevé des minutes de Yahoo au moins toutes les 4 semaines (outil à écrire, sur accord de l'utilisateur).
