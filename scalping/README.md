@@ -836,3 +836,22 @@ d'aujourd'hui, frais 1 $ + 1 tick par ordre) :
 **Décision** (comme E et F, pour 3 tests) : retenue si t ≥ 2,13 (Bonferroni), positive avant et après 2023 et au-dessus de
 95 % des jumeaux de chaque bruit (40 + 40, la zone recalculée sur chaque jumeau) ; intéressante si t ≥ 1,65, positive sur
 les deux périodes et au-dessus de 90 % des jumeaux. Pour information : corrélation avec la zone.
+
+### Résultats de la partie G (25 octobre 2026) : `resultats/g/partie_g.txt`
+
+- **Contrôle** : la zone recalculée redonne les 3 562 trades de la zone vérifiée, à 100 %.
+- **Carte de l'élan** (gain moyen des 30 minutes suivantes dans le sens de l'élan du jour, avant frais) :
+
+| État de la zone au contrôle | ≤ 2022 | ≥ 2023 |
+|---|---|---|
+| **en position** (prix hors de la bande) | **+1,05 pb, t 4,05** | **+1,16 pb, t 2,39** |
+| à plat, élan faible (\|e\| < 0,5) | −0,38 pb, t −1,71 | +0,18 pb, t 0,44 |
+| à plat, dans la bande, élan net (\|e\| ≥ 0,5) | +0,08 pb, t 0,34 | −0,34 pb, t −0,92 |
+
+- **Règles** : G1 t −2,69 (−16,6 $ par séance), G2 t 0,71, G3 t 0,95 (et −0,22 depuis 2023). **Aucune retenue ni
+  intéressante.**
+
+**Ce que ça veut dire :** l'élan intraday du NQ n'existe que **quand le prix est sorti de la bande de bruit**, c'est-à-dire
+exactement quand la zone est en position. À l'intérieur de la bande, il n'y a pas d'élan, ni avant ni après 2023. La zone
+capte donc déjà tout l'élan intraday mesurable du NQ ; une autre stratégie d'élan ne ferait que la doubler (c'est aussi
+ce que montraient les cassures F2, F3, E9 et le « frog in the pan », corrélés à la zone).
