@@ -5,6 +5,7 @@ l'entrainement) est jouee sur le controle (2023 - fin des donnees), dont on gard
 16) par sorte : vrai, bruit par permutation, bruit par signe. Ecrit resultats/v5/machine_<piste>_<marche>_<sorte>_<graine>.npz.
 Lancer : python3 scalping/vague5.py B B2 D"""
 import multiprocessing as mp
+import os
 import sys
 import time
 
@@ -74,12 +75,15 @@ def tache(args):
         n_c[k] = n
         par_an[k] = [np.nansum(gain[ans == a]) for a in ANNEES]
     SORTIE.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(SORTIE / f"machine_{piste}_{marche}_{sorte}_{graine}.npz", genomes=genomes[adm], t_tr=t_tr[adm],
-                        n_tr=n_tr[adm], t_c=t_c, n_c=n_c, par_an=par_an, gains=gains, jours=d["jours"][sc:s1],
-                        distinctes=len(genomes))
+    final = SORTIE / f"machine_{piste}_{marche}_{sorte}_{graine}.npz"
+    tmp = final.with_suffix(".tmp")
+    with open(tmp, "wb") as fh:                   # ecriture atomique : un fichier tronque ne peut pas etre repris
+        np.savez_compressed(fh, genomes=genomes[adm], t_tr=t_tr[adm], n_tr=n_tr[adm], t_c=t_c, n_c=n_c, par_an=par_an,
+                            gains=gains, jours=d["jours"][sc:s1], distinctes=len(genomes))
+    os.replace(tmp, final)
+    # le journal ne montre pas le controle (relecture v5) : il se lit seulement dans selection5.py
     return (f"{piste} {marche} {sorte} {graine} : {len(genomes)} strategies distinctes en {time.time() - t0:.0f} s, "
-            f"admises {len(adm)}, meilleur t entrainement {t_tr.max():.2f}, meilleur t controle "
-            f"{t_c.max() if len(adm) else float('nan'):.2f}")
+            f"admises {len(adm)}, meilleur t entrainement {t_tr.max():.2f}")
 
 
 def main():

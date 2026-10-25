@@ -37,20 +37,24 @@ MARCHES = [
 
 
 def mouvements(etf):
+    """Mouvement median sur l'horloge (relecture v5) : chaque jour est mis sur la grille 9 h 30, 9 h 35, ... 15 h 55 ;
+    une paire (debut, fin) ne compte que si les deux barres existent (les ETF peu echanges ont des barres manquantes)."""
     b = pd.read_csv(LIBRES / "etf_5min" / f"{etf}.csv.gz", usecols=["t", "c"])
     b = b[b["t"] >= DEBUT]
     t = pd.to_datetime(b["t"])
-    m = t.dt.hour * 60 + t.dt.minute
-    b = b[(m >= 570) & (m < 960)].copy()
-    b["jour"] = b["t"].str[:10]
+    m = (t.dt.hour * 60 + t.dt.minute).to_numpy()
+    garde = (m >= 570) & (m < 960) & ((m - 570) % 5 == 0)
+    jours = b["t"].str[:10].to_numpy()[garde]
+    case = (m[garde] - 570) // 5
+    c = b["c"].to_numpy(float)[garde]
+    uj, ij = np.unique(jours, return_inverse=True)
+    grille = np.full((len(uj), 78), np.nan)
+    grille[ij, case] = c
     out = {}
     for k, nom in ((1, 5), (3, 15), (6, 30)):
-        r = []
-        for _, g in b.groupby("jour"):
-            c = g["c"].to_numpy(float)
-            if len(c) > k:
-                r.append(np.abs(c[k::k] / c[:-k:k][:len(c[k::k])] - 1))
-        out[nom] = float(np.median(np.concatenate(r))) * 1e4
+        a, z = grille[:, :-k:k], grille[:, k::k]
+        r = np.abs(z / a - 1)[np.isfinite(a) & np.isfinite(z)]
+        out[nom] = float(np.median(r)) * 1e4
     return out
 
 

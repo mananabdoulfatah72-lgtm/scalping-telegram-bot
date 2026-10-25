@@ -6,7 +6,9 @@ l'avenir).
 - Vrai : les admises des 6 graines sont reunies et les genomes en double retires (memes donnees, memes chiffres).
 - Bruit : chaque graine a ses propres donnees ; une admise est le couple (graine, genome), rien n'est retire.
 - Panier : moyenne des gains quotidiens de toutes les admises (seance non jouable = pas de trade, 0), sur les seances
-  ou au moins une admise est jouable."""
+  ou au moins une admise est jouable. Un panier de bruit sans aucune admise compte t = 0.
+- Corrections de la contre-revue v5 : placebos marques suivis ou non ; paniers placebo ; constantes de calcul figees
+  dans candidats.json ; JSON strict ; candidats.json non reecrit sans --force."""
 import hashlib
 import json
 import os
@@ -31,7 +33,7 @@ def lire(piste, marche, sorte):
         f = SORTIE / f"machine_{piste}_{marche}_{sorte}_{g}.npz"
         if f.exists():
             z = np.load(f)
-            out.append({k: z[k] for k in z.files} | {"graine": g})
+            out.append({k: z[k] for k in z.files} | {"graine": g, "sorte": sorte})
     return out
 
 
@@ -47,7 +49,7 @@ def admises(runs, dedoublonner):
                 vus.add(k)
             out.append(dict(genome=r["genomes"][i], t_tr=float(r["t_tr"][i]), n_tr=int(r["n_tr"][i]),
                             t_c=float(r["t_c"][i]), n_c=int(r["n_c"][i]), par_an=r["par_an"][i], gains=r["gains"][i],
-                            graine=r["graine"]))
+                            graine=r["graine"], sorte=r["sorte"]))
     return out
 
 
@@ -75,6 +77,26 @@ def panier(liste, jours):
     par_an = np.array([p[jouable & (ans == a)].sum() for a in V.ANNEES])
     return dict(n=len(liste), t=K.t_stat(p[jouable]), moyenne=float(p[jouable].mean()), par_an=par_an, serie=p,
                 jouable=jouable)
+
+
+def constantes(piste, marche):
+    """Constantes de calcul du marche, figees pour le coffre de l'avenir (le prix de reference de la nuit, par exemple,
+    changerait si les caches etaient refaits avec de nouveaux mois)."""
+    z = np.load(MA.fichier(piste, marche, "complet"))
+    return {k: float(z[k]) for k in ("pt", "tick", "pas", "frais", "pref", "rond", "m0", "n")}
+
+
+def propre(x):
+    """JSON strict : NaN et infinis deviennent null."""
+    if isinstance(x, dict):
+        return {k: propre(v) for k, v in x.items()}
+    if isinstance(x, (list, tuple)):
+        return [propre(v) for v in x]
+    if isinstance(x, (float, np.floating)):
+        return float(x) if np.isfinite(x) else None
+    if isinstance(x, np.integer):
+        return int(x)
+    return x
 
 
 def zone_quotidienne():
@@ -132,29 +154,50 @@ def main():
                          + (f"{p['t']:5.2f} ({p['moyenne']:+.2f} $/seance ; " + " ".join(f"{a}:{v:+.0f}" for a, v in
                                                                                     zip(V.ANNEES, p['par_an'])) + ")"
                             if p else "  -"))
+            L.append("  graine par graine (admises / meilleur t controle / panier t) :")
+            for so in MA.SORTES:
+                el = []
+                for r in runs[so]:
+                    a = admises([r], dedoublonner=False)
+                    p = panier(a, jours)
+                    el.append(f"{len(a)}/{max([x['t_c'] for x in a], default=float('nan')):.2f}/"
+                              f"{p['t'] if p else float('nan'):.2f}")
+                L.append(f"    {so:<6} " + "  ".join(el))
             L.append(f"  barriere du bruit : {barriere:.2f}")
+            cst = constantes(piste, marche)
+            n_cand = 0
             for x in deux_meilleures([x for x in ok["reel"] if x["t_c"] > barriere]):
                 c = correlation_zone(np.nan_to_num(x["gains"]), jours, np.isfinite(x["gains"]), zq)
                 d = dict(type="candidate", piste=piste, marche=marche, genome=x["genome"].tolist(), t_tr=x["t_tr"],
                          n_tr=x["n_tr"], t_c=x["t_c"], n_c=x["n_c"], par_an=x["par_an"].tolist(), barriere=barriere,
-                         corr_zone=c, description=CO.decrire(x["genome"], piste))
+                         corr_zone=c, constantes=cst, description=CO.decrire(x["genome"], piste))
                 candidates.append(d)
+                n_cand += 1
                 L.append(f"  CANDIDATE t controle {x['t_c']:.2f} ({x['n_c']} trades, entrainement t {x['t_tr']:.2f}), "
                          f"correlation zone {c:+.2f} : {d['description']}")
-            for x in deux_meilleures(ok["bruit"] + ok["signe"]):
-                placebos.append(dict(type="placebo", piste=piste, marche=marche, genome=x["genome"].tolist(),
-                                     t_c_bruit=x["t_c"], graine=int(x["graine"]), description=CO.decrire(x["genome"], piste)))
             pr = pan["reel"]
+            passe = False
             if pr:
                 cz = correlation_zone(pr["serie"], jours, pr["jouable"], zq)
-                bruits = [pan[so]["t"] for so in ("bruit", "signe") if pan[so]]
+                bruits = [pan[so]["t"] if pan[so] else 0.0 for so in ("bruit", "signe")]   # aucun admis : t = 0
                 passe = (pr["t"] >= 2 and int(np.sum(pr["par_an"] > 0)) >= 3 and all(pr["t"] > b for b in bruits))
-                L.append(f"  panier reel : t {pr['t']:.2f}, correlation zone {cz:+.2f}, "
-                         + ("PANIER CANDIDAT" if passe else "non retenu"))
+                L.append(f"  panier reel : t {pr['t']:.2f} (paniers de bruit {bruits[0]:.2f} et {bruits[1]:.2f}), "
+                         f"correlation zone {cz:+.2f}, " + ("PANIER CANDIDAT" if passe else "non retenu"))
                 if passe:
                     paniers_cand.append(dict(type="panier", piste=piste, marche=marche, n=pr["n"], t_c=pr["t"],
-                                             par_an=pr["par_an"].tolist(), corr_zone=cz,
+                                             par_an=pr["par_an"].tolist(), corr_zone=cz, constantes=cst,
                                              genomes=[x["genome"].tolist() for x in adm["reel"]]))
+                    for so in ("bruit", "signe"):          # panier placebo : les admises de ce bruit, jouees sur le vrai
+                        if adm[so]:
+                            placebos.append(dict(type="panier placebo", piste=piste, marche=marche, sorte=so,
+                                                 n=len(adm[so]), t_c_bruit=pan[so]["t"], suivi=True, constantes=cst,
+                                                 genomes=[x["genome"].tolist() for x in adm[so]]))
+            suivi = bool(n_cand or passe)
+            for x in deux_meilleures(ok["bruit"] + ok["signe"]):
+                placebos.append(dict(type="placebo", piste=piste, marche=marche, genome=x["genome"].tolist(),
+                                     sorte=x["sorte"], graine=int(x["graine"]), t_tr_bruit=x["t_tr"], t_c_bruit=x["t_c"],
+                                     n_c_bruit=x["n_c"], par_an_bruit=x["par_an"].tolist(), suivi=suivi, constantes=cst,
+                                     description=CO.decrire(x["genome"], piste)))
             resume.append((piste, marche, len(ok["reel"]), len(ok["bruit"]) + len(ok["signe"]), barriere,
                            max([x["t_c"] for x in ok["reel"]], default=float("nan"))))
             L.append("")
@@ -165,15 +208,23 @@ def main():
     for p, mm, a, b, bar, best in resume:
         L.append(f"  {p:<3} {mm:<4} {a:6d} {b:6d}   barriere {bar:5.2f}   meilleur reel {best:5.2f}")
     L.append("")
-    L.append(f"CANDIDATES : {len(candidates)} ; PANIERS CANDIDATS : {len(paniers_cand)} ; PLACEBOS : {len(placebos)} ; "
+    L.append(f"CANDIDATES : {len(candidates)} ; PANIERS CANDIDATS : {len(paniers_cand)} ; PLACEBOS : "
+             f"{sum(p['suivi'] for p in placebos)} suivis sur {len(placebos)} listes ; "
              f"m = {m}, seuil de Bonferroni pour le coffre de l'avenir : {seuil:.2f}")
     L.append("Selection COMPLETE." if not manque else "Selection INCOMPLETE : " + " ; ".join(manque))
     txt = "\n".join(L)
     (SORTIE / "selection.txt").write_text(txt + "\n")
     if not manque:
+        if zq is None:
+            sys.exit(f"Trades de la zone introuvables ({ZONE}) : donner ZONE_TRADES ; candidats.json n'est pas ecrit.")
         f = SORTIE / "candidats.json"
-        f.write_text(json.dumps(dict(candidates=candidates, paniers=paniers_cand, placebos=placebos, m=m,
-                                     seuil_bonferroni=seuil, debut_coffre="2026-11-01"), indent=1, ensure_ascii=False))
+        texte = json.dumps(propre(dict(candidates=candidates, paniers=paniers_cand, placebos=placebos, m=m,
+                                       seuil_bonferroni=seuil, debut_coffre="2026-11-01")),
+                           indent=1, ensure_ascii=False, allow_nan=False)
+        if f.exists() and f.read_text() != texte and "--force" not in sys.argv:
+            sys.exit("candidats.json existe deja avec un autre contenu : la liste du coffre est figee (--force pour "
+                     "passer outre, a justifier dans le README).")
+        f.write_text(texte)
         L.append(f"candidats.json sha256 {hashlib.sha256(f.read_bytes()).hexdigest()}")
         (SORTIE / "selection.txt").write_text("\n".join(L) + "\n")
     print("\n".join(L))

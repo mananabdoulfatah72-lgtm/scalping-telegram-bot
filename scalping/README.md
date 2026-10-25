@@ -538,7 +538,7 @@ bruit couvre aussi la période de contrôle. Fichiers `resultats/v5/machine_<pis
 - **Sources** : NQ de jour, `zone/robot/nq_1min.csv.gz` de `main` (le robot de la zone l'enrichit chaque jour) ; autres
   marchés de jour et bitcoin, minutes de Yahoo (contrats continus), qui ne garde que 30 jours : elles devront être
   relevées au moins toutes les 4 semaines ; nuit, HistData (même source que l'exploration), mois par mois. L'outil de
-  relevé n'est écrit que pour les marchés qui ont une candidate, un placebo ou un panier candidat. Une séance manquante
+  relevé n'est écrit que pour les marchés qui ont une candidate ou un panier candidat. Une séance manquante
   est sautée, jamais remplacée par une autre source choisie après coup.
 - **Points de lecture** : 1er février, 1er mai, 1er août et 1er novembre 2027, puis tous les 3 mois.
 - **Écartée** : t du coffre ≤ −1 avec au moins 50 trades, à un point de lecture.
@@ -549,7 +549,11 @@ bruit couvre aussi la période de contrôle. Fichiers `resultats/v5/machine_<pis
 - Les placebos sont lus de la même façon : s'ils passent aussi souvent que les candidates, le palier ne prouve rien.
   Précision (25 octobre, avant le calcul de la sélection) : un placebo n'est suivi que sur un couple piste-marché qui a
   une candidate ou un panier candidat, puisqu'il sert de comparaison sur le même marché ; les autres sont listés, pas
-  suivis.
+  suivis. Précision de la contre-revue (avant la sélection) : un panier candidat a aussi ses **paniers placebo**, un par
+  bruit : toutes les admises de ce bruit, chacune pour 1/N contrat, jouées sur les vraies données à venir.
+- **Constantes figées** : prix de référence, valeur du point, tick, grille des prix, frais, pas des niveaux ronds, début
+  et longueur de la séance sont écrits dans `candidats.json` pour chaque entrée ; l'outil de relevé les reprend tels
+  quels (refaire les caches avec de nouveaux mois changerait, par exemple, le prix de référence de la nuit).
 - La nuit garde la règle de réalisme de la version 4 : jamais dans le robot sans confirmation sur de vraies
   transactions de nuit du future.
 
@@ -560,20 +564,51 @@ ans. Seule une stratégie nettement plus forte que la zone se confirmerait en qu
 
 ### Contre-revue
 
-Code de la vague et de la sélection relu par un relecteur indépendant avant la lecture du contrôle ; ses défauts sont
-corrigés et listés ici.
+Code de la vague et de la sélection relu par un relecteur indépendant avant la lecture du contrôle (25 octobre, la vague
+en était à 14 tâches sur 252). **Aucun défaut critique** : la vague est conforme aux règles et ne regarde pas en avant
+(il a vérifié que changer les données du contrôle ne change aucune stratégie trouvée, que l'entraînement des bruits
+est identique au bit près avec ou sans les mois de contrôle, et que les indicateurs sont causaux). Défauts corrigés,
+tous dans `selection5.py`, `couts.py` et ce texte (la vague en cours n'a pas à être relancée) :
+
+| # | Défaut | Correction |
+|---|---|---|
+| 1 | la précision « placebos suivis seulement sur un couple avec candidate » n'était pas codée | drapeau `suivi` par placebo, compté à part |
+| 2 | le journal de la vague affiche le meilleur t du contrôle de chaque tâche | retiré du code ; pour la vague en cours (lancée avec l'ancien code), seules les 2 premières lignes ont été lues (t 1,37 et 1,45), plus rien ensuite avant la sélection |
+| 3 | constantes de calcul (prix de référence de la nuit…) pas figées | écrites dans `candidats.json` |
+| 4 | un panier candidat n'avait pas de placebo comparable | paniers placebo (ci-dessus) |
+| 5 | JSON avec NaN possibles ; fichier des trades de la zone absent sans erreur | JSON strict ; arrêt si le fichier manque |
+| 6 | `candidats.json` réécrivable après publication de l'empreinte | refusé sans `--force` |
+| 7 | un placebo ne gardait pas sa sorte de bruit ni ses chiffres | ajoutés |
+| 8 | écriture des fichiers de la vague non atomique | atomique pour les prochains calculs |
+| 9 | un panier de bruit sans aucune admise sortait de la comparaison sans le dire | compte t = 0, affiché |
+| 10 | comparaisons réel / bruit asymétriques (12 jeux de bruit contre un vrai) | détail graine par graine affiché (admises, meilleur t, panier) |
+| 11 | `couts.py` comptait les fenêtres en barres : sur les ETF peu échangés, la fenêtre s'allongeait | grille de l'horloge, paires complètes seulement |
+| 12 | même séance 9 h 30 - 16 h pour tous dans `couts.py` (or et pétrole un peu défavorisés) | noté, ne change aucune conclusion |
+| 13 | conclusion des coûts trop forte (voir ci-dessous) | réécrite |
+| 14 | mots du panier v4 | précisés ci-dessous |
+| 15 | le Russell commence le 10 juillet 2017 : son entraînement aussi | noté |
+
+Sur la question de la première minute réelle gardée dans les bruits : sans effet sur les candidates (aucune entrée
+pendant la minute 0, et les minutes suivantes du bruit sont permutées ou de signe tiré au hasard) ; ce que les bruits
+gardent du réel (tendance du mois, profil de la journée) ne peut que relever la barrière.
 
 ### Lu après l'écriture de ces règles (descriptif)
 
 - **Panier de la version 4** (`ensemble_v4.py` → `resultats/ensemble_v4.txt`, coffre déjà ouvert) : il ne sauve rien.
-  NQ de jour : t 5,05 en exploration, **0,74** au coffre (paniers de bruit 0,11 et 0,22) ; NQ de nuit 5,95 → 0,25 (bruit
-  par permutation 0,73) ; ES de jour 4,75 → −2,90 ; YM 3,53 → −1,07 ; ES de nuit 3,16 → −0,81. La tendance positive du NQ
-  de jour vient de stratégies très liées entre elles (corrélation moyenne 0,38), donc d'une seule idée.
+  NQ de jour : t 5,05 en exploration, **0,74** au coffre (paniers placebo, c'est-à-dire stratégies trouvées sur bruit
+  rejouées sur les vraies données : 0,11 et 0,22) ; NQ de nuit 5,95 → 0,25 (placebo par permutation 0,73) ; ES de jour
+  4,75 → −2,90 ; YM 3,53 → −1,07 ; ES de nuit 3,16 → −0,81. La tendance positive du NQ de jour vient de stratégies très
+  liées entre elles (corrélation moyenne 0,38), donc d'une seule idée. (Dans ce calcul, l'exploration de la nuit est
+  mesurée sur 2017 - 2022 et une séance non jouable compte 0.)
 - **Coûts par marché** (`couts.py` → `resultats/v5/couts.txt`) : rapport du coût d'un aller-retour au mouvement médian de
-  15 minutes, 2023 - 2026. NQ (MNQ) **0,09**, de loin le plus favorable des marchés à contrat micro ; YM, or, ES, bitcoin,
-  Russell 0,23 à 0,28 ; argent 0,34 ; pétrole 0,40 ; devises 0,71 à 1,70 ; taux 1,06 à 1,64 ; gaz 1,78. Seuls l'essence
-  (RB, 0,06), le platine (0,24) et le Brent (0,25), en contrats standard, rejoindraient la machine, mais il n'existe pas
-  de minutes gratuites de ces futures, et `etude_large/` n'y a trouvé aucun avantage intraday même avant frais.
+  15 minutes, 2023 - 2026, fenêtres sur l'horloge. NQ (MNQ) **0,09**, de loin le plus favorable des marchés à contrat
+  micro ; YM, or, ES, bitcoin, Russell 0,23 à 0,28 ; argent 0,34 ; pétrole 0,40 ; cuivre 0,45 ; palladium 0,52 ; soja
+  0,73 ; devises 0,88 à 1,93 ; taux 1,06 à 1,64 ; blé et maïs 1,09 et 1,76 ; gaz 1,78. La machine contient déjà le
+  pétrole (0,40) et l'euro (1,14) : sur le seul critère des coûts, l'essence (RB, 0,08), le platine (0,24), le Brent
+  (0,25), l'argent (0,34), le cuivre (0,45) et le palladium (0,52) pourraient la rejoindre. Mais il n'existe pas de
+  minutes gratuites de ces futures, et dans `etude_large/` (ETF en 5 minutes) tout y est négatif après frais ; les
+  quelques t positifs avant frais (2,2 à 2,8) viennent d'ETF peu échangés dont ce même README juge les chiffres avant
+  frais inexploitables.
 
 ## La zone de bruit filtrée : peut-on encore l'optimiser ? (25 octobre 2026, descriptif, aucun nouveau réglage testé)
 
