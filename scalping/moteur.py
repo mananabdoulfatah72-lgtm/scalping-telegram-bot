@@ -186,9 +186,10 @@ def _cond(g, s, t, O, H, L, C, V, sigp, vwap, hh, ll, ph, pl, pc, vm, X, sxp, ro
             r0 = np.floor(C[s, t - 1] / rond + 1e-9)
             if conf == 0:
                 r1 = np.floor(C[s, t] / rond + 1e-9)
-                if r1 > r0 and C[s, t] - r1 * rond >= marge:
+                # ecart au niveau compte en mailles entieres (pas de virgule flottante quand la marge vaut 0)
+                if r1 > r0 and np.round((C[s, t] - r1 * rond) / (2.0 * h)) * 2.0 * h >= marge - 1e-12:
                     return 1
-                if r1 < r0 and (r1 + 1.0) * rond - C[s, t] >= marge:
+                if r1 < r0 and np.round(((r1 + 1.0) * rond - C[s, t]) / (2.0 * h)) * 2.0 * h >= marge - 1e-12:
                     return -1
                 return 0
             nv = (r0 + 1) * rond                 # rejet du niveau rond au-dessus ou au-dessous (a une demi-maille pres)

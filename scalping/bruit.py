@@ -66,7 +66,8 @@ def _permuter(d, perms):
 
 def _retourner(d, signes):
     """signes (S, n) de +1 / -1 ; la premiere minute n'est jamais retournee. Version 4 (seconde relecture) : chaque mois,
-    toutes les minutes retournees sont decalees d'une meme constante pour que le mouvement du mois soit le vrai ; le
+    toutes les minutes 1 a n-1 des seances completes sont decalees d'une meme constante pour que le mouvement du mois soit
+    le vrai ; le
     niveau des prix reste donc celui des vraies donnees a chaque fin de mois (sans cela il derive au hasard, ce qui
     change le poids du tick)."""
     ro, rh, rl, rc = _rapports(d)

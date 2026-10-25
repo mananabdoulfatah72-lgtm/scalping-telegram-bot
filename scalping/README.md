@@ -297,7 +297,7 @@ ses recalculs indépendants donnent **0 écart** sur 17 597 trades de B, B2 et D
 
 | # | Défaut | Correction |
 |---|---|---|
-| 1 | Le bruit par signe perd le niveau des prix (il dérive au hasard : NQ 0,69 à 0,92 fois le vrai, NQ de nuit 0,39 à 0,58), donc le tick y pèse plus lourd : ce bruit était plus dur que le vrai et pouvait abaisser la barrière | chaque mois, les minutes retournées sont décalées d'une même constante pour que le mouvement du mois soit le vrai : le niveau est exactement le vrai à chaque fin de mois (dans le mois : NQ de 0,89 à 1,15) |
+| 1 | Le bruit par signe perd le niveau des prix (il dérive au hasard : NQ 0,69 à 0,92 fois le vrai, NQ de nuit 0,39 à 0,58), donc le tick y pèse plus lourd : ce bruit était plus dur que le vrai et pouvait abaisser la barrière | chaque mois, toutes les minutes (sauf la première de chaque séance) sont décalées d'une même constante pour que le mouvement du mois soit le vrai : le niveau est exactement le vrai à chaque fin de mois (dans le mois : NQ de 0,82 à 1,12) |
 | 2 | Rien n'empêchait d'ouvrir le coffre avant la fin de toutes les explorations | `exploration` inscrit la complétude (4 graines × 3 sortes par marché, parties A et C) ; `ouvrir` refuse si quelque chose manque ; `exploration` refuse une fois le coffre ouvert |
 | 3 | Nuit : la barre de 18 h manque souvent en 2023 - 2025 (43 % des nuits du coffre incomplètes) | une nuit est complète si une barre existe avant 18 h 15 ; les premières barres manquantes sont recopiées à plat (décidé sur la seule présence des barres) |
 | 4 | Rejet d'un niveau rond comparé en virgule flottante (F5, devises : +8 % à +35 % de signaux) | comparaison à une demi-maille |
@@ -318,8 +318,25 @@ les deux grilles sont égales ; c'est plus prudent pour le 6E (données à 0,000
 recalage mensuel du bruit par signe laisse dans ce bruit une petite dérive connue sur le mois, présente aussi dans les
 vraies données.
 
-Les vraies données, les parties A et C et les machines sont lancées après ces corrections ; le relecteur vérifie les
-corrections pendant le calcul, et le coffre ne s'ouvre qu'après sa réponse.
+Les vraies données, les parties A et C et les machines sont lancées après ces corrections (25 octobre, 0 h 52 UTC) ;
+le relecteur vérifie les corrections pendant le calcul, et le coffre ne s'ouvre qu'après sa réponse.
+
+**Vérification des corrections v4 par le relecteur** : les 8 points sont justes (0 écart sur 17 489 trades recalculés
+avec l'arrondi au tick du micro ; niveau du bruit par signe exact en fin de mois ; verrou du coffre simulé ; nuits du coffre
+du NQ complètes à 97 % en 2024 et 99 % en 2025, contre 54 % et 67 % avant). Le recalage mensuel laisse une petite dérive
+suivable dans le bruit par signe (avant frais : +0,24 pb par trade de 30 minutes sur NQ, sous les frais de 0,49 pb) : le
+bruit en est un peu plus facile, donc la barrière un peu plus prudente ; il ne peut pas créer de fausse survivante.
+Restes corrigés pendant le calcul :
+- **F5, niveau rond franchi avec une marge nulle** : comparaison faite en virgule flottante (1,7 % des signaux du 6E
+  de jour, environ 1 % la nuit sur 6E, 6B, 6A) ; l'écart au niveau est maintenant compté en mailles entières. Seuls
+  les marchés de devises sont touchés (niveaux non entiers) : leurs machines (6E de jour ; 6E, 6B, 6A de nuit) sont
+  refaites avec le code corrigé, les autres sont identiques ;
+- `ouvrir` recompte la complétude sur les fichiers (au lieu de lire un drapeau) et refuse si un résultat est plus récent
+  que la sélection ;
+- **Limite de la partie D** : en 2023, seules 55 % des nuits sont complètes sur les 6 marchés (HistData n'a pas les
+  barres du milieu de nuit) ; aucune règle ne peut le corriger, le coffre de nuit 2023 est donc plus court.
+- Aucun fichier de la version 3 n'est réutilisé : les 43 fichiers de bruit v3 ont été retirés avant le lancement, et
+  tous les fichiers de résultats sont postérieurs à 0 h 52.
 
 ## Contre-revue indépendante (#ultrareview)
 

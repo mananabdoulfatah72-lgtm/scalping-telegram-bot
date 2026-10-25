@@ -106,6 +106,22 @@ def empreinte(chemin):
     return hashlib.sha256(chemin.read_bytes()).hexdigest()
 
 
+def completude():
+    """Ce qui manque pour ouvrir le coffre, recompte sur les fichiers (et non lu dans finalistes.json)."""
+    manque = []
+    for piste in ("B", "B2", "D"):
+        for marche in MA.marches(piste):
+            for so in MA.SORTES:
+                n = sum((MA.SORTIE / f"machine_{piste}_{marche}_{so}_{gr}.npz").exists()
+                        for gr in range(1, MA.GRAINES + 1))
+                if n < MA.GRAINES:
+                    manque.append(f"{piste} {marche} {so} : {n} graine(s) sur {MA.GRAINES}")
+    for nom, fich in (("A", "partie_a.json"), ("C", "appris.json")):
+        if not (MA.SORTIE / fich).exists():
+            manque.append(f"partie {nom}")
+    return manque
+
+
 def exploration():
     if (MA.SORTIE / "coffre_ouvert.txt").exists():
         sys.exit("Le coffre est deja ouvert : la selection des finalistes ne peut plus changer.")
@@ -233,8 +249,12 @@ def ouvrir():
             sys.exit("Le coffre a deja ete ouvert (resultats/coffre_ouvert.txt). --relire refait le meme calcul, et "
                      "seulement si finalistes.json n'a pas change.")
     sel = json.loads(sel_f.read_text())
-    if not sel.get("complet"):
-        sys.exit("Exploration incomplete (" + " ; ".join(sel.get("manque", ["?"])) + ") : le coffre reste ferme.")
+    manque = completude()
+    if manque or not sel.get("complet"):
+        sys.exit("Exploration incomplete (" + " ; ".join(manque or sel.get("manque", ["?"])) + ") : le coffre reste ferme.")
+    fichiers = sorted(MA.SORTIE.glob("machine_*.npz")) + [MA.SORTIE / "partie_a.json", MA.SORTIE / "appris.json"]
+    if any(f.stat().st_mtime > sel_f.stat().st_mtime for f in fichiers):
+        sys.exit("Un resultat d'exploration est plus recent que finalistes.json : relancer `exploration` d'abord.")
     fin, plac = sel["finalistes"], sel["placebos"]
     m = max(len(fin), 1)
     seuil = NormalDist().inv_cdf(1 - 0.05 / m)
