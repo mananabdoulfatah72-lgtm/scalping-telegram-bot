@@ -1158,3 +1158,12 @@ Contrôle : sans entrée à la cassure, le moteur de J redonne exactement les 3 
 - Un objectif fixe coupe les grandes journées de tendance, qui font le gain de la zone (36 % de trades gagnants
   seulement). Aucune lecture du risque (ligne de sortie, VWAP, largeur de la zone) ne rattrape le bot.
 - Vrai stop sur la ligne (J2s, J3s, information) : pire encore (−9 072 et −6 706 points).
+
+**Détail, descriptif (`partie_j_fausses.py` → `resultats/j/fausses_cassures.txt`).** Sur 2011 - 23 octobre 2026,
+4 387 cassures ont lieu entre deux contrôles :
+- 2 315 (53 %) sont **fausses** : le prix est revenu dans la zone au contrôle suivant, et le bot ne fait rien. Entrées à
+  la cassure, elles perdent −16,5 points en moyenne (9 % de gagnantes), −38 118 points au total, dont −17 599 depuis 2023 ;
+- 2 072 (47 %) **tiennent** jusqu'au contrôle suivant, où le bot entre : +18,3 points en moyenne si on les prend à la
+  cassure, +37 852 au total.
+- Les deux s'annulent : entrer à la cassure gagne sur les vraies ce qu'il perd sur les fausses. Exemple : le 1er octobre
+  2026, trois fausses cassures à la vente (10 h 22, 11 h 08, 11 h 51), −195 points, environ −1 560 $ en 4 MNQ.

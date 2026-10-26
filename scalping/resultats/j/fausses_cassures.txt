@@ -1,0 +1,19 @@
+Cassures entre deux controles (10 h - 15 h 30), 2011 - 2026-10-23 : 4387
+- fausses (prix revenu dans la zone au controle suivant : le bot ne fait rien) : 2315 (53%), -16.47 points en moyenne, 9% gagnantes, total -38118 points ; depuis 2023 : 514, total -17599 points
+- tenues (encore hors de la zone au controle suivant : le bot entre a ce controle) : 2072 (47%), +18.27 points en moyenne, 52% gagnantes, total +37852 points ; depuis 2023 : 480, total +18776 points
+
+Fausses cassures depuis le 1er septembre 2026 (heure de New York ; points pour 1 MNQ, frais deduits) :
+  2026-09-01  14h45 vente  a 29003.75, au controle suivant 29084.00, sortie 29084.00 : -81.75 points
+  2026-09-09  11h24 vente  a 29363.75, au controle suivant 29410.25, sortie 29410.25 : -48.00 points
+  2026-09-22  12h07 achat  a 30925.50, au controle suivant 30899.50, sortie 30899.50 : -27.50 points
+  2026-09-30  12h41 achat  a 30851.75, au controle suivant 30862.25, sortie 30862.25 : +9.00 points
+  2026-10-01  10h22 vente  a 30575.50, au controle suivant 30638.50, sortie 30638.50 : -64.50 points
+  2026-10-01  11h08 vente  a 30558.25, au controle suivant 30626.25, sortie 30626.25 : -69.50 points
+  2026-10-01  11h51 vente  a 30551.75, au controle suivant 30611.50, sortie 30611.50 : -61.25 points
+  2026-10-02  10h04 achat  a 31250.00, au controle suivant 31243.50, sortie 31243.50 : -8.00 points
+  2026-10-14  10h11 vente  a 30472.00, au controle suivant 30471.25, sortie 30471.25 : -0.75 points
+  2026-10-14  10h52 vente  a 30423.25, au controle suivant 30477.25, sortie 30477.25 : -55.50 points
+  2026-10-21  11h35 achat  a 30009.00, au controle suivant 30023.25, sortie 30023.25 : +12.75 points
+  2026-10-21  12h01 achat  a 30029.75, au controle suivant 29999.50, sortie 29999.50 : -31.75 points
+  2026-10-23  11h34 achat  a 29286.50, au controle suivant 29294.75, sortie 29294.75 : +6.75 points
+  2026-10-23  12h02 achat  a 29298.50, au controle suivant 29243.75, sortie 29243.75 : -56.25 points
