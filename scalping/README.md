@@ -1385,3 +1385,10 @@ auraient gagné. Aucun stop ne fait mieux que L1a à la fois sur les années de 
 - B mesure ce que fait le bot si l'utilisateur ne ferme jamais lui-même : grosses journées, mais 42 % des journées
   avec trade (2023 - 2026) touchent la limite de −1 000 $. Le vrai résultat dépendra de ses sorties à la main.
 - Le bot installé sur la branche est A (rejeu C# identique trade par trade au calcul Python : 4 445 trades).
+
+### Version A2 (26 octobre 2026 au soir, descriptif, non retenue) : `reglages_26oct_d.py`
+
+A2 = A sans entrée tardive : une entrée seulement à la minute où le prix franchit le niveau (minute d'avant encore du bon
+côté), avec le volume ×2, aux contrôles comme entre eux ; sorties d'origine. 1 412 trades en 15 ans (+3 018 points),
+t +1,66 / +1,16, 2025 +12 839 $, 2026 −451 $ (4 MNQ), validé 11,8 % avec 1 000 $ de marge (44,2 % expirés). Trop peu de
+trades. L'utilisateur a précisé que ce n'était pas sa règle ; elle n'est pas codée dans le bot (le bot reste la version A).
