@@ -1186,3 +1186,21 @@ laisser courir les trades gagnants. Mêmes niveaux, données, frais et mesures q
 **Décision (fixée maintenant)** : comme J. Une variante n'est conseillée que si son t dépasse celui du bot sur 2011-2022
 **et** sur 2023-2026, **et** qu'elle valide au moins 2 points de plus que le bot dans les deux situations depuis
 49 500 $. Elle est publiée quoi qu'il arrive.
+
+### Résultats de la partie K (26 octobre 2026) : `resultats/j/partie_k.txt`
+
+| Variante | Trades | Points (15 ans) | 2025 | 2026 | t 2011-22 / 2023-26 | Validé depuis 49 500 $ (haut 51 172 / 50 600) | Challenge neuf |
+|---|---|---|---|---|---|---|---|
+| **Bot (contrôles seuls)** | 3 577 | **+10 558** | **+942** | **+1 311** | **+3,75 / +2,27** | **20,8 % / 29,4 %** | **48,0 %** |
+| K1a, coupure à la clôture, réentrée | 13 497 | −7 552 | −1 015 | +444 | +1,18 / +1,15 | 19,0 % / 26,1 % | 41,7 % |
+| K1b, coupure à la clôture, attente | 8 023 | +920 | +12 | +400 | +2,06 / +1,41 | 20,0 % / 26,7 % | 42,3 % |
+| K2a, vrai stop sur la limite, réentrée | 19 440 | −20 876 | −2 785 | −506 | −1,50 / +0,13 | 15,4 % / 21,3 % | 35,2 % |
+| K2b, vrai stop sur la limite, attente | 8 825 | −2 230 | −910 | +953 | +1,29 / +1,40 | 17,8 % / 24,7 % | 40,5 % |
+
+**Décision fixée à l'avance : aucune variante ne passe.** Le conseil reste le bot tel quel.
+- Les gagnants courent bien : +28 à +40 points en moyenne pour les trades non coupés.
+- Mais le prix fait des allers-retours autour de la limite. 78 à 91 % des trades sont coupés, à −5 à −9 points chacun
+  (frais compris), jusqu'à 21 trades dans une journée (37 avec le vrai stop). Les coupures coûtent plus que ce que
+  rapportent les gagnants : K1a −75 724 points de coupures contre +68 172 de gagnants.
+- La coupure réduit les journées à −1 000 $ en 4 MNQ (457 à 486 contre 638 pour K1b et K2b), mais le gain s'effondre et
+  les chances de valider baissent dans toutes les situations.
