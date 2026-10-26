@@ -1073,3 +1073,21 @@ simulation que `situation_bulenox.py` (zone sans filtre, limite du jour réglabl
 - Avec une marge de 828 $, une limite du jour plus basse ne change rien : 20 à 21 % de validés de 500 $ à 1 000 $.
 - Ces chances sont à peine au-dessus du pile ou face de la marge : à ce stade, c'est surtout la taille de la marge qui
   décide, pas la stratégie.
+
+### Entrer dès la cassure au lieu des contrôles de 30 minutes, dans la même situation (26 octobre 2026) : `situation_cassure.py`
+
+Question de l'utilisateur : pourquoi le bot n'achète-t-il pas dès que le prix casse la zone ? La variante a déjà été
+mesurée le 20 octobre (E1 de `entree_tardive/`, branche `claude/elegant-ptolemy-g94s8t` : cassure cherchée à chaque fin
+de minute, sorties inchangées). Ses trades (2011 - 19 octobre 2026, sans filtre) sont rejoués ici dans la situation du
+challenge à 49 500 $. Contrôle : les 3 562 trades H1 du fichier sont exactement ceux de la zone recalculée ici.
+
+| | Trades (15 ans) | Points | 2025 | 2026 (au 19 oct.) | Validé, plus haut 51 172 $ | Validé, plus haut 50 600 $ |
+|---|---|---|---|---|---|---|
+| Contrôles de 30 min (le bot) | 3 572 | +10 721 | +942 | +1 474 | 20,6 % | 29,2 % |
+| Entrée à la cassure, chaque minute | 5 525 | +3 037 | −1 616 | +378 | 21,5 % | 29,6 % |
+
+(4 puis 6 MNQ, 13 séances, départs 2012-2026 ; points bruts pour 1 MNQ, sans mise au prix d'aujourd'hui.)
+- Entrer à la cassure prend 55 % de trades en plus, surtout des fausses cassures : le gain sur 15 ans tombe de 72 %,
+  et 2025 aurait été perdante.
+- Dans le challenge, la différence (moins d'un point) est dans le bruit des départs qui se chevauchent : ça ne monte
+  pas les chances de valider, et ça abîme le bot pour le compte financé ensuite.
