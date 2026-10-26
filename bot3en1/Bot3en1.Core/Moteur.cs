@@ -66,6 +66,10 @@ namespace Bot3en1
         // quel que soit le delta
         public bool Relance = false;
         public double SeuilForce = 0;
+        // entree a la cassure (26 octobre 2026, demande de l'utilisateur ; scalping/README.md partie J, variante J0) : entre
+        // deux controles, une minute qui cloture au-dela des niveaux du dernier controle declenche l'entree tout de suite,
+        // comme si c'etait un controle. Niveaux, controles et sorties inchanges.
+        public bool EntreeCassure = false;
         /// <summary>Message a chaque controle (prix, limites, VWAP, delta, decision) : source "controle". Heure de Paris
         /// donnee par l'hote (minute de la seance -> "16h00"), sinon seulement l'heure de New York.</summary>
         public bool MessageControle = false;
@@ -293,6 +297,9 @@ namespace Bot3en1
             int k = (m % PAS == 0) ? m / PAS - 1 : -1;
             if (k >= 0 && k < NMOMENTS && ZoneActive && ZoneAutorisee && barres[0].Presente && !double.IsNaN(Sigma[k]))
                 Zone(m, k, b.C, sortie);
+            else if (EntreeCassure && k < 0 && m > PAS && m < NMOMENTS * PAS && ZoneActive && ZoneAutorisee && barres[0].Presente
+                     && !double.IsNaN(Sigma[m / PAS - 1]) && ZoneVirtuelle == 0 && !Arret)
+                Entree(m, m / PAS - 1, b.C, sortie, " (cassure entre deux controles)");
             if (m == N - 1 && ZoneVirtuelle != 0)
                 SortieZone(m, b.C, "sortie 16h00", sortie);
             if (PlafondJour > 0 && !Arret && ValeurJour(b.C) >= PlafondJour)
@@ -358,6 +365,16 @@ namespace Bot3en1
                         Texte = $"{(ZoneTenue > 0 ? "achat" : "vente")} {Heure(m)} a {p:F2} (relance : delta 30 min {dr:+0;-0;0}, GARDE)" });
                 }
             }
+            Entree(m, k, p, s, "");
+        }
+
+        /// <summary>Entree de zone si le prix p est au-dela des niveaux du controle k et qu'aucun trade (tenu ou ecarte) n'est
+        /// en cours : au controle (ZoneDecision) ou, en entree a la cassure, a une minute entre deux controles.</summary>
+        void Entree(int m, int k, double p, List<Signal> s, string ou)
+        {
+            double o0 = barres[0].O;
+            double refH = Math.Max(o0, Veille), refB = Math.Min(o0, Veille);
+            double haut = refH * (1 + Sigma[k]), bas = refB * (1 - Sigma[k]);
             if (ZoneVirtuelle == 0 && (p > haut || p < bas))
             {
                 int sens = p > haut ? 1 : -1;
@@ -373,12 +390,12 @@ namespace Bot3en1
                     if (ModeAPlat) entreeZoneES = PrixES;
                     s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p,
                         Texte = $"{(sens > 0 ? "achat" : "vente")} {h} a {p:F2} (delta 30 min {d:+0;-0;0}, GARDE{(force && Math.Sign(d) != sens ? ", cassure forte" : "")})"
-                              + $" [depassement {depasse.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}]" });
+                              + $" [depassement {depasse.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}]{ou}" });
                 }
                 else
                     s.Add(new Signal { Minute = m, Source = "zone-ecarte", PrixReference = p,
                         Texte = $"{(sens > 0 ? "achat" : "vente")} {h} a {p:F2} ecarte (delta 30 min {d:+0;-0;0})"
-                              + $" [depassement {depasse.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}]" });
+                              + $" [depassement {depasse.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}]{ou}" });
             }
         }
 

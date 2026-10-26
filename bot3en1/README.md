@@ -1,8 +1,10 @@
-# Bot 3 en 1 pour Quantower (zone de bruit + filtre delta, décoché par défaut + RSI(2))
+# Bot 3 en 1 pour Quantower (zone de bruit, entrée à la cassure + filtre delta, décoché par défaut + RSI(2))
 
 Le bot qui trade pour de vrai, sur un compte Rithmic (par exemple DayTraders) avec Quantower. Il regroupe :
 - **la zone de bruit** (V1, `zone/robot.py` sur main) : contrôle toutes les 30 minutes de 10 h à 15 h 30, sortie au
-  plus tard à 16 h (heure de New York) ;
+  plus tard à 16 h (heure de New York). **Depuis le 26 octobre 2026, entrée à la cassure par défaut** (réglage « Zone :
+  entree a la cassure ») : entre deux contrôles, le bot entre dès qu'une minute clôture au-delà des niveaux du dernier
+  contrôle ;
 - **le filtre delta** (H1, `orderflow/`) : une entrée de zone n'est prise que si le delta (achats agressifs − ventes
   agressives) des 30 minutes du NQ va dans son sens. Le delta est lu en direct dans les transactions Rithmic, plus
   besoin de Databento. **Décoché par défaut depuis le 26 octobre 2026** (réglage « Filtre delta de la zone ») : la zone
@@ -133,6 +135,27 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     identiques octet pour octet à l'ancienne version avec `SANS_FILTRE=1` (105 trades de zone pris, 190 ordres, 0
     position la nuit). Coché, identiques à l'ancienne version par défaut. `Bot3en1.TestQuantower` garde le filtre coché
     sauf avec `SANS_FILTRE=1`, pour que les vérifications ci-dessus restent comparables.
+- **Entrée à la cassure, cochée par défaut (26 octobre 2026)** : réglage « Zone : entree a la cassure », à la demande
+  de l'utilisateur, qui en assume le risque :
+  - entre deux contrôles (10 h - 15 h 30, New York), dès qu'une minute clôture au-dessus du niveau d'achat ou sous le
+    niveau de vente **du dernier contrôle**, et que le bot n'a aucun trade en cours, il entre tout de suite (ordre envoyé
+    environ 2 secondes après la fin de la minute). Le journal et Telegram l'écrivent « (cassure entre deux controles) » ;
+  - rien d'autre ne change : niveaux et σ calculés aux contrôles, décisions et sorties aux contrôles de 30 minutes
+    (sortie quand le prix repasse la limite ou le VWAP), sortie à 16 h, limite de perte du jour, objectif, frein, Fed ;
+  - pas d'entrée avant le contrôle de 10 h, ni après celui de 15 h 30, ni après l'arrêt du jour ;
+  - mesuré avant d'être codé (`scalping/README.md`, parties J et K, variante J0) : sur 15 ans, 5 921 trades au lieu de
+    3 577, +2 629 points au lieu de +10 558 (1 MNQ, frais déduits), perdant en 2025 (−1 412) et en 2026 (−424) ; 53 % des
+    cassures entre deux contrôles sont revenues dans la zone au contrôle suivant (−16,5 points en moyenne). Dans le
+    challenge à 49 500 $ avec 1 000 $ de marge (13 séances, 4 puis 6 MNQ), chances de valider égales : 24,3 % contre
+    24,2 % ; plus de comptes perdus (70,5 % contre 67,6 %) et moins de challenges expirés. Sur le compte Master, la
+    décocher est conseillé ;
+  - vérifié : le moteur C# (`Bot3en1.Replay`, `CASSURE=1 SANS_FILTRE=1`) redonne trade par trade les 5 921 trades du
+    calcul Python (2011 - 23 octobre 2026), dont 4 387 entrés entre deux contrôles ; décoché, les 3 577 trades et
+    +10 557,75 points de la zone. Adaptateur transaction par transaction (avril - 23 octobre 2026, mode à plat, 4 MNQ,
+    limite 1 000 $) : 165 trades de zone dont 120 à la cassure, à plat chaque soir, 0 erreur hors limite du jour
+    (20 journées coupées contre 15). Décoché, ordres, journal et messages identiques octet pour octet à la version
+    d'avant. `Bot3en1.TestQuantower` garde l'entrée aux seuls contrôles sauf avec `CASSURE=1` ;
+  - `Bot3en1.TestAPlat` et `Bot3en1.TestPlafond` : tous les contrôles passent.
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
@@ -205,6 +228,8 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Plafond de gain du jour | 0 | **500** |
 | Limite de perte du jour | **1 000** (100 $ de marge avant les 1 100 $ de Bulenox) | 1 000 |
 | Frein | **0** | **750** |
+| Zone : entrée à la cassure | **coché** (choix de l'utilisateur, 26 octobre 2026) | **décoché conseillé** (voir plus bas) |
+| Filtre delta de la zone | décoché | décoché |
 | Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
 | Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |
 | Challenge : objectif | **53 000** | **0** |
