@@ -1,0 +1,22 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23.
+
+variante                         trades   points  gagn. gain moy perte moy    pire  t 11-22  t 23-26    2025    2026 jours -250$
+bot d'avant (controles seuls)      3577   +10558    36%   +147.2     -77.5    -612    +3.75    +2.27    +942   +1311         638
+L1a laisser courir (installe)      2769    +5120    28%   +220.6     -86.0    -624    +2.31    +0.88    -562    +648         585
+N1 sortie a la cloture de minute   2769    +4043    16%   +235.6     -41.1    -414    +2.22    +1.28    -477    +571         148
+N2 vrai stop sur le niveau         2769    +2371    12%   +234.1     -30.4    -373    +2.19    +0.91    -438    +786         128
+
+(points bruts pour 1 MNQ, frais deduits ; gain moy, perte moy et pire trade : 2023-2026, points au prix d'aujourd'hui ; t des gains quotidiens, jours sans Fed ; jours -250$ = 1 000 $ en 4 MNQ)
+
+Challenge, 4 puis 6 MNQ, limite du jour 1 000 $, departs 2012-2026 : valide / perdu / expire
+variante                           49 500 $, marge 1 000 $   challenge neuf, 21 seances
+bot d'avant (controles seuls)       24.2%  67.6%   8.1%    48.0%  44.6%   7.3%
+L1a laisser courir (installe)       25.1%  68.7%   6.2%    45.8%  47.7%   6.5%
+N1 sortie a la cloture de minute    21.7%  59.2%  19.1%    42.4%  33.5%  24.1%
+N2 vrai stop sur le niveau          18.2%  58.5%  23.3%    38.2%  29.7%  32.1%
+
+2026 mois par mois, 4 MNQ, prix d'aujourd'hui, limite du jour 1 000 $, sans les jours de la Fed :
+bot d'avant (controles seuls)    01: -8,049 02: +1,581 03: +4,213 04: -1,895 05:   +972 06:    -21 07: -7,123 08: +4,661 09: +4,111 10: +4,476   total +2,926 $
+L1a laisser courir (installe)    01: -6,092 02: +1,929 03: -1,615 04:   -174 05:   +951 06:   -619 07: -7,651 08: +3,523 09: +3,617 10: +6,362   total +232 $
+N1 sortie a la cloture de minute 01: -5,076 02:   -494 03:   -892 04:   -132 05: -2,559 06:   -489 07: -3,901 08: +1,800 09: +3,963 10: +3,744   total -4,036 $
+N2 vrai stop sur le niveau       01: -4,576 02:    +63 03:   -107 04: -1,850 05: -1,233 06:   +691 07: -3,468 08: +2,050 09: +3,468 10: +2,444   total -2,519 $

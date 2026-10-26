@@ -1311,3 +1311,18 @@ d'allers-retours) :
 **Décision (fixée maintenant)** : N1 ou N2 n'est conseillé que s'il bat L1a **et** le bot d'avant sur le t des gains
 quotidiens en 2011-2022 **et** en 2023-2026, **et** valide au moins 2 points de plus que les deux avec 1 000 $ de marge.
 Publié quoi qu'il arrive.
+
+### Résultats de la partie N (26 octobre 2026) : `resultats/j/partie_n.txt`
+
+| Variante | Points (15 ans) | Gagnants | Gain moyen / perte moyenne (2023-26, points) | t 2011-22 / 2023-26 | Journées à −1 000 $ (4 MNQ, 15 ans) | Validé, marge 1 000 $ (validé / perdu / expiré) | 2026, 4 MNQ |
+|---|---|---|---|---|---|---|---|
+| Bot d'avant (contrôles) | **+10 558** | 36 % | +147 / −78 | **+3,75 / +2,27** | 638 | 24,2 / 67,6 / 8,1 % | **+2 926 $** |
+| L1a (installé) | +5 120 | 28 % | +221 / −86 | +2,31 / +0,88 | 585 | **25,1** / 68,7 / 6,2 % | +232 $ |
+| N1, sortie à la clôture de minute | +4 043 | 16 % | +236 / −41 | +2,22 / +1,28 | **148** | 21,7 / **59,2** / 19,1 % | −4 036 $ |
+| N2, vrai stop sur le niveau | +2 371 | 12 % | +234 / −30 | +2,19 / +0,91 | 128 | 18,2 / 58,5 / 23,3 % | −2 519 $ |
+
+**Décision fixée à l'avance : ni N1 ni N2 ne passe.**
+- Sortir dès le retour sous le niveau divise la perte moyenne par deux et les journées à −1 000 $ par quatre.
+- Mais le prix revient très souvent tester le niveau cassé avant de repartir : les gagnants tombent de 28 % à 16 %. Avec
+  une seule entrée par jour, le trade est coupé et le mouvement est raté.
+- Moins de comptes perdus (59 % contre 69 %), mais beaucoup plus de challenges expirés : moins de validés.
