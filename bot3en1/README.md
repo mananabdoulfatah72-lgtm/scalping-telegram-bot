@@ -156,6 +156,21 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     (20 journées coupées contre 15). Décoché, ordres, journal et messages identiques octet pour octet à la version
     d'avant. `Bot3en1.TestQuantower` garde l'entrée aux seuls contrôles sauf avec `CASSURE=1` ;
   - `Bot3en1.TestAPlat` et `Bot3en1.TestPlafond` : tous les contrôles passent.
+- **Laisser courir (26 octobre 2026)** : réglage « Zone : laisser courir », décoché par défaut, proposé par
+  l'utilisateur :
+  - une seule entrée de zone par séance (la première cassure) ;
+  - sortie à un contrôle seulement si le prix repasse le niveau cassé à l'entrée (figé), au lieu de la limite du
+    contrôle (qui monte au fil de la journée) ou du VWAP. Sortie de 16 h, limite du jour, objectif et frein inchangés ;
+  - le message de contrôle donne ce niveau de sortie ; après la sortie : « plus d'entree aujourd'hui » ;
+  - mesuré avant d'être codé (`scalping/README.md`, partie L, variante L1a), avec l'entrée à la cassure : sur 15 ans,
+    2 769 trades, +5 120 points (contre +2 629 pour l'entrée à la cassure seule et +10 558 pour l'entrée aux seuls
+    contrôles), 585 journées à −1 000 $ en 4 MNQ (789 et 638), 2025 −562, 2026 +648. Dans le challenge avec 1 000 $ de
+    marge : 25,1 % de validés (24,3 % et 24,2 %, écarts dans le bruit) ;
+  - vérifié : le moteur C# (`Bot3en1.Replay`, `CASSURE=1 COURIR=1 SANS_FILTRE=1`) redonne trade par trade les 2 769
+    trades du calcul Python ; décoché, rejeu et adaptateur identiques octet pour octet à la version d'avant (avec et
+    sans entrée à la cassure). Adaptateur, avril - 23 octobre 2026, mode à plat, 4 MNQ, limite 1 000 $ : 91 trades de
+    zone, +1 291,5 $ pour 1 MNQ (entrée à la cassure seule : −339 $ ; entrée aux contrôles : +455,5 $), 12 journées
+    coupées par la limite (20 et 15), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond passent.
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
@@ -229,6 +244,7 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Limite de perte du jour | **1 000** (100 $ de marge avant les 1 100 $ de Bulenox) | 1 000 |
 | Frein | **0** | **750** |
 | Zone : entrée à la cassure | **coché** (choix de l'utilisateur, 26 octobre 2026) | **décoché conseillé** (voir plus bas) |
+| Zone : laisser courir | **coché conseillé** si l'entrée à la cassure est cochée (voir plus bas) | décoché |
 | Filtre delta de la zone | décoché | décoché |
 | Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
 | Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |

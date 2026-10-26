@@ -70,6 +70,12 @@ namespace Bot3en1
         // deux controles, une minute qui cloture au-dela des niveaux du dernier controle declenche l'entree tout de suite,
         // comme si c'etait un controle. Niveaux, controles et sorties inchanges.
         public bool EntreeCassure = false;
+        // laisser courir (26 octobre 2026, scalping/README.md partie L, variante L1a) : une seule entree de zone par seance,
+        // et sortie a un controle seulement si le prix repasse le niveau casse a l'entree (fige), au lieu de max(limite du
+        // controle, VWAP) ; sortie de 16 h inchangee
+        public bool LaisserCourir = false;
+        public double NiveauCasse { get; private set; } = double.NaN;
+        public bool DejaEntre { get; private set; }
         /// <summary>Message a chaque controle (prix, limites, VWAP, delta, decision) : source "controle". Heure de Paris
         /// donnee par l'hote (minute de la seance -> "16h00"), sinon seulement l'heure de New York.</summary>
         public bool MessageControle = false;
@@ -219,7 +225,7 @@ namespace Bot3en1
             Jour = jour.Date; Contrat = contrat;
             for (int i = 0; i < N; i++) barres[i] = new Barre();
             cumTv = cumV = cumT = 0; nPresentes = 0;
-            ZoneVirtuelle = 0; ZoneTenue = 0;          // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
+            ZoneVirtuelle = 0; ZoneTenue = 0; DejaEntre = false; NiveauCasse = double.NaN;   // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
             // veille : cloture de la derniere seance complete du meme contrat, sans changement de contrat entre les deux
             Veille = double.NaN;
             for (int i = Historique.Count - 1; i >= 0; i--)
@@ -298,7 +304,7 @@ namespace Bot3en1
             if (k >= 0 && k < NMOMENTS && ZoneActive && ZoneAutorisee && barres[0].Presente && !double.IsNaN(Sigma[k]))
                 Zone(m, k, b.C, sortie);
             else if (EntreeCassure && k < 0 && m > PAS && m < NMOMENTS * PAS && ZoneActive && ZoneAutorisee && barres[0].Presente
-                     && !double.IsNaN(Sigma[m / PAS - 1]) && ZoneVirtuelle == 0 && !Arret)
+                     && !double.IsNaN(Sigma[m / PAS - 1]) && ZoneVirtuelle == 0 && !(LaisserCourir && DejaEntre) && !Arret)
                 Entree(m, m / PAS - 1, b.C, sortie, " (cassure entre deux controles)");
             if (m == N - 1 && ZoneVirtuelle != 0)
                 SortieZone(m, b.C, "sortie 16h00", sortie);
@@ -335,9 +341,10 @@ namespace Bot3en1
                 : neuf.Any(x => x.Source == "zone" && !x.Texte.StartsWith("sortie")) ? (ZoneTenue > 0 ? "ACHAT" : "VENTE")
                 : neuf.Any(x => x.Source == "zone" && x.Texte.StartsWith("sortie")) ? "sortie du trade"
                 : avantVirt != 0 && ZoneVirtuelle == 0 && avantTenue == 0 ? "le trade ecarte est termine (prix revenu), plus de relance pour lui"
-                : ZoneTenue > 0 ? $"en position (achat) ; sortie a un controle si le prix passe sous {Math.Max(haut, vw):F2}"
-                : ZoneTenue < 0 ? $"en position (vente) ; sortie a un controle si le prix passe au-dessus de {Math.Min(bas, vw):F2}"
+                : ZoneTenue > 0 ? $"en position (achat) ; sortie a un controle si le prix passe sous {(LaisserCourir ? NiveauCasse : Math.Max(haut, vw)):F2}"
+                : ZoneTenue < 0 ? $"en position (vente) ; sortie a un controle si le prix passe au-dessus de {(LaisserCourir ? NiveauCasse : Math.Min(bas, vw)):F2}"
                 : Arret ? "plus de trade aujourd'hui (objectif ou limite du jour atteint)"
+                : ZoneVirtuelle == 0 && LaisserCourir && DejaEntre ? "plus d'entree aujourd'hui (laisser courir : une seule entree par seance)"
                 : ZoneVirtuelle != 0 ? $"trade ecarte toujours en cours : {(Relance ? "relance au prochain controle si le delta passe du bon cote" : "relance decochee, le bot attend sa fin")}"
                 : "pas de signal : prix dans la zone";
             string paris = HeureParis?.Invoke(m);
@@ -351,8 +358,9 @@ namespace Bot3en1
             double o0 = barres[0].O;
             double refH = Math.Max(o0, Veille), refB = Math.Min(o0, Veille);
             double haut = refH * (1 + Sigma[k]), bas = refB * (1 - Sigma[k]), vw = Vwap(m);
-            if (ZoneVirtuelle > 0 && p <= Math.Max(haut, vw)) SortieZone(m, p, "sortie", s);
-            else if (ZoneVirtuelle < 0 && p >= Math.Min(bas, vw)) SortieZone(m, p, "sortie", s);
+            double sortH = LaisserCourir ? NiveauCasse : Math.Max(haut, vw), sortB = LaisserCourir ? NiveauCasse : Math.Min(bas, vw);
+            if (ZoneVirtuelle > 0 && p <= sortH) SortieZone(m, p, "sortie", s);
+            else if (ZoneVirtuelle < 0 && p >= sortB) SortieZone(m, p, "sortie", s);
             else if (Relance && FiltreDelta && ZoneVirtuelle != 0 && ZoneTenue == 0 && !Arret)
             {
                 // trade ecarte encore vivant (prix toujours hors de la zone et du bon cote du VWAP) : nouvelle chance
@@ -375,10 +383,11 @@ namespace Bot3en1
             double o0 = barres[0].O;
             double refH = Math.Max(o0, Veille), refB = Math.Min(o0, Veille);
             double haut = refH * (1 + Sigma[k]), bas = refB * (1 - Sigma[k]);
-            if (ZoneVirtuelle == 0 && (p > haut || p < bas))
+            if (ZoneVirtuelle == 0 && !(LaisserCourir && DejaEntre) && (p > haut || p < bas))
             {
                 int sens = p > haut ? 1 : -1;
                 ZoneVirtuelle = sens;
+                DejaEntre = true; NiveauCasse = sens > 0 ? haut : bas;
                 double d = Delta(m);
                 double depasse = sens > 0 ? (p - haut) / (refH * Sigma[k]) : (bas - p) / (refB * Sigma[k]);
                 bool force = SeuilForce > 0 && depasse >= SeuilForce;
