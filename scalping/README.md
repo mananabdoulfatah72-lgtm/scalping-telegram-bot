@@ -1431,3 +1431,26 @@ W = 5 minutes fixé avant le calcul. Résultats en 4 MNQ, prix d'aujourd'hui, li
 tient dans toutes les variantes : 2023 et 2026 positifs, deux fois moins de journées à −1 000 $ que le bot d'avant, et
 environ 20 % de validés. Ce qui ne tient pas : le t de 2011 - 2022, faible partout. La règle a été construite en regardant
 ces mêmes années : seul le suivi des prochaines semaines dira ce qu'elle vaut vraiment.
+
+## Partie Q (27 octobre 2026) : un filtre de plus pour la précision d'entrée (règles fixées avant tout calcul)
+
+Base : la configuration installée (`reglages_26oct_g.py` : cassure du niveau du dernier contrôle, volume ≥ 1 × la moyenne des
+30 minutes, fenêtre de confirmation de 5 minutes, une entrée par séance, sortie aux contrôles au retour sous le niveau
+cassé, 16 h). On ajoute **un seul** filtre à la fois, comme condition de plus sur la minute qui confirme l'entrée (si le
+filtre refuse cette minute, la fenêtre continue comme si le volume manquait) :
+
+| Filtre | Achat seulement si… (vente : l'inverse) |
+|---|---|
+| **Q1, écart d'ouverture** | l'ouverture de la séance est au-dessus ou au niveau de la clôture de la veille |
+| **Q2, tendance de fond** | la clôture de la veille est au-dessus de la moyenne des 20 dernières clôtures (séances complètes) |
+| **Q3, VWAP** | la clôture de la minute d'entrée est au-dessus du VWAP de la séance |
+| **Q4, bougie de force** | la minute d'entrée clôture dans le tiers haut de son range (plus haut − plus bas) |
+| **Q5, pas trop loin** | la clôture d'entrée est à moins de 0,25 fois la largeur de la zone (référence × σ) au-dessus du niveau |
+| **Q6, matin** | l'entrée a lieu au plus tard à 12 h (New York) |
+
+Le delta acheteur/vendeur n'est pas testé : il n'existe que depuis avril 2026.
+
+**Décision (fixée maintenant)** : un filtre n'est conseillé que si, par rapport à la configuration installée, il améliore le
+t des gains quotidiens **à la fois** sur 2011 - 2022 **et** sur 2023 - 2026, **et** valide au moins aussi souvent dans le
+challenge (49 500 $, marge 1 000 $, 13 séances, 4 puis 6 MNQ, départs 2012 - 2026). Avec 6 filtres essayés, un seul
+« gagnant » sur une seule période ne compte pas. Publié quoi qu'il arrive.
