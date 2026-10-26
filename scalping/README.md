@@ -1454,3 +1454,22 @@ Le delta acheteur/vendeur n'est pas testé : il n'existe que depuis avril 2026.
 t des gains quotidiens **à la fois** sur 2011 - 2022 **et** sur 2023 - 2026, **et** valide au moins aussi souvent dans le
 challenge (49 500 $, marge 1 000 $, 13 séances, 4 puis 6 MNQ, départs 2012 - 2026). Avec 6 filtres essayés, un seul
 « gagnant » sur une seule période ne compte pas. Publié quoi qu'il arrive.
+
+### Résultats de la partie Q (27 octobre 2026) : `resultats/j/partie_q.txt`
+
+Contrôle : sans filtre, on retrouve exactement la configuration installée.
+
+| Filtre | Trades | t 2011-22 / 2023-26 | Journées à −1 000 $ | Validé / perdu (marge 1 000 $) | 2023-26 (4 MNQ) | 2026 (4 MNQ) |
+|---|---|---|---|---|---|---|
+| Installée (aucun) | 2 400 | +0,66 / +1,04 | 383 | **19,9** / 68,0 % | +43 102 $ | +11 677 $ |
+| **Q1 écart d'ouverture** | 1 624 | **+2,08 / +1,54** | 240 | 17,5 / 56,2 % | +37 207 $ | +13 368 $ |
+| **Q2 tendance de fond** | 1 219 | **+1,22 / +2,08** | **205** | 15,9 / **47,5 %** | **+51 975 $** | **+14 454 $** |
+| Q3 VWAP | 2 339 | +0,66 / +1,12 | 374 | 19,8 / 67,7 % | +45 560 $ | +11 724 $ |
+| Q4 bougie de force | 2 315 | +0,15 / +1,05 | 385 | 18,6 / 68,8 % | +33 192 $ | +6 091 $ |
+| **Q5 pas trop loin** | 2 298 | **+1,00 / +1,26** | 328 | 19,8 / 65,5 % | +38 894 $ | +13 444 $ |
+| Q6 matin | 1 892 | +0,76 / +0,88 | 337 | 19,4 / 67,2 % | +32 510 $ | +9 061 $ |
+
+**Décision fixée à l'avance : aucun filtre ne passe**, car aucun ne valide au moins aussi souvent dans le challenge de
+13 séances (moins de trades, donc plus de challenges expirés). Mais Q1, Q2 et Q5 améliorent le t **sur les deux
+périodes**, et Q1 et Q2 nettement : moins de journées à −1 000 $ et moins de comptes perdus. Ce sont des pistes sérieuses
+pour après le challenge (compte Master), pas pour les 13 séances qui restent.
