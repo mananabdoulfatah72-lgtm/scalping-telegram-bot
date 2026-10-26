@@ -55,6 +55,7 @@ class Program
             TailleFin = int.Parse(Environment.GetEnvironmentVariable("TAILLE_FIN") ?? "0", inv),
             SeancesFin = int.Parse(Environment.GetEnvironmentVariable("SEANCES_FIN") ?? "5", inv)
         };
+        strat.FiltreDeltaActif = Environment.GetEnvironmentVariable("SANS_FILTRE") != "1";   // les tests de reference gardent le filtre
         if (Environment.GetEnvironmentVariable("RELANCE") is string relance) strat.RelanceFiltre = relance == "1";   // sinon le reglage par defaut
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";
         bool sansNQ = Environment.GetEnvironmentVariable("SANS_NQ") == "1";
@@ -82,7 +83,6 @@ class Program
         }
         if (strat.Arretee) { Console.WriteLine(string.Join("\n", strat.Logs)); return 1; }
         var moteur = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
-        if (Environment.GetEnvironmentVariable("SANS_FILTRE") == "1") moteur.FiltreDelta = false;
         int Pos(Symbol sy) { var p = Core.Instance.Liste.FirstOrDefault(x => x.Symbol == sy); return p == null ? 0 : (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity; }
         var nuits = new List<string>();
         var violations = new List<string>();

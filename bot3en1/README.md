@@ -1,11 +1,12 @@
-# Bot 3 en 1 pour Quantower (zone de bruit + filtre delta + RSI(2))
+# Bot 3 en 1 pour Quantower (zone de bruit + filtre delta, décoché par défaut + RSI(2))
 
 Le bot qui trade pour de vrai, sur un compte Rithmic (par exemple DayTraders) avec Quantower. Il regroupe :
 - **la zone de bruit** (V1, `zone/robot.py` sur main) : contrôle toutes les 30 minutes de 10 h à 15 h 30, sortie au
   plus tard à 16 h (heure de New York) ;
 - **le filtre delta** (H1, `orderflow/`) : une entrée de zone n'est prise que si le delta (achats agressifs − ventes
   agressives) des 30 minutes du NQ va dans son sens. Le delta est lu en direct dans les transactions Rithmic, plus
-  besoin de Databento ;
+  besoin de Databento. **Décoché par défaut depuis le 26 octobre 2026** (réglage « Filtre delta de la zone ») : la zone
+  seule prend chaque cassure vue à un contrôle ;
 - **le RSI(2)** de Connors (`tournoi8/`) : décision à 15 h 50 (heure de New York), position tenue la nuit et le
   week-end si la règle le dit.
 
@@ -115,6 +116,23 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
   - vérifié : réglage par défaut, ordres et journal du moteur identiques octet pour octet à l'ancienne version avec
     `RELANCE=0` (avril - 25 septembre 2026, vrai delta : 164 ordres, +4 370,0 $ ; et en mode à plat avec les réglages du
     challenge). Avec `RELANCE=1`, identiques à l'ancienne version par défaut (172 ordres, +4 537,5 $).
+- **Filtre delta décoché par défaut (26 octobre 2026)** : réglage « Filtre delta de la zone », à la demande de
+  l'utilisateur :
+  - message du 26 octobre : sur le challenge Bulenox, le filtre a écarté l'achat à la cassure de la zone (delta négatif). Le bot
+    a acheté plus tard, plus haut, puis le prix s'est retourné : −1 000 $, coupé par la limite de perte du jour ;
+  - décoché, chaque cassure vue à un contrôle de 30 minutes est prise, quel que soit le delta. L'entrée se fait
+    toujours à un contrôle, et la sortie quand le prix repasse la limite ou le VWAP à un contrôle : il n'y a pas
+    d'objectif de prix fixe ;
+  - c'est la version mesurée sur 15 ans (2011 - 2026). Le filtre n'a été confirmé que sur avril - octobre 2026 (coffre
+    t = 2,34, 5 trades écartés). Sur 15 ans, l'approximation par les barres ne le confirme pas (t = 1,62). Sur les
+    7 trades mesurés avec le vrai delta Rithmic depuis le 2 octobre, il a écarté le meilleur (+447,75 points) : zone
+    seule +668 points, zone filtrée +220 (`filtre_h1/resultat_rithmic.txt`, trop peu de trades pour décider) ;
+  - quand le filtre est décoché, la relance n'a plus d'effet (aucun trade n'est écarté par le delta) ;
+  - au lancement, le bot écrit « filtre delta decoche (zone seule) » ou « COCHE ». Vérifier cette ligne ;
+  - vérifié (avril - 23 octobre 2026, mode à plat, 4 MNQ, limite 1 000 $) : décoché, ordres, journal et messages
+    identiques octet pour octet à l'ancienne version avec `SANS_FILTRE=1` (105 trades de zone pris, 190 ordres, 0
+    position la nuit). Coché, identiques à l'ancienne version par défaut. `Bot3en1.TestQuantower` garde le filtre coché
+    sauf avec `SANS_FILTRE=1`, pour que les vérifications ci-dessus restent comparables.
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
