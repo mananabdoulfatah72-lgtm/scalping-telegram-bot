@@ -38,11 +38,9 @@ namespace Bot3en1
         public bool ConfirmationVolume = true;
         [InputParameter("Zone : laisser courir, coche par defaut depuis le 26 octobre 2026 a la demande de l'utilisateur (une seule entree par seance ; sortie a un controle seulement si le prix repasse le niveau casse a l'entree, au lieu de la limite du controle ou du VWAP ; sortie de 16 h inchangee)", 53)]
         public bool LaisserCourir = true;
-        [InputParameter("Zone : sortie des le retour au niveau casse, cochee par defaut depuis le 26 octobre 2026 a la demande de l'utilisateur (le trade est ferme des qu'une minute cloture de l'autre cote du niveau casse a l'entree, sans attendre le controle de 30 minutes)", 54)]
-        public bool SortieImmediate = true;
-        [InputParameter("Filtre delta de la zone : decoche par defaut depuis le 26 octobre 2026 = la zone seule, chaque cassure verifiee a un controle est prise quel que soit le delta (coche = ancien bot, cassure ecartee si le delta 30 min va contre elle)", 55)]
+        [InputParameter("Filtre delta de la zone : decoche par defaut depuis le 26 octobre 2026 = la zone seule, chaque cassure verifiee a un controle est prise quel que soit le delta (coche = ancien bot, cassure ecartee si le delta 30 min va contre elle)", 54)]
         public bool FiltreDeltaActif = false;
-        [InputParameter("Filtre delta : relance, decochee par defaut depuis le 20 octobre 2026 (un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 56)]
+        [InputParameter("Filtre delta : relance, decochee par defaut depuis le 20 octobre 2026 (un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 55)]
         public bool RelanceFiltre = false;
         [InputParameter("Plafond de gain du jour en $ (0 = aucun ; Bulenox : 500 sur le compte Master seulement, 0 pendant le challenge ; Static : 500 sur le compte Pro)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
         [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1000, 100 $ de marge avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
@@ -67,7 +65,7 @@ namespace Bot3en1
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
-        const string Version = "26 octobre 2026 (cassure confirmee par le volume, laisser courir, sortie des le retour au niveau casse, filtre delta decoche)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
+        const string Version = "26 octobre 2026 (cassure confirmee par le volume, laisser courir, filtre delta decoche)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
         Moteur bot;
         TimeZoneInfo ny;
         Timer horloge;
@@ -134,7 +132,7 @@ namespace Bot3en1
                 SymboleNQ.NewLast += SurTransaction;
                 if (ModeAPlat) SymboleMES.NewLast += SurTransactionES;
                 horloge = new Timer(_ => Tic(), null, 500, 500);
-                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? " CONFIRMEE PAR LE VOLUME (x2)" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, {(LaisserCourir ? "LAISSER COURIR (une entree par seance, sortie au niveau casse)" : "sortie normale (limite du controle ou VWAP)")}, {(SortieImmediate ? "SORTIE DES LE RETOUR AU NIVEAU CASSE (cloture de minute)" : "sortie aux controles seulement")}, filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}. {EtatTexte()}");
+                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? " CONFIRMEE PAR LE VOLUME (x2)" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, {(LaisserCourir ? "LAISSER COURIR (une entree par seance, sortie au niveau casse)" : "sortie normale (limite du controle ou VWAP)")}, filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}. {EtatTexte()}");
             }
             catch (Exception e)
             {
@@ -302,7 +300,6 @@ namespace Bot3en1
             bot.EntreeCassure = EntreeCassure;
             bot.LaisserCourir = LaisserCourir;
             bot.ConfirmationVolume = ConfirmationVolume;
-            bot.SortieImmediate = SortieImmediate;
             bot.Relance = RelanceFiltre;
             bot.MessageControle = true;
             bot.HeureParis = m => HeureDeParis(m);

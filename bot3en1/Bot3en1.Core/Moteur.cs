@@ -79,10 +79,6 @@ namespace Bot3en1
         // moyenne des 30 minutes d'avant ; aux controles, rien ne change
         public bool ConfirmationVolume = false;
         public const double VolumeMultiple = 2.0;
-        // sortie immediate (26 octobre 2026, demande de l'utilisateur ; scalping/README.md partie N, variante N1) : un trade de
-        // zone est ferme des qu'une minute cloture de l'autre cote du niveau casse a l'entree (fige), sans attendre le controle
-        public bool SortieImmediate = false;
-        int minuteEntree = -1;
         public double NiveauCasse { get; private set; } = double.NaN;
         public bool DejaEntre { get; private set; }
         /// <summary>Message a chaque controle (prix, limites, VWAP, delta, decision) : source "controle". Heure de Paris
@@ -234,7 +230,7 @@ namespace Bot3en1
             Jour = jour.Date; Contrat = contrat;
             for (int i = 0; i < N; i++) barres[i] = new Barre();
             cumTv = cumV = cumT = 0; nPresentes = 0;
-            ZoneVirtuelle = 0; ZoneTenue = 0; DejaEntre = false; NiveauCasse = double.NaN; minuteEntree = -1;   // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
+            ZoneVirtuelle = 0; ZoneTenue = 0; DejaEntre = false; NiveauCasse = double.NaN;   // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
             // veille : cloture de la derniere seance complete du meme contrat, sans changement de contrat entre les deux
             Veille = double.NaN;
             for (int i = Historique.Count - 1; i >= 0; i--)
@@ -310,9 +306,6 @@ namespace Bot3en1
             double typique = (b.H + b.L + b.C) / 3;
             cumTv += typique * b.V; cumV += b.V; cumT += typique;
             int k = (m % PAS == 0) ? m / PAS - 1 : -1;
-            if (SortieImmediate && ZoneVirtuelle != 0 && m > minuteEntree && m < N - 1 && !double.IsNaN(NiveauCasse)
-                && ZoneVirtuelle * (b.C - NiveauCasse) <= 0)
-                SortieZone(m, b.C, "sortie", sortie, $" (retour au niveau casse {NiveauCasse:F2})");
             if (k >= 0 && k < NMOMENTS && ZoneActive && ZoneAutorisee && barres[0].Presente && !double.IsNaN(Sigma[k]))
                 Zone(m, k, b.C, sortie);
             else if (EntreeCassure && k < 0 && m > PAS && m < NMOMENTS * PAS && ZoneActive && ZoneAutorisee && barres[0].Presente
@@ -362,9 +355,7 @@ namespace Bot3en1
                 : neuf.Any(x => x.Source == "zone" && x.Texte.StartsWith("sortie")) ? "sortie du trade"
                 : avantVirt != 0 && ZoneVirtuelle == 0 && avantTenue == 0 ? "le trade ecarte est termine (prix revenu), plus de relance pour lui"
                 : ZoneTenue > 0 ? $"en position (achat) ; sortie a un controle si le prix passe sous {(LaisserCourir ? NiveauCasse : Math.Max(haut, vw)):F2}"
-                                  + (SortieImmediate ? $", ou des qu'une minute cloture sous {NiveauCasse:F2}" : "")
                 : ZoneTenue < 0 ? $"en position (vente) ; sortie a un controle si le prix passe au-dessus de {(LaisserCourir ? NiveauCasse : Math.Min(bas, vw)):F2}"
-                                  + (SortieImmediate ? $", ou des qu'une minute cloture au-dessus de {NiveauCasse:F2}" : "")
                 : Arret ? "plus de trade aujourd'hui (objectif ou limite du jour atteint)"
                 : ZoneVirtuelle == 0 && LaisserCourir && DejaEntre ? "plus d'entree aujourd'hui (laisser courir : une seule entree par seance)"
                 : ZoneVirtuelle != 0 ? $"trade ecarte toujours en cours : {(Relance ? "relance au prochain controle si le delta passe du bon cote" : "relance decochee, le bot attend sa fin")}"
@@ -409,7 +400,7 @@ namespace Bot3en1
             {
                 int sens = p > haut ? 1 : -1;
                 ZoneVirtuelle = sens;
-                DejaEntre = true; NiveauCasse = sens > 0 ? haut : bas; minuteEntree = m;
+                DejaEntre = true; NiveauCasse = sens > 0 ? haut : bas;
                 double d = Delta(m);
                 double depasse = sens > 0 ? (p - haut) / (refH * Sigma[k]) : (bas - p) / (refB * Sigma[k]);
                 bool force = SeuilForce > 0 && depasse >= SeuilForce;
@@ -430,14 +421,14 @@ namespace Bot3en1
             }
         }
 
-        void SortieZone(int m, double p, string quoi, List<Signal> s, string apres = "")
+        void SortieZone(int m, double p, string quoi, List<Signal> s)
         {
             if (ZoneTenue != 0)
             {
                 if (ModeAPlat)
                     RealiseAPlat += ZoneSurMES ? Taille * (5 * ZoneTenue * Es(PrixES, entreeZoneES) - 4.5) : Taille * (2 * ZoneTenue * (p - EntreeZone) - 3.0);
                 RealiseJour += Taille * (ZoneTenue * (p - EntreeZone) - 1.5) * 2;
-                s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p, Texte = $"{quoi} {Heure(m)} a {p:F2}{apres}" });
+                s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p, Texte = $"{quoi} {Heure(m)} a {p:F2}" });
             }
             ZoneVirtuelle = 0; ZoneTenue = 0;
         }
