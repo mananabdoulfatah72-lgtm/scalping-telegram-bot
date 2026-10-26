@@ -1326,3 +1326,23 @@ Publié quoi qu'il arrive.
 - Mais le prix revient très souvent tester le niveau cassé avant de repartir : les gagnants tombent de 28 % à 16 %. Avec
   une seule entrée par jour, le trade est coupé et le mouvement est raté.
 - Moins de comptes perdus (59 % contre 69 %), mais beaucoup plus de challenges expirés : moins de validés.
+
+## Partie P (26 octobre 2026) : quel stop pour L1a ? (règles fixées avant tout calcul)
+
+Question de l'utilisateur : quel stop idéal pour sa version (L1a : entrée à la cassure, une entrée par séance, sortie
+aux contrôles au niveau cassé, 16 h) ? On ajoute un vrai stop posé à l'entrée (touché à n'importe quel moment, rempli un
+tick au-delà, ou à l'ouverture si elle est déjà au-delà). Le reste de L1a ne change pas.
+
+**Candidats** :
+- **aucun stop** (= L1a) ;
+- **stop en % du prix d'entrée** : 0,10 %, 0,15 %, 0,20 %, 0,30 %, 0,40 % (au NQ à 29 300 : environ 29, 44, 59, 88 et
+  117 points, soit 234, 352, 469, 703 et 938 $ en 4 MNQ) ;
+- **stop sous le niveau cassé, avec une marge** pour laisser le prix revenir le tester : niveau − 0,25, 0,5 ou 1 fois la
+  largeur de la zone au contrôle (référence × σ).
+
+**Choix sans tricher** : le candidat retenu est celui qui a le meilleur t des gains quotidiens sur **2011 - 2022**
+seulement. Il est ensuite jugé sur **2023 - 2026**, qui n'a pas servi au choix.
+
+**Décision (fixée maintenant)** : le stop retenu n'est conseillé que si, sur 2023 - 2026, son t est au moins celui de L1a,
+**et** s'il valide au moins autant que L1a dans le challenge avec 1 000 $ de marge (départs 2012 - 2026 et départs
+2023 - 2026). Publié quoi qu'il arrive.
