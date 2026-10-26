@@ -1057,3 +1057,19 @@ entraînement à partir de 2017) : c'est un coffre intact, dans le passé, de 6 
 zéro, et les deux placebos choisis sur bruit font mieux qu'elles : la sélection de la version 5 sur le NQ n'a donc trouvé
 que du hasard. Elles ne seront ni mises dans le bot ni proposées pour l'argent réel ; le suivi virtuel n'a plus d'objet
 pour elles. (L'or, le pétrole et le Russell n'ont pas de coffre du passé : leurs minutes commencent en 2016 - 2017.)
+
+## Situation du challenge à 49 500 $ (26 octobre 2026, descriptif) : `resultats/i/situation_49500_haut*.txt`
+
+Après une perte de 1 000 $ (filtre delta retiré du bot à la demande de l'utilisateur, voir `bot3en1/README.md`). Même
+simulation que `situation_bulenox.py` (zone sans filtre, limite du jour réglable par `LIMITE`), 13 séances jusqu'au
+12 novembre 2026, départ depuis chaque séance historique.
+
+| Plus haut de fin de journée | Plancher (marge) | Sans avantage, au plus | 4 puis 6 MNQ : validé / perdu / expiré (2012-2026) | 2023-2026 |
+|---|---|---|---|---|
+| 51 172 $ | 48 672 $ (828 $) | 19 % | 20,7 % / 72,7 % / 6,6 % | 22,6 % / 72,9 % / 4,5 % |
+| 50 600 $ | 48 100 $ (1 400 $) | 28 % | 29,2 % / 57,0 % / 13,8 % | 30,9 % / 57,9 % / 11,1 % |
+
+- Plus de MNQ n'aide presque pas (6 puis 8 : 21 % / 31 %), et perd plus de comptes.
+- Avec une marge de 828 $, une limite du jour plus basse ne change rien : 20 à 21 % de validés de 500 $ à 1 000 $.
+- Ces chances sont à peine au-dessus du pile ou face de la marge : à ce stade, c'est surtout la taille de la marge qui
+  décide, pas la stratégie.

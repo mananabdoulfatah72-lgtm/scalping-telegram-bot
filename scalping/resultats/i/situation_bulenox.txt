@@ -1,12 +1,12 @@
-Situation : solde 50,600 $, plus haut de fin de journee 50,600 $, plancher 48,100 $ (marge 2,500 $), objectif 53 000 $ (encore 2,400 $), 14 seances restantes.
-Sans aucun avantage, la chance d'atteindre l'objectif avant le plancher vaut au plus marge / (marge + reste) = 51% (sans limite de temps).
+Situation : solde 49,500 $, plus haut de fin de journee 51,172 $, plancher 48,672 $ (marge 828 $), objectif 53 000 $ (encore 3,500 $), 13 seances restantes, limite de perte du jour 1,000 $.
+Sans aucun avantage, la chance d'atteindre l'objectif avant le plancher vaut au plus marge / (marge + reste) = 19% (sans limite de temps).
 
 reglage                                      2012-2026 : valide  perdu  expire  2023-2026 : valide  perdu  expire
-zone 1 MNQ                                      4.7%    0.8%   94.5%       2.9%    0.0%   97.1%
-zone 2 puis 4 MNQ                              37.8%   17.4%   44.7%      36.7%   22.0%   41.3%
-zone 3 puis 5 MNQ                              46.9%   25.9%   27.2%      47.1%   29.3%   23.7%
-zone 4 puis 6 MNQ (reglage actuel)             50.5%   33.4%   16.1%      52.7%   34.1%   13.2%
-zone 5 puis 7 MNQ                              51.9%   39.2%    8.9%      52.8%   41.3%    5.9%
-zone 6 puis 8 MNQ                              52.0%   42.1%    5.9%      52.4%   43.2%    4.4%
-zone 8 puis 10 MNQ                             51.1%   45.3%    3.6%      52.4%   45.4%    2.2%
-zone 4 puis 6 + ORB 5 min 2 MNQ                54.4%   40.9%    4.6%      54.0%   43.9%    2.1%
+zone 1 MNQ                                      1.0%   20.8%   78.2%       0.0%   22.2%   77.8%
+zone 2 puis 4 MNQ                              16.8%   59.4%   23.8%      15.9%   61.4%   22.7%
+zone 3 puis 5 MNQ                              20.2%   67.9%   11.9%      21.1%   69.4%    9.5%
+zone 4 puis 6 MNQ (reglage actuel)             20.7%   72.7%    6.6%      22.6%   72.9%    4.5%
+zone 5 puis 7 MNQ                              20.7%   75.2%    4.1%      22.0%   74.8%    3.3%
+zone 6 puis 8 MNQ                              21.3%   76.0%    2.7%      21.2%   76.1%    2.6%
+zone 8 puis 10 MNQ                             20.1%   78.8%    1.1%      19.9%   79.2%    0.9%
+zone 4 puis 6 + ORB 5 min 2 MNQ                23.2%   74.7%    2.0%      22.0%   75.9%    2.1%
