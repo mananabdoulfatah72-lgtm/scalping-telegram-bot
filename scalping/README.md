@@ -1346,3 +1346,24 @@ seulement. Il est ensuite jugé sur **2023 - 2026**, qui n'a pas servi au choix.
 **Décision (fixée maintenant)** : le stop retenu n'est conseillé que si, sur 2023 - 2026, son t est au moins celui de L1a,
 **et** s'il valide au moins autant que L1a dans le challenge avec 1 000 $ de marge (départs 2012 - 2026 et départs
 2023 - 2026). Publié quoi qu'il arrive.
+
+### Résultats de la partie P (26 octobre 2026) : `resultats/j/partie_p.txt`
+
+Contrôle : sans stop, on retrouve exactement L1a. **Stop choisi sur 2011 - 2022 : niveau − 0,5 largeur de zone**
+(t +2,71 contre +2,31 sans stop).
+
+| Candidat | t 2011-22 | t 2023-26 | Gagnants | Perte moyenne (points) | Journées à −1 000 $ | Validé (marge 1 000 $) | 2026 en 4 MNQ |
+|---|---|---|---|---|---|---|---|
+| Aucun stop (L1a) | +2,31 | +0,88 | 28 % | −86 | 585 | 25,1 % | +232 $ |
+| 0,10 % | +2,13 | +0,94 | 15 % | −33 | 9 | 21,1 % | −4 014 $ |
+| 0,15 % | +2,22 | +0,79 | 19 % | −45 | 11 | 22,0 % | −3 558 $ |
+| 0,20 % | +2,27 | +0,69 | 22 % | −55 | 21 | 24,0 % | −7 761 $ |
+| 0,30 % | +2,56 | +1,06 | 25 % | −68 | 91 | 24,8 % | −7 546 $ |
+| 0,40 % | +2,52 | +1,35 | 27 % | −74 | 580 | 25,1 % | +237 $ |
+| Niveau − 0,25 largeur | +2,69 | +0,80 | 22 % | −57 | 209 | 23,3 % | −4 912 $ |
+| **Niveau − 0,5 largeur (choisi)** | **+2,71** | +0,62 | 25 % | −72 | 304 | 24,3 % | −3 724 $ |
+| Niveau − 1 largeur | +2,64 | +0,88 | 28 % | −83 | 485 | 24,8 % | −2 374 $ |
+
+**Décision fixée à l'avance : le stop choisi ne passe pas** (t 2023-2026 de +0,62 contre +0,88, et 24,3 % de validés
+contre 25,1 %). Un stop serré supprime presque toutes les journées à −1 000 $, mais coupe trop de trades qui
+auraient gagné. Aucun stop ne fait mieux que L1a à la fois sur les années de choix et sur les années de contrôle.

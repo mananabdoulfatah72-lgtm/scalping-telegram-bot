@@ -1,0 +1,15 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23. Controle : aucun stop = L1a de partie_m : oui.
+Stop choisi sur 2011-2022 (meilleur t) : niveau - 0,5 largeur
+
+candidat                  t 11-22  t 23-26  points  gagn.  stoppes perte moy   pire j. -1000$  valide  perdu  expire valide 23-26  2026 4MNQ  avr-oct
+aucun stop (L1a)            +2.31    +0.88   +5120    28%       0%     -86.0   -624       585   25.1%  68.7%    6.2%        25.4%       +232   +6,010
+stop 0,10 %                 +2.13    +0.94   +2228    15%      77%     -32.5    -36         9   21.1%  61.6%   17.3%        20.8%     -4,014   -1,679
+stop 0,15 %                 +2.22    +0.79   +2055    19%      64%     -44.7    -52        11   22.0%  66.7%   11.3%        20.0%     -3,558     +740
+stop 0,20 %                 +2.27    +0.69   +1977    22%      52%     -54.5    -68        21   24.0%  68.2%    7.8%        22.7%     -7,761   -2,835
+stop 0,30 %                 +2.56    +1.06   +4292    25%      34%     -67.7   -100        91   24.8%  68.4%    6.8%        25.5%     -7,546   +1,047
+stop 0,40 %                 +2.52    +1.35   +5363    27%      22%     -74.1   -133       580   25.1%  68.7%    6.2%        25.4%       +237   +6,010
+niveau - 0,25 largeur       +2.69    +0.80   +4042    22%      65%     -56.8   -416       209   23.3%  65.5%   11.1%        23.5%     -4,912   +1,529
+niveau - 0,5 largeur        +2.71    +0.62   +3825    25%      45%     -71.7   -459       304   24.3%  68.3%    7.4%        23.2%     -3,724   +4,536
+niveau - 1 largeur          +2.64    +0.88   +5054    28%      20%     -83.2   -545       485   24.8%  68.9%    6.3%        24.7%     -2,374   +3,405
+
+(t des gains quotidiens, jours sans Fed ; points bruts 1 MNQ frais deduits ; perte moyenne et pire trade : 2023-2026, points au prix d'aujourd'hui ; j. -1000$ = journees a -1 000 $ en 4 MNQ sur 15 ans ; challenge : 49 500 $, marge 1 000 $, 13 seances, 4 puis 6 MNQ, limite du jour 1 000 $ ; 2026 et avril-octobre : $ en 4 MNQ au prix d'aujourd'hui)
