@@ -1204,3 +1204,27 @@ laisser courir les trades gagnants. Mêmes niveaux, données, frais et mesures q
   rapportent les gagnants : K1a −75 724 points de coupures contre +68 172 de gagnants.
 - La coupure réduit les journées à −1 000 $ en 4 MNQ (457 à 486 contre 638 pour K1b et K2b), mais le gain s'effondre et
   les chances de valider baissent dans toutes les situations.
+
+## Partie L (26 octobre 2026) : entrer à la première cassure et laisser courir (règles fixées avant tout calcul)
+
+Le bot installé depuis le 26 octobre entre à la cassure (J0). Mais la zone s'élargit à chaque contrôle, et il sort dès
+que le prix repasse sous la **nouvelle** limite, même si le prix est encore au-dessus du niveau qu'il a cassé. Exemple
+du 23 octobre : achat à 10 h 40 (New York) à la cassure de 29 250,71, sortie à 11 h 30 à 29 261 parce que la limite était
+montée à 29 282, puis nouvel achat à 11 h 34. L'utilisateur demande d'entrer à la cassure des premiers niveaux, de
+laisser courir, et de ne sortir que si le prix revient franchement dans la zone.
+
+**Règles** (mêmes données, niveaux, frais et mesures que J) :
+- **Entrée** : comme J0 (clôture d'une minute au-delà des niveaux du dernier contrôle, 10 h - 15 h 30, ou décision au
+  contrôle).
+- **Sortie**, seulement aux contrôles de 30 minutes, et à 16 h :
+  - **L1, niveau cassé** : le prix repasse sous le niveau cassé à l'entrée (figé à l'entrée ; au-dessus pour une vente) ;
+  - **L2, VWAP** : le prix repasse sous le VWAP (au-dessus pour une vente) ;
+  - **L3, retour fort** : le prix repasse sous max(ouverture, veille), donc toute la marge σ est reprise (au-dessus de
+    min(ouverture, veille) pour une vente).
+- **Nombre de trades** : **a**, un seul trade par séance (la première cassure) ; **b**, après une sortie, nouvelle entrée
+  à une cassure suivante (pas dans la minute de la sortie).
+- Références : le bot d'avant (entrée aux contrôles) et le bot installé (J0).
+
+**Décision (fixée maintenant)** : une variante n'est conseillée que si elle bat **les deux références** sur le t des gains
+quotidiens en 2011-2022 **et** en 2023-2026, **et** valide au moins 2 points de plus que les deux depuis 49 500 $ avec
+1 000 $ de marge (plus haut 51 000 $, 13 séances, 4 puis 6 MNQ, limite du jour 1 000 $). Publiée quoi qu'il arrive.
