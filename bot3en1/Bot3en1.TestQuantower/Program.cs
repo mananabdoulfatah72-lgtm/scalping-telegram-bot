@@ -16,7 +16,7 @@ using TradingPlatform.BusinessLayer;
 // RELANCE=1 / RELANCE=0 : relance du filtre cochee / decochee (sans la variable : reglage par defaut, decoche).
 // CASSURE=1 : entree a la cassure entre deux controles (sans la variable : entree aux seuls controles, comme avant).
 // VOLUME=1 : entree a la cassure confirmee par le volume (minute d'au moins 2 fois la moyenne des 30 minutes d'avant).
-// VOLMULT=1 : multiple du volume (2 sans la variable). SANS_TARDIVE=1 : pas d'entree tardive. FENETRE=5 : fenetre de confirmation (0 sans la variable). COURIR=1 : une entree par seance,
+// VOLMULT=1 : multiple du volume (2 sans la variable). SANS_TARDIVE=1 : pas d'entree tardive. FENETRE=5 : fenetre de confirmation (0 sans la variable). Q1=1, Q2=1 : filtres de la partie Q. COURIR=1 : une entree par seance,
 // sortie au niveau casse.
 // SANS_NQ=1 : aucune transaction NQ pendant la seance (16 octobre 2026) : le bot doit donner l'alerte et ne rien trader.
 // LANCEMENT=09:10 : heure de lancement le premier jour (New York), horloge avancee minute par minute jusqu'a 9 h 29.
@@ -65,6 +65,8 @@ class Program
         strat.MultipleVolume = double.Parse(Environment.GetEnvironmentVariable("VOLMULT") ?? "2", inv);
         strat.SansEntreeTardive = Environment.GetEnvironmentVariable("SANS_TARDIVE") == "1";
         strat.FenetreConfirmation = int.Parse(Environment.GetEnvironmentVariable("FENETRE") ?? "0", inv);
+        strat.FiltreOuverture = Environment.GetEnvironmentVariable("Q1") == "1";
+        strat.FiltreTendance = Environment.GetEnvironmentVariable("Q2") == "1";
         strat.LaisserCourir = Environment.GetEnvironmentVariable("COURIR") == "1";
         if (Environment.GetEnvironmentVariable("RELANCE") is string relance) strat.RelanceFiltre = relance == "1";   // sinon le reglage par defaut
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";

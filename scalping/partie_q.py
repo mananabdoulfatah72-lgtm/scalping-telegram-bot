@@ -68,6 +68,8 @@ def _zone_q(O, H, L, C, V, sigma, vwap, href, bref, tend, jouable, kvol, W, filt
                         ok = e * (p - (ub if e > 0 else lb)) <= 0.25 * (href[s] if e > 0 else bref[s]) * sg
                     elif ok and filtre == 6:
                         ok = m <= 150
+                    elif ok and filtre == 7:                    # Q1 et Q2 ensemble (27 octobre 2026, apres la partie Q)
+                        ok = ((O[s, 0] >= href[s]) if e > 0 else (O[s, 0] <= bref[s])) and tend[s] == e
                     if ok:
                         pos, me, px, fait = e, m, p, True
                         niveau = ub if e > 0 else lb

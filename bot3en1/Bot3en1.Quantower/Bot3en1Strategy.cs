@@ -42,11 +42,15 @@ namespace Bot3en1
         public bool SansEntreeTardive = true;
         [InputParameter("Zone : fenetre de confirmation en minutes, 5 par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (si la minute de la cassure n'a pas le volume, une des minutes suivantes peut confirmer tant que le prix reste au-dela du niveau ; 0 = seulement la minute de la cassure)", 56, 0, 30, 1, 0)]
         public int FenetreConfirmation = 5;
+        [InputParameter("Zone : filtre Q1, sens de l'ouverture, decoche par defaut (achat seulement si l'ouverture de 9 h 30 est au-dessus ou au niveau de la cloture de la veille, vente seulement si elle est en dessous ou au niveau ; scalping/README.md partie Q)", 57)]
+        public bool FiltreOuverture = false;
+        [InputParameter("Zone : filtre Q2, tendance de fond, decoche par defaut (achat seulement si la veille a cloture au-dessus de la moyenne des 20 dernieres clotures, vente seulement en dessous ; scalping/README.md partie Q)", 58)]
+        public bool FiltreTendance = false;
         [InputParameter("Zone : une seule entree par seance et sortie seulement au retour sous le niveau casse, cochee par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (sortie a un controle de 30 minutes si le prix est repasse de l'autre cote du niveau casse a l'entree, au lieu de la limite du controle ou du VWAP ; sinon a 16 h ; limite de perte du jour inchangee)", 55)]
         public bool LaisserCourir = true;
-        [InputParameter("Filtre delta de la zone : decoche par defaut depuis le 26 octobre 2026 = la zone seule, chaque cassure verifiee a un controle est prise quel que soit le delta (coche = ancien bot, cassure ecartee si le delta 30 min va contre elle)", 57)]
+        [InputParameter("Filtre delta de la zone : decoche par defaut depuis le 26 octobre 2026 = la zone seule, chaque cassure verifiee a un controle est prise quel que soit le delta (coche = ancien bot, cassure ecartee si le delta 30 min va contre elle)", 48)]
         public bool FiltreDeltaActif = false;
-        [InputParameter("Filtre delta : relance, decochee par defaut depuis le 20 octobre 2026 (un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 58)]
+        [InputParameter("Filtre delta : relance, decochee par defaut depuis le 20 octobre 2026 (un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 49)]
         public bool RelanceFiltre = false;
         [InputParameter("Plafond de gain du jour en $ (0 = aucun ; Bulenox : 500 sur le compte Master seulement, 0 pendant le challenge ; Static : 500 sur le compte Pro)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
         [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1000, 100 $ de marge avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
@@ -138,7 +142,7 @@ namespace Bot3en1
                 SymboleNQ.NewLast += SurTransaction;
                 if (ModeAPlat) SymboleMES.NewLast += SurTransactionES;
                 horloge = new Timer(_ => Tic(), null, 500, 500);
-                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? $" CONFIRMEE PAR LE VOLUME (x{MultipleVolume.ToString("0.#", CultureInfo.InvariantCulture)})" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, {(SansEntreeTardive ? $"SANS ENTREE TARDIVE (confirmation dans les {Math.Max(0, FenetreConfirmation)} minutes apres la cassure)" : "entree tardive possible aux controles")}, {(LaisserCourir ? "UNE ENTREE PAR SEANCE, SORTIE SEULEMENT AU RETOUR SOUS LE NIVEAU CASSE (aux controles) ou a 16 h" : "sorties d'origine (aux controles, limite de la zone ou VWAP, et 16 h)")}, filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}. {EtatTexte()}");
+                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? $" CONFIRMEE PAR LE VOLUME (x{MultipleVolume.ToString("0.#", CultureInfo.InvariantCulture)})" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, {(SansEntreeTardive ? $"SANS ENTREE TARDIVE (confirmation dans les {Math.Max(0, FenetreConfirmation)} minutes apres la cassure)" : "entree tardive possible aux controles")}, {(LaisserCourir ? "UNE ENTREE PAR SEANCE, SORTIE SEULEMENT AU RETOUR SOUS LE NIVEAU CASSE (aux controles) ou a 16 h" : "sorties d'origine (aux controles, limite de la zone ou VWAP, et 16 h)")}, filtres Q1 (sens de l'ouverture) {(FiltreOuverture ? "COCHE" : "decoche")} et Q2 (tendance de fond) {(FiltreTendance ? "COCHE" : "decoche")}, filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}. {EtatTexte()}");
             }
             catch (Exception e)
             {
@@ -308,6 +312,8 @@ namespace Bot3en1
             bot.VolumeMultiple = MultipleVolume;
             bot.SansEntreeTardive = SansEntreeTardive;
             bot.FenetreConfirmation = Math.Max(0, FenetreConfirmation);
+            bot.FiltreOuverture = FiltreOuverture;
+            bot.FiltreTendance = FiltreTendance;
             bot.LaisserCourir = LaisserCourir;
             bot.Relance = RelanceFiltre;
             bot.MessageControle = true;

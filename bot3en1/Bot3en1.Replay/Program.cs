@@ -11,7 +11,7 @@ using Bot3en1;
 // RELANCE=1, FORCE=1 : variantes de relance/README.md (trade ecarte repris si le delta tourne ; cassure forte prise).
 // CASSURE=1 : entree a la cassure entre deux controles (scalping/README.md partie J, J0). COURIR=1 : laisser courir
 // (partie L, L1a : une entree par seance, sortie au niveau casse). VOLUME=1 : cassure confirmee par le volume (partie M, M1V).
-// VOLMULT=1 : multiple du volume (2 par defaut). SANS_TARDIVE=1 : entree seulement a la minute qui franchit le niveau. FENETRE=5 : confirmation possible dans les 5 minutes.
+// VOLMULT=1 : multiple du volume (2 par defaut). SANS_TARDIVE=1 : entree seulement a la minute qui franchit le niveau. FENETRE=5 : confirmation possible dans les 5 minutes. Q1=1, Q2=1 : filtres de la partie Q.
 class Program
 {
     static int Main(string[] a)
@@ -42,6 +42,8 @@ class Program
                                                     VolumeMultiple = double.Parse(Environment.GetEnvironmentVariable("VOLMULT") ?? "2", inv),
                                                     SansEntreeTardive = Environment.GetEnvironmentVariable("SANS_TARDIVE") == "1",
                                                     FenetreConfirmation = int.Parse(Environment.GetEnvironmentVariable("FENETRE") ?? "0", inv),
+                                                    FiltreOuverture = Environment.GetEnvironmentVariable("Q1") == "1",
+                                                    FiltreTendance = Environment.GetEnvironmentVariable("Q2") == "1",
                                                     SeuilForce = double.Parse(Environment.GetEnvironmentVariable("FORCE") ?? "0", inv) };
         var trades = new List<string>();
         double zone = 0, rsi = 0, entreeZ = 0, entreeR = 0; int sensZ = 0, nZone = 0, nEcartes = 0, nRsi = 0;

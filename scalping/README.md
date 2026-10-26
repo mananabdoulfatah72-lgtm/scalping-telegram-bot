@@ -1473,3 +1473,7 @@ Contrôle : sans filtre, on retrouve exactement la configuration installée.
 13 séances (moins de trades, donc plus de challenges expirés). Mais Q1, Q2 et Q5 améliorent le t **sur les deux
 périodes**, et Q1 et Q2 nettement : moins de journées à −1 000 $ et moins de comptes perdus. Ce sont des pistes sérieuses
 pour après le challenge (compte Master), pas pour les 13 séances qui restent.
+
+**Q1 + Q2 ensemble (27 octobre 2026, mesuré après coup, hors des règles fixées) : `reglages_27oct_q12.py`.** 824 trades,
+t +1,60 / +2,44, 126 journées à −1 000 $ ; challenge avec 1 000 $ de marge : 11,5 % validés, 38,4 % perdus, 50,1 % expirés.
+Ajoutés au bot comme réglages décochés par défaut.

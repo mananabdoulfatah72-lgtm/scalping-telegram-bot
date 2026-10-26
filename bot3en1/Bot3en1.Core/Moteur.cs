@@ -87,6 +87,11 @@ namespace Bot3en1
         // franchit le niveau n'a pas le volume, une des FenetreConfirmation minutes suivantes peut confirmer tant que le prix clot
         // toujours au-dela du niveau ; s'il revient dans la zone, il faut une nouvelle cassure
         public int FenetreConfirmation = 0;
+        // filtres d'entree (27 octobre 2026, scalping/README.md partie Q) : Q1, n'acheter que si l'ouverture est au-dessus ou au
+        // niveau de la cloture de la veille (vendre : en dessous ou au niveau) ; Q2, n'acheter que si la cloture de la derniere
+        // seance complete est au-dessus de la moyenne des 20 dernieres clotures completes (vendre : en dessous)
+        public bool FiltreOuverture = false, FiltreTendance = false;
+        public int Tendance { get; private set; }
         int finFenetre = -1, sensFenetre, debutFenetre = -1;
         public double NiveauCasse { get; private set; } = double.NaN;
         public bool DejaEntre { get; private set; }
@@ -251,6 +256,13 @@ namespace Bot3en1
             var completes = Historique.Where(r => r.Complete).Skip(Math.Max(0, Historique.Count(r => r.Complete) - JOURS_MOYENNE)).ToList();
             bool assez = completes.Count == JOURS_MOYENNE;
             for (int k = 0; k < NMOMENTS; k++) Sigma[k] = assez ? completes.Average(r => r.Mv[k]) : double.NaN;
+            var clotures = Historique.Where(r => r.Complete).Select(r => r.Cloture).ToList();
+            Tendance = 0;
+            if (clotures.Count >= 20)
+            {
+                var der = clotures.Skip(clotures.Count - 20).ToList();
+                Tendance = der[^1] > der.Average() ? 1 : -1;
+            }
             ZoneActive = assez && !double.IsNaN(Veille) && !Calendrier.JourCourt(jour) && !Calendrier.JourFerme(jour);
             JourFed = ModeAPlat && JoursFed != null && JoursFed.Contains(jour.Date);
             if (JourFed) ZoneActive = false;                 // vague 9 : pas de zone les jours d'annonce de la Fed
@@ -441,6 +453,8 @@ namespace Bot3en1
             if (ZoneVirtuelle == 0 && !(LaisserCourir && DejaEntre) && (p > haut || p < bas))
             {
                 int sens = p > haut ? 1 : -1;
+                if (FiltreOuverture && (sens > 0 ? o0 < Veille : o0 > Veille)) return;
+                if (FiltreTendance && Tendance != sens) return;
                 ZoneVirtuelle = sens;
                 DejaEntre = true; NiveauCasse = sens > 0 ? haut : bas;
                 double d = Delta(m);
