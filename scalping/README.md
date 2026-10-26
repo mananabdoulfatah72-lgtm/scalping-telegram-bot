@@ -1392,3 +1392,20 @@ A2 = A sans entrée tardive : une entrée seulement à la minute où le prix fra
 côté), avec le volume ×2, aux contrôles comme entre eux ; sorties d'origine. 1 412 trades en 15 ans (+3 018 points),
 t +1,66 / +1,16, 2025 +12 839 $, 2026 −451 $ (4 MNQ), validé 11,8 % avec 1 000 $ de marge (44,2 % expirés). Trop peu de
 trades. L'utilisateur a précisé que ce n'était pas sa règle ; elle n'est pas codée dans le bot (le bot reste la version A).
+
+### Règle de l'utilisateur (26 octobre 2026 au soir, descriptif) : `reglages_26oct_f.py`
+
+Entrée à la minute où le prix franchit le niveau du dernier contrôle, avec un volume d'au moins k fois la moyenne des 30
+minutes d'avant ; une seule entrée par séance, pas de rattrapage ; sortie aux contrôles si le prix est repassé de l'autre
+côté du niveau cassé, sinon 16 h.
+
+| | Trades | Points (15 ans) | t 2011-22 / 2023-26 | Journées à −1 000 $ | 2025 (4 MNQ) | 2026 (4 MNQ) | Validé, marge 1 000 $ (départs 2012-26 / depuis 2025) |
+|---|---|---|---|---|---|---|---|
+| Bot d'avant | 3 577 | +10 558 | +3,75 / +2,27 | 638 | −4 531 $ | +2 926 $ | 24,2 % / 18,9 % |
+| Version A | 4 445 | +8 569 | +3,39 / +1,88 | 677 | +5 157 $ | +1 131 $ | 25,2 % / 20,2 % |
+| **Règle, volume ×1** | 2 247 | +2 833 | +0,57 / +1,50 | **335** | **+19 898 $** | **+10 664 $** | 19,7 % / **22,6 %** |
+| Règle, volume ×1,5 | 1 646 | +1 765 | +1,12 / +0,64 | 208 | +7 237 $ | +3 209 $ | 17,7 % / — |
+| Règle, volume ×2 | 1 121 | +2 911 | +1,64 / +1,14 | 114 | +12 452 $ | +1 411 $ | 12,6 % / — |
+
+Très bonne sur 2025 - 2026, faible sur 2011 - 2022 (t +0,57) : le résultat récent peut tenir à la période. Codée dans le
+bot avec le multiple 1 (choix de l'utilisateur).

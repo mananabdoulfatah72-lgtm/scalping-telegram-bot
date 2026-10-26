@@ -78,7 +78,11 @@ namespace Bot3en1
         // entre deux controles demande en plus que la minute de la cassure ait un volume d'au moins VolumeMultiple fois la
         // moyenne des 30 minutes d'avant ; aux controles, rien ne change
         public bool ConfirmationVolume = false;
-        public const double VolumeMultiple = 2.0;
+        public double VolumeMultiple = 2.0;
+        // pas d'entree tardive (26 octobre 2026 au soir, regle de l'utilisateur ; scalping/reglages_26oct_f.py) : une entree n'est
+        // prise qu'a la minute ou le prix franchit le niveau (minute d'avant encore du bon cote), aux controles comme entre eux, et
+        // avec la confirmation par le volume si elle est cochee ; une cassure ratee n'est pas rattrapee plus loin
+        public bool SansEntreeTardive = false;
         public double NiveauCasse { get; private set; } = double.NaN;
         public bool DejaEntre { get; private set; }
         /// <summary>Message a chaque controle (prix, limites, VWAP, delta, decision) : source "controle". Heure de Paris
@@ -311,9 +315,7 @@ namespace Bot3en1
             else if (EntreeCassure && k < 0 && m > PAS && m < NMOMENTS * PAS && ZoneActive && ZoneAutorisee && barres[0].Presente
                      && !double.IsNaN(Sigma[m / PAS - 1]) && ZoneVirtuelle == 0 && !(LaisserCourir && DejaEntre) && !Arret)
             {
-                double vol = b.V, moy = 0;
-                for (int i = m - 30; i < m; i++) moy += barres[i].V;
-                moy /= 30;
+                double vol = b.V, moy = MoyenneVolume(m);
                 if (!ConfirmationVolume) Entree(m, m / PAS - 1, b.C, sortie, " (cassure entre deux controles)");
                 else if (vol >= VolumeMultiple * moy)
                     Entree(m, m / PAS - 1, b.C, sortie, $" (cassure entre deux controles, volume {vol:F0}"
@@ -358,6 +360,7 @@ namespace Bot3en1
                 : ZoneTenue < 0 ? $"en position (vente) ; sortie a un controle si le prix passe au-dessus de {(LaisserCourir ? NiveauCasse : Math.Min(bas, vw)):F2}"
                 : Arret ? "plus de trade aujourd'hui (objectif ou limite du jour atteint)"
                 : ZoneVirtuelle == 0 && LaisserCourir && DejaEntre ? "plus d'entree aujourd'hui (laisser courir : une seule entree par seance)"
+                : ZoneVirtuelle == 0 && SansEntreeTardive && (p > haut || p < bas) ? "prix deja au-dela du niveau sans cassure confirmee : pas d'entree tardive"
                 : ZoneVirtuelle != 0 ? $"trade ecarte toujours en cours : {(Relance ? "relance au prochain controle si le delta passe du bon cote" : "relance decochee, le bot attend sa fin")}"
                 : "pas de signal : prix dans la zone";
             string paris = HeureParis?.Invoke(m);
@@ -386,7 +389,22 @@ namespace Bot3en1
                         Texte = $"{(ZoneTenue > 0 ? "achat" : "vente")} {Heure(m)} a {p:F2} (relance : delta 30 min {dr:+0;-0;0}, GARDE)" });
                 }
             }
-            Entree(m, k, p, s, "");
+            string ou = "";
+            if (SansEntreeTardive && ConfirmationVolume)
+            {
+                double vol = barres[m].V, moy = MoyenneVolume(m);
+                if (vol < VolumeMultiple * moy) return;
+                ou = $" (cassure au controle, volume {vol:F0}"
+                     + (moy > 0 ? $" = {(vol / moy).ToString("F1", System.Globalization.CultureInfo.InvariantCulture)} x la moyenne des 30 minutes)" : ")");
+            }
+            Entree(m, k, p, s, ou);
+        }
+
+        double MoyenneVolume(int m)
+        {
+            double moy = 0;
+            for (int i = m - 30; i < m; i++) moy += barres[i].V;
+            return moy / 30;
         }
 
         /// <summary>Entree de zone si le prix p est au-dela des niveaux du controle k et qu'aucun trade (tenu ou ecarte) n'est
@@ -399,6 +417,7 @@ namespace Bot3en1
             if (ZoneVirtuelle == 0 && !(LaisserCourir && DejaEntre) && (p > haut || p < bas))
             {
                 int sens = p > haut ? 1 : -1;
+                if (SansEntreeTardive && (sens > 0 ? barres[m - 1].C > haut : barres[m - 1].C < bas)) return;   // deja au-dela : tardive
                 ZoneVirtuelle = sens;
                 DejaEntre = true; NiveauCasse = sens > 0 ? haut : bas;
                 double d = Delta(m);

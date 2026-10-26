@@ -36,9 +36,15 @@ namespace Bot3en1
         public bool EntreeCassure = true;
         [InputParameter("Zone : entree a la cassure confirmee par le volume, cochee par defaut depuis le 26 octobre 2026 a la demande de l'utilisateur (la minute de la cassure doit avoir un volume d'au moins 2 fois la moyenne des 30 minutes d'avant ; sans effet aux controles)", 52)]
         public bool ConfirmationVolume = true;
-        [InputParameter("Filtre delta de la zone : decoche par defaut depuis le 26 octobre 2026 = la zone seule, chaque cassure verifiee a un controle est prise quel que soit le delta (coche = ancien bot, cassure ecartee si le delta 30 min va contre elle)", 54)]
+        [InputParameter("Zone : multiple du volume pour confirmer la cassure, 1 par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (1 = la minute de la cassure a au moins le volume moyen des 30 minutes d'avant ; 2 = au moins le double)", 53, 0.5, 5, 0.5, 1)]
+        public double MultipleVolume = 1.0;
+        [InputParameter("Zone : pas d'entree tardive, cochee par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (entree seulement a la minute ou le prix franchit le niveau, avec le volume, aux controles comme entre eux ; une cassure ratee n'est pas rattrapee plus haut ou plus bas)", 54)]
+        public bool SansEntreeTardive = true;
+        [InputParameter("Zone : une seule entree par seance et sortie seulement au retour sous le niveau casse, cochee par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (sortie a un controle de 30 minutes si le prix est repasse de l'autre cote du niveau casse a l'entree, au lieu de la limite du controle ou du VWAP ; sinon a 16 h ; limite de perte du jour inchangee)", 55)]
+        public bool LaisserCourir = true;
+        [InputParameter("Filtre delta de la zone : decoche par defaut depuis le 26 octobre 2026 = la zone seule, chaque cassure verifiee a un controle est prise quel que soit le delta (coche = ancien bot, cassure ecartee si le delta 30 min va contre elle)", 57)]
         public bool FiltreDeltaActif = false;
-        [InputParameter("Filtre delta : relance, decochee par defaut depuis le 20 octobre 2026 (un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 55)]
+        [InputParameter("Filtre delta : relance, decochee par defaut depuis le 20 octobre 2026 (un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 58)]
         public bool RelanceFiltre = false;
         [InputParameter("Plafond de gain du jour en $ (0 = aucun ; Bulenox : 500 sur le compte Master seulement, 0 pendant le challenge ; Static : 500 sur le compte Pro)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
         [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1000, 100 $ de marge avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
@@ -63,7 +69,7 @@ namespace Bot3en1
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
-        const string Version = "26 octobre 2026 soir (entree a la cassure confirmee par le volume, sorties inchangees, filtre delta decoche)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
+        const string Version = "26 octobre 2026 nuit (regle de l'utilisateur : entree a la cassure avec volume, pas d'entree tardive, une entree par seance, sortie au niveau casse)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
         Moteur bot;
         TimeZoneInfo ny;
         Timer horloge;
@@ -130,7 +136,7 @@ namespace Bot3en1
                 SymboleNQ.NewLast += SurTransaction;
                 if (ModeAPlat) SymboleMES.NewLast += SurTransactionES;
                 horloge = new Timer(_ => Tic(), null, 500, 500);
-                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? " CONFIRMEE PAR LE VOLUME (x2)" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, sorties inchangees (aux controles, limite de la zone ou VWAP, et 16 h), filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}. {EtatTexte()}");
+                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? $" CONFIRMEE PAR LE VOLUME (x{MultipleVolume.ToString("0.#", CultureInfo.InvariantCulture)})" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, {(SansEntreeTardive ? "SANS ENTREE TARDIVE" : "entree tardive possible aux controles")}, {(LaisserCourir ? "UNE ENTREE PAR SEANCE, SORTIE SEULEMENT AU RETOUR SOUS LE NIVEAU CASSE (aux controles) ou a 16 h" : "sorties d'origine (aux controles, limite de la zone ou VWAP, et 16 h)")}, filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}. {EtatTexte()}");
             }
             catch (Exception e)
             {
@@ -297,6 +303,9 @@ namespace Bot3en1
             bot.FiltreDelta = FiltreDeltaActif;
             bot.EntreeCassure = EntreeCassure;
             bot.ConfirmationVolume = ConfirmationVolume;
+            bot.VolumeMultiple = MultipleVolume;
+            bot.SansEntreeTardive = SansEntreeTardive;
+            bot.LaisserCourir = LaisserCourir;
             bot.Relance = RelanceFiltre;
             bot.MessageControle = true;
             bot.HeureParis = m => HeureDeParis(m);
