@@ -1091,3 +1091,34 @@ challenge à 49 500 $. Contrôle : les 3 562 trades H1 du fichier sont exactemen
   et 2025 aurait été perdante.
 - Dans le challenge, la différence (moins d'un point) est dans le bruit des départs qui se chevauchent : ça ne monte
   pas les chances de valider, et ça abîme le bot pour le compte financé ensuite.
+
+## Partie J (26 octobre 2026) : entrer à la cassure avec un objectif à 2 ou 3 fois le risque (règles fixées avant tout calcul)
+
+Demande de l'utilisateur : garder tout le bot tel quel (contrôles de 30 minutes, sorties aux contrôles), mais entrer
+dès que le prix casse la zone, avec un objectif de 2 ou 3 fois le risque, le risque étant la distance jusqu'au niveau où
+le bot sortirait du trade.
+
+**Règles** (zone V1 sans filtre, mêmes σ, limites, VWAP, frais et données que `situation_cassure.py`) :
+- **Niveaux** : ceux du dernier contrôle passé (ceux du message de contrôle du bot) : achat au-dessus de
+  max(ouverture, veille) × (1 + σ du contrôle), vente sous min(ouverture, veille) × (1 − σ du contrôle). Pas de zone
+  avant le contrôle de 10 h.
+- **Entrée** : à la clôture de la première minute qui finit au-delà d'un niveau, de 10 h à 15 h 30 (New York), si le bot
+  n'a ni trade en cours ni trade virtuel. Au contrôle, la décision est celle du bot (mêmes niveaux, mises à jour).
+- **Sortie (inchangée)** : à un contrôle, quand le prix repasse sous max(limite haute, VWAP) pour un achat (au-dessus de
+  min(limite basse, VWAP) pour une vente), et à 16 h.
+- **Objectif** : risque = |prix d'entrée − ligne de sortie à la minute d'entrée|. Objectif = entrée ± R × risque,
+  R = 2 (**J2**) ou 3 (**J3**). Rempli si une minute suivante le dépasse d'un tick, au prix de l'objectif. Si le risque
+  est nul ou négatif (entrée du mauvais côté du VWAP), pas d'objectif pour ce trade.
+- **Après l'objectif** : le trade reste virtuel jusqu'à sa sortie normale à un contrôle. Aucune nouvelle entrée avant.
+- **Pour information seulement (aucune décision)** : **J2s**, **J3s**, la même chose avec un vrai stop sur la ligne de
+  sortie fixée à l'entrée (touchée à n'importe quelle minute, rempli un tick au-delà, ou à l'ouverture si elle est
+  déjà au-delà) ; **J0**, l'entrée à la cassure sans objectif.
+
+**Mesures** : sur 2011 - 23 octobre 2026, pour le bot (contrôles seuls), J0, J2, J3, J2s, J3s : trades, points bruts
+(1 MNQ), part de trades à l'objectif, risque médian, t des gains quotidiens (au prix d'aujourd'hui) sur 2011-2022 et
+2023-2026, points en 2025 et 2026, séances à −250 $ pour 1 MNQ (−1 000 $ en 4 MNQ) ; challenge depuis 49 500 $ (plus
+haut 51 172 $ et 50 600 $, 13 séances, 4 puis 6 MNQ, limite du jour 1 000 $), et challenge neuf (50 000 $, 21 séances).
+
+**Décision (fixée maintenant)** : J2 ou J3 n'est conseillé que s'il a un t **supérieur au bot** sur 2011-2022 **et** sur
+2023-2026, **et** au moins 2 points de validés de plus que le bot dans les deux situations depuis 49 500 $. Sinon, le
+conseil reste le bot tel quel ; la variante est publiée quand même, et l'utilisateur décide.
