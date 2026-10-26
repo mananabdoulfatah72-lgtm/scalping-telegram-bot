@@ -1228,3 +1228,22 @@ laisser courir, et de ne sortir que si le prix revient franchement dans la zone.
 **Décision (fixée maintenant)** : une variante n'est conseillée que si elle bat **les deux références** sur le t des gains
 quotidiens en 2011-2022 **et** en 2023-2026, **et** valide au moins 2 points de plus que les deux depuis 49 500 $ avec
 1 000 $ de marge (plus haut 51 000 $, 13 séances, 4 puis 6 MNQ, limite du jour 1 000 $). Publiée quoi qu'il arrive.
+
+### Résultats de la partie L (26 octobre 2026) : `resultats/j/partie_l.txt`
+
+| Variante | Trades | Points (15 ans) | 2025 | 2026 | t 2011-22 / 2023-26 | Journées à −1 000 $ (4 MNQ) | Validé, marge 1 000 $ |
+|---|---|---|---|---|---|---|---|
+| Bot d'avant (contrôles) | 3 577 | **+10 558** | **+942** | **+1 311** | **+3,75 / +2,27** | 638 | 24,2 % |
+| Bot installé (J0, cassure) | 5 921 | +2 629 | −1 412 | −424 | +2,55 / +0,93 | 789 | 24,3 % |
+| **L1a, niveau cassé, 1 trade par jour** | 2 769 | +5 120 | −562 | +648 | +2,31 / +0,88 | **585** | 25,1 % |
+| L1b, niveau cassé, réentrée | 4 403 | +5 000 | −1 696 | +163 | +2,59 / +0,93 | 831 | 24,5 % |
+| L2a, VWAP, 1 trade par jour | 2 769 | +4 642 | −2 580 | −57 | +2,79 / +0,32 | 781 | 26,3 % |
+| L2b, VWAP, réentrée | 4 005 | +3 932 | −2 705 | +522 | +2,25 / +0,79 | 980 | 25,3 % |
+| L3a, retour fort, 1 trade par jour | 2 769 | +4 954 | +348 | +188 | +1,58 / +0,91 | 1 148 | 24,4 % |
+| L3b, retour fort, réentrée | 3 131 | +3 831 | −1 838 | +795 | +1,60 / +0,65 | 1 196 | 24,4 % |
+
+**Décision fixée à l'avance : aucune variante ne passe** (aucune ne bat le t du bot d'avant).
+- Toutes font mieux que le bot installé en points (+3 800 à +5 100 contre +2 629), aucune n'approche le bot d'avant.
+- **L1a** est la plus équilibrée des entrées à la cassure : moitié moins de trades que J0, deux fois plus de points, le
+  moins de journées à −1 000 $ de tout le tableau, 2026 positif. Son t est proche de celui de J0.
+- Dans le challenge, toutes les versions sont entre 24 et 26 % : écarts dans le bruit des départs qui se chevauchent.
