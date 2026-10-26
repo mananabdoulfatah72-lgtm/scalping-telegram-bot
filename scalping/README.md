@@ -1134,3 +1134,27 @@ sauf le risque :
 - **JM2, JM3** : risque = largeur de la zone au dernier contrôle, référence × σ (distance entre max(ouverture, veille) et
   la limite haute).
 Même décision que J. Les deux lectures sont publiées quoi qu'il arrive.
+
+### Résultats de la partie J (26 octobre 2026) : `resultats/j/partie_j.txt`
+
+Contrôle : sans entrée à la cassure, le moteur de J redonne exactement les 3 577 trades de la zone (2011 - 23 octobre
+2026).
+
+| Variante | Trades | Points (15 ans) | 2025 | 2026 | t 2011-22 / 2023-26 | Validé depuis 49 500 $ (haut 51 172 / 50 600) | Challenge neuf |
+|---|---|---|---|---|---|---|---|
+| **Bot (contrôles seuls)** | 3 577 | **+10 558** | **+942** | **+1 311** | **+3,75 / +2,27** | 20,8 % / 29,4 % | **48,0 %** |
+| J0, cassure sans objectif | 5 921 | +2 629 | −1 412 | −424 | +2,55 / +0,93 | 21,5 % / 29,5 % | 45,4 % |
+| J2, objectif 2 × risque (ligne de sortie) | 5 921 | −7 820 | −2 986 | −85 | −1,24 / −0,86 | 7,5 % / 8,9 % | 19,0 % |
+| J3, objectif 3 × risque (ligne de sortie) | 5 921 | −5 737 | −2 585 | +261 | −0,32 / −0,47 | 9,9 % / 12,1 % | 24,6 % |
+| JV2, risque au VWAP | 5 921 | −3 808 | −4 491 | −1 288 | +1,64 / −0,25 | 18,4 % / 23,8 % | 39,5 % |
+| JV3, risque au VWAP | 5 921 | −2 307 | −4 089 | −921 | +1,57 / +0,19 | 20,5 % / 26,8 % | 42,4 % |
+| JM2, risque = largeur de la zone | 5 921 | −462 | −3 618 | −381 | +2,29 / +0,63 | 19,6 % / 26,4 % | 42,6 % |
+| JM3, risque = largeur de la zone | 5 921 | +2 023 | −2 352 | −606 | +2,84 / +0,93 | 20,6 % / 27,7 % | 43,7 % |
+
+**Décision fixée à l'avance : aucune variante ne passe.** Le conseil reste le bot tel quel.
+- À la cassure, le prix vient juste de passer la limite : le risque jusqu'à la ligne de sortie vaut 1,45 point en
+  médiane, l'objectif 3 à 4 points, moins que les frais. J2 et J3 perdent de l'argent.
+- Entrer à la cassure ajoute 2 344 trades, surtout des fausses cassures que le contrôle de 30 minutes évitait.
+- Un objectif fixe coupe les grandes journées de tendance, qui font le gain de la zone (36 % de trades gagnants
+  seulement). Aucune lecture du risque (ligne de sortie, VWAP, largeur de la zone) ne rattrape le bot.
+- Vrai stop sur la ligne (J2s, J3s, information) : pire encore (−9 072 et −6 706 points).
