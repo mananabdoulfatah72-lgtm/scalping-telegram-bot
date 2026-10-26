@@ -1247,3 +1247,27 @@ quotidiens en 2011-2022 **et** en 2023-2026, **et** valide au moins 2 points de 
 - **L1a** est la plus équilibrée des entrées à la cassure : moitié moins de trades que J0, deux fois plus de points, le
   moins de journées à −1 000 $ de tout le tableau, 2026 positif. Son t est proche de celui de J0.
 - Dans le challenge, toutes les versions sont entre 24 et 26 % : écarts dans le bruit des départs qui se chevauchent.
+
+## Partie M (26 octobre 2026) : confirmer la cassure par le volume et par une bougie plus longue (règles fixées avant tout calcul)
+
+Demande de l'utilisateur : ne pas entrer parce qu'une seule bougie d'une minute clôture juste au-delà du niveau ; exiger
+un vrai volume et une confirmation sur une unité de temps plus grande, pour éviter les fausses cassures.
+
+**Base** : L1a (entrée à la cassure, une entrée par séance, sortie aux contrôles au niveau cassé figé, 16 h). Seule la
+confirmation de l'entrée **entre deux contrôles** change ; aux contrôles, la décision reste celle du bot (clôture de la
+minute du contrôle). Niveaux : ceux du dernier contrôle. Bougies de 5 et 15 minutes alignées sur 9 h 30.
+
+| Variante | Entrée entre deux contrôles seulement si… |
+|---|---|
+| **M1** (= L1a) | une bougie d'1 minute clôture au-delà du niveau |
+| **M5** | une bougie de 5 minutes clôture au-delà du niveau |
+| **M15** | une bougie de 15 minutes clôture au-delà du niveau |
+| **M1V** | une bougie d'1 minute clôture au-delà, avec un volume d'au moins 2 fois la moyenne des 30 minutes d'avant |
+| **M5V** | une bougie de 5 minutes clôture au-delà, avec un volume d'au moins 1,5 fois la moyenne des 6 bougies de 5 minutes d'avant |
+
+Même entrée à la clôture de la bougie qui confirme ; mêmes mesures que L (15 ans, 2025, 2026, journées à −1 000 $,
+challenge depuis 49 500 $ avec 1 000 $ de marge, 13 séances, 4 puis 6 MNQ).
+
+**Décision (fixée maintenant)** : une confirmation n'est conseillée que si elle bat M1 sur le t des gains quotidiens en
+2011-2022 **et** en 2023-2026, sur les points en 15 ans, **et** ne valide pas moins souvent que M1 avec 1 000 $ de marge.
+Publiée quoi qu'il arrive.
