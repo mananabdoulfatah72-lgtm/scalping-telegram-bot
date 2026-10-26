@@ -1,0 +1,39 @@
+=== 20 seances jamais vues (28 sept. - 23 oct. 2026), $ pour 1 MNQ au prix du jour du suivi, frais compris ===
+jour         zone(1MNQ)  Supertrend   ORB5  cassure  pivots | ORB5+pivots  les 4
+2026-09-28       -247       +139    +279     -85      +0 |      +279     +333
+2026-09-29         +0       -658     -55      +0      +0 |       -55     -713
+2026-09-30        -31        -83     -83    -140    -140 |      -223     -446
+2026-10-01         +0       -257    -152    -242    -389 |      -541    -1040
+2026-10-02         +0        -38     -24      -3      +0 |       -24      -65
+2026-10-05       +247       +303    +303     +52    +137 |      +440     +795
+2026-10-06         +0       +147    -160     -83      +0 |      -160      -96
+2026-10-07         +0        -79     -83      -3      +0 |       -83     -165
+2026-10-08        -53        +83    -146    +392    +531 |      +385     +859
+2026-10-09         +0        -81     +75      +0      +0 |       +75       -6
+2026-10-12       -165       +122    +122    +182    +182 |      +304     +607
+2026-10-13         +0       -539    +248      -3      +0 |      +248     -294
+2026-10-14       +416       +637      +0      -3      +0 |        +0     +634
+2026-10-15         +0       -589    -142     -70      +0 |      -142     -800
+2026-10-16       +925      +1246   +1246    +521    +817 |     +2063    +3829
+2026-10-19        -82       -158     -73      +0    -245 |      -317     -475
+2026-10-20       -289       -246    -161     -48    -249 |      -410     -704
+2026-10-21       -377        -20    -116    -106    +195 |       +78      -49
+2026-10-22       +381       +807    -154     -33      +0 |      -154     +621
+2026-10-23        -50       -519    -100     -45      +0 |      -100     -664
+  zone         total    +675 $ ; jours perdants 8 ; pire jour   -377 $ ; pire baisse    748 $
+  H12          total    +217 $ ; jours perdants 12 ; pire jour   -658 $ ; pire baisse   1081 $
+  H1           total    +825 $ ; jours perdants 13 ; pire jour   -161 $ ; pire baisse    604 $
+  H5           total    +281 $ ; jours perdants 13 ; pire jour   -242 $ ; pire baisse    505 $
+  F3           total    +839 $ ; jours perdants 4 ; pire jour   -389 $ ; pire baisse    529 $
+  ORB5+pivots  total   +1664 $ ; jours perdants 11 ; pire jour   -541 $ ; pire baisse    903 $
+  les 4        total   +2161 $ ; jours perdants 13 ; pire jour  -1040 $ ; pire baisse   2265 $
+  correlation quotidienne zone / (les 4) sur la periode : +0.75
+
+=== 12 derniers mois (27 oct. 2025 - 23 oct. 2026), 1 MNQ ===
+  zone         total   +2640 $ ; jours perdants 78/134 ; pire jour   -880 $ ; pire baisse   3833 $
+  H12          total   +7613 $ ; jours perdants 130/244 ; pire jour  -1355 $ ; pire baisse   8450 $
+  H1           total    -837 $ ; jours perdants 176/242 ; pire jour   -425 $ ; pire baisse   5415 $
+  H5           total   +2009 $ ; jours perdants 169/220 ; pire jour   -756 $ ; pire baisse   1559 $
+  F3           total   +4223 $ ; jours perdants 55/121 ; pire jour  -1542 $ ; pire baisse   2944 $
+  ORB5+pivots  total   +3385 $ ; jours perdants 159/243 ; pire jour  -1803 $ ; pire baisse   7238 $
+  les 4        total  +13008 $ ; jours perdants 149/244 ; pire jour  -2116 $ ; pire baisse  13049 $
