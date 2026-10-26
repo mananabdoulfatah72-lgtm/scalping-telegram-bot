@@ -1167,3 +1167,22 @@ Contrôle : sans entrée à la cassure, le moteur de J redonne exactement les 3 
   cassure, +37 852 au total.
 - Les deux s'annulent : entrer à la cassure gagne sur les vraies ce qu'il perd sur les fausses. Exemple : le 1er octobre
   2026, trois fausses cassures à la vente (10 h 22, 11 h 08, 11 h 51), −195 points, environ −1 560 $ en 4 MNQ.
+
+### Partie K (26 octobre 2026) : entrer à la cassure, couper dès le retour dans la zone, laisser courir (règles fixées avant tout calcul)
+
+Proposition de l'utilisateur : entrer dès que le prix casse la zone, sortir dès que le prix revient dans la zone, et
+laisser courir les trades gagnants. Mêmes niveaux, données, frais et mesures que J ; pas d'objectif de prix.
+- **Entrée** : comme J0 (clôture de la première minute au-delà des niveaux du dernier contrôle, 10 h - 15 h 30, et
+  décision du bot aux contrôles).
+- **Coupure** : dès que le prix revient dans la zone (sous la limite haute du dernier contrôle pour un achat, au-dessus
+  de la limite basse pour une vente) :
+  - **K1** : à la clôture de la première minute revenue dans la zone ;
+  - **K2** : vrai stop posé sur la limite (touchée à n'importe quel moment, rempli un tick au-delà, ou à l'ouverture si
+    elle est déjà au-delà).
+- **Laisser courir** : sinon, sortie normale du bot aux contrôles (sous max(limite, VWAP) pour un achat) et à 16 h.
+- **Après une coupure** : **a**, nouvelle entrée possible dès la cassure suivante (K1a, K2a) ; **b**, pas de nouvelle
+  entrée avant le contrôle suivant, où le bot décide comme d'habitude (K1b, K2b).
+
+**Décision (fixée maintenant)** : comme J. Une variante n'est conseillée que si son t dépasse celui du bot sur 2011-2022
+**et** sur 2023-2026, **et** qu'elle valide au moins 2 points de plus que le bot dans les deux situations depuis
+49 500 $. Elle est publiée quoi qu'il arrive.
