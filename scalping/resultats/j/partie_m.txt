@@ -1,0 +1,20 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23. Controle : M1 = L1a de partie_l : oui.
+
+variante                         trades a la cassure   points  gagn.  t 11-22  t 23-26    2025    2026 jours -250$
+bot d'avant (controles seuls)      3577            0   +10558    36%    +3.75    +2.27    +942   +1311         638
+M1 (= L1a) bougie 1 min            2769         1718    +5120    28%    +2.31    +0.88    -562    +648         585
+M5 bougie 5 min                    2662         1582    +4377    30%    +2.36    +0.72   -1258    +196         595
+M15 bougie 15 min                  2550         1439    +5882    33%    +3.16    +0.44   -1220    +405         600
+M1V 1 min + volume x2              2521         1033    +6387    33%    +2.86    +1.09    -219     +16         594
+M5V 5 min + volume x1,5            2437          700    +6426    35%    +3.17    +1.02    -961    +464         593
+
+(points bruts pour 1 MNQ, frais de 1,5 point deduits ; « a la cassure » = entrees entre deux controles ; t des gains quotidiens au prix d'aujourd'hui, jours sans Fed ; jours -250$ = 1 000 $ en 4 MNQ)
+
+Challenge, 4 puis 6 MNQ, limite du jour 1 000 $, departs 2012-2026 : valide / perdu / expire
+variante                           49 500 $, marge 1 000 $   challenge neuf, 21 seances
+bot d'avant (controles seuls)       24.2%  67.6%   8.1%    48.0%  44.6%   7.3%
+M1 (= L1a) bougie 1 min             25.1%  68.7%   6.2%    45.8%  47.7%   6.5%
+M5 bougie 5 min                     24.0%  69.1%   6.9%    45.4%  48.6%   6.0%
+M15 bougie 15 min                   24.0%  68.7%   7.3%    45.9%  47.4%   6.6%
+M1V 1 min + volume x2               23.7%  67.5%   8.8%    46.3%  45.9%   7.8%
+M5V 5 min + volume x1,5             24.0%  68.8%   7.2%    45.4%  46.4%   8.2%

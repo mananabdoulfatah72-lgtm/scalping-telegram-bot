@@ -1271,3 +1271,21 @@ challenge depuis 49 500 $ avec 1 000 $ de marge, 13 séances, 4 puis 6 MNQ).
 **Décision (fixée maintenant)** : une confirmation n'est conseillée que si elle bat M1 sur le t des gains quotidiens en
 2011-2022 **et** en 2023-2026, sur les points en 15 ans, **et** ne valide pas moins souvent que M1 avec 1 000 $ de marge.
 Publiée quoi qu'il arrive.
+
+### Résultats de la partie M (26 octobre 2026) : `resultats/j/partie_m.txt`
+
+Contrôle : M1 redonne exactement les trades de L1a.
+
+| Variante | Trades (dont à la cassure) | Points (15 ans) | 2025 | 2026 | t 2011-22 / 2023-26 | Journées à −1 000 $ | Validé, marge 1 000 $ |
+|---|---|---|---|---|---|---|---|
+| Bot d'avant (contrôles, clôture à 30 min) | 3 577 (0) | **+10 558** | **+942** | **+1 311** | **+3,75 / +2,27** | 638 | 24,2 % |
+| M1 = L1a (bougie 1 min) | 2 769 (1 718) | +5 120 | −562 | +648 | +2,31 / +0,88 | 585 | 25,1 % |
+| M5 (bougie 5 min) | 2 662 (1 582) | +4 377 | −1 258 | +196 | +2,36 / +0,72 | 595 | 24,0 % |
+| M15 (bougie 15 min) | 2 550 (1 439) | +5 882 | −1 220 | +405 | +3,16 / +0,44 | 600 | 24,0 % |
+| M1V (1 min + volume × 2) | 2 521 (1 033) | +6 387 | −219 | +16 | +2,86 / +1,09 | 594 | 23,7 % |
+| M5V (5 min + volume × 1,5) | 2 437 (700) | +6 426 | −961 | +464 | +3,17 / +1,02 | 593 | 24,0 % |
+
+**Décision fixée à l'avance : aucune confirmation ne passe.** M1V et M5V battent M1 sur le t des deux périodes et sur les
+points, mais valident un peu moins souvent (23,7 % et 24,0 % contre 25,1 %, écart dans le bruit). La clôture d'une
+bougie de 5 ou 15 minutes seule n'apporte rien de net. Aucune n'approche le bot d'avant, dont l'entrée est déjà une
+confirmation : le prix doit encore être au-delà du niveau à la clôture du contrôle de 30 minutes.
