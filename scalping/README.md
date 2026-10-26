@@ -1122,3 +1122,15 @@ haut 51 172 $ et 50 600 $, 13 séances, 4 puis 6 MNQ, limite du jour 1 000 $), e
 **Décision (fixée maintenant)** : J2 ou J3 n'est conseillé que s'il a un t **supérieur au bot** sur 2011-2022 **et** sur
 2023-2026, **et** au moins 2 points de validés de plus que le bot dans les deux situations depuis 49 500 $. Sinon, le
 conseil reste le bot tel quel ; la variante est publiée quand même, et l'utilisateur décide.
+
+### Partie J bis (26 octobre 2026) : risque mesuré jusqu'au VWAP ou à la largeur de la zone (règles fixées avant tout calcul)
+
+Premier calcul de J (ci-dessous) : à la cassure, le prix vient de passer la limite, donc le risque jusqu'à la ligne de
+sortie est minuscule (1,45 point en médiane) et l'objectif aussi. L'exemple de l'utilisateur (achat à 29 354, objectif
+29 554, soit 200 points) suppose un risque d'environ 70 à 100 points. Deux lectures sont ajoutées, mêmes règles que J
+sauf le risque :
+- **JV2, JV3** : risque = distance de l'entrée au VWAP de la minute d'entrée (VWAP sous l'entrée pour un achat, au-dessus
+  pour une vente ; sinon pas d'objectif) ;
+- **JM2, JM3** : risque = largeur de la zone au dernier contrôle, référence × σ (distance entre max(ouverture, veille) et
+  la limite haute).
+Même décision que J. Les deux lectures sont publiées quoi qu'il arrive.
