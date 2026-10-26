@@ -1289,3 +1289,25 @@ Contrôle : M1 redonne exactement les trades de L1a.
 points, mais valident un peu moins souvent (23,7 % et 24,0 % contre 25,1 %, écart dans le bruit). La clôture d'une
 bougie de 5 ou 15 minutes seule n'apporte rien de net. Aucune n'approche le bot d'avant, dont l'entrée est déjà une
 confirmation : le prix doit encore être au-delà du niveau à la clôture du contrôle de 30 minutes.
+
+## Partie N (26 octobre 2026) : une seule entrée par jour, sortie immédiate au retour sous le niveau cassé (règles fixées avant tout calcul)
+
+**D'où viennent les pertes de L1a (descriptif, 2023 - 2026, points au prix d'aujourd'hui, 1 MNQ).** 649 trades : 30 %
+de gagnants à +220,6 points en moyenne, 70 % de perdants à −86,0. Pour 97 % des perdants, le prix est revenu sous le
+niveau cassé **avant** le contrôle de sortie. La sortie attend ce contrôle : 23 minutes en médiane après le retour, à
+24 points en médiane au-delà du niveau. 61 % des pertes dépassent 50 points, 22 % dépassent 125 points (1 000 $ en
+4 MNQ). Exemple du 20 octobre 2026 : achat à 10 h 27 (New York) à 29 848 (niveau 29 805,16), retour au niveau à 11 h 12,
+sortie au contrôle de 11 h 30 à 29 742 : −107,5 points.
+
+L'utilisateur pensait que le bot fermait dès le retour sous le niveau. On le teste, avec une seule entrée par jour (pas
+d'allers-retours) :
+- **Entrée** : comme L1a (cassure à la clôture d'une minute, niveaux du dernier contrôle, une entrée par séance).
+- **Sortie** : seulement au retour de l'autre côté du niveau cassé à l'entrée (figé), sinon à 16 h :
+  - **N1** : à la clôture de la première minute revenue de l'autre côté du niveau ;
+  - **N2** : vrai stop posé sur le niveau (touché à n'importe quel moment, rempli un tick au-delà, ou à l'ouverture si
+    elle est déjà au-delà).
+- Mêmes mesures que L et M ; en plus, la perte moyenne et la pire perte d'un trade.
+
+**Décision (fixée maintenant)** : N1 ou N2 n'est conseillé que s'il bat L1a **et** le bot d'avant sur le t des gains
+quotidiens en 2011-2022 **et** en 2023-2026, **et** valide au moins 2 points de plus que les deux avec 1 000 $ de marge.
+Publié quoi qu'il arrive.
