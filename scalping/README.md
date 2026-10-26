@@ -1367,3 +1367,21 @@ Contrôle : sans stop, on retrouve exactement L1a. **Stop choisi sur 2011 - 2022
 **Décision fixée à l'avance : le stop choisi ne passe pas** (t 2023-2026 de +0,62 contre +0,88, et 24,3 % de validés
 contre 25,1 %). Un stop serré supprime presque toutes les journées à −1 000 $, mais coupe trop de trades qui
 auraient gagné. Aucun stop ne fait mieux que L1a à la fois sur les années de choix et sur les années de contrôle.
+
+### Configurations du 26 octobre au soir (descriptif) : `reglages_26oct_b.py`, `reglages_26oct_c.py`
+
+| | Bot d'avant (contrôles) | **A** : entrée à la cassure + volume ×2, sorties d'origine | **B** : une entrée par jour + volume ×2, tenue jusqu'à 16 h ou −1 000 $ |
+|---|---|---|---|
+| Trades (15 ans) | 3 577 | 4 445 (2 106 à la cassure) | 2 264 |
+| t 2011-22 / 2023-26 | **+3,75 / +2,27** | +3,39 / +1,88 | +2,22 / +2,11 |
+| Journées à −1 000 $ en 4 MNQ (15 ans) | **638** | 677 | 932 |
+| 2025, 4 MNQ | −4 531 $ | **+5 157 $** | +4 437 $ |
+| 2026 au 23 octobre, 4 MNQ | +2 926 $ | +1 131 $ | **+6 359 $** |
+| Avril - 23 octobre 2026, 4 MNQ | +5 181 $ | +4 214 $ | **+10 789 $** |
+| Validé, marge 1 000 $ (13 séances) | 24,2 % | **25,2 %** | 23,0 % |
+| Challenge neuf (21 séances) | **48,0 %** | 46,9 % | 44,6 % |
+
+- A est la meilleure des entrées à la cassure sur 15 ans (t proche du bot d'avant) et valide le plus souvent.
+- B mesure ce que fait le bot si l'utilisateur ne ferme jamais lui-même : grosses journées, mais 42 % des journées
+  avec trade (2023 - 2026) touchent la limite de −1 000 $. Le vrai résultat dépendra de ses sorties à la main.
+- Le bot installé sur la branche est A (rejeu C# identique trade par trade au calcul Python : 4 445 trades).

@@ -1,0 +1,15 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23. Controles : bot d'avant = partie_j oui, J0 = partie_j oui.
+
+configuration                  trades cassure  points  gagn. gain moy perte moy  t 11-22  t 23-26 j. -1000$  valide  perdu  expire neuf 21 s.  2025 4MNQ  2026 4MNQ  avr-oct
+bot d'avant (controles seuls)    3577       0  +10558    36%   +147.2     -77.5    +3.75    +2.27       638   24.2%  67.6%    8.1%      48.0%     -4,531     +2,926   +5,181
+J0 cassure sans volume           5921    4387   +2629    31%   +126.6     -66.9    +2.55    +0.93       789   24.3%  70.5%    5.1%      45.4%       +323     -5,036   +2,634
+CHOIX : cassure + volume x2      4445    2106   +8569    33%   +142.1     -74.6    +3.39    +1.88       677   25.2%  67.6%    7.2%      46.9%     +5,157     +1,131   +4,214
+
+(cassure = entrees entre deux controles ; points bruts 1 MNQ frais deduits ; gain et perte moyens : 2023-2026, points au prix d'aujourd'hui ; t des gains quotidiens, jours sans Fed ; j. -1000$ = journees a -1 000 $ en 4 MNQ sur 15 ans ; challenge : 49 500 $, marge 1 000 $, 13 seances, 4 puis 6 MNQ, limite du jour 1 000 $ ; neuf 21 s. = challenge neuf de 21 seances, valides ; $ en 4 MNQ au prix d'aujourd'hui, limite du jour 1 000 $)
+
+2026 mois par mois, 4 MNQ :
+bot d'avant (controles seuls)  01: -8,049 02: +1,581 03: +4,213 04: -1,895 05:   +972 06:    -21 07: -7,123 08: +4,661 09: +4,111 10: +4,476
+J0 cassure sans volume         01: -7,859 02:    -99 03:   +289 04: -3,135 05:   +728 06: -1,751 07: -7,478 08: +3,312 09: +4,237 10: +6,721
+CHOIX : cassure + volume x2    01: -8,293 02: +1,235 03: +3,975 04: -2,970 05:   +594 06:   -871 07: -7,807 08: +4,766 09: +4,544 10: +5,958
+
+Octobre 2026 jour par jour, configuration choisie, 4 MNQ : 5:+989 8:+726 12:-639 14:+1,665 16:+3,699 19:+121 20:-1,000 21:-926 22:+1,525 23:-201
