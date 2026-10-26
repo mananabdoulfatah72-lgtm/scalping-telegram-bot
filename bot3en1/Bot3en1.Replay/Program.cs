@@ -10,7 +10,7 @@ using Bot3en1;
 // SANS_FILTRE=1 : zone sans le filtre delta. CONTRAT_CALENDRIER=1 : contrats de la regle du calendrier (comme en direct).
 // RELANCE=1, FORCE=1 : variantes de relance/README.md (trade ecarte repris si le delta tourne ; cassure forte prise).
 // CASSURE=1 : entree a la cassure entre deux controles (scalping/README.md partie J, J0). COURIR=1 : laisser courir
-// (partie L, L1a : une entree par seance, sortie au niveau casse).
+// (partie L, L1a : une entree par seance, sortie au niveau casse). VOLUME=1 : cassure confirmee par le volume (partie M, M1V).
 class Program
 {
     static int Main(string[] a)
@@ -37,6 +37,7 @@ class Program
                                                     Relance = Environment.GetEnvironmentVariable("RELANCE") == "1",
                                                     EntreeCassure = Environment.GetEnvironmentVariable("CASSURE") == "1",
                                                     LaisserCourir = Environment.GetEnvironmentVariable("COURIR") == "1",
+                                                    ConfirmationVolume = Environment.GetEnvironmentVariable("VOLUME") == "1",
                                                     SeuilForce = double.Parse(Environment.GetEnvironmentVariable("FORCE") ?? "0", inv) };
         var trades = new List<string>();
         double zone = 0, rsi = 0, entreeZ = 0, entreeR = 0; int sensZ = 0, nZone = 0, nEcartes = 0, nRsi = 0;

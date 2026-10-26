@@ -156,7 +156,7 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     (20 journées coupées contre 15). Décoché, ordres, journal et messages identiques octet pour octet à la version
     d'avant. `Bot3en1.TestQuantower` garde l'entrée aux seuls contrôles sauf avec `CASSURE=1` ;
   - `Bot3en1.TestAPlat` et `Bot3en1.TestPlafond` : tous les contrôles passent.
-- **Laisser courir (26 octobre 2026)** : réglage « Zone : laisser courir », décoché par défaut, proposé par
+- **Laisser courir (26 octobre 2026)** : réglage « Zone : laisser courir », coché par défaut à la demande de
   l'utilisateur :
   - une seule entrée de zone par séance (la première cassure) ;
   - sortie à un contrôle seulement si le prix repasse le niveau cassé à l'entrée (figé), au lieu de la limite du
@@ -171,6 +171,23 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     sans entrée à la cassure). Adaptateur, avril - 23 octobre 2026, mode à plat, 4 MNQ, limite 1 000 $ : 91 trades de
     zone, +1 291,5 $ pour 1 MNQ (entrée à la cassure seule : −339 $ ; entrée aux contrôles : +455,5 $), 12 journées
     coupées par la limite (20 et 15), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond passent.
+- **Cassure confirmée par le volume (26 octobre 2026)** : réglage « Zone : entree a la cassure confirmee par le volume »,
+  coché par défaut à la demande de l'utilisateur. Version voulue : entrée à la cassure + volume + laisser courir, filtre
+  delta décoché (ce sont les réglages par défaut) :
+  - entre deux contrôles, la minute qui clôture au-delà du niveau doit aussi avoir un volume d'au moins 2 fois la
+    moyenne des 30 minutes d'avant (volume du NQ compté dans les transactions reçues). Sinon, pas d'entrée à cette
+    minute ; une minute suivante peut confirmer. Aux contrôles, rien ne change ;
+  - le journal et Telegram écrivent le volume et le multiple, par exemple « (cassure entre deux controles, volume 3363 =
+    2.5 x la moyenne des 30 minutes) ». Au lancement : « CONFIRMEE PAR LE VOLUME (x2) » ;
+  - mesuré avant d'être codé (`scalping/README.md`, partie M, variante M1V) : sur 15 ans, 2 521 trades, +6 387 points
+    (laisser courir sans volume : +5 120), t +2,86 / +1,09 (+2,31 / +0,88), 2025 −219 (−562), 2026 +16 (+648). Challenge
+    avec 1 000 $ de marge : 23,7 % de validés (25,1 %), écart dans le bruit ;
+  - vérifié : le moteur C# (`Bot3en1.Replay`, `CASSURE=1 COURIR=1 VOLUME=1 SANS_FILTRE=1`) redonne trade par trade les
+    2 521 trades du calcul Python ; décoché, rejeu et adaptateur identiques octet pour octet à la version d'avant (bot
+    d'avant, cassure seule, laisser courir). Adaptateur avec les réglages de l'utilisateur, avril - 23 octobre 2026,
+    mode à plat, 4 MNQ, limite 1 000 $ : 81 trades de zone dont 22 à la cassure, −692 $ pour 1 MNQ (sans volume :
+    +1 291,5 $), 16 journées coupées par la limite (12), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et
+    TestPlafond passent.
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
@@ -244,7 +261,8 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Limite de perte du jour | **1 000** (100 $ de marge avant les 1 100 $ de Bulenox) | 1 000 |
 | Frein | **0** | **750** |
 | Zone : entrée à la cassure | **coché** (choix de l'utilisateur, 26 octobre 2026) | **décoché conseillé** (voir plus bas) |
-| Zone : laisser courir | **coché conseillé** si l'entrée à la cassure est cochée (voir plus bas) | décoché |
+| Zone : entrée à la cassure confirmée par le volume | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
+| Zone : laisser courir | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
 | Filtre delta de la zone | décoché | décoché |
 | Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
 | Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |

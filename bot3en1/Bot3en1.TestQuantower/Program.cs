@@ -16,6 +16,7 @@ using TradingPlatform.BusinessLayer;
 // RELANCE=1 / RELANCE=0 : relance du filtre cochee / decochee (sans la variable : reglage par defaut, decoche).
 // CASSURE=1 : entree a la cassure entre deux controles (sans la variable : entree aux seuls controles, comme avant).
 // COURIR=1 : laisser courir (une entree par seance, sortie a un controle au niveau casse a l'entree).
+// VOLUME=1 : entree a la cassure confirmee par le volume (minute d'au moins 2 fois la moyenne des 30 minutes d'avant).
 // SANS_NQ=1 : aucune transaction NQ pendant la seance (16 octobre 2026) : le bot doit donner l'alerte et ne rien trader.
 // LANCEMENT=09:10 : heure de lancement le premier jour (New York), horloge avancee minute par minute jusqu'a 9 h 29.
 // SOLDE_MANUEL=51000 : solde des reglages, repris si le solde est illisible (SOLDE absent). TELEGRAM_JETON, TELEGRAM_CHAT : envoi
@@ -60,6 +61,7 @@ class Program
         strat.FiltreDeltaActif = Environment.GetEnvironmentVariable("SANS_FILTRE") != "1";   // les tests de reference gardent le filtre
         strat.EntreeCassure = Environment.GetEnvironmentVariable("CASSURE") == "1";          // et l'entree aux seuls controles
         strat.LaisserCourir = Environment.GetEnvironmentVariable("COURIR") == "1";
+        strat.ConfirmationVolume = Environment.GetEnvironmentVariable("VOLUME") == "1";
         if (Environment.GetEnvironmentVariable("RELANCE") is string relance) strat.RelanceFiltre = relance == "1";   // sinon le reglage par defaut
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";
         bool sansNQ = Environment.GetEnvironmentVariable("SANS_NQ") == "1";

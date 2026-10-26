@@ -74,6 +74,11 @@ namespace Bot3en1
         // et sortie a un controle seulement si le prix repasse le niveau casse a l'entree (fige), au lieu de max(limite du
         // controle, VWAP) ; sortie de 16 h inchangee
         public bool LaisserCourir = false;
+        // confirmation par le volume (26 octobre 2026, scalping/README.md partie M, variante M1V) : l'entree a la cassure
+        // entre deux controles demande en plus que la minute de la cassure ait un volume d'au moins VolumeMultiple fois la
+        // moyenne des 30 minutes d'avant ; aux controles, rien ne change
+        public bool ConfirmationVolume = false;
+        public const double VolumeMultiple = 2.0;
         public double NiveauCasse { get; private set; } = double.NaN;
         public bool DejaEntre { get; private set; }
         /// <summary>Message a chaque controle (prix, limites, VWAP, delta, decision) : source "controle". Heure de Paris
@@ -305,7 +310,15 @@ namespace Bot3en1
                 Zone(m, k, b.C, sortie);
             else if (EntreeCassure && k < 0 && m > PAS && m < NMOMENTS * PAS && ZoneActive && ZoneAutorisee && barres[0].Presente
                      && !double.IsNaN(Sigma[m / PAS - 1]) && ZoneVirtuelle == 0 && !(LaisserCourir && DejaEntre) && !Arret)
-                Entree(m, m / PAS - 1, b.C, sortie, " (cassure entre deux controles)");
+            {
+                double vol = b.V, moy = 0;
+                for (int i = m - 30; i < m; i++) moy += barres[i].V;
+                moy /= 30;
+                if (!ConfirmationVolume) Entree(m, m / PAS - 1, b.C, sortie, " (cassure entre deux controles)");
+                else if (vol >= VolumeMultiple * moy)
+                    Entree(m, m / PAS - 1, b.C, sortie, $" (cassure entre deux controles, volume {vol:F0}"
+                        + (moy > 0 ? $" = {(vol / moy).ToString("F1", System.Globalization.CultureInfo.InvariantCulture)} x la moyenne des 30 minutes)" : ")"));
+            }
             if (m == N - 1 && ZoneVirtuelle != 0)
                 SortieZone(m, b.C, "sortie 16h00", sortie);
             if (PlafondJour > 0 && !Arret && ValeurJour(b.C) >= PlafondJour)
