@@ -1025,3 +1025,20 @@ enregistre chaque jour sur `main`. Aucun ordre.
   −131 $ ; candidate 2,81 : aucun trade ; H12 +217 $, H1 +825 $, H5 +281 $, F3 +839 $ (1 MNQ). Bien trop tôt pour conclure.
 - Lancement chaque jour de semaine par `workflow_suivi_scalping.yml`, à placer sur `main` avec l'accord de l'utilisateur ;
   résumé sur Telegram chaque samedi.
+
+## Coffre du passé (26 octobre 2026) : les candidates NQ sur 2011 - 2016 (règle fixée avant tout calcul)
+
+L'utilisateur ne veut pas attendre des années de suivi virtuel. Les minutes du NQ de **2011 à 2016** n'ont jamais servi à
+la version 5 (entraînement à partir de 2017, choix sur 2023 - 2026) ni à la version 4 (données à partir de 2016,
+entraînement à partir de 2017) : c'est un coffre intact, dans le passé, de 6 ans.
+
+- **Testées** : les 2 candidates NQ de la version 5 (génomes et constantes figés de `candidats.json`), sur les minutes de
+  la partie E (même fichier que la machine), séances de 2011-01-01 à 2016-12-31, mêmes règles d'exécution et de frais
+  (frais d'aujourd'hui, gain au prix d'aujourd'hui).
+- **Confirmée dans le passé** : gain moyen positif et t ≥ 1,96 (Bonferroni pour 2 tests, unilatéral 5 %), avec au moins
+  100 trades. **Écartée** : t ≤ 0. Entre les deux : pas de conclusion.
+- **Comparaisons publiées dans tous les cas** : les 2 placebos NQ (choisis sur bruit), et toutes les admises réelles du
+  NQ de la version 5 (t médian sur 2011 - 2016, part au-dessus de 1,96) : si la sélection a du sens, les candidates
+  doivent faire mieux que l'admise typique.
+- Limite : 2011 - 2016 est un autre marché (NQ entre 2 000 et 5 000 points, moins liquide). Échouer là n'est pas une
+  preuve absolue d'échec aujourd'hui ; réussir est une preuve forte.
