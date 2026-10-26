@@ -1042,3 +1042,18 @@ entraînement à partir de 2017) : c'est un coffre intact, dans le passé, de 6 
   doivent faire mieux que l'admise typique.
 - Limite : 2011 - 2016 est un autre marché (NQ entre 2 000 et 5 000 points, moins liquide). Échouer là n'est pas une
   preuve absolue d'échec aujourd'hui ; réussir est une preuve forte.
+
+### Résultat du coffre du passé (26 octobre 2026) : `resultats/v5/coffre_passe.txt`
+
+| Stratégie | Trades 2011 - 2016 | Gain (1 MNQ) | t | Verdict |
+|---|---|---|---|---|
+| candidate NQ 3,28 (micro-compression, ventes) | 209 | −1 895 $ | **−1,33** | **écartée** |
+| candidate NQ 2,81 (mouvement de 15 min, ventes) | 133 | +36 $ | +0,05 | pas de conclusion (rien) |
+| placebo 1 (choisi sur bruit) | 151 | +1 126 $ | +0,56 | — |
+| placebo 2 (choisi sur bruit) | 261 | +3 523 $ | +1,47 | — |
+| toutes les admises réelles du NQ (9 436) | | | médiane −1,26 ; 19 % positives ; 0,5 % ≥ 1,96 | — |
+
+**Les candidates NQ ne tiennent pas hors de leur période de choix.** La première perd sur 2011 - 2016, la seconde est à
+zéro, et les deux placebos choisis sur bruit font mieux qu'elles : la sélection de la version 5 sur le NQ n'a donc trouvé
+que du hasard. Elles ne seront ni mises dans le bot ni proposées pour l'argent réel ; le suivi virtuel n'a plus d'objet
+pour elles. (L'or, le pétrole et le Russell n'ont pas de coffre du passé : leurs minutes commencent en 2016 - 2017.)
