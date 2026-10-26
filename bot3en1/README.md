@@ -188,6 +188,23 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     mode à plat, 4 MNQ, limite 1 000 $ : 81 trades de zone dont 22 à la cassure, −692 $ pour 1 MNQ (sans volume :
     +1 291,5 $), 16 journées coupées par la limite (12), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et
     TestPlafond passent.
+- **Sortie dès le retour au niveau cassé (26 octobre 2026)** : réglage « Zone : sortie des le retour au niveau casse »,
+  coché par défaut à la demande de l'utilisateur. Version voulue : entrée à la cassure + volume + laisser courir + sortie
+  immédiate, filtre delta décoché (réglages par défaut) :
+  - le trade de zone est fermé dès qu'une minute clôture de l'autre côté du niveau cassé à l'entrée (figé), sans attendre
+    le contrôle de 30 minutes. Sinon, sortie à 16 h. Avec « laisser courir », pas de nouvelle entrée ce jour-là ;
+  - le journal et Telegram écrivent par exemple « sortie 11h29 a 2310.50 (retour au niveau casse 2311.10) » ; le message
+    de contrôle ajoute « ou des qu'une minute cloture sous … » ;
+  - mesuré (`scalping/README.md`, parties N et P ; `scalping/reglages_26oct.py` pour la configuration complète) : sur 15
+    ans, 2 521 trades, +4 563 points pour 1 MNQ, 21 % de gagnants à +208 points en moyenne (2023-2026, prix d'aujourd'hui)
+    et des pertes de −55 points en moyenne, 195 journées à −1 000 $ en 4 MNQ (585 pour laisser courir sans sortie
+    immédiate). Challenge avec 1 000 $ de marge : 21,0 % validés, 63,0 % perdus, 15,9 % expirés (laisser courir :
+    25,1 / 68,7 / 6,2 %). En 4 MNQ : 2025 +2 504 $, 2026 −7 147 $ (au 23 octobre) ;
+  - vérifié : le moteur C# (`Bot3en1.Replay`, `CASSURE=1 COURIR=1 VOLUME=1 IMMEDIATE=1 SANS_FILTRE=1`) redonne trade par
+    trade les 2 521 trades du calcul Python (et les 2 769 de N1 sans volume) ; décoché, rejeu et adaptateur identiques
+    octet pour octet à la version d'avant. Adaptateur avec tous les réglages de l'utilisateur, avril - 23 octobre 2026,
+    mode à plat, 4 MNQ, limite 1 000 $ : 81 trades, −464 $ pour 1 MNQ, 2 journées coupées par la limite (16 sans la
+    sortie immédiate), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond passent.
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
@@ -263,6 +280,7 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Zone : entrée à la cassure | **coché** (choix de l'utilisateur, 26 octobre 2026) | **décoché conseillé** (voir plus bas) |
 | Zone : entrée à la cassure confirmée par le volume | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
 | Zone : laisser courir | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
+| Zone : sortie dès le retour au niveau cassé | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
 | Filtre delta de la zone | décoché | décoché |
 | Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
 | Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |
