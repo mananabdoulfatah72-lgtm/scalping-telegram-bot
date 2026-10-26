@@ -83,6 +83,11 @@ namespace Bot3en1
         // prise qu'a la minute ou le prix franchit le niveau (minute d'avant encore du bon cote), aux controles comme entre eux, et
         // avec la confirmation par le volume si elle est cochee ; une cassure ratee n'est pas rattrapee plus loin
         public bool SansEntreeTardive = false;
+        // fenetre de confirmation (26 octobre 2026 au soir, scalping/reglages_26oct_g.py) : avec SansEntreeTardive, si la minute qui
+        // franchit le niveau n'a pas le volume, une des FenetreConfirmation minutes suivantes peut confirmer tant que le prix clot
+        // toujours au-dela du niveau ; s'il revient dans la zone, il faut une nouvelle cassure
+        public int FenetreConfirmation = 0;
+        int finFenetre = -1, sensFenetre, debutFenetre = -1;
         public double NiveauCasse { get; private set; } = double.NaN;
         public bool DejaEntre { get; private set; }
         /// <summary>Message a chaque controle (prix, limites, VWAP, delta, decision) : source "controle". Heure de Paris
@@ -234,7 +239,7 @@ namespace Bot3en1
             Jour = jour.Date; Contrat = contrat;
             for (int i = 0; i < N; i++) barres[i] = new Barre();
             cumTv = cumV = cumT = 0; nPresentes = 0;
-            ZoneVirtuelle = 0; ZoneTenue = 0; DejaEntre = false; NiveauCasse = double.NaN;   // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
+            ZoneVirtuelle = 0; ZoneTenue = 0; DejaEntre = false; NiveauCasse = double.NaN; finFenetre = -1; sensFenetre = 0; debutFenetre = -1;   // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
             // veille : cloture de la derniere seance complete du meme contrat, sans changement de contrat entre les deux
             Veille = double.NaN;
             for (int i = Historique.Count - 1; i >= 0; i--)
@@ -316,7 +321,8 @@ namespace Bot3en1
                      && !double.IsNaN(Sigma[m / PAS - 1]) && ZoneVirtuelle == 0 && !(LaisserCourir && DejaEntre) && !Arret)
             {
                 double vol = b.V, moy = MoyenneVolume(m);
-                if (!ConfirmationVolume) Entree(m, m / PAS - 1, b.C, sortie, " (cassure entre deux controles)");
+                if (SansEntreeTardive) CassureFenetre(m, m / PAS - 1, b.C, sortie, false);
+                else if (!ConfirmationVolume) Entree(m, m / PAS - 1, b.C, sortie, " (cassure entre deux controles)");
                 else if (vol >= VolumeMultiple * moy)
                     Entree(m, m / PAS - 1, b.C, sortie, $" (cassure entre deux controles, volume {vol:F0}"
                         + (moy > 0 ? $" = {(vol / moy).ToString("F1", System.Globalization.CultureInfo.InvariantCulture)} x la moyenne des 30 minutes)" : ")"));
@@ -389,14 +395,32 @@ namespace Bot3en1
                         Texte = $"{(ZoneTenue > 0 ? "achat" : "vente")} {Heure(m)} a {p:F2} (relance : delta 30 min {dr:+0;-0;0}, GARDE)" });
                 }
             }
-            string ou = "";
-            if (SansEntreeTardive && ConfirmationVolume)
+            if (SansEntreeTardive) CassureFenetre(m, k, p, s, true);
+            else Entree(m, k, p, s, "");
+        }
+
+        /// <summary>Pas d'entree tardive : entree a la minute qui franchit le niveau du controle k, ou a une des
+        /// FenetreConfirmation minutes suivantes si le prix est toujours au-dela, avec le volume si ConfirmationVolume.</summary>
+        void CassureFenetre(int m, int k, double p, List<Signal> s, bool auControle)
+        {
+            if (ZoneVirtuelle != 0 || (LaisserCourir && DejaEntre) || Arret) return;
+            double o0 = barres[0].O;
+            double haut = Math.Max(o0, Veille) * (1 + Sigma[k]), bas = Math.Min(o0, Veille) * (1 - Sigma[k]);
+            int e = p > haut ? 1 : p < bas ? -1 : 0;
+            if (e == 0) { finFenetre = -1; return; }
+            double prec = barres[m - 1].C;
+            if (e > 0 ? prec <= haut : prec >= bas) { finFenetre = m + FenetreConfirmation; sensFenetre = e; debutFenetre = m; }
+            if (sensFenetre != e || m > finFenetre) return;
+            string ou;
+            if (ConfirmationVolume)
             {
                 double vol = barres[m].V, moy = MoyenneVolume(m);
                 if (vol < VolumeMultiple * moy) return;
-                ou = $" (cassure au controle, volume {vol:F0}"
-                     + (moy > 0 ? $" = {(vol / moy).ToString("F1", System.Globalization.CultureInfo.InvariantCulture)} x la moyenne des 30 minutes)" : ")");
+                ou = $" (cassure {(auControle ? "au controle" : "entre deux controles")}, volume {vol:F0}"
+                     + (moy > 0 ? $" = {(vol / moy).ToString("F1", System.Globalization.CultureInfo.InvariantCulture)} x la moyenne des 30 minutes" : "")
+                     + (m > debutFenetre ? $", {m - debutFenetre} min apres la cassure" : "") + ")";
             }
+            else ou = auControle ? "" : " (cassure entre deux controles)";
             Entree(m, k, p, s, ou);
         }
 
@@ -417,7 +441,6 @@ namespace Bot3en1
             if (ZoneVirtuelle == 0 && !(LaisserCourir && DejaEntre) && (p > haut || p < bas))
             {
                 int sens = p > haut ? 1 : -1;
-                if (SansEntreeTardive && (sens > 0 ? barres[m - 1].C > haut : barres[m - 1].C < bas)) return;   // deja au-dela : tardive
                 ZoneVirtuelle = sens;
                 DejaEntre = true; NiveauCasse = sens > 0 ? haut : bas;
                 double d = Delta(m);

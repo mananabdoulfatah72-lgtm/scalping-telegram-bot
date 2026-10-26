@@ -1409,3 +1409,25 @@ côté du niveau cassé, sinon 16 h.
 
 Très bonne sur 2025 - 2026, faible sur 2011 - 2022 (t +0,57) : le résultat récent peut tenir à la période. Codée dans le
 bot avec le multiple 1 (choix de l'utilisateur).
+
+### Fenêtre de confirmation et sensibilité de la règle (26 octobre 2026 au soir, descriptif) : `reglages_26oct_g.py`
+
+W = 5 minutes fixé avant le calcul. Résultats en 4 MNQ, prix d'aujourd'hui, limite du jour 1 000 $.
+
+| Configuration | t 2011-22 / 2023-26 | 2023 | 2024 | 2025 | 2026 | Validé (2012-26 / depuis 2025) |
+|---|---|---|---|---|---|---|
+| Bot d'avant | **+3,75 / +2,27** | +32 301 $ | +16 655 $ | −4 531 $ | +2 926 $ | 24,2 / 18,9 % |
+| Version A | +3,39 / +1,88 | +33 542 $ | +13 522 $ | +5 157 $ | +1 131 $ | 25,2 / 20,2 % |
+| Règle ×1, fenêtre 0 | +0,57 / +1,50 | +22 628 $ | −298 $ | +19 898 $ | +10 664 $ | 19,7 / 22,6 % |
+| Règle ×1, fenêtre 3 | +0,54 / +0,96 | +20 828 $ | +6 130 $ | −98 $ | +13 524 $ | 19,8 / 21,1 % |
+| **Règle ×1, fenêtre 5 (choix)** | +0,66 / +1,04 | +20 828 $ | +12 010 $ | −1 413 $ | +11 677 $ | 19,9 / 20,4 % |
+| Règle ×1, fenêtre 10 | +0,75 / +1,21 | +21 757 $ | +13 935 $ | −884 $ | +13 162 $ | 19,9 / 21,3 % |
+| Règle ×0,8, fenêtre 5 | +0,62 / +0,77 | +21 670 $ | +10 712 $ | −3 027 $ | +4 601 $ | 20,0 / 19,1 % |
+| Règle ×1,2, fenêtre 5 | +0,17 / +1,33 | +22 902 $ | +8 104 $ | +10 727 $ | +9 226 $ | 20,0 / 18,9 % |
+| Règle ×1, fenêtre 5, moyenne sur 20 min | +0,84 / +0,91 | +22 369 $ | +11 983 $ | −418 $ | +6 331 $ | 19,9 / 20,2 % |
+| Règle ×1, fenêtre 5, moyenne sur 40 min | +0,45 / +0,96 | +18 715 $ | +11 168 $ | +93 $ | +6 642 $ | 19,4 / 20,2 % |
+
+**Lecture.** Le +19 898 $ de 2025 dépendait de la règle exacte : un petit changement le fait tomber vers zéro. Ce qui
+tient dans toutes les variantes : 2023 et 2026 positifs, deux fois moins de journées à −1 000 $ que le bot d'avant, et
+environ 20 % de validés. Ce qui ne tient pas : le t de 2011 - 2022, faible partout. La règle a été construite en regardant
+ces mêmes années : seul le suivi des prochaines semaines dira ce qu'elle vaut vraiment.

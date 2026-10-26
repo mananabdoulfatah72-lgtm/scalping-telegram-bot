@@ -211,6 +211,23 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     version A, laisser courir + volume) sont identiques octet pour octet à avant. Adaptateur avec ces réglages, avril -
     23 octobre 2026, mode à plat, 4 MNQ, limite 1 000 $ : 70 trades, +2 512 $ pour 1 MNQ, 3 journées coupées par la
     limite, à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond passent.
+- **Fenêtre de confirmation (26 octobre 2026 au soir)** : réglage « Zone : fenetre de confirmation en minutes », **5 par
+  défaut** à la demande de l'utilisateur (fixé avant le calcul : « quelques minutes ») :
+  - si la minute qui franchit le niveau n'a pas le volume, une des 5 minutes suivantes peut confirmer, tant que le prix
+    clôture toujours au-delà du niveau. S'il revient dans la zone, il faut une nouvelle cassure. 0 = seulement la minute
+    de la cassure. Le message l'écrit, par exemple « (cassure entre deux controles, volume 866 = 1.3 x la moyenne des 30
+    minutes, 3 min apres la cassure) » ;
+  - mesuré (`scalping/reglages_26oct_g.py`) : 2 400 trades, +1 968 points pour 1 MNQ, t +0,66 / +1,04, 383 journées à
+    −1 000 $ en 4 MNQ ; en 4 MNQ : 2023 +20 828 $, 2024 +12 010 $, 2025 −1 413 $, 2026 +11 677 $ ; validé avec 1 000 $ de
+    marge : 19,9 % (départs 2012 - 2026), 20,4 % (depuis 2025) ;
+  - sensibilité (même fichier) : le +19 898 $ de 2025 de la fenêtre 0 ne tient pas à de petits changements (fenêtre 3 :
+    −98 $ ; multiple 0,8 : −3 027 $ ; multiple 1,2 : +10 727 $). 2026 reste positif dans toutes les variantes (+4 601 à
+    +13 524 $). Le t de 2011 - 2022 reste faible partout (+0,17 à +0,84, contre +3,75 pour le bot d'avant) ;
+  - vérifié : le rejeu C# (`… FENETRE=5`) redonne trade par trade les 2 400 trades du calcul Python ; avec `FENETRE=0`, rejeu
+    et adaptateur identiques octet pour octet à la version d'avant ; autres modes inchangés. Adaptateur, avril - 23 octobre
+    2026, mode à plat, 4 MNQ, limite 1 000 $ : 76 trades dont 13 confirmés après la minute de cassure, +1 981,5 $ pour
+    1 MNQ, 4 journées coupées par la limite, à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond
+    passent.
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
@@ -287,6 +304,7 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Zone : entrée à la cassure confirmée par le volume | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
 | Zone : multiple du volume | **1** (choix de l'utilisateur) | (sans effet) |
 | Zone : pas d'entrée tardive | **coché** (choix de l'utilisateur) | décoché |
+| Zone : fenêtre de confirmation en minutes | **5** (choix de l'utilisateur) | (sans effet) |
 | Zone : une seule entrée par séance et sortie au niveau cassé | **coché** (choix de l'utilisateur) | décoché |
 | Zone : laisser courir | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
 | Filtre delta de la zone | décoché | décoché |
