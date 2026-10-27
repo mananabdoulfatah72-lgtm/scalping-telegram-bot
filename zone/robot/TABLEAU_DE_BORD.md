@@ -18,7 +18,7 @@ Voyant VERT (fourchette normale) : +424 $ pour 1 MNQ apres 21 seance(s) ; le bac
 
 ## Trades du 2026-10-26
 
-- achat 11h00 a 29,554.50 -> sortie 16h00 a 29,439.50
+- achat 11h00 a 29,554.75 -> sortie 16h00 a 29,439.50
 
 ## Pour la seance du 2026-10-27 (a utiliser en direct)
 
@@ -45,7 +45,7 @@ Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la 
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : pas de position. Pas d'achat possible le 2026-10-27 (il faudrait un prix au-dessus de 28,005.62, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 27,660.20).
+RSI(2) : pas de position. Pas d'achat possible le 2026-10-27 (il faudrait un prix au-dessus de 28,005.63, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 27,653.20).
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
