@@ -16,7 +16,8 @@ using TradingPlatform.BusinessLayer;
 // RELANCE=1 / RELANCE=0 : relance du filtre cochee / decochee (sans la variable : reglage par defaut, decoche).
 // CASSURE=1 : entree a la cassure entre deux controles (sans la variable : entree aux seuls controles, comme avant).
 // VOLUME=1 : entree a la cassure confirmee par le volume (minute d'au moins 2 fois la moyenne des 30 minutes d'avant).
-// VOLMULT=1 : multiple du volume (2 sans la variable). SANS_TARDIVE=1 : pas d'entree tardive. FENETRE=5 : fenetre de confirmation (0 sans la variable). Q1=1, Q2=1 : filtres de la partie Q. SANS_SORTIE=1 : pas de sortie aux controles. COURIR=1 : une entree par seance,
+// VOLMULT=1 : multiple du volume (2 sans la variable). SANS_TARDIVE=1 : pas d'entree tardive. FENETRE=5 : fenetre de confirmation (0 sans la variable). Q1=1, Q2=1 : filtres de la partie Q. SANS_SORTIE=1 : pas de sortie aux controles. STOP=70 : stop a 70 points au-dela du niveau casse. Avec un stop, l'horloge passe aussi par le plus haut et le plus bas de chaque minute
+// (tic au milieu de la minute), comme le bot en direct qui verifie le stop toutes les 0,5 s. COURIR=1 : une entree par seance,
 // sortie au niveau casse.
 // SANS_NQ=1 : aucune transaction NQ pendant la seance (16 octobre 2026) : le bot doit donner l'alerte et ne rien trader.
 // LANCEMENT=09:10 : heure de lancement le premier jour (New York), horloge avancee minute par minute jusqu'a 9 h 29.
@@ -68,6 +69,7 @@ class Program
         strat.FiltreOuverture = Environment.GetEnvironmentVariable("Q1") == "1";
         strat.FiltreTendance = Environment.GetEnvironmentVariable("Q2") == "1";
         strat.SortieFinDeJour = Environment.GetEnvironmentVariable("SANS_SORTIE") == "1";
+        strat.StopPoints = double.Parse(Environment.GetEnvironmentVariable("STOP") ?? "0", inv);
         strat.LaisserCourir = Environment.GetEnvironmentVariable("COURIR") == "1";
         if (Environment.GetEnvironmentVariable("RELANCE") is string relance) strat.RelanceFiltre = relance == "1";   // sinon le reglage par defaut
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";
@@ -121,7 +123,10 @@ class Program
                         if (aPlat) strat.SymboleMES.Emettre(new Last { Time = Utc(t0.AddSeconds(s)), Price = p / 4, Size = 1, AggressorFlag = f });
                     }
                     T(b[m].O, reste, AggressorFlag.None, 1); T(b[m].H, av.Item1, AggressorFlag.Buy, 2);
-                    T(b[m].L, av.Item2, AggressorFlag.Sell, 3); T(b[m].C, 0, AggressorFlag.None, 4);
+                    if (strat.StopPoints > 0) { horloge.DateTimeUtcNow = Utc(t0.AddSeconds(2.5)); tic.Invoke(strat, null); }   // stop vu au plus haut
+                    T(b[m].L, av.Item2, AggressorFlag.Sell, 3);
+                    if (strat.StopPoints > 0) { horloge.DateTimeUtcNow = Utc(t0.AddSeconds(3.5)); tic.Invoke(strat, null); }   // stop vu au plus bas
+                    T(b[m].C, 0, AggressorFlag.None, 4);
                 }
                 horloge.DateTimeUtcNow = Utc(t0.AddMinutes(1).AddSeconds(3));
                 tic.Invoke(strat, null);
@@ -186,7 +191,7 @@ class Program
             else if (s.Source == "zone-ecarte") nE++;
             else if (s.Source == "zone")
             {
-                if (s.Texte.StartsWith("sortie")) { zone += (sZ * (s.PrixReference - eZ) - 1.5) * 2; zOuv = false; }
+                if (s.Texte.StartsWith("sortie") || s.Texte.StartsWith("stop")) { zone += (sZ * (s.PrixReference - eZ) - 1.5) * 2; zOuv = false; }
                 else { sZ = s.Texte.StartsWith("achat") ? 1 : -1; eZ = s.PrixReference; nZ++; zOuv = true; }
             }
             else if (s.Source == "plafond")                        // tout ferme au prix du declenchement

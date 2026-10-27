@@ -255,6 +255,23 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     adaptateur identiques octet pour octet à la version d'avant ; autres modes inchangés. Adaptateur, avril - 23 octobre
     2026, mode à plat, 4 MNQ, limite 1 000 $ : 76 trades, 28 journées coupées par la limite (4 avec la sortie aux
     contrôles), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond passent.
+- **Stop à 70 points au-delà du niveau cassé (27 octobre 2026)** : réglage « Zone : stop en points au-dela du niveau
+  casse », **70 par défaut** à la demande de l'utilisateur (0 = aucun stop) :
+  - achat : stop au niveau cassé − 70 points ; vente : niveau cassé + 70 points (exemple : cassure du niveau de vente
+    29 870, stop 29 940). Vérifié à chaque prix reçu (tic de 0,5 s) ; sortie au marché. Le rejeu le vérifie sur le plus
+    bas / plus haut de chaque minute (rempli au stop ± 1 tick, ou à l'ouverture si elle est déjà au-delà). Message :
+    « stop 12h03 a … (stop …, 70 points au-dela du niveau casse …) » ; le message de contrôle donne le prix du stop ;
+  - mesuré (`scalping/reglages_27oct_stop.py`, 70 points ramenés au prix de chaque jour), avec les autres réglages de
+    l'utilisateur (pas de sortie aux contrôles) : 61 % des trades stoppés ; 2023 - 2026 : 35 % de journées gagnantes,
+    +1 509 $ en moyenne, pertes de −680 $ en moyenne, 7 % des journées à −1 000 $ (48 % sans stop) ; 4 MNQ : 2011 - 2026
+    +73 967 $ (+119 380 $ sans stop), 2026 +7 963 $ (+17 420 $), avril - octobre 2026 −2 480 $ (+4 493 $) ; t +0,85 / +1,43
+    (+1,44 / +1,17) ; challenge avec 1 000 $ de marge : 21,7 % validés, 70,9 % perdus (21,9 / 72,3 %). Sensibilité : 50 points,
+    2026 +2 825 $ et 3 % de journées à −1 000 $ ; 100 points, 2026 +15 326 $ et 24 % ;
+  - vérifié : le rejeu C# (`… SANS_SORTIE=1 STOP=70`) redonne trade par trade les 2 400 trades du calcul Python (stop en
+    points fixes) ; sans stop, rejeu et adaptateur identiques octet pour octet à la version d'avant ; autres modes
+    inchangés. Adaptateur (le banc passe par le plus haut et le plus bas de chaque minute pour exercer la vérification du
+    stop à chaque prix), avril - 23 octobre 2026, 4 MNQ, limite 1 000 $ : 76 trades, 46 stops, 0 journée coupée par la
+    limite (28 sans stop), à plat chaque soir, 0 erreur. TestAPlat et TestPlafond passent.
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
@@ -334,6 +351,7 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Zone : fenêtre de confirmation en minutes | **5** (choix de l'utilisateur) | (sans effet) |
 | Zone : filtres Q1 et Q2 | décochés (ils font baisser les chances de valider en 13 séances) | **cochés conseillé** |
 | Zone : pas de sortie aux contrôles | **coché** (choix de l'utilisateur, 27 octobre 2026) | décoché |
+| Zone : stop en points au-delà du niveau cassé | **70** (choix de l'utilisateur, 27 octobre 2026) | 70 |
 | Zone : une seule entrée par séance et sortie au niveau cassé | **coché** (choix de l'utilisateur) | décoché |
 | Zone : laisser courir | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
 | Filtre delta de la zone | décoché | décoché |

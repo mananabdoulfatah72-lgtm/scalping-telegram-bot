@@ -94,6 +94,12 @@ namespace Bot3en1
         // sans sortie aux controles (27 octobre 2026, demande de l'utilisateur ; scalping/reglages_27oct_sans_sortie.py) : un trade
         // de zone n'est plus ferme aux controles ; il est garde jusqu'a 16 h (ou jusqu'a la limite de perte du jour, geree par l'hote)
         public bool SortieFinDeJour = false;
+        // stop (27 octobre 2026, demande de l'utilisateur ; scalping/reglages_27oct_stop.py) : StopPoints > 0 = un trade de zone est
+        // ferme si le prix touche le niveau casse moins StopPoints (achat) ou plus StopPoints (vente). L'hote le verifie a chaque
+        // prix recu (VerifierStop) ; MinuteFermee le verifie aussi sur le plus bas / plus haut de la minute (rejeu)
+        public double StopPoints = 0;
+        public double PrixStop { get; private set; } = double.NaN;
+        int minuteEntree = -1;
         public int Tendance { get; private set; }
         int finFenetre = -1, sensFenetre, debutFenetre = -1;
         public double NiveauCasse { get; private set; } = double.NaN;
@@ -247,7 +253,7 @@ namespace Bot3en1
             Jour = jour.Date; Contrat = contrat;
             for (int i = 0; i < N; i++) barres[i] = new Barre();
             cumTv = cumV = cumT = 0; nPresentes = 0;
-            ZoneVirtuelle = 0; ZoneTenue = 0; DejaEntre = false; NiveauCasse = double.NaN; finFenetre = -1; sensFenetre = 0; debutFenetre = -1;   // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
+            ZoneVirtuelle = 0; ZoneTenue = 0; DejaEntre = false; NiveauCasse = double.NaN; PrixStop = double.NaN; minuteEntree = -1; finFenetre = -1; sensFenetre = 0; debutFenetre = -1;   // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
             // veille : cloture de la derniere seance complete du meme contrat, sans changement de contrat entre les deux
             Veille = double.NaN;
             for (int i = Historique.Count - 1; i >= 0; i--)
@@ -330,6 +336,9 @@ namespace Bot3en1
             double typique = (b.H + b.L + b.C) / 3;
             cumTv += typique * b.V; cumV += b.V; cumT += typique;
             int k = (m % PAS == 0) ? m / PAS - 1 : -1;
+            if (StopPoints > 0 && ZoneVirtuelle != 0 && m > minuteEntree && !double.IsNaN(PrixStop)
+                && (ZoneVirtuelle > 0 ? b.L <= PrixStop : b.H >= PrixStop))
+                SortieStop(m, ZoneVirtuelle > 0 ? Math.Min(b.O, PrixStop) - 0.25 : Math.Max(b.O, PrixStop) + 0.25, sortie);
             if (k >= 0 && k < NMOMENTS && ZoneActive && ZoneAutorisee && barres[0].Presente && !double.IsNaN(Sigma[k]))
                 Zone(m, k, b.C, sortie);
             else if (EntreeCassure && k < 0 && m > PAS && m < NMOMENTS * PAS && ZoneActive && ZoneAutorisee && barres[0].Presente
@@ -378,6 +387,7 @@ namespace Bot3en1
                 : neuf.Any(x => x.Source == "zone" && x.Texte.StartsWith("sortie")) ? "sortie du trade"
                 : avantVirt != 0 && ZoneVirtuelle == 0 && avantTenue == 0 ? "le trade ecarte est termine (prix revenu), plus de relance pour lui"
                 : ZoneTenue != 0 && SortieFinDeJour ? $"en position ({(ZoneTenue > 0 ? "achat" : "vente")}) ; pas de sortie aux controles : sortie a 16 h ou a la limite de perte du jour"
+                                                      + (double.IsNaN(PrixStop) ? "" : $", stop a {PrixStop:F2}")
                 : ZoneTenue > 0 ? $"en position (achat) ; sortie a un controle si le prix passe sous {(LaisserCourir ? NiveauCasse : Math.Max(haut, vw)):F2}"
                 : ZoneTenue < 0 ? $"en position (vente) ; sortie a un controle si le prix passe au-dessus de {(LaisserCourir ? NiveauCasse : Math.Min(bas, vw)):F2}"
                 : Arret ? "plus de trade aujourd'hui (objectif ou limite du jour atteint)"
@@ -460,7 +470,8 @@ namespace Bot3en1
                 if (FiltreOuverture && (sens > 0 ? o0 < Veille : o0 > Veille)) return;
                 if (FiltreTendance && Tendance != sens) return;
                 ZoneVirtuelle = sens;
-                DejaEntre = true; NiveauCasse = sens > 0 ? haut : bas;
+                DejaEntre = true; NiveauCasse = sens > 0 ? haut : bas; minuteEntree = m;
+                PrixStop = StopPoints > 0 ? NiveauCasse - sens * StopPoints : double.NaN;
                 double d = Delta(m);
                 double depasse = sens > 0 ? (p - haut) / (refH * Sigma[k]) : (bas - p) / (refB * Sigma[k]);
                 bool force = SeuilForce > 0 && depasse >= SeuilForce;
@@ -481,14 +492,28 @@ namespace Bot3en1
             }
         }
 
-        void SortieZone(int m, double p, string quoi, List<Signal> s)
+        void SortieStop(int m, double p, List<Signal> s) =>
+            SortieZone(m, p, "stop", s, $" (stop {PrixStop:F2}, {StopPoints.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)} points au-dela du niveau casse {NiveauCasse:F2})");
+
+        /// <summary>Stop verifie par l'hote a chaque prix recu pendant la seance (minute m en cours). Renvoie les signaux.</summary>
+        public List<Signal> VerifierStop(double prix, int m)
+        {
+            var s = new List<Signal>();
+            if (StopPoints <= 0 || ZoneTenue == 0 || double.IsNaN(PrixStop) || m <= minuteEntree || m >= N || prix <= 0) return s;
+            if (ZoneTenue > 0 ? prix > PrixStop : prix < PrixStop) return s;
+            SortieStop(m, prix, s);
+            Journal.AddRange(s);
+            return s;
+        }
+
+        void SortieZone(int m, double p, string quoi, List<Signal> s, string apres = "")
         {
             if (ZoneTenue != 0)
             {
                 if (ModeAPlat)
                     RealiseAPlat += ZoneSurMES ? Taille * (5 * ZoneTenue * Es(PrixES, entreeZoneES) - 4.5) : Taille * (2 * ZoneTenue * (p - EntreeZone) - 3.0);
                 RealiseJour += Taille * (ZoneTenue * (p - EntreeZone) - 1.5) * 2;
-                s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p, Texte = $"{quoi} {Heure(m)} a {p:F2}" });
+                s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p, Texte = $"{quoi} {Heure(m)} a {p:F2}{apres}" });
             }
             ZoneVirtuelle = 0; ZoneTenue = 0;
         }
