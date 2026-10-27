@@ -1,58 +1,57 @@
 # Robot zone de bruit (MNQ) : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-10-23**. Demarre le 2026-09-25. Aucun argent reel n'est engage.
+Mis a jour le **2026-10-26**. Demarre le 2026-09-25. Aucun argent reel n'est engage.
 
 Historique : rejeu de cette gestion avec les regles Phidias publiques d'octobre 2026, departs 2023-2024 suivis 24 mois (tournoi8/ et zone_deux/ sur la branche de recherche) : zone + RSI(2) environ +254 $ nets par an, rien recu dans 27 % des departs ; zone seule -22 $ par an, rien recu dans 79 %. Sur 12 mois, environ -115 $ par an dans les deux cas : le premier retrait arrive en general apres 12 mois. Une taille plus grande ne fait pas mieux (zone_deux/).
 
-**Challenge n°1 en cours : +404 $ sur +4 000 $ ; marge avant la limite 2,452 $**
+**Challenge n°1 en cours : +171 $ sur +4 000 $ ; marge avant la limite 2,220 $**
 
-Voyant VERT (fourchette normale) : +657 $ pour 1 MNQ apres 20 seance(s) ; le backtest attendait +230 $, alerte sous -1,260 $ (ligne des 5 %). Prochain bilan a 60 seances.
+Voyant VERT (fourchette normale) : +424 $ pour 1 MNQ apres 21 seance(s) ; le backtest attendait +242 $, alerte sous -1,285 $ (ligne des 5 %). Prochain bilan a 60 seances.
 
 | Mesure | Valeur |
 |---|---|
 | Tentatives de challenge | 1 (n°1 en cours) |
 | Recu en retraits virtuels (80 %) | 0 $ |
-| Gain de la strategie pour 1 MNQ depuis le depart | +657 $ |
+| Gain de la strategie pour 1 MNQ depuis le depart | +424 $ |
 | RSI(2) (second moteur, dans le compte depuis le 1er octobre 2026) pour 1 MNQ | -253 $ |
 | Rebond (suivi a part, hors compte) pour 1 MNQ depuis le 1er octobre 2026 | +854 $ |
 
-## Trades du 2026-10-23
+## Trades du 2026-10-26
 
-- achat 11h00 a 29,283.25 -> sortie 11h30 a 29,261.00
-- rebond (suivi a part, hors compte) : achat 9h30 a 29,029.50 -> sortie 16h00 a 29,122.50, +183 $ pour 1 MNQ
+- achat 11h00 a 29,554.50 -> sortie 16h00 a 29,439.50
 
-## Pour la seance du 2026-10-26 (a utiliser en direct)
+## Pour la seance du 2026-10-27 (a utiliser en direct)
 
-Cloture de la veille (16 h New York) : **29,122.50**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
+Cloture de la veille (16 h New York) : **29,439.50**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
 
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
-| 10h00 | 15h00 | 0.251% | 1.00251 | 0.99749 |
-| 10h30 | 15h30 | 0.355% | 1.00355 | 0.99645 |
-| 11h00 | 16h00 | 0.420% | 1.00420 | 0.99580 |
-| 11h30 | 16h30 | 0.482% | 1.00482 | 0.99518 |
-| 12h00 | 17h00 | 0.545% | 1.00545 | 0.99455 |
-| 12h30 | 17h30 | 0.492% | 1.00492 | 0.99508 |
-| 13h00 | 18h00 | 0.576% | 1.00576 | 0.99424 |
-| 13h30 | 18h30 | 0.665% | 1.00665 | 0.99335 |
-| 14h00 | 19h00 | 0.724% | 1.00724 | 0.99276 |
-| 14h30 | 19h30 | 0.716% | 1.00716 | 0.99284 |
-| 15h00 | 20h00 | 0.720% | 1.00720 | 0.99280 |
-| 15h30 | 20h30 | 0.697% | 1.00697 | 0.99303 |
+| 10h00 | 15h00 | 0.243% | 1.00243 | 0.99757 |
+| 10h30 | 15h30 | 0.372% | 1.00372 | 0.99628 |
+| 11h00 | 16h00 | 0.482% | 1.00482 | 0.99518 |
+| 11h30 | 16h30 | 0.541% | 1.00541 | 0.99459 |
+| 12h00 | 17h00 | 0.590% | 1.00590 | 0.99410 |
+| 12h30 | 17h30 | 0.551% | 1.00551 | 0.99449 |
+| 13h00 | 18h00 | 0.640% | 1.00640 | 0.99360 |
+| 13h30 | 18h30 | 0.727% | 1.00727 | 0.99273 |
+| 14h00 | 19h00 | 0.790% | 1.00790 | 0.99210 |
+| 14h30 | 19h30 | 0.778% | 1.00778 | 0.99222 |
+| 15h00 | 20h00 | 0.769% | 1.00769 | 0.99231 |
+| 15h30 | 20h30 | 0.754% | 1.00754 | 0.99246 |
 
-Taille : un jour normal = 234 $ de risque pour 1 MNQ. Sur un compte neuf : f = 0.15 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.25 -> Phidias (coussin 2 500 $) 2 MNQ, Topstep (coussin 2 000 $) 2 MNQ ; f = 0.35 -> Phidias (coussin 2 500 $) 3 MNQ, Topstep (coussin 2 000 $) 2 MNQ. **En cours de challenge : MNQ = f x (solde - limite de perte) / 234, arrondi en dessous, au moins 1 MNQ** (exemple : f = 0,25, coussin 1 500 $ -> 1 MNQ).
+Taille : un jour normal = 237 $ de risque pour 1 MNQ. Sur un compte neuf : f = 0.15 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.25 -> Phidias (coussin 2 500 $) 2 MNQ, Topstep (coussin 2 000 $) 2 MNQ ; f = 0.35 -> Phidias (coussin 2 500 $) 3 MNQ, Topstep (coussin 2 000 $) 2 MNQ. **En cours de challenge : MNQ = f x (solde - limite de perte) / 237, arrondi en dessous, au moins 1 MNQ** (exemple : f = 0,25, coussin 1 500 $ -> 1 MNQ).
 
 Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la reouverture de 18 h). On ne regarde le prix qu'aux heures de controle : pas de stop place dans le marche.
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : pas de position. Le 2026-10-26 a 15 h 50 New York : ACHAT si le prix de 15 h 49 est entre 27,987.96 (moyenne des 200) et 28,579.15 (RSI(2) sous 10), sauf jour de changement d'echeance.
+RSI(2) : pas de position. Pas d'achat possible le 2026-10-27 (il faudrait un prix au-dessus de 28,005.62, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 27,660.20).
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
 ## Bot 3 en 1 : zone filtree par le delta + RSI(2), 1 MNQ chacun (challenge 50K virtuel a part)
 
-**Bot 3 en 1 (zone filtree par le delta + RSI(2), 1 MNQ chacun, depuis le 2026-10-02) : challenge n°1, +0 $ sur +4 000 $, marge avant la limite 2,500 $ ; EN PAUSE : 15 seance(s) en attente du vrai delta (transactions Databento indisponibles ; le bot rattrapera tout seul quand elles reviendront).**
+**Bot 3 en 1 (zone filtree par le delta + RSI(2), 1 MNQ chacun, depuis le 2026-10-02) : challenge n°1, +0 $ sur +4 000 $, marge avant la limite 2,500 $ ; EN PAUSE : 16 seance(s) en attente du vrai delta (transactions Databento indisponibles ; le bot rattrapera tout seul quand elles reviendront).**
 
 Demande de l'utilisateur du 2 octobre 2026 : la zone de bruit ne garde que les trades dont le delta des 30 minutes va dans leur sens, plus le RSI(2), 1 MNQ chacun, taille fixe. Rejeu d'avril a septembre 2026 (mois ou le filtre a ete trouve, donc flatteur) : challenge reussi en 3 a 4 mois selon le mois de depart, marge la plus basse 50 $ le 29 juillet 2026 a 15 h 59 (rejeu minute par minute du 3 octobre 2026 ; le premier rejeu, a la journee, disait 414 $). Le bot n'utilise que le vrai delta (transactions Databento) : sans lui, il se met en pause et rattrape quand les donnees reviennent. Une approximation par le prix aurait fait perdre le challenge le 29 juillet.
 
@@ -68,12 +67,13 @@ Pas encore de trade de zone mesure depuis le 2026-10-01.
 
 ## Second moteur : rebond apres forte baisse (suivi a part, hors compte)
 
-Pas d'achat le 2026-10-26. Derniere seance complete : +0.32% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.19%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
+Pas d'achat le 2026-10-27. Derniere seance complete : +0.72% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.19%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
 
 ## Derniers jours
 
 | Date | Phase | MNQ zone | RSI(2) MNQ | Resultat du jour | Solde | Zone pour 1 MNQ | RSI(2) pour 1 MNQ | Rebond (a part, 1 MNQ) | Evenement |
 |---|---|---|---|---|---|---|---|---|---|
+| 2026-10-26 | challenge n°1 | 1 | 0 | -233 $ | 50,171 $ | -233 $ | +0 $ | +0 $ |  |
 | 2026-10-23 | challenge n°1 | 1 | 0 | -48 $ | 50,404 $ | -48 $ | +0 $ | +183 $ |  |
 | 2026-10-22 | challenge n°1 | 1 | 0 | +364 $ | 50,452 $ | +364 $ | +0 $ | +0 $ |  |
 | 2026-10-21 | challenge n°1 | 1 | 1 | +378 $ | 50,088 $ | -364 $ | +742 $ | +0 $ |  |
@@ -88,4 +88,3 @@ Pas d'achat le 2026-10-26. Derniere seance complete : +0.32% (ouverture -> clotu
 | 2026-10-08 | challenge n°1 | 1 | 0 | -54 $ | 49,918 $ | -54 $ | +0 $ | +0 $ |  |
 | 2026-10-07 | challenge n°1 | 1 | 0 | +0 $ | 49,972 $ | +0 $ | +0 $ | +0 $ |  |
 | 2026-10-06 | challenge n°1 | 1 | 0 | +0 $ | 49,972 $ | +0 $ | +0 $ | +0 $ |  |
-| 2026-10-05 | challenge n°1 | 1 | 0 | +248 $ | 49,972 $ | +248 $ | +0 $ | +0 $ |  |
