@@ -48,6 +48,8 @@ namespace Bot3en1
         public bool FiltreTendance = false;
         [InputParameter("Zone : une seule entree par seance et sortie seulement au retour sous le niveau casse, cochee par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (sortie a un controle de 30 minutes si le prix est repasse de l'autre cote du niveau casse a l'entree, au lieu de la limite du controle ou du VWAP ; sinon a 16 h ; limite de perte du jour inchangee)", 55)]
         public bool LaisserCourir = true;
+        [InputParameter("Zone : pas de sortie aux controles, cochee par defaut depuis le 27 octobre 2026 a la demande de l'utilisateur (le trade est garde jusqu'a 16 h, ou jusqu'a la limite de perte du jour ; decoche = sortie a un controle au retour sous le niveau casse)", 59)]
+        public bool SortieFinDeJour = true;
         [InputParameter("Filtre delta de la zone : decoche par defaut depuis le 26 octobre 2026 = la zone seule, chaque cassure verifiee a un controle est prise quel que soit le delta (coche = ancien bot, cassure ecartee si le delta 30 min va contre elle)", 48)]
         public bool FiltreDeltaActif = false;
         [InputParameter("Filtre delta : relance, decochee par defaut depuis le 20 octobre 2026 (un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 49)]
@@ -75,7 +77,7 @@ namespace Bot3en1
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
-        const string Version = "26 octobre 2026 nuit (regle de l'utilisateur : entree a la cassure avec volume, fenetre de confirmation, une entree par seance, sortie au niveau casse)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
+        const string Version = "27 octobre 2026 (regle de l'utilisateur : entree a la cassure avec volume, fenetre de confirmation, une entree par seance, sortie seulement a 16 h ou a la limite du jour)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
         Moteur bot;
         TimeZoneInfo ny;
         Timer horloge;
@@ -142,7 +144,7 @@ namespace Bot3en1
                 SymboleNQ.NewLast += SurTransaction;
                 if (ModeAPlat) SymboleMES.NewLast += SurTransactionES;
                 horloge = new Timer(_ => Tic(), null, 500, 500);
-                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? $" CONFIRMEE PAR LE VOLUME (x{MultipleVolume.ToString("0.#", CultureInfo.InvariantCulture)})" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, {(SansEntreeTardive ? $"SANS ENTREE TARDIVE (confirmation dans les {Math.Max(0, FenetreConfirmation)} minutes apres la cassure)" : "entree tardive possible aux controles")}, {(LaisserCourir ? "UNE ENTREE PAR SEANCE, SORTIE SEULEMENT AU RETOUR SOUS LE NIVEAU CASSE (aux controles) ou a 16 h" : "sorties d'origine (aux controles, limite de la zone ou VWAP, et 16 h)")}, filtres Q1 (sens de l'ouverture) {(FiltreOuverture ? "COCHE" : "decoche")} et Q2 (tendance de fond) {(FiltreTendance ? "COCHE" : "decoche")}, filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}. {EtatTexte()}");
+                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? $" CONFIRMEE PAR LE VOLUME (x{MultipleVolume.ToString("0.#", CultureInfo.InvariantCulture)})" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, {(SansEntreeTardive ? $"SANS ENTREE TARDIVE (confirmation dans les {Math.Max(0, FenetreConfirmation)} minutes apres la cassure)" : "entree tardive possible aux controles")}, {(LaisserCourir ? "UNE ENTREE PAR SEANCE" : "plusieurs entrees par seance")}, {(SortieFinDeJour ? "PAS DE SORTIE AUX CONTROLES : SORTIE SEULEMENT A 16 H OU A LA LIMITE DE PERTE DU JOUR" : LaisserCourir ? "sortie a un controle au retour sous le niveau casse, ou a 16 h" : "sorties d'origine (aux controles, limite de la zone ou VWAP, et 16 h)")}, filtres Q1 (sens de l'ouverture) {(FiltreOuverture ? "COCHE" : "decoche")} et Q2 (tendance de fond) {(FiltreTendance ? "COCHE" : "decoche")}, filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}. {EtatTexte()}");
             }
             catch (Exception e)
             {
@@ -315,6 +317,7 @@ namespace Bot3en1
             bot.FiltreOuverture = FiltreOuverture;
             bot.FiltreTendance = FiltreTendance;
             bot.LaisserCourir = LaisserCourir;
+            bot.SortieFinDeJour = SortieFinDeJour;
             bot.Relance = RelanceFiltre;
             bot.MessageControle = true;
             bot.HeureParis = m => HeureDeParis(m);

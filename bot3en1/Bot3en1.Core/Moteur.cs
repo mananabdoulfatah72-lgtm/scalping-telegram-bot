@@ -91,6 +91,9 @@ namespace Bot3en1
         // niveau de la cloture de la veille (vendre : en dessous ou au niveau) ; Q2, n'acheter que si la cloture de la derniere
         // seance complete est au-dessus de la moyenne des 20 dernieres clotures completes (vendre : en dessous)
         public bool FiltreOuverture = false, FiltreTendance = false;
+        // sans sortie aux controles (27 octobre 2026, demande de l'utilisateur ; scalping/reglages_27oct_sans_sortie.py) : un trade
+        // de zone n'est plus ferme aux controles ; il est garde jusqu'a 16 h (ou jusqu'a la limite de perte du jour, geree par l'hote)
+        public bool SortieFinDeJour = false;
         public int Tendance { get; private set; }
         int finFenetre = -1, sensFenetre, debutFenetre = -1;
         public double NiveauCasse { get; private set; } = double.NaN;
@@ -374,6 +377,7 @@ namespace Bot3en1
                 : neuf.Any(x => x.Source == "zone" && !x.Texte.StartsWith("sortie")) ? (ZoneTenue > 0 ? "ACHAT" : "VENTE")
                 : neuf.Any(x => x.Source == "zone" && x.Texte.StartsWith("sortie")) ? "sortie du trade"
                 : avantVirt != 0 && ZoneVirtuelle == 0 && avantTenue == 0 ? "le trade ecarte est termine (prix revenu), plus de relance pour lui"
+                : ZoneTenue != 0 && SortieFinDeJour ? $"en position ({(ZoneTenue > 0 ? "achat" : "vente")}) ; pas de sortie aux controles : sortie a 16 h ou a la limite de perte du jour"
                 : ZoneTenue > 0 ? $"en position (achat) ; sortie a un controle si le prix passe sous {(LaisserCourir ? NiveauCasse : Math.Max(haut, vw)):F2}"
                 : ZoneTenue < 0 ? $"en position (vente) ; sortie a un controle si le prix passe au-dessus de {(LaisserCourir ? NiveauCasse : Math.Min(bas, vw)):F2}"
                 : Arret ? "plus de trade aujourd'hui (objectif ou limite du jour atteint)"
@@ -393,8 +397,8 @@ namespace Bot3en1
             double refH = Math.Max(o0, Veille), refB = Math.Min(o0, Veille);
             double haut = refH * (1 + Sigma[k]), bas = refB * (1 - Sigma[k]), vw = Vwap(m);
             double sortH = LaisserCourir ? NiveauCasse : Math.Max(haut, vw), sortB = LaisserCourir ? NiveauCasse : Math.Min(bas, vw);
-            if (ZoneVirtuelle > 0 && p <= sortH) SortieZone(m, p, "sortie", s);
-            else if (ZoneVirtuelle < 0 && p >= sortB) SortieZone(m, p, "sortie", s);
+            if (!SortieFinDeJour && ZoneVirtuelle > 0 && p <= sortH) SortieZone(m, p, "sortie", s);
+            else if (!SortieFinDeJour && ZoneVirtuelle < 0 && p >= sortB) SortieZone(m, p, "sortie", s);
             else if (Relance && FiltreDelta && ZoneVirtuelle != 0 && ZoneTenue == 0 && !Arret)
             {
                 // trade ecarte encore vivant (prix toujours hors de la zone et du bon cote du VWAP) : nouvelle chance

@@ -242,6 +242,19 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     décochés, rejeu et adaptateur identiques octet pour octet à la version d'avant. Adaptateur avec les deux cochés,
     avril - 23 octobre 2026, 4 MNQ : 28 trades, +2 071,5 $ pour 1 MNQ, 2 journées coupées par la limite, à plat chaque
     soir, 0 erreur. TestAPlat et TestPlafond passent.
+- **Pas de sortie aux contrôles (27 octobre 2026)** : réglage « Zone : pas de sortie aux controles », **coché par défaut** à la
+  demande de l'utilisateur. Le trade de zone n'est plus fermé aux contrôles : il est gardé jusqu'à 16 h (fermeture
+  obligatoire), sauf si la limite de perte du jour (1 000 $) ou l'objectif est atteint. Entrées inchangées (cassure,
+  volume ×1, fenêtre de 5 minutes, une entrée par séance) :
+  - mesuré (`scalping/reglages_27oct_sans_sortie.py`), 4 MNQ, prix d'aujourd'hui, limite du jour 1 000 $ : t +1,44 / +1,17
+    (sortie aux contrôles : +0,66 / +1,04) ; 2011 - 2026 +119 380 $ (+55 071 $) ; 2023 - 2026 +54 514 $ (+43 102 $) ; 2026 au
+    23 octobre +17 420 $ (+11 677 $), avril - octobre 2026 +4 493 $ (+6 717 $). Mais 48 % des journées avec trade de
+    2023 - 2026 touchent −1 000 $ (17 % avec la sortie aux contrôles), 1 071 journées à −1 000 $ en 15 ans (383). Challenge
+    avec 1 000 $ de marge : 21,9 % validés, 72,3 % perdus (19,9 / 68,0 %) ;
+  - vérifié : le rejeu C# (`… SANS_SORTIE=1`) redonne trade par trade les 2 400 trades du calcul Python ; décoché, rejeu et
+    adaptateur identiques octet pour octet à la version d'avant ; autres modes inchangés. Adaptateur, avril - 23 octobre
+    2026, mode à plat, 4 MNQ, limite 1 000 $ : 76 trades, 28 journées coupées par la limite (4 avec la sortie aux
+    contrôles), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond passent.
 - **Alerte « marché invisible » (18 octobre 2026) :**
   - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
     marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
@@ -320,6 +333,7 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Zone : pas d'entrée tardive | **coché** (choix de l'utilisateur) | décoché |
 | Zone : fenêtre de confirmation en minutes | **5** (choix de l'utilisateur) | (sans effet) |
 | Zone : filtres Q1 et Q2 | décochés (ils font baisser les chances de valider en 13 séances) | **cochés conseillé** |
+| Zone : pas de sortie aux contrôles | **coché** (choix de l'utilisateur, 27 octobre 2026) | décoché |
 | Zone : une seule entrée par séance et sortie au niveau cassé | **coché** (choix de l'utilisateur) | décoché |
 | Zone : laisser courir | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
 | Filtre delta de la zone | décoché | décoché |
