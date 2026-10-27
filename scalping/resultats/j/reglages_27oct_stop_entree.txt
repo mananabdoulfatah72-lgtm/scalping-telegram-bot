@@ -1,0 +1,23 @@
+(1) Entree au-dela du niveau casse, 2023 - 2026 (points au prix d'aujourd'hui ; 1 point = 8 $ en 4 MNQ) :
+  moyenne 16.8 points, mediane 10.8, 3 entrees sur 4 a moins de 21.7, 9 sur 10 a moins de 35.2, maximum 189.9 ; entrees a plus de 20 points : 28%, a plus de 40 points : 8%
+
+(2) Stop a 70 points : du niveau casse (installe) ou du prix d'entree, 4 MNQ :
+  stop niveau casse +/- 70 (installe) : stoppes 61% ; perte au stop (2023-2026) moyenne -720 $, mediane -670 $, pire -2,105 $
+    2023-2026 : jours gagnants 35%, gain moyen +1,509 $, perte moyenne -680 $, jours a -1 000 $ 7% ; t +0.85 / +1.43
+    total 2011-2026 +73,967 $, depuis 2023 +44,461 $, 2026 +7,963 $, avril-octobre 2026 -2,480 $ ; challenge marge 1 000 $ : valide 21.7% perdu 70.9%
+  stop prix d'entree +/- 70 : stoppes 65% ; perte au stop (2023-2026) moyenne -583 $, mediane -582 $, pire -599 $
+    2023-2026 : jours gagnants 31%, gain moyen +1,479 $, perte moyenne -563 $, jours a -1 000 $ 1% ; t +0.88 / +1.53
+    total 2011-2026 +70,244 $, depuis 2023 +39,801 $, 2026 +846 $, avril-octobre 2026 -4,234 $ ; challenge marge 1 000 $ : valide 21.2% perdu 69.6%
+
+Octobre 2026 (heure de New York, 4 MNQ) : entree, niveau casse, stop niveau / stop entree -> resultat
+  2026-10-01 vente 10h22 a 30575.50, niveau 30604.83 (29 pts au-dela), stops 30674.59 / 30645.27 : stop 10h34 -809 $  |  stop 10h32 -574 $
+  2026-10-05 achat 10h08 a 31170.25, niveau 31159.55 (11 pts au-dela), stops 31089.20 / 31099.90 : 16 h +1,327 $  |  16 h +1,327 $
+  2026-10-08 vente 12h49 a 31069.25, niveau 31081.44 (12 pts au-dela), stops 31152.20 / 31140.01 : 16 h +726 $  |  16 h +726 $
+  2026-10-12 vente 10h05 a 30943.75, niveau 30964.22 (20 pts au-dela), stops 31034.55 / 31014.08 : 16 h +364 $  |  16 h +364 $
+  2026-10-14 vente 10h52 a 30423.25, niveau 30451.02 (28 pts au-dela), stops 30520.23 / 30492.46 : 16 h +1,912 $  |  stop 10h59 -574 $
+  2026-10-16 vente 10h51 a 29893.75, niveau 29928.32 (36 pts au-dela), stops 29996.34 / 29961.77 : 16 h +4,222 $  |  16 h +4,222 $
+  2026-10-19 achat 11h05 a 29891.75, niveau 29883.64 (8 pts au-dela), stops 29816.18 / 29824.29 : stop 12h49 -642 $  |  stop 12h30 -575 $
+  2026-10-20 achat 10h27 a 29848.00, niveau 29805.16 (45 pts au-dela), stops 29738.12 / 29780.96 : stop 11h13 -932 $  |  stop 11h12 -575 $
+  2026-10-21 achat 11h36 a 30027.75, niveau 30006.08 (22 pts au-dela), stops 29938.41 / 29960.07 : stop 15h00 -754 $  |  stop 14h59 -574 $
+  2026-10-22 vente 10h15 a 29440.75, niveau 29446.41 (6 pts au-dela), stops 29513.27 / 29507.61 : 16 h +2,452 $  |  16 h +2,452 $
+  2026-10-23 achat 10h40 a 29252.75, niveau 29250.71 (2 pts au-dela), stops 29184.94 / 29186.99 : stop 13h08 -592 $  |  stop 13h08 -575 $
