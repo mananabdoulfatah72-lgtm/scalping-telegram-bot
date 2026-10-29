@@ -553,3 +553,29 @@ L'utilisateur demande d'éloigner le stop de quelques points pour que le bruit d
   points et en t par séance. Sinon S2b reste telle quelle. Publié quoi qu'il arrive, avec le taux de stops et le risque
   en dollars par trade.
 - Limite : S2b elle-même a été choisie sur avril - 16 octobre ; seul l'écart du stop est jugé ici hors échantillon.
+
+### Résultat (29 octobre 2026) : `resultats/stop_s2b.txt`
+
+Contrôle : sans écart, on retrouve exactement les trades de S2b.
+
+| Variante | Août - 27 oct. : total | t par séance | Part de stops | Risque médian par MNQ |
+|---|---|---|---|---|
+| **S2b d'origine** | **+559,8 pts** | **+3,01** | 55 % | 27 $ |
+| Stop +2 pts, objectif 2 R | +424,8 | +2,24 | 61 % | 31 $ |
+| Stop +2 pts, objectif inchangé | +533,0 | +2,82 | 53 % | 31 $ |
+| Stop +4 pts, objectif 2 R | +382,5 | +1,96 | 61 % | 35 $ |
+| **Stop +4 pts, objectif inchangé (choisi sur avril - juillet)** | +563,5 | +2,71 | 49 % | 35 $ |
+| Stop +6 pts, objectif 2 R | +311,8 | +1,47 | 61 % | 39 $ |
+| Stop +6 pts, objectif inchangé | +525,8 | +2,48 | 47 % | 39 $ |
+| Stop +8 pts, objectif 2 R | +234,2 | +0,99 | 63 % | 43 $ |
+| Stop +8 pts, objectif inchangé | +522,2 | +2,43 | 46 % | 43 $ |
+
+**Décision fixée à l'avance : S2b reste telle quelle.** La variante choisie sur avril - juillet (stop +4 points,
+objectif inchangé) fait presque le même total sur août - octobre (+563,5 contre +559,8 points) mais un t plus faible
+(+2,71 contre +3,01), avec un risque plus grand par trade.
+- Garder « objectif 2 R » en élargissant le stop éloigne aussi l'objectif : **plus** de trades finissent au stop
+  (61 à 63 %) et le gain fond.
+- Garder l'objectif et élargir le stop fait bien baisser la part de stops (55 % → 46 %), mais chaque perte coûte plus :
+  au total, rien de gagné.
+- Le trade du 20 octobre aurait été stoppé même avec 8 points de plus (le prix est descendu à 29 636,75 à 10 h 04) ;
+  il fallait 9 points, ce qu'on ne sait qu'après coup.
