@@ -535,3 +535,21 @@ pour le point d'étape.
 - **Challenge Bulenox** (tirage des séances) : en 10 séances, 0 % de validation à 1, 2 ou 3 MNQ (le gain moyen est trop
   petit pour faire +3 100 $) ; en 60 séances à 3 MNQ, 21 à 24 % si l'avantage mesuré tient, 4 à 5 % s'il est divisé par 2 ;
   le compte n'est presque jamais perdu (0 à 5 %). S2b protège le compte mais avance lentement.
+
+## S2b avec un stop élargi (question de l'utilisateur, règles fixées le 29 octobre 2026 avant tout calcul)
+
+Le 20 octobre, le stop de S2b (12,75 points) a été touché de quelques points avant une hausse de 220 points.
+L'utilisateur demande d'éloigner le stop de quelques points pour que le bruit de la minute l'atteigne moins souvent.
+
+- **Variantes** : stop de S2b éloigné de **2, 4, 6 ou 8 points** de plus (au-delà de l'extrême de la cassure), avec
+  - **(a)** objectif à 2 fois le **nouveau** risque (la règle reste « 2 R ») ;
+  - **(b)** objectif **inchangé** (même distance qu'avec le stop d'origine).
+  Mêmes entrées que S2b (le contrôle du risque maximal de 0,12 % reste fait sur le risque d'origine), mêmes frais, même
+  exécution ; le 19 octobre reste exclu.
+- **Choix sans tricher** : l'écart et la variante sont choisis sur **avril - juillet** seulement (meilleur t par séance,
+  S2b d'origine comprise parmi les candidats).
+- **Jugement** sur **3 août - 27 octobre** (dont les séances neuves), qui n'a pas servi au choix : la variante choisie
+  remplace S2b dans le bot seulement si elle fait mieux que S2b d'origine sur cette période **à la fois** en total de
+  points et en t par séance. Sinon S2b reste telle quelle. Publié quoi qu'il arrive, avec le taux de stops et le risque
+  en dollars par trade.
+- Limite : S2b elle-même a été choisie sur avril - 16 octobre ; seul l'écart du stop est jugé ici hors échantillon.
