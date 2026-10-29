@@ -1,0 +1,34 @@
+S2b : cassure ratee du plus haut ou du plus bas de la veille ou de la premiere heure, sans condition de flux ; entree contre la cassure a l'ouverture de la minute suivante ; stop au-dela de l'extreme de la cassure (3 points au moins) ; objectif 2 R ; 60 minutes au plus ; signaux de 10 h a 12 h (New York).
+Periode : 2026-04-09 - 2026-10-27 (134 seances jouables, dont 6 neuves ; le 19 octobre est exclu, sa veille manque). Points de NQ, frais compris ; 1 point = 2 $ par MNQ.
+
+Trades : 110 (0.82 par seance, 87 seances avec au moins un trade)
+Gagnants : 49 (45%), gain moyen +34.4 pt ; perdants : 61, perte moyenne -14.7 pt ; net moyen +7.17 pt
+Plus gros gain +68.0 pt, plus grosse perte -37.5 pt
+Risque R (distance au stop) : median 13.5 pt, 90 % des trades sous 29.1 pt, maximum 36.2 pt
+Sorties : stop 55%, objectif 44%, temps 1%
+Sens : ventes 77 (+8.0 pt en moyenne), achats 33 (+5.2 pt en moyenne)
+Niveaux : plus bas de la 1re heure 23 trades, +5.1 pt ; plus bas de la veille 10 trades, +5.4 pt ; plus haut de la 1re heure 49 trades, +8.5 pt ; plus haut de la veille 28 trades, +7.2 pt
+
+Heure du signal (New York) : 10h00 20 trades +8.1 pt ; 10h30 61 trades +7.5 pt ; 11h00 18 trades +7.9 pt ; 11h30 11 trades +2.5 pt
+Mois : 2026-04 -97 pt (17) | 2026-05 +84 pt (15) | 2026-06 +51 pt (16) | 2026-07 +191 pt (18) | 2026-08 +182 pt (20) | 2026-09 +225 pt (12) | 2026-10 +153 pt (12)
+Plus longue serie de pertes : 9 trades de suite ; pire baisse (trade par trade) : -141.8 pt
+Pire journee : -37.5 pt ; meilleure : +72.0 pt ; journees perdantes 44, gagnantes 43, sans trade 47
+
+t par trade : historique (avril - 16 octobre, 104 trades) +2.31, choisi parmi 89 100 configurations sur ces memes seances (donc gonfle) ; seances neuves (6 trades) +2.55
+Fragilite : avec le trade du 19 octobre (veille inconnue, exclu par la regle : -30.5 pt), les seances neuves donneraient t +1.39 au lieu de +2.55
+
+En dollars (net, frais compris) : par trade et par seance, selon la taille
+  1 MNQ : risque median par trade 27 $ (90 % sous 58 $), net moyen +14 $ par trade, +12 $ par seance ; pire journee -75 $, pire baisse -284 $ ; 6 seances neuves +264 $
+  2 MNQ : risque median par trade 54 $ (90 % sous 116 $), net moyen +29 $ par trade, +24 $ par seance ; pire journee -150 $, pire baisse -567 $ ; 6 seances neuves +528 $
+  3 MNQ : risque median par trade 81 $ (90 % sous 174 $), net moyen +43 $ par trade, +35 $ par seance ; pire journee -225 $, pire baisse -850 $ ; 6 seances neuves +792 $
+  4 MNQ : risque median par trade 108 $ (90 % sous 232 $), net moyen +57 $ par trade, +47 $ par seance ; pire journee -300 $, pire baisse -1134 $ ; 6 seances neuves +1056 $
+
+Challenge Bulenox 50K (objectif 53 000 $, perte max 2 500 $ suivie en fin de journee, limite du jour 1 000 $), par tirage des seances jouables avec remise ; valide / perdu / pas fini :
+  49 900 $, plancher 48 672 $   10 seances, avantage mesure        : 1 MNQ 0%/0%/100% | 2 MNQ 0%/0%/100% | 3 MNQ 0%/0%/100%
+  49 900 $, plancher 48 672 $   10 seances, avantage divise par 2  : 1 MNQ 0%/0%/100% | 2 MNQ 0%/0%/100% | 3 MNQ 0%/0%/100%
+  49 900 $, plancher 48 672 $   60 seances, avantage mesure        : 1 MNQ 0%/0%/100% | 2 MNQ 1%/0%/99% | 3 MNQ 21%/0%/79%
+  49 900 $, plancher 48 672 $   60 seances, avantage divise par 2  : 1 MNQ 0%/0%/100% | 2 MNQ 0%/1%/99% | 3 MNQ 4%/5%/92%
+  compte neuf 50 000 $          10 seances, avantage mesure        : 1 MNQ 0%/0%/100% | 2 MNQ 0%/0%/100% | 3 MNQ 0%/0%/100%
+  compte neuf 50 000 $          10 seances, avantage divise par 2  : 1 MNQ 0%/0%/100% | 2 MNQ 0%/0%/100% | 3 MNQ 0%/0%/100%
+  compte neuf 50 000 $          60 seances, avantage mesure        : 1 MNQ 0%/0%/100% | 2 MNQ 2%/0%/98% | 3 MNQ 24%/0%/76%
+  compte neuf 50 000 $          60 seances, avantage divise par 2  : 1 MNQ 0%/0%/100% | 2 MNQ 0%/0%/100% | 3 MNQ 5%/0%/95%

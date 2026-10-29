@@ -518,3 +518,20 @@ heure de New York). Aucune de ces séances n'a servi à aucun calcul du projet.
   échantillon (un ou deux trades de plus dans un sens ou dans l'autre changent beaucoup le total) ; la barre pour le
   réel (40 trades en direct) n'est pas franchie. S2b n'a pas de condition d'order flow : c'est une cassure ratée des
   niveaux de la veille et de la première heure.
+
+### Détail de S2b (29 octobre 2026, descriptif) : `detail_s2b.py` → `resultats/detail_s2b.txt`, `resultats/trades_S2b.csv`
+
+Contrôle : mêmes trades que la configuration 82358 de la partie 2. Le 19 octobre est exclu (veille absente), comme fixé
+pour le point d'étape.
+
+- 110 trades sur 134 séances (0,82 par séance) ; 45 % de gagnants à +34,4 points, perdants à −14,7 ; **+7,17 points par
+  trade**. Stop médian 13,5 points (90 % sous 29). Sorties : stop 55 %, objectif 44 %.
+- Avril −97 points, puis chaque mois positif (mai +84, juin +51, juillet +191, août +182, septembre +225, octobre +153).
+- Plus longue série : 9 pertes de suite ; pire baisse −141,8 points ; pire journée −37,5 points.
+- **3 MNQ** : risque médian 81 $ par trade (90 % sous 174 $), +43 $ par trade et +35 $ par séance en moyenne, pire journée
+  −225 $, pire baisse −850 $ ; séances neuves +792 $.
+- **Fragilité** : t 2,55 sur les 6 trades neufs ; avec le trade du 19 octobre (exclu, −30,5 points), il tomberait à 1,39.
+  Le t historique (2,31) est gonflé : S2b a été choisie parmi 89 100 configurations sur ces mêmes séances.
+- **Challenge Bulenox** (tirage des séances) : en 10 séances, 0 % de validation à 1, 2 ou 3 MNQ (le gain moyen est trop
+  petit pour faire +3 100 $) ; en 60 séances à 3 MNQ, 21 à 24 % si l'avantage mesuré tient, 4 à 5 % s'il est divisé par 2 ;
+  le compte n'est presque jamais perdu (0 à 5 %). S2b protège le compte mais avance lentement.
