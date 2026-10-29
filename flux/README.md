@@ -276,3 +276,10 @@ Chercher « les réglages optimaux » de l'order flow, c'est ici trouver le rég
 passés : il ne dure pas le mois suivant, et le hasard en produit d'aussi beaux. **Aucun réglage optimal de l'order flow
 n'existe dans ces 7 mois de tape réel du NQ**, ni pour le repli absorbé, ni pour la cassure ratée, ni pour le volume
 d'arrêt du footprint.
+
+## Suite (29 octobre 2026)
+
+Le bot FluxNQ (lecture en direct du tape, du DOM et du footprint, enregistrement, suivi des setups) n'est **pas
+construit** : l'utilisateur a demandé à quoi servirait un bot si aucun réglage ne passe, et la réponse honnête est qu'en
+réel il ne ferait que perdre plus vite. Seule pièce encore utile : un enregistreur du DOM (aucun ordre), pour tester un
+jour le carnet profond, jamais disponible dans les données. Décision laissée à l'utilisateur.
