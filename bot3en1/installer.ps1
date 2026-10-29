@@ -89,9 +89,27 @@ foreach ($p in $plateformes) {
     New-Item -ItemType Directory -Force -Path $dest | Out-Null
     Copy-Item "$PSScriptRoot\Bot3en1.Quantower\bin\Release\$tfm\Bot3en1.dll" $dest -Force
     Write-Host "Installe dans $dest" -ForegroundColor Green
+    # FluxNQ (bot order flow) : compile a part ; s'il echoue, le bot 3 en 1 reste installe
+    $flux = "$PSScriptRoot\Flux.Quantower\Flux.Quantower.csproj"
+    if (Test-Path $flux) {
+        Remove-Item -Recurse -Force "$PSScriptRoot\Flux.Quantower\obj", "$PSScriptRoot\Flux.Quantower\bin" -ErrorAction SilentlyContinue
+        $ancien = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+        dotnet restore $flux -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" | Out-Host
+        dotnet build $flux -c Release --no-restore -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" -nologo | Out-Host
+        $codeFlux = $LASTEXITCODE
+        $ErrorActionPreference = $ancien
+        if ($codeFlux -eq 0) {
+            $destFlux = Join-Path $p.Base "Settings\Scripts\Strategies\FluxNQ"
+            New-Item -ItemType Directory -Force -Path $destFlux | Out-Null
+            Copy-Item "$PSScriptRoot\Flux.Quantower\bin\Release\$tfm\FluxNQ.dll" $destFlux -Force
+            Write-Host "FluxNQ installe dans $destFlux" -ForegroundColor Green
+        } else {
+            Write-Host "ATTENTION : FluxNQ n'a pas compile (le bot 3 en 1 est bien installe). Envoie installation_bot3en1.txt a Claude." -ForegroundColor Yellow
+        }
+    }
 }
 New-Item -ItemType Directory -Force -Path "C:\Bot3en1" | Out-Null
-Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1 ou Export transactions NQ (voir le guide)."
+Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1, Export transactions NQ ou FluxNQ (voir le guide)."
 Write-Host "INSTALLATION TERMINEE" -ForegroundColor Green
 }
 catch {

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Strategie Quantower FluxNQ (order flow). Compilee sur le PC de l'utilisateur par installer.ps1, contre la bibliotheque
+       de Quantower (TradingPlatform.BusinessLayer.dll ; chemin passe par QuantowerBin). Separee du bot 3 en 1 : si elle ne
+       compile pas, le bot 3 en 1 s'installe quand meme. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>FluxNQ</AssemblyName>
+    <RootNamespace>Bot3en1</RootNamespace>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <QuantowerBin Condition="'$(QuantowerBin)' == ''">C:\Quantower\TradingPlatform\bin</QuantowerBin>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Flux.Core\*.cs" />
+    <Compile Include="..\Bot3en1.Core\Calendrier.cs" />
+    <Reference Include="TradingPlatform.BusinessLayer">
+      <HintPath>$(QuantowerBin)\TradingPlatform.BusinessLayer.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -562,3 +562,46 @@ Période : du 7 au 16 octobre 2026, soit environ 8 séances, jusqu'à la fin de 
 correction, puis nouvel essai.
 
 Le gain ou la perte de ces séances n'entre pas dans la décision.
+
+## FluxNQ : le bot order flow (29 octobre 2026)
+
+Stratégie Quantower à part (`Flux.Quantower/FluxNQ.cs`, moteur `Flux.Core/MoteurFlux.cs`), installée par le même
+`installer.bat`. Règles, résultats et barre pour le réel : `flux/README.md`.
+
+**Ce qu'il fait**
+- Lit chaque transaction du NQ (prix, taille, acheteur ou vendeur) et le DOM (10 niveaux de chaque côté, une photo par
+  seconde) ; construit minutes, footprint, profil de volume (POC, zone de valeur), VWAP et bandes, delta, CVD, gros lots.
+- Envoie une lecture du flux sur Telegram toutes les 30 minutes, et chaque signal.
+- Enregistre tout dans `C:\Bot3en1\flux\AAAA-MM-JJ\` : `tape.csv.gz`, `dom.csv.gz`, `minutes.csv`, `footprint.csv`,
+  `virtuel.csv` (trades virtuels), `passif.csv` (ordres limites simulés), `reel.csv` (ordres réels).
+- Suit S1, S2, S2b et C1 en virtuel ; passe des ordres MNQ seulement pour la règle choisie dans « Règle qui passe les
+  ordres » (0 par défaut : aucune).
+
+**Réglages** : compte, NQ (lecture), MNQ (ordres), règle des ordres (0 à 4), MNQ par trade (1), limite de perte du
+jour (300 $), trades réels au plus par jour (4), lecture Telegram (30 min), jeton et numéro Telegram.
+
+**À savoir**
+- **Aucune règle n'a encore franchi la barre** (40 trades virtuels en direct, gain moyen positif, t ≥ 2,24). Choisir une
+  règle pour les ordres, c'est un essai, pas une stratégie prouvée.
+- Ne pas faire tourner le bot 3 en 1 et FluxNQ en ordres réels sur le même compte : FluxNQ refuse de trader si une
+  position MNQ qu'il n'a pas ouverte existe.
+- Fichier `STOP` dans `C:\Bot3en1` : plus aucun ordre réel, position fermée.
+- Après une ou plusieurs semaines, envoyer le dossier `C:\Bot3en1\flux` (compressé) : `python3 flux/suivi_direct.py`
+  dit où en est chaque règle, et les enregistrements du DOM servent aux tests suivants.
+- Le DOM est lu par réflexion (`DepthOfMarket.GetDepthOfMarketAggregatedCollections`) : si la plateforme n'expose pas
+  ces noms, le bot le dit au démarrage et continue sans DOM (C1 ne trade alors pas).
+
+**Vérifications faites (29 octobre 2026)**
+- `Flux.Replay` : le moteur C# reprend exactement les trades du Python (S1 28, S2 69, S2b 104, C1 sans DOM 218 ; 0 écart).
+- `Flux.Test` : FluxNQ joué transaction par transaction sur les 18 séances de l'export Rithmic (23 septembre - 16 octobre),
+  avec un carnet imité : minutes, footprint, tape et DOM enregistrés identiques à ce qui a été émis ; carnets virtuels
+  identiques au moteur rejoué sur ces enregistrements ; avec une règle choisie (S2b, puis C1), un trade réel ou un refus
+  expliqué pour chaque signal, à plat chaque soir, refus quand une position étrangère existe.
+- Pas vérifiable ici : la compilation contre la vraie bibliothèque de Quantower et la lecture réelle du DOM chez Rithmic.
+
+Relancer :
+```
+python3 flux/confluence.py <dossier>            # fichiers de reference (KB=<copie de claude/keen-babbage-r686cl>)
+dotnet run -c Release --project Flux.Replay -- <dossier>
+dotnet run -c Release --project Flux.Test -- <transactions_NQZ6_rithmic.csv> <dossier de travail> [regle 0-4]
+```

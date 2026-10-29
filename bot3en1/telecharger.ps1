@@ -1,7 +1,7 @@
 # Telecharge le bot 3 en 1 depuis GitHub (seulement son dossier, environ 150 Ko), puis lance son installation dans
 # Quantower (compilation et copie dans Settings\Scripts\Strategies).
 # A coller dans PowerShell (menu Demarrer > taper PowerShell > Entree) :
-#   irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/exciting-fermat-sea2l2/bot3en1/telecharger.ps1 | iex
+#   irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/optimistic-ptolemy-xs24ra/bot3en1/telecharger.ps1 | iex
 # Recoller la meme ligne plus tard met le bot a jour. Ses reglages restent dans Quantower, son etat dans C:\Bot3en1.
 # (Texte sans accents : il passe tel quel dans toutes les versions de PowerShell.)
 & {
@@ -9,7 +9,7 @@
     $ProgressPreference = "SilentlyContinue"
     try { [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 } catch { }
     $depot = "mananabdoulfatah72-lgtm/scalping-telegram-bot"
-    $branche = "claude/exciting-fermat-sea2l2"
+    $branche = "claude/optimistic-ptolemy-xs24ra"
     $dest = if ($env:BOT3EN1_DESTINATION) { $env:BOT3EN1_DESTINATION } else { Join-Path $env:USERPROFILE "Bot3en1-installation" }
     try {
         Write-Host "=== Bot 3 en 1 : telechargement ===" -ForegroundColor Cyan
