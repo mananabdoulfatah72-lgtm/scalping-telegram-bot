@@ -676,3 +676,52 @@ Publié quoi qu'il arrive, avec les stratégies choisies chaque année. Pour une
 Avant d'être publié comme « retenu », le résultat est relu par deux agents indépendants : l'un vérifie le code (regard
 vers le futur, alignement des dates, recalcul indépendant), l'autre cherche à démolir la conclusion. On ne conclut que
 s'ils sont d'accord.
+
+### Résultats de la partie 4 (29 octobre 2026) : `resultats/combinaisons.txt`, `inventaire/`
+
+**Inventaire** (agents d'inventaire, `inventaire/branche_recherche.md`, `inventaire/autres_branches.md`,
+`inventaire/flux.md`) : environ 80 lignes sur la branche de recherche et 160 sur les autres branches (environ
+190 stratégies et variantes, 21 configurations successives du bot 3 en 1), plus les machines (environ 2,5 millions de
+configurations au total). Avec une preuve hors échantillon positive : la zone de bruit d'origine (la plus solide), le
+RSI(2) de Connors (coffre t 1,95 ; **il garde la nuit et le week-end, interdit chez Bulenox**), puis des pistes faibles
+(renfort de la zone : fait perdre le challenge Lucid ; or, cassure de Londres : coffre t 1,49, ajoutée à la zone elle
+fait baisser la validation Lucid de 52 % à 42 % ; cassure de la veille, Supertrend, pivots : liés à la zone à 0,4 - 0,5).
+
+**Combinaisons, walk-forward 2014 - 25 septembre 2026** (3 276 séances, $ par MNQ au prix d'aujourd'hui) :
+
+| Méthode | t | Années positives | Pire baisse |
+|---|---|---|---|
+| **ZONE seule (témoin fixe)** | **+3,88** | **12 / 13** | **−6 338 $** |
+| M1, portefeuille des solides | +2,14 | 9 / 13 | −20 770 $ |
+| M2, meilleure combinaison | +0,54 | 8 / 13 | −34 602 $ |
+| Toutes, 1 MNQ chacune | +0,73 | 8 / 13 | −237 057 $ |
+
+**Décision fixée à l'avance : aucune méthode retenue** (M1 : t inférieur à celui de ZONE seule ; M2 : échoue à 3 critères).
+
+**Contre-revue (#ultrareview), deux agents indépendants, d'accord sur la conclusion :**
+- **Vérification du code** : chiffres reproduits exactement avec un code indépendant (ZONE +3,8825 ; M1 +2,142 ; M2 +0,543 ;
+  mêmes choix chaque année) ; aucune décision ne voit l'année jouée ; la série ZONE est exactement la zone d'origine
+  (identique, à 0,0001 $ près, aux 3 465 trades vérifiés de `filtre_h1/trades_zone.csv`). **Défaut relevé** : le contrôle
+  sans avantage, recentré sur toute la période, est trop indulgent (médianes −0,62 et −2,99 au lieu de 0) ; avec des
+  contrôles sans ce biais, le 95e centile est +1,4 à +1,6 pour M1 et +1,6 à +2,3 pour M2 : M2 ne bat pas le hasard. La
+  décision ne change pas.
+- **Avocat du diable** : pondération par le risque, zone + une stratégie décorrélée, zone + la meilleure du passé, en
+  walk-forward : aucune ne bat ZONE seule ni en t ni en pire baisse (la meilleure : +3,08). Raison : toutes les
+  stratégies positives sont de l'élan intraday sur le même NQ, liées à la zone à 0,41 - 0,49 ; les peu liées ont un t
+  sous 1,5.
+
+**Réserves écrites par les relecteurs :**
+- ZONE seule est un témoin choisi après coup : classée par son passé, elle n'était que 2e à 6e de 2014 à 2018 ; la
+  « meilleure stratégie seule » choisie en walk-forward fait t +2,43. Sans 2018, le t de ZONE sur 2014 - 2026 tombe à 3,01.
+- **Depuis la publication de la zone (juin 2024)**, son avantage est plus faible : t +1,03, +14,2 $ par séance et par MNQ
+  (contre +20,8 $ sur 2014 - 2026), avec la pire baisse de son histoire (−6 338 $ par MNQ, 21 avril 2025 - 2 février 2026).
+- **Correction de « S2b sur 15 ans »** : les −4,03 points par trade (t −7,65) exagèrent la perte, car le tick de 2011 pèse
+  autant que le glissement, le stop et l'objectif réunis (environ 0,5 R). Version juste (barres remises au prix
+  d'aujourd'hui, tick et frais d'aujourd'hui), 2011 - 2025 : **−1,50 point par trade, t −3,04, 3 années positives sur 15** ;
+  sans aucun coût : −0,33 point par trade (t −0,64). S2b n'a **aucun avantage brut** sur 15 ans ; aucune règle simple de
+  régime tirée de 2026 ne la sauve (7 règles, toutes négatives sur 2011 - 2025). La conclusion ne change pas : pas de
+  S2b en réel.
+
+**Ce qu'on retient.** Rien dans le projet ne bat la zone de bruit d'origine, seule. Pour le challenge Bulenox, les
+relecteurs estiment une validation autour d'une chance sur deux (68 % à 1 MNQ sans limite de temps si tout l'avantage
+historique tient ; environ 50 % à toutes les tailles au niveau observé depuis juin 2024 ; 30 à 42 % sans aucun avantage).
