@@ -365,3 +365,49 @@ glissement de l'entrée et des sorties au marché, × (30 000 ÷ ouverture de la
 - **Réglage glissant** (G1 - G9 ensemble), comme la partie 2, contre les 8 bruits.
 - **Si une configuration est retenue**, elle devient le réglage du bot FluxNQ ; elle reste à confirmer sur les
   exports de l'utilisateur (contrats passés, puis l'avenir). Sinon, rien n'est construit pour le direct, et c'est dit.
+
+### Résultats de la partie 3 (29 octobre 2026) : `resultats/partie3_exploration.txt`, `partie3_coffre.txt`, `partie3_glissant.txt`
+
+Contrôles avant calcul (`test_quant.py`) : aucun regard vers le futur (6 coupures sur le tape, 592 920 signaux
+identiques ; 22 367 sur les barres de 15 ans) ; gestion vérifiée sur des minutes fabriquées ; un signal de G1 (lambda,
+z, croisement) et un de G9 (déséquilibre de la veille contre ses quantiles) revérifiés à la main.
+
+**Exploration : aucune famille ne sort du bruit.**
+
+| Famille | Meilleur score réel | Bruit : moyenne des 8 meilleurs (barrière = le plus haut) | Finaliste |
+|---|---|---|---|
+| G1 lambda de Kyle | 2,61 | 2,67 (3,07) | non |
+| G2 VPIN (vrai tape) | 1,96 | 2,50 (2,91) | non |
+| G3 élan du flux | 2,19 | 2,91 (3,67) | non |
+| G4 flux de l'ouverture | 2,69 | 2,37 (2,91) | non |
+| G5 flux de fin de journée | 1,71 | 1,93 (2,93) | non |
+| G6 gros lots nets | 2,87 | 2,72 (3,14) | non |
+| G7 bandes de VWAP et flux | 2,30 | 2,83 (3,67) | non |
+| G8 absorption quantifiée | 1,93 | 2,90 (3,36) | non |
+| G9 déséquilibre de la veille (Chordia-Subrahmanyam) | 1,67 | 1,76 (3,13) | non |
+| G2b VPIN par barres, 2012 - 2022 (3 910 séances gratuites) | 1,33 | 1,39 (2,11) | non |
+
+**0 finaliste : le coffre n'a rien à juger.** Sur les vraies données, le meilleur réglage de chaque famille fait au
+mieux ce que fait en moyenne le meilleur réglage trouvé dans du bruit.
+
+**Réglage glissant : −1 832 points (−3 663 $ par MNQ) hors échantillon, t −1,05**, dans la fourchette des 8 bruits
+(de −3 990 $ à +4 498 $). Décision fixée à l'avance : pas utile. En mai, le réglage choisi avait un score de 4,83 sur
+son passé (le genre de backtest qui « passe crème ») ; mai et juin ont gagné, puis juillet, août, septembre et octobre
+ont tous perdu.
+
+### Bilan de la journée
+
+| Vague | Configurations | Retenues |
+|---|---|---|
+| Partie 1 : setups order flow classiques, stop sur la structure | 3 | 0 |
+| Partie 2 : réglages optimaux de ces setups | 89 100 | 0 (réglage glissant −552 $ par MNQ) |
+| Partie 3 : familles quant publiées + VPIN sur 15 ans | 19 260 | 0 (réglage glissant −3 663 $ par MNQ) |
+
+Plus de 108 000 configurations order flow, toutes sur le vrai côté agresseur des transactions du NQ (ou, pour G2b,
+sur 15 ans de barres gratuites) : aucune ne fait mieux que ce que la même recherche trouve dans du bruit. Des réglages
+au beau backtest, il y en a des centaines (score > 2,5) ; le bruit en produit autant. En choisir un et le lancer en
+direct revient à jouer à pile ou face en payant les frais.
+
+**Ce qui changerait la donne : plus de vrai tape.** La seule source gratuite est la plateforme de l'utilisateur :
+« Export transactions NQ » sur les contrats passés (NQU6, NQM6, NQH6, NQZ5...). Si Rithmic les fournit, toutes les vagues
+se relancent telles quelles, avec ces mois-là comme nouveau coffre, jamais vu par aucune des 108 000 configurations.

@@ -1,0 +1,35 @@
+Partie 3, exploration. Tape : A = 76 seances jouables (2026-04-09 - 2026-07-31), 18180 configurations. G2b : 2687 seances (2012 - 2022), 1080 configurations. Score = t par seance x min(1, trades / n_min). 8 graines de bruit.
+
+G1 (2592 configurations) : eligibles reels 810 ; meilleur score reel 2.61 ; bruit 2.73, 2.90, 2.52, 2.02, 2.48, 2.80, 2.86, 3.07 (moyenne 2.67) -> barriere 3.07
+    meilleure reelle : G1 (60, 30, residu, 1.0) | jusqu'a 15 h 59, stop aucun, objectif aucun, sens de base
+    76 trades, net moyen +53.73 pt, t par seance +2.61, score 2.61 -> pas finaliste (le bruit fait aussi bien ou mieux)
+G2 (1080 configurations) : eligibles reels 321 ; meilleur score reel 1.96 ; bruit 2.37, 2.58, 2.57, 2.31, 2.65, 2.12, 2.48, 2.91 (moyenne 2.50) -> barriere 2.91
+    meilleure reelle : G2 (25, bas, 25) | jusqu'a 15 h 59, stop aucun, objectif 2 u, sens de base
+    62 trades, net moyen +35.87 pt, t par seance +1.96, score 1.96 -> pas finaliste (le bruit fait aussi bien ou mieux)
+G3 (5832 configurations) : eligibles reels 1581 ; meilleur score reel 2.19 ; bruit 3.08, 2.26, 3.46, 2.40, 3.06, 3.19, 3.67, 2.16 (moyenne 2.91) -> barriere 3.67
+    meilleure reelle : G3 (15, 5, 80, desaccord) | jusqu'a 15 h 59, stop aucun, objectif aucun, sens inverse
+    57 trades, net moyen +63.27 pt, t par seance +2.19, score 2.19 -> pas finaliste (le bruit fait aussi bien ou mieux)
+G4 (1944 configurations) : eligibles reels 403 ; meilleur score reel 2.69 ; bruit 2.42, 2.91, 2.54, 2.39, 1.86, 2.29, 2.90, 1.67 (moyenne 2.37) -> barriere 2.91
+    meilleure reelle : G4 (89, 70, libre) | 60 min, stop aucun, objectif 1 u, sens de base
+    38 trades, net moyen +41.53 pt, t par seance +2.69, score 2.69 -> pas finaliste (le bruit fait aussi bien ou mieux)
+G5 (216 configurations) : eligibles reels 60 ; meilleur score reel 1.71 ; bruit 1.57, 1.82, 1.49, 2.93, 1.91, 2.05, 1.67, 1.98 (moyenne 1.93) -> barriere 2.93
+    meilleure reelle : G5 (359, jour, 70, libre) | jusqu'a 15 h 59, stop aucun, objectif aucun, sens inverse
+    38 trades, net moyen +26.20 pt, t par seance +1.71, score 1.71 -> pas finaliste (le bruit fait aussi bien ou mieux)
+G6 (1944 configurations) : eligibles reels 705 ; meilleur score reel 2.87 ; bruit 2.69, 2.73, 2.47, 2.93, 3.14, 2.86, 2.49, 2.46 (moyenne 2.72) -> barriere 3.14
+    meilleure reelle : G6 (50, 5, 95) | jusqu'a 15 h 59, stop aucun, objectif 1 u, sens inverse
+    154 trades, net moyen +32.34 pt, t par seance +2.87, score 2.87 -> pas finaliste (le bruit fait aussi bien ou mieux)
+G7 (1944 configurations) : eligibles reels 747 ; meilleur score reel 2.30 ; bruit 2.98, 2.54, 3.13, 1.73, 3.53, 2.55, 2.52, 3.67 (moyenne 2.83) -> barriere 3.67
+    meilleure reelle : G7 (2.0, 5, desaccord) | 60 min, stop aucun, objectif 1 u, sens de base
+    46 trades, net moyen +35.55 pt, t par seance +2.30, score 2.30 -> pas finaliste (le bruit fait aussi bien ou mieux)
+G8 (2592 configurations) : eligibles reels 306 ; meilleur score reel 1.93 ; bruit 3.35, 3.36, 2.87, 2.50, 1.89, 3.17, 3.05, 3.00 (moyenne 2.90) -> barriere 3.36
+    meilleure reelle : G8 (5, 90, 0.5, extreme) | jusqu'a 15 h 59, stop aucun, objectif aucun, sens de base
+    49 trades, net moyen +66.66 pt, t par seance +1.93, score 1.93 -> pas finaliste (le bruit fait aussi bien ou mieux)
+G9 (36 configurations) : eligibles reels 6 ; meilleur score reel 1.67 ; bruit 0.56, 3.13, 1.45, 1.69, 2.15, 0.90, 1.56, 2.61 (moyenne 1.76) -> barriere 3.13
+    meilleure reelle : G9 (derniere heure, 70, libre) | jusqu'a 15 h 59, stop aucun, objectif aucun, sens inverse
+    37 trades, net moyen +82.53 pt, t par seance +1.67, score 1.67 -> pas finaliste (le bruit fait aussi bien ou mieux)
+
+G2b (1080 configurations) : eligibles reels 35 ; meilleur score reel 1.33 ; bruit 2.11, 1.75, 0.86, 1.92, 1.14, 1.20, 1.24, 0.85 (moyenne 1.39) -> barriere 2.11
+    meilleure reelle : G2b (50, haut, 50) | jusqu'a 15 h 59, stop aucun, objectif aucun, sens inverse
+    1820 trades, net moyen +8.48 pt, t par seance +1.33, score 1.33 -> pas finaliste (le bruit fait aussi bien ou mieux)
+
+Finalistes : 0

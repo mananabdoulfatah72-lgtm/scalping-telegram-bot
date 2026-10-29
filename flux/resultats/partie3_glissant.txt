@@ -1,0 +1,19 @@
+Partie 3, reglage glissant (G1 - G9 ensemble) : au debut de chaque mois, la configuration au meilleur score sur tout le passe est jouee le mois suivant. Hors echantillon : mai - 16 octobre 2026.
+
+  reel : 112 seances hors echantillon, total -1832 pt (-3,663 $ par MNQ), t par seance -1.05
+    2026-05 : G1 (30, 30, flux, 1.5) | 60 min, stop 1 u, objectif 1 u, sens de base (score passe 4.83) -> 49 trades, +328 pt
+    2026-06 : G6 (10, 5, 95) | 60 min, stop aucun, objectif 2 u, sens de base (score passe 4.15) -> 60 trades, +728 pt
+    2026-07 : G6 (10, 30, 90) | jusqu'a 15 h 59, stop 1 u, objectif aucun, sens inverse (score passe 2.93) -> 40 trades, -789 pt
+    2026-08 : G6 (50, 5, 95) | jusqu'a 15 h 59, stop aucun, objectif 1 u, sens inverse (score passe 2.87) -> 31 trades, -618 pt
+    2026-09 : G6 (25, 15, 95) | 60 min, stop 1 u, objectif 2 u, sens inverse (score passe 3.20) -> 54 trades, -779 pt
+    2026-10 : G1 (60, 30, residu, 1.0) | jusqu'a 15 h 59, stop aucun, objectif aucun, sens de base (score passe 2.88) -> 11 trades, -702 pt
+  bruit21 : 112 seances hors echantillon, total +2249 pt (+4,498 $ par MNQ), t par seance +1.18
+  bruit22 : 112 seances hors echantillon, total +911 pt (+1,822 $ par MNQ), t par seance +0.51
+  bruit23 : 112 seances hors echantillon, total +215 pt (+430 $ par MNQ), t par seance +0.15
+  bruit24 : 112 seances hors echantillon, total -4 pt (-7 $ par MNQ), t par seance -0.00
+  bruit25 : 112 seances hors echantillon, total +442 pt (+883 $ par MNQ), t par seance +0.31
+  bruit26 : 112 seances hors echantillon, total +176 pt (+352 $ par MNQ), t par seance +0.13
+  bruit27 : 112 seances hors echantillon, total +754 pt (+1,508 $ par MNQ), t par seance +0.81
+  bruit28 : 112 seances hors echantillon, total -1995 pt (-3,990 $ par MNQ), t par seance -1.90
+
+Decision fixee a l'avance : reglage glissant pas utile (t -1.05)
