@@ -1,0 +1,96 @@
+{
+ "yahoo_jour": {
+  "heure_utc": "2026-10-29 22:09",
+  "symboles": 168,
+  "manquants": [
+   "INTC"
+  ],
+  "fichiers_ecrits": 109
+ },
+ "yahoo_heure": {
+  "heure_utc": "2026-10-29 22:09",
+  "symboles": 37,
+  "fichiers_ecrits": 13
+ },
+ "yahoo_minute": {
+  "heure_utc": "2026-10-29 22:09",
+  "symboles": 28,
+  "jours_ecrits": 30
+ },
+ "dix_gex": {
+  "heure_utc": "2026-10-29 22:09",
+  "lignes": 3898,
+  "derniere": "2026-10-29",
+  "fichiers_ecrits": 25
+ },
+ "wikipedia": {
+  "heure_utc": "2026-10-29 22:11",
+  "articles": 28,
+  "fichiers_ecrits": 21
+ },
+ "fred": {
+  "heure_utc": "2026-10-29 22:12",
+  "series": 0,
+  "manquantes": [
+   "ANFCI",
+   "BAMLC0A0CM",
+   "BAMLH0A0HYM2",
+   "CCSA",
+   "CPIAUCSL",
+   "DCOILWTICO",
+   "DEXJPUS",
+   "DEXUSEU",
+   "DFII10",
+   "DGS10",
+   "DGS2",
+   "DGS3MO",
+   "DHHNGSP",
+   "DTWEXBGS",
+   "EFFR",
+   "ICSA",
+   "INDPRO",
+   "M2SL",
+   "MORTGAGE30US",
+   "NASDAQ100",
+   "NASDAQCOM",
+   "NFCI",
+   "PAYEMS",
+   "RRPONTSYD",
+   "SOFR",
+   "SP500",
+   "STLFSI4",
+   "T10Y2Y",
+   "T10Y3M",
+   "T10YIE",
+   "UMCSENT",
+   "UNRATE",
+   "USEPUINDXD",
+   "VIXCLS",
+   "VXNCLS",
+   "WALCL",
+   "WLEMUINDXD",
+   "WRESBAL",
+   "WTREGEN"
+  ],
+  "fichiers_ecrits": 0
+ },
+ "cnn_peur_avidite": {
+  "heure_utc": "2026-10-29 22:13",
+  "erreur": "pas de reponse"
+ },
+ "aaii": {
+  "heure_utc": "2026-10-29 22:13",
+  "lignes": 2050,
+  "fichiers_ecrits": 49
+ },
+ "options_cboe": {
+  "heure_utc": "2026-10-29 22:13",
+  "sous_jacents": 3,
+  "fichiers_ecrits": 1
+ },
+ "resultats": {
+  "heure_utc": "2026-10-29 22:14",
+  "symboles": 35,
+  "lignes": 2969
+ }
+}
