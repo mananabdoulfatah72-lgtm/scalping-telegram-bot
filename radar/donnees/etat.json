@@ -92,5 +92,16 @@
   "heure_utc": "2026-10-29 22:14",
   "symboles": 35,
   "lignes": 2969
+ },
+ "gdelt": {
+  "heure_utc": "2026-10-29 22:27",
+  "series": 0,
+  "fichiers_ecrits": 0
+ },
+ "finra": {
+  "heure_utc": "2026-10-29 22:29",
+  "jours_demandes": 2500,
+  "jours_recus": 2409,
+  "fichiers_ecrits": 19
  }
 }
