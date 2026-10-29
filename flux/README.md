@@ -330,28 +330,38 @@ mention. « Au croisement » = la condition est vraie à t et fausse à t − 1.
 | G8 | **Absorption quantifiée** | au croisement : \|Σδ_W\| ≥ quantile q de \|Σδ_W\| (q = 90, 95) et \|c_t − c_{t−W}\| ≤ k σ1 √W (k = 0,25 ; 0,5), W = 5, 15, 30 ; lieu : partout, près d'un extrême du jour (à moins de 0,5 u), près du VWAP (à moins de 0,5 u) | contre le flux absorbé | 36 |
 | G2b | **VPIN par barres, 15 ans** (barres gratuites) | comme G2, avec achats = volume × Φ(Δc ÷ σΔ) (BVC ; σΔ = écart-type des Δc des 5 séances d'avant) | signe du flux estimé | 15 |
 
-**Gestion** (toutes sauf G5, 72 combinaisons) : durée 15, 30, 60 minutes ou jusqu'à 15 h 59 ; stop aucun, 0,5 u ou 1 u ;
+Ajout avant tout calcul (même jour, demande de l'utilisateur d'explorer les études publiées et les « écarts ») :
+
+| # | Famille (référence) | Signal | Sens de base | Combinaisons |
+|---|---|---|---|---|
+| G9 | **Déséquilibre de la veille** (Chordia et Subrahmanyam 2004, JFE : le déséquilibre d'ordres d'un jour prédit le rendement du lendemain) | déséquilibre (achats − ventes) ÷ volume de toute la séance précédente, ou de sa dernière heure, comparé aux 20 séances d'avant (signe, quantile 70 ou 85) ; mouvement du prix de la veille : libre, d'accord, en désaccord. Entrée à l'ouverture de 9 h 31, sortie à 15 h 59, sans stop | signe du déséquilibre | 18 × 2 sens = 36 |
+
+Écarté, avec la raison : écart ES/NQ en paires (déjà testé dans `paires/` : Sharpe −0,45 sur 2006 - 2026), avance de
+l'ES sur le NQ à la minute (famille F7 de `scalping/`, rien), arbitrage NQ/QQQ (microsecondes, hors de portée d'un PC),
+retournement du flux après la Fed (Boguth, Grégoire, Martineau 2019 : 4 annonces seulement dans le tape disponible).
+
+**Gestion** (toutes sauf G5 et G9, 72 combinaisons) : durée 15, 30, 60 minutes ou jusqu'à 15 h 59 ; stop aucun, 0,5 u ou 1 u ;
 objectif aucun, 1 u ou 2 u ; sens de base ou inverse. G5 : sortie à 15 h 59, stop aucun, 0,5 u ou 1 u, sens de base ou
 inverse (6). Stops et objectifs arrondis au tick (stop vers la perte, objectif en s'éloignant). Exécution, frais et ordre
-le plus défavorable : ceux de la partie 1. Une position à la fois. Soit **17 928 + 216 = 18 144** configurations sur le
+le plus défavorable : ceux de la partie 1. Une position à la fois. Soit **17 928 + 216 + 36 = 18 180** configurations sur le
 vrai tape et **1 080** pour G2b.
 
-**G2b au prix d'aujourd'hui** (comme `scalping/`) : gain d'un trade = (sens × (sortie − entrée) − 0,5 point de
-glissement) × (30 000 ÷ ouverture de la séance) − 1 point de commission.
+**G2b au prix d'aujourd'hui** (comme `scalping/`) : gain d'un trade = sens × (sortie − entrée), avec le tick de
+glissement de l'entrée et des sorties au marché, × (30 000 ÷ ouverture de la séance) − 1 point de commission.
 
 ### Bruit, sélection, coffre (fixés maintenant)
 
 - **Bruit par signe, 8 graines** (comme la partie 2 ; les gros lots nets changent de signe avec la minute ; pour G2b, la
   minute retournée donne un BVC retourné).
-- **Tape (G1 - G8)** : exploration sur A (avril - juillet). Score = t par séance × min(1, trades ÷ n_min), n_min = 40
-  (25 pour G4 et G5, qui tradent au plus une fois par jour). Éligible : au moins n_min trades et gain net moyen > 0.
+- **Tape (G1 - G9)** : exploration sur A (avril - juillet). Score = t par séance × min(1, trades ÷ n_min), n_min = 40
+  (25 pour G4, G5 et G9, qui tradent au plus une fois par jour). Éligible : au moins n_min trades et gain net moyen > 0.
   Barrière par famille = meilleur score éligible sur les 8 bruits. Finaliste = meilleure configuration réelle de la
   famille si elle dépasse la barrière.
 - **G2b** : exploration 2012 - 2022 (2011 pour les seuils), même score avec n_min = 200, barrière sur 8 bruits ; coffre
   2023 - 28 octobre 2026.
 - **Coffre, une seule fois pour toute la vague** (B pour le tape, 2023 - 2026 pour G2b) : m = nombre total de
   finalistes ; retenue si t par séance ≥ seuil de Bonferroni unilatéral à 5 % pour m, gain net moyen > 0, au moins 15
-  trades (10 pour G4 et G5 ; 100 pour G2b), et bat 95 % des placebos de sens.
-- **Réglage glissant** (G1 - G8 ensemble), comme la partie 2, contre les 8 bruits.
+  trades (10 pour G4, G5 et G9 ; 100 pour G2b), et bat 95 % des placebos de sens.
+- **Réglage glissant** (G1 - G9 ensemble), comme la partie 2, contre les 8 bruits.
 - **Si une configuration est retenue**, elle devient le réglage du bot FluxNQ ; elle reste à confirmer sur les
   exports de l'utilisateur (contrats passés, puis l'avenir). Sinon, rien n'est construit pour le direct, et c'est dit.
