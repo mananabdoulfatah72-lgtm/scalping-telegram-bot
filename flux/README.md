@@ -762,3 +762,26 @@ les autres heures : après le coût d'un contrat standard (1 tick + 2,50 $ par o
 tester (tendance, retour à la moyenne, order flow, régimes, apprentissage, nuit, paires, rendez-vous institutionnels) :
 la seule stratégie intraday compatible avec Bulenox qui gagne sur 15 ans reste la zone de bruit d'origine. Ce qui n'a
 jamais été testé, faute de données : le DOM (enregistré par FluxNQ depuis son installation).
+
+## Partie 6 : améliorer S2b avec l'order flow (règles fixées le 29 octobre 2026, avant tout calcul)
+
+L'utilisateur lancera S2b et demande ce qui pourrait l'améliorer avec l'order flow. On ajoute à S2b **un seul filtre de
+flux à la fois**, mesuré dans le vrai tape (achats et ventes agressifs de chaque minute) ; un signal refusé par le
+filtre ne bloque pas les suivants. Pour un signal de vente (cassure ratée d'un niveau par le haut ; l'achat est
+symétrique), avec b la minute de la cassure et f la minute du retour (signal) :
+
+| Filtre | Le trade est pris seulement si… | Idée |
+|---|---|---|
+| **FA** (= S2) | déséquilibre de la minute b ≥ son quantile 75 des 5 séances d'avant | de vrais acheteurs ont attaqué le niveau |
+| **FB** | delta de la minute f < 0 | les vendeurs prennent la main au retour |
+| **FC** | somme des delta de b à f > 0 | les acheteurs ont poussé sans faire avancer le prix : ils sont piégés |
+| **FD** | delta des 30 dernières minutes < 0 à f | le flux de fond va dans le sens du trade |
+| **FE** | volume de la minute b ≥ 1,5 fois la médiane des 30 minutes d'avant | la cassure a attiré du monde, donc des piégés |
+
+- **Données** : tape Databento (1er avril - 1er octobre) et exports Rithmic (2 - 16 octobre, 19 - 27 octobre) ; le
+  19 octobre reste exclu.
+- **Choix** sur **A** (avril - juillet) : le meilleur t par séance parmi S2b seule et S2b + chaque filtre.
+- **Jugement** sur **B** (3 août - 27 octobre), qui n'a pas servi au choix : le filtre choisi est **conseillé** s'il fait
+  mieux que S2b seule sur B **à la fois** en total de points et en t par séance, avec au moins 20 trades sur B.
+- **Descriptif** : FE n'utilise que le volume, présent dans les barres gratuites ; il est aussi mesuré sur 2011 - 2025.
+- Limite : S2b a été choisie sur avril - 16 octobre ; seul le filtre est jugé hors échantillon.
