@@ -1,0 +1,9 @@
+COT (E-mini Nasdaq-100) : 1063 rapports du 2006-06-13 au 2026-10-20 ; seances NQ 2011-01-03 - 2026-09-25
+
+G1 : exploration 2011-2018 t -0.78 (placebos 95e +1.30), 1956 seances jouees, -17,757 $ par MNQ -> elimine ; descriptif cloture a cloture t -0.62
+G2 : exploration 2011-2018 t -0.42 (placebos 95e +1.13), 1956 seances jouees, -9,580 $ par MNQ -> elimine ; descriptif cloture a cloture t -1.05
+G3 : exploration 2011-2018 t +1.33 (placebos 95e +1.39), 419 seances jouees, +13,778 $ par MNQ -> elimine ; descriptif cloture a cloture t +1.24
+G4 : exploration 2011-2018 t +0.67 (placebos 95e +1.07), 1956 seances jouees, +15,232 $ par MNQ -> elimine ; descriptif cloture a cloture t +1.56
+G5 : exploration 2011-2018 t -0.64 (placebos 95e +1.27), 1032 seances jouees, -10,897 $ par MNQ -> elimine ; descriptif cloture a cloture t -0.96
+
+Finalistes : aucun

@@ -846,3 +846,20 @@ ouverture 9 h 35) × 2 $ × 30 900 ÷ ouverture de 9 h 30 − 3 $ par MNQ). Desc
   placebos où la série des signaux hebdomadaires est décalée d'un nombre de semaines tiré au hasard (au moins 8).
 - **Coffre 2019 - 2026**, ouvert une fois : t ≥ seuil de Bonferroni unilatéral à 5 % pour le nombre de finalistes, gain
   moyen > 0, au moins 5 années positives sur 8. Publié quoi qu'il arrive.
+
+### Résultats de la partie 7 (29 octobre 2026) : `resultats/cot.txt`
+
+Données récupérées par un robot GitHub Actions (`.github/workflows/donnees-cot.yml`, `telecharger_cot.py`) :
+1 063 rapports hebdomadaires du 13 juin 2006 au 20 octobre 2026 (« NASDAQ-100 STOCK INDEX (MINI) » puis « NASDAQ MINI »).
+
+| Hypothèse | Exploration 2011 - 2018, t | 95e centile des placebos | Verdict |
+|---|---|---|---|
+| G1 suivre les gestionnaires d'actifs | −0,78 | +1,30 | éliminée |
+| G2 suivre les fonds à levier | −0,42 | +1,13 | éliminée |
+| G3 contre les fonds à levier trop chargés | +1,33 | +1,39 | éliminée |
+| G4 suivre les banques et teneurs de marché | +0,67 | +1,07 | éliminée |
+| G5 consensus gestionnaires + fonds à levier | −0,64 | +1,27 | éliminée |
+
+**0 finaliste : le coffre 2019 - 2026 n'a rien à juger.** Les positions hebdomadaires des géants publiées par la CFTC ne
+donnent pas le sens de la séance du NQ. La plus proche (G3, contre les fonds à levier quand leur position est extrême)
+reste dans ce que donnent des signaux décalés au hasard.

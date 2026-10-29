@@ -42,7 +42,7 @@ def lire_cot(dossier):
     garde = nom.str.contains("NASDAQ") & nom.str.contains("MINI") & ~nom.str.contains("MICRO") & nom.str.contains("CHICAGO")
     t = t[garde]
     d = pd.DataFrame({
-        "date": pd.to_datetime(t[col("Report_Date_as_YYYY-MM-DD", "report_date", "yyyy")]),
+        "date": pd.to_datetime(t[col("Report_Date_as_YYYY-MM-DD", "report_date", "yyyy")], format="mixed"),
         "oi": t[col("Open_Interest_All", "open_interest", "all")].astype(float),
         "am": t[col("Asset_Mgr_Positions_Long_All", "asset_mgr", "long", "all")].astype(float) - t[col("Asset_Mgr_Positions_Short_All", "asset_mgr", "short", "all")].astype(float),
         "lf": t[col("Lev_Money_Positions_Long_All", "lev_money", "long", "all")].astype(float) - t[col("Lev_Money_Positions_Short_All", "lev_money", "short", "all")].astype(float),
@@ -77,7 +77,7 @@ def seances():
     jours = pd.DatetimeIndex(d["jours"].astype("datetime64[D]"))
     jour_pts = (C[:, 384] - O[:, 5]) * float(d["pt"]) * ech                  # 1 MNQ, acheteur, avant frais
     cc = pd.Series(C[:, -1], index=jours)
-    nuit_pts = (cc - cc.shift(1)).to_numpy() * float(d["pt"]) * ech          # descriptif : de cloture a cloture
+    nuit_pts = np.nan_to_num((cc - cc.shift(1)).to_numpy()) * float(d["pt"]) * ech   # descriptif : de cloture a cloture
     return jours, ok, jour_pts, nuit_pts, float(d["frais"])
 
 
