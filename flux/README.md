@@ -485,3 +485,15 @@ emporté par le bruit d'une minute. Reste à voir si le DOM change cela : seul l
 construire et tester sur les données du challenge, il suffit de le lancer en lecture (aucune règle choisie pour les
 ordres) et d'envoyer le dossier `C:\Bot3en1\flux` ; un premier test du DOM, aux règles fixées avant de lire les
 enregistrements, demande 20 à 30 séances.
+
+## Séances neuves du 19 au 27 octobre 2026 (export Rithmic de l'utilisateur, règles fixées avant le calcul)
+
+Fichier : `donnees/transactions_NQZ6_19-29oct.csv` (« Export transactions NQ » sur NQZ6, fait le 29 octobre à 11 h 44,
+heure de New York). Aucune de ces séances n'a servi à aucun calcul du projet.
+
+- **Séances** : 19, 20, 21, 22, 23, 26 et 27 octobre (complètes, 390 minutes). Écartées : le 28 (61 minutes manquent),
+  le 29 (séance en cours). Le 17 octobre manque dans toutes les sources : le 19, S2 et S2b ne tradent pas (pas de veille,
+  donc pas de plus haut ni de plus bas de la veille) ; S1 garde ses seuils des 5 séances présentes d'avant.
+- **Mesuré** : S1, S2 et S2b exactement comme le bot les trade (C1 demande le footprint par prix, absent de l'export) ;
+  trades, résultat jour par jour, et contrôle que le moteur C# du bot donne les mêmes trades que le Python.
+- **Point d'étape, aucune décision** : 7 séances. La barre pour le réel (40 trades en direct, t ≥ 2,24) ne change pas.
