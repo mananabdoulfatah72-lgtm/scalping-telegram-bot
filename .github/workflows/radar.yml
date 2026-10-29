@@ -10,6 +10,7 @@ on:
     paths:
       - radar/collecte.py
       - radar/rapport.py
+      - radar/enregistrer.sh
       - .github/workflows/radar.yml
   workflow_dispatch:
 
@@ -34,25 +35,49 @@ jobs:
       - name: Installer les dependances
         run: pip install yfinance pandas numpy requests xlrd openpyxl lxml
 
-      - name: Collecter les donnees de tous les marches et des autres sources
+      - name: Collecter les marches (Yahoo), le gamma, Wikipedia, FRED, sentiment, options, resultats
+        timeout-minutes: 40
         run: python3 radar/collecte.py
+        env:
+          RADAR_SOURCES: yahoo_jour,yahoo_heure,yahoo_minute,dix_gex,wiki,fred,cnn,aaii,options_cboe,resultats
 
-      - name: Rapport du jour (si present)
-        if: hashFiles('radar/rapport.py') != ''
+      - name: Enregistrer
+        if: always()
+        run: radar/enregistrer.sh "marches et sources"
+
+      - name: Collecter le ton des nouvelles (GDELT)
+        if: always()
+        timeout-minutes: 15
+        run: python3 radar/collecte.py
+        env:
+          RADAR_SOURCES: gdelt
+
+      - name: Collecter les ventes a decouvert (FINRA, les plus recentes d'abord)
+        if: always()
+        timeout-minutes: 40
+        run: python3 radar/collecte.py
+        env:
+          RADAR_SOURCES: finra
+
+      - name: Enregistrer
+        if: always()
+        run: radar/enregistrer.sh "nouvelles et ventes a decouvert"
+
+      - name: Completer l'historique FINRA (les plus anciennes, jusqu'a 2 500 jours par passage)
+        if: always()
+        timeout-minutes: 40
+        run: python3 radar/collecte.py
+        env:
+          RADAR_SOURCES: finra
+          RADAR_FINRA_ANCIENS: "1"
+
+      - name: Rapport du soir
+        if: always() && hashFiles('radar/rapport.py') != ''
         run: python3 radar/rapport.py
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
 
-      - name: Enregistrer les donnees sur la branche
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add radar/
-          git diff --cached --quiet && exit 0
-          git commit -q -m "Radar : donnees du $(date -u +%Y-%m-%d)"
-          for essai in 1 2 3 4; do
-            git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0
-            sleep $((10 * essai))
-          done
-          exit 1
+      - name: Enregistrer
+        if: always()
+        run: radar/enregistrer.sh "historique FINRA et rapport"

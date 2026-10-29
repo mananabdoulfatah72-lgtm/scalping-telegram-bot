@@ -157,7 +157,7 @@ def main():
                                        for k, v in e.items()]
     strat = ICI / "resultats" / "STRATEGIE.md"
     if strat.exists():
-        L += ["", "## Stratégie du radar", "", f"Voir `radar/resultats/STRATEGIE.md`."]
+        L += ["", "## Stratégie du radar", "", "Voir `radar/resultats/STRATEGIE.md`."]
     (ICI / "RAPPORT.md").write_text("\n".join(L) + "\n")
     print("\n".join(L))
     jeton, chat = os.getenv("TELEGRAM_TOKEN", ""), os.getenv("CHAT_ID", "")

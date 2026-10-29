@@ -1,0 +1,44 @@
+Radar, scan des regles (radar/README.md, protocole du 29 octobre 2026)
+
+4065 seances du NQ (2011-01-03 - 2026-10-29), 60 variables continues, 19 du calendrier, 11 heures d'entree, 49 couples entree-duree.
+Etape 1 : 189 familles envoyees en confirmation (t_E >= 3.0, au plus 5000).
+Placebos (0) : meilleur t de confirmation 
+Barre de confirmation : 3.00
+Survivantes de l'etape 2 (sans doublons) : 1
+
+Les 30 meilleures familles en confirmation (toutes, survivantes ou non) :
+
+  t_E  3.19  t_C  3.73  n_C  211  moy_C  +65.84 $  achat a 13 h 30, 120 min si place Q5
+  t_E  3.00  t_C  2.78  n_C  149  moy_C  +63.54 $  achat a 13 h 30, 120 min si place Q5 et age_h Q1
+  t_E  3.23  t_C  2.59  n_C  100  moy_C  +83.21 $  achat a 13 h 30, jusqu a 16 h si place Q5 et j_serie Q1
+  t_E  3.09  t_C  2.35  n_C   66  moy_C +103.25 $  achat a 10 h 30, jusqu a 16 h si j_r20 Q5 et j_serie Q1
+  t_E  3.15  t_C  2.30  n_C   60  moy_C +116.34 $  vente a 15 h 00, jusqu a 16 h si vol15 Q5 et or30 Q1
+  t_E  3.45  t_C  2.25  n_C   56  moy_C  +35.95 $  achat a 13 h 30, 60 min si place Q5 et d_hv 10 % haut
+  t_E  3.12  t_C  2.02  n_C   66  moy_C +103.15 $  achat a 9 h 35, jusqu a 16 h si j_r20 Q5 et j_serie Q1
+  t_E  3.14  t_C  1.99  n_C  128  moy_C  +36.91 $  achat a 10 h 00, 30 min si ouv Q5 et eff Q5
+  t_E  3.08  t_C  1.91  n_C  130  moy_C +106.82 $  achat a 9 h 45, jusqu a 16 h si d_hv Q5 et d_bv Q5
+  t_E  3.04  t_C  1.91  n_C   44  moy_C  +50.46 $  vente a 15 h 30, jusqu a 16 h si j_serie Q3 et cal_mercredi
+  t_E  4.09  t_C  1.87  n_C   73  moy_C  +24.90 $  achat a 12 h 30, 30 min si j_ret Q4 et j_place Q4
+  t_E  3.81  t_C  1.85  n_C   76  moy_C  +53.88 $  achat a 13 h 30, 120 min si place Q5 et vwap 10 % haut
+  t_E  3.51  t_C  1.77  n_C  102  moy_C  +23.27 $  achat a 13 h 30, 60 min si ouv Q5 et d_hv Q5
+  t_E  3.83  t_C  1.75  n_C   74  moy_C  +37.76 $  achat a 13 h 30, 120 min si vwap Q5 et d_hv Q5
+  t_E  3.19  t_C  1.75  n_C   57  moy_C  +59.96 $  achat a 13 h 30, 120 min si r60 Q5 et or30 Q5
+  t_E  3.61  t_C  1.73  n_C   79  moy_C  +25.46 $  achat a 13 h 30, 60 min si d_bv Q5 et eff Q5
+  t_E  3.24  t_C  1.66  n_C   66  moy_C  +81.59 $  achat a 10 h 30, jusqu a 16 h si j_ma50 Q5 et j_serie Q1
+  t_E  3.03  t_C  1.65  n_C   66  moy_C  +77.92 $  achat a 9 h 35, jusqu a 16 h si j_ma50 Q5 et j_serie Q1
+  t_E  3.46  t_C  1.57  n_C   60  moy_C  +23.36 $  achat a 15 h 00, 15 min si place Q5 et or30 10 % haut
+  t_E  4.04  t_C  1.55  n_C  125  moy_C  +36.71 $  achat a 13 h 30, jusqu a 16 h si ouv Q5 et place Q5
+  t_E  3.73  t_C  1.51  n_C  115  moy_C  +51.59 $  achat a 13 h 30, jusqu a 16 h si or30 Q5 et age_h Q1
+  t_E  3.96  t_C  1.51  n_C   64  moy_C  +47.09 $  achat a 13 h 30, 120 min si place Q5 et or30 10 % haut
+  t_E  3.17  t_C  1.51  n_C   66  moy_C  +68.67 $  achat a 9 h 45, jusqu a 16 h si j_r20 Q5 et j_serie Q1
+  t_E  3.66  t_C  1.48  n_C   97  moy_C  +31.10 $  achat a 15 h 30, 15 min si j_place Q1 et j_ma50 Q1
+  t_E  3.13  t_C  1.47  n_C  195  moy_C  +13.78 $  achat a 15 h 00, 15 min si vwap Q5 et CL_r30 10 % bas
+  t_E  3.13  t_C  1.47  n_C  195  moy_C  +13.78 $  achat a 15 h 00, 15 min si vwap Q5 et GC_r30 10 % bas
+  t_E  3.06  t_C  1.45  n_C   59  moy_C  +37.24 $  achat a 9 h 35, 15 min si age_b Q4 et cal_mardi
+  t_E  3.20  t_C  1.43  n_C   70  moy_C  +43.64 $  achat a 11 h 00, 120 min si or30 Q5 et age_b Q5
+  t_E  3.35  t_C  1.38  n_C   87  moy_C  +31.47 $  achat a 15 h 30, 15 min si j_place Q1 et j_r20 Q1
+  t_E  3.05  t_C  1.37  n_C   90  moy_C  +28.75 $  achat a 11 h 00, 60 min si d_bv Q5 et ES_ouv Q5
+
+Survivantes :
+
+  t_E  3.19  t_C  3.73  n_C  211  moy_C  +65.84 $  achat a 13 h 30, 120 min si place Q5

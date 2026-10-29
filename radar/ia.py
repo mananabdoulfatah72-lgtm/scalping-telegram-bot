@@ -7,7 +7,6 @@ seances d'entrainement. Selection sur 2015 - 2022 (t >= 3,3), coffre 2023 - 2026
 
 Lancer : RADAR_CALCUL=<dossier de variables.npz> python3 radar/ia.py [--coffre]"""
 import argparse
-import os
 import time
 import warnings
 from pathlib import Path

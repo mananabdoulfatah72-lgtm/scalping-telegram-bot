@@ -280,14 +280,28 @@ def finra():
             deja |= set(pd.read_csv(f, usecols=["date"], dtype=str)["date"])
     jours = [j for j in pd.bdate_range("2009-08-03", pd.Timestamp.today().normalize() - pd.Timedelta(days=1))
              if j.strftime("%Y-%m-%d") not in deja]
+    n_max = int(os.getenv("RADAR_FINRA_MAX", "2500"))               # l'historique se complete en plusieurs passages
+    jours = jours[:n_max] if os.getenv("RADAR_FINRA_ANCIENS") else jours[-n_max:]
     garder = set(FINRA)
 
-    def un(j):
-        r = get(f"https://cdn.finra.org/equity/regsho/daily/CNMSshvol{j:%Y%m%d}.txt", essais=2, attente=3)
+    def fichier(prefixe, j):
+        r = get(f"https://cdn.finra.org/equity/regsho/daily/{prefixe}shvol{j:%Y%m%d}.txt", essais=2, attente=3)
         if r is None or r.status_code != 200 or b"|" not in r.content[:200]:
             return None
         t = pd.read_csv(io.BytesIO(r.content), sep="|", dtype=str)
-        t = t[t["Symbol"].isin(garder)]
+        return t[t["Symbol"].isin(garder)]
+
+    def un(j):
+        """Fichier consolide (CNMS, depuis 2018) ; avant, somme des places de declaration (Nasdaq, NYSE, ADF)."""
+        t = fichier("CNMS", j)
+        if t is None:
+            parts = [x for x in (fichier(p, j) for p in ("FNSQ", "FNYX", "FNRA", "FNQC")) if x is not None and len(x)]
+            if not parts:
+                return None
+            t = pd.concat(parts)
+            for c in ("ShortVolume", "ShortExemptVolume", "TotalVolume"):
+                t[c] = pd.to_numeric(t[c], errors="coerce")
+            t = t.groupby("Symbol", as_index=False)[["ShortVolume", "ShortExemptVolume", "TotalVolume"]].sum()
         if not len(t):
             return None
         out = []
@@ -334,11 +348,21 @@ def wiki():
 
 
 def fred():
+    """Series de la FRED (le site repond parfois tres lentement : 20 s par serie, 6 min en tout, arret apres 4 echecs
+    de suite)."""
     cols = {}
+    debut, echecs = time.time(), 0
     for s in FRED:
-        r = get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={s}")
-        if r is None or r.status_code != 200:
+        if time.time() - debut > 360 or echecs >= 4:
+            break
+        try:
+            r = requests.get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={s}", timeout=20, headers=NAVIGATEUR)
+        except requests.RequestException:
+            r = None
+        if r is None or r.status_code != 200 or not r.content[:200].strip():
+            echecs += 1
             continue
+        echecs = 0
         t = pd.read_csv(io.BytesIO(r.content))
         t = t.set_index(t.columns[0])
         cols[s] = pd.to_numeric(t.iloc[:, 0], errors="coerce")
