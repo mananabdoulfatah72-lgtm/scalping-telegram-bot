@@ -31,16 +31,22 @@ def lire_cot(dossier):
         elif f.suffix in (".txt", ".csv"):
             tables.append(pd.read_csv(f, low_memory=False))
     t = pd.concat(tables, ignore_index=True)
-    col = lambda *mots: next(c for c in t.columns if all(m.lower() in c.lower() for m in mots))
-    nom = t[col("market", "exchange")].astype(str).str.upper()
+    def col(exact, *mots):
+        """Nom officiel de la CFTC s'il existe, sinon premiere colonne qui contient tous les mots (hors variations,
+        pourcentages et nombres de traders)."""
+        if exact in t.columns:
+            return exact
+        return next(c for c in t.columns if all(m.lower() in c.lower() for m in mots)
+                    and not any(x in c.lower() for x in ("change", "pct", "traders", "conc")))
+    nom = t[col("Market_and_Exchange_Names", "market", "exchange")].astype(str).str.upper()
     garde = nom.str.contains("NASDAQ") & nom.str.contains("MINI") & ~nom.str.contains("MICRO") & nom.str.contains("CHICAGO")
     t = t[garde]
     d = pd.DataFrame({
-        "date": pd.to_datetime(t[col("report_date", "yyyy")]),
-        "oi": t[col("open_interest", "all")].astype(float),
-        "am": t[col("asset_mgr", "long", "all")].astype(float) - t[col("asset_mgr", "short", "all")].astype(float),
-        "lf": t[col("lev_money", "long", "all")].astype(float) - t[col("lev_money", "short", "all")].astype(float),
-        "dl": t[col("dealer", "long", "all")].astype(float) - t[col("dealer", "short", "all")].astype(float),
+        "date": pd.to_datetime(t[col("Report_Date_as_YYYY-MM-DD", "report_date", "yyyy")]),
+        "oi": t[col("Open_Interest_All", "open_interest", "all")].astype(float),
+        "am": t[col("Asset_Mgr_Positions_Long_All", "asset_mgr", "long", "all")].astype(float) - t[col("Asset_Mgr_Positions_Short_All", "asset_mgr", "short", "all")].astype(float),
+        "lf": t[col("Lev_Money_Positions_Long_All", "lev_money", "long", "all")].astype(float) - t[col("Lev_Money_Positions_Short_All", "lev_money", "short", "all")].astype(float),
+        "dl": t[col("Dealer_Positions_Long_All", "dealer", "long", "all")].astype(float) - t[col("Dealer_Positions_Short_All", "dealer", "short", "all")].astype(float),
     })
     # plusieurs lignes la meme semaine (changement de nom du marche) : la plus grosse (le contrat principal)
     d = d.sort_values(["date", "oi"]).drop_duplicates("date", keep="last").set_index("date").sort_index()
