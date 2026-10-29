@@ -1,0 +1,43 @@
+name: Donnees COT (CFTC) pour la partie 7
+
+on:
+  push:
+    branches: [claude/optimistic-ptolemy-xs24ra]
+    paths:
+      - flux/telecharger_cot.py
+      - .github/workflows/donnees-cot.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer les dependances
+        run: pip install pandas requests
+
+      - name: Telecharger le rapport COT
+        run: python3 flux/telecharger_cot.py
+
+      - name: Enregistrer les donnees sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add flux/donnees/cot/cot_nq.csv
+          git diff --cached --quiet && exit 0
+          git commit -m "Donnees COT (CFTC) : E-mini Nasdaq-100, Traders in Financial Futures"
+          for essai in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 10
+          done
+          exit 1
