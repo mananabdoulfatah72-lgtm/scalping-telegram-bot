@@ -171,3 +171,69 @@ pour autant : voir n'est pas prévoir.
 Ce qui reste vraiment non testé, faute de données, c'est **le DOM** (profondeur du carnet, ordres posés et retirés,
 icebergs). Aucune donnée historique n'existe dans le projet. Le seul moyen honnête de le tester est de l'enregistrer
 en direct depuis la plateforme de l'utilisateur, puis de fixer les règles avant de lire les enregistrements.
+
+## Partie 2 : chercher les réglages optimaux (règles fixées le 29 octobre 2026, après la partie 1, avant ce calcul)
+
+### Demande de l'utilisateur
+
+Puisqu'aucun setup ne passe avec ses réglages d'origine, trouver les réglages optimaux de l'order flow, pour un bot
+qui trade en direct sur le challenge Bulenox à partir du tape, du DOM, du footprint et du VWAP.
+
+**Le piège.** Avec 89 100 réglages essayés sur 76 séances, le meilleur aura toujours l'air excellent, même sur des
+données sans aucune information. La recherche mesure donc ce que la même optimisation « trouve » dans du bruit, juge
+les réglages choisis sur des mois qui n'ont pas servi au choix, et simule ce qu'aurait donné un bot réglé chaque mois
+sur son seul passé.
+
+### Les réglages essayés (grille complète, 89 100 configurations)
+
+Gestion, commune aux trois familles (180 combinaisons) :
+
+| Gène | Valeurs |
+|---|---|
+| objectif | 1 ; 1,5 ; 2 ; 3 fois le risque, ou aucun (sortie au temps ou au stop) |
+| durée maximale | 10, 30 ou 60 minutes |
+| stop minimum | 3, 6 ou 10 points (le stop de structure est éloigné jusque-là s'il est plus près) |
+| fenêtre des signaux | 10 h - 15 h, ou 10 h - 12 h |
+| sens | celui du setup, ou l'inverse (même risque, stop et objectif de l'autre côté) |
+
+Signal :
+
+| Famille | Gènes | Combinaisons |
+|---|---|---|
+| F1 repli absorbé (S1) | delta de contexte sur 15, 30 ou 60 min ; VWAP exigé ou non ; repli sur 3, 5 ou 10 min ; déséquilibre au-delà du quantile 5, 10, 20 ou 30 ; volume ≥ 0, 1 ou 1,5 fois la médiane des 30 min ; clôture dans la moitié favorable exigée ou non | 432 × 180 = 77 760 |
+| F2 cassure ratée (S2) | niveaux de la veille, de la première heure, ou les deux ; agression à la cassure : aucune, ou au-delà du quantile 60, 75 ou 90 ; échec dans les 2, 5 ou 10 minutes | 36 × 180 = 6 480 |
+| F3 volume d'arrêt (S3) | extrême de la séance, des 30 ou des 60 dernières minutes ; footprint au-delà du quantile 80, 90 ou 95 ; rejet d'au moins 0,5, 1 ou 2 points | 27 × 180 = 4 860 |
+
+Le reste (mesures, seuils glissants des 5 séances d'avant, exécution, frais, R maximal de 0,12 %, une position à la
+fois) est celui de la partie 1. Les réglages d'origine de S1, S2 et S3 font partie de la grille.
+
+### Le jumeau de bruit (4 graines)
+
+À partir de la 2e minute de chaque séance, chaque minute est retournée avec la probabilité 1/2 : ses mouvements par
+rapport à la clôture précédente changent de signe (plus haut et plus bas échangés), achats et ventes agressifs sont
+échangés, et le footprint aussi (ventes aux deux prix les plus bas ↔ achats aux deux prix les plus hauts). Les prix sont
+enchaînés à partir de la vraie première minute. Le bruit garde la volatilité, le volume, la saisonnalité de la journée et
+le lien entre le flux et le prix **dans la même minute**, mais détruit tout lien entre une minute et les suivantes :
+ce que l'optimisation y trouve est du hasard.
+
+### Sélection, coffre et réglage glissant (fixés maintenant)
+
+1. **Exploration sur A seulement** (avril - juillet, 76 séances jouables). Score = t par séance sur A × min(1,
+   trades ÷ 40). Éligible : au moins 40 trades sur A et gain net moyen > 0.
+2. **Barrière du bruit**, par famille : le meilleur score éligible obtenu sur les 4 graines de bruit.
+3. **Finalistes** : dans chaque famille, la meilleure configuration réelle si son score dépasse la barrière (0 à 3
+   finalistes, m = leur nombre). Leur liste est écrite avec son empreinte avant la lecture de B.
+4. **Coffre B** (3 août - 16 octobre, 52 séances), lu une seule fois : une finaliste est **retenue** si son t par séance
+   sur B ≥ 1,645 (m = 1), 1,96 (m = 2) ou 2,13 (m = 3), son gain net moyen sur B > 0, au moins 20 trades sur B, et si
+   elle bat 95 % des placebos de sens sur B. Limite : les réglages d'origine ont déjà été joués sur B dans la partie 1.
+5. **Réglage glissant** (ce que ferait un bot réoptimisé chaque mois), sur les vraies données et sur les 4 bruits : au
+   début de chaque mois de mai à octobre, on prend la configuration au meilleur score sur toutes les séances
+   précédentes (depuis avril ; score = t par séance × min(1, trades ÷ (0,5 × séances)), gain net moyen > 0), et on la
+   joue le mois suivant. Les mois joués sont tous hors de l'optimisation. Le réglage glissant est jugé **utile** si son t
+   par séance hors échantillon (mai - 16 octobre) ≥ 1,65, avec un gain net positif, et s'il fait mieux que sur chacun des
+   4 bruits.
+
+**Ce que le bot FluxNQ utilisera** : une finaliste retenue s'il y en a une ; sinon, si le réglage glissant est utile, la
+configuration qu'il choisit aujourd'hui (réoptimisée chaque mois) ; sinon, la meilleure configuration de tout
+l'historique, **marquée « non validée »**, en virtuel par défaut. Le passage en réel reste le choix de l'utilisateur, avec
+ce résultat sous les yeux.
