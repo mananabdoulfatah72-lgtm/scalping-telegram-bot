@@ -283,3 +283,75 @@ Le bot FluxNQ (lecture en direct du tape, du DOM et du footprint, enregistrement
 construit** : l'utilisateur a demandé à quoi servirait un bot si aucun réglage ne passe, et la réponse honnête est qu'en
 réel il ne ferait que perdre plus vite. Seule pièce encore utile : un enregistreur du DOM (aucun ordre), pour tester un
 jour le carnet profond, jamais disponible dans les données. Décision laissée à l'utilisateur.
+
+## Partie 3 : vague quant (règles fixées le 29 octobre 2026, avant tout calcul de cette vague)
+
+### Demande de l'utilisateur
+
+Continuer : d'autres manières de construire un système order flow sur le NQ, fondées sur les formules quantitatives,
+avec toutes les sources de données gratuites, sans s'arrêter si des milliers de réglages échouent ; l'utilisateur
+connectera ensuite le bot en direct sur son challenge.
+
+**Ce qui ne change pas** : la barre. Chercher « jusqu'à ce que ça passe » sans tenir compte du nombre d'essais
+garantit de trouver un réglage chanceux, qui perd ensuite en direct. Chaque famille est donc jugée contre ce que la
+même recherche trouve dans le bruit, sur des mois qui n'ont pas servi au choix.
+
+### Sources gratuites (recherche du 29 octobre 2026)
+
+Aucune source gratuite ne donne les transactions du NQ avec le côté agresseur : seulement des fournisseurs payants
+(AlgoSeek, IQFeed, Kibot, Databento, CME DataMine) ou quelques jours d'historique (Tradovate, CME). Les substituts
+gratuits déjà essayés (barres d'une minute, transactions du QQQ chez Alpaca, ticks de London Strategic Edge) ont été
+refusés dans `filtre_h1/` : leur delta ne ressemble pas assez au vrai. Les sources de cette vague sont donc :
+- le vrai tape du NQ déjà dans le projet (Databento, avril - 1er octobre 2026 ; export Rithmic du compte, 2 - 16 octobre) ;
+- les barres d'une minute gratuites du NQ, 2011 - 2026 (`intraday/donnees/nasdaq100_1min.csv.gz` de la branche de
+  recherche, complétées par `zone/robot/nq_1min.csv.gz`), pour la seule famille qui a été conçue pour des barres : le
+  VPIN avec classification du volume par barres (BVC, Easley, López de Prado, O'Hara 2012).
+- La source gratuite la plus riche reste **la plateforme de l'utilisateur** : « Export transactions NQ » peut exporter les
+  transactions Rithmic des contrats passés (NQU6, NQM6, NQH6, NQZ5...) si Rithmic les garde. Ce sera le coffre suivant.
+
+### Notations (à la clôture de la minute t, seulement ce qui est connu)
+
+Δc_t = clôture_t − clôture_{t−1} ; σ1_t = écart-type des Δc des 60 dernières minutes de la séance ; **u_t = σ1_t × √30**
+(mouvement typique de 30 minutes, environ 75 points) ; δ_t = achats − ventes agressifs ; Σδ_W = somme des δ des W
+dernières minutes. « Quantile » = rang parmi les mêmes valeurs des 5 séances précédentes (minutes de 10 h à 16 h), sauf
+mention. « Au croisement » = la condition est vraie à t et fausse à t − 1.
+
+### Les familles (signaux de 10 h à 15 h 30 sauf mention)
+
+| # | Famille (référence) | Signal | Sens de base | Combinaisons |
+|---|---|---|---|---|
+| G1 | **Lambda de Kyle** (Kyle 1985 ; Hasbrouck 2007) | λ = Σ Δc·δ ÷ Σ δ² sur les L dernières minutes (L = 30 ou 60) ; mouvement expliqué par le flux π = λ Σδ_W (W = 5, 15, 30). Type « résidu » : z = (c_t − c_{t−W} − π) ÷ (σ1 √W) ; type « flux informé » : z = π ÷ (σ1 √W). Au croisement de \|z\| ≥ k (k = 1 ; 1,5 ; 2) | signe du résidu, ou du flux | 36 |
+| G2 | **VPIN** (Easley, López de Prado, O'Hara 2012), vrai côté agresseur | seaux de volume de 1/50 du volume médian des 5 séances d'avant ; VPIN = moyenne de \|achats − ventes\| ÷ volume sur les n derniers seaux (n = 10, 25, 50). Tous les quarts d'heure : régime haut (VPIN ≥ quantile 50, 75 ou 90) ou bas (≤ quantile 25 ou 50) | signe du flux de ces n seaux | 15 |
+| G3 | **Élan du flux** | aux contrôles toutes les C minutes (C = 5, 15, 30) : Σδ_W (W = 15, 30, 60) au-delà du quantile q ou en deçà de 100 − q (q = 80, 90, 95) ; prix sur W : libre, d'accord avec le flux, ou en désaccord | signe du flux | 81 |
+| G4 | **Flux de l'ouverture** | à 10 h, 10 h 30 ou 11 h : delta depuis 9 h 30, comparé aux 20 séances d'avant (signe seul, ou au-delà du quantile 70 ou 85) ; prix depuis l'ouverture : libre, d'accord, en désaccord | signe du flux | 27 |
+| G5 | **Flux de fin de journée** (élan intrajournalier, Gao, Han, Li, Zhou 2018, version flux) | à 15 h ou 15 h 30 : delta du jour, des 60 dernières minutes, ou de la première demi-heure, comparé aux 20 séances d'avant (signe, quantile 70 ou 85) ; prix libre ou d'accord ; sortie à 15 h 59 | signe du flux | 36 |
+| G6 | **Gros lots nets** (Databento) | flux net des transactions d'au moins S contrats (S = 10, 25, 50) sur W minutes (5, 15, 30), au croisement du quantile q ou 100 − q (q = 90, 95, 99) | signe du flux des gros lots | 27 |
+| G7 | **Bandes de VWAP et flux** | clôture qui franchit VWAP ± k σ_V (σ_V = écart-type du prix pondéré par le volume depuis 9 h 30 ; k = 1 ; 1,5 ; 2) ; flux sur W (5, 15, 30) : en désaccord avec le franchissement (retour), d'accord (cassure), ou libre (retour, sans flux) | retour ou cassure | 27 |
+| G8 | **Absorption quantifiée** | au croisement : \|Σδ_W\| ≥ quantile q de \|Σδ_W\| (q = 90, 95) et \|c_t − c_{t−W}\| ≤ k σ1 √W (k = 0,25 ; 0,5), W = 5, 15, 30 ; lieu : partout, près d'un extrême du jour (à moins de 0,5 u), près du VWAP (à moins de 0,5 u) | contre le flux absorbé | 36 |
+| G2b | **VPIN par barres, 15 ans** (barres gratuites) | comme G2, avec achats = volume × Φ(Δc ÷ σΔ) (BVC ; σΔ = écart-type des Δc des 5 séances d'avant) | signe du flux estimé | 15 |
+
+**Gestion** (toutes sauf G5, 72 combinaisons) : durée 15, 30, 60 minutes ou jusqu'à 15 h 59 ; stop aucun, 0,5 u ou 1 u ;
+objectif aucun, 1 u ou 2 u ; sens de base ou inverse. G5 : sortie à 15 h 59, stop aucun, 0,5 u ou 1 u, sens de base ou
+inverse (6). Stops et objectifs arrondis au tick (stop vers la perte, objectif en s'éloignant). Exécution, frais et ordre
+le plus défavorable : ceux de la partie 1. Une position à la fois. Soit **17 928 + 216 = 18 144** configurations sur le
+vrai tape et **1 080** pour G2b.
+
+**G2b au prix d'aujourd'hui** (comme `scalping/`) : gain d'un trade = (sens × (sortie − entrée) − 0,5 point de
+glissement) × (30 000 ÷ ouverture de la séance) − 1 point de commission.
+
+### Bruit, sélection, coffre (fixés maintenant)
+
+- **Bruit par signe, 8 graines** (comme la partie 2 ; les gros lots nets changent de signe avec la minute ; pour G2b, la
+  minute retournée donne un BVC retourné).
+- **Tape (G1 - G8)** : exploration sur A (avril - juillet). Score = t par séance × min(1, trades ÷ n_min), n_min = 40
+  (25 pour G4 et G5, qui tradent au plus une fois par jour). Éligible : au moins n_min trades et gain net moyen > 0.
+  Barrière par famille = meilleur score éligible sur les 8 bruits. Finaliste = meilleure configuration réelle de la
+  famille si elle dépasse la barrière.
+- **G2b** : exploration 2012 - 2022 (2011 pour les seuils), même score avec n_min = 200, barrière sur 8 bruits ; coffre
+  2023 - 28 octobre 2026.
+- **Coffre, une seule fois pour toute la vague** (B pour le tape, 2023 - 2026 pour G2b) : m = nombre total de
+  finalistes ; retenue si t par séance ≥ seuil de Bonferroni unilatéral à 5 % pour m, gain net moyen > 0, au moins 15
+  trades (10 pour G4 et G5 ; 100 pour G2b), et bat 95 % des placebos de sens.
+- **Réglage glissant** (G1 - G8 ensemble), comme la partie 2, contre les 8 bruits.
+- **Si une configuration est retenue**, elle devient le réglage du bot FluxNQ ; elle reste à confirmer sur les
+  exports de l'utilisateur (contrats passés, puis l'avenir). Sinon, rien n'est construit pour le direct, et c'est dit.
