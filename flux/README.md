@@ -785,3 +785,21 @@ symétrique), avec b la minute de la cassure et f la minute du retour (signal) :
   mieux que S2b seule sur B **à la fois** en total de points et en t par séance, avec au moins 20 trades sur B.
 - **Descriptif** : FE n'utilise que le volume, présent dans les barres gratuites ; il est aussi mesuré sur 2011 - 2025.
 - Limite : S2b a été choisie sur avril - 16 octobre ; seul le filtre est jugé hors échantillon.
+
+### Résultats de la partie 6 (29 octobre 2026) : `resultats/of_s2b.txt`
+
+Contrôle : sans filtre, on retrouve exactement les trades de S2b.
+
+| Filtre | A (avril - juillet) : trades, net moyen, t | B (3 août - 27 octobre) : trades, net moyen, t, total |
+|---|---|---|
+| **aucun (S2b)** | 66, +3,47, +1,15 | **44, +12,72, +3,01, +559,8 pts** |
+| FA agression à la cassure (= S2) | 35, −0,50, −0,13 | 22, +19,93, +2,66, +438,5 |
+| FB vendeurs au retour | 25, +3,73, +0,64 | 20, +21,39, +2,50, +427,8 |
+| FC acheteurs piégés (delta b → f) | 54, +3,31, +1,02 | 33, +9,30, +2,23, +307,0 |
+| FD flux de fond (delta 30 min) | 10, +8,90, +0,75 | 13, +9,46, +1,20, +123,0 |
+| **FE volume de la cassure (choisi sur A)** | 21, +9,77, **+1,53** | 19, +17,17, +2,05, +326,2 |
+
+**Décision fixée à l'avance : aucun filtre conseillé, S2b reste telle quelle.** FE, choisi sur A, gagne plus par trade
+sur B mais prend deux fois moins de trades : total et t plus faibles que S2b seule. Descriptif, 2011 - 2025 (barres
+gratuites, même convention que « S2b sur 15 ans ») : S2b seule −4,06 points par trade (1 année positive sur 15),
+S2b + FE −4,51 (2 sur 15) : le filtre de volume ne corrige pas S2b sur la durée.

@@ -1,0 +1,13 @@
+Partie 6 : S2b avec un filtre d'order flow. Points de NQ nets de frais par trade ; 1 point = 2 $ par MNQ.
+
+filtre  | A : trades, net moyen, t, total    | B : trades, net moyen, t, total   
+aucun   |  66,  +3.47, +1.15,  +229.2      |  44, +12.72, +3.01,  +559.8
+FA      |  35,  -0.50, -0.13,   -17.5      |  22, +19.93, +2.66,  +438.5
+FB      |  25,  +3.73, +0.64,   +93.2      |  20, +21.39, +2.50,  +427.8
+FC      |  54,  +3.31, +1.02,  +179.0      |  33,  +9.30, +2.23,  +307.0
+FD      |  10,  +8.90, +0.75,   +89.0      |  13,  +9.46, +1.20,  +123.0
+FE      |  21,  +9.77, +1.53,  +205.2      |  19, +17.17, +2.05,  +326.2
+
+Choisi sur avril - juillet : FE (t +1.53 ; S2b seule +1.15)
+Sur aout - 27 octobre : +326.2 pts, t +2.05, 19 trades ; S2b seule +559.8 pts, t +3.01
+Decision fixee a l'avance : aucun filtre conseille, S2b reste telle quelle
