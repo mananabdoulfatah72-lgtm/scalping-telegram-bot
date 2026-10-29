@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Matrice des gains quotidiens (en $ pour 1 contrat micro, au prix d'aujourd'hui, frais compris) de toutes les
 strategies du projet qu'on peut regenerer sur le NQ de 2011 a 2026 : zone de bruit (version d'origine, controles de
-30 minutes), regles G (elan hors zone), H1 - H16 (banc d'analyse technique), E1 - E9 (institutions et chercheurs ;
-E5 et E6 de nuit, rangees a la date de la seance du matin), F1 - F8 (pistes inexplorees), S2b. Ecrit
+30 minutes), regles G (elan hors zone), H1 - H16 (banc d'analyse technique), F1 - F8 (pistes inexplorees), S2b.
+E1 - E9 (institutions et chercheurs) sont ajoutees seulement si leurs donnees de nuit et d'ETF sont en cache (absentes
+le 29 octobre 2026 : la matrice publiee n'en contient aucune). Ecrit
 FLUX_CALCUL/matrice.pkl (une colonne par strategie, NaN = pas de trade ce jour-la).
 
 Lancer : KB=<copie de claude/keen-babbage-r686cl> python3 flux/matrice.py"""
