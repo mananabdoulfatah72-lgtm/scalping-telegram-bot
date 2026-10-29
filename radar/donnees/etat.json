@@ -100,8 +100,6 @@
  },
  "finra": {
   "heure_utc": "2026-10-29 22:29",
-  "jours_demandes": 2500,
-  "jours_recus": 2409,
-  "fichiers_ecrits": 19
+  "erreur": "KeyError: 'ShortExemptVolume'"
  }
 }
