@@ -742,3 +742,23 @@ arrivées le 1er octobre, mais seules les familles B (fin de séance, 5 marchés
 Critères (écrits le 30 septembre) : t ≥ 2 sur 2011 - 2022 (bitcoin 2018 - 2022) en rendements quotidiens nets ; battre
 les autres heures (A), le bruit (D) ou 95 % des tirages de jours sans adjudication (E) ; puis coffre 2023 - 2026 : t ≥
 seuil de Bonferroni et au moins 3 années positives sur 4.
+
+### Résultats de la partie 5 (29 octobre 2026) : `resultats/tournoi5_exploration_ADE.csv`
+
+`PYTHONPATH=../tournoi python3 explorer5.py A D E` dans `tournoi5/`, code du 30 septembre inchangé :
+
+| Famille | t 2011 - 2022 (net) | 1re / 2e moitié | Contrôle | Verdict |
+|---|---|---|---|---|
+| A1 dollar avant le fixing | −6,31 | −3,74 / −5,20 | autres heures : au mieux −5,91 | éliminée |
+| A2 dollar après le fixing | −8,01 | −4,21 / −7,21 | autres heures : au mieux −6,54 | éliminée |
+| E1 ZN avant adjudication | −4,89 | −4,36 / −2,69 | jours sans adjudication : p95 −5,22 | éliminée |
+| E2 ZN après adjudication | −5,17 | −1,39 / −6,54 | jours sans adjudication : p95 −7,71 | éliminée |
+| D1 bitcoin CME | non calculable | — | — | minutes manquantes non gérées par le code du 30 septembre (NaN) ; le bitcoin intraday avait déjà été rejeté par la machine B2 |
+
+**0 survivant, le coffre n'a rien à juger.** Avant frais, les heures du fixing et des adjudications ne font pas mieux que
+les autres heures : après le coût d'un contrat standard (1 tick + 2,50 $ par ordre), tout est négatif.
+
+**Bilan des recherches à ce jour** : environ 2,5 millions de configurations et toutes les familles publiées qu'on a pu
+tester (tendance, retour à la moyenne, order flow, régimes, apprentissage, nuit, paires, rendez-vous institutionnels) :
+la seule stratégie intraday compatible avec Bulenox qui gagne sur 15 ans reste la zone de bruit d'origine. Ce qui n'a
+jamais été testé, faute de données : le DOM (enregistré par FluxNQ depuis son installation).
