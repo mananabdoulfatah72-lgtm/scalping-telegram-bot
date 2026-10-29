@@ -1,0 +1,8 @@
+C1, confluence, SANS la condition du DOM (aucun DOM historique) : descriptif, aucun reglage
+seances jouables avec profil de la veille et footprint : 117 (Databento, 2026-04-09 - 2026-10-01)
+
+  A (avril - juillet)       123 trades | net moyen  -1.66 pt | gagnants 26.0% | t par seance -1.39 | total   -204.2 pt (-408 $ par MNQ)
+  B (aout - 1er octobre)     95 trades | net moyen  -2.40 pt | gagnants 25.3% | t par seance -2.72 | total   -228.0 pt (-456 $ par MNQ)
+  tout                      218 trades | net moyen  -1.98 pt | gagnants 25.7% | t par seance -2.56 | total   -432.2 pt (-864 $ par MNQ)
+  sorties : objectif 26%, stop 74%, temps 0% ; R median 4.50 pt ; achats 40%
+  placebo de sens : bat 59.5% des tirages

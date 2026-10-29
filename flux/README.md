@@ -472,3 +472,16 @@ Databento ; publié tel quel, sans aucun réglage.
 Pour chaque règle, sur ses **trades virtuels pris en direct** depuis l'installation du bot (jamais sur l'historique) :
 au moins **40 trades**, gain net moyen > 0 et **t ≥ 2,24** (Bonferroni unilatéral à 5 % pour 4 règles). Une règle qui
 franchit la barre peut être choisie pour les ordres réels ; avant, c'est un essai. Le choix reste celui de l'utilisateur.
+
+### C1 sans DOM sur l'historique (29 octobre 2026, descriptif) : `resultats/confluence_sans_dom.txt`
+
+Contrôle : aucun regard vers le futur (15 coupures). Sur 117 séances Databento avec profil de la veille et footprint :
+218 trades, **−1,98 point par trade** (−864 $ par MNQ), t par séance −2,56, perdant sur A (−1,66) comme sur B
+(−2,40), 26 % de gagnants, stop médian 4,5 points ; pas mieux qu'un sens tiré au hasard (59,5 % des placebos battus).
+Sans le DOM, la confluence niveau + footprint + delta perd comme S3 : un stop de quelques points sous la mèche est
+emporté par le bruit d'une minute. Reste à voir si le DOM change cela : seul l'essai en direct peut le dire.
+
+**Données du direct** : le bot enregistre transactions, DOM, minutes et footprint qu'il passe des ordres ou non. Pour
+construire et tester sur les données du challenge, il suffit de le lancer en lecture (aucune règle choisie pour les
+ordres) et d'envoyer le dossier `C:\Bot3en1\flux` ; un premier test du DOM, aux règles fixées avant de lire les
+enregistrements, demande 20 à 30 séances.
