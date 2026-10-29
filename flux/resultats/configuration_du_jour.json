@@ -1,0 +1,15 @@
+{
+ "configuration": 82358,
+ "description": "F2 cassure ratee : niveaux les deux, agression aucune, echec en 5 min | objectif 2 R, 60 min, stop min 3 pt, signaux jusqu'a 12 h, sens du setup",
+ "famille": "F2",
+ "signal": [
+  "les deux",
+  0,
+  5
+ ],
+ "objectif": 2.0,
+ "duree": 60,
+ "stop_min": 3.0,
+ "t_max": 150,
+ "sens": 1
+}

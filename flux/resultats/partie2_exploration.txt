@@ -1,0 +1,29 @@
+Partie 2, exploration sur A seulement : 76 seances jouables du 2026-04-09 au 2026-07-31 ; 89100 configurations ; score = t par seance x min(1, trades / 40)
+
+Nombre de configurations eligibles (>= 40 trades, gain net moyen > 0) et meilleur score, reel contre bruit :
+  F1 : reel 3409 eligibles, meilleur score 2.15 | bruit, meilleur score par graine : 2.48, 1.88, 2.44, 2.09 -> barriere 2.48
+      score >= 2.0 : reel 6
+      score >= 2.5 : reel 0
+      score >= 3.0 : reel 0
+      score >= 3.5 : reel 0
+      meilleure reelle : F1 repli absorbe : delta 60 min, VWAP exige, repli 3 min, desequilibre au-dela du quantile 10, volume >= 0.0 x mediane 30 min, cloture favorable exigee | objectif 1.5 R, 30 min, stop min 6 pt, signaux jusqu'a 15 h, sens du setup
+      sur A : 47 trades, net moyen +4.23 pt, t par seance +2.15, score 2.15
+      -> pas finaliste (le bruit fait aussi bien ou mieux)
+  F2 : reel 739 eligibles, meilleur score 1.64 | bruit, meilleur score par graine : 1.34, 1.16, 1.15, 2.38 -> barriere 2.38
+      score >= 2.0 : reel 0
+      score >= 2.5 : reel 0
+      score >= 3.0 : reel 0
+      score >= 3.5 : reel 0
+      meilleure reelle : F2 cassure ratee : niveaux les deux, agression aucune, echec en 2 min | objectif 1.5 R, 10 min, stop min 3 pt, signaux jusqu'a 12 h, sens du setup
+      sur A : 65 trades, net moyen +4.05 pt, t par seance +1.64, score 1.64
+      -> pas finaliste (le bruit fait aussi bien ou mieux)
+  F3 : reel 154 eligibles, meilleur score 0.73 | bruit, meilleur score par graine : 1.62, 1.93, 2.11, 1.14 -> barriere 2.11
+      score >= 2.0 : reel 0
+      score >= 2.5 : reel 0
+      score >= 3.0 : reel 0
+      score >= 3.5 : reel 0
+      meilleure reelle : F3 volume d'arret : extreme 60 min, footprint quantile 95, rejet 2.0 pt | objectif aucun, 60 min, stop min 10 pt, signaux jusqu'a 12 h, sens du setup
+      sur A : 111 trades, net moyen +4.36 pt, t par seance +0.73, score 0.73
+      -> pas finaliste (le bruit fait aussi bien ou mieux)
+
+Finalistes : 0

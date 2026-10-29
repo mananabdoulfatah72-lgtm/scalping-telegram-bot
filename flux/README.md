@@ -237,3 +237,42 @@ ce que l'optimisation y trouve est du hasard.
 configuration qu'il choisit aujourd'hui (réoptimisée chaque mois) ; sinon, la meilleure configuration de tout
 l'historique, **marquée « non validée »**, en virtuel par défaut. Le passage en réel reste le choix de l'utilisateur, avec
 ce résultat sous les yeux.
+
+### Résultats de la partie 2 (29 octobre 2026) : `resultats/partie2_exploration.txt`, `partie2_coffre.txt`, `partie2_glissant.txt`
+
+Contrôle : avec les réglages d'origine, la machine redonne exactement les trades de la partie 1 (28, 69 et 583 trades :
+mêmes séances, mêmes minutes, mêmes gains). Le bruit garde la volatilité d'une minute (13,58 points dans les deux) et le
+lien entre le flux et le prix dans la même minute (corrélation 0,564 dans les deux).
+
+**Exploration sur A : le bruit trouve mieux que les vraies données, dans les trois familles.**
+
+| Famille | Meilleur score réel | Meilleur score sur bruit (4 graines) | Finaliste |
+|---|---|---|---|
+| F1 repli absorbé | 2,15 | 2,48 ; 1,88 ; 2,44 ; 2,09 | non |
+| F2 cassure ratée | 1,64 | 1,34 ; 1,16 ; 1,15 ; 2,38 | non |
+| F3 volume d'arrêt | 0,73 | 1,62 ; 1,93 ; 2,11 ; 1,14 | non |
+
+**0 finaliste : le coffre n'a rien à juger.**
+
+**Réglage glissant (le bot réoptimisé chaque mois sur son passé) : il perd.**
+
+| | Hors échantillon (mai - 16 octobre, 112 séances) | t par séance |
+|---|---|---|
+| **Vraies données** | **−276 points (−552 $ par MNQ)**, 5 mois perdants sur 6 | **−1,77** |
+| Bruit, graines 11 à 14 | −203, −257, −122, −165 points | −1,20 ; −0,74 ; −0,69 ; −1,06 |
+
+Chaque mois, le réglage « optimal » du passé (score de 2,2 à 3,0 sur le passé) perd le mois suivant. **Décision fixée à
+l'avance : réglage glissant pas utile.**
+
+**Meilleure configuration sur tout l'historique** (descriptif, chiffres optimistes puisqu'elle est choisie sur ces
+mêmes séances) : F2, cassure ratée des niveaux de la veille et de la première heure, **sans condition d'order flow**,
+échec en 5 minutes, objectif 2 R, 60 minutes au plus, stop d'au moins 3 points, signaux jusqu'à 12 h : 104 trades,
++6,32 points par trade, t +2,45. C'est du niveau de ce que le bruit atteint (2,38 à 2,48 sur A seul), et ce n'est pas de
+l'order flow.
+
+### Ce qu'on retient de la partie 2
+
+Chercher « les réglages optimaux » de l'order flow, c'est ici trouver le réglage qui a eu de la chance sur les mois
+passés : il ne dure pas le mois suivant, et le hasard en produit d'aussi beaux. **Aucun réglage optimal de l'order flow
+n'existe dans ces 7 mois de tape réel du NQ**, ni pour le repli absorbé, ni pour la cassure ratée, ni pour le volume
+d'arrêt du footprint.

@@ -1,0 +1,49 @@
+Partie 2, reglage glissant : au debut de chaque mois, la configuration au meilleur score sur tout le passe (depuis avril) est jouee le mois suivant. Hors echantillon : mai - 16 octobre 2026.
+
+  reel : hors echantillon 112 seances, total -276 pt (-552 $ par MNQ), t par seance -1.77
+    2026-05 : choisie F1 (score passe 3.03, t passe +3.03) -> 20 trades, -105 pt
+        F1 repli absorbe : delta 30 min, VWAP exige, repli 10 min, desequilibre au-dela du quantile 30, volume >= 0.0 x mediane 30 min, cloture favorable exigee | objectif 1.5 R, 10 min, stop min 3 pt, signaux jusqu'a 15 h, sens inverse
+    2026-06 : choisie F1 (score passe 2.64, t passe +2.64) -> 5 trades, -42 pt
+        F1 repli absorbe : delta 60 min, VWAP exige, repli 5 min, desequilibre au-dela du quantile 10, volume >= 1.5 x mediane 30 min, cloture favorable libre | objectif aucun, 10 min, stop min 3 pt, signaux jusqu'a 12 h, sens du setup
+    2026-07 : choisie F1 (score passe 2.37, t passe +2.37) -> 18 trades, +5 pt
+        F1 repli absorbe : delta 30 min, VWAP libre, repli 10 min, desequilibre au-dela du quantile 30, volume >= 1.5 x mediane 30 min, cloture favorable libre | objectif 2 R, 10 min, stop min 10 pt, signaux jusqu'a 12 h, sens du setup
+    2026-08 : choisie F1 (score passe 2.15, t passe +2.15) -> 18 trades, -76 pt
+        F1 repli absorbe : delta 60 min, VWAP exige, repli 3 min, desequilibre au-dela du quantile 10, volume >= 0.0 x mediane 30 min, cloture favorable exigee | objectif 1.5 R, 30 min, stop min 6 pt, signaux jusqu'a 15 h, sens du setup
+    2026-09 : choisie F1 (score passe 2.33, t passe +2.33) -> 13 trades, -54 pt
+        F1 repli absorbe : delta 30 min, VWAP libre, repli 5 min, desequilibre au-dela du quantile 20, volume >= 0.0 x mediane 30 min, cloture favorable exigee | objectif 2 R, 30 min, stop min 6 pt, signaux jusqu'a 12 h, sens inverse
+    2026-10 : choisie F2 (score passe 2.51, t passe +2.51) -> 6 trades, -3 pt
+        F2 cassure ratee : niveaux les deux, agression aucune, echec en 5 min | objectif 1.5 R, 60 min, stop min 3 pt, signaux jusqu'a 12 h, sens du setup
+  bruit11 : hors echantillon 112 seances, total -203 pt (-406 $ par MNQ), t par seance -1.20
+    2026-05 : choisie F2 (score passe 2.82, t passe +2.82) -> 7 trades, -5 pt
+    2026-06 : choisie F1 (score passe 2.66, t passe +2.66) -> 7 trades, -18 pt
+    2026-07 : choisie F1 (score passe 2.37, t passe +2.37) -> 44 trades, -68 pt
+    2026-08 : choisie F1 (score passe 2.48, t passe +2.48) -> 17 trades, -88 pt
+    2026-09 : choisie F1 (score passe 2.05, t passe +2.05) -> 19 trades, -10 pt
+    2026-10 : choisie F1 (score passe 2.09, t passe +2.09) -> 4 trades, -14 pt
+  bruit12 : hors echantillon 112 seances, total -257 pt (-514 $ par MNQ), t par seance -0.74
+    2026-05 : choisie F1 (score passe 3.55, t passe +3.55) -> 53 trades, -9 pt
+    2026-06 : choisie F1 (score passe 2.34, t passe +2.34) -> 7 trades, -1 pt
+    2026-07 : choisie F1 (score passe 2.79, t passe +2.79) -> 14 trades, -209 pt
+    2026-08 : choisie F3 (score passe 1.93, t passe +1.93) -> 21 trades, -75 pt
+    2026-09 : choisie F1 (score passe 2.11, t passe +2.11) -> 40 trades, -8 pt
+    2026-10 : choisie F1 (score passe 1.98, t passe +1.98) -> 24 trades, +44 pt
+  bruit13 : hors echantillon 112 seances, total -122 pt (-245 $ par MNQ), t par seance -0.69
+    2026-05 : choisie F1 (score passe 3.02, t passe +3.02) -> 21 trades, +20 pt
+    2026-06 : choisie F1 (score passe 2.24, t passe +2.24) -> 5 trades, +4 pt
+    2026-07 : choisie F1 (score passe 2.30, t passe +2.30) -> 23 trades, -201 pt
+    2026-08 : choisie F1 (score passe 2.44, t passe +2.44) -> 17 trades, +131 pt
+    2026-09 : choisie F1 (score passe 2.89, t passe +2.89) -> 17 trades, -47 pt
+    2026-10 : choisie F1 (score passe 2.28, t passe +2.28) -> 8 trades, -29 pt
+  bruit14 : hors echantillon 112 seances, total -165 pt (-330 $ par MNQ), t par seance -1.06
+    2026-05 : choisie F1 (score passe 2.81, t passe +2.81) -> 9 trades, -82 pt
+    2026-06 : choisie F2 (score passe 2.26, t passe +2.40) -> 4 trades, +78 pt
+    2026-07 : choisie F2 (score passe 2.95, t passe +2.95) -> 9 trades, -8 pt
+    2026-08 : choisie F2 (score passe 2.48, t passe +2.48) -> 13 trades, +53 pt
+    2026-09 : choisie F2 (score passe 2.84, t passe +2.84) -> 9 trades, -78 pt
+    2026-10 : choisie F2 (score passe 2.55, t passe +2.55) -> 13 trades, -127 pt
+
+Decision fixee a l'avance : reglage glissant pas utile (t -1.77, seuil 1,65, et mieux que les 4 bruits)
+
+Meilleure configuration sur tout l'historique (avril - 16 octobre ; descriptif, chiffres optimistes car choisie sur ces memes seances) :
+  F2 cassure ratee : niveaux les deux, agression aucune, echec en 5 min | objectif 2 R, 60 min, stop min 3 pt, signaux jusqu'a 12 h, sens du setup
+  104 trades, net moyen +6.32 pt, t par seance +2.45, configuration n. 82358
