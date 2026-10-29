@@ -497,3 +497,24 @@ heure de New York). Aucune de ces séances n'a servi à aucun calcul du projet.
 - **Mesuré** : S1, S2 et S2b exactement comme le bot les trade (C1 demande le footprint par prix, absent de l'export) ;
   trades, résultat jour par jour, et contrôle que le moteur C# du bot donne les mêmes trades que le Python.
 - **Point d'étape, aucune décision** : 7 séances. La barre pour le réel (40 trades en direct, t ≥ 2,24) ne change pas.
+
+### Résultat du point d'étape (29 octobre 2026) : `resultats/point_19_27oct.txt`
+
+| Règle (choisie avant le 17 octobre) | Trades | Gagnants | Points | $ par MNQ |
+|---|---|---|---|---|
+| S1 | 2 | — | +3,5 | +7 |
+| S2 | 2 | 2 | +61,0 | +122 |
+| **S2b** (meilleure des 89 100 configurations de la partie 2) | **6** | **5** | **+132,0** | **+264** |
+| Partie 3 : meilleure configuration au 16 octobre (G6, gros lots) | 0 | — | — | l'export n'a pas la taille de chaque transaction |
+| Partie 3 : meilleure sans G6 (G7, VWAP ± 2 σ et flux en désaccord) | 8 | 4 | −76,0 | −152 |
+
+- S2b, trade par trade (heure de New York) : 20/10 10 h 02 achat −14,0 ; 20/10 10 h 30 vente +49,5 ; 21/10 10 h 00 vente
+  +17,0 ; 21/10 10 h 51 vente +29,0 ; 23/10 10 h 31 vente +32,0 ; 27/10 10 h 03 vente +18,5. t par trade 2,55 sur 6 trades.
+  Sur tout l'historique et ces séances : 111 trades, +6,83 points par trade.
+- Le choix « sans G6 » a été décidé après avoir vu que l'export n'a pas les gros lots, avant de voir son résultat.
+- Contrôle : le moteur C# du bot donne exactement les mêmes trades que le Python, séances neuves comprises (S1 30,
+  S2 71, S2b 111, C1 218 ; 0 écart).
+- **Lecture** : S2b tient sur les premières séances qu'elle n'avait jamais vues, G7 non. Six trades restent un petit
+  échantillon (un ou deux trades de plus dans un sens ou dans l'autre changent beaucoup le total) ; la barre pour le
+  réel (40 trades en direct) n'est pas franchie. S2b n'a pas de condition d'order flow : c'est une cassure ratée des
+  niveaux de la veille et de la première heure.
