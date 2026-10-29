@@ -656,9 +656,9 @@ La combinaison choisie est jouée l'année Y. Les années jouées (2014 - 25 sep
 
 ### Contrôle du hasard
 
-Les mêmes méthodes sont refaites 200 fois sur des stratégies **sans avantage** : chaque série est décalée d'un nombre
-d'années tiré au hasard (permutation circulaire par années, la même pour toutes les stratégies d'un tirage, ce qui garde
-leurs corrélations) **et recentrée sur zéro** (sa moyenne de 2011 - 2026 retirée). Ce que M1 et M2 « gagnent » alors
+Les mêmes méthodes sont refaites 200 fois sur des stratégies **sans avantage** : toutes les séries sont décalées
+ensemble (permutation circulaire) d'un nombre de séances tiré au hasard entre 252 et n − 252 (au moins un an), ce qui
+garde leurs corrélations, **puis chacune est recentrée sur zéro** (sa moyenne de 2011 - 2026 retirée). Ce que M1 et M2 « gagnent » alors
 hors échantillon mesure ce que la sélection seule fabrique.
 
 ### Décision (fixée maintenant)
