@@ -1,0 +1,1 @@
+coffre ouvert ; empreinte sha256 de finalistes.json : ca8e4add20aa82dbc86e4a6cc07ef10ee15a1ef41a6a7c0b982ef03f4faa3b67

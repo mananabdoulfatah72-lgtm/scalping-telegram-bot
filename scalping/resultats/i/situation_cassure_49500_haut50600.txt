@@ -1,0 +1,10 @@
+Controle : 3562 trades H1 lus, 3562 recalcules, 3562 communs.
+Situation : solde 49,500 $, plus haut 50,600 $, plancher 48,100 $, 13 seances, limite du jour 1,000 $, 4 puis 6 MNQ (2 puis 4 et 6 puis 8 en plus).
+
+zone                                     MNQ       2012-2026 : valide  perdu  expire  2023-2026 : valide  perdu  expire
+controles de 30 min (le bot)             4 puis 6    29.2%   57.0%   13.8%      30.8%   58.1%   11.2%
+controles de 30 min (le bot)             2 puis 4    20.4%   40.0%   39.6%      19.8%   43.8%   36.4%
+controles de 30 min (le bot)             6 puis 8    31.1%   63.1%    5.7%      31.0%   63.9%    5.2%
+entree a la cassure, chaque minute (E1)  4 puis 6    29.6%   61.3%    9.2%      31.8%   58.7%    9.5%
+entree a la cassure, chaque minute (E1)  2 puis 4    21.6%   48.1%   30.2%      20.4%   49.4%   30.1%
+entree a la cassure, chaque minute (E1)  6 puis 8    31.3%   65.3%    3.4%      32.7%   64.5%    2.8%

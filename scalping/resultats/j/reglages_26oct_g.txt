@@ -1,0 +1,17 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23.
+
+configuration                      trades  points  t 11-22  t 23-26 j. -1000$  2023 4MNQ  2024 4MNQ  2025 4MNQ  2026 4MNQ valide 12-26 valide 25-26
+bot d'avant                          3577  +10558    +3.75    +2.27       638    +32,301    +16,655     -4,531     +2,926        24.2%        18.9%
+version A                            4445   +8569    +3.39    +1.88       677    +33,542    +13,522     +5,157     +1,131        25.2%        20.2%
+regle x1, fenetre 0 min              2247   +2833    +0.57    +1.50       335    +22,628       -298    +19,898    +10,664        19.7%        22.6%
+regle x1, fenetre 3 min              2380   +1612    +0.54    +0.96       377    +20,828     +6,130        -98    +13,524        19.8%        21.1%
+regle x1, fenetre 5 min (CHOIX)      2400   +1968    +0.66    +1.04       383    +20,828    +12,010     -1,413    +11,677        19.9%        20.4%
+regle x1, fenetre 10 min             2415   +2464    +0.75    +1.21       390    +21,757    +13,935       -884    +13,162        19.9%        21.3%
+regle x0.8, fenetre 5 min            2462    +550    +0.62    +0.77       397    +21,670    +10,712     -3,027     +4,601        20.0%        19.1%
+regle x1.2, fenetre 5 min            2299   +1192    +0.17    +1.33       364    +22,902     +8,104    +10,727     +9,226        20.0%        18.9%
+regle x1, fenetre 5, moy 20 min      2420   +1616    +0.84    +0.91       381    +22,369    +11,983       -418     +6,331        19.9%        20.2%
+regle x1, fenetre 5, moy 40 min      2392    +884    +0.45    +0.96       386    +18,715    +11,168        +93     +6,642        19.4%        20.2%
+
+(points bruts 1 MNQ frais deduits ; t des gains quotidiens, jours sans Fed ; j. -1000$ = journees a -1 000 $ en 4 MNQ sur 15 ans ; $ par an en 4 MNQ au prix d'aujourd'hui, limite du jour 1 000 $ ; valide : 49 500 $, marge 1 000 $, 13 seances, 4 puis 6 MNQ, departs 2012-2026 et depuis 2025)
+
+Octobre 2026 jour par jour, CHOIX, 4 MNQ : 1:-518 5:+1,327 8:+726 12:+364 14:-449 16:+4,222 19:-452 20:-1,000 21:-246 22:+2,452 23:-89   total +6,339 $

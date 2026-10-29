@@ -1,0 +1,28 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23 (4061 seances). Controle : bot recalcule 3577 trades, zone de partie_g 3577, communs 3577.
+
+variante                           trades   points objectif risque med  t 11-22  t 23-26    2025    2026 jours -250$
+bot (controles seuls)                3577   +10558       0%       5.75    +3.75    +2.27    +942   +1311         638
+J0 cassure sans objectif             5921    +2629       0%       1.45    +2.55    +0.93   -1412    -424         789
+J2 cassure, objectif 2 x risque      5921    -7820      64%       1.45    -1.24    -0.86   -2986     -85         444
+J3 cassure, objectif 3 x risque      5921    -5737      57%       1.45    -0.32    -0.47   -2585    +261         512
+J2s idem + vrai stop (info)          5921    -9072      22%       1.45    -2.51    -1.73   -1470    -966         171
+J3s idem + vrai stop (info)          5921    -6706      18%       1.45    -1.56    -0.75   -1376    -454         179
+JV2 risque au VWAP, 2 x              5921    -3808      17%      17.66    +1.64    -0.25   -4491   -1288         728
+JV3 risque au VWAP, 3 x              5921    -2307      11%      17.66    +1.57    +0.19   -4089    -921         757
+JM2 risque = largeur zone, 2 x       5921     -462      13%      27.43    +2.29    +0.63   -3618    -381         745
+JM3 risque = largeur zone, 3 x       5921    +2023       7%      27.43    +2.84    +0.93   -2352    -606         776
+
+(points bruts pour 1 MNQ, frais de 1,5 point deduits ; t des gains quotidiens au prix d'aujourd'hui, jours sans Fed ; jours -250$ = 1 000 $ en 4 MNQ, au pire de chaque minute)
+
+Challenge, 4 puis 6 MNQ, limite du jour 1 000 $, departs 2012-2026 : valide / perdu / expire
+variante                             49 500 $, plus haut 51 172    49 500 $, plus haut 50 600    challenge neuf, 21 seances
+bot (controles seuls)                 20.8%  72.5%   6.7%    29.4%  56.8%  13.8%    48.0%  44.6%   7.3%
+J0 cassure sans objectif              21.5%  74.1%   4.4%    29.5%  62.3%   8.3%    45.4%  50.3%   4.3%
+J2 cassure, objectif 2 x risque        7.5%  69.4%  23.1%     8.9%  52.9%  38.3%    19.0%  43.4%  37.7%
+J3 cassure, objectif 3 x risque        9.9%  70.9%  19.3%    12.1%  53.1%  34.8%    24.6%  44.8%  30.6%
+J2s idem + vrai stop (info)            4.6%  68.1%  27.3%     5.7%  47.4%  46.9%    13.6%  38.6%  47.8%
+J3s idem + vrai stop (info)            7.7%  69.0%  23.3%     9.5%  48.1%  42.4%    20.5%  38.8%  40.7%
+JV2 risque au VWAP, 2 x               18.4%  73.8%   7.8%    23.8%  61.9%  14.4%    39.5%  51.7%   8.7%
+JV3 risque au VWAP, 3 x               20.5%  73.6%   5.9%    26.8%  62.0%  11.2%    42.4%  51.4%   6.2%
+JM2 risque = largeur zone, 2 x        19.6%  73.0%   7.4%    26.4%  60.7%  13.0%    42.6%  50.8%   6.6%
+JM3 risque = largeur zone, 3 x        20.6%  74.0%   5.4%    27.7%  62.4%  10.0%    43.7%  50.5%   5.8%

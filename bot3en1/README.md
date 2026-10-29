@@ -1,11 +1,14 @@
-# Bot 3 en 1 pour Quantower (zone de bruit + filtre delta + RSI(2))
+# Bot 3 en 1 pour Quantower (zone de bruit, entrée à la cassure + filtre delta, décoché par défaut + RSI(2))
 
 Le bot qui trade pour de vrai, sur un compte Rithmic (par exemple DayTraders) avec Quantower. Il regroupe :
 - **la zone de bruit** (V1, `zone/robot.py` sur main) : contrôle toutes les 30 minutes de 10 h à 15 h 30, sortie au
-  plus tard à 16 h (heure de New York) ;
+  plus tard à 16 h (heure de New York). **Depuis le 26 octobre 2026, entrée à la cassure par défaut** (réglage « Zone :
+  entree a la cassure ») : entre deux contrôles, le bot entre dès qu'une minute clôture au-delà des niveaux du dernier
+  contrôle ;
 - **le filtre delta** (H1, `orderflow/`) : une entrée de zone n'est prise que si le delta (achats agressifs − ventes
   agressives) des 30 minutes du NQ va dans son sens. Le delta est lu en direct dans les transactions Rithmic, plus
-  besoin de Databento ;
+  besoin de Databento. **Décoché par défaut depuis le 26 octobre 2026** (réglage « Filtre delta de la zone ») : la zone
+  seule prend chaque cassure vue à un contrôle ;
 - **le RSI(2)** de Connors (`tournoi8/`) : décision à 15 h 50 (heure de New York), position tenue la nuit et le
   week-end si la règle le dit.
 
@@ -19,7 +22,9 @@ Taille : 1 MNQ par source. La position nette sur MNQ est la somme des deux (zone
 | `Bot3en1.Quantower/` | L'adaptateur Quantower : lit les transactions du NQ, construit les minutes, appelle le moteur, aligne la position sur MNQ, envoie les messages Telegram. |
 | `Bot3en1.Replay/` | Rejeu de vérification sur des barres historiques. |
 | `Bot3en1.TestQuantower/` | Joue l'adaptateur, transaction par transaction, contre une imitation de Quantower. |
-| `installer.bat`, `installer.ps1` | Installation sur le PC (double-clic). |
+| `Bot3en1.TestPlafond/` | Contrôles du plafond du jour (système Static) sur le moteur seul, avec des prix fabriqués. |
+| `telecharger.ps1` | Installation en une ligne à coller dans PowerShell : télécharge seulement ce dossier, puis lance `installer.ps1`. Recoller la ligne met le bot à jour : `irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/exciting-fermat-sea2l2/bot3en1/telecharger.ps1 \| iex` |
+| `installer.bat`, `installer.ps1` | Installation sur le PC (double-clic) : dans Quantower et/ou Optimus Flow (une version de Quantower, gratuite avec la démo Optimus Futures). Si la plateforme n'est pas trouvée, glisser son dossier sur `installer.bat` ou coller son chemin quand le script le demande. Sans winget (Windows Server 2022 des serveurs loués), le kit .NET s'installe avec le script officiel de Microsoft. |
 
 ## Vérifications faites (3 octobre 2026)
 
@@ -44,7 +49,34 @@ Relancer les vérifications (avec le kit .NET 8) :
 dotnet run -c Release --project Bot3en1.Replay -- <nasdaq100_1min.csv.gz> <agresseurs.csv.gz> 2026-04-01 2026-09-25
 SANS_FILTRE=1 dotnet run -c Release --project Bot3en1.Replay -- <nasdaq100_1min.csv.gz> - 2023-01-03 2026-09-25
 dotnet run -c Release --project Bot3en1.TestQuantower -- <dossier avec nq_1min.csv.gz> <nq_1min.csv.gz> <agresseurs.csv.gz> 2026-04-01 2026-09-25
+PLAFOND=500 dotnet run -c Release --project Bot3en1.TestQuantower -- <memes arguments>
+dotnet run -c Release --project Bot3en1.TestPlafond
 ```
+
+**Plafond du jour corrigé pour le système Static (8 octobre 2026)** :
+- **Le défaut.** Le plafond comptait le gain d'un RSI(2) gardé depuis plusieurs jours à partir de son prix
+  d'achat, et non depuis la veille. Il ne regardait pas non plus la nuit.
+- **Maintenant, il fait ce que `static50k/` a simulé :**
+  - le gain du jour est compté depuis le début de la journée de trading de la firme (18 h la veille). Un RSI(2) gardé
+    la nuit compte à partir du dernier prix avant la pause de 17 h ;
+  - le plafond est vérifié en séance à chaque fin de minute, et hors séance (après la fin de la séance, et avant
+    9 h 30) à chaque transaction du NQ ;
+  - une fois le plafond atteint, plus rien jusqu'à 18 h ;
+  - en cas de redémarrage dans la journée, le bot reprend le gain déjà réalisé, la référence du RSI(2) et le plafond
+    atteint (`etat.json`).
+- **Revue de code indépendante, puis corrections :**
+  - le gain du jour et la référence étaient perdus au redémarrage ;
+  - pendant 2 secondes à 16 h, le plafond de nuit pouvait partir avant la fermeture de la zone ;
+  - la nuit, le plafond n'était vérifié qu'une fois par demi-seconde ;
+  - une transaction de 18 h pouvait arriver avant le changement de journée.
+- **Vérifié :**
+  - `Bot3en1.TestPlafond` : 15 contrôles sur 15 ;
+  - avec le plafond à 0, les deux rejeux (+21 767,0 $ et +4 366,0 $) et le test de l'adaptateur (164 ordres, +4 370,0 $,
+    position finale à plat, aucune erreur) sont identiques à avant la correction ;
+  - avec `PLAFOND=500` et une transaction chaque soir à 19 h, l'adaptateur passe par 18 h et par le plafond hors séance
+    sans erreur : 14 plafonds atteints d'avril à septembre 2026, 160 ordres, position finale à plat.
+- **Limite des tests.** Le rejeu et le test de l'adaptateur n'ont que les minutes de 9 h 30 à 16 h. Leur référence
+  pour le RSI(2) est donc la clôture de 16 h, alors qu'en direct c'est le dernier prix avant 17 h.
 
 Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par seconde regroupés par minute).
 
@@ -67,11 +99,437 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
   - le bot prévient si les symboles choisis ne sont plus ceux du jour. Il faut alors choisir les nouveaux (NQ et
     MNQ) dans les réglages, quatre fois par an.
 - **Arrêt d'urgence :** créer un fichier nommé `STOP` dans `C:\Bot3en1` : le bot ferme tout et ne trade plus.
+- **Message à chaque contrôle (19 octobre 2026)** : toutes les 30 minutes, le journal et Telegram donnent l'heure de Paris
+  et de New York, le prix, les limites d'achat et de vente, le VWAP, le delta des 30 minutes et la décision (achat,
+  vente, cassure écartée, en position avec son niveau de sortie, trade écarté en attente de relance, pas de signal).
+  Aucune décision ne change : mêmes ordres que sans message (banc et adaptateur avec le vrai delta).
+- **Relance du filtre (19 octobre 2026, `relance/README.md`)** : réglage « Filtre delta : relance ». **Décoché par défaut
+  depuis le 20 octobre 2026**, à la demande de l'utilisateur :
+  - le 20 octobre, le bot a acheté après le mouvement, puis le prix a été rejeté et s'est retourné : −1 002 $, coupé par
+    la limite de perte du jour ;
+  - une relance entre plus tard que la cassure, donc plus loin de sa sortie. Jusqu'au contrôle suivant, seule la limite
+    de perte du jour la protège. Même la relance du 16 octobre, qui avait motivé son adoption, est descendue à
+    −130,75 points avant de gagner : en 4 MNQ, la limite de 1 000 $ l'aurait coupée ;
+  - 5 relances en 136 séances avec le vrai delta : trop peu pour juger. Étude `entree_tardive/` (branche
+    `claude/elegant-ptolemy-g94s8t`) : entrer dès la cassure, sortir à la minute ou refuser les entrées trop loin de la
+    limite font toutes moins bien que le bot sans relance, sur 15 ans comme dans le challenge de 16 séances ;
+  - au lancement, le bot écrit « relance du filtre decochee » ou « COCHEE ». Un réglage déjà enregistré dans Quantower
+    peut garder son ancienne valeur : vérifier cette ligne ;
+  - vérifié : réglage par défaut, ordres et journal du moteur identiques octet pour octet à l'ancienne version avec
+    `RELANCE=0` (avril - 25 septembre 2026, vrai delta : 164 ordres, +4 370,0 $ ; et en mode à plat avec les réglages du
+    challenge). Avec `RELANCE=1`, identiques à l'ancienne version par défaut (172 ordres, +4 537,5 $).
+- **Filtre delta décoché par défaut (26 octobre 2026)** : réglage « Filtre delta de la zone », à la demande de
+  l'utilisateur :
+  - message du 26 octobre : sur le challenge Bulenox, le filtre a écarté l'achat à la cassure de la zone (delta négatif). Le bot
+    a acheté plus tard, plus haut, puis le prix s'est retourné : −1 000 $, coupé par la limite de perte du jour ;
+  - décoché, chaque cassure vue à un contrôle de 30 minutes est prise, quel que soit le delta. L'entrée se fait
+    toujours à un contrôle, et la sortie quand le prix repasse la limite ou le VWAP à un contrôle : il n'y a pas
+    d'objectif de prix fixe ;
+  - c'est la version mesurée sur 15 ans (2011 - 2026). Le filtre n'a été confirmé que sur avril - octobre 2026 (coffre
+    t = 2,34, 5 trades écartés). Sur 15 ans, l'approximation par les barres ne le confirme pas (t = 1,62). Sur les
+    7 trades mesurés avec le vrai delta Rithmic depuis le 2 octobre, il a écarté le meilleur (+447,75 points) : zone
+    seule +668 points, zone filtrée +220 (`filtre_h1/resultat_rithmic.txt`, trop peu de trades pour décider) ;
+  - quand le filtre est décoché, la relance n'a plus d'effet (aucun trade n'est écarté par le delta) ;
+  - au lancement, le bot écrit « filtre delta decoche (zone seule) » ou « COCHE ». Vérifier cette ligne ;
+  - vérifié (avril - 23 octobre 2026, mode à plat, 4 MNQ, limite 1 000 $) : décoché, ordres, journal et messages
+    identiques octet pour octet à l'ancienne version avec `SANS_FILTRE=1` (105 trades de zone pris, 190 ordres, 0
+    position la nuit). Coché, identiques à l'ancienne version par défaut. `Bot3en1.TestQuantower` garde le filtre coché
+    sauf avec `SANS_FILTRE=1`, pour que les vérifications ci-dessus restent comparables.
+- **Entrée à la cassure, cochée par défaut (26 octobre 2026)** : réglage « Zone : entree a la cassure », à la demande
+  de l'utilisateur, qui en assume le risque :
+  - entre deux contrôles (10 h - 15 h 30, New York), dès qu'une minute clôture au-dessus du niveau d'achat ou sous le
+    niveau de vente **du dernier contrôle**, et que le bot n'a aucun trade en cours, il entre tout de suite (ordre envoyé
+    environ 2 secondes après la fin de la minute). Le journal et Telegram l'écrivent « (cassure entre deux controles) » ;
+  - rien d'autre ne change : niveaux et σ calculés aux contrôles, décisions et sorties aux contrôles de 30 minutes
+    (sortie quand le prix repasse la limite ou le VWAP), sortie à 16 h, limite de perte du jour, objectif, frein, Fed ;
+  - pas d'entrée avant le contrôle de 10 h, ni après celui de 15 h 30, ni après l'arrêt du jour ;
+  - mesuré avant d'être codé (`scalping/README.md`, parties J et K, variante J0) : sur 15 ans, 5 921 trades au lieu de
+    3 577, +2 629 points au lieu de +10 558 (1 MNQ, frais déduits), perdant en 2025 (−1 412) et en 2026 (−424) ; 53 % des
+    cassures entre deux contrôles sont revenues dans la zone au contrôle suivant (−16,5 points en moyenne). Dans le
+    challenge à 49 500 $ avec 1 000 $ de marge (13 séances, 4 puis 6 MNQ), chances de valider égales : 24,3 % contre
+    24,2 % ; plus de comptes perdus (70,5 % contre 67,6 %) et moins de challenges expirés. Sur le compte Master, la
+    décocher est conseillé ;
+  - vérifié : le moteur C# (`Bot3en1.Replay`, `CASSURE=1 SANS_FILTRE=1`) redonne trade par trade les 5 921 trades du
+    calcul Python (2011 - 23 octobre 2026), dont 4 387 entrés entre deux contrôles ; décoché, les 3 577 trades et
+    +10 557,75 points de la zone. Adaptateur transaction par transaction (avril - 23 octobre 2026, mode à plat, 4 MNQ,
+    limite 1 000 $) : 165 trades de zone dont 120 à la cassure, à plat chaque soir, 0 erreur hors limite du jour
+    (20 journées coupées contre 15). Décoché, ordres, journal et messages identiques octet pour octet à la version
+    d'avant. `Bot3en1.TestQuantower` garde l'entrée aux seuls contrôles sauf avec `CASSURE=1` ;
+  - `Bot3en1.TestAPlat` et `Bot3en1.TestPlafond` : tous les contrôles passent.
+- **Laisser courir (26 octobre 2026)** : réglage « Zone : laisser courir », coché par défaut à la demande de
+  l'utilisateur :
+  - une seule entrée de zone par séance (la première cassure) ;
+  - sortie à un contrôle seulement si le prix repasse le niveau cassé à l'entrée (figé), au lieu de la limite du
+    contrôle (qui monte au fil de la journée) ou du VWAP. Sortie de 16 h, limite du jour, objectif et frein inchangés ;
+  - le message de contrôle donne ce niveau de sortie ; après la sortie : « plus d'entree aujourd'hui » ;
+  - mesuré avant d'être codé (`scalping/README.md`, partie L, variante L1a), avec l'entrée à la cassure : sur 15 ans,
+    2 769 trades, +5 120 points (contre +2 629 pour l'entrée à la cassure seule et +10 558 pour l'entrée aux seuls
+    contrôles), 585 journées à −1 000 $ en 4 MNQ (789 et 638), 2025 −562, 2026 +648. Dans le challenge avec 1 000 $ de
+    marge : 25,1 % de validés (24,3 % et 24,2 %, écarts dans le bruit) ;
+  - vérifié : le moteur C# (`Bot3en1.Replay`, `CASSURE=1 COURIR=1 SANS_FILTRE=1`) redonne trade par trade les 2 769
+    trades du calcul Python ; décoché, rejeu et adaptateur identiques octet pour octet à la version d'avant (avec et
+    sans entrée à la cassure). Adaptateur, avril - 23 octobre 2026, mode à plat, 4 MNQ, limite 1 000 $ : 91 trades de
+    zone, +1 291,5 $ pour 1 MNQ (entrée à la cassure seule : −339 $ ; entrée aux contrôles : +455,5 $), 12 journées
+    coupées par la limite (20 et 15), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond passent.
+- **Cassure confirmée par le volume (26 octobre 2026)** : réglage « Zone : entree a la cassure confirmee par le volume »,
+  coché par défaut à la demande de l'utilisateur. Version voulue : entrée à la cassure + volume + laisser courir, filtre
+  delta décoché (ce sont les réglages par défaut) :
+  - entre deux contrôles, la minute qui clôture au-delà du niveau doit aussi avoir un volume d'au moins 2 fois la
+    moyenne des 30 minutes d'avant (volume du NQ compté dans les transactions reçues). Sinon, pas d'entrée à cette
+    minute ; une minute suivante peut confirmer. Aux contrôles, rien ne change ;
+  - le journal et Telegram écrivent le volume et le multiple, par exemple « (cassure entre deux controles, volume 3363 =
+    2.5 x la moyenne des 30 minutes) ». Au lancement : « CONFIRMEE PAR LE VOLUME (x2) » ;
+  - mesuré avant d'être codé (`scalping/README.md`, partie M, variante M1V) : sur 15 ans, 2 521 trades, +6 387 points
+    (laisser courir sans volume : +5 120), t +2,86 / +1,09 (+2,31 / +0,88), 2025 −219 (−562), 2026 +16 (+648). Challenge
+    avec 1 000 $ de marge : 23,7 % de validés (25,1 %), écart dans le bruit ;
+  - vérifié : le moteur C# (`Bot3en1.Replay`, `CASSURE=1 COURIR=1 VOLUME=1 SANS_FILTRE=1`) redonne trade par trade les
+    2 521 trades du calcul Python ; décoché, rejeu et adaptateur identiques octet pour octet à la version d'avant (bot
+    d'avant, cassure seule, laisser courir). Adaptateur avec les réglages de l'utilisateur, avril - 23 octobre 2026,
+    mode à plat, 4 MNQ, limite 1 000 $ : 81 trades de zone dont 22 à la cassure, −692 $ pour 1 MNQ (sans volume :
+    +1 291,5 $), 16 journées coupées par la limite (12), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et
+    TestPlafond passent.
+- **Sortie dès le retour au niveau cassé** : ajoutée puis retirée le 26 octobre 2026 à la demande de l'utilisateur, qui
+  garde la sortie aux contrôles (laisser courir). Mesures : `scalping/reglages_26oct.py`, parties N et P.
+- **Règle de l'utilisateur (26 octobre 2026 au soir), réglages par défaut** :
+  - entrée à la cassure (« Zone : entree a la cassure »), confirmée par le volume (« … confirmee par le volume »), avec un
+    multiple réglable (« Zone : multiple du volume », **1 par défaut** : la minute de la cassure a au moins le volume moyen
+    des 30 minutes d'avant) ;
+  - **pas d'entrée tardive** (« Zone : pas d'entree tardive ») : entrée seulement à la minute où le prix franchit le niveau
+    (minute d'avant encore dans la zone), aux contrôles comme entre eux, avec le volume. Une cassure ratée n'est pas
+    rattrapée plus loin ; il faut que le prix revienne dans la zone et casse de nouveau. Le message de contrôle l'écrit
+    (« prix deja au-dela du niveau sans cassure confirmee : pas d'entree tardive ») ;
+  - **une seule entrée par séance, sortie seulement au retour sous le niveau cassé** (« Zone : une seule entree par seance
+    et sortie seulement au retour sous le niveau casse », réglage `LaisserCourir` du moteur) : sortie à un contrôle de
+    30 minutes si le prix est repassé de l'autre côté du niveau cassé à l'entrée (figé), sinon à 16 h. Limite de perte du
+    jour (1 000 $), objectif et filet de 16 h 30 inchangés ; filtre delta décoché ;
+  - mesuré (`scalping/reglages_26oct_f.py`) : sur 15 ans, 2 247 trades, +2 833 points pour 1 MNQ, t +0,57 / +1,50 ;
+    335 journées à −1 000 $ en 4 MNQ (bot d'avant : 638). En 4 MNQ : 2025 +19 898 $, 2026 +10 664 $ (au 23 octobre).
+    Challenge avec 1 000 $ de marge : 19,7 % validés sur les départs 2012 - 2026, 22,6 % sur les départs depuis 2025
+    (version A : 20,2 % ; bot d'avant : 18,9 %). Avec un multiple de 2 : 1 121 trades, 12,6 % validés (trop peu de trades) ;
+  - vérifié : le rejeu C# (`CASSURE=1 VOLUME=1 VOLMULT=1 SANS_TARDIVE=1 COURIR=1 SANS_FILTRE=1`) redonne trade par trade
+    les 2 247 trades du calcul Python (et les 1 121 avec `VOLMULT=2`) ; les autres modes (bot d'avant, cassure seule,
+    version A, laisser courir + volume) sont identiques octet pour octet à avant. Adaptateur avec ces réglages, avril -
+    23 octobre 2026, mode à plat, 4 MNQ, limite 1 000 $ : 70 trades, +2 512 $ pour 1 MNQ, 3 journées coupées par la
+    limite, à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond passent.
+- **Fenêtre de confirmation (26 octobre 2026 au soir)** : réglage « Zone : fenetre de confirmation en minutes », **5 par
+  défaut** à la demande de l'utilisateur (fixé avant le calcul : « quelques minutes ») :
+  - si la minute qui franchit le niveau n'a pas le volume, une des 5 minutes suivantes peut confirmer, tant que le prix
+    clôture toujours au-delà du niveau. S'il revient dans la zone, il faut une nouvelle cassure. 0 = seulement la minute
+    de la cassure. Le message l'écrit, par exemple « (cassure entre deux controles, volume 866 = 1.3 x la moyenne des 30
+    minutes, 3 min apres la cassure) » ;
+  - mesuré (`scalping/reglages_26oct_g.py`) : 2 400 trades, +1 968 points pour 1 MNQ, t +0,66 / +1,04, 383 journées à
+    −1 000 $ en 4 MNQ ; en 4 MNQ : 2023 +20 828 $, 2024 +12 010 $, 2025 −1 413 $, 2026 +11 677 $ ; validé avec 1 000 $ de
+    marge : 19,9 % (départs 2012 - 2026), 20,4 % (depuis 2025) ;
+  - sensibilité (même fichier) : le +19 898 $ de 2025 de la fenêtre 0 ne tient pas à de petits changements (fenêtre 3 :
+    −98 $ ; multiple 0,8 : −3 027 $ ; multiple 1,2 : +10 727 $). 2026 reste positif dans toutes les variantes (+4 601 à
+    +13 524 $). Le t de 2011 - 2022 reste faible partout (+0,17 à +0,84, contre +3,75 pour le bot d'avant) ;
+  - vérifié : le rejeu C# (`… FENETRE=5`) redonne trade par trade les 2 400 trades du calcul Python ; avec `FENETRE=0`, rejeu
+    et adaptateur identiques octet pour octet à la version d'avant ; autres modes inchangés. Adaptateur, avril - 23 octobre
+    2026, mode à plat, 4 MNQ, limite 1 000 $ : 76 trades dont 13 confirmés après la minute de cassure, +1 981,5 $ pour
+    1 MNQ, 4 journées coupées par la limite, à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond
+    passent.
+- **Filtres d'entrée Q1 et Q2 (27 octobre 2026)** : réglages « Zone : filtre Q1, sens de l'ouverture » et « Zone : filtre Q2,
+  tendance de fond », **décochés par défaut** (`scalping/README.md` partie Q, `scalping/reglages_27oct_q12.py`) :
+  - Q1 : achat seulement si l'ouverture de 9 h 30 est au-dessus ou au niveau de la clôture de la veille (vente : en dessous
+    ou au niveau). Q2 : achat seulement si la dernière séance complète a clôturé au-dessus de la moyenne des 20 dernières
+    clôtures complètes (vente : en dessous). Ils s'ajoutent à toutes les autres conditions d'entrée ;
+  - mesuré avec la configuration de l'utilisateur, sur 15 ans : t 2011-22 / 2023-26 de +0,66 / +1,04 sans filtre, +2,08 /
+    +1,54 avec Q1, +1,22 / +2,08 avec Q2, +1,60 / +2,44 avec les deux ; journées à −1 000 $ en 4 MNQ : 383, 240, 205, 126.
+    Mais moins de trades (2 400, 1 624, 1 219, 824) : dans le challenge avec 1 000 $ de marge et 13 séances, 19,9 %,
+    17,5 %, 15,9 % et 11,5 % de validés (moins de comptes perdus, beaucoup plus de challenges expirés). Conseillés pour le
+    compte Master, pas pour finir le challenge ;
+  - vérifié : le rejeu C# (`Q1=1`, `Q2=1`) redonne trade par trade les 1 624, 1 219 et 824 trades du calcul Python ;
+    décochés, rejeu et adaptateur identiques octet pour octet à la version d'avant. Adaptateur avec les deux cochés,
+    avril - 23 octobre 2026, 4 MNQ : 28 trades, +2 071,5 $ pour 1 MNQ, 2 journées coupées par la limite, à plat chaque
+    soir, 0 erreur. TestAPlat et TestPlafond passent.
+- **Pas de sortie aux contrôles (27 octobre 2026)** : réglage « Zone : pas de sortie aux controles », **coché par défaut** à la
+  demande de l'utilisateur. Le trade de zone n'est plus fermé aux contrôles : il est gardé jusqu'à 16 h (fermeture
+  obligatoire), sauf si la limite de perte du jour (1 000 $) ou l'objectif est atteint. Entrées inchangées (cassure,
+  volume ×1, fenêtre de 5 minutes, une entrée par séance) :
+  - mesuré (`scalping/reglages_27oct_sans_sortie.py`), 4 MNQ, prix d'aujourd'hui, limite du jour 1 000 $ : t +1,44 / +1,17
+    (sortie aux contrôles : +0,66 / +1,04) ; 2011 - 2026 +119 380 $ (+55 071 $) ; 2023 - 2026 +54 514 $ (+43 102 $) ; 2026 au
+    23 octobre +17 420 $ (+11 677 $), avril - octobre 2026 +4 493 $ (+6 717 $). Mais 48 % des journées avec trade de
+    2023 - 2026 touchent −1 000 $ (17 % avec la sortie aux contrôles), 1 071 journées à −1 000 $ en 15 ans (383). Challenge
+    avec 1 000 $ de marge : 21,9 % validés, 72,3 % perdus (19,9 / 68,0 %) ;
+  - vérifié : le rejeu C# (`… SANS_SORTIE=1`) redonne trade par trade les 2 400 trades du calcul Python ; décoché, rejeu et
+    adaptateur identiques octet pour octet à la version d'avant ; autres modes inchangés. Adaptateur, avril - 23 octobre
+    2026, mode à plat, 4 MNQ, limite 1 000 $ : 76 trades, 28 journées coupées par la limite (4 avec la sortie aux
+    contrôles), à plat chaque soir, 0 erreur hors limite du jour. TestAPlat et TestPlafond passent.
+- **Stop à 70 points au-delà du niveau cassé (27 octobre 2026)** : réglage « Zone : stop en points au-dela du niveau
+  casse », **70 par défaut** à la demande de l'utilisateur (0 = aucun stop) :
+  - achat : stop au niveau cassé − 70 points ; vente : niveau cassé + 70 points (exemple : cassure du niveau de vente
+    29 870, stop 29 940). Vérifié à chaque prix reçu (tic de 0,5 s) ; sortie au marché. Le rejeu le vérifie sur le plus
+    bas / plus haut de chaque minute (rempli au stop ± 1 tick, ou à l'ouverture si elle est déjà au-delà). Message :
+    « stop 12h03 a … (stop …, 70 points au-dela du niveau casse …) » ; le message de contrôle donne le prix du stop ;
+  - mesuré (`scalping/reglages_27oct_stop.py`, 70 points ramenés au prix de chaque jour), avec les autres réglages de
+    l'utilisateur (pas de sortie aux contrôles) : 61 % des trades stoppés ; 2023 - 2026 : 35 % de journées gagnantes,
+    +1 509 $ en moyenne, pertes de −680 $ en moyenne, 7 % des journées à −1 000 $ (48 % sans stop) ; 4 MNQ : 2011 - 2026
+    +73 967 $ (+119 380 $ sans stop), 2026 +7 963 $ (+17 420 $), avril - octobre 2026 −2 480 $ (+4 493 $) ; t +0,85 / +1,43
+    (+1,44 / +1,17) ; challenge avec 1 000 $ de marge : 21,7 % validés, 70,9 % perdus (21,9 / 72,3 %). Sensibilité : 50 points,
+    2026 +2 825 $ et 3 % de journées à −1 000 $ ; 100 points, 2026 +15 326 $ et 24 % ;
+  - vérifié : le rejeu C# (`… SANS_SORTIE=1 STOP=70`) redonne trade par trade les 2 400 trades du calcul Python (stop en
+    points fixes) ; sans stop, rejeu et adaptateur identiques octet pour octet à la version d'avant ; autres modes
+    inchangés. Adaptateur (le banc passe par le plus haut et le plus bas de chaque minute pour exercer la vérification du
+    stop à chaque prix), avril - 23 octobre 2026, 4 MNQ, limite 1 000 $ : 76 trades, 46 stops, 0 journée coupée par la
+    limite (28 sans stop), à plat chaque soir, 0 erreur. TestAPlat et TestPlafond passent.
+- **Alerte « marché invisible » (18 octobre 2026) :**
+  - dès la première transaction du NQ reçue après le lancement, le bot écrit « flux NQ recu (prix) : le bot voit le
+    marche ». Lancé vers 9 h 15 (New York), cette ligne doit apparaître en quelques secondes ;
+  - si aucune transaction n'est arrivée 3 minutes après le lancement (à partir de 8 h, le NQ s'échange avant
+    l'ouverture) ou après l'ouverture, le bot écrit en rouge « ALERTE : aucune transaction NQ recue depuis le
+    lancement », puis toutes les 15 minutes ;
+  - quand le flux revient après l'alerte de silence de 3 minutes, il écrit « flux NQ revenu » ;
+  - pourquoi : le 16 octobre 2026, le bot a tourné toute la séance sans recevoir un seul prix du NQ, et sans rien dire
+    (l'alerte de silence ne marchait qu'après une première transaction). Il a manqué une vente de 449 points. Signes
+    dans le journal : aucune ligne de zone à 10 h, et une décision du RSI(2) de 15 h 50 faite sur la clôture de la
+    veille. Le solde du compte était illisible le même jour ;
+  - **19 octobre 2026, cause probable** : un symbole ou un compte restauré depuis les réglages de Quantower peut être une
+    copie qui ne reçoit rien (d'où aussi un solde lu à 0). Au lancement, le bot reprend désormais les objets de la
+    connexion active (`Core.GetSymbol(symbole.CreateInfo())`, comme le modèle de stratégie Quantower ; compte de même Id
+    dans `Core.Accounts`), par réflexion. À chaque alerte de flux, il les reprend encore et refait l'abonnement. L'heure
+    d'une transaction est lue en UTC quel que soit son genre, et une heure illisible est signalée au lieu d'être ignorée ;
+  - le message « solde du compte illisible » est désormais en rouge, lui aussi ;
+  - **solde illisible** : le bot écrit aussi une ligne « diagnostic du solde » (valeur brute de `Account.Balance` et
+    champs du compte qui ressemblent à un solde, noms et valeurs seulement), relit le solde chaque minute et écrit
+    « solde du compte lu » dès qu'il y arrive. Tant qu'il reste illisible, le réglage « solde actuel du compte » sert
+    de point de départ : il est repris une seule fois par valeur (gardé dans l'état), puis le bot le suit avec ses
+    propres trades à 18 h. Contrôle : `SOLDE_MANUEL=51000` (plancher 48 500 $, objectif atteint dès 2 050 $ de gain,
+    valeur non reprise au lancement suivant) ;
+  - **Telegram** : jeton et numéro nettoyés (tous les espaces, même au milieu, et « bot » devant le jeton) ; un envoi refusé est écrit dans le
+    journal avec la raison donnée par Telegram et un conseil (jeton faux, numéro faux ou bouton Démarrer pas appuyé,
+    bot bloqué, internet), une seule fois tant que l'erreur ne change pas, jamais avec le jeton ;
+  - contrôle : `SANS_NQ=1` dans `Bot3en1.TestQuantower` (première alerte à 9 h 33, puis toutes les 15 minutes, aucun
+    ordre) ; `LANCEMENT=09:10` (alerte à 9 h 14, avant l'ouverture). Les 5 modes du banc donnent les mêmes ordres et le
+    même journal du moteur qu'avant, avec une seule ligne « flux NQ recu » et aucune alerte en 6 mois.
 - **Messages :** chaque ordre et chaque alerte vont dans `C:\Bot3en1\journal.txt`, et sur Telegram si le jeton et le
   numéro de conversation sont remplis (ils restent sur le PC, jamais dans le dépôt).
 - **Plafond du jour** (réglage, 0 par défaut) :
-  - c'est la piste 4 de `protection/`, à n'activer que sur le compte financé, si l'utilisateur la choisit (500 $) ;
-  - le bot la vérifie à chaque fin de minute (le backtest la vérifiait à l'intérieur de la minute).
+  - c'est le système retenu par `static50k/` :
+    - **0 pendant l'évaluation Static et sur la démo** ;
+    - **500 sur le compte Pro** (après la réussite) ;
+  - en séance, le bot vérifie le plafond à chaque fin de minute. Le backtest le vérifiait à l'intérieur de la minute.
+  - hors séance, il le vérifie à chaque transaction du NQ, **si le PC est allumé**. PC éteint la nuit : le RSI(2) reste
+    ouvert, et le plafond n'est vérifié qu'au retour.
+
+## Mode à plat pour Bulenox (et FundedNext) — ajouté le 10 octobre 2026
+
+Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plusieurs jours y est interdit. Le réglage
+**« Mode a plat chaque jour »** fait ce que les vagues 8 à 11 ont simulé. Désactivé (par défaut), le bot ne change pas.
+
+**Les 4 changements :**
+1. **RSI(2) de nuit seulement, sur 1 MES** — **décoché par défaut depuis le 13 octobre 2026** (réglage « RSI(2) de nuit
+   sur MES », voir plus bas : Bulenox interdit de garder une position la nuit). Coché, la règle est décidée à 15 h 50
+   comme avant, mais rien n'est acheté à 15 h 50 :
+   - le bot achète 1 MES à la réouverture de 18 h (dimanche 18 h avant un lundi) ;
+   - il revend à 9 h 30.
+   - Démarré plus tard dans la nuit, il achète jusqu'à 9 h 25, pas au-delà.
+2. **Frein.** Quand le compte finit une journée à 750 $ ou plus sous son plus haut de fin de journée, la zone trade sur MES
+   au lieu de MNQ toute la séance suivante. Plus précisément : coussin = solde − plancher, avec plancher = plus haut de fin
+   de journée − 2 500 $, arrêté à 50 100 $ ; frein si coussin < 1 750 $. Le solde est lu dans Quantower ; s'il est
+   illisible, le bot utilise sa propre estimation et le signale.
+3. **Pas de zone les jours d'annonce de la Fed.** Les dates sont dans `Calendrier.JoursFed` jusqu'à fin 2027 ; on peut en
+   ajouter dans les réglages.
+4. **Plafond de gain du jour : 500 $, seulement sur le compte Master** (0 pendant le challenge). Il est vérifié deux fois
+   par seconde sur la valeur réelle du compte (solde + gains latents), sinon sur l'estimation du bot. Une fois atteint, tout
+   est fermé et plus rien n'est pris jusqu'à 18 h.
+
+**Réglages pour Bulenox 50K (option 2, perte calculée en fin de journée), version 30 jours (vague 13, version D) :**
+
+| Réglage | Challenge (30 jours) | Compte Master (après la réussite) |
+|---|---|---|
+| Mode a plat chaque jour | coché | coché |
+| RSI(2) de nuit sur MES | **décoché** | **décoché** |
+| MNQ, MES, NQ | échéance du moment (ex. MNQZ6, MESZ6, NQZ6) | idem |
+| MNQ par source | **4** | **1** |
+| Plafond de gain du jour | 0 | **500** |
+| Limite de perte du jour | **1 000** (100 $ de marge avant les 1 100 $ de Bulenox) | 1 000 |
+| Frein | **0** | **750** |
+| Zone : entrée à la cassure | **coché** (choix de l'utilisateur, 26 octobre 2026) | **décoché conseillé** (voir plus bas) |
+| Zone : entrée à la cassure confirmée par le volume | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
+| Zone : multiple du volume | **1** (choix de l'utilisateur) | (sans effet) |
+| Zone : pas d'entrée tardive | **coché** (choix de l'utilisateur) | décoché |
+| Zone : fenêtre de confirmation en minutes | **5** (choix de l'utilisateur) | (sans effet) |
+| Zone : filtres Q1 et Q2 | décochés (ils font baisser les chances de valider en 13 séances) | **cochés conseillé** |
+| Zone : pas de sortie aux contrôles | **coché** (choix de l'utilisateur, 27 octobre 2026) | décoché |
+| Zone : stop en points au-delà du niveau cassé | **70** (choix de l'utilisateur, 27 octobre 2026) | 70 |
+| Zone : une seule entrée par séance et sortie au niveau cassé | **coché** (choix de l'utilisateur) | décoché |
+| Zone : laisser courir | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
+| Filtre delta de la zone | décoché | décoché |
+| Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
+| Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |
+| Challenge : objectif | **53 000** | **0** |
+| Challenge : dernier jour (AAAA-MM-JJ) | **date de fin donnée par Bulenox** | vide |
+| Challenge : MNQ en fin de challenge | **6** | **0** |
+| Challenge : nombre de dernières séances | 5 | (sans effet) |
+
+**Challenge de 30 jours (vagues 12 et 13, 12 octobre 2026)** : Bulenox limite maintenant le challenge à 30 jours. Le bot
+tel quel n'y valide qu'environ 5 % des challenges.
+- **Vague 12 :** 4 MNQ par source et pas de frein pendant le challenge, environ 40 % de validés en simulation.
+- **Vague 13, version D (retenue) :** environ 53 à 55 % de validés en simulation (45 % en 2025). Elle ajoute deux
+  réglages :
+  1. **Arrêt à l'objectif.**
+     - Pendant la journée, dès que le compte atteint 53 050 $ (l'objectif de 53 000 $ plus 50 $ pour les frais de
+       sortie), le bot ferme tout et ne prend plus rien jusqu'à 18 h.
+     - Les jours suivants, si le solde de 18 h est à 53 000 $ ou plus, il ne trade plus du tout sur ce compte et le dit
+       chaque soir.
+     - Pas besoin de 6 000 $ quand 3 000 suffisent : c'est ce qui évite de reperdre un challenge déjà gagné.
+  2. **Fin de course.** Si l'objectif n'est pas atteint, le bot passe à 6 MNQ par source (zone, et RSI(2) de nuit s'il
+     est coché)
+     pendant les 5 dernières séances avant la date de fin.
+     - Il change de taille seulement quand il est à plat, normalement à 18 h.
+     - Le décompte saute les week-ends et les jours fériés de la Bourse.
+     - La date à mettre est le dernier jour où Bulenox laisse trader le compte (30 jours après l'achat, à vérifier sur
+       le tableau de bord de Bulenox).
+- Voir `vague12/README.md` et `vague13/README.md` avant d'acheter.
+
+**Règles confirmées par Bulenox par e-mail (13 octobre 2026), et ce que fait le bot :**
+- **Journée de trading de 17 h à 16 h (heure de Chicago)**, soit de 18 h à 17 h à New York. Le bot compte sa journée,
+  sa limite de perte et son plafond à partir de 18 h (New York) : c'est la même journée.
+- **Tout fermer avant 15 h 59 (Chicago), soit 16 h 59 (New York), 22 h 59 à Paris.** La zone ferme à 16 h (New York),
+  22 h à Paris. Deux sécurités en plus depuis le 13 octobre :
+  - **filet de 16 h 30 :** entre 16 h 30 et 18 h (New York), si une position MNQ ou MES est encore ouverte (ordre refusé,
+    coupure, position ouverte à la main), le bot ferme tout ;
+  - **arrêt du bot :** en mode à plat, arrêter la stratégie dans Quantower ferme d'abord toutes les positions. Le bot
+    peut être relancé le jour même.
+- **« Holding positions overnight is strictly prohibited ».** Le RSI(2) de nuit garde 1 MES de 18 h à 9 h 30 : il est
+  donc **décoché par défaut**. Simulation du challenge de 30 jours (vague 13, version D, filtre fort), il n'apportait
+  presque rien :
+
+  | Période | Avec RSI(2) de nuit | Sans |
+  |---|---|---|
+  | 2012-2026 | 54,6 % | 54,4 % |
+  | 2023-2026 | 55,4 % | 56,0 % |
+  | 2025 | 44,7 % | 41,5 % |
+
+- **Bots permis**, mais seulement un outil fait par le titulaire du compte, pour lui seul. Les outils « publicly
+  distributed » sont interdits : passer le dépôt GitHub en privé une fois le bot installé.
+- **100 $ par mois** si on se connecte à Rithmic par une API tierce ou un logiciel composite. Demander à Bulenox si
+  Quantower avec Rithmic est concerné.
+- **Taille (« EOD Dynamic Scaling Plan ») :** la limite de contrats monte avec le gain en fin de journée. Au premier
+  palier (gain de 0 à 1 500 $), 2 contrats standard, soit 20 micros (1 standard = 10 micros chez Bulenox). Le bot tient
+  au plus 6 MNQ à la fois pendant le challenge (vérifié sur le test de 30 jours), sous la limite dès le premier jour.
+- **Limite de perte du jour : 1 000 $ dans le bot (13 octobre 2026), pour 1 100 $ chez Bulenox.** Le bot ferme tout
+  après 3 secondes de confirmation : dans un marché rapide, la fermeture peut finir un peu plus loin que le réglage.
+  À 1 050 $, la marge n'était que de 6 points du NQ en 4 MNQ, 4 en 6 MNQ ; à 1 000 $, elle double. Simulation du
+  challenge de 30 jours (version D, sans RSI de nuit, filtre fort) : 54,4 % de validés avec la limite de Bulenox seule,
+  54,6 % à 1 050 $, 54,5 % à 1 000 $, 54,2 % à 950 $, 53,6 % à 900 $. Si la limite de Bulenox est touchée quand même,
+  le compte est suspendu pour le reste de la journée, sans être perdu (d'après Bulenox et les guides).
+- **Ce que le bot ne peut pas empêcher :** la perte maximale suivie en fin de journée (2 500 $). C'est elle qui fait
+  perdre environ un tiers des challenges en simulation : ce n'est pas une infraction, c'est un challenge raté.
+
+**Au passage au compte Master :**
+- choisir le nouveau compte dans les réglages ;
+- le bot repart alors d'un plus haut de 50 000 $ (il reconnaît le changement de compte) ;
+- mettre MNQ par source à 1, le frein à 750, le plafond à 500, l'objectif à 0, la date de fin vide et MNQ en fin de
+  challenge à 0 (colonne de droite du tableau) ;
+- demander chaque retrait dès que Bulenox l'autorise (au moins 1 000 $, 52 600 $ gardés).
+
+**Vérifié (10 octobre 2026) :**
+- **Ancien mode inchangé :**
+  - rejeu 2023-2026 : +21 767,0 $ ;
+  - test de l'adaptateur avec trades de zone (sans filtre), avec et sans plafond : ordres, journal et messages identiques
+    octet pour octet à avant le changement.
+- **RSI(2) de nuit :** d'avril à septembre 2026, le bot achète **les mêmes 19 nuits** que la recherche Python
+  (`vague4/moteur4.py`, rsi = 4).
+- **Adaptateur en mode à plat** (avril - septembre 2026, transaction par transaction) :
+  - à plat chaque jour à 16 h, jamais de MNQ la nuit, 0 erreur ;
+  - avec un solde lu à 49 000 $, toute la zone part sur MES ;
+  - avec le plafond à 500 $, 7 journées arrêtées.
+- **Moteur :** `Bot3en1.TestAPlat`, 21 contrôles sur 21 (frein avant et après blocage du plancher, Fed, nuit, plafond) ;
+  34 depuis le 12 octobre.
+
+```
+dotnet run -c Release --project Bot3en1.TestAPlat
+A_PLAT=1 SANS_FILTRE=1 dotnet run -c Release --project Bot3en1.TestQuantower -- <dossier> <nq_1min.csv.gz> <agresseurs.csv.gz> 2026-04-01 2026-09-25
+```
+
+**Vérifié (12 octobre 2026), réglages du challenge de 30 jours :**
+- **Rien d'autre ne change.** Nouveaux réglages à 0 : ordres, journal et messages identiques octet pour octet à avant,
+  dans les 4 modes testés (mode à plat, avec frein, avec plafond, ancien mode).
+- **Moteur :** `Bot3en1.TestAPlat`, 34 contrôles sur 34. Les nouveaux portent sur :
+  - le plafond de l'objectif : 53 050 $ moins le solde de 18 h, ou le plus petit avec le plafond du jour ;
+  - le décompte des séances : semaine de Thanksgiving, 3 juillet 2026, après la date de fin ;
+  - la taille : 4 MNQ, puis 6 MNQ les 5 dernières séances.
+- **Adaptateur, transaction par transaction** (mode à plat, sans le filtre) :
+  - **taille de fin de course** (date de fin au 8 juillet 2026) : mêmes trades qu'avant, en 6 MNQ au lieu de 1,
+    seulement du 1er au 8 juillet (3 juillet férié sauté), puis retour à 1 ;
+  - **objectif** : après le déclenchement, plus aucun ordre jusqu'à la fin du test. Solde lu à 53 000 $ dès le départ :
+    aucun ordre du tout ;
+  - **6 challenges de 30 jours rejoués en 2026** avec tous les réglages de la colonne challenge : 5 objectifs atteints
+    sans aucun ordre ensuite, et 1 non atteint, joué en 6 MNQ sur ses 5 dernières séances. Ce test vérifie la mécanique,
+    pas la rentabilité : il est fait sans le filtre et ne simule pas la perte du compte.
+- **Défaut ancien trouvé et corrigé pendant ce test.** Quand la dernière séance de l'historique était incomplète, la
+  zone restait coupée **pour toute la durée du lancement du bot**, pas seulement un jour. Exemples de séances
+  incomplètes : demi-séance du 3 juillet, lendemain de Thanksgiving, 24 décembre, trou dans les données. Même chose après
+  un rattrapage de transactions raté. Exemple : démarré le lundi 6 juillet 2026, le bot ne prenait aucun trade de zone
+  pendant 30 jours. Maintenant, la zone est réautorisée à chaque nouvelle séance : démarré le 6 juillet, il prend les
+  mêmes trades que s'il tournait depuis avril.
+
+```
+A_PLAT=1 SANS_FILTRE=1 TAILLE=4 OBJECTIF=53000 DATE_FIN=2026-05-12 TAILLE_FIN=6 SEANCES_FIN=5 FREIN=0 LIMITE=1050 \
+  dotnet run -c Release --project Bot3en1.TestQuantower -- <dossier> <nasdaq100_1min.csv.gz> <agresseurs.csv.gz> 2026-04-13 2026-05-12
+```
+
+**Vérifié (13 octobre 2026), RSI(2) de nuit décoché, filet de 16 h 30 et arrêt du bot :**
+- RSI(2) de nuit coché : ordres, journal et messages identiques octet pour octet à avant, dans les 5 modes testés (à plat,
+  frein, plafond, challenge de 30 jours, ancien mode).
+- Décoché (par défaut) : aucune nuit achetée, mêmes trades de zone, 0 erreur.
+- Position MNQ ouverte à la main à 16 h 35 : fermée au tic suivant. Position MES ouverte puis arrêt du bot : tout fermé.
+
+**Revue indépendante du code (10 octobre 2026), puis corrections :**
+- **Défaut grave corrigé : le fichier STOP la nuit.** Le bot revendait puis rachetait le MES toutes les 16 secondes
+  (15 ordres en 4 minutes dans le scénario de la revue). Maintenant : un seul ordre de vente, plus rien ensuite.
+- **Plafond et limite de perte.** Ils ne se déclenchent plus sur une lecture fausse du compte (perte comptée deux fois
+  pendant qu'une position se ferme). Il faut que la valeur lue dans Quantower et l'estimation du bot soient d'accord,
+  3 secondes de suite, sans ordre envoyé dans les 10 dernières secondes.
+- **RSI(2) de nuit.** Le bot n'achète que si la décision de 15 h 50 de la séance d'avant est bien connue. Sinon, il
+  envoie une alerte au lieu d'acheter sur une décision périmée. La décision est enregistrée pour les redémarrages.
+- **Un fichier d'état par compte** (`etat_<compte>.json`) : le challenge et le Master ne s'écrasent plus.
+- **Nouveau réglage « plus haut de fin de journée déjà atteint »**, pour un compte qui a déjà tradé.
+- **Détails :**
+  - le gain du jour n'est plus compté deux fois après un redémarrage en séance ;
+  - le solde estimé se recale sur le vrai solde ;
+  - une alerte part si le flux du MES manque à l'heure de l'achat de nuit.
+- **Revérifié après les corrections :**
+  - ancien mode identique, octet pour octet ;
+  - mêmes 19 nuits que la recherche ;
+  - à plat chaque jour, 0 erreur ;
+  - 21 contrôles du moteur sur 21 ;
+  - scénarios de la revue repassés (STOP, redémarrage à 2 h, fausse lecture de perte).
+
+**Limites :**
+- Si le bot est éteint pendant toute une séance avec un MES de nuit ouvert, il le revend au redémarrage s'il est entre
+  9 h 30 et 18 h, sinon seulement le lendemain à 9 h 30.
+- Si le PC dort à 18 h, la nouvelle journée ne commence qu'au tic suivant après 18 h. Une nuit sans tic après 18 h fait
+  manquer l'achat de nuit.
+- La lecture du solde (`Account.Balance`) et des gains latents (`Position.GrossPnL`) passe par réflexion, pour ne pas
+  bloquer la compilation si Quantower les nomme autrement. À chaque lancement, vérifier dans le journal que le message
+  « mode a plat : solde ... » donne le vrai solde, et non « solde estimé ».
+- Le flux du MES doit arriver : sans transaction MES récente, le bot n'achète pas le RSI(2) de nuit.
+- RSI(2) de nuit coché seulement : PC (ou serveur) allumé de 18 h à 9 h 30 (New York), soit de minuit à 15 h 30 heure
+  de Paris, en plus de la séance.
+
+## Export des transactions : jour, nuit ou 24 h (ajouté le 25 octobre 2026)
+
+La stratégie « Export transactions NQ » ne passe aucun ordre. Elle lit les transactions Rithmic (côté agresseur
+compris) et les regroupe par minute dans `C:\Bot3en1\export\`. Le réglage **Séance** choisit la plage (heure de New
+York) :
+
+| Séance | Plage | Fichier | Minute 0 |
+|---|---|---|---|
+| 0 (par défaut, comme avant) | 9 h 30 - 16 h | `transactions_NQZ6.csv` | 9 h 30 |
+| 1 | 18 h la veille - 9 h 30 | `transactions_nuit_NQZ6.csv` | 18 h la veille (9 h 30 = minute 930, exclue) |
+| 2 | 18 h la veille - 17 h | `transactions_24h_NQZ6.csv` | 18 h la veille (9 h 30 = minute 930) |
+
+- La colonne `jour` est toujours la date de la séance de jour qui suit : la nuit du lundi part du dimanche à 18 h.
+  Les week-ends et les jours fermés (calendrier du bot) sont sautés.
+- Colonnes inchangées : `jour,minute,o,h,l,c,v,achats,ventes,sans_cote,contrat`.
+- Un contrat par lancement : NQZ6, puis NQU6, NQM6, NQH6… Avec « Seulement les jours où ce contrat est l'échéance
+  suivie » coché, chaque fichier ne garde que ses jours. Le même export marche pour l'ES (ESZ6…).
+- La profondeur de l'historique de transactions dépend de Rithmic : le message final compte les séances sans
+  transactions.
+- Contrôlé hors Quantower avec des transactions fabriquées : 390, 930 ou 1 380 minutes par séance, 9 h 30 de l'export
+  24 h identique à l'export de jour, et changement d'heure du 1er novembre 2026 (nuit du lundi 2 de 23 h à 14 h 29 UTC).
 
 ## Limites connues
 
@@ -82,3 +540,25 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
 - Le PC (ou un serveur loué) doit rester allumé et connecté du lundi au vendredi, de 15 h 30 à 22 h 15 (heure de
   Paris).
 - Ne pas trader MNQ à la main sur le même compte : le bot réalignerait la position.
+
+## Essai sur le compte d'essai Optimus Flow / Ironbeam (critères fixés le 6 octobre 2026, avant le premier lancement)
+
+But : vérifier que le bot **trade correctement** sur une vraie plateforme. Ce n'est pas un test de rentabilité :
+sur une dizaine de séances, le gain dépend surtout du hasard (environ ±1 000 $ pour un gain attendu d'environ
++250 $).
+
+Période : du 7 au 16 octobre 2026, soit environ 8 séances, jusqu'à la fin de la démo. Le bot tourne de 15 h 30 à
+22 h 05, heure de Paris.
+
+**Feu vert pour un vrai compte** si tout ceci est vrai :
+1. au moins 6 séances jouées sans erreur ni arrêt imprévu ;
+2. chaque signal de zone (heure, sens, gardé ou écarté) et chaque décision du RSI(2) sont les mêmes que ceux du
+   robot virtuel (`zone/robot.py` sur main) pour la même séance. Toute différence doit être expliquée et corrigée ;
+3. jamais plus de 1 MNQ par source, et aucune position de zone après 16 h (New York) ;
+4. glissement moyen d'au plus 1 tick par ordre sur MNQ ;
+5. le delta noté par le bot à chaque signal a le même signe que celui de l'export Ironbeam pour la même minute.
+
+**Pas de feu vert** si une différence n'est pas expliquée, si la taille est fausse ou si une sortie est manquée :
+correction, puis nouvel essai.
+
+Le gain ou la perte de ces séances n'entre pas dans la décision.

@@ -1,0 +1,11 @@
+Partie F (README.md) : 8 regles, NQ, 1 contrat micro au prix d'aujourd'hui, frais compris. Retenue : t >= 2.50, positive avant et apres 2023, au-dessus de 95 % des jumeaux de chaque bruit ; interessante : t >= 1,65, positive sur les deux periodes, au-dessus de 90 % des jumeaux.
+
+regle  nom                                              trades     t   net/trade  gagnants   t <=2022 (moy.)        t >=2023 (moy.)      95e perm 95e signe bat le bruit  verdict
+F1     cassure de la semaine precedente                   787   0.20     3.61 $      52%   -0.22 (  -4.56 $)    0.96 ( +32.18 $)       1.76    0.90      57%      non
+F2     cassure du mois precedent                          173   1.13    39.57 $      58%    0.63 ( +26.34 $)    1.35 ( +82.16 $)       0.90    1.04      95%      non
+F3     pivots R1/S1, version tendance                    1912   1.69    20.56 $      52%    1.83 ( +25.30 $)    0.21 (  +5.39 $)       1.12    1.01      98%      interessante
+F4     Turtle Soup (extreme de 20 seances)                133  -0.71   -18.42 $      17%   -1.78 ( -49.06 $)    1.11 ( +67.36 $)       1.09    0.83      42%      non
+F5     retournement d'un grand mouvement a fort volume   1343  -1.41   -11.32 $      48%   -1.63 ( -14.39 $)   -0.02 (  -0.30 $)       1.17    1.01       8%      non
+F6     regime du matin (ratio de variance)               3840  -1.22    -8.34 $      49%   -0.74 (  -5.74 $)   -1.16 ( -16.69 $)       0.66    0.81      28%      non
+F7     frog in the pan (10 h 30)                         2862   1.45    13.98 $      53%    0.80 (  +9.10 $)    1.64 ( +29.30 $)       1.19    0.45     100%      non
+F8     Open-Drive (Dalton)                                138   1.20    41.45 $      56%    1.05 ( +39.08 $)    0.76 ( +64.18 $)       1.64    1.50      78%      non

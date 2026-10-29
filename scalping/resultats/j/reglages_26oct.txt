@@ -1,0 +1,17 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23. Controle : N1 recalcule = N1 de partie_n : oui.
+
+configuration                  trades  points  gagn. gain moy perte moy  t 11-22  t 23-26 j. -1000$  valide  perdu  expire  2025 4MNQ  2026 4MNQ  avr-oct
+bot d'avant (controles seuls)    3577  +10558    36%   +147.2     -77.5    +3.75    +2.27       638   24.2%  67.6%    8.1%     -4,531     +2,926   +5,181
+L1a laisser courir               2769   +5120    28%   +220.6     -86.0    +2.31    +0.88       585   25.1%  68.7%    6.2%     -2,903       +232   +6,010
+N1 sortie immediate              2769   +4043    16%   +235.6     -41.1    +2.22    +1.28       148   21.7%  59.2%   19.1%     +3,438     -4,036   +2,426
+CHOIX : N1 + volume x2           2521   +4563    21%   +208.4     -54.6    +2.71    +0.97       195   21.0%  63.0%   15.9%     +2,504     -7,147   -2,687
+
+(points bruts 1 MNQ frais deduits ; gain et perte moyens : 2023-2026, points au prix d'aujourd'hui ; t des gains quotidiens, jours sans Fed ; j. -1000$ = journees a -1 000 $ en 4 MNQ sur 15 ans ; challenge : 49 500 $, marge 1 000 $, 13 seances, 4 puis 6 MNQ, limite du jour 1 000 $ ; $ en 4 MNQ au prix d'aujourd'hui, limite du jour 1 000 $)
+
+2026 mois par mois, 4 MNQ :
+bot d'avant (controles seuls)  01: -8,049 02: +1,581 03: +4,213 04: -1,895 05:   +972 06:    -21 07: -7,123 08: +4,661 09: +4,111 10: +4,476
+L1a laisser courir             01: -6,092 02: +1,929 03: -1,615 04:   -174 05:   +951 06:   -619 07: -7,651 08: +3,523 09: +3,617 10: +6,362
+N1 sortie immediate            01: -5,076 02:   -494 03:   -892 04:   -132 05: -2,559 06:   -489 07: -3,901 08: +1,800 09: +3,963 10: +3,744
+CHOIX : N1 + volume x2         01: -6,172 02: +2,794 03: -1,082 04: -3,834 05: -3,977 06:   -196 07: -5,914 08: +1,874 09: +3,705 10: +5,656
+
+Octobre 2026 jour par jour, configuration choisie, 4 MNQ : 5:-108 8:+726 12:-279 14:+1,665 16:+3,699 19:-124 20:-1,000 21:-186 22:+1,525 23:-263

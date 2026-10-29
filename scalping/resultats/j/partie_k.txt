@@ -1,0 +1,18 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23.
+
+variante                               trades   points  coupes  gagn.  t 11-22  t 23-26    2025    2026 jours -250$
+bot (controles seuls)                    3577   +10558      0%    36%    +3.75    +2.27    +942   +1311         638
+K1a coupure a la cloture, reentree      13497    -7552     82%    16%    +1.18    +1.15   -1015    +444         593
+K1b coupure a la cloture, attente        8023     +920     78%    19%    +2.06    +1.41     +12    +400         486
+K2a vrai stop sur la limite, reentree   19440   -20876     91%    10%    -1.50    +0.13   -2785    -506         725
+K2b vrai stop sur la limite, attente     8825    -2230     85%    15%    +1.29    +1.40    -910    +953         457
+
+(points bruts pour 1 MNQ, frais de 1,5 point deduits ; coupes = trades sortis par la coupure ; t des gains quotidiens au prix d'aujourd'hui, jours sans Fed ; jours -250$ = 1 000 $ en 4 MNQ)
+
+Challenge, 4 puis 6 MNQ, limite du jour 1 000 $, departs 2012-2026 : valide / perdu / expire
+variante                                 49 500 $, plus haut 51 172 $   49 500 $, plus haut 50 600 $   challenge neuf, 21 seances
+bot (controles seuls)                     20.8%  72.5%   6.7%    29.4%  56.8%  13.8%    48.0%  44.6%   7.3%
+K1a coupure a la cloture, reentree        19.0%  76.3%   4.7%    26.1%  64.5%   9.5%    41.7%  53.2%   5.1%
+K1b coupure a la cloture, attente         20.0%  72.9%   7.0%    26.7%  61.1%  12.2%    42.3%  50.6%   7.2%
+K2a vrai stop sur la limite, reentree     15.4%  80.8%   3.7%    21.3%  70.8%   7.9%    35.2%  60.9%   3.9%
+K2b vrai stop sur la limite, attente      17.8%  75.5%   6.8%    24.7%  62.4%  12.8%    40.5%  50.6%   8.9%

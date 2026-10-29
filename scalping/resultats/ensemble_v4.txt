@@ -1,0 +1,16 @@
+Panier des eligibles de la version 4 (descriptif, coffre deja ouvert) : t en exploration (2017 - 2022) et au coffre
+
+B NQ reel   n=  498 ensemble exploration t   5.05 | coffre t   0.74 moyenne +0.83 $/seance ; corr moyenne entre strategies 0.38 ; 2023:+306 2024:+97 2025:+364 2026:+28
+B NQ bruit  n=   54 ensemble exploration t  -0.89 | coffre t   0.11 moyenne +0.13 $/seance ; corr moyenne entre strategies 0.22 ; 2023:+693 2024:-833 2025:-78 2026:+339
+B NQ signe  n= 1296 ensemble exploration t  -1.03 | coffre t   0.22 moyenne +0.46 $/seance ; corr moyenne entre strategies 0.30 ; 2023:+1794 2024:+107 2025:-663 2026:-791
+D NQ reel   n= 4639 ensemble exploration t   5.95 | coffre t   0.25 moyenne +0.59 $/seance ; corr moyenne entre strategies 0.26 ; 2023:-320 2024:+66 2025:+852 2026:-22
+D NQ bruit  n=  815 ensemble exploration t  -2.28 | coffre t   0.73 moyenne +1.35 $/seance ; corr moyenne entre strategies 0.34 ; 2023:-986 2024:+1109 2025:+180 2026:+1004
+D NQ signe  n= 1024 ensemble exploration t   1.82 | coffre t  -0.73 moyenne -1.51 $/seance ; corr moyenne entre strategies 0.32 ; 2023:+567 2024:-346 2025:-738 2026:-948
+B ES reel   n=  295 ensemble exploration t   4.75 | coffre t  -2.90 moyenne -2.15 $/seance ; corr moyenne entre strategies 0.32 ; 2023:-912 2024:-287 2025:-384 2026:-487
+B ES signe  n=   29 ensemble exploration t  -3.05 | coffre t  -1.70 moyenne -3.51 $/seance ; corr moyenne entre strategies 0.87 ; 2023:+393 2024:+244 2025:-2907 2026:-1108
+B YM reel   n=  187 ensemble exploration t   3.53 | coffre t  -1.07 moyenne -0.78 $/seance ; corr moyenne entre strategies 0.54 ; 2023:+179 2024:-242 2025:+309 2026:-997
+B YM bruit  n=  188 ensemble exploration t  -2.45 | coffre t  -0.98 moyenne -0.55 $/seance ; corr moyenne entre strategies 0.24 ; 2023:-180 2024:-154 2025:-203 2026:+9
+B YM signe  n=   35 ensemble exploration t  -2.09 | coffre t  -1.20 moyenne -1.33 $/seance ; corr moyenne entre strategies 0.63 ; 2023:+167 2024:-52 2025:-1063 2026:-338
+D ES reel   n=  162 ensemble exploration t   3.16 | coffre t  -0.81 moyenne -0.76 $/seance ; corr moyenne entre strategies 0.35 ; 2023:-201 2024:-75 2025:-332 2026:-130
+D ES bruit  n=   33 ensemble exploration t  -1.16 | coffre t   0.30 moyenne +0.19 $/seance ; corr moyenne entre strategies 0.35 ; 2023:-62 2024:-31 2025:+445 2026:-171
+D ES signe  n=    5 ensemble exploration t  -0.63 | coffre t  -1.14 moyenne -1.92 $/seance ; corr moyenne entre strategies 0.74 ; 2023:-679 2024:+348 2025:-924 2026:-609

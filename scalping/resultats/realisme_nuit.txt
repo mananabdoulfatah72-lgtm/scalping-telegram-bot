@@ -1,0 +1,4 @@
+Realisme des cotations de nuit (CFD HistData) face au future (Databento, barres d'une heure), 2013-2022
+
+NQ : 32535 heures de nuit communes ; correlation CFD / future 0.916 ; ecart-type CFD / future 1.008 ; autocorrelation d'une heure a la suivante : CFD +0.003, future +0.001
+ES : 26786 heures de nuit communes ; correlation CFD / future 0.897 ; ecart-type CFD / future 1.004 ; autocorrelation d'une heure a la suivante : CFD +0.013, future +0.005

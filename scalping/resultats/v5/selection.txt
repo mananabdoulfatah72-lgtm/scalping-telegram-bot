@@ -1,0 +1,179 @@
+Version 5 (README.md) : machine sur l'entrainement seulement, choix sur le controle 2023 - fin des donnees, comparaison a la meme chaine sur les deux bruits. Gains pour 1 contrat micro, au prix d'aujourd'hui, frais compris. Admise : t entrainement >= 2 avec 200 trades. Trois conditions : t controle >= 1,65, 100 trades, 3 annees positives sur 4. Barriere : meilleur t controle des admises de bruit qui remplissent les trois conditions.
+
+Correlation avec la zone du bot : /tmp/claude-0/-home-user-scalping-telegram-bot/4861520c-7c70-542c-a1db-763e9dd91dac/scratchpad/kbf/filtre_h1/trades_zone.csv
+
+=== B NQ : strategies distinctes cherchees reel 63596, permutation 63650, signe 63676
+  reel   admises   9437 ; t controle median  -0.29, part > 0   38%, meilleur  3.28 ; trois conditions   113 ; panier t -0.50 (-0.51 $/seance ; 2023:-362 2024:+211 2025:+245 2026:-557)
+  bruit  admises   4787 ; t controle median  -0.96, part > 0   22%, meilleur  1.94 ; trois conditions     8 ; panier t -2.58 (-1.41 $/seance ; 2023:-413 2024:-3 2025:-628 2026:-243)
+  signe  admises   6119 ; t controle median  -0.54, part > 0   28%, meilleur  2.76 ; trois conditions    61 ; panier t -1.38 (-1.78 $/seance ; 2023:-740 2024:-614 2025:-473 2026:+202)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   1334/3.28/-0.02  1206/2.81/0.51  1218/1.94/-0.41  1872/1.81/-0.97  2472/2.05/-0.59  1335/2.33/-0.33
+    bruit  386/1.37/-0.34  1022/1.36/-2.63  828/1.80/-0.79  1214/1.90/-1.56  686/1.55/-1.73  651/1.94/0.80
+    signe  930/1.80/-1.05  1159/2.76/0.03  1140/2.62/-0.39  716/1.98/-0.95  627/1.68/-1.02  1547/1.44/-1.38
+  barriere du bruit : 2.76
+  CANDIDATE t controle 3.28 (133 trades, entrainement t 3.46), correlation zone +0.01 : micro-compression puis cassure (k = 10, Q = 0.85) ; contre ; ventes seules ; entrees de la minute 60 a 210 ; regime agite ; tendance contre ; au marche ; stop 2.57 u ; objectif 0.47 u ; duree 20 min ; pause 5 min
+  CANDIDATE t controle 2.81 (104 trades, entrainement t 2.36), correlation zone +0.00 : mouvement de k minutes (k = 15, z >= 2.21) ; suivre ; ventes seules ; entrees de la minute 30 a 300 ; regime calme ; tendance toute ; au marche ; stop 2.66 u ; objectif 2.48 u ; duree 10 min ; pause 0 min
+  panier reel : t -0.50 (paniers de bruit -2.58 et -1.38), correlation zone +0.04, non retenu
+
+=== B ES : strategies distinctes cherchees reel 63392, permutation 63362, signe 63499
+  reel   admises   3592 ; t controle median  -0.59, part > 0   33%, meilleur  1.45 ; trois conditions     0 ; panier t -1.02 (-0.89 $/seance ; 2023:-144 2024:-848 2025:+367 2026:-189)
+  bruit  admises   2632 ; t controle median  -1.13, part > 0    8%, meilleur  1.44 ; trois conditions     0 ; panier t -2.94 (-0.83 $/seance ; 2023:-332 2024:-26 2025:-483 2026:+86)
+  signe  admises   2709 ; t controle median  -1.28, part > 0    6%, meilleur  1.43 ; trois conditions     0 ; panier t -3.27 (-1.92 $/seance ; 2023:-463 2024:-521 2025:-627 2026:-147)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   703/1.45/-0.13  560/1.13/-2.11  464/0.97/-1.93  544/1.17/-0.77  772/1.19/-0.14  549/1.11/-0.35
+    bruit  492/-0.15/-1.63  428/0.05/-1.63  591/0.61/-1.26  221/-1.29/-2.16  266/1.44/0.11  634/0.47/-0.97
+    signe  250/0.28/-2.83  384/0.78/-1.72  393/-0.64/-1.41  580/1.43/-1.85  113/-0.35/-1.71  989/1.18/-1.22
+  barriere du bruit : 1.65
+  panier reel : t -1.02 (paniers de bruit -2.94 et -3.27), correlation zone -0.21, non retenu
+
+=== B RTY : strategies distinctes cherchees reel 63437, permutation 63596, signe 63644
+  reel   admises   2710 ; t controle median  -2.77, part > 0    1%, meilleur  1.95 ; trois conditions     1 ; panier t -3.76 (-1.00 $/seance ; 2023:-128 2024:-215 2025:-341 2026:-232)
+  bruit  admises   1146 ; t controle median  -0.37, part > 0   41%, meilleur  1.34 ; trois conditions     0 ; panier t -1.69 (-0.39 $/seance ; 2023:-114 2024:-93 2025:-144 2026:-1)
+  signe  admises   2462 ; t controle median  -0.85, part > 0   20%, meilleur  1.40 ; trois conditions     0 ; panier t -1.57 (-0.53 $/seance ; 2023:-57 2024:-59 2025:-398 2026:+27)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   128/1.95/-0.43  294/0.10/-0.42  272/-0.62/-2.37  701/-1.04/-3.55  711/-0.19/-3.59  604/-0.47/-2.98
+    bruit  165/1.34/0.22  71/-1.07/-1.87  42/-1.26/-2.07  184/0.53/-0.58  377/1.01/0.28  307/-0.16/-1.76
+    signe  356/1.40/0.34  246/-0.01/-1.85  231/1.10/-2.18  1274/0.91/-1.21  61/1.06/-1.39  294/1.13/-0.23
+  barriere du bruit : 1.65
+  CANDIDATE t controle 1.95 (149 trades, entrainement t 2.05), correlation zone +0.01 : pic de volume (volume >= 4.06 x mediane) ; suivre ; achats seuls ; entrees de la minute 15 a 120 ; regime agite ; tendance toute ; au marche ; stop 2.38 u ; objectif 5.00 u ; duree 20 min ; pause 5 min
+  panier reel : t -3.76 (paniers de bruit -1.69 et -1.57), correlation zone +0.04, non retenu
+
+=== B YM : strategies distinctes cherchees reel 62932, permutation 63562, signe 63690
+  reel   admises   4210 ; t controle median  -1.23, part > 0    5%, meilleur  1.67 ; trois conditions     3 ; panier t -2.43 (-1.26 $/seance ; 2023:+10 2024:-318 2025:-246 2026:-601)
+  bruit  admises   2706 ; t controle median  -1.03, part > 0   18%, meilleur  1.31 ; trois conditions     0 ; panier t -2.33 (-0.75 $/seance ; 2023:-348 2024:-204 2025:+79 2026:-209)
+  signe  admises   2187 ; t controle median  -0.47, part > 0   34%, meilleur  2.36 ; trois conditions    22 ; panier t -0.93 (-0.21 $/seance ; 2023:-120 2024:-48 2025:-61 2026:+36)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   653/1.66/-2.00  778/0.94/-1.91  638/0.23/-2.03  276/0.68/-1.02  1225/1.04/-1.55  640/1.67/-1.24
+    bruit  545/0.56/-1.30  748/1.31/-1.59  276/-0.08/-1.87  236/0.88/-0.21  757/0.98/-0.48  144/0.48/-0.85
+    signe  574/2.36/0.38  405/1.82/0.33  328/0.96/-1.13  115/0.10/-2.21  297/0.71/-1.16  468/1.68/-1.20
+  barriere du bruit : 2.36
+  panier reel : t -2.43 (paniers de bruit -2.33 et -0.93), correlation zone +0.05, non retenu
+
+=== B GC : strategies distinctes cherchees reel 63859, permutation 63604, signe 63433
+  reel   admises   3689 ; t controle median   0.52, part > 0   66%, meilleur  2.26 ; trois conditions    51 ; panier t  0.57 (+0.40 $/seance ; 2023:-134 2024:+2 2025:+549 2026:-47)
+  bruit  admises   2468 ; t controle median  -1.42, part > 0   22%, meilleur  1.24 ; trois conditions     0 ; panier t -3.37 (-2.03 $/seance ; 2023:-354 2024:-492 2025:-518 2026:-498)
+  signe  admises   2592 ; t controle median  -1.07, part > 0   12%, meilleur  2.00 ; trois conditions     2 ; panier t -2.81 (-1.36 $/seance ; 2023:-218 2024:-380 2025:-205 2026:-450)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   481/1.61/0.47  922/2.07/-0.00  546/2.26/1.06  714/1.86/1.16  578/1.61/-0.17  448/1.48/-1.36
+    bruit  201/1.18/-0.69  495/0.72/-0.16  267/1.24/1.02  517/-0.83/-3.39  99/-0.26/-0.96  889/-0.01/-2.18
+    signe  358/1.54/-1.90  299/0.14/-1.01  541/0.52/-2.09  648/2.00/-1.20  497/0.73/-0.81  249/1.33/-0.85
+  barriere du bruit : 2.00
+  CANDIDATE t controle 2.07 (158 trades, entrainement t 2.05), correlation zone +0.03 : mouvement de k minutes (k = 30, z >= 2.46) ; suivre ; achats seuls ; entrees de la minute 1 a 210 ; regime tous ; tendance toute ; au marche ; stop 3.00 u ; objectif 2.54 u ; duree 10 min ; pause 15 min
+  CANDIDATE t controle 2.03 (211 trades, entrainement t 2.44), correlation zone -0.03 : serie de barres (n = 7, z >= 0.36) ; suivre ; achats et ventes ; entrees de la minute 15 a 300 ; regime agite ; tendance avec ; limite 0.1 u pendant 1 min ; stop 2.29 u ; objectif 1.66 u ; duree 30 min ; pause 15 min
+  panier reel : t 0.57 (paniers de bruit -3.37 et -2.81), correlation zone +0.03, non retenu
+
+=== B CL : strategies distinctes cherchees reel 63600, permutation 63524, signe 63896
+  reel   admises   1317 ; t controle median  -0.59, part > 0   26%, meilleur  2.30 ; trois conditions     9 ; panier t -1.26 (-0.44 $/seance ; 2023:+38 2024:-240 2025:-171 2026:-27)
+  bruit  admises   1197 ; t controle median  -1.86, part > 0    0%, meilleur -0.06 ; trois conditions     0 ; panier t -3.99 (-0.96 $/seance ; 2023:-39 2024:-176 2025:-286 2026:-376)
+  signe  admises    914 ; t controle median  -1.73, part > 0   16%, meilleur  2.06 ; trois conditions     6 ; panier t -3.01 (-0.96 $/seance ; 2023:-56 2024:-63 2025:-368 2026:-385)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   507/1.38/-0.88  162/-0.08/-0.75  76/2.30/0.67  229/0.12/-1.09  231/1.57/0.21  112/1.11/-1.88
+    bruit  227/-0.35/-1.70  198/-0.11/-1.65  384/-0.16/-2.00  10/-0.06/-3.04  349/-1.42/-2.72  29/-0.53/-0.81
+    signe  307/2.06/-0.64  21/0.60/0.27  112/0.04/-2.64  438/-0.37/-2.40  1/-0.85/-0.85  35/-0.10/-1.00
+  barriere du bruit : 2.06
+  CANDIDATE t controle 2.30 (139 trades, entrainement t 2.79), correlation zone -0.07 : niveau franchi ou rejete (niveau rond, franchi, marge 0.70) ; suivre ; ventes seules ; entrees de la minute 120 a 5 avant la fin ; regime agite ; tendance toute ; limite 0.5 u pendant 5 min ; stop 1.63 u ; objectif 1.70 u ; duree 30 min ; pause 5 min
+  panier reel : t -1.26 (paniers de bruit -3.99 et -3.01), correlation zone +0.11, non retenu
+
+=== B 6E : strategies distinctes cherchees reel 63633, permutation 63669, signe 63563
+  reel   admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  bruit  admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  signe  admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+    bruit  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+    signe  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+  barriere du bruit : 1.65
+
+=== B2 BTC : strategies distinctes cherchees reel 63271, permutation 63448, signe 63648
+  reel   admises   3142 ; t controle median  -1.53, part > 0   12%, meilleur  2.02 ; trois conditions     4 ; panier t -2.45 (-0.68 $/seance ; 2023:-95 2024:+59 2025:-327 2026:-209)
+  bruit  admises   3098 ; t controle median  -2.16, part > 0    0%, meilleur  0.18 ; trois conditions     0 ; panier t -6.18 (-2.15 $/seance ; 2023:-470 2024:-701 2025:-276 2026:-368)
+  signe  admises   2730 ; t controle median  -1.16, part > 0   24%, meilleur  2.56 ; trois conditions   122 ; panier t -3.24 (-1.14 $/seance ; 2023:-521 2024:-259 2025:-190 2026:+7)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   379/1.90/-0.01  634/0.95/-2.45  646/1.07/-2.15  447/1.79/-2.38  653/2.02/-2.02  383/-0.53/-1.40
+    bruit  739/0.06/-3.48  439/-0.40/-3.42  814/-0.21/-2.13  209/-1.48/-3.07  353/0.18/-2.04  544/0.14/-3.30
+    signe  505/1.02/-2.65  841/2.56/0.30  269/-1.37/-4.48  201/0.53/-1.01  337/1.40/-0.35  577/0.61/-2.31
+  barriere du bruit : 2.56
+  panier reel : t -2.45 (paniers de bruit -6.18 et -3.24), correlation zone +0.06, non retenu
+
+=== D NQ : strategies distinctes cherchees reel 63710, permutation 63593, signe 63820
+  reel   admises  16572 ; t controle median  -0.30, part > 0   38%, meilleur  3.15 ; trois conditions   232 ; panier t -0.40 (-0.67 $/seance ; 2023:-152 2024:-536 2025:+219 2026:-94)
+  bruit  admises   6476 ; t controle median  -0.17, part > 0   41%, meilleur  2.56 ; trois conditions    67 ; panier t -0.83 (-0.69 $/seance ; 2023:-473 2024:+303 2025:+79 2026:-491)
+  signe  admises   8808 ; t controle median  -0.00, part > 0   50%, meilleur  3.81 ; trois conditions   566 ; panier t -0.32 (-0.20 $/seance ; 2023:+36 2024:+75 2025:-6 2026:-275)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   2904/2.73/-0.79  2738/3.15/-0.77  2909/2.80/-0.79  2401/2.74/-0.05  2862/2.63/0.22  2758/2.76/0.01
+    bruit  1240/2.01/-0.06  1130/2.15/0.09  715/1.61/-2.39  1225/2.56/-0.19  1111/1.69/-0.45  1055/2.50/0.43
+    signe  1274/2.32/-0.23  1188/1.90/-0.13  2299/2.42/-0.86  952/2.18/-0.74  1279/2.52/0.35  1816/3.81/1.80
+  barriere du bruit : 3.81
+  panier reel : t -0.40 (paniers de bruit -0.83 et -0.32), correlation zone +0.08, non retenu
+
+=== D ES : strategies distinctes cherchees reel 63732, permutation 63922, signe 63576
+  reel   admises   5744 ; t controle median  -0.65, part > 0   14%, meilleur  2.09 ; trois conditions     1 ; panier t -1.39 (-0.97 $/seance ; 2023:-36 2024:-448 2025:-579 2026:+239)
+  bruit  admises   3017 ; t controle median  -1.37, part > 0   14%, meilleur  1.67 ; trois conditions     0 ; panier t -3.68 (-0.98 $/seance ; 2023:-39 2024:-156 2025:-365 2026:-266)
+  signe  admises   4185 ; t controle median  -1.18, part > 0   18%, meilleur  2.55 ; trois conditions    14 ; panier t -3.22 (-1.08 $/seance ; 2023:-64 2024:-338 2025:-454 2026:-55)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   391/0.90/-0.64  728/0.56/-2.42  1062/0.96/-0.65  1351/2.09/-0.22  1044/1.45/-0.74  1168/1.02/-2.40
+    bruit  220/0.78/-1.97  304/1.67/-0.12  602/1.33/-0.18  709/1.35/-1.64  617/0.15/-3.07  565/0.46/-2.47
+    signe  467/0.86/0.12  798/1.07/-1.34  627/1.22/-2.34  701/0.80/-1.93  527/2.55/0.02  1065/0.01/-1.45
+  barriere du bruit : 2.55
+  panier reel : t -1.39 (paniers de bruit -3.68 et -3.22), correlation zone +0.09, non retenu
+
+=== D GC : strategies distinctes cherchees reel 63611, permutation 63722, signe 63417
+  reel   admises   4305 ; t controle median   0.19, part > 0   60%, meilleur  2.26 ; trois conditions    29 ; panier t  0.44 (+0.27 $/seance ; 2023:-31 2024:+172 2025:+336 2026:-248)
+  bruit  admises   4652 ; t controle median   0.56, part > 0   67%, meilleur  3.06 ; trois conditions   635 ; panier t  0.47 (+0.23 $/seance ; 2023:-59 2024:+279 2025:+120 2026:-145)
+  signe  admises   5707 ; t controle median  -0.51, part > 0   31%, meilleur  2.03 ; trois conditions     1 ; panier t -1.62 (-0.75 $/seance ; 2023:-41 2024:+162 2025:-311 2026:-446)
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   609/1.66/0.04  602/1.73/0.22  1076/2.04/0.49  715/2.26/0.10  584/2.05/0.40  719/1.35/-0.31
+    bruit  360/0.95/-2.16  725/0.89/-2.21  824/1.69/0.66  1321/3.06/1.76  482/2.39/0.95  940/2.11/0.78
+    signe  983/1.31/0.34  961/1.59/0.09  947/1.41/-0.79  1392/1.15/-1.10  1060/2.03/-0.81  364/1.20/-0.95
+  barriere du bruit : 3.06
+  panier reel : t 0.44 (paniers de bruit 0.47 et -1.62), correlation zone +0.08, non retenu
+
+=== D 6E : strategies distinctes cherchees reel 63561, permutation 63672, signe 63746
+  reel   admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  bruit  admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  signe  admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+    bruit  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+    signe  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+  barriere du bruit : 1.65
+
+=== D 6B : strategies distinctes cherchees reel 63112, permutation 63694, signe 63455
+  reel   admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  bruit  admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  signe  admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+    bruit  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+    signe  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+  barriere du bruit : 1.65
+
+=== D 6A : strategies distinctes cherchees reel 63582, permutation 63890, signe 63499
+  reel   admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  bruit  admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  signe  admises      0 ; t controle median    nan, part > 0  nan%, meilleur   nan ; trois conditions     0 ; panier t   -
+  graine par graine (admises / meilleur t controle / panier t) :
+    reel   0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+    bruit  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+    signe  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan  0/nan/nan
+  barriere du bruit : 1.65
+
+RESUME : couple, admises reelles aux trois conditions, admises de bruit aux trois conditions (12 graines), barriere, meilleur reel
+  B   NQ      113     69   barriere  2.76   meilleur reel  3.28
+  B   ES        0      0   barriere  1.65   meilleur reel   nan
+  B   RTY       1      0   barriere  1.65   meilleur reel  1.95
+  B   YM        3     22   barriere  2.36   meilleur reel  1.67
+  B   GC       51      2   barriere  2.00   meilleur reel  2.07
+  B   CL        9      6   barriere  2.06   meilleur reel  2.30
+  B   6E        0      0   barriere  1.65   meilleur reel   nan
+  B2  BTC       4    122   barriere  2.56   meilleur reel  2.02
+  D   NQ      232    633   barriere  3.81   meilleur reel  3.15
+  D   ES        1     14   barriere  2.55   meilleur reel  2.09
+  D   GC       29    636   barriere  3.06   meilleur reel  2.26
+  D   6E        0      0   barriere  1.65   meilleur reel   nan
+  D   6B        0      0   barriere  1.65   meilleur reel   nan
+  D   6A        0      0   barriere  1.65   meilleur reel   nan
+
+CANDIDATES : 6 ; PANIERS CANDIDATS : 0 ; PLACEBOS : 4 suivis sur 12 listes ; m = 6, seuil de Bonferroni pour le coffre de l'avenir : 2.39
+Selection COMPLETE.
+candidats.json sha256 3aee9308e03cb6f526a7f1faaf05d065be881f2b773578ed58250bb847c61b0e

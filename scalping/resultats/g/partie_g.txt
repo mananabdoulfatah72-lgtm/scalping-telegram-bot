@@ -1,0 +1,23 @@
+Controle de la zone recalculee : 3562 trades ; zone verifiee 3562 ; communs 3562 (100.0%)
+
+Carte de l'elan (descriptif) : gain moyen des 30 minutes suivantes dans le sens de l'elan du jour, en points de base, avant frais ; etat de la zone apres sa decision au controle
+
+etat                                         periode       controles   moyenne (pb)     t
+zone en position, dans son sens              <= 2022        10295         1.05     4.05
+zone en position, dans son sens              >= 2023         3168         1.16     2.39
+zone en position, contre son sens            <= 2022            0          nan      nan
+zone en position, contre son sens            >= 2023            0          nan      nan
+zone a plat, |e| < 0,5                       <= 2022        11496        -0.38    -1.71
+zone a plat, |e| < 0,5                       >= 2023         3492         0.18     0.44
+zone a plat, dans la bande, |e| >= 0,5       <= 2022        13333         0.08     0.34
+zone a plat, dans la bande, |e| >= 0,5       >= 2023         4296        -0.34    -0.92
+zone a plat, hors de la bande                <= 2022            0          nan      nan
+zone a plat, hors de la bande                >= 2023            0          nan      nan
+
+Zone sans filtre, memes conventions (seances ou elle trade) : t 4.21, +34.73 $ par seance ; <= 2022 t 3.61, >= 2023 t 2.17
+
+Regles (retenue : t >= 2.13, positive avant et apres 2023, au-dessus de 95 % des jumeaux ; interessante : t >= 1,65, positive sur les deux periodes, au-dessus de 90 %)
+regle  nom                                                  seances    t   net/seance  t <=2022 (moy.)       t >=2023 (moy.)     corr. zone  bat le bruit  verdict
+G1     elan dans la bande, zone a plat, 30 min                3378  -2.69   -16.58 $   -1.82 ( -13.12 $)   -2.32 ( -27.66 $)   +0.04          30%      non
+G2     elan dans la bande, zone a plat, 1re fois, jusqu'a 15 h 55   3378   0.71     6.55 $    0.39 (  +4.09 $)    0.76 ( +14.40 $)   +0.21          80%      non
+G3     elan du matin sans trade de zone, de 12 h a 15 h 55    1018   0.95    12.88 $    1.16 ( +19.18 $)   -0.22 (  -5.01 $)   +0.09          85%      non

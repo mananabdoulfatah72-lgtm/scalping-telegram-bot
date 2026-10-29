@@ -1,0 +1,19 @@
+Partie H (README.md) : 16 strategies simples, NQ 2011 - 2026, 1 MNQ au prix d'aujourd'hui, frais compris. Retenue : t >= 2.73, positive avant et apres 2023, au-dessus de 95 % des jumeaux ; interessante : t >= 1,65, positive sur les deux periodes, au-dessus de 90 %. Zone dans les memes conventions : t 4,21 (partie G).
+
+regle  strategie                                        seances    t   net/seance gagnants  t <=2022 (moy.)       t >=2023 (moy.)     corr. zone  bat le bruit  verdict
+H1     ORB 5 min (Zarattini-Aziz)                        3804   2.25    12.85 $    23%    2.42 ( +16.27 $)    0.19 (  +1.97 $)   +0.39         100%      interessante
+H2     ORB 15 min                                        3846   0.67     4.88 $    40%   -0.04 (  -0.30 $)    1.43 ( +21.51 $)   +0.54          92%      non
+H3     ORB 30 min                                        3809   0.18     1.35 $    45%   -0.61 (  -5.15 $)    1.45 ( +22.26 $)   +0.55          65%      non
+H4     ORB 60 min (initial balance)                      3617   0.55     3.94 $    49%    0.10 (  +0.80 $)    0.94 ( +13.97 $)   +0.53          85%      non
+H5     cassure du plus haut / plus bas de la veille      3363   1.97     9.86 $    22%    1.32 (  +7.54 $)    1.68 ( +17.28 $)   +0.50         100%      interessante
+H6     Donchian 20 / 10 (5 min)                          3853  -0.51    -4.23 $    47%   -0.46 (  -4.33 $)   -0.21 (  -3.91 $)   +0.44          45%      non
+H7     croisement EMA 9 / 21 (5 min)                     3600   1.53    13.01 $    48%    2.44 ( +23.23 $)   -1.10 ( -20.21 $)   +0.38         100%      non
+H8     MACD 12-26-9 (5 min)                              3855  -2.51   -21.02 $    46%   -1.90 ( -17.87 $)   -1.71 ( -31.15 $)   +0.01          28%      non
+H9     Bollinger 20-2, retour a la moyenne (5 min)       3851  -2.74   -19.47 $    52%   -2.63 ( -20.92 $)   -0.95 ( -14.81 $)   -0.41           2%      non
+H10    Bollinger 20-2, cassure (5 min)                   3851   0.39     2.78 $    46%    0.51 (  +4.12 $)   -0.10 (  -1.51 $)   +0.41          88%      non
+H11    RSI(2) intraday (5 min)                           3855  -2.69   -18.22 $    50%   -2.33 ( -17.50 $)   -1.34 ( -20.54 $)   -0.24          50%      non
+H12    Supertrend 10-3 (5 min)                           3855   2.92    28.57 $    50%    2.69 ( +30.15 $)    1.18 ( +23.51 $)   +0.44         100%      RETENUE
+H13    gap and go (ecart >= 0,5 %)                       1397   0.47     9.36 $    53%    0.93 ( +22.59 $)   -0.77 ( -25.29 $)   +0.19          62%      non
+H14    comblement de gap (ecart >= 0,5 %)                1397  -0.93   -15.73 $    53%   -1.15 ( -23.78 $)    0.19 (  +5.34 $)   -0.27          20%      non
+H15    jour interieur, cassure du range de la veille      373   0.72    22.62 $    51%    0.13 (  +4.44 $)    1.14 ( +78.16 $)   +0.17          72%      non
+H16    NR7 + ORB 30 min                                   524   0.59    10.40 $    44%    0.07 (  +1.46 $)    1.17 ( +38.36 $)   +0.15          75%      non

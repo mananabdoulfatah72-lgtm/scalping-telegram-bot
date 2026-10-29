@@ -1,0 +1,9 @@
+Version installee (stop 70 points du niveau, pas de sortie aux controles), 4 MNQ, prix d'aujourd'hui, limite du jour 1 000 $
+
+filtre                 trades par an gagnants  gain moy perte moy j. -1000$  t 11-22  t 23-26    15 ans   2023-26     2025     2026  valide  perdu  expire
+aucun (installee)        2400    152      35%    +1,509      -680       167    +0.85    +1.43   +73,967   +44,461   +2,747   +7,963   21.7%  70.9%    7.4%
+Q1 sens de l'ouverture   1624    103      37%    +1,464      -682       100    +1.85    +1.83  +121,138   +43,470   -7,529  +11,755   18.1%  64.1%   17.8%
+Q2 tendance de fond      1219     77      41%    +1,531      -683        91    +0.78    +2.87   +74,749   +62,836   -1,896  +17,492   17.4%  51.8%   30.9%
+Q1 + Q2                   824     52      47%    +1,457      -693        58    +0.65    +3.07   +70,564   +54,378   -4,037  +14,094   12.3%  43.9%   43.8%
+
+(gagnants, gain et perte moyens : journees avec trade de 2023-2026 ; j. -1000$ : 15 ans ; challenge : 49 500 $, marge 1 000 $, 13 seances, 4 puis 6 MNQ, departs 2012-2026)

@@ -1,0 +1,16 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23. Memes entrees dans les deux cas : oui.
+
+sortie aux controles (installee) : 2400 trades, t +0.66 / +1.04, journees a -1 000 $ (15 ans) 383, pire baisse -37,294 $
+  2023-2026 : jours gagnants 27%, gain moyen +1,674 $, perte moyenne -509 $, jours coupes a -1 000 $ 17%
+  par an (4 MNQ) : 2018:+20,543 2019:+5,194 2020:-3,300 2021:-6,169 2022:-17,089 2023:+20,828 2024:+12,010 2025:-1,413 2026:+11,677
+  total 2011-2026 +55,071 $, depuis 2023 +43,102 $
+  challenge marge 1 000 $ : valide 19.9% perdu 68.0% expire 12.1% ; departs depuis 2025 : valide 20.4% perdu 70.1%
+  octobre 2026 : 1:-518 5:+1,327 8:+726 12:+364 14:-449 16:+4,222 19:-452 20:-1,000 21:-246 22:+2,452 23:-89   total +6,339 $
+
+SANS SORTIE : 16 h ou -1 000 $ : 2400 trades, t +1.44 / +1.17, journees a -1 000 $ (15 ans) 1071, pire baisse -36,359 $
+  2023-2026 : jours gagnants 43%, gain moyen +1,439 $, perte moyenne -897 $, jours coupes a -1 000 $ 48%
+  par an (4 MNQ) : 2018:+23,090 2019:+14,438 2020:+20,144 2021:-5,904 2022:+1,219 2023:+20,505 2024:+14,106 2025:+2,483 2026:+17,420
+  total 2011-2026 +119,380 $, depuis 2023 +54,514 $
+  challenge marge 1 000 $ : valide 21.9% perdu 72.3% expire 5.8% ; departs depuis 2025 : valide 22.2% perdu 69.9%
+  octobre 2026 : 1:-1,000 5:+1,327 8:+726 12:+364 14:+1,912 16:+4,222 19:-1,000 20:-1,000 21:-1,000 22:+2,452 23:-1,000   total +6,004 $
+

@@ -1,0 +1,48 @@
+# A placer dans .github/workflows/ de la branche main (les taches programmees de GitHub ne tournent que sur main).
+# Suivi virtuel du coffre de l'avenir (scalping/README.md, version 5) : chaque jour de semaine apres le robot de la zone,
+# joue les strategies figees sur les minutes du NQ que ce robot vient d'enregistrer. Aucun ordre.
+name: Suivi virtuel scalping NQ
+
+on:
+  schedule:
+    - cron: "50 13 * * 2-6"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: suivi-scalping
+
+jobs:
+  suivi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Code de la recherche (figé)
+        uses: actions/checkout@v4
+        with:
+          ref: claude/exciting-fermat-sea2l2
+          path: recherche
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Installer les dependances
+        run: pip install numpy pandas numba scipy requests
+      - name: Suivi
+        run: python3 recherche/scalping/suivi5.py zone/robot/nq_1min.csv.gz 2026-11-02
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+      - name: Sauvegarder le resultat
+        run: |
+          cp recherche/scalping/resultats/v5/suivi.txt zone/robot/suivi_scalping.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add zone/robot/suivi_scalping.txt
+          git diff --cached --quiet && exit 0
+          git commit -m "Suivi virtuel scalping NQ"
+          for essai in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 10
+          done
+          exit 1

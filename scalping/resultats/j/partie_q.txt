@@ -1,0 +1,12 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23. Controle : sans filtre = reglages_26oct_g : oui.
+
+filtre                     trades  points  gagn.  t 11-22  t 23-26 j. -1000$  valide  perdu  2023-26 4MNQ  2026 4MNQ  decision
+installee (aucun filtre)     2400   +1968    25%    +0.66    +1.04       383   19.9%  68.0%       +43,102    +11,677  -
+Q1 ecart d'ouverture         1624   +3978    27%    +2.08    +1.54       240   17.5%  56.2%       +37,207    +13,368  non
+Q2 tendance de fond          1219   +4924    27%    +1.22    +2.08       205   15.9%  47.5%       +51,975    +14,454  non
+Q3 VWAP                      2339   +2427    25%    +0.66    +1.12       374   19.8%  67.7%       +45,560    +11,724  non
+Q4 bougie de force           2315    +903    25%    +0.15    +1.05       385   18.6%  68.8%       +33,192     +6,091  non
+Q5 pas trop loin             2298   +2918    24%    +1.00    +1.26       328   19.8%  65.5%       +38,894    +13,444  non
+Q6 matin (avant 12 h)        1892   +1074    24%    +0.76    +0.88       337   19.4%  67.2%       +32,510     +9,061  non
+
+(t des gains quotidiens, jours sans Fed ; j. -1000$ = journees a -1 000 $ en 4 MNQ sur 15 ans ; challenge : 49 500 $, marge 1 000 $, 13 seances, 4 puis 6 MNQ, departs 2012-2026 ; $ en 4 MNQ au prix d'aujourd'hui, limite du jour 1 000 $)

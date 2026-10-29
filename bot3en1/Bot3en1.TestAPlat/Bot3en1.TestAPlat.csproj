@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Controles du mode a plat (Bulenox) sur le moteur seul : frein, jours de la Fed, RSI(2) de nuit, plafond. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Bot3en1.Core\*.cs" />
+  </ItemGroup>
+</Project>

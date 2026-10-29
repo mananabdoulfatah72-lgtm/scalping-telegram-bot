@@ -1,0 +1,27 @@
+2023 - 2026 : 566 trades, 156 gagnants (28%) a +1,735 $ en moyenne, 410 perdants a -573 $ en moyenne (4 MNQ, prix d'aujourd'hui, frais compris).
+
+Perdants, decomposition de la perte moyenne :
+  entree deja au-dela du niveau casse : 127 $ en moyenne (mediane 80 $)
+  sortie au controle, au-dela du niveau dans le mauvais sens : 427 $ en moyenne (mediane 277 $)
+  frais : 12 $
+  prix revenu sous le niveau avant la sortie : 97% des perdants ; attente jusqu'au controle : 22 minutes en mediane
+  pire moment pendant le trade : -631 $ en mediane
+  pertes de plus de 400 $ : 54% ; de plus de 800 $ : 22%
+  journees touchant -1 000 $ pendant le trade : 98 sur 566 trades
+
+Exemples d'octobre 2026 (heure de New York, 4 MNQ) :
+  2026-10-01 vente 10h22 a 30575.50 (niveau casse 30604.83, +235 $ au-dela), retour sous le niveau a 10h25, sortie 10h30 a 30638.50 -> -518 $ (pire -554 $)
+  2026-10-05 achat 10h08 a 31170.25 (niveau casse 31159.55, +85 $ au-dela), retour sous le niveau a -, sortie 15h59 a 31338.50 -> +1,327 $ (pire -119 $)
+  2026-10-08 vente 12h49 a 31069.25 (niveau casse 31081.44, +97 $ au-dela), retour sous le niveau a -, sortie 15h59 a 30976.00 -> +726 $ (pire -164 $)
+  2026-10-12 vente 10h05 a 30943.75 (niveau casse 30964.22, +163 $ au-dela), retour sous le niveau a 11h55, sortie 15h59 a 30896.50 -> +364 $ (pire -287 $)
+  2026-10-14 vente 10h52 a 30423.25 (niveau casse 30451.02, +225 $ au-dela), retour sous le niveau a 10h55, sortie 11h00 a 30477.25 -> -449 $ (pire -605 $)
+  2026-10-16 vente 10h51 a 29893.75 (niveau casse 29928.32, +285 $ au-dela), retour sous le niveau a -, sortie 15h59 a 29379.50 -> +4,222 $ (pire -47 $)
+  2026-10-19 achat 11h05 a 29891.75 (niveau casse 29883.64, +67 $ au-dela), retour sous le niveau a 11h07, sortie 12h30 a 29838.75 -> -452 $ (pire -560 $)
+  2026-10-20 achat 10h27 a 29848.00 (niveau casse 29805.16, +358 $ au-dela), retour sous le niveau a 11h12, sortie 11h30 a 29742.00 -> -898 $ (pire -1,324 $)
+  2026-10-21 achat 11h36 a 30027.75 (niveau casse 30006.08, +179 $ au-dela), retour sous le niveau a 12h25, sortie 12h30 a 29999.50 -> -246 $ (pire -358 $)
+  2026-10-22 vente 10h15 a 29440.75 (niveau casse 29446.41, +47 $ au-dela), retour sous le niveau a 10h16, sortie 15h59 a 29146.50 -> +2,452 $ (pire -287 $)
+  2026-10-23 achat 10h40 a 29252.75 (niveau casse 29250.71, +17 $ au-dela), retour sous le niveau a 10h42, sortie 12h30 a 29243.75 -> -89 $ (pire -411 $)
+
+Meme entree, deux sorties (4 MNQ, prix d'aujourd'hui, limite du jour 1 000 $) :
+  sortie au controle (installee)         gagnants 28%, gain moyen +1,735 $, perte moyenne -573 $, 2023-2026 +43,102 $, 2026 +11,677 $, valide 19.9% / perdu 68.0%
+  sortie des la cloture sous le niveau   gagnants 14%, gain moyen +2,010 $, perte moyenne -232 $, 2023-2026 +38,162 $, 2026 -4,857 $, valide 16.6% / perdu 54.2%

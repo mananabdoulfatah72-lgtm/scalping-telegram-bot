@@ -1,0 +1,17 @@
+Finalistes de nuit (partie D) : d'ou vient le gain, exploration 2013-2022 seulement
+
+NQ score 6.54 : 2587 trades, achats 100% ; gain des achats +43,470 $ (+16.80 $ par trade), des ventes +0 $ (+0.00 $ par trade) ; duree mediane 100 min
+      correlation quotidienne avec l'achat simple de la nuit +0.17 ; achat simple : t 3.16, +67,473 $ sur la periode
+      micro-compression puis cassure (k = 10, Q = 1.27) ; contre ; achats seuls ; entrees de la minute 60 a 210 ; regime tous ; tendance contre ; au marche ; stop 1.22 u ; objectif 3.72 u ; duree 20 min ; pause 15 min
+NQ score 4.37 : 1298 trades, achats 0% ; gain des achats +0 $ (+0.00 $ par trade), des ventes +16,595 $ (+12.79 $ par trade) ; duree mediane 25 min
+      correlation quotidienne avec l'achat simple de la nuit -0.26 ; achat simple : t 3.16, +67,473 $ sur la periode
+      serie de barres (n = 3, z >= 2.92) ; suivre ; ventes seules ; entrees de la minute 15 a 5 avant la fin ; regime tous ; tendance avec ; au marche ; stop 1.30 u ; objectif 2.40 u ; duree 5 min ; pause 5 min
+ES score 3.72 : 601 trades, achats 100% ; gain des achats +8,497 $ (+14.14 $ par trade), des ventes +0 $ (+0.00 $ par trade) ; duree mediane 100 min
+      correlation quotidienne avec l'achat simple de la nuit +0.09 ; achat simple : t 1.87, +21,487 $ sur la periode
+      micro-compression puis cassure (k = 5, Q = 0.92) ; contre ; achats seuls ; entrees de la minute 60 a 300 ; regime agite ; tendance contre ; au marche ; stop 1.94 u ; objectif 2.17 u ; duree 20 min ; pause 5 min
+GC score 3.08 : 427 trades, achats 0% ; gain des achats +0 $ (+0.00 $ par trade), des ventes +5,584 $ (+13.08 $ par trade) ; duree mediane 105 min
+      correlation quotidienne avec l'achat simple de la nuit -0.15 ; achat simple : t -0.30, -4,452 $ sur la periode
+      serie de barres (n = 3, z >= 2.10) ; suivre ; ventes seules ; entrees de la minute 15 a 5 avant la fin ; regime calme ; tendance avec ; au marche ; stop 1.28 u ; objectif 3.21 u ; duree 30 min ; pause 5 min
+GC score 2.86 : 943 trades, achats 100% ; gain des achats +11,689 $ (+12.40 $ par trade), des ventes +0 $ (+0.00 $ par trade) ; duree mediane 75 min
+      correlation quotidienne avec l'achat simple de la nuit +0.27 ; achat simple : t -0.30, -4,452 $ sur la periode
+      mouvement de k minutes (k = 10, z >= 1.18) ; contre ; achats seuls ; entrees de la minute 120 a 210 ; regime agite ; tendance toute ; au marche ; stop 2.84 u ; objectif 3.87 u ; duree 15 min ; pause 5 min

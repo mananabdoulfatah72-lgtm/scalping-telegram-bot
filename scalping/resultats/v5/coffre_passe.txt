@@ -1,0 +1,12 @@
+Coffre du passe : NQ du 2011-01-03 au 2016-12-30 (1531 seances, 1446 jouables), jamais vu par les versions 4 et 5. 1 MNQ au prix d'aujourd'hui, frais d'aujourd'hui.
+
+candidate (t controle 3.28) : 209 trades, -1,895 $, t -1.33, gagnants 57% -> ECARTEE
+    2011:-979 2012:+430 2013:-298 2014:-1664 2015:+739 2016:-123
+    micro-compression puis cassure (k = 10, Q = 0.85) ; contre ; ventes seules ; entrees de la minute 60 a 210 ; regime agite ; tendance contre ; au marche ; stop 2.57 u ; objectif 0.47 u ; duree 20 min ; pause 5 min
+candidate (t controle 2.81) : 133 trades, +36 $, t +0.05, gagnants 44% -> pas de conclusion
+    2011:-179 2012:+119 2013:+333 2014:-18 2015:-211 2016:-7
+    mouvement de k minutes (k = 15, z >= 2.21) ; suivre ; ventes seules ; entrees de la minute 30 a 300 ; regime calme ; tendance toute ; au marche ; stop 2.66 u ; objectif 2.48 u ; duree 10 min ; pause 0 min
+placebo (signe) : 151 trades, +1,126 $, t +0.56
+placebo (signe) : 261 trades, +3,523 $, t +1.47
+
+Toutes les admises reelles du NQ (v5, 9436 avec au moins 30 trades) sur 2011 - 2016 : t median -1.26, part > 0 19%, part >= 1,96 0.5%

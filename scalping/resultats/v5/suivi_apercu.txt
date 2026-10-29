@@ -1,0 +1,13 @@
+Suivi virtuel du NQ depuis le 2026-09-28 : 20 seances, dont 20 jouables (completes, hors changement de contrat) ; derniere seance 2026-10-23. Gains pour 1 MNQ au prix d'aujourd'hui, frais compris. Aucun ordre passe.
+
+strategie                                                                            seances trades   total $      t  verdict
+candidate NQ t 3.28 : micro-compression puis cassure (k = 10, Q = 0.85) ; contre ;         3      3      -131  -0.72  en cours
+candidate NQ t 2.81 : mouvement de k minutes (k = 15, z >= 2.21) ; suivre ; ventes         0      0        +0    nan  en cours
+placebo placebo signe : niveau franchi ou rejete (bas 15 premieres min, rejete, marg       5      6      -177  -0.39  en cours
+placebo placebo signe : ecart au VWAP (z >= 1.26) ; suivre ; achats et ventes ; entr       2      2       +85    nan  en cours
+regle H12 Supertrend 10-3 (5 min)                                                         20     20      +217   0.10  en cours
+regle H1 ORB 5 min                                                                        19     19      +825   0.57  en cours
+regle H5 cassure de la veille                                                             17     17      +281   0.36  en cours
+regle F3 pivots R1/S1, tendance                                                            9      9      +839   0.71  en cours
+
+Regles (README.md v5) : ecartee si t <= -1 avec au moins 50 trades ; retenue si t >= 2.39 avec au moins 150 trades et 2 trimestres positifs sur 3 ; interessante si t >= 1,65 avec 100 trades. Les placebos doivent faire moins bien que les candidates. Or, petrole et Russell : pas encore de releve des minutes.

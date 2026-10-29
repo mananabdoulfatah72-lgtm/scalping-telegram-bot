@@ -1,0 +1,10 @@
+Sorties de la version installee (stop 70 points du niveau, pas de sortie aux controles), 4 MNQ, prix d'aujourd'hui
+
+entree                             trades gagnants au-dela  t 11-22  t 23-26   2023-26     2026  Bulenox Lucid 2 MNQ
+des la cassure, sans volume          2498      33%   11.7p    +0.38    +1.55   +44,848   +9,826    20.9%       25.6%
+cassure + volume, minute seule       2247      34%   13.1p    +0.73    +1.81   +52,052   +5,064    22.2%       29.1%
+volume, fenetre 3 min                2380      35%   16.3p    +0.77    +1.36   +42,623   +9,963    21.6%       25.9%
+volume, fenetre 5 min (installee)    2400      35%   16.8p    +0.85    +1.43   +44,461   +7,963    21.7%       26.6%
+volume, fenetre 10 min               2415      35%   17.4p    +0.89    +1.55   +49,128   +8,979    22.0%       26.6%
+
+(gagnants : journees avec trade 2023-2026 ; au-dela : entree au-dela du niveau, points moyens 2023-2026 ; t des gains quotidiens, jours sans Fed ; Bulenox : 49 500 $, marge 1 000 $, 13 seances, 4 puis 6 MNQ ; Lucid : LucidFlex 50K sans limite de temps, 2 MNQ, departs 2012 - sept. 2025)

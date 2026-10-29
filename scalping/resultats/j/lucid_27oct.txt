@@ -1,0 +1,29 @@
+LucidFlex 50K sans limite de temps, version installee du bot (stop 70 points du niveau), au prix d'aujourd'hui.
+Valide = objectif + regularite remplis ; perdu = plancher touche ; en cours = ni l'un ni l'autre apres un an.
+
+aucun filtre (installee)   1 MNQ  | departs 2012 - 2025 : valide 42.4%, perdu 51.2%, en cours 6.4%, seances pour valider 112 (mediane)  | departs 2023 - sept. 2025 : valide 62.6%, perdu 37.4%, en cours 0.0%, seances pour valider 81 (mediane)
+aucun filtre (installee)   2 MNQ  | departs 2012 - 2025 : valide 26.6%, perdu 73.2%, en cours 0.2%, seances pour valider 35 (mediane)  | departs 2023 - sept. 2025 : valide 45.3%, perdu 54.7%, en cours 0.0%, seances pour valider 40 (mediane)
+aucun filtre (installee)   3 MNQ  | departs 2012 - 2025 : valide 22.2%, perdu 77.7%, en cours 0.1%, seances pour valider 23 (mediane)  | departs 2023 - sept. 2025 : valide 31.6%, perdu 68.4%, en cours 0.0%, seances pour valider 22 (mediane)
+
+Q1                         1 MNQ  | departs 2012 - 2025 : valide 43.6%, perdu 44.4%, en cours 11.9%, seances pour valider 121 (mediane)  | departs 2023 - sept. 2025 : valide 53.7%, perdu 45.9%, en cours 0.4%, seances pour valider 142 (mediane)
+Q1                         2 MNQ  | departs 2012 - 2025 : valide 30.8%, perdu 68.7%, en cours 0.5%, seances pour valider 46 (mediane)  | departs 2023 - sept. 2025 : valide 49.0%, perdu 51.0%, en cours 0.0%, seances pour valider 44 (mediane)
+Q1                         3 MNQ  | departs 2012 - 2025 : valide 23.3%, perdu 76.4%, en cours 0.3%, seances pour valider 30 (mediane)  | departs 2023 - sept. 2025 : valide 32.9%, perdu 67.1%, en cours 0.0%, seances pour valider 26 (mediane)
+
+Q2                         1 MNQ  | departs 2012 - 2025 : valide 35.8%, perdu 49.6%, en cours 14.7%, seances pour valider 111 (mediane)  | departs 2023 - sept. 2025 : valide 65.3%, perdu 22.2%, en cours 12.6%, seances pour valider 109 (mediane)
+Q2                         2 MNQ  | departs 2012 - 2025 : valide 34.0%, perdu 65.3%, en cours 0.7%, seances pour valider 70 (mediane)  | departs 2023 - sept. 2025 : valide 53.0%, perdu 47.0%, en cours 0.0%, seances pour valider 47 (mediane)
+Q2                         3 MNQ  | departs 2012 - 2025 : valide 31.2%, perdu 68.7%, en cours 0.1%, seances pour valider 52 (mediane)  | departs 2023 - sept. 2025 : valide 46.2%, perdu 53.8%, en cours 0.0%, seances pour valider 38 (mediane)
+
+Q1 + Q2                    1 MNQ  | departs 2012 - 2025 : valide 25.5%, perdu 34.9%, en cours 39.6%, seances pour valider 125 (mediane)  | departs 2023 - sept. 2025 : valide 52.8%, perdu 26.3%, en cours 20.9%, seances pour valider 110 (mediane)
+Q1 + Q2                    2 MNQ  | departs 2012 - 2025 : valide 29.8%, perdu 62.9%, en cours 7.2%, seances pour valider 90 (mediane)  | departs 2023 - sept. 2025 : valide 60.2%, perdu 39.8%, en cours 0.0%, seances pour valider 58 (mediane)
+Q1 + Q2                    3 MNQ  | departs 2012 - 2025 : valide 25.6%, perdu 71.5%, en cours 2.9%, seances pour valider 60 (mediane)  | departs 2023 - sept. 2025 : valide 47.7%, perdu 52.3%, en cours 0.0%, seances pour valider 43 (mediane)
+
+
+Comparaison avec les versions precedentes du bot (meme simulation) :
+bot d'avant (controles)                            1 MNQ : 2012-2025 valide 56.2% perdu 42.5% (86 seances) | 2023-2025 valide 55.9% perdu 44.1% (85 seances)
+bot d'avant (controles)                            2 MNQ : 2012-2025 valide 34.9% perdu 65.1% (34 seances) | 2023-2025 valide 24.9% perdu 75.1% (24 seances)
+version A (cassure+volume x2, sorties d'origine)   1 MNQ : 2012-2025 valide 55.5% perdu 43.2% (91 seances) | 2023-2025 valide 57.5% perdu 42.5% (80 seances)
+version A (cassure+volume x2, sorties d'origine)   2 MNQ : 2012-2025 valide 34.4% perdu 65.6% (32 seances) | 2023-2025 valide 27.8% perdu 72.2% (25 seances)
+ta regle, sortie au niveau casse aux controles     1 MNQ : 2012-2025 valide 33.7% perdu 57.5% (102 seances) | 2023-2025 valide 63.4% perdu 22.0% (89 seances)
+ta regle, sortie au niveau casse aux controles     2 MNQ : 2012-2025 valide 20.9% perdu 78.7% (39 seances) | 2023-2025 valide 28.1% perdu 69.6% (32 seances)
+ta regle, sans sortie ni stop (16 h ou -1000)      1 MNQ : 2012-2025 valide 33.7% perdu 65.7% (56 seances) | 2023-2025 valide 22.7% perdu 74.6% (44 seances)
+ta regle, sans sortie ni stop (16 h ou -1000)      2 MNQ : 2012-2025 valide 24.0% perdu 76.0% (21 seances) | 2023-2025 valide 32.5% perdu 67.5% (19 seances)

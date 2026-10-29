@@ -1,0 +1,22 @@
+Bulenox 50K sans limite de temps (horizon 252 seances), zone sans filtre a taille fixe, pas de zone les jours de la Fed ; departs 2012 - 2025 (3532)
+
+depuis ta situation (50 600 $, plancher 48 672 $)
+  reglage                                  valide   perdu   pas fini   seances pour valider (mediane)
+  zone 1 MNQ                                72.9%   26.0%     1.0%      62 (un quart apres plus de 103)
+  zone 2 MNQ                                57.0%   43.0%     0.0%      16 (un quart apres plus de 29)
+  zone 2 MNQ + ORB 5 min 1 MNQ              57.2%   42.8%     0.0%   
+  zone 2 MNQ + cassure de la veille 1 MNQ   57.0%   43.0%     0.0%   
+  zone 3 MNQ                                55.4%   44.6%     0.0%       8 (un quart apres plus de 16)
+  zone 4 MNQ                                51.0%   49.0%     0.0%       5 (un quart apres plus de 10)
+  zone 6 MNQ                                49.5%   50.5%     0.0%       3 (un quart apres plus de 6)
+
+depuis un compte neuf (50 000 $, plancher 47 500 $)
+  reglage                                  valide   perdu   pas fini   seances pour valider (mediane)
+  zone 1 MNQ                                70.1%   27.8%     2.1%      81 (un quart apres plus de 123)
+  zone 2 MNQ                                51.9%   48.1%     0.0%      21 (un quart apres plus de 37)
+  zone 2 MNQ + ORB 5 min 1 MNQ              54.5%   45.5%     0.0%   
+  zone 2 MNQ + cassure de la veille 1 MNQ   53.2%   46.8%     0.0%   
+  zone 3 MNQ                                52.5%   47.5%     0.0%      12 (un quart apres plus de 21)
+  zone 4 MNQ                                50.9%   49.1%     0.0%       7 (un quart apres plus de 13)
+  zone 6 MNQ                                51.0%   49.0%     0.0%       4 (un quart apres plus de 8)
+

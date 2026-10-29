@@ -1,0 +1,24 @@
+Minutes du NQ : 2011-01-03 - 2026-10-23.
+
+variante                         trades   points  gagn. duree med  t 11-22  t 23-26    2025    2026 jours -250$
+bot d'avant (controles seuls)      3577   +10558    36%      60 m    +3.75    +2.27    +942   +1311         638
+bot installe (J0, cassure)         5921    +2629    31%      30 m    +2.55    +0.93   -1412    -424         789
+L1a niveau casse, 1 trade/jour     2769    +5120    28%      63 m    +2.31    +0.88    -562    +648         585
+L1b niveau casse, reentree         4403    +5000    27%      58 m    +2.59    +0.93   -1696    +163         831
+L2a VWAP, 1 trade/jour             2769    +4642    37%     148 m    +2.79    +0.32   -2580     -57         781
+L2b VWAP, reentree                 4005    +3932    37%     118 m    +2.25    +0.79   -2705    +522         980
+L3a retour fort, 1 trade/jour      2769    +4954    45%     279 m    +1.58    +0.91    +348    +188        1148
+L3b retour fort, reentree          3131    +3831    45%     249 m    +1.60    +0.65   -1838    +795        1196
+
+(points bruts pour 1 MNQ, frais de 1,5 point deduits ; duree mediane d'un trade en minutes ; t des gains quotidiens au prix d'aujourd'hui, jours sans Fed ; jours -250$ = 1 000 $ en 4 MNQ)
+
+Challenge, 4 puis 6 MNQ, limite du jour 1 000 $, departs 2012-2026 : valide / perdu / expire
+variante                           49 500 $, marge 1 000 $   49 500 $, plus haut 51 172 $   49 500 $, plus haut 50 600 $   challenge neuf, 21 seances
+bot d'avant (controles seuls)       24.2%  67.6%   8.1%    20.8%  72.5%   6.7%    29.4%  56.8%  13.8%    48.0%  44.6%   7.3%
+bot installe (J0, cassure)          24.3%  70.5%   5.1%    21.5%  74.1%   4.4%    29.5%  62.3%   8.3%    45.4%  50.3%   4.3%
+L1a niveau casse, 1 trade/jour      25.1%  68.7%   6.2%    22.4%  72.3%   5.4%    29.9%  59.9%  10.2%    45.8%  47.7%   6.5%
+L1b niveau casse, reentree          24.5%  71.4%   4.1%    21.9%  74.7%   3.4%    30.4%  62.8%   6.9%    45.8%  51.1%   3.0%
+L2a VWAP, 1 trade/jour              26.3%  69.2%   4.5%    23.5%  73.0%   3.5%    31.1%  61.5%   7.4%    47.5%  49.0%   3.6%
+L2b VWAP, reentree                  25.3%  70.9%   3.7%    22.2%  74.9%   3.0%    30.4%  64.0%   5.6%    45.8%  52.3%   2.0%
+L3a retour fort, 1 trade/jour       24.4%  72.4%   3.2%    21.8%  75.7%   2.5%    29.6%  65.4%   5.0%    46.3%  52.3%   1.3%
+L3b retour fort, reentree           24.4%  72.3%   3.3%    21.8%  75.6%   2.6%    29.7%  65.3%   5.0%    45.5%  52.8%   1.6%

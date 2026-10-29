@@ -1,0 +1,12 @@
+Effet du vrai delta en avril - septembre 2026 : 20% des trades ecartes, rho = 0.24. 3577 trades de zone V1 (2011 - 23 octobre 2026), 20 tirages par scenario.
+
+LucidFlex 50K sans limite de temps (objectif 3 000 $, perte 2 000 $ en fin de journee bloquee a +100 $, regularite 50 %), bot de base (zone aux controles), limite du bot 1 000 $, pas de zone les jours de la Fed :
+
+sans filtre                      1 MNQ  | departs 2012 - 2025 : valide 56.2%, perdu 42.5%, 86 seances (mediane)  | departs 2023 - sept. 2025 : valide 55.9%, perdu 44.1%, 85 seances (mediane)
+sans filtre                      2 MNQ  | departs 2012 - 2025 : valide 34.9%, perdu 65.1%, 34 seances (mediane)  | departs 2023 - sept. 2025 : valide 24.9%, perdu 75.1%, 24 seances (mediane)
+filtre aussi bon qu'en 2026      1 MNQ  | departs 2012 - 2025 : valide 76.4%, perdu 22.1%, 80 seances (mediane)  | departs 2023 - sept. 2025 : valide 71.9%, perdu 24.8%, 80 seances (mediane)
+filtre aussi bon qu'en 2026      2 MNQ  | departs 2012 - 2025 : valide 55.5%, perdu 44.5%, 39 seances (mediane)  | departs 2023 - sept. 2025 : valide 49.3%, perdu 50.5%, 32 seances (mediane)
+filtre deux fois moins bon       1 MNQ  | departs 2012 - 2025 : valide 66.6%, perdu 31.1%, 87 seances (mediane)  | departs 2023 - sept. 2025 : valide 63.7%, perdu 32.5%, 87 seances (mediane)
+filtre deux fois moins bon       2 MNQ  | departs 2012 - 2025 : valide 47.2%, perdu 52.8%, 40 seances (mediane)  | departs 2023 - sept. 2025 : valide 41.1%, perdu 58.9%, 33 seances (mediane)
+filtre inutile (20 % au hasard)  1 MNQ  | departs 2012 - 2025 : valide 51.1%, perdu 45.8%, 93 seances (mediane)  | departs 2023 - sept. 2025 : valide 49.5%, perdu 46.7%, 91 seances (mediane)
+filtre inutile (20 % au hasard)  2 MNQ  | departs 2012 - 2025 : valide 38.2%, perdu 61.8%, 42 seances (mediane)  | departs 2023 - sept. 2025 : valide 33.6%, perdu 66.4%, 35 seances (mediane)

@@ -1,0 +1,17 @@
+Partie E (README.md) : 10 regles, NQ, 1 contrat micro au prix d'aujourd'hui, frais compris. Retenue : t >= 2.58, positive avant et apres 2023, au-dessus de 95 % des jumeaux de chaque bruit ; interessante : t >= 1,65, positive sur les deux periodes, au-dessus de 90 % des jumeaux.
+
+regle  nom                                                     trades     t   net/trade  gagnants   t <=2022 (moy.)        t >=2023 (moy.)      t apres publication   95e perm 95e signe bat le bruit  verdict
+E1     gamma d'heure en heure (contre si GEX > 0, avec si < 0)   3773  -3.92   -32.52 $      47%   -3.70 ( -35.43 $)   -1.40 ( -23.39 $)   -0.50 ( 670 tr.)      -0.47   -1.04       2%      non
+E1b    gamma en fin de seance (contre a 15 h 30 si GEX > 0)     3432  -1.48    -3.98 $      49%   -2.74 (  -8.52 $)    1.74 (  +9.37 $)    0.79 (1017 tr.)       0.38    1.19      25%      non
+E2     conference de presse de la Fed (suivre 14 h - 14 h 30)     70   1.10    75.76 $      60%    0.68 ( +61.53 $)    1.06 (+104.82 $)    0.14 (  37 tr.)       1.48    1.46      85%      non
+E3     retournement de l'annonce de la Fed                        94   0.42    29.51 $      53%    1.32 (+104.77 $)   -1.39 (-202.82 $)   -0.45 (  28 tr.)       1.57    1.77      52%      non
+E4     reequilibrage 60/40 de fin de mois                        569   1.24    37.58 $      50%    1.40 ( +57.00 $)    0.01 (  +0.62 $)    0.44 (  80 tr.)       1.04   -0.11      95%      non
+E5     nuit avant NFP et ISM (achat)                             318   0.57    13.03 $      59%    0.70 ( +17.96 $)   -0.06 (  -2.65 $)    0.24 ( 156 tr.)       2.02    2.29      25%      non
+E6     derive de 2 h a 3 h apres une fin de seance vendeuse     1171   2.75     9.46 $      55%    3.25 ( +12.81 $)   -0.26 (  -1.84 $)    0.86 ( 509 tr.)       2.33    0.94      95%      non
+E7     regle des 80 % (Market Profile)                           885   0.35     3.17 $      52%    0.61 (  +6.57 $)   -0.47 (  -7.97 $)     nan (   0 tr.)       1.12    0.82      78%      non
+E8     Oops de Larry Williams                                   1001   1.16    20.04 $      50%    1.02 ( +21.04 $)    0.57 ( +16.94 $)     nan (   0 tr.)       1.67    1.09      92%      non
+E9     cassure des extremes de la nuit                          3252   1.13    11.21 $      50%    1.00 ( +11.06 $)    0.54 ( +11.68 $)     nan (   0 tr.)       1.03    1.51      90%      non
+
+Pour information (pas de decision) : la Fed avec les jours de changement de contrat
+E2     conference de presse de la Fed (suivre 14 h - 14 h 30)     85   0.57    36.44 $  ; <=2022 t -0.05, >=2023 t 1.37, apres publication t -0.36
+E3     retournement de l'annonce de la Fed                        94   0.42    29.51 $  ; <=2022 t 1.32, >=2023 t -1.39, apres publication t -0.45
