@@ -621,3 +621,58 @@ dans 15 ans d'histoire. La bonne semaine du 20 au 27 octobre (6 trades) ne pèse
 prévoyait la partie 2 (le bruit atteint les mêmes scores), le meilleur réglage de 7 mois était surtout chanceux.
 **S2b ne doit pas trader en réel.** La zone de bruit (version d'origine) reste la seule stratégie du projet avec un
 avantage sur 15 ans (t +3,75 sur 2011 - 2022, +2,27 sur 2023 - 2026).
+
+## Partie 4 : les meilleures combinaisons de stratégies (règles fixées le 29 octobre 2026, avant tout calcul)
+
+### Demande de l'utilisateur
+
+Retracer toutes les stratégies et tous les réglages du projet, les classer, et trouver les combinaisons les plus
+efficaces ensemble (« c'est l'ensemble des confluences et de plusieurs stratégies qui fait la rentabilité »), avec
+plusieurs agents et une contre-revue indépendante (#ultrareview).
+
+### Les stratégies combinables (`matrice.py` → `FLUX_CALCUL/matrice.pkl`)
+
+Toutes celles dont le code du projet régénère les gains **quotidiens** sur le NQ de 2011 à 2026 (4 041 séances,
+3 janvier 2011 - 25 septembre 2026), en $ pour 1 contrat micro au prix d'aujourd'hui, frais compris :
+- **ZONE** : la zone de bruit, version d'origine (contrôles de 30 minutes) ;
+- **G1 - G3** : l'élan hors zone (`scalping/partie_g.py`) ;
+- **H1 - H16** : le banc des stratégies simples d'analyse technique, dont l'ORB 5 min (H1), la cassure de la veille (H5)
+  et le Supertrend (H12) (`scalping/partie_h.py`) ;
+- **F1 - F8** : les pistes inexplorées, dont les pivots (F3) (`scalping/partie_f.py`) ;
+- **S2b** (`flux/s2b_15ans.py`).
+Les 10 règles de la partie E (institutions et chercheurs) demandent des données de nuit absentes du cache : elles ne sont
+pas dans cette vague (aucune n'avait été retenue). Les stratégies trouvées par l'inventaire des agents hors de ces
+familles feront une vague suivante, avec ses propres règles.
+
+### Les méthodes, en walk-forward (aucune décision ne voit l'année jouée)
+
+Chaque année Y de 2014 à 2026, avec les seules séances de 2011 à Y − 1 :
+- **M1, portefeuille des solides** : toutes les stratégies dont le t des gains quotidiens (jours sans trade compris) est
+  ≥ 2 et qui sont positives au moins 2 années sur 3 ; 1 MNQ chacune ; aucune → pas de trade.
+- **M2, meilleure combinaison** : on part de la stratégie au meilleur t ; on ajoute, une à une, celle qui augmente le plus
+  le t de la somme ; on s'arrête quand plus rien ne l'augmente, ou à 4 stratégies ; 1 MNQ chacune.
+- **Témoins fixes** (sans choix) : ZONE seule ; toutes les stratégies à 1 MNQ chacune.
+La combinaison choisie est jouée l'année Y. Les années jouées (2014 - 25 septembre 2026) forment la série hors échantillon.
+
+### Contrôle du hasard
+
+Les mêmes méthodes sont refaites 200 fois sur des stratégies **sans avantage** : chaque série est décalée d'un nombre
+d'années tiré au hasard (permutation circulaire par années, la même pour toutes les stratégies d'un tirage, ce qui garde
+leurs corrélations) **et recentrée sur zéro** (sa moyenne de 2011 - 2026 retirée). Ce que M1 et M2 « gagnent » alors
+hors échantillon mesure ce que la sélection seule fabrique.
+
+### Décision (fixée maintenant)
+
+Une méthode est **retenue** si, hors échantillon (2014 - 2026) :
+1. t des gains quotidiens ≥ 2 ;
+2. t plus grand que celui de ZONE seule sur les mêmes séances ;
+3. au moins 9 années positives sur 13 ;
+4. au-dessus du 95e centile de ses 200 tirages sans avantage.
+Publié quoi qu'il arrive, avec les stratégies choisies chaque année. Pour une méthode retenue : challenge Bulenox
+(descriptif), comparé à ZONE seule à risque quotidien égal.
+
+### Contre-revue
+
+Avant d'être publié comme « retenu », le résultat est relu par deux agents indépendants : l'un vérifie le code (regard
+vers le futur, alignement des dates, recalcul indépendant), l'autre cherche à démolir la conclusion. On ne conclut que
+s'ils sont d'accord.

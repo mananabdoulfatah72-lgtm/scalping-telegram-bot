@@ -86,5 +86,40 @@ def main():
     print(texte)
 
 
+def quotidien():
+    """Gain de chaque seance en $ par MNQ (2011 - 28 octobre 2026), pour flux/matrice.py."""
+    import reglages as R
+    arr, jours, change = Q.barres_15_ans()
+    o, h, l, c = arr["o"], arr["h"], arr["l"], arr["c"]
+    m = {"o": o, "h": h, "l": l, "c": c}
+    Y.DUREE = 60
+    out = {}
+    for d in range(1, len(jours)):
+        if change[d]:
+            continue
+        o0 = o[d, 0]
+        rmin = max(TICK, round(3.0 * o0 / REF / TICK) * TICK)
+        libre, g, n = 0, 0.0, 0
+        for t, sens, stop_s in signaux(h[d], l[d], c[d], h[d - 1].max(), l[d - 1].min()):
+            if t < libre:
+                continue
+            e = t + 1
+            ent = o[d, e] + sens * TICK
+            st = np.floor(min(stop_s, ent - rmin) / TICK) * TICK if sens > 0 else np.ceil(max(stop_s, ent + rmin) / TICK) * TICK
+            R_ = abs(ent - st)
+            if R_ > Y.R_MAX * ent:
+                continue
+            ob = ent + sens * 2 * R_
+            ob = np.ceil(ob / TICK) * TICK if sens > 0 else np.floor(ob / TICK) * TICK
+            x, sortie, motif = Y.suivre(m, d, e, sens, ent, st, ob)
+            g += 2 * (sens * (sortie - ent) * REF / o0 - 2 * Y.COM)
+            n += 1
+            libre = x
+        out[jours[d]] = g if n else np.nan
+    R.CALCUL.mkdir(parents=True, exist_ok=True)
+    pd.Series(out, name="S2b").to_frame().to_pickle(R.CALCUL / "s2b_quotidien.pkl")
+
+
 if __name__ == "__main__":
-    main()
+    import sys
+    quotidien() if "--quotidien" in sys.argv else main()
