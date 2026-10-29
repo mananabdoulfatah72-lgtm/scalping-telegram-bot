@@ -411,3 +411,64 @@ direct revient à jouer à pile ou face en payant les frais.
 **Ce qui changerait la donne : plus de vrai tape.** La seule source gratuite est la plateforme de l'utilisateur :
 « Export transactions NQ » sur les contrats passés (NQU6, NQM6, NQH6, NQZ5...). Si Rithmic les fournit, toutes les vagues
 se relancent telles quelles, avec ces mois-là comme nouveau coffre, jamais vu par aucune des 108 000 configurations.
+
+## Le bot FluxNQ (règles fixées le 29 octobre 2026, avant tout calcul de C1)
+
+### Demande de l'utilisateur
+
+Les contrats passés (NQU6, NQM6...) ne sont pas proposés par sa plateforme : pas d'historique de plus. Il demande le bot
+order flow branché en direct, qui décide à partir de chaque transaction (prix, taille, acheteur ou vendeur), du DOM, du
+footprint, du profil de volume, du VWAP et du delta, par confluences, et les quatre points proposés : plus de vrai
+tape, le DOM, un essai en simulation avec une barre fixée d'avance, des ordres passifs.
+
+### Ce que fait le bot
+
+1. **Il lit** chaque transaction du NQ (prix, taille, côté agresseur), le DOM sur 10 niveaux de chaque côté (une photo
+   par seconde), et construit en direct : barres d'une minute avec achats et ventes agressifs, footprint (volume par prix
+   et par minute), profil de volume de la séance (POC, VAH, VAL) et de la veille, VWAP et bandes, delta, CVD, delta des
+   30 dernières minutes, plus gros lots. Une lecture est envoyée sur Telegram toutes les 30 minutes.
+2. **Il enregistre tout** (point 1 et 2) : transactions, DOM, minutes et footprint, chaque jour, dans
+   `C:\Bot3en1\flux\AAAA-MM-JJ\`. Ce sont les données qui manquent pour tester le DOM et pour relancer les vagues.
+3. **Il suit en simulation, chacune dans son propre carnet virtuel** (point 3), quatre règles :
+   - **S1** et **S2** : exactement celles de la partie 1 ;
+   - **S2b** : la meilleure configuration de tout l'historique (partie 2 : cassure ratée des niveaux de la veille et de
+     la première heure, sans condition de flux, échec en 5 minutes, objectif 2 R, 60 minutes, stop d'au moins 3 points,
+     signaux jusqu'à 12 h) ;
+   - **C1, confluence** (ci-dessous), la seule à utiliser le DOM.
+4. **Il mesure les ordres passifs** (point 4) : pour chaque entrée virtuelle, il note si un ordre limite posé au meilleur
+   prix acheteur (achat ; vendeur pour une vente) au moment du signal aurait été rempli dans les 60 secondes (une
+   transaction au moins un tick au-delà de la limite), et l'amélioration de prix obtenue.
+5. **Il passe des ordres MNQ** seulement pour la règle choisie dans ses réglages (aucune par défaut), au marché, avec :
+   taille, limite de perte du jour, nombre maximal de trades par jour, à plat à 15 h 59, fichier `STOP`. Il refuse de
+   trader si une position MNQ qu'il n'a pas ouverte existe sur le compte (le bot 3 en 1 ne doit pas tourner sur le même
+   compte).
+
+### C1 : la confluence (achat décrit ; vente : l'exact symétrique)
+
+À la clôture de la minute t, de 10 h à 15 h :
+1. **Lieu** : au moins un niveau L parmi le plus bas de la veille, la VAL, le POC et la VAH du profil de la veille,
+   et VWAP − 1 écart-type (σ_V, écart-type du prix pondéré par le volume depuis 9 h 30) est **testé par le haut** : plus
+   bas_t ≤ L + 2 ticks, plus bas_t ≥ L − 8 ticks, clôture_t ≥ L, clôture_{t−1} > L + 2 ticks. Vente : plus haut de la
+   veille, VAH, POC, VAL de la veille, VWAP + 1 σ_V, testé par le bas.
+2. **Footprint** : ventes agressives aux deux prix les plus bas de la minute ≥ leur quantile 75 des 5 séances d'avant
+   (les vendeurs ont frappé le niveau) ;
+3. **Delta** de la minute < 0 (vendeurs agressifs) **alors que le prix a tenu** (condition 1 : clôture au-dessus du
+   niveau) ;
+4. **DOM** : somme des quantités affichées sur les 10 meilleurs prix acheteurs ≥ 1,2 × celle des 10 meilleurs prix
+   vendeurs, à la clôture de la minute.
+
+Stop : plus bas_t − 2 ticks, ramené à au moins 3 points sous l'entrée. Objectif 2 R, 30 minutes au plus, pas de trade si
+R > 0,12 % du prix. Exécution, frais et ordre le plus défavorable : ceux de la partie 1.
+
+**Profil de volume** : volume (achats + ventes) par prix de la séance ; POC = prix au plus fort volume (le plus bas en
+cas d'égalité) ; zone de valeur : partant du POC, on ajoute un tick à la fois du côté (au-dessus ou au-dessous) qui a le
+plus de volume (au-dessus en cas d'égalité) jusqu'à 70 % du volume ; VAL et VAH en sont les bornes.
+
+**Descriptif, avant le direct** (`confluence.py`) : C1 sans la condition 4 (aucun DOM historique) sur les séances
+Databento ; publié tel quel, sans aucun réglage.
+
+### La barre pour passer en réel (fixée maintenant)
+
+Pour chaque règle, sur ses **trades virtuels pris en direct** depuis l'installation du bot (jamais sur l'historique) :
+au moins **40 trades**, gain net moyen > 0 et **t ≥ 2,24** (Bonferroni unilatéral à 5 % pour 4 règles). Une règle qui
+franchit la barre peut être choisie pour les ordres réels ; avant, c'est un essai. Le choix reste celui de l'utilisateur.
