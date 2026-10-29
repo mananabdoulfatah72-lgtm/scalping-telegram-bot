@@ -25,7 +25,7 @@ namespace Bot3en1
         [InputParameter("NQ : contrat du moment, pour lire le flux (tape et DOM), ex. NQZ6", 20)] public Symbol SymboleNQ;
         [InputParameter("MNQ : meme echeance, pour les ordres, ex. MNQZ6", 30)] public Symbol SymboleMNQ;
         [InputParameter("Dossier des donnees (enregistrements dans le sous-dossier flux)", 40)] public string Dossier = @"C:\Bot3en1";
-        [InputParameter("Regle qui passe les ordres : 0 = aucune (lecture, enregistrement, carnets virtuels), 1 = S1, 2 = S2, 3 = S2b, 4 = C1. Aucune regle n'a encore franchi la barre fixee (40 trades en direct, t >= 2,24) : flux/README.md", 50, 0, 4, 1, 0)]
+        [InputParameter("Regle qui passe les ordres : 0 = aucune (lecture, enregistrement, carnets virtuels), 1 = S1, 2 = S2, 3 = S2b, 4 = C1. Aucune regle n'a encore franchi la barre fixee (40 trades en direct et t au moins 2,24) - flux/README.md", 50, 0, 4, 1, 0)]
         public int RegleOrdres = 0;
         [InputParameter("MNQ par trade (ordres reels)", 60, 1, 10, 1, 0)] public int Taille = 1;
         [InputParameter("Limite de perte du jour en $ pour les ordres reels (0 = aucune)", 70, 0, 5000, 50, 0)] public double LimitePerteJour = 300;
@@ -77,8 +77,8 @@ namespace Bot3en1
 
         public FluxNQ() : base()
         {
-            Name = "FluxNQ (order flow : tape, DOM, footprint)";
-            Description = "Lit le tape, le DOM et le footprint du NQ, enregistre tout, suit S1, S2, S2b et C1 en virtuel ; ordres MNQ seulement pour la regle choisie.";
+            Name = "FluxNQ order flow (tape DOM footprint)";     // sans deux-points ni virgule, comme les strategies qui marchent
+            Description = "Lit le tape, le DOM et le footprint du NQ et enregistre tout. Suit S1 S2 S2b et C1 en virtuel. Ordres MNQ seulement pour la regle choisie.";
         }
 
         // ------------------------------------------------------------------ demarrage et arret
