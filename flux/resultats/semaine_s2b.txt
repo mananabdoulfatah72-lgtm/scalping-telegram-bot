@@ -1,0 +1,43 @@
+S2b, semaine du 20 au 29 octobre 2026 (export Rithmic du compte), trade par trade. Heures de New York, avec Paris entre parenthèses. Points de NQ nets de frais (1,5 point par aller-retour) ; 1 point = 2 $ par MNQ.
+
+19/10 : inconnu. La veille (vendredi 17) manque dans l'export : sans son plus haut et son plus bas, on ne peut pas savoir ce que le bot aurait fait.
+
+Tue 20/10 : veille haut 29983.50 / bas 29653.75 ; 1re heure haut 29883.00 / bas 29391.75
+   ACHAT a 10h03 (16h03 a Paris) a 29658.25 ; stop 29645.50 (12.75 pts), objectif 29683.75
+      pourquoi : le prix a casse le plus bas de la veille (29653.75) a 10h02 (16h02), jusqu'a 29645.75, puis une minute a cloture de nouveau au-dessus a 10h02 : les vendeurs de la cassure sont pieges
+      sortie : stop a 10h03 (16h03) a 29645.25 -> -14.00 pts (-28 $ par MNQ)
+   VENTE a 10h31 (16h31 a Paris) a 29878.50 ; stop 29903.75 (25.25 pts), objectif 29828.00
+      pourquoi : le prix a casse le plus haut de la 1re heure (29883.00) a 10h30 (16h30), jusqu'a 29903.50, puis une minute a cloture de nouveau en dessous a 10h30 : les acheteurs de la cassure sont pieges
+      sortie : objectif a 10h33 (16h33) a 29828.00 -> +49.50 pts (+99 $ par MNQ)
+
+Wed 21/10 : veille haut 29903.50 / bas 29391.75 ; 1re heure haut 29934.25 / bas 29771.00
+   VENTE a 10h01 (16h01 a Paris) a 29896.75 ; stop 29905.75 (9.00 pts), objectif 29878.75
+      pourquoi : le prix a casse le plus haut de la veille (29903.50) a 10h00 (16h00), jusqu'a 29905.50, puis une minute a cloture de nouveau en dessous a 10h00 : les acheteurs de la cassure sont pieges
+      sortie : objectif a 10h01 (16h01) a 29878.75 -> +17.00 pts (+34 $ par MNQ)
+   VENTE a 10h52 (16h52 a Paris) a 29929.00 ; stop 29944.00 (15.00 pts), objectif 29899.00
+      pourquoi : le prix a casse le plus haut de la 1re heure (29934.25) a 10h50 (16h50), jusqu'a 29943.75, puis une minute a cloture de nouveau en dessous a 10h51 : les acheteurs de la cassure sont pieges
+      sortie : objectif a 10h55 (16h55) a 29899.00 -> +29.00 pts (+58 $ par MNQ)
+
+Thu 22/10 : veille haut 30113.00 / bas 29771.00 ; 1re heure haut 29594.75 / bas 29346.75
+   aucun trade : aucun de ces niveaux n'a ete casse puis repris dans les 5 minutes entre 10 h et 12 h
+
+Fri 23/10 : veille haut 29594.75 / bas 29033.00 ; 1re heure haut 29193.50 / bas 28987.00
+   VENTE a 10h32 (16h32 a Paris) a 29186.25 ; stop 29202.75 (16.50 pts), objectif 29153.25
+      pourquoi : le prix a casse le plus haut de la 1re heure (29193.50) a 10h31 (16h31), jusqu'a 29202.50, puis une minute a cloture de nouveau en dessous a 10h31 : les acheteurs de la cassure sont pieges
+      sortie : objectif a 10h33 (16h33) a 29153.25 -> +32.00 pts (+64 $ par MNQ)
+
+Mon 26/10 : veille haut 29326.00 / bas 28987.00 ; 1re heure haut 29383.00 / bas 29165.25
+   aucun trade : aucun de ces niveaux n'a ete casse puis repris dans les 5 minutes entre 10 h et 12 h
+
+Tue 27/10 : veille haut 29572.00 / bas 29165.25 ; 1re heure haut 29687.75 / bas 29494.50
+   VENTE a 10h04 (15h04 a Paris) a 29563.25 ; stop 29573.00 (9.75 pts), objectif 29543.75
+      pourquoi : le prix a casse le plus haut de la veille (29572.00) a 10h03 (15h03), jusqu'a 29572.75, puis une minute a cloture de nouveau en dessous a 10h03 : les acheteurs de la cassure sont pieges
+      sortie : objectif a 10h09 (15h09) a 29543.75 -> +18.50 pts (+37 $ par MNQ)
+
+Wed 28/10 : veille haut 29881.25 / bas 29494.50 ; 1re heure haut 29952.75 / bas 29767.25 ; 61 minute(s) manquante(s)
+   aucun trade : aucun de ces niveaux n'a ete casse puis repris dans les 5 minutes entre 10 h et 12 h
+
+Thu 29/10 : veille haut 30004.00 / bas 29767.25 ; 1re heure haut 29630.50 / bas 29405.00 ; donnees jusqu'a 11h43
+   aucun trade : aucun de ces niveaux n'a ete casse puis repris dans les 5 minutes entre 10 h et 12 h
+
+Total des trades termines : 6 trade(s), +132.00 pts = +264 $ par MNQ ; 1 stop(s), 5 objectif(s)
