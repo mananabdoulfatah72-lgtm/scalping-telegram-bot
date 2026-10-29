@@ -598,3 +598,26 @@ sur les barres d'une minute gratuites du NQ (`intraday/donnees/nasdaq100_1min.cs
 - **Décision (fixée maintenant)** : S2b est **confirmée sur 15 ans** si le t des gains quotidiens sur 2011 - mars 2026
   ≥ 2 et le gain net moyen > 0. Publié quoi qu'il arrive, année par année, avec 2011 - 2022 et 2023 - mars 2026 à part
   (les périodes où la zone a t +3,75 et +2,27).
+
+### Résultat (29 octobre 2026) : `resultats/s2b_15ans.txt` — **S2b n'est PAS confirmée sur 15 ans**
+
+| Période | Trades | Gagnants | Net moyen | Total ($ par MNQ) | t par séance |
+|---|---|---|---|---|---|
+| 2011 - 2022 | 2 259 | 29 % | −4,86 pts | −21 956 $ | −7,99 |
+| 2023 - mars 2026 | 670 | 33 % | −1,22 pts | −1 635 $ | −1,17 |
+| **Tout (2011 - mars 2026)** | **2 929** | **30 %** | **−4,03 pts** | **−23 591 $** | **−7,65** |
+
+**Décision fixée à l'avance : S2b non confirmée** (t −7,65 ; seuil +2). Une seule année positive sur 16 (2024, +106 $).
+
+Contrôles (descriptif) :
+- Le même programme sur avril - 27 octobre 2026 retrouve un gain (114 trades, +3,66 points par trade) : le test n'est pas
+  faussé. Mais ce gain est deux fois plus petit qu'avec les minutes faites depuis Databento (+7,17) : le résultat de S2b
+  dépend de la façon exacte de construire les minutes, signe de fragilité.
+- Le tick pesait 13 fois plus en 2011 (NQ à 2 300). Avec un glissement ramené au prix d'aujourd'hui, S2b perd encore
+  (−2,18 points par trade, 2 années positives sur 16) ; même **sans aucun frais**, elle perd (−1,18 point par trade).
+
+**Lecture.** Les 7 mois d'avril à octobre 2026, où S2b a été choisie parmi 89 100 configurations, sont une exception
+dans 15 ans d'histoire. La bonne semaine du 20 au 27 octobre (6 trades) ne pèse rien face à 2 929 trades. Comme le
+prévoyait la partie 2 (le bruit atteint les mêmes scores), le meilleur réglage de 7 mois était surtout chanceux.
+**S2b ne doit pas trader en réel.** La zone de bruit (version d'origine) reste la seule stratégie du projet avec un
+avantage sur 15 ans (t +3,75 sur 2011 - 2022, +2,27 sur 2023 - 2026).

@@ -1,0 +1,27 @@
+S2b sur les barres gratuites, 2011-01-04 - 2026-03-31 : 3725 seances, 2929 trades (0.79 par seance). Points au prix d'aujourd'hui (NQ a 30 000), frais compris ; 1 point = 2 $ par MNQ.
+
+2011 - 2022       :  2259 trades, gagnants 29%, net moyen -4.86 pt, total   -10978 pt (-21,956 $ par MNQ), t par seance -7.99
+2023 - mars 2026  :   670 trades, gagnants 33%, net moyen -1.22 pt, total     -818 pt (-1,635 $ par MNQ), t par seance -1.17
+tout              :  2929 trades, gagnants 30%, net moyen -4.03 pt, total   -11795 pt (-23,591 $ par MNQ), t par seance -7.65
+
+Decision fixee a l'avance : S2b NON confirmee sur 15 ans (t -7.65, seuil 2)
+
+Annee par annee (points, trades, $ par MNQ) :
+  2011 :   -2186 pt (173 trades, 20% gagnants) = -4,373 $
+  2012 :   -1174 pt (172 trades, 29% gagnants) = -2,349 $
+  2013 :   -1004 pt (192 trades, 30% gagnants) = -2,009 $
+  2014 :   -1513 pt (183 trades, 26% gagnants) = -3,026 $
+  2015 :   -1274 pt (202 trades, 28% gagnants) = -2,547 $
+  2016 :   -1231 pt (206 trades, 28% gagnants) = -2,462 $
+  2017 :    -259 pt (216 trades, 35% gagnants) = -518 $
+  2018 :    -803 pt (210 trades, 29% gagnants) = -1,607 $
+  2019 :    -609 pt (198 trades, 30% gagnants) = -1,217 $
+  2020 :    -395 pt (159 trades, 32% gagnants) = -790 $
+  2021 :    -321 pt (208 trades, 30% gagnants) = -642 $
+  2022 :    -208 pt (140 trades, 34% gagnants) = -416 $
+  2023 :    -590 pt (202 trades, 30% gagnants) = -1,180 $
+  2024 :     +53 pt (199 trades, 36% gagnants) = +106 $
+  2025 :    -129 pt (207 trades, 35% gagnants) = -257 $
+  2026 :    -152 pt (62 trades, 34% gagnants) = -303 $
+
+Pire baisse (fin de journee) : -11888 pt ; annees positives : 1 sur 16
