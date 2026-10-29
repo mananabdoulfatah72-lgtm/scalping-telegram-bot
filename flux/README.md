@@ -725,3 +725,20 @@ fait baisser la validation Lucid de 52 % à 42 % ; cassure de la veille, Supertr
 **Ce qu'on retient.** Rien dans le projet ne bat la zone de bruit d'origine, seule. Pour le challenge Bulenox, les
 relecteurs estiment une validation autour d'une chance sur deux (68 % à 1 MNQ sans limite de temps si tout l'avantage
 historique tient ; environ 50 % à toutes les tailles au niveau observé depuis juin 2024 ; 30 à 42 % sans aucun avantage).
+
+## Partie 5 : finir le tournoi n°5 (29 octobre 2026, règles fixées le 30 septembre 2026, jamais calculées)
+
+L'utilisateur demande de continuer à chercher des pistes nouvelles, fondées sur les études publiées. L'inventaire
+(partie 4) montre que le tournoi n°5 de la branche de recherche (`tournoi5/`) a fixé le 30 septembre 2026, **avant tout
+calcul**, des règles sur des rendez-vous institutionnels documentés, et figé son code le même jour ; ses données sont
+arrivées le 1er octobre, mais seules les familles B (fin de séance, 5 marchés) et C (rapport EIA) ont été calculées
+(0 sur 6). **Les familles A, D et E n'ont jamais été calculées.** Elles le sont ici, avec le code et les critères du
+30 septembre, sans rien changer :
+- **A1 / A2** : panier des 6 devises (6E, 6B, 6J, 6A, 6C, 6S) une heure avant (vente) / après (achat) le fixing de 16 h
+  à Londres (Krohn, Mueller, Whelan, Journal of Finance 2024) ;
+- **D1** : bitcoin CME, à 15 h 30 dans le sens de 9 h 30 - 10 h, jusqu'à 16 h (Shen, Urquhart, Wang 2022) ;
+- **E1 / E2** : ZN (10 ans), vente de 9 h à 13 h les jours d'adjudication du Trésor, achat de 13 h à 15 h (Lou, Yan,
+  Zhang 2013).
+Critères (écrits le 30 septembre) : t ≥ 2 sur 2011 - 2022 (bitcoin 2018 - 2022) en rendements quotidiens nets ; battre
+les autres heures (A), le bruit (D) ou 95 % des tirages de jours sans adjudication (E) ; puis coffre 2023 - 2026 : t ≥
+seuil de Bonferroni et au moins 3 années positives sur 4.
