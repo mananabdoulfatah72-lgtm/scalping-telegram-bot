@@ -1,0 +1,52 @@
+Systeme order flow NQ (flux/README.md) : 138 seances du 2026-04-01 au 2026-10-16 (127 Databento, 11 export Rithmic) ; jouables : 128
+A = jusqu'au 2026-07-31 (76 seances jouables), B = apres (52). Points de NQ par trade, frais compris (1 point = 2 $ par MNQ).
+
+S1 repli absorbe dans le sens du flux
+  A        14 trades | net moyen  +4.07 pt | gagnants 42.9% | t par trade +0.86 | t par seance +0.86 | total    +57.0 pt
+  B        14 trades | net moyen  -2.98 pt | gagnants 35.7% | t par trade -0.90 | t par seance -1.01 | total    -41.8 pt
+  A + B    28 trades | net moyen  +0.54 pt | gagnants 39.3% | t par trade +0.19 | t par seance +0.20 | total    +15.2 pt
+  sorties : objectif 39%, stop 61%, temps 0% ; risque R median 8.00 pt ; achats 79%
+  placebo de sens : bat 56.5% des 2000 tirages (95e centile des placebos : t +1.37)
+  jumeau sans order flow (descriptif) : 1377 trades, net moyen -2.01 pt, t par seance -3.69
+  decision : non retenu (A et B positifs False, t >= 2.13 False, placebo 95 % False, 60 trades False)
+
+S2 cassure ratee (pieges)
+  A        44 trades | net moyen  -1.73 pt | gagnants 29.5% | t par trade -0.46 | t par seance -0.49 | total    -76.2 pt
+  B        25 trades | net moyen  +9.94 pt | gagnants 48.0% | t par trade +1.60 | t par seance +1.69 | total   +248.5 pt
+  A + B    69 trades | net moyen  +2.50 pt | gagnants 36.2% | t par trade +0.75 | t par seance +0.79 | total   +172.2 pt
+  sorties : objectif 33%, stop 64%, temps 3% ; risque R median 13.25 pt ; achats 30%
+  placebo de sens : bat 86.9% des 2000 tirages (95e centile des placebos : t +1.27)
+  jumeau sans order flow (descriptif) : 128 trades, net moyen +4.55 pt, t par seance +2.03
+  decision : non retenu (A et B positifs False, t >= 2.13 False, placebo 95 % False, 60 trades True)
+
+S3 volume d'arret a l'extreme (footprint)
+  A       391 trades | net moyen  -3.27 pt | gagnants 25.6% | t par trade -4.61 | t par seance -3.64 | total  -1278.2 pt
+  B       192 trades | net moyen  -2.32 pt | gagnants 27.1% | t par trade -2.37 | t par seance -1.89 | total   -445.2 pt
+  A + B   583 trades | net moyen  -2.96 pt | gagnants 26.1% | t par trade -5.15 | t par seance -4.08 | total  -1723.5 pt
+  sorties : objectif 26%, stop 74%, temps 0% ; risque R median 5.50 pt ; achats 30%
+  placebo de sens : bat 46.7% des 2000 tirages (95e centile des placebos : t -2.77)
+  jumeau sans order flow (descriptif) : 2093 trades, net moyen -1.98 pt, t par seance -4.37
+  decision : non retenu (A et B positifs False, t >= 2.13 False, placebo 95 % False, 60 trades True)
+
+DESCRIPTIF (aucune decision)
+Mois par mois (net en points, nombre de trades) :
+  S1 : 2026-04 -4 (1) | 2026-05 +25 (4) | 2026-06 +3 (2) | 2026-07 +33 (7) | 2026-08 -34 (6) | 2026-09 -14 (4) | 2026-10 +6 (4)
+  S2 : 2026-04 -112 (12) | 2026-05 -4 (7) | 2026-06 -54 (13) | 2026-07 +94 (12) | 2026-08 +79 (8) | 2026-09 +198 (9) | 2026-10 -29 (8)
+  S3 : 2026-04 -69 (81) | 2026-05 -243 (98) | 2026-06 -478 (113) | 2026-07 -488 (99) | 2026-08 -309 (111) | 2026-09 -190 (79) | 2026-10 +54 (2)
+
+Execution a la seconde (Databento seulement), memes trades :
+  S1 : 24 trades, net moyen a la minute +0.39 pt, a la seconde +0.31 pt, t par trade +0.09
+  S2 : 63 trades, net moyen a la minute +3.92 pt, a la seconde +3.88 pt, t par trade +1.08
+  S3 : 583 trades, net moyen a la minute -2.96 pt, a la seconde -3.12 pt, t par trade -5.29
+
+Les trois ensemble (une position a la fois) : 664 trades, net moyen -2.24 pt, t par seance -3.02, total -1486 pt (-2,972 $ par MNQ)
+
+Challenge Bulenox 50K par tirage des seances jouables (A + B), limite du jour 1 000 $, trade par trade :
+  S1 repli absorbe d compte neuf                  30 seances, valide / perdu / pas fini : 1 MNQ  0.0% /  0.0% / 100.0% | 2 MNQ  0.0% /  0.0% / 100.0% | 4 MNQ  0.0% /  0.0% / 100.0%
+  S1 repli absorbe d 49 900 $, plancher 48 672 $  30 seances, valide / perdu / pas fini : 1 MNQ  0.0% /  0.0% / 100.0% | 2 MNQ  0.0% /  0.0% / 100.0% | 4 MNQ  0.0% /  0.0% / 100.0%
+  S2 cassure ratee ( compte neuf                  30 seances, valide / perdu / pas fini : 1 MNQ  0.0% /  0.0% / 100.0% | 2 MNQ  0.0% /  0.0% / 100.0% | 4 MNQ  0.2% /  0.0% / 99.8%
+  S2 cassure ratee ( 49 900 $, plancher 48 672 $  30 seances, valide / perdu / pas fini : 1 MNQ  0.0% /  0.0% / 100.0% | 2 MNQ  0.0% /  0.0% / 100.0% | 4 MNQ  0.1% /  4.0% / 95.8%
+  S3 volume d'arret  compte neuf                  30 seances, valide / perdu / pas fini : 1 MNQ  0.0% /  0.1% / 100.0% | 2 MNQ  0.0% / 17.5% / 82.5% | 4 MNQ  0.0% / 74.6% / 25.4%
+  S3 volume d'arret  49 900 $, plancher 48 672 $  30 seances, valide / perdu / pas fini : 1 MNQ  0.0% / 17.4% / 82.6% | 2 MNQ  0.0% / 72.0% / 28.0% | 4 MNQ  0.0% / 93.4% /  6.6%
+  Les trois ensemble compte neuf                  30 seances, valide / perdu / pas fini : 1 MNQ  0.0% /  0.1% / 100.0% | 2 MNQ  0.0% / 18.1% / 81.9% | 4 MNQ  0.2% / 71.0% / 28.8%
+  Les trois ensemble 49 900 $, plancher 48 672 $  30 seances, valide / perdu / pas fini : 1 MNQ  0.0% / 16.7% / 83.3% | 2 MNQ  0.0% / 65.0% / 35.0% | 4 MNQ  0.2% / 88.0% / 11.8%

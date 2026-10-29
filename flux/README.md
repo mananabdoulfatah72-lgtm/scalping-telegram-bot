@@ -130,3 +130,44 @@ avec un gain net moyen positif**. Publié quoi qu'il arrive.
 au meilleur vendeur de la première seconde, stop et objectif suivis seconde par seconde) ; les trois setups ensemble ;
 le challenge Bulenox 50K (perte max 2 500 $ suivie en fin de journée, objectif 53 000 $, limite du jour 1 000 $) de
 1 à 4 MNQ, par tirage des séances.
+
+## Résultats (29 octobre 2026, calcul lancé une seule fois) : `resultats/systeme.txt`
+
+Contrôles faits avant le calcul (`test_flux.py`) : aucun regard vers le futur (40 coupures, 953 signaux identiques
+quand les minutes suivantes et les séances suivantes sont remplacées par du hasard) ; exécution la plus défavorable
+vérifiée sur des minutes fabriquées. Un trade de chaque setup a été revérifié à la main sur les minutes brutes (niveaux,
+seuils, stop, objectif, frais) : conforme.
+
+138 séances (127 Databento, 11 export Rithmic), 128 jouables : A = 76 séances (avril - juillet), B = 52 (août - 16 octobre).
+
+| Setup | Trades A / B | Net moyen A / B (points) | Net moyen A + B | t par séance | Placebo battu | Décision |
+|---|---|---|---|---|---|---|
+| S1 repli absorbé dans le sens du flux | 14 / 14 | +4,07 / −2,98 | +0,54 | +0,20 | 56 % | non retenu |
+| S2 cassure ratée (piégés) | 44 / 25 | −1,73 / +9,94 | +2,50 | +0,79 | 87 % | non retenu |
+| S3 volume d'arrêt à l'extrême (footprint) | 391 / 192 | −3,27 / −2,32 | **−2,96** | **−4,08** | 47 % | non retenu |
+
+**Décision fixée à l'avance : aucun setup n'est retenu.**
+
+- **S1** se déclenche rarement (28 trades en 7 mois) et ne gagne rien : +0,5 point par trade.
+- **S2** perd d'avril à juillet et gagne d'août à octobre ; sur l'ensemble, t +0,79. Descriptif, après coup : le même
+  setup **sans** la condition d'agression (128 trades) fait +4,55 points par trade (t +2,03). Le flux n'ajoute rien à la
+  seule cassure ratée ; ce chiffre-là a été vu après le calcul et n'est pas une preuve.
+- **S3**, le « volume d'arrêt » qu'on voit sur le footprint, **perd chaque mois** (−1 723 points en 7 mois, soit
+  −3 447 $ par MNQ) et ne fait pas mieux qu'un sens tiré au hasard : acheter le gros volume vendeur au plus bas du jour
+  n'apporte rien, et un stop de 5 points en médiane est mangé par le bruit d'une minute de NQ (amplitude médiane
+  12,5 points) et par les frais (1,5 point).
+- Exécution à la seconde (Databento) : mêmes conclusions (S1 +0,31, S2 +3,88, S3 −3,12 points par trade).
+- Les trois ensemble : 664 trades, −2,24 points par trade, −2 972 $ par MNQ sur 7 mois. Dans le challenge, aucun
+  ne valide (S1 et S2 gagnent trop peu pour atteindre 53 000 $ en 30 séances ; S3 perd le compte à 4 MNQ dans 75 à
+  93 % des tirages).
+
+### Ce qu'on retient
+
+C'est la même conclusion que `ordres/` (ES) et `orderflow/` (NQ, 41 567 stratégies), maintenant avec des stops serrés
+sur la structure et des objectifs à 2 R, comme les traders order flow : **ce que montrent le tape et le footprint est
+réel, mais trop petit pour payer les frais et le bruit d'une minute de NQ**. Un bot qui « voit » le flux ne gagne pas
+pour autant : voir n'est pas prévoir.
+
+Ce qui reste vraiment non testé, faute de données, c'est **le DOM** (profondeur du carnet, ordres posés et retirés,
+icebergs). Aucune donnée historique n'existe dans le projet. Le seul moyen honnête de le tester est de l'enregistrer
+en direct depuis la plateforme de l'utilisateur, puis de fixer les règles avant de lire les enregistrements.
