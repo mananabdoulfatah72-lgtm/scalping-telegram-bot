@@ -25,7 +25,7 @@ namespace Bot3en1
         [InputParameter("NQ : contrat du moment, pour lire le flux (tape et DOM), ex. NQZ6", 20)] public Symbol SymboleNQ;
         [InputParameter("MNQ : meme echeance, pour les ordres, ex. MNQZ6", 30)] public Symbol SymboleMNQ;
         [InputParameter("Dossier des donnees (enregistrements dans le sous-dossier flux)", 40)] public string Dossier = @"C:\Bot3en1";
-        [InputParameter("Regle qui passe les ordres : 0 = aucune (lecture, enregistrement, carnets virtuels), 1 = S1, 2 = S2, 3 = S2b, 4 = C1. Aucune regle n'a encore franchi la barre fixee (40 trades en direct et t au moins 2,24) - flux/README.md", 50, 0, 4, 1, 0)]
+        [InputParameter("Regle qui passe les ordres : 0 = aucune (lecture, enregistrement, carnets virtuels), 1 = S1, 2 = S2, 3 = S2b, 4 = C1, 5 = ORB 5 min, 6 = cassure de la veille, 7 = Supertrend, 8 = pivots. Toutes sont suivies en virtuel ; voir flux/README.md avant le reel", 50, 0, 8, 1, 0)]
         public int RegleOrdres = 0;
         [InputParameter("MNQ par trade (ordres reels)", 60, 1, 10, 1, 0)] public int Taille = 1;
         [InputParameter("Limite de perte du jour en $ pour les ordres reels (0 = aucune)", 70, 0, 5000, 50, 0)] public double LimitePerteJour = 300;
@@ -35,12 +35,17 @@ namespace Bot3en1
         [InputParameter("Telegram : jeton du bot (facultatif)", 100)] public string JetonTelegram = "";
         [InputParameter("Telegram : numero de conversation (facultatif)", 110)] public string ChatTelegram = "";
 
-        const string Version = "29 octobre 2026 (S1, S2, S2b, C1 ; enregistrement du tape et du DOM)";
+        const string Version = "29 octobre 2026 (S1, S2, S2b, C1 ; ORB 5 min, cassure de la veille, Supertrend, pivots ; enregistrement du tape et du DOM)";
         const double TICK = 0.25;
         static readonly HttpClient http = new HttpClient { Timeout = TimeSpan.FromSeconds(20) };
         static readonly CultureInfo inv = CultureInfo.InvariantCulture;
 
         MoteurFlux moteur;
+        MoteurTendance tendance;
+        bool tendancePrete;                       // Supertrend amorce sur les seances precedentes
+        int tendanceVoulue;                       // sens tenu en reel par la regle de tendance choisie (0 : rien)
+        int tendanceBloquee;                      // sens a ignorer (entree refusee, stop deja touche, trade deja en cours au demarrage)
+        double tendanceEntree;                    // prix d'entree estime du trade reel de tendance
         TimeZoneInfo ny;
         Timer horloge;
         readonly object verrou = new object();
@@ -59,7 +64,7 @@ namespace Bot3en1
         long majL2;
         // enregistrement
         string dossierJour;
-        StreamWriter wTape, wDom, wMinutes, wFootprint, wVirtuel, wPassif, wReel;
+        StreamWriter wTape, wDom, wMinutes, wFootprint, wVirtuel, wPassif, wReel, wTendance;
         // lecture : gros lots des 30 dernieres minutes (heure UTC, prix, taille, sens)
         readonly List<(DateTime t, double prix, double taille, int sens)> gros = new List<(DateTime, double, double, int)>();
         // ordres passifs a verifier : regle, sens, limite, fin de l'attente, minute du signal
@@ -78,7 +83,7 @@ namespace Bot3en1
         public FluxNQ() : base()
         {
             Name = "FluxNQ order flow (tape DOM footprint)";     // sans deux-points ni virgule, comme les strategies qui marchent
-            Description = "Lit le tape, le DOM et le footprint du NQ et enregistre tout. Suit S1 S2 S2b et C1 en virtuel. Ordres MNQ seulement pour la regle choisie.";
+            Description = "Lit le tape, le DOM et le footprint du NQ et enregistre tout. Suit en virtuel S1 S2 S2b C1 et les regles de tendance (ORB 5 min, cassure de la veille, Supertrend, pivots). Ordres MNQ seulement pour la regle choisie.";
         }
 
         // ------------------------------------------------------------------ demarrage et arret
@@ -95,6 +100,7 @@ namespace Bot3en1
                 if (SymboleMNQ != null) SymboleMNQ = Vivant(SymboleMNQ);
                 Compte = CompteVivant(Compte);
                 moteur = new MoteurFlux();
+                tendance = new MoteurTendance();
                 lock (verrou)
                 {
                     var maintenant = HeureNY();
@@ -104,10 +110,10 @@ namespace Bot3en1
                 SymboleNQ.NewLast += SurTransaction;
                 AbonnerDom();
                 horloge = new Timer(_ => Tic(), null, 250, 250);
-                string regle = RegleOrdres == 0 ? "AUCUNE (lecture, enregistrement et carnets virtuels seulement)" : $"{NomRegle(RegleOrdres)} sur {Compte?.Name}, {Taille} MNQ, limite du jour {LimitePerteJour:F0} $, {MaxTradesJour} trades au plus";
+                string regle = RegleOrdres == 0 ? "AUCUNE (lecture, enregistrement et carnets virtuels seulement)" : $"{Libelle(RegleOrdres)} sur {Compte?.Name}, {Taille} MNQ, limite du jour {LimitePerteJour:F0} $, {MaxTradesJour} trades au plus";
                 Dire($"demarre (version du {Version}). Regle qui passe les ordres : {regle}. Enregistrement dans {Path.Combine(Dossier, "flux")}.");
                 if (RegleOrdres > 0)
-                    Dire($"ATTENTION : {NomRegle(RegleOrdres)} n'a pas encore franchi la barre fixee pour le reel (40 trades en direct, gain moyen > 0, t >= 2,24). Ce sont des ordres d'essai.", true);
+                    Dire($"ATTENTION : {Libelle(RegleOrdres)} n'a pas franchi de barre pour le reel (flux/README.md) : ce sont des ordres d'essai.", true);
             }
             catch (Exception e)
             {
@@ -137,7 +143,9 @@ namespace Bot3en1
             Dire("arrete.");
         }
 
-        static string NomRegle(int r) => r switch { 1 => "S1", 2 => "S2", 3 => "S2b", 4 => "C1", _ => "aucune" };
+        static string NomRegle(int r) => r switch { 1 => "S1", 2 => "S2", 3 => "S2b", 4 => "C1", 5 => "H1", 6 => "H5", 7 => "H12", 8 => "F3", _ => "aucune" };
+        static string Libelle(int r) => r >= 5 && r <= 8 ? $"{NomRegle(r)} ({MoteurTendance.Libelles[r - 5]})" : NomRegle(r);
+        bool OrdresTendance => RegleOrdres >= 5 && RegleOrdres <= 8;
 
         static TimeZoneInfo TrouverFuseau()
         {
@@ -226,6 +234,19 @@ namespace Bot3en1
             // pas de trade le jour d'un changement de contrat (comme l'historique)
             jouable = prec.Count >= 5 && veille != DateTime.MinValue && Calendrier.Contrat(veille) == Calendrier.Contrat(jour);
             moteur.DebutSeance(jour, prec, profilVeille, jouable);
+            if (!tendancePrete)
+            {
+                // Supertrend continu : amorce sur les seances precedentes (comme un graphique de seance)
+                foreach (var b in prec)
+                {
+                    tendance.DebutSeance(DateTime.MinValue, false, null);
+                    for (int t = 0; t < MoteurTendance.N; t++) tendance.FermerMinute(t, b[t]);
+                }
+                tendancePrete = true;
+            }
+            bool memeContrat = veille != DateTime.MinValue && Calendrier.Contrat(veille) == Calendrier.Contrat(jour);
+            tendance.DebutSeance(jour, memeContrat && prec.Count > 0, memeContrat && prec.Count > 0 ? prec[^1] : null);
+            tendanceVoulue = 0; tendanceBloquee = 0;
             OuvrirFichiers();
             Dire($"seance du {jour:yyyy-MM-dd} : {prec.Count} seance(s) precedente(s) chargee(s)"
                  + (jouable ? ", regles actives" : " : PAS DE TRADE aujourd'hui (seances precedentes incompletes ou changement de contrat), lecture et enregistrement seulement"));
@@ -354,6 +375,7 @@ namespace Bot3en1
             catch (Exception e) { Dire($"rattrapage de la seance impossible ({e.Message}) : les minutes passees sont a plat", true); }
             for (int m = 0; m < jusqua; m++) FermerMinute(m, executer: false);
             prochaineMinute = jusqua;
+            if (OrdresTendance) tendanceBloquee = tendance.PositionVoulue(NomRegle(RegleOrdres));   // pas de trade deja commence
             Dire($"demarrage en cours de seance : {jusqua} minute(s) rattrapee(s) (aucun ordre reel pour un signal passe)");
         }
 
@@ -380,13 +402,14 @@ namespace Bot3en1
             wVirtuel = W("virtuel.csv", "regle,jour,signal,entree_minute,sens,entree,stop,objectif,R,sortie_minute,sortie,motif,net,raison", true);
             wPassif = W("passif.csv", "regle,jour,signal,sens,limite,rempli,seconde", true);
             wReel = W("reel.csv", "regle,jour,signal,sens,taille,entree_estimee,stop,objectif,sortie_estimee,motif,gain_estime_dollars", true);
+            wTendance = W("tendance.csv", "regle,jour,minute,evenement,sens,prix,stop,objectif,motif,gain_dollars_par_mnq", true);
         }
 
         void FermerFichiers(bool compresser)
         {
-            foreach (var w in new[] { wTape, wDom, wMinutes, wFootprint, wVirtuel, wPassif, wReel })
+            foreach (var w in new[] { wTape, wDom, wMinutes, wFootprint, wVirtuel, wPassif, wReel, wTendance })
                 try { w?.Flush(); w?.Dispose(); } catch { }
-            wTape = wDom = wMinutes = wFootprint = wVirtuel = wPassif = wReel = null;
+            wTape = wDom = wMinutes = wFootprint = wVirtuel = wPassif = wReel = wTendance = null;
             if (!compresser || dossierJour == null) return;
             foreach (var nom in new[] { "tape.csv", "dom.csv" })
             {
@@ -499,6 +522,14 @@ namespace Bot3en1
                             p.Rempli = true;
                             p.Quand = tu;
                         }
+                    // regle de tendance en reel (ORB 5 min, cassure de la veille) : stop et objectif verifies a chaque transaction
+                    if (OrdresTendance && tendanceVoulue != 0)
+                    {
+                        string rg = NomRegle(RegleOrdres);
+                        double st = tendance.StopCourant(rg), ob = tendance.ObjectifCourant(rg);
+                        if (!double.IsNaN(st) && (tendanceVoulue > 0 ? last.Price <= st : last.Price >= st)) SortirTendance("stop", last.Price, true);
+                        else if (!double.IsNaN(ob) && (tendanceVoulue > 0 ? last.Price >= ob + TICK : last.Price <= ob - TICK)) SortirTendance("objectif", ob, true);
+                    }
                     // ordres reels : stop et objectif verifies a chaque transaction
                     if (reel != null)
                     {
@@ -528,6 +559,7 @@ namespace Bot3en1
                         if (!arretJour) Dire("fichier STOP present : plus aucun ordre reel, position fermee", true);
                         arretJour = true;
                         if (reel != null) FermerReel("fichier STOP", dernierPrix);
+                        if (tendanceVoulue != 0) SortirTendance("fichier STOP", dernierPrix, false);
                     }
                     // filet : position du bot encore ouverte apres 16 h 30 (a plat obligatoire avant 16 h 59)
                     if (voulu != null && voulu != 0 && maintenant.TimeOfDay >= TimeSpan.FromMinutes(990) && reel == null) voulu = 0;
@@ -564,6 +596,14 @@ namespace Bot3en1
             if (x != null) x.CalculerFootprint();
             var dom = executer ? photo : null;
             var evs = moteur.FermerMinute(m, x, dom);
+            foreach (var et in tendance.FermerMinute(m, x))
+            {
+                wTendance?.WriteLine(string.Join(",", et.Regle, jour.ToString("yyyy-MM-dd"), et.Minute, et.Entree ? "entree" : "sortie", et.Sens,
+                    et.Prix.ToString("R", inv), et.Stop.ToString("R", inv), et.Objectif.ToString("R", inv), et.Motif ?? "",
+                    et.Sortie ? et.Gain.ToString("0.00", inv) : ""));
+                if (executer) Dire(et.Texte + " [virtuel]");
+            }
+            if (executer && OrdresTendance) SuivreTendance(m);
             if (x != null && x.Presente)
             {
                 EcrireMinutes(wMinutes, jour, barres, false, m);
@@ -597,7 +637,7 @@ namespace Bot3en1
             if (executer)
             {
                 if (reel != null && (m >= reel.FinMinute || m >= MoteurFlux.N - 2)) FermerReel(m >= reel.FinMinute ? "temps" : "fin de seance", dernierPrix);
-                foreach (var w in new[] { wTape, wDom, wMinutes, wFootprint, wVirtuel, wPassif, wReel }) try { w?.Flush(); } catch { }
+                foreach (var w in new[] { wTape, wDom, wMinutes, wFootprint, wVirtuel, wPassif, wReel, wTendance }) try { w?.Flush(); } catch { }
                 if (PeriodeLecture > 0 && m >= 29 && (m + 1) % PeriodeLecture == 0) Dire(Lecture(m));
             }
         }
@@ -607,6 +647,10 @@ namespace Bot3en1
             if (seanceFinie) return;
             seanceFinie = true;
             if (reel != null) FermerReel("fin de seance", dernierPrix);
+            if (tendanceVoulue != 0) SortirTendance("fin de seance", dernierPrix, false);
+            string resT = string.Join(" ; ", MoteurTendance.Noms.Select((n, i) =>
+                $"{MoteurTendance.Libelles[i]} {(double.IsNaN(tendance.Gain(n)) ? "pas de trade" : tendance.Gain(n).ToString("+0;-0", inv) + " $")}"));
+            Dire($"regles de tendance du {jour:yyyy-MM-dd} (virtuel, 1 MNQ) : {resT}");
             var t = moteur.Trades.Where(x => x.SortieMinute >= 0).ToList();
             string res = string.Join(" ; ", moteur.Regles.Select(r =>
             {
@@ -638,7 +682,9 @@ namespace Bot3en1
                 : $"{gros.Count} lot(s) de {GrosLot}+ en 30 min (achats {gros.Where(g => g.sens > 0).Sum(g => g.taille):0}, ventes {gros.Where(g => g.sens < 0).Sum(g => g.taille):0}), le plus gros {gros.OrderByDescending(g => g.taille).First().taille:0} a {gros.OrderByDescending(g => g.taille).First().prix:F2}";
             string carnet = photo == null || photo.Vide ? "carnet indisponible"
                 : $"carnet 10 niveaux : {photo.SommeAchat:0} a l'achat / {photo.SommeVente:0} a la vente (ratio {photo.SommeAchat / Math.Max(1, photo.SommeVente):0.00}), plus grosse offre {Max(photo.QteAchat, photo.PrixAchat)} a l'achat, {Max(photo.QteVente, photo.PrixVente)} a la vente";
-            string virt = string.Join(", ", moteur.Regles.Select(r => $"{r.Nom} {moteur.Trades.Where(t => t.Regle == r && t.SortieMinute >= 0).Sum(t => t.Net):+0;-0} pt"));
+            string virt = string.Join(", ", moteur.Regles.Select(r => $"{r.Nom} {moteur.Trades.Where(t => t.Regle == r && t.SortieMinute >= 0).Sum(t => t.Net):+0;-0} pt"))
+                          + ", " + string.Join(", ", MoteurTendance.Noms.Select(n => $"{n} {(tendance.Position(n) > 0 ? "achete" : tendance.Position(n) < 0 ? "vendu" : "a plat")}"
+                                                                                         + (double.IsNaN(tendance.Gain(n)) ? "" : $" {tendance.Gain(n):+0;-0} $")));
             return $"lecture de {jour.AddMinutes(570 + m + 1):HH:mm} (New York) : NQ {x.C:F2}, VWAP {vw:F2} ({(x.C >= vw ? "au-dessus" : "en dessous")}, bandes {vw - s:F2} / {vw + s:F2}) ; "
                    + $"delta 30 min {moteur.D30(m):+0;-0}, CVD du jour {moteur.Cvd(m):+0;-0}, desequilibre de la minute {moteur.Desequilibre(m):+0.00;-0.00} (seuils {q10:+0.00;-0.00} / {q90:+0.00;-0.00}) ; "
                    + $"{profilJour} ; veille : haut {pdh:F2}, bas {pdl:F2}, POC {poc:F2}, zone de valeur {val:F2} - {vah:F2} ; {lots} ; {carnet} ; "
@@ -683,6 +729,51 @@ namespace Bot3en1
             tradesJour++;
             voulu = tr.Sens * Taille;
             Dire($"{r.Nom} : ORDRE REEL {(tr.Sens > 0 ? "achat" : "vente")} {Taille} MNQ vers {ent:F2}, stop {st:F2} ({R * 2 * Taille:F0} $), objectif {ob:F2}");
+            Aligner();
+        }
+
+        /// <summary>Regle de tendance choisie pour le reel : apres chaque cloture de minute, la position MNQ suit la position
+        /// que la regle tiendra a l'ouverture suivante (entree, sortie, retournement du Supertrend).</summary>
+        void SuivreTendance(int m)
+        {
+            string rg = NomRegle(RegleOrdres);
+            int pv = tendance.PositionVoulue(rg);
+            if (tendanceBloquee != 0 && pv != tendanceBloquee) tendanceBloquee = 0;
+            if (pv == tendanceVoulue) return;
+            if (tendanceVoulue != 0) SortirTendance(pv == 0 ? "sortie de la regle" : "retournement", dernierPrix, false);
+            if (pv == 0 || pv == tendanceBloquee) return;
+            string refus = arretJour ? "limite du jour atteinte ou fichier STOP"
+                : tradesJour >= MaxTradesJour ? $"{MaxTradesJour} trades reels deja pris aujourd'hui"
+                : voulu == null && PositionReelle() != 0 ? "une position MNQ que le bot n'a pas ouverte existe sur ce compte (bot 3 en 1 ou position a la main ?)"
+                : dernierPrix <= 0 ? "aucun prix recu" : m >= MoteurFlux.N - 6 ? "fin de seance" : null;
+            if (refus != null) { tendanceBloquee = pv; Dire($"{Libelle(RegleOrdres)} : pas d'ordre reel ({refus})", refus.Contains("n'a pas ouverte")); return; }
+            tendanceVoulue = pv;
+            tendanceEntree = dernierPrix + pv * TICK;
+            tradesJour++;
+            voulu = pv * Taille;
+            double st = tendance.StopCourant(rg);
+            Dire($"{Libelle(RegleOrdres)} : ORDRE REEL {(pv > 0 ? "achat" : "vente")} {Taille} MNQ vers {tendanceEntree:F2}"
+                 + (double.IsNaN(st) ? "" : $", stop {st:F2}"));
+            Aligner();
+        }
+
+        void SortirTendance(string motif, double prix, bool attendreRegle)
+        {
+            if (tendanceVoulue == 0) return;
+            double gain = tendanceVoulue * (prix - tendanceEntree) * 2 * Taille - 2.0 * Taille;
+            realiseJour += gain;
+            wReel?.WriteLine(string.Join(",", NomRegle(RegleOrdres), jour.ToString("yyyy-MM-dd"), "", tendanceVoulue, Taille, tendanceEntree.ToString("R", inv),
+                tendance.StopCourant(NomRegle(RegleOrdres)).ToString("R", inv), tendance.ObjectifCourant(NomRegle(RegleOrdres)).ToString("R", inv),
+                prix.ToString("R", inv), motif, gain.ToString("0.00", inv)));
+            Dire($"{Libelle(RegleOrdres)} : SORTIE REELLE ({motif}) vers {prix:F2}, {gain:+0;-0} $ estimes ; jour {realiseJour:+0;-0} $");
+            if (attendreRegle) tendanceBloquee = tendanceVoulue;   // stop touche : pas de nouvelle entree avant que la regle change
+            tendanceVoulue = 0;
+            voulu = 0;
+            if (LimitePerteJour > 0 && realiseJour <= -LimitePerteJour && !arretJour)
+            {
+                arretJour = true;
+                Dire($"limite de perte du jour atteinte ({realiseJour:F0} $) : plus d'ordre reel aujourd'hui", true);
+            }
             Aligner();
         }
 

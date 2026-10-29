@@ -46,7 +46,7 @@ namespace Bot3en1.Flux
 
         public readonly Dictionary<string, Etat> Etats = new Dictionary<string, Etat>();
 
-        public class Evenement { public string Regle, Texte; public bool Entree, Sortie; public int Sens; public double Prix, Stop, Objectif; }
+        public class Evenement { public string Regle, Texte, Motif; public bool Entree, Sortie; public int Sens, Minute; public double Prix, Stop, Objectif, Gain; }
 
         /// <summary>prec : seance complete precedente du meme contrat (null : aucune) ; ok : seance jouable (complete et pas
         /// un jour de changement de contrat).</summary>
@@ -62,6 +62,8 @@ namespace Bot3en1.Flux
             foreach (var n in Noms) Etats[n] = new Etat { Nom = n, Attente = int.MinValue };
         }
 
+        public double StopCourant(string regle) => Etats.TryGetValue(regle, out var e) ? e.Stop : double.NaN;
+        public double ObjectifCourant(string regle) => Etats.TryGetValue(regle, out var e) ? e.Obj : double.NaN;
         public double Gain(string regle) => Etats.TryGetValue(regle, out var e) && e.Joue ? e.Gain : double.NaN;
         public int Position(string regle) => Etats.TryGetValue(regle, out var e) ? e.Pos : 0;
 
@@ -130,9 +132,10 @@ namespace Bot3en1.Flux
 
         void Sortir(Etat e, double prix, int m, string motif, List<Evenement> ev)
         {
-            e.Gain += e.Pos * (prix - e.Px) * PT * echelle - Frais;
+            double g = e.Pos * (prix - e.Px) * PT * echelle - Frais;
+            e.Gain += g;
             e.Trades++;
-            ev.Add(new Evenement { Regle = e.Nom, Sortie = true, Sens = e.Pos, Prix = prix,
+            ev.Add(new Evenement { Regle = e.Nom, Sortie = true, Sens = e.Pos, Prix = prix, Minute = m, Motif = motif, Gain = g,
                 Texte = $"{e.Nom} : sortie {(e.Pos > 0 ? "achat" : "vente")} ({motif}) a {prix.ToString("F2", CultureInfo.InvariantCulture)}, "
                         + $"{(e.Pos * (prix - e.Px) * PT * echelle - Frais).ToString("+0.00;-0.00", CultureInfo.InvariantCulture)} $ par MNQ" });
             e.Pos = 0;
@@ -142,7 +145,7 @@ namespace Bot3en1.Flux
         {
             e.Pos = sens; e.Px = prix; e.Joue = true;
             if (e.M0 < 0) e.M0 = m;
-            ev.Add(new Evenement { Regle = e.Nom, Entree = true, Sens = sens, Prix = prix, Stop = e.Stop, Objectif = e.Obj,
+            ev.Add(new Evenement { Regle = e.Nom, Entree = true, Sens = sens, Prix = prix, Stop = e.Stop, Objectif = e.Obj, Minute = m,
                 Texte = $"{e.Nom} : entree {(sens > 0 ? "ACHAT" : "VENTE")} a {prix.ToString("F2", CultureInfo.InvariantCulture)}"
                         + (double.IsNaN(e.Stop) ? "" : $", stop {e.Stop.ToString("F2", CultureInfo.InvariantCulture)}")
                         + (double.IsNaN(e.Obj) ? "" : $", objectif {e.Obj.ToString("F2", CultureInfo.InvariantCulture)}")

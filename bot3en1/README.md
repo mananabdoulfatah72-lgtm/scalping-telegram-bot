@@ -605,3 +605,29 @@ python3 flux/confluence.py <dossier>            # fichiers de reference (KB=<cop
 dotnet run -c Release --project Flux.Replay -- <dossier>
 dotnet run -c Release --project Flux.Test -- <transactions_NQZ6_rithmic.csv> <dossier de travail> [regle 0-4]
 ```
+
+### FluxNQ : règles de tendance ajoutées (29 octobre 2026)
+
+À la demande de l'utilisateur, FluxNQ suit aussi en virtuel, en permanence, quatre règles de tendance de la recherche
+(`scalping/README.md`, parties F et H), codées à l'identique (`Flux.Core/MoteurTendance.cs`) :
+
+| Règle des ordres | Règle | Ce qu'elle fait |
+|---|---|---|
+| 5 | **H1 ORB 5 min** (Zarattini et Aziz 2023) | à 9 h 35, entre dans le sens de la première bougie de 5 minutes ; stop à l'autre extrême de cette bougie ; objectif 10 fois le risque ; sinon sortie à 15 h 55 |
+| 6 | **H5 cassure de la veille** | à la première clôture d'une minute au-delà du plus haut (achat) ou du plus bas (vente) de la veille, avant 15 h ; stop à l'ouverture du jour ; sortie à 15 h 55 |
+| 7 | **H12 Supertrend 10-3** (barres de 5 minutes) | toujours dans le sens du Supertrend, retournement à chaque changement ; entrées jusqu'à 15 h ; sortie à 15 h 55 |
+| 8 | **F3 pivots R1/S1** | pivots de la veille (P = (haut + bas + clôture) ÷ 3, R1 = 2P − bas, S1 = 2P − haut) ; si l'ouverture est entre S1 et R1, première clôture au-delà de R1 (achat) ou de S1 (vente), avant 15 h ; sortie à 15 h 55 ; pas de stop |
+
+- Journal : `tendance.csv` dans le dossier du jour (entrées, sorties, gain en $ par MNQ), et résumé de fin de séance.
+- En réel (règle 5 à 8) : la position MNQ suit la position de la règle après chaque clôture de minute ; le stop (et
+  l'objectif de l'ORB) est vérifié à chaque transaction ; un trade déjà commencé au démarrage du bot n'est pas pris.
+- Vérifications : `Flux.ReplayTendance` redonne exactement les gains de la recherche sur 4 041 séances (2011 - 2026,
+  0 écart : ORB +48 870 $, cassure de la veille +33 156 $, Supertrend +110 156 $, pivots +39 318 $ pour 1 MNQ au prix
+  d'aujourd'hui) ; `Flux.Test` (règles 5 à 8) : journal identique au moteur rejoué, chaque entrée réelle a sa sortie, à
+  plat chaque soir, pas d'entrée tant qu'une position étrangère existe.
+- Rappel de la recherche : chacune est plus faible que la zone d'origine, liée à elle (0,4 - 0,5), et aucune ne
+  l'améliore dans le challenge Bulenox (partie I) ; depuis 2023, l'ORB 5 min et les pivots sont presque nuls (t +0,19 et
+  +0,21).
+
+Relancer : `python3 flux/tendance_ref.py <dossier>` (KB=...), puis
+`dotnet run -c Release --project Flux.ReplayTendance -- <dossier>`.

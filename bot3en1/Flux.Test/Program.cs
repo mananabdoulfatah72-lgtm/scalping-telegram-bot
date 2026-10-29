@@ -207,8 +207,51 @@ class Program
         foreach (var r in new[] { "S1", "S2", "S2b", "C1" })
             Console.WriteLine($"  {r} : {obtenus.Count(x => x.StartsWith(r + ","))} trade(s) virtuel(s)");
 
+        // 2 bis. regles de tendance : journal du bot = moteur rejoue sur les enregistrements (amorce du Supertrend sur les
+        // 5 seances chargees au demarrage, comme le bot)
+        var mt = new MoteurTendance();
+        foreach (var j in jours.Take(5))
+        {
+            mt.DebutSeance(DateTime.MinValue, false, null);
+            for (int t = 0; t < MoteurTendance.N; t++) mt.FermerMinute(t, lus[j].b[t]);
+        }
+        var attT = new List<string>();
+        foreach (var j in direct)
+        {
+            var veille = jours.Where(x => x < j && lus.ContainsKey(x)).Last();
+            bool meme = Calendrier.Contrat(veille) == Calendrier.Contrat(j);
+            mt.DebutSeance(j, meme, meme ? lus[veille].b : null);
+            for (int t = 0; t < MoteurTendance.N; t++)
+                foreach (var e in mt.FermerMinute(t, lus[j].b[t].Presente ? lus[j].b[t] : null))
+                    if (e.Sortie) attT.Add($"{e.Regle},{j:yyyy-MM-dd},{e.Minute},{e.Gain.ToString("0.00", inv)}");
+        }
+        var obtT = direct.SelectMany(j => File.ReadLines(Path.Combine(travail, "flux", j.ToString("yyyy-MM-dd"), "tendance.csv")).Skip(1))
+            .Select(l => l.Split(',')).Where(c => c[3] == "sortie").Select(c => $"{c[0]},{c[1]},{c[2]},{c[9]}").ToList();
+        Verifier(attT.OrderBy(x => x).SequenceEqual(obtT.OrderBy(x => x)), $"regles de tendance : {obtT.Count} trades du bot, {attT.Count} du moteur rejoue");
+        foreach (var r in MoteurTendance.Noms)
+            Console.WriteLine($"  {r} : {obtT.Count(x => x.StartsWith(r + ","))} trade(s) virtuel(s), {obtT.Where(x => x.StartsWith(r + ",")).Sum(x => double.Parse(x.Split(',')[3], inv)):+0;-0} $");
+
         // 3. ordres reels
-        if (regle > 0)
+        if (regle >= 5)
+        {
+            string nom = new[] { "", "S1", "S2", "S2b", "C1", "H1", "H5", "H12", "F3" }[regle];
+            var reels = direct.SelectMany(j => File.ReadLines(Path.Combine(travail, "flux", j.ToString("yyyy-MM-dd"), "reel.csv")).Skip(1)).ToList();
+            var journal = File.ReadLines(Path.Combine(travail, "flux", "journal.txt")).ToList();
+            int nOrdres = journal.Count(l => l.Contains(" : ORDRE REEL "));
+            int sorties = journal.Count(l => l.Contains(" : SORTIE REELLE "));
+            int entreesV = obtT.Count(x => x.StartsWith(nom + ","));
+            Console.WriteLine($"  ordres reels {nom} : {nOrdres} entree(s), {sorties} sortie(s), {reels.Count} ligne(s) au journal reel ; trades virtuels de la regle {entreesV} ; ordres envoyes {core.Ordres.Count}");
+            Verifier(nOrdres > 0 && nOrdres == sorties && reels.Count == sorties, "chaque entree reelle a sa sortie");
+            Verifier(nOrdres <= entreesV + direct.Count, "pas plus d'entrees reelles que de trades de la regle (plus les retournements)");
+            if (etrangereJour >= 0)
+            {
+                string je = direct[etrangereJour].ToString("yyyy-MM-dd");
+                var avantMidi = journal.Where(l => l.Contains(" : ORDRE REEL ")).Select(l => DateTime.ParseExact(l.Substring(0, 19), "yyyy-MM-dd HH:mm:ss", inv))
+                    .Count(t => TimeZoneInfo.ConvertTimeFromUtc(t, ny).Date == direct[etrangereJour] && TimeZoneInfo.ConvertTimeFromUtc(t, ny).TimeOfDay < TimeSpan.FromMinutes(570 + 150));
+                Verifier(avantMidi == 0, $"aucune entree reelle le {je} tant que la position etrangere existe");
+            }
+        }
+        else if (regle > 0)
         {
             string nom = new[] { "", "S1", "S2", "S2b", "C1" }[regle];
             var reels = direct.SelectMany(j => File.ReadLines(Path.Combine(travail, "flux", j.ToString("yyyy-MM-dd"), "reel.csv")).Skip(1)).ToList();
