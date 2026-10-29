@@ -579,3 +579,22 @@ objectif inchangé) fait presque le même total sur août - octobre (+563,5 cont
   au total, rien de gagné.
 - Le trade du 20 octobre aurait été stoppé même avec 8 points de plus (le prix est descendu à 29 636,75 à 10 h 04) ;
   il fallait 9 points, ce qu'on ne sait qu'après coup.
+
+## S2b sur 15 ans de barres gratuites (règles fixées le 29 octobre 2026, avant tout calcul)
+
+S2b n'utilise que les prix (niveaux de la veille et de la première heure, clôtures d'une minute) : elle peut être jouée
+sur les barres d'une minute gratuites du NQ (`intraday/donnees/nasdaq100_1min.csv.gz` de la branche de recherche).
+**Période du test : 3 janvier 2011 - 31 mars 2026**, qu'aucun choix de S2b n'a vue (S2b a été choisie sur avril -
+16 octobre 2026).
+
+- **Règle** : S2b exactement (4 niveaux, cassure d'un tick, retour dans les 5 minutes, signaux de 10 h à 12 h, entrée à
+  l'ouverture suivante avec un tick de glissement, stop derrière l'extrême, objectif 2 R, 60 minutes au plus, une
+  position à la fois). Séances complètes (390 minutes) ; pas de trade le premier jour d'un nouveau contrat (la veille
+  est sur l'ancien).
+- **Au prix d'aujourd'hui** (le NQ valait 2 200 en 2011, 30 000 en 2026) : le stop minimal de 3 points devient
+  3 × ouverture ÷ 30 000 (au moins un tick) ; le risque maximal reste 0,12 % du prix ; gain d'un trade = sens × (sortie −
+  entrée) × 30 000 ÷ ouverture − 1 point de commission. Le tick de glissement reste un vrai tick, donc plus coûteux
+  autrefois (prudent).
+- **Décision (fixée maintenant)** : S2b est **confirmée sur 15 ans** si le t des gains quotidiens sur 2011 - mars 2026
+  ≥ 2 et le gain net moyen > 0. Publié quoi qu'il arrive, année par année, avec 2011 - 2022 et 2023 - mars 2026 à part
+  (les périodes où la zone a t +3,75 et +2,27).
