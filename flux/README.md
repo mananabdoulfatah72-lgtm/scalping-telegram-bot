@@ -803,3 +803,46 @@ Contrôle : sans filtre, on retrouve exactement les trades de S2b.
 sur B mais prend deux fois moins de trades : total et t plus faibles que S2b seule. Descriptif, 2011 - 2025 (barres
 gratuites, même convention que « S2b sur 15 ans ») : S2b seule −4,06 points par trade (1 année positive sur 15),
 S2b + FE −4,51 (2 sur 15) : le filtre de volume ne corrige pas S2b sur la durée.
+
+## Partie 7 : suivre les positions des géants (rapport COT de la CFTC) — règles fixées le 29 octobre 2026, avant toute donnée
+
+### Demande de l'utilisateur
+
+Suivre les flux et les mouvements des fonds, des institutions et des banques, et en tirer des stratégies.
+
+### Pourquoi le COT
+
+Le projet a déjà testé les traces indirectes des institutions qu'on peut voir avec des données publiques (gamma des
+teneurs de marché, DIX, jours de Fed, rééquilibrages de fin de mois, clôture, ETF à levier, fixings, adjudications,
+gros lots du tape) : rien n'a tenu. La seule source **directe** jamais utilisée est le rapport officiel de la CFTC
+« Traders in Financial Futures » (futures seuls), chaque semaine depuis juin 2006 : positions acheteuses et vendeuses
+sur le contrat **E-mini Nasdaq-100** des **gestionnaires d'actifs** (fonds, assureurs, fonds de pension), des **fonds à
+levier** (hedge funds, CTA), et des **banques et teneurs de marché** (dealers), en pourcentage des positions ouvertes.
+
+### Données
+
+Fichiers officiels de la CFTC (`fin_fut_txt_2006_2016.zip`, puis `fut_fin_txt_AAAA.zip`), lignes du marché « NASDAQ »
+« MINI » (pas « MICRO ») de la bourse de Chicago. Positions du mardi, publiées le vendredi à 15 h 30 : un rapport ne sert
+qu'à partir de la **première séance qui suit sa publication** (mardi + 3 jours, puis la séance suivante).
+
+### Les cinq hypothèses (biais de la semaine, valable jusqu'au rapport suivant)
+
+| # | Règle | Idée |
+|---|---|---|
+| G1 | sens de la variation sur 4 semaines de la position nette des gestionnaires (÷ positions ouvertes) | suivre l'argent lent des institutions |
+| G2 | sens de la variation sur 4 semaines de la position nette des fonds à levier | suivre les hedge funds et les CTA |
+| G3 | contre les fonds à levier quand leur position nette est extrême (z sur 52 semaines au-delà de ± 1,5) | foule trop chargée |
+| G4 | sens de la variation sur 4 semaines de la position nette des banques et teneurs de marché | suivre les dealers |
+| G5 | G1 et G2 d'accord : dans leur sens ; sinon pas de trade | consensus des géants |
+
+**Exécution compatible Bulenox** : chaque séance où le biais existe, position dans son sens de l'ouverture de 9 h 35 à
+la clôture de 15 h 55 (une par jour, sans stop) ; gain au prix d'aujourd'hui comme `scalping/` (sens × (clôture 15 h 55 −
+ouverture 9 h 35) × 2 $ × 30 900 ÷ ouverture de 9 h 30 − 3 $ par MNQ). Descriptif : la même chose de clôture à clôture
+(avec la nuit), pour information seulement.
+
+### Tri (fixé maintenant)
+
+- **Exploration 2011 - 2018** : t des gains quotidiens (jours sans trade compris) ≥ 2, **et** mieux que 95 % de 1 000
+  placebos où la série des signaux hebdomadaires est décalée d'un nombre de semaines tiré au hasard (au moins 8).
+- **Coffre 2019 - 2026**, ouvert une fois : t ≥ seuil de Bonferroni unilatéral à 5 % pour le nombre de finalistes, gain
+  moyen > 0, au moins 5 années positives sur 8. Publié quoi qu'il arrive.
