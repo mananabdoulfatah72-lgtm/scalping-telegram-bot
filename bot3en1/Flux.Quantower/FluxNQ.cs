@@ -86,7 +86,7 @@ namespace Bot3en1
         {
             try
             {
-                if (SymboleNQ == null) throw new Exception("choisis le symbole NQ dans les reglages");
+                if (SymboleNQ == null) throw new Exception("aucun symbole NQ choisi : ouvre les reglages de FluxNQ et choisis NQZ6 dans « NQ : contrat du moment »");
                 if (RegleOrdres > 0 && (Compte == null || SymboleMNQ == null))
                     throw new Exception("une regle passe les ordres : choisis aussi le compte et le symbole MNQ");
                 ny = TrouverFuseau();
@@ -733,7 +733,12 @@ namespace Bot3en1
         void Dire(string texte, bool erreur = false)
         {
             Log(texte, erreur ? StrategyLoggingLevel.Error : StrategyLoggingLevel.Info);
-            try { File.AppendAllText(Path.Combine(Dossier, "flux", "journal.txt"), $"{Maintenant():yyyy-MM-dd HH:mm:ss} UTC {texte}{Environment.NewLine}"); } catch { }
+            try
+            {
+                Directory.CreateDirectory(Path.Combine(Dossier, "flux"));       // le message d'une erreur au demarrage n'est pas perdu
+                File.AppendAllText(Path.Combine(Dossier, "flux", "journal.txt"), $"{Maintenant():yyyy-MM-dd HH:mm:ss} UTC {texte}{Environment.NewLine}");
+            }
+            catch { }
             if (string.IsNullOrWhiteSpace(JetonTelegram) || string.IsNullOrWhiteSpace(ChatTelegram)) return;
             string jeton = System.Text.RegularExpressions.Regex.Replace(JetonTelegram, "\\s", ""),
                    chat = System.Text.RegularExpressions.Regex.Replace(ChatTelegram, "\\s", "");

@@ -62,6 +62,15 @@ class Program
         var ticksDuJour = jours.ToDictionary(j => j, j => minutes[j].OrderBy(k => k.Key).SelectMany(k => Transactions(j, k.Key, k.Value)).ToList());
 
         var core = Core.Instance;
+        // lancement sans symbole NQ : le bot s'arrete et l'erreur est ecrite dans le journal, dossier cree au besoin
+        {
+            string vide = Path.Combine(travail, "sans_symbole");
+            var b0 = new FluxNQ { Dossier = vide };
+            b0.Lancer();
+            string jr = Path.Combine(vide, "flux", "journal.txt");
+            Verifier(b0.Arretee && File.Exists(jr) && File.ReadAllText(jr).Contains("aucun symbole NQ choisi"),
+                     "sans symbole : arret et message dans le journal");
+        }
         var nq = new Symbol { Name = "NQZ6" };
         var mnq = new Symbol { Name = "MNQZ6" };
         var compte = new Account { Name = "SIM" };
