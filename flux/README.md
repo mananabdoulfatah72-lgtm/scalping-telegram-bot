@@ -879,3 +879,53 @@ quand le NQ est en haut de son range, et garder 2 heures. **Aucune stratégie n'
 - la zone d'origine, comme référence.
 
 Le workflow `radar.yml` fait tourner la collecte, ce suivi et le rapport du soir (`radar/RAPPORT.md`, Telegram).
+
+## Partie 9 : vague order flow figée le 30 octobre 2026 (tape, premier niveau, DOM à 10 niveaux), avant tout calcul
+
+Cette vague est figée **avant** d'avoir vu la séance du 30 octobre 2026 enregistrée par FluxNQ, et avant tout calcul
+sur l'historique. Le code est `flux/of_fige.py`. Rien n'y sera changé après coup.
+
+### Règles communes
+- **Données.**
+  - L'historique est la seconde de Databento (avril - octobre 2026, 127 séances) : dernier prix, plus haut et plus bas
+    de la seconde, volumes acheteurs et vendeurs agresseurs, nombre de transactions, meilleur prix et quantité à l'achat
+    et à la vente.
+  - Pour les séances de FluxNQ, ces mêmes secondes sont reconstruites à partir de `tape.csv` et du premier niveau de
+    `dom.csv`, plus les sommes des 10 niveaux de chaque côté.
+- **Échelle.** A est la moyenne des ranges des 30 dernières minutes terminées, avec un plancher de 2 points.
+- **Entrées.** De 10 h à 15 h 30, sauf la règle T7. Une seule position à la fois par règle, au plus 4 trades par jour.
+- **Exécution et frais.**
+  - L'entrée se fait au dernier prix de la seconde du signal, plus 1 tick contre soi.
+  - Le stop sort au stop, moins 1 tick. L'objectif sort au prix exact.
+  - La sortie à l'heure limite, ou à 15 h 55, se fait au dernier prix, moins 1 tick.
+  - Si le stop et l'objectif sont touchés dans la même seconde, c'est le stop qui compte.
+  - Commission de 2 $ par aller-retour ; gains en $ par MNQ.
+- **Historique.** Une règle passe si t ≥ 2,45 (Bonferroni unilatéral à 5 % pour 7 règles) avec au moins 30 trades.
+
+### Règles sur le tape et le premier niveau (testables sur les 127 séances)
+
+| Règle | Signal | Sens | Stop / objectif / durée |
+|---|---|---|---|
+| T1 balayage | dans une seconde : range ≥ 2 points, ≥ 80 % du volume du même côté, volume ≥ 5 fois la moyenne par seconde de la séance (au moins 50 contrats), prix ≥ 1 point plus loin que la seconde d'avant dans ce sens | suivre | 1,5 A / 3 A / 15 min |
+| T2 épuisement | un balayage (T1) fait le plus haut (plus bas) des 60 dernières minutes, puis, dans les 30 s, le prix repasse sous (au-dessus de) son prix d'avant le balayage | contre | 1 tick au-delà de l'extrême du balayage / 2 R / 30 min |
+| T3 iceberg | sur 30 s, le meilleur achat ne bouge pas, le prix ne passe jamais dessous, et les ventes exécutées ≥ 100 contrats et ≥ 4 fois la quantité affichée en moyenne (vendeur caché au meilleur prix de vente : symétrique) | avec l'acheteur (le vendeur) caché | niveau − max(1 point ; 0,5 A) / 2 R / 20 min |
+| T4 VPIN | paquets de volume (1/50 du volume moyen des 5 séances d'avant) ; VPIN = moyenne de \|achats − ventes\| / paquet sur 50 paquets ; signal à la fin d'un paquet si VPIN > son 90e centile des 5 séances d'avant | sens des 10 derniers paquets | 2 A / 4 A / 30 min |
+| T5 rafale | transactions des 10 dernières secondes ≥ 4 fois leur moyenne des 10 minutes d'avant, ≥ 60 % du volume du même côté, prix ≥ 0,5 A plus loin dans ce sens | suivre | 1,5 A / 3 A / 15 min |
+| T6 absorption | delta des 5 dernières minutes ≥ 2 fois sa moyenne absolue de la séance, mais le prix a bougé de moins de 0,25 A dans son sens | contre le delta | 1,5 A / 3 A / 30 min |
+| T7 après-midi + flux | à 13 h 30, le NQ est dans les 14 % du haut de son range du jour (règle R1 du radar) et le delta cumulé depuis 9 h 30 est positif | achat | sortie à 15 h 30 |
+
+### Règles sur le DOM à 10 niveaux (jugées seulement sur les séances de FluxNQ)
+
+| Règle | Signal | Sens | Stop / objectif / durée |
+|---|---|---|---|
+| D1 déséquilibre | (somme des achats − somme des ventes) / total des 10 niveaux ≥ 0,30 pendant 30 s de suite, et delta des 30 s ≥ 0 (symétrique à −0,30) | côté le plus chargé | 1,5 A / 3 A / 15 min |
+| D2 retrait | la somme des 10 niveaux de vente tombe à 60 % ou moins de sa moyenne des 60 s finissant 5 s plus tôt, pendant que celle des achats reste à 90 % ou plus (symétrique) | côté qui ne recule pas | 1 A / 2 A / 10 min |
+| D3 rebond sur un mur | un niveau des 10 achats ≥ 5 fois la quantité médiane des 20 niveaux, présent au même prix depuis 30 s, et le meilleur achat à 2 ticks ou moins de lui (symétrique côté vente) | achat au-dessus d'un mur d'achats (vente sous un mur de ventes) | 2 ticks au-delà du mur / 2 R / 10 min |
+| D4 mur cassé | un mur de ventes (comme D3, présent depuis 30 s) est traversé d'au moins 1 tick (symétrique) | suivre la cassure | 0,5 A en deçà du mur / 2 R / 15 min |
+
+### Jugement
+- **Les 7 règles du tape** sont jugées sur les 127 séances d'historique, puis suivies sur les séances de FluxNQ.
+- **Les 11 règles** sont jouées telles quelles sur chaque séance que FluxNQ enregistre, à commencer par celle du
+  30 octobre 2026.
+- **Une seule séance ne prouve rien.** Une règle ne sera dite « qui marche » qu'après au moins 40 trades sur les séances
+  de FluxNQ avec t ≥ 2,64 (Bonferroni pour 11).
