@@ -1001,3 +1001,16 @@ Le détail est dans `resultats/partie10/scan.md`.
   5e quintile (t 4,09 puis 2,92 ; 68 trades ; +58,8 $). C'est une règle de prix plus que d'order flow.
 - **Aucune variable d'order flow n'arrive en tête.** Delta, carnet, gros lots, footprint et intensité ne donnent pas
   de famille qui tienne en confirmation sur ces 131 séances.
+
+### La règle de l'écart d'ouverture sur 15 ans (question de l'utilisateur, 30 octobre 2026)
+
+Le détail est dans `flux/gap_15ans.py` et `resultats/partie10/gap_15ans.md`.
+- **Les 68 trades de confirmation ne viennent que de 9 journées**, parce que la règle rachète toutes les 15 minutes le
+  même matin. Compté par journée, le t tombe à 1,69. Deux journées (4 août et 21 septembre) font 3 141 $ des 4 000 $.
+- **Rejouée telle quelle sur 2011 - mars 2026**, des années que le scan n'avait jamais vues : 536 journées,
+  −10 950 $, t −0,43.
+- **Les années alternent**, avec par exemple −12 698 $ en 2022 et −11 858 $ en 2025.
+- **Pire journée** : −6 637 $ le 20 novembre 2025. **Plus forte baisse du cumul** : −23 350 $. 77 journées sur 563
+  perdent plus de 1 000 $ (1 MNQ par entrée, jusqu'à 8 entrées le même matin).
+- **Conclusion : 2026 est une bonne année pour cette règle, pas un avantage.** Elle n'est pas adoptée et reste
+  seulement suivie, sans argent.
