@@ -25,9 +25,11 @@ import partie_h as H  # noqa: E402
 DOSSIER = ICI / "veille"
 DEBUT_SUIVI = pd.Timestamp(os.getenv("DEBUT_SUIVI", "2026-10-30"))
 NOMS = {"S2b": "S2b cassure ratee", "H1": "ORB 5 min", "H5": "cassure de la veille", "H12": "Supertrend 10-3",
-        "F3": "pivots R1/S1", "R1": "radar : achat 13 h 30 en haut du range", "ZONE": "zone d'origine (reference)"}
-BARRE_TRADES, BARRE_T = 40, 2.45            # 40 seances avec trade, t >= 2,45 (Bonferroni unilateral 5 % pour 7)
+        "F3": "pivots R1/S1", "R1": "radar : achat 13 h 30 en haut du range",
+        "R2": "radar : achat 13 h au-dessus de la veille", "ZONE": "zone d'origine (reference)"}
+BARRE_TRADES, BARRE_T = 40, 2.50            # 40 seances avec trade, t >= 2,50 (Bonferroni unilateral 5 % pour 8)
 PLACE_R1 = 0.8591989517211914               # radar/resultats/scan.txt : 5e quintile de la place a 13 h 30 (2011-2018)
+D_HV_R2, EFF_R2 = 0.24112540781497965, 0.12363548576831819   # radar/resultats/protocole2 : 5es quintiles a 13 h
 TICK = 0.25
 
 
@@ -102,9 +104,26 @@ def r1(d):
     return np.where(ok & (place > PLACE_R1), g, np.nan)
 
 
+def r2(d):
+    """Radar, protocole 2 (echouee au coffre 2023 - 2026) : a 13 h, si le NQ est au-dessus du plus haut de la veille de
+    plus de 0,241 range moyen (20 seances) et que son mouvement du jour est regulier (efficacite > 0,124), achat a
+    l'ouverture de 13 h, vente a celle de 15 h."""
+    O, Hh, L, C = d["o"], d["h"], d["l"], d["c"]
+    ok = d["complete"] & ~d["ech"]
+    rng = Hh.max(1) - L.min(1)
+    a20 = pd.Series(np.where(d["complete"], rng, np.nan)).shift(1).rolling(20, min_periods=10).mean().values
+    pm = d["prec_meme"]
+    haut_veille = np.where(pm >= 0, Hh[np.maximum(pm, 0)].max(1), np.nan)
+    dhv = (C[:, 209] - haut_veille) / np.where(a20 > 0, a20, np.nan)
+    chemin = np.abs(np.diff(np.c_[O[:, :1], C], axis=1)).cumsum(1)[:, 209]
+    eff = np.abs(C[:, 209] - O[:, 0]) / np.where(chemin > 0, chemin, np.nan)
+    g = (O[:, 330] - O[:, 210]) * float(d["pref"]) / O[:, 0] * float(d["pt"]) - 3.0
+    return np.where(ok & (dhv > D_HV_R2) & (eff > EFF_R2), g, np.nan)
+
+
 def gains(d):
     jours = pd.DatetimeIndex(d["jours"].astype("datetime64[D]"))
-    out = {"S2b": s2b(d), "R1": r1(d)}
+    out = {"S2b": s2b(d), "R1": r1(d), "R2": r2(d)}
     h = H.toutes(d)
     out.update({"H1": h["H1"][0], "H5": h["H5"][0], "H12": h["H12"][0], "F3": F.toutes(d)["F3"][0]})
     _, _, _, _, tr = G.calcul(d)

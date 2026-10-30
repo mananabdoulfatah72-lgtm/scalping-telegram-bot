@@ -1,6 +1,6 @@
 Protocole 2, GC : 2771 seances (2016-01-04 - 2026-09-28), 109 variables continues, 20 du calendrier, 18 heures d'entree, 82 couples entree-duree ; frais 4.00 $
 Etape 1 : 3 familles (t_E >= 3) ; placebos : 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.22, 0.30, 0.30, 0.49, 0.51, 0.82, 0.93, 1.02, 1.05, 1.07, 1.18, 1.55, 2.53
-Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 86 s
+Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 4 s
 
   t_E  3.23  t_C  0.27  n_C  157  moy_C    +3.42 $  GC : vente a 11 h 05, jusqu a la cloture si place Q2
   t_E  3.35  t_C -0.11  n_C   92  moy_C    -2.14 $  GC : vente a 9 h 20, 60 min si fred_stress Q4

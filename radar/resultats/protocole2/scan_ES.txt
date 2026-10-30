@@ -1,6 +1,6 @@
 Protocole 2, ES : 4041 seances (2011-01-03 - 2026-09-25), 109 variables continues, 20 du calendrier, 24 heures d'entree, 109 couples entree-duree ; frais 4.50 $
 Etape 1 : 185 familles (t_E >= 3) ; placebos : 1.23, 1.59, 1.80, 1.88, 1.92, 2.01, 2.04, 2.07, 2.09, 2.12, 2.13, 2.24, 2.29, 2.43, 2.48, 2.49, 2.54, 2.54, 2.62, 2.68
-Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 193 s
+Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 11 s
 
   t_E  3.46  t_C  2.34  n_C   79  moy_C   +35.16 $  ES : achat a 11 h 15, 60 min si r60 Q5 et d_cv Q5
   t_E  3.03  t_C  2.02  n_C   61  moy_C   +40.25 $  ES : achat a 13 h 45, 60 min si age_h Q2 et NQ_ouv Q5

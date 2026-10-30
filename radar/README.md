@@ -252,3 +252,38 @@ Pour m règles et modèles retenus par le protocole 2, une règle passe si :
 
 Ce qui passe est assemblé comme au protocole 1 (`strategie.py`) et ajouté au suivi en direct. Ce qui échoue est
 publié tel quel.
+
+### Résultats du protocole 2 (30 octobre 2026)
+
+Fichiers : `resultats/protocole2/` (un `scan_<marché>.txt` par marché, `resume.txt`, `resume_coffre.txt`,
+`logistique.csv`, placebos).
+
+| Marché | Séances | Familles d'exploration | Barre des placebos | Survivantes |
+|---|---|---|---|---|
+| NQ | 4 065 | 654 | 3,52 | 2 |
+| ES | 4 041 | — | 3,00 | 0 |
+| RTY | 2 378 | — | 3,00 | 0 |
+| YM | 2 769 | — | 3,00 | 0 |
+| Or (GC) | 2 771 | — | 3,00 | 0 |
+| Pétrole (CL) | 2 770 | — | 3,00 | 0 |
+| Euro (6E) | 2 774 | — | 3,00 | 0 |
+| Bitcoin (BTC) | 2 269 | — | 3,00 | 0 |
+
+Les familles d'exploration des autres marchés sont dans leur `scan_<marché>.txt`.
+
+**Régressions logistiques.** Aucune sur 828 (barre 3,84). Les meilleures : ES, 12 h 15 → clôture, t 3,07 ; NQ,
+11 h 15 → clôture, t 3,02.
+
+**Coffre** (seuil 2,13 : Bonferroni pour 3, dont la règle du protocole 1) :
+
+| Règle | Trades | Moyenne | t | 2023 | 2024 | 2025 | 2026 | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| NQ : achat à 13 h 30 pour 2 h si en haut du range | 221 | +11,21 $ | 0,78 | +3 587 | +601 | −413 | −1 296 | échoue |
+| NQ : achat à 13 h pour 2 h si loin au-dessus du plus haut de la veille et mouvement régulier | 82 | +30,69 $ | 1,30 | +1 550 | +1 940 | −779 | −195 | échoue |
+
+**Conclusion du protocole 2 : aucune stratégie.**
+- Sur 8 marchés, la seule famille qui traverse la confirmation est l'élan de l'après-midi du NQ : acheter vers 13 h
+  quand il est fort dans sa journée.
+- Elle gagnait de 2011 à 2024 et perd en 2025 et en 2026.
+- Les deux règles sont suivies en direct, sans argent (`flux/veille.py`, R1 et R2, barre t ≥ 2,50 pour 8 candidates).
+- Tout nouveau protocole jugé sur ce coffre devra compter ces 3 règles dans son Bonferroni.

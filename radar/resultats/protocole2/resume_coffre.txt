@@ -1,0 +1,12 @@
+Radar, protocole 2 (radar/README.md, fixe le 30 octobre 2026)
+
+Survivantes de la confirmation (tous marches) : 2
+Regressions logistiques : 0 modeles, barre t >= nan hors echantillon avant 2023, retenus 0
+
+  t_E  3.19  t_C  3.73  n_C  211  moy_C   +65.84 $  NQ : achat a 13 h 30, 120 min si place Q5
+  t_E  3.13  t_C  3.61  n_C   90  moy_C   +58.01 $  NQ : achat a 13 h 00, 120 min si d_hv Q5 et eff Q5
+
+COFFRE 2023 - 2026 (ouvert une fois) : seuil t >= 2.13 (Bonferroni pour 3, dont 1 du protocole 1), 3 annees gagnantes sur 4
+
+  echoue  n 221  moy +11.21 $  t 0.78  annees 2023 +3587, 2024 +601, 2025 -413, 2026 -1296  | NQ : achat a 13 h 30, 120 min si place Q5
+  echoue  n 82  moy +30.69 $  t 1.30  annees 2023 +1550, 2024 +1940, 2025 -779, 2026 -195  | NQ : achat a 13 h 00, 120 min si d_hv Q5 et eff Q5

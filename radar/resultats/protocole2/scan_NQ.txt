@@ -1,6 +1,6 @@
 Protocole 2, NQ : 4065 seances (2011-01-03 - 2026-10-29), 109 variables continues, 20 du calendrier, 24 heures d'entree, 109 couples entree-duree ; frais 3.00 $
 Etape 1 : 654 familles (t_E >= 3) ; placebos : 2.15, 2.29, 2.31, 2.47, 2.57, 2.58, 2.67, 2.72, 2.73, 2.89, 2.91, 3.00, 3.01, 3.02, 3.14, 3.15, 3.26, 3.32, 3.52, 3.53
-Barre de confirmation 3.52 ; survivantes (sans doublons) : 2 ; calcul 203 s
+Barre de confirmation 3.52 ; survivantes (sans doublons) : 2 ; calcul 11 s
 
   t_E  3.19  t_C  3.73  n_C  211  moy_C   +65.84 $  NQ : achat a 13 h 30, 120 min si place Q5
   t_E  3.13  t_C  3.61  n_C   90  moy_C   +58.01 $  NQ : achat a 13 h 00, 120 min si d_hv Q5 et eff Q5

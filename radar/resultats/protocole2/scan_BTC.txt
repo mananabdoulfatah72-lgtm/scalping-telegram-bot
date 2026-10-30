@@ -1,4 +1,4 @@
 Protocole 2, BTC : 2269 seances (2017-12-18 - 2026-09-30), 109 variables continues, 20 du calendrier, 24 heures d'entree, 109 couples entree-duree ; frais 3.00 $
 Etape 1 : 0 familles (t_E >= 3) ; placebos : 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00
-Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 69 s
+Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 3 s
 
