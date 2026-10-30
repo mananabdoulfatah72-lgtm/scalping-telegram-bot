@@ -17,6 +17,7 @@ sys.path.insert(0, str(ICI.parent / "scalping"))
 import donnees as SD  # noqa: E402
 
 PLACE = 0.8591989517211914
+SEUIL = 0.80                           # gamma haut (L2)
 DEBUT_0DTE = "2022-05-16"
 FRAIS = 3.0
 
@@ -54,14 +55,14 @@ def main():
     ouv = (O[:, 30] - O[:, 0]) * ech
     regles = {
         "L1 fin de séance, gamma bas": np.where(g <= 0.2, sens_jour, 0) * fin,
-        "L2 fin de séance, gamma haut": np.where(g >= 0.8, -sens_jour, 0) * fin,
+        "L2 fin de séance, gamma haut": np.where(g >= SEUIL, -sens_jour, 0) * fin,
         "L3 après-midi, gamma bas": np.where(g <= 0.4, pos, 0) * apm,
         "L4 après-midi, gamma haut": np.where(g >= 0.6, -pos, 0) * apm,
         "L5 ouverture après la nuit": np.where(rg_ecart >= 0.9, -1, np.where(rg_ecart <= 0.1, 1, 0)) * ouv,
     }
     actif = {
         "L1 fin de séance, gamma bas": (g <= 0.2) & (sens_jour != 0),
-        "L2 fin de séance, gamma haut": (g >= 0.8) & (sens_jour != 0),
+        "L2 fin de séance, gamma haut": (g >= SEUIL) & (sens_jour != 0),
         "L3 après-midi, gamma bas": (g <= 0.4) & (pos != 0),
         "L4 après-midi, gamma haut": (g >= 0.6) & (pos != 0),
         "L5 ouverture après la nuit": (rg_ecart >= 0.9) | (rg_ecart <= 0.1),

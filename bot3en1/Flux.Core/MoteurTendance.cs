@@ -7,23 +7,26 @@ namespace Bot3en1.Flux
 {
     /// <summary>Regles de tendance du bot FluxNQ, memes decisions que la recherche (scalping/README.md, parties F et H) :
     /// H1 ORB 5 min, H5 cassure du plus haut / plus bas de la veille, H12 Supertrend 10-3 sur barres de 5 minutes,
-    /// F3 pivots R1/S1 version tendance. Une minute est donnee a sa cloture ; les entrees et sorties « a l'ouverture » se
+    /// F3 pivots R1/S1 version tendance ; L2 (flux/README.md, partie 11) : a 15 h 30, contre le mouvement du jour quand le
+    /// gamma des teneurs de marche de la veille est haut (rang >= 80 % sur 252 seances), sortie a 16 h. Une minute est donnee a sa cloture ; les entrees et sorties « a l'ouverture » se
     /// font a l'ouverture de la minute suivante. Gains en $ pour 1 contrat micro : sens x (sortie - entree) x 2 $ x Echelle
     /// - Frais (Echelle = 1 en direct ; 30 900 / ouverture dans le rejeu « au prix d'aujourd'hui »).</summary>
     public class MoteurTendance
     {
         public const int N = 390;
         const double TICK = 0.25, PT = 2.0;
-        public static readonly string[] Noms = { "H1", "H5", "H12", "F3" };
+        public static readonly string[] Noms = { "H1", "H5", "H12", "F3", "L2" };
         public static readonly string[] Libelles =
         {
-            "ORB 5 min", "cassure de la veille", "Supertrend 10-3 (5 min)", "pivots R1/S1"
+            "ORB 5 min", "cassure de la veille", "Supertrend 10-3 (5 min)", "pivots R1/S1", "fin de seance contre le mouvement (gamma haut)"
         };
+        public const double SeuilGamma = 0.80;
 
         public double Frais = 3.0;                 // $ par aller-retour : 1 $ + 1 tick (0,5 $) par ordre
         public DateTime Jour;
         bool ok;
         double echelle = 1.0;
+        double gamma = double.NaN;                  // rang du gamma de la veille (0 a 1, NaN : inconnu)
         readonly BarreFlux[] b = new BarreFlux[N];
         int derniere = -1;
         BarreFlux[] veille;
@@ -50,9 +53,10 @@ namespace Bot3en1.Flux
 
         /// <summary>prec : seance complete precedente du meme contrat (null : aucune) ; ok : seance jouable (complete et pas
         /// un jour de changement de contrat).</summary>
-        public void DebutSeance(DateTime jour, bool jouable, BarreFlux[] prec, double ech = 1.0)
+        public void DebutSeance(DateTime jour, bool jouable, BarreFlux[] prec, double ech = 1.0, double rangGamma = double.NaN)
         {
             Jour = jour;
+            gamma = rangGamma;
             ok = jouable;
             veille = prec;
             echelle = ech;
@@ -61,6 +65,9 @@ namespace Bot3en1.Flux
             Etats.Clear();
             foreach (var n in Noms) Etats[n] = new Etat { Nom = n, Attente = int.MinValue };
         }
+
+        /// <summary>Rang du gamma de la veille (0 a 1), connu apres le debut de la seance (telechargement) ; NaN : inconnu.</summary>
+        public void DefinirGamma(double rangGamma) => gamma = rangGamma;
 
         public double StopCourant(string regle) => Etats.TryGetValue(regle, out var e) ? e.Stop : double.NaN;
         public double ObjectifCourant(string regle) => Etats.TryGetValue(regle, out var e) ? e.Obj : double.NaN;
@@ -217,7 +224,15 @@ namespace Bot3en1.Flux
                 }
                 else f3.M0 = int.MaxValue;              // ouverture deja au-dela : pas de trade aujourd'hui
             }
-            foreach (var e in new[] { h1, h5, f3 })
+            // L2 : a la cloture de 15 h 29, gamma haut : contre le mouvement depuis l'ouverture, entree a 15 h 30
+            var l2 = Etats["L2"];
+            if (t == 359 && gamma >= SeuilGamma && b[359].C != b[0].O)
+            {
+                l2.Attente = b[359].C > b[0].O ? -1 : 1;
+                l2.M0 = 360;
+                l2.Raison = $"gamma de la veille haut (rang {gamma * 100:F0} %), contre le mouvement du jour";
+            }
+            foreach (var e in new[] { h1, h5, f3, l2 })
             {
                 if (e.Fini) continue;
                 // entree a l'ouverture de la minute M0
@@ -249,7 +264,8 @@ namespace Bot3en1.Flux
                         if (e.Pos > 0 && (x.O > e.Obj || x.H >= e.Obj + TICK)) { sortie = x.O > e.Obj ? x.O : e.Obj; motif = "objectif"; }
                         else if (e.Pos < 0 && (x.O < e.Obj || x.L <= e.Obj - TICK)) { sortie = x.O < e.Obj ? x.O : e.Obj; motif = "objectif"; }
                     }
-                    if (sortie == null && t == 384) { sortie = x.C; motif = "15 h 55"; }
+                    int fin = e.Nom == "L2" ? N - 1 : 384;
+                    if (sortie == null && t == fin) { sortie = x.C; motif = e.Nom == "L2" ? "16 h" : "15 h 55"; }
                     if (sortie != null)
                     {
                         Sortir(e, sortie.Value, t, motif, ev);

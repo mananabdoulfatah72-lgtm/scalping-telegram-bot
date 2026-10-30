@@ -6,8 +6,8 @@ using System.IO.Compression;
 using System.Linq;
 using Bot3en1.Flux;
 
-// Rejoue MoteurTendance sur les fichiers de flux/tendance_ref.py et compare le gain de chaque seance (H1, H5, H12, F3) a
-// celui du code de la recherche. Usage : Flux.ReplayTendance <dossier>
+// Rejoue MoteurTendance sur les fichiers de flux/tendance_ref.py et compare le gain de chaque seance (H1, H5, H12, F3, L2) a
+// celui du code de la recherche (L2 : flux/gamma_0dte.py). Usage : Flux.ReplayTendance <dossier>
 class Program
 {
     static IEnumerable<string> Lignes(string f)
@@ -26,7 +26,8 @@ class Program
     {
         var inv = CultureInfo.InvariantCulture;
         var seances = Lignes(Path.Combine(args[0], "seances.csv")).Select(l => l.Split(','))
-            .Select(c => (jour: DateTime.ParseExact(c[0], "yyyy-MM-dd", inv), ok: c[1] == "1", prec: int.Parse(c[2]), ech: D(c[3]))).ToList();
+            .Select(c => (jour: DateTime.ParseExact(c[0], "yyyy-MM-dd", inv), ok: c[1] == "1", prec: int.Parse(c[2]), ech: D(c[3]),
+                          gamma: c.Length > 4 ? D(c[4]) : double.NaN)).ToList();
         int S = seances.Count;
         var barres = new BarreFlux[S][];
         for (int s = 0; s < S; s++) barres[s] = new BarreFlux[MoteurTendance.N];
@@ -43,8 +44,8 @@ class Program
         var totaux = MoteurTendance.Noms.ToDictionary(n => n, n => (c: 0.0, p: 0.0, nc: 0, np: 0));
         for (int s = 0; s < S; s++)
         {
-            var (jour, ok, prec, ech) = seances[s];
-            moteur.DebutSeance(jour, ok, prec >= 0 ? barres[prec] : null, ech);
+            var (jour, ok, prec, ech, gamma) = seances[s];
+            moteur.DebutSeance(jour, ok, prec >= 0 ? barres[prec] : null, ech, gamma);
             for (int t = 0; t < MoteurTendance.N; t++) moteur.FermerMinute(t, barres[s][t]);
             foreach (var n in MoteurTendance.Noms)
             {

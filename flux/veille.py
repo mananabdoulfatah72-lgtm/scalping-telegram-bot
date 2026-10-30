@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Machine de veille (flux/README.md, partie 8) : chaque soir de semaine, joue sur les nouvelles seances du NQ les
-strategies candidates figees (S2b, ORB 5 min, cassure de la veille, Supertrend, pivots, la regle du radar, et la zone
-d'origine comme reference), tient leur journal depuis le debut du suivi, les mesure contre la barre fixee d'avance et
+strategies candidates figees (S2b, ORB 5 min, cassure de la veille, Supertrend, pivots, les regles du radar, L2, et la
+zone d'origine comme reference), tient leur journal depuis le debut du suivi, les mesure contre la barre fixee d'avance et
 envoie le point sur Telegram. Aucun reglage n'est change par la machine : c'est le seul test que rien ne peut biaiser (l'avenir).
 
 Lancer : python3 flux/veille.py <minutes NQ au format du robot (t,o,h,l,c,v,contrat)>
@@ -26,8 +26,9 @@ DOSSIER = ICI / "veille"
 DEBUT_SUIVI = pd.Timestamp(os.getenv("DEBUT_SUIVI", "2026-10-30"))
 NOMS = {"S2b": "S2b cassure ratee", "H1": "ORB 5 min", "H5": "cassure de la veille", "H12": "Supertrend 10-3",
         "F3": "pivots R1/S1", "R1": "radar : achat 13 h 30 en haut du range",
-        "R2": "radar : achat 13 h au-dessus de la veille", "ZONE": "zone d'origine (reference)"}
-BARRE_TRADES, BARRE_T = 40, 2.50            # 40 seances avec trade, t >= 2,50 (Bonferroni unilateral 5 % pour 8)
+        "R2": "radar : achat 13 h au-dessus de la veille", "L2": "L2 : contre le mouvement a 15 h 30 (gamma haut)",
+        "ZONE": "zone d'origine (reference)"}
+BARRE_TRADES, BARRE_T = 40, 2.54            # 40 seances avec trade, t >= 2,54 (Bonferroni unilateral 5 % pour 9)
 PLACE_R1 = 0.8591989517211914               # radar/resultats/scan.txt : 5e quintile de la place a 13 h 30 (2011-2018)
 D_HV_R2, EFF_R2 = 0.24112540781497965, 0.12363548576831819   # radar/resultats/protocole2 : 5es quintiles a 13 h
 TICK = 0.25
@@ -121,9 +122,26 @@ def r2(d):
     return np.where(ok & (dhv > D_HV_R2) & (eff > EFF_R2), g, np.nan)
 
 
+def l2(d):
+    """Partie 11 (flux/gamma_0dte.py) : gamma de la veille haut (rang >= 80 % sur 252 seances, donnees du radar) : a
+    15 h 30, contre le mouvement depuis l'ouverture, sortie a 16 h."""
+    sys.path.insert(0, str(ICI))
+    import gamma_0dte as G
+    O, C = d["o"], d["c"]
+    ok = d["complete"] & ~d["ech"]
+    jours = pd.DatetimeIndex(d["jours"].astype("datetime64[D]"))
+    r = G.gex().dropna()
+    i = r.index.searchsorted(jours, side="left") - 1
+    g = np.where(i >= 0, r.values[np.maximum(i, 0)], np.nan)
+    g = np.where((jours - r.index[np.maximum(i, 0)]).days <= 7, g, np.nan)
+    sens = -np.sign(C[:, 359] - O[:, 0])
+    gain = sens * (C[:, 389] - O[:, 360]) * float(d["pref"]) / O[:, 0] * float(d["pt"]) - 3.0
+    return np.where(ok & (g >= G.SEUIL) & (sens != 0), gain, np.nan)
+
+
 def gains(d):
     jours = pd.DatetimeIndex(d["jours"].astype("datetime64[D]"))
-    out = {"S2b": s2b(d), "R1": r1(d), "R2": r2(d)}
+    out = {"S2b": s2b(d), "R1": r1(d), "R2": r2(d), "L2": l2(d)}
     h = H.toutes(d)
     out.update({"H1": h["H1"][0], "H5": h["H5"][0], "H12": h["H12"][0], "F3": F.toutes(d)["F3"][0]})
     _, _, _, _, tr = G.calcul(d)

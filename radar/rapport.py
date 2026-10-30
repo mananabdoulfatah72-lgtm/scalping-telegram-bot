@@ -102,6 +102,18 @@ def main():
                      f"{x.get('cboe:NDX:pc_volume', np.nan):.2f} en volume")
             msg.append(f"Gamma NDX {x.get('cboe:NDX:gex_total', np.nan) / 1e9:+.1f} Md$ ; murs {x.get('cboe:NDX:mur_put', np.nan):,.0f}"
                        f" / {x.get('cboe:NDX:mur_call', np.nan):,.0f}")
+        if "squeeze:gex" in alt:
+            gx = alt["squeeze:gex"].dropna()
+            hist = sorted((ICI / "donnees" / "jour" / "alt").glob("*.csv.gz"))
+            tout = pd.concat([pd.read_csv(f) for f in hist])
+            tout = tout[tout["serie"] == "squeeze:gex"].assign(date=lambda x: pd.to_datetime(x["date"])).set_index("date")["valeur"].sort_index()
+            avant = tout.iloc[-253:-1]
+            rg = float((avant < tout.iloc[-1]).mean()) if len(avant) >= 199 else np.nan
+            L += ["", "## Régime gamma (règle L2 du bot FluxNQ, règle 9)", "",
+                  f"GEX de SqueezeMetrics du {gx.index[-1].date()} : rang {rg * 100:.0f} % sur 252 séances. "
+                  + ("**L2 active à la prochaine séance** : à 15 h 30, contre le mouvement du jour, sortie à 16 h."
+                     if rg >= 0.8 else "L2 inactive à la prochaine séance (il faut 80 %).")]
+            msg.append(f"Gamma rang {rg * 100:.0f} % : L2 {'ACTIVE' if rg >= 0.8 else 'inactive'} demain")
         w = [c for c in alt.columns if c.startswith("wiki:")]
         if w:
             lv = np.log(alt[w].clip(lower=1))

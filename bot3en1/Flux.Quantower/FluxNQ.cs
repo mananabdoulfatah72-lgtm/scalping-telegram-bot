@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Bot3en1.Flux;
 using TradingPlatform.BusinessLayer;
 
@@ -25,17 +26,18 @@ namespace Bot3en1
         [InputParameter("NQ : contrat du moment, pour lire le flux (tape et DOM), ex. NQZ6", 20)] public Symbol SymboleNQ;
         [InputParameter("MNQ : meme echeance, pour les ordres, ex. MNQZ6", 30)] public Symbol SymboleMNQ;
         [InputParameter("Dossier des donnees (enregistrements dans le sous-dossier flux)", 40)] public string Dossier = @"C:\Bot3en1";
-        [InputParameter("Regle qui passe les ordres : 0 = aucune (lecture, enregistrement, carnets virtuels), 1 = S1, 2 = S2, 3 = S2b, 4 = C1, 5 = ORB 5 min, 6 = cassure de la veille, 7 = Supertrend, 8 = pivots. Toutes sont suivies en virtuel ; voir flux/README.md avant le reel", 50, 0, 8, 1, 0)]
+        [InputParameter("Regle qui passe les ordres : 0 = aucune (lecture, enregistrement, carnets virtuels), 1 = S1, 2 = S2, 3 = S2b, 4 = C1, 5 = ORB 5 min, 6 = cassure de la veille, 7 = Supertrend, 8 = pivots, 9 = L2 fin de seance contre le mouvement quand le gamma est haut. Toutes sont suivies en virtuel ; voir flux/README.md avant le reel", 50, 0, 9, 1, 0)]
         public int RegleOrdres = 0;
         [InputParameter("MNQ par trade (ordres reels)", 60, 1, 10, 1, 0)] public int Taille = 1;
         [InputParameter("Limite de perte du jour en $ pour les ordres reels (0 = aucune)", 70, 0, 5000, 50, 0)] public double LimitePerteJour = 300;
         [InputParameter("Trades reels au plus par jour", 80, 1, 20, 1, 0)] public int MaxTradesJour = 4;
         [InputParameter("Lecture du flux sur Telegram toutes les X minutes (0 = jamais)", 90, 0, 120, 5, 0)] public int PeriodeLecture = 30;
         [InputParameter("Gros lot : transaction d'au moins X contrats NQ (lecture)", 95, 1, 500, 1, 0)] public int GrosLot = 20;
+        [InputParameter("L2 : rang du gamma de la veille en % si le telechargement echoue (-1 = aucun, L2 ne trade pas)", 96, -1, 100, 1, 0)] public int GammaManuel = -1;
         [InputParameter("Telegram : jeton du bot (facultatif)", 100)] public string JetonTelegram = "";
         [InputParameter("Telegram : numero de conversation (facultatif)", 110)] public string ChatTelegram = "";
 
-        const string Version = "29 octobre 2026 (S1, S2, S2b, C1 ; ORB 5 min, cassure de la veille, Supertrend, pivots ; enregistrement du tape et du DOM)";
+        const string Version = "30 octobre 2026 (S1, S2, S2b, C1 ; ORB 5 min, cassure de la veille, Supertrend, pivots ; L2 gamma ; enregistrement du tape et du DOM)";
         const double TICK = 0.25;
         static readonly HttpClient http = new HttpClient { Timeout = TimeSpan.FromSeconds(20) };
         static readonly CultureInfo inv = CultureInfo.InvariantCulture;
@@ -143,9 +145,9 @@ namespace Bot3en1
             Dire("arrete.");
         }
 
-        static string NomRegle(int r) => r switch { 1 => "S1", 2 => "S2", 3 => "S2b", 4 => "C1", 5 => "H1", 6 => "H5", 7 => "H12", 8 => "F3", _ => "aucune" };
-        static string Libelle(int r) => r >= 5 && r <= 8 ? $"{NomRegle(r)} ({MoteurTendance.Libelles[r - 5]})" : NomRegle(r);
-        bool OrdresTendance => RegleOrdres >= 5 && RegleOrdres <= 8;
+        static string NomRegle(int r) => r switch { 1 => "S1", 2 => "S2", 3 => "S2b", 4 => "C1", 5 => "H1", 6 => "H5", 7 => "H12", 8 => "F3", 9 => "L2", _ => "aucune" };
+        static string Libelle(int r) => r >= 5 && r <= 9 ? $"{NomRegle(r)} ({MoteurTendance.Libelles[r - 5]})" : NomRegle(r);
+        bool OrdresTendance => RegleOrdres >= 5 && RegleOrdres <= 9;
 
         static TimeZoneInfo TrouverFuseau()
         {
@@ -246,6 +248,7 @@ namespace Bot3en1
             }
             bool memeContrat = veille != DateTime.MinValue && Calendrier.Contrat(veille) == Calendrier.Contrat(jour);
             tendance.DebutSeance(jour, memeContrat && prec.Count > 0, memeContrat && prec.Count > 0 ? prec[^1] : null);
+            ChargerGamma(jour);
             tendanceVoulue = 0; tendanceBloquee = 0;
             OuvrirFichiers();
             Dire($"seance du {jour:yyyy-MM-dd} : {prec.Count} seance(s) precedente(s) chargee(s)"
@@ -588,6 +591,48 @@ namespace Bot3en1
                 }
             }
             catch (Exception e) { Dire($"ERREUR : {e.Message}", true); }
+        }
+
+        /// <summary>L2 : rang du gamma de la veille (GEX de SqueezeMetrics parmi les 252 valeurs d'avant, comme
+        /// flux/gamma_0dte.py), telecharge sans bloquer le bot ; a defaut, le rang saisi dans les reglages.</summary>
+        void ChargerGamma(DateTime j)
+        {
+            Task.Run(async () =>
+            {
+                double r = double.NaN;
+                string source;
+                try
+                {
+                    r = RangGamma(await http.GetStringAsync("https://squeezemetrics.com/monitor/static/DIX.csv"), j);
+                    source = double.IsNaN(r) ? "donnees de SqueezeMetrics trop anciennes" : "SqueezeMetrics";
+                }
+                catch (Exception e) { source = $"telechargement impossible : {e.Message}"; }
+                if (double.IsNaN(r) && GammaManuel >= 0) { r = GammaManuel / 100.0; source += ", rang saisi dans les reglages"; }
+                lock (verrou)
+                {
+                    if (jour != j || tendance == null) return;
+                    tendance.DefinirGamma(r);
+                    Dire(double.IsNaN(r) ? $"L2 : gamma de la veille inconnu ({source}) : L2 ne trade pas aujourd'hui"
+                        : $"L2 : gamma de la veille au rang {r * 100:F0} % ({source}) : L2 "
+                          + (r >= MoteurTendance.SeuilGamma ? "ACTIVE a 15 h 30, contre le mouvement du jour" : "inactive aujourd'hui (il faut 80 %)"));
+                }
+            });
+        }
+
+        public static double RangGamma(string csv, DateTime jour)
+        {
+            var v = new List<(DateTime d, double g)>();
+            foreach (var l in csv.Split('\n').Skip(1))
+            {
+                var c = l.Trim().Split(',');
+                if (c.Length < 4 || !DateTime.TryParseExact(c[0], "yyyy-MM-dd", inv, DateTimeStyles.None, out var d)
+                    || !double.TryParse(c[3], NumberStyles.Float, inv, out var g)) continue;
+                if (d < jour.Date) v.Add((d, g));
+            }
+            v.Sort((a, b) => a.d.CompareTo(b.d));
+            if (v.Count < 200 || (jour.Date - v[^1].d).TotalDays > 7) return double.NaN;
+            var avant = v.Skip(Math.Max(0, v.Count - 253)).Take(Math.Min(252, v.Count - 1)).ToList();
+            return avant.Count(x => x.g < v[^1].g) / (double)avant.Count;
         }
 
         void FermerMinute(int m, bool executer)

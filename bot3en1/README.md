@@ -631,3 +631,37 @@ dotnet run -c Release --project Flux.Test -- <transactions_NQZ6_rithmic.csv> <do
 
 Relancer : `python3 flux/tendance_ref.py <dossier>` (KB=...), puis
 `dotnet run -c Release --project Flux.ReplayTendance -- <dossier>`.
+
+### FluxNQ : règle 9, L2 (30 octobre 2026)
+
+Cette règle vient de la partie 11 de `flux/README.md` : la recherche sur l'ère des options 0DTE.
+
+**Ce qu'elle fait.**
+- Chaque matin, le bot télécharge le gamma des teneurs de marché (GEX) publié par SqueezeMetrics et calcule son rang
+  parmi les 252 séances d'avant.
+- Si le rang de la veille est d'au moins 80 %, à 15 h 30 (New York), elle prend 1 position contre le mouvement de la
+  journée : vente si le NQ a monté depuis l'ouverture, achat s'il a baissé. Elle sort à 16 h.
+- Elle n'a ni stop ni objectif.
+- Si le téléchargement échoue, le réglage « L2 : rang du gamma de la veille en % » sert de secours ; à −1, L2 ne trade
+  pas.
+
+**Résultats de l'ère 0DTE (16 mai 2022 - 29 octobre 2026), 1 MNQ, frais compris :**
+- **Trades.** 306 trades, soit environ 69 par an. 56 % sont gagnants : en moyenne +83 $ quand ils gagnent, −76 $
+  quand ils perdent.
+- **Total.** +3 927 $, soit +12,8 $ par trade, t 2,06. La pire perte est de −356 $, la plus forte baisse du cumul de
+  −1 036 $.
+- **Avant 2022**, la même règle perdait (t −1,52).
+- **Elle n'a pas franchi sa barre** (t 2,33) : c'est une candidate, pas une stratégie validée.
+
+**Vérifications.**
+- Le C# donne exactement les mêmes trades que la recherche : 975 séances jouées sur 2011 - 2026, 0 écart
+  (`Flux.ReplayTendance`).
+- Le rang du gamma calculé par le bot est identique à celui de la recherche sur les dates testées
+  (`Flux.Test gamma`).
+- Le test complet du bot en direct (`Flux.Test`, règles 0, 7 et 9) passe, sauf un écart connu et antérieur à L2 : sur
+  la séance coupée du 29 octobre (export arrêté à 11 h 43), H5 et F3 diffèrent entre le direct et le rejeu. Il reste à
+  corriger.
+
+**Suivi.**
+- `flux/veille.py` suit L2 chaque soir, sans argent.
+- Le rapport du radar dit chaque soir si L2 sera active à la séance suivante.

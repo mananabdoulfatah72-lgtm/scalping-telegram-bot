@@ -45,6 +45,13 @@ class Program
 
     static int Main(string[] args)
     {
+        if (args[0] == "gamma")              // Flux.Test gamma <DIX.csv> <jours...> : rang du gamma de la veille (regle L2)
+        {
+            var csv = File.ReadAllText(args[1]);
+            foreach (var j in args.Skip(2))
+                Console.WriteLine($"{j} {FluxNQ.RangGamma(csv, DateTime.ParseExact(j, "yyyy-MM-dd", inv)).ToString("R", inv)}");
+            return 0;
+        }
         string source = args[0], travail = args[1];
         int regle = args.Length > 2 ? int.Parse(args[2]) : 0;
         if (Directory.Exists(travail)) Directory.Delete(travail, true);
@@ -228,6 +235,8 @@ class Program
         var obtT = direct.SelectMany(j => File.ReadLines(Path.Combine(travail, "flux", j.ToString("yyyy-MM-dd"), "tendance.csv")).Skip(1))
             .Select(l => l.Split(',')).Where(c => c[3] == "sortie").Select(c => $"{c[0]},{c[1]},{c[2]},{c[9]}").ToList();
         Verifier(attT.OrderBy(x => x).SequenceEqual(obtT.OrderBy(x => x)), $"regles de tendance : {obtT.Count} trades du bot, {attT.Count} du moteur rejoue");
+        foreach (var x in obtT.Except(attT)) Console.WriteLine($"    seulement dans le journal du bot : {x}");
+        foreach (var x in attT.Except(obtT)) Console.WriteLine($"    seulement dans le rejeu : {x}");
         foreach (var r in MoteurTendance.Noms)
             Console.WriteLine($"  {r} : {obtT.Count(x => x.StartsWith(r + ","))} trade(s) virtuel(s), {obtT.Where(x => x.StartsWith(r + ",")).Sum(x => double.Parse(x.Split(',')[3], inv)):+0;-0} $");
 
