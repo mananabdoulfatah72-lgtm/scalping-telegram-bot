@@ -202,3 +202,53 @@ RADAR_CALCUL=<dossier> python3 radar/scan.py --placebos 20      # puis --coffre,
 RADAR_CALCUL=<dossier> python3 radar/ia.py                      # puis --coffre
 RADAR_CALCUL=<dossier> python3 radar/strategie.py
 ```
+
+## Protocole 2, fixé le 30 octobre 2026 avant tout calcul (`protocole2.py`)
+
+Relancer le protocole 1 sur les mêmes données redonnerait le même résultat. Le protocole 2 élargit donc la recherche :
+plus de marchés, plus d'heures d'entrée, de nouvelles variables. Le coffre devient plus sévère, parce qu'il est ouvert
+une deuxième fois.
+
+### Ce qui change
+- **Marchés.** Huit marchés tradables en micro chez Bulenox : NQ, ES, RTY, YM, or (GC), pétrole (CL), euro (6E) et
+  bitcoin (BTC). Chacun est pris en minutes, sur sa fenêtre de séance du projet (`scalping/commun.py`).
+- **Frais.** Ceux du projet pour chaque micro, en $ par aller-retour au prix d'aujourd'hui : NQ 3, ES 4,50, RTY 3,
+  YM 3, GC 4, CL 4, 6E 4,50, BTC 3.
+- **Périodes.**
+
+  | Marchés | Exploration | Confirmation | Coffre |
+  |---|---|---|---|
+  | NQ et ES | 2011 - 2018 | 2019 - 2022 | 2023 - 2026 |
+  | Les autres | début des données (2016, 2017 pour le RTY, 2018 pour le BTC) - 2019 | 2020 - 2022 | 2023 - 2026 |
+
+- **Entrées.** Une toutes les 15 minutes, de la 15e minute de la fenêtre jusqu'à 30 minutes avant sa fin (24 heures
+  d'entrée sur le NQ). Sorties à 15, 30, 60 ou 120 minutes, ou à la clôture de la fenêtre.
+- **Nouvelles variables de séance** :
+  - mouvement sur 5 et sur 120 minutes ;
+  - range des 30 dernières minutes ;
+  - écart à la clôture de la veille ;
+  - place dans le range des 60 premières minutes ;
+  - distance au plus haut et au plus bas des 20 séances d'avant ;
+  - niveaux ronds au pas de chaque marché.
+- **Variables des autres marchés.** Les 7 autres marchés, à la même heure de New York.
+- **Variables d'avant l'ouverture.** Les mêmes qu'au protocole 1.
+- **Modèle d'apprentissage.** Régression logistique seule (les arbres n'ont rien donné au protocole 1 et coûtent
+  20 fois plus de calcul), sur chaque marché et chaque couple entrée-durée.
+  - Elle est entraînée sur toutes les séances avant l'année Y, dès qu'il y en a 500.
+  - Sélection sur les années hors échantillon avant 2023 : t ≥ le seuil de Bonferroni unilatéral à 5 % pour tous les
+    modèles.
+
+### Ce qui ne change pas
+Les conditions (7 tranches figées sur l'exploration, calendrier), les règles à une ou deux conditions, les familles, et
+l'étape 1 (t ≥ 3, au moins 120 trades, au plus 5 000 familles par marché). L'étape 2 aussi : 20 placebos par marché,
+jugés avec les mêmes exigences que les vraies règles, une barre au moins égale à 3, et les doublons au-dessus de 0,7 de
+corrélation.
+
+### Coffre 2023 - 2026
+Pour m règles et modèles retenus par le protocole 2, une règle passe si :
+- t ≥ le seuil de Bonferroni unilatéral à 5 % pour m + 1 (le « + 1 » compte la règle déjà ouverte au protocole 1) ;
+- son gain moyen est positif ;
+- au moins 3 années sur 4 sont gagnantes, ou 2 sur 3 pour un marché dont les données s'arrêtent en 2025.
+
+Ce qui passe est assemblé comme au protocole 1 (`strategie.py`) et ajouté au suivi en direct. Ce qui échoue est
+publié tel quel.
