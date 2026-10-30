@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Machine de veille (flux/README.md, partie 8) : chaque soir de semaine, joue sur les nouvelles seances du NQ les
-strategies candidates figees (S2b, ORB 5 min, cassure de la veille, Supertrend, pivots, les regles du radar, L2, W1i, et
-la zone d'origine comme reference), tient leur journal depuis le debut du suivi, les mesure contre la barre fixee d'avance et
+strategies candidates figees (S2b, ORB 5 min, cassure de la veille, Supertrend, pivots, les regles du radar, L2, W1i, les
+murs d'options, et la zone d'origine comme reference), tient leur journal depuis le debut du suivi, les mesure contre la barre fixee d'avance et
 envoie le point sur Telegram. Aucun reglage n'est change par la machine : c'est le seul test que rien ne peut biaiser (l'avenir).
 
 Lancer : python3 flux/veille.py <minutes NQ au format du robot (t,o,h,l,c,v,contrat)>
@@ -27,8 +27,9 @@ DEBUT_SUIVI = pd.Timestamp(os.getenv("DEBUT_SUIVI", "2026-10-30"))
 NOMS = {"S2b": "S2b cassure ratee", "H1": "ORB 5 min", "H5": "cassure de la veille", "H12": "Supertrend 10-3",
         "F3": "pivots R1/S1", "R1": "radar : achat 13 h 30 en haut du range",
         "R2": "radar : achat 13 h au-dessus de la veille", "L2": "L2 : contre le mouvement a 15 h 30 (gamma haut)",
-        "W1i": "W1i : achat du lundi apres un week-end bitcoin negatif", "ZONE": "zone d'origine (reference)"}
-BARRE_TRADES, BARRE_T = 40, 2.57            # 40 seances avec trade, t >= 2,57 (Bonferroni unilateral 5 % pour 10)
+        "W1i": "W1i : achat du lundi apres un week-end bitcoin negatif", "MUR": "murs d'options du NDX (contre le mur)",
+        "ZONE": "zone d'origine (reference)"}
+BARRE_TRADES, BARRE_T = 40, 2.61            # 40 seances avec trade, t >= 2,61 (Bonferroni unilateral 5 % pour 11)
 PLACE_R1 = 0.8591989517211914               # radar/resultats/scan.txt : 5e quintile de la place a 13 h 30 (2011-2018)
 D_HV_R2, EFF_R2 = 0.24112540781497965, 0.12363548576831819   # radar/resultats/protocole2 : 5es quintiles a 13 h
 TICK = 0.25
@@ -155,9 +156,63 @@ def w1i(d):
     return np.where(ok & (w < 0), gain, np.nan)
 
 
+def murs(d):
+    """Partie 15 : murs d'options du NDX de la veille (radar, CBOE), ramenes au NQ par l'ecart NQ - NDX de la veille. De
+    10 h a 15 h 30, premier contact a 0,1 % pres du mur de calls : vente a l'ouverture suivante, stop 0,25 % au-dessus du
+    mur, objectif 2 R, sortie 16 h au plus tard (mur de puts : achat, symetrique). Un trade par mur et par jour."""
+    sys.path.insert(0, str(ICI))
+    import recherche14 as R
+    O, Hh, L, C = d["o"], d["h"], d["l"], d["c"]
+    ok = d["complete"] & ~d["ech"]
+    jours = pd.DatetimeIndex(d["jours"].astype("datetime64[D]"))
+    try:
+        kc, kp = R.serie("alt", "cboe:NDX:mur_call"), R.serie("alt", "cboe:NDX:mur_put")
+        ecart = R.serie("yahoo", "NQ=F:c") - R.serie("yahoo", "^NDX:c")
+    except (KeyError, ValueError):
+        return np.full(len(O), np.nan)
+    ech = float(d["pref"]) / O[:, 0] * float(d["pt"])
+    g = np.full(len(O), np.nan)
+    for s, j in enumerate(jours):
+        if not ok[s]:
+            continue
+        av = kc.index[kc.index < j]
+        ae = ecart.dropna().index[ecart.dropna().index < j]
+        if not len(av) or not len(ae) or (j - av[-1]).days > 4:
+            continue
+        base = ecart[ae[-1]]
+        tot = 0.0
+        joue = False
+        for mur, sens in ((kc[av[-1]] + base, -1), (kp[av[-1]] + base, 1)):
+            for m in range(30, 361):
+                touche = Hh[s, m] >= mur * 0.999 if sens < 0 else L[s, m] <= mur * 1.001
+                if not touche:
+                    continue
+                e = m + 1
+                ent = O[s, e]
+                st = mur * (1.0025 if sens < 0 else 0.9975)
+                R_ = abs(st - ent)
+                if R_ <= 0 or (sens < 0 and ent >= st) or (sens > 0 and ent <= st):
+                    break
+                ob = ent + sens * 2 * R_
+                sortie = C[s, 389]
+                for k in range(e, 390):
+                    if (sens < 0 and Hh[s, k] >= st) or (sens > 0 and L[s, k] <= st):
+                        sortie = st
+                        break
+                    if (sens < 0 and L[s, k] <= ob) or (sens > 0 and Hh[s, k] >= ob):
+                        sortie = ob
+                        break
+                tot += sens * (sortie - ent) * ech[s] - 3.0
+                joue = True
+                break
+        if joue:
+            g[s] = tot
+    return g
+
+
 def gains(d):
     jours = pd.DatetimeIndex(d["jours"].astype("datetime64[D]"))
-    out = {"S2b": s2b(d), "R1": r1(d), "R2": r2(d), "L2": l2(d), "W1i": w1i(d)}
+    out = {"S2b": s2b(d), "R1": r1(d), "R2": r2(d), "L2": l2(d), "W1i": w1i(d), "MUR": murs(d)}
     h = H.toutes(d)
     out.update({"H1": h["H1"][0], "H5": h["H5"][0], "H12": h["H12"][0], "F3": F.toutes(d)["F3"][0]})
     _, _, _, _, tr = G.calcul(d)

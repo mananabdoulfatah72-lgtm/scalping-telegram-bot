@@ -490,9 +490,13 @@ def options_cboe():
         o["oi_put"] = np.where(o["type"] == "P", o["open_interest"], 0.0)
         par_k = o.groupby("k")[["gex", "oi_call", "oi_put", "volume"]].sum().reset_index()
         proche = o[o["jours"] <= 1]
-        cum = par_k.sort_values("k")["gex"].cumsum().values
-        ks = par_k.sort_values("k")["k"].values
-        bascule = float(ks[np.argmin(np.abs(cum))]) if len(ks) else np.nan
+        # bascule : prix d'exercice ou le gamma cumule (des plus bas aux plus hauts) change de signe, a 10 % du prix
+        # au plus (avant le 30 octobre 2026, le plus petit prix d'exercice etait pris par erreur)
+        pk = par_k.sort_values("k")
+        cum, ks = pk["gex"].cumsum().values, pk["k"].values
+        pres = (ks >= 0.9 * spot) & (ks <= 1.1 * spot)
+        chg = np.nonzero(pres[1:] & (np.sign(cum[1:]) != np.sign(cum[:-1])))[0]
+        bascule = float(ks[chg[np.argmin(np.abs(ks[chg + 1] - spot))] + 1]) if len(chg) else np.nan
         calls, puts = o[o["type"] == "C"], o[o["type"] == "P"]
         mur_call = float(calls.groupby("k")["gex"].sum().idxmax()) if len(calls) else np.nan
         mur_put = float(puts.groupby("k")["gex"].sum().idxmin()) if len(puts) else np.nan

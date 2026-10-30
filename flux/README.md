@@ -1211,3 +1211,35 @@ Le détail est dans `resultats/partie14/recherche14.md`. **Aucune règle ne pass
 - **L'inverse de W1 (achat du lundi après un week-end bitcoin négatif) est une idée trouvée après coup.** Elle ne peut
   pas être adoptée sur ces chiffres. Elle va au suivi en direct, sous le nom W1i, comme une hypothèse nouvelle.
 - **La liquidité nette (N1)** bat l'achat de chaque séance depuis 2022, mais trop peu pour être sûr (t 1,26).
+
+## Partie 15 : les murs d'options du Nasdaq 100 (règle fixée le 30 octobre 2026, jugée seulement sur l'avenir)
+
+### Recherches consultées pour cette partie
+Elles ne donnent pas de mécanisme nouveau testable sur l'historique :
+- sur les fonds à volatilité cible, aucune étude sérieuse ;
+- les rachats d'ETF à levier ont déjà été testés ;
+- l'effet de fin de journée des produits VIX se retourne la nuit ;
+- les niveaux de déclenchement des CTA n'ont pas d'étude ;
+- une étude de juillet 2026 décrit la fin du suivi de tendance à court terme.
+
+### La source
+Le radar calcule depuis le 29 octobre 2026 les murs d'options du NDX, à partir de la photo du CBOE (`radar/collecte.py`) :
+- **mur de calls** : le prix d'exercice où le gamma des calls est le plus fort ;
+- **mur de puts** : le prix d'exercice où le gamma des puts est le plus fort.
+
+Les teneurs de marché y vendent à l'approche par le bas et y achètent à l'approche par le haut. Cette source n'a pas
+d'historique gratuit ; elle sera jugée sur les séances qui viennent.
+
+### Règle MUR (`flux/veille.py`)
+- **Niveaux.** On prend les murs de la dernière photo avant la séance (4 jours au plus) et on les ramène au NQ avec
+  l'écart NQ − NDX de la veille.
+- **Signal.** Entre 10 h et 15 h 30, au premier contact à 0,1 % près du mur de calls, vente à l'ouverture de la minute
+  suivante.
+- **Sortie.** Stop 0,25 % au-dessus du mur, objectif 2 R, sortie à 16 h au plus tard.
+- **Mur de puts.** Achat, de façon symétrique.
+- Un trade par mur et par jour ; frais de 3 $.
+- **Barre.** 40 séances avec trade et t ≥ 2,61 (Bonferroni pour les 11 candidates suivies).
+
+### Correction de la collecte
+Le niveau de bascule du gamma prenait par erreur le plus petit prix d'exercice. C'est maintenant le changement de signe
+du gamma cumulé, à 10 % du prix au plus. La règle MUR ne l'utilise pas.
