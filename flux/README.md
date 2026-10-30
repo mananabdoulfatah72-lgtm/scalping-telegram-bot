@@ -929,3 +929,24 @@ sur l'historique. Le code est `flux/of_fige.py`. Rien n'y sera changé après co
   30 octobre 2026.
 - **Une seule séance ne prouve rien.** Une règle ne sera dite « qui marche » qu'après au moins 40 trades sur les séances
   de FluxNQ avec t ≥ 2,64 (Bonferroni pour 11).
+
+### Résultats sur l'historique (131 séances de Databento, avril - octobre 2026)
+
+Le détail est dans `resultats/partie9/historique.md`.
+
+| Règle | Trades | Moyenne | t | Verdict |
+|---|---|---|---|---|
+| T1 balayage | 522 | −0,2 $ | −0,06 | échoue |
+| T2 épuisement | 367 | −1,7 $ | −0,88 | échoue |
+| T3 iceberg | 0 | — | — | jamais déclenchée (voir plus bas) |
+| T4 VPIN | 132 | −9,4 $ | −1,13 | échoue |
+| T5 rafale | 55 | −13,6 $ | −2,38 | échoue |
+| T6 absorption | 119 | −10,0 $ | −1,03 | échoue |
+| T7 après-midi + flux | 23 | +20,2 $ | +0,54 | échoue (trop peu de trades pour conclure) |
+
+- **T3 ne se déclenche jamais, et ce n'est pas un défaut du code.** Sur ces séances, le meilleur prix d'achat ne
+  reste jamais plus de 11 secondes au même niveau, alors que la règle demande 30 secondes.
+- **Les quatre règles du DOM restent à juger.** Elles le seront sur les séances de FluxNQ, à commencer par celle du
+  30 octobre 2026.
+- **Un détail de calcul a été corrigé avant d'avoir la séance du 30 octobre.** Les stops et les objectifs exprimés en
+  multiples de A sont arrondis au tick, du côté prudent. Le tableau ci-dessus est calculé après cette correction.
