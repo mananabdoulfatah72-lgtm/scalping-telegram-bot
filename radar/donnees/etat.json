@@ -1,55 +1,55 @@
 {
  "yahoo_jour": {
-  "heure_utc": "2026-10-30 00:23",
+  "heure_utc": "2026-10-30 00:46",
   "symboles": 169,
   "manquants": [],
-  "fichiers_ecrits": 56
+  "fichiers_ecrits": 1
  },
  "yahoo_heure": {
-  "heure_utc": "2026-10-30 00:24",
+  "heure_utc": "2026-10-30 00:46",
   "symboles": 37,
-  "fichiers_ecrits": 3
+  "fichiers_ecrits": 1
  },
  "yahoo_minute": {
-  "heure_utc": "2026-10-30 00:24",
+  "heure_utc": "2026-10-30 00:46",
   "symboles": 28,
   "jours_ecrits": 0
  },
  "dix_gex": {
-  "heure_utc": "2026-10-30 00:24",
+  "heure_utc": "2026-10-30 00:46",
   "lignes": 3898,
   "derniere": "2026-10-29",
   "fichiers_ecrits": 0
  },
  "wikipedia": {
-  "heure_utc": "2026-10-30 00:26",
-  "articles": 27,
-  "fichiers_ecrits": 21
+  "heure_utc": "2026-10-30 00:48",
+  "articles": 28,
+  "fichiers_ecrits": 0
  },
  "fred": {
-  "heure_utc": "2026-10-30 00:26",
+  "heure_utc": "2026-10-30 00:48",
   "series": 39,
   "manquantes": [],
-  "fichiers_ecrits": 117
+  "fichiers_ecrits": 0
  },
  "cnn_peur_avidite": {
-  "heure_utc": "2026-10-30 00:27",
+  "heure_utc": "2026-10-30 00:49",
   "erreur": "pas de reponse"
  },
  "aaii": {
-  "heure_utc": "2026-10-30 00:27",
+  "heure_utc": "2026-10-30 00:49",
   "lignes": 2050,
   "fichiers_ecrits": 0
  },
  "options_cboe": {
-  "heure_utc": "2026-10-30 00:27",
+  "heure_utc": "2026-10-30 00:49",
   "sous_jacents": 3,
   "fichiers_ecrits": 1
  },
  "resultats": {
-  "heure_utc": "2026-10-30 00:28",
+  "heure_utc": "2026-10-30 00:50",
   "symboles": 35,
-  "lignes": 2954
+  "lignes": 2955
  },
  "gdelt": {
   "heure_utc": "2026-10-30 00:42",
@@ -61,9 +61,9 @@
   "erreur": "KeyError: 'Symbol'"
  },
  "incertitude": {
-  "heure_utc": "2026-10-30 00:26",
+  "heure_utc": "2026-10-30 00:48",
   "lignes": 15276,
   "derniere": "2026-10-28",
-  "fichiers_ecrits": 51
+  "fichiers_ecrits": 0
  }
 }
