@@ -1047,3 +1047,22 @@ au plus 20 %, haut = au moins 80 %. Le code est `flux/gamma_0dte.py`.
   - au moins 3 des 5 années 2022 - 2026 sont gagnantes.
 - **2011 - mai 2022** est publié à titre de comparaison.
 - **Une règle qui passe** va au suivi en direct, sans argent. **Une qui échoue** est publiée telle quelle.
+
+### Résultats de la partie 11
+
+Le détail est dans `resultats/partie11/gamma_0dte.md`. Aucune règle ne passe la barre de l'ère 0DTE.
+
+| Règle | 2011 - mai 2022 | Ère 0DTE (mai 2022 - oct. 2026) |
+|---|---|---|
+| L1 fin de séance, gamma bas (élan) | 495 trades, +45,4 $, **t +2,81** | 173 trades, −7,0 $, t −0,37 |
+| L2 fin de séance, gamma haut (contre) | 675 trades, −6,0 $, t −1,52 | 306 trades, **+12,8 $, t +2,06**, 4 années sur 5 gagnantes |
+| L3 après-midi, gamma bas (élan) | 299 trades, +22,0 $, t +1,08 | 138 trades, +18,7 $, t +0,67 |
+| L4 après-midi, gamma haut (contre) | 318 trades, −22,0 $, t −2,45 | 194 trades, −5,7 $, t −0,34 |
+| L5 ouverture après la nuit (contre) | 505 trades, +43,8 $, **t +3,24** | 219 trades, −1,6 $, t −0,07 |
+
+- **Ce qui marchait avant 2022 ne marche plus depuis.** L'élan de fin de séance (L1) et le retournement de l'ouverture
+  (L5) disparaissent avec l'ère 0DTE, comme l'élan de l'après-midi des parties 8 et 10.
+- **L2 est la seule règle qui gagne régulièrement depuis 2022**, et elle suit le mécanisme décrit par la recherche.
+  Mais son t de 2,06 reste sous la barre de 2,33.
+- **Décision : L2 n'est pas adoptée en argent réel.** Elle entre dans le bot FluxNQ (règle 9, en virtuel par défaut)
+  et dans le suivi de chaque soir. Elle sera dite « qui marche » après 40 trades nouveaux avec t ≥ 2,50.
