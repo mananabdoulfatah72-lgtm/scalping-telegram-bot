@@ -1,0 +1,52 @@
+[
+ {
+  "decalage": 58,
+  "familles": 8,
+  "t_C_max": 1.6551125936431874
+ },
+ {
+  "decalage": 116,
+  "familles": 10,
+  "t_C_max": 0.0
+ },
+ {
+  "decalage": 61,
+  "familles": 0,
+  "t_C_max": 0.0
+ },
+ {
+  "decalage": 31,
+  "familles": 0,
+  "t_C_max": 0.0
+ },
+ {
+  "decalage": 74,
+  "familles": 4,
+  "t_C_max": 1.173213135022305
+ },
+ {
+  "decalage": 81,
+  "familles": 3,
+  "t_C_max": 2.920957876981236
+ },
+ {
+  "decalage": 37,
+  "familles": 2,
+  "t_C_max": 0.0
+ },
+ {
+  "decalage": 118,
+  "familles": 1,
+  "t_C_max": 0.6868507868164697
+ },
+ {
+  "decalage": 15,
+  "familles": 2,
+  "t_C_max": 0.0
+ },
+ {
+  "decalage": 87,
+  "familles": 8,
+  "t_C_max": 0.9525390441161014
+ }
+]

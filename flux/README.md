@@ -1282,3 +1282,16 @@ A est le range moyen des minutes des 30 dernières minutes (plancher 2 points).
   20 suivantes à confirmer.
 - **La séance du 30 octobre ne donne qu'un classement.** Ce n'est pas un résultat. Il est publié avec le meilleur
   résultat de 10 placebos sur cette même séance, pour montrer ce que le hasard seul produit.
+
+### Résultats de la partie 16 sur l'historique (131 séances)
+
+Le détail est dans `resultats/partie16/historique.md`.
+- **131 760 réglages** du tape et du premier niveau.
+- **Une seule famille atteint t ≥ 3 en exploration**, moins que certains placebos (jusqu'à 10 familles). Elle tombe à
+  t 0,08 en confirmation.
+- **Les placebos** ont un meilleur t de confirmation de 0 à 2,92 ; la barre est de 3,00. **Aucune survivante**, et
+  rien à t ≥ 2 : aucune règle du tape n'est figée pour les séances de FluxNQ.
+- **Conclusion.** Sur ces 131 séances, le tape et le premier niveau ne contiennent pas plus de signal exploitable que
+  le hasard, une fois payés le glissement et la commission. C'est ce que dit la recherche : leur effet ne dure que 1 à
+  2 ticks.
+- **Les 74 520 réglages du DOM** (G2 sur 3, 5 et 10 niveaux ; G5) restent à explorer sur les séances de FluxNQ.
