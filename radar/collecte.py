@@ -286,12 +286,22 @@ def finra():
     jours = jours[:n_max] if os.getenv("RADAR_FINRA_ANCIENS") else jours[-n_max:]
     garder = set(FINRA)
 
+    entetes = {}
+
     def fichier(prefixe, j):
         r = get(f"https://cdn.finra.org/equity/regsho/daily/{prefixe}shvol{j:%Y%m%d}.txt", essais=2, attente=3)
-        if r is None or r.status_code != 200 or b"|" not in r.content[:200]:
+        if r is None or r.status_code != 200 or b"|" not in r.content[:300]:
             return None
-        t = pd.read_csv(io.BytesIO(r.content), sep="|", dtype=str)
-        return t[t["Symbol"].isin(garder)]
+        t = pd.read_csv(io.BytesIO(r.content), sep="|", dtype=str, encoding_errors="ignore")
+        t.columns = [str(c).strip().lstrip("\ufeff") for c in t.columns]
+        noms = {c.lower().replace(" ", ""): c for c in t.columns}
+        if "symbol" not in noms:
+            entetes.setdefault(prefixe, "|".join(t.columns)[:120])
+            return None
+        t = t.rename(columns={noms[k]: v for k, v in (("symbol", "Symbol"), ("shortvolume", "ShortVolume"),
+                                                       ("shortexemptvolume", "ShortExemptVolume"),
+                                                       ("totalvolume", "TotalVolume")) if k in noms})
+        return t[t["Symbol"].astype(str).str.strip().isin(garder)]
 
     def un(j):
         """Fichier consolide (CNMS, depuis 2018) ; avant, somme des places de declaration (Nasdaq, NYSE, ADF)."""
@@ -320,7 +330,7 @@ def finra():
                 parts.append(x)
     t = pd.concat(parts, ignore_index=True) if parts else None
     n = ranger(t, dossier, "date", ["date", "serie"])
-    noter("finra", jours_demandes=len(jours), jours_recus=len(parts), fichiers_ecrits=n)
+    noter("finra", jours_demandes=len(jours), jours_recus=len(parts), fichiers_ecrits=n, entetes_inconnus=entetes)
 
 
 def dix_gex():
