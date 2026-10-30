@@ -1151,3 +1151,42 @@ n'est pas retenue : sur l'ère 0DTE, elle fait −1 489 $ sur 699 séances (t �
   1 092 en ont au moins 5.
 - **Conclusion : ce portefeuille n'est pas une stratégie fiable.** Ses pires séances (−5 000 $ à 1 MNQ par règle)
   dépassent de loin la limite du jour de Bulenox (1 100 $). Il reste suivi, sans argent.
+
+## Partie 14 : trois sources de la recherche récente que presque personne ne teste (fixée le 30 octobre 2026 avant tout calcul)
+
+### Les sources
+- **Week-end crypto.** Une baisse des cryptos pendant le week-end annonce une baisse des actions le lundi ; une hausse
+  n'annonce rien. L'effet est apparu après le krach de LUNA (mai 2022) (Mourey, Shahrour et Şoiman, *Finance Research
+  Letters* 2025).
+- **Liquidité nette de la Fed.** Bilan de la Fed − compte du Trésor − prises en pension inversées. C'est une mesure de
+  praticiens, sans test académique trouvé.
+- **Prime de variance.** C'est l'écart entre la variance implicite et la variance réalisée ; sa partie intrajournalière
+  prévoit les horizons courts (Papagelis et Dotsis, *Journal of Futures Markets* 2025).
+
+### Règles
+Chaque trade va de l'ouverture (9 h 30) à la clôture (16 h) du NQ, frais de 3 $, en $ pour 1 MNQ au prix d'aujourd'hui.
+Le code est `flux/recherche14.py`.
+
+| Règle | Signal (connu avant 9 h 30) | Trade |
+|---|---|---|
+| W1 | rendement du bitcoin (BTC-USD, Yahoo) du vendredi 20 h au dimanche 20 h (New York) négatif | vente le lundi |
+| W2 | ce rendement ≤ −2 % | vente le lundi |
+| N1 | variation sur 4 semaines de la liquidité nette (séries WALCL, WTREGEN et RRPONTSYD de la FRED ; niveaux du mercredi, utilisés à partir du vendredi qui suit) positive | achat chaque séance |
+| N2 | même variation : positive ou négative | achat si positive, vente si négative, chaque séance |
+| V1 | prime de variance du Nasdaq (VXN² de la veille − variance réalisée du NQ sur les 21 séances d'avant, en minutes, annualisée) dans le tiers haut de ses 252 séances d'avant | achat |
+| V2 | même prime : tiers haut ou tiers bas | achat dans le tiers haut, vente dans le tiers bas |
+
+### Jugement
+Le jugement se fait sur l'ère 0DTE, du 16 mai 2022 au 29 octobre 2026. C'est aussi l'après-LUNA. Une règle passe si :
+- t ≥ 2,39 (Bonferroni unilatéral à 5 % pour 6 règles) ;
+- le gain moyen est positif ;
+- au moins 3 années sur 5 sont gagnantes ;
+- pour les règles qui ne font qu'acheter (N1, V1), le gain moyen par trade bat celui d'un achat à chaque séance sur la
+  même période.
+
+**Résistance, publiée pour chaque règle** :
+- le gain avec des frais doublés (6 $) ;
+- le résultat de 2011 à mai 2022 (2018 à mai 2022 pour le bitcoin) ;
+- le détail année par année.
+
+Une règle qui passe va au suivi en direct.
