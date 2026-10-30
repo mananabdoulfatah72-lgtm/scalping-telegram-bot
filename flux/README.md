@@ -1066,3 +1066,36 @@ Le détail est dans `resultats/partie11/gamma_0dte.md`. Aucune règle ne passe l
   Mais son t de 2,06 reste sous la barre de 2,33.
 - **Décision : L2 n'est pas adoptée en argent réel.** Elle entre dans le bot FluxNQ (règle 9, en virtuel par défaut)
   et dans le suivi de chaque soir. Elle sera dite « qui marche » après 40 trades nouveaux avec t ≥ 2,50.
+
+## Partie 12 : le retournement des jours de gamma haut, toute la journée (fixé le 30 octobre 2026 avant tout calcul)
+
+### Pourquoi
+- **Barbon et Buraschi (2021)** : quand les teneurs de marché sont longs en gamma, les rendements de 5 à 60 minutes
+  s'enchaînent à l'envers (autocorrélation négative).
+- **Baule, Schlie et Zhou (2025)** : ces retournements sont les plus forts à 15 minutes, et ils viennent de la
+  couverture des teneurs de marché.
+- **L2** (partie 11) n'en prend qu'une miette, à 15 h 30. Si le mécanisme est réel, il doit agir toute la journée, ce
+  qui donne des trades bien plus fréquents.
+
+### Règles
+Le gamma et son rang sont ceux de la partie 11 (GEX de la veille, rang sur 252 séances). Code : `flux/gamma_jour.py`.
+
+| Règle | Jours | Trades |
+|---|---|---|
+| M1 | gamma ≥ 80 % | toutes les 30 minutes de 10 h à 15 h 30 : contre le mouvement des 30 dernières minutes, tenu 30 minutes (on retourne ou on reste selon le signe) |
+| M2 | gamma ≥ 60 % | comme M1 |
+| M3 | gamma ≥ 80 % | toutes les 15 minutes de 9 h 45 à 15 h 45 : contre le mouvement des 15 dernières minutes, tenu 15 minutes |
+| M4 (le miroir) | gamma ≤ 20 % | toutes les 30 minutes de 10 h à 15 h 30 : **dans le sens** du mouvement des 30 dernières minutes, tenu 30 minutes |
+
+- **Trade.** Entrée et sortie à l'ouverture des minutes. Pas de trade si le mouvement est nul.
+- **Frais.** 3 $ par trade (aller-retour), comme si chaque trade était fermé puis rouvert. C'est prudent : un vrai
+  retournement coûte moins.
+
+### Jugement
+- **Les gains sont additionnés par journée.** Le t est calculé sur les journées, pour ne pas compter plusieurs fois les
+  trades liés d'une même journée.
+- **Une règle passe** si, sur l'ère 0DTE (16 mai 2022 - 29 octobre 2026), t ≥ 2,24 (Bonferroni unilatéral à 5 % pour
+  4), le gain moyen est positif et au moins 3 années sur 5 sont gagnantes. 2011 - mai 2022 est publié pour comparaison.
+- **Ensuite**, que quelque chose passe ou non, la demande de l'utilisateur est appliquée : combiner les meilleures
+  pièces trouvées. C'est un **portefeuille de candidates**, publié avec sa limite : ses pièces ont été choisies en
+  connaissant une partie de ces années. Il ne sera dit fiable qu'après le suivi en direct.
