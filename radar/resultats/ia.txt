@@ -1,0 +1,22 @@
+Radar, modele d'apprentissage (radar/README.md, protocole du 29 octobre 2026)
+
+98 modeles (49 couples entree-duree x 2), predictions hors echantillon 2015 - 2022, barre t >= 3.3
+Retenus : 0
+
+Les 15 meilleurs hors echantillon 2015 - 2022 :
+
+  logistique 11 h 30, cloture  n  827  moy  +43.78 $  t  2.60
+  logistique 11 h 30, 60 min   n  791  moy  +19.71 $  t  2.29
+  arbres     15 h 00, cloture  n   42  moy  +97.24 $  t  2.28
+  logistique 9 h 35, 15 min   n  781  moy  +17.86 $  t  2.27
+  logistique 10 h 30, 120 min  n  856  moy  +28.65 $  t  2.22
+  arbres     11 h 30, cloture  n   68  moy +167.47 $  t  2.05
+  logistique 10 h 00, 120 min  n  872  moy  +26.49 $  t  1.98
+  logistique 11 h 00, cloture  n 1015  moy  +35.07 $  t  1.97
+  arbres     11 h 00, 60 min   n   55  moy  +69.39 $  t  1.85
+  arbres     9 h 35, 15 min   n   42  moy  +52.43 $  t  1.66
+  logistique 10 h 00, cloture  n  882  moy  +35.28 $  t  1.65
+  arbres     9 h 35, 30 min   n   41  moy  +73.72 $  t  1.65
+  logistique 15 h 00, cloture  n  840  moy  +17.70 $  t  1.57
+  logistique 15 h 30, cloture  n  867  moy  +14.12 $  t  1.56
+  logistique 10 h 30, cloture  n  893  moy  +31.89 $  t  1.49

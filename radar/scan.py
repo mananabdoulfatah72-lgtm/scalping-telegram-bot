@@ -189,8 +189,11 @@ def main():
         X3, B = decaler(d, k)
         s_pl, pre_pl = etape1(d, X3, B, P)
         s_pl = etape2(d, s_pl, pre_pl, P)
+        # meme exigence que pour les vraies regles (au moins MIN_C trades, gain moyen positif) : correction du
+        # 30 octobre 2026, avant l'ouverture du coffre (un placebo comptait une regle a 3 trades, t 10,24)
+        jug = s_pl[(s_pl["n_C"] >= MIN_C) & (s_pl["moy_C"] > 0)]
         placebos.append({"decalage": k, "familles": int(len(s_pl)), "t_E_max": float(s_pl["t_E"].max()),
-                         "t_C_max": float(np.nanmax(s_pl["t_C"])) if len(s_pl) else float("nan"),
+                         "t_C_max": float(jug["t_C"].max()) if len(jug) else 0.0,
                          "nb_t_C_3": int((s_pl["t_C"] >= 3).sum())})
         print(f"placebo {len(placebos)} (decalage {k}) : {len(s_pl)} familles, meilleur t_E {s_pl['t_E'].max():.2f}, "
               f"meilleur t_C {placebos[-1]['t_C_max']:.2f}", flush=True)
