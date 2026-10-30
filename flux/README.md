@@ -1190,3 +1190,24 @@ Le jugement se fait sur l'ère 0DTE, du 16 mai 2022 au 29 octobre 2026. C'est au
 - le détail année par année.
 
 Une règle qui passe va au suivi en direct.
+
+### Résultats de la partie 14
+
+Le détail est dans `resultats/partie14/recherche14.md`. **Aucune règle ne passe.**
+
+| Règle | Ère 0DTE | Avant |
+|---|---|---|
+| W1 vente du lundi après un week-end bitcoin négatif | 99 trades, −145,8 $, t −2,38 | 157 trades, −66,0 $, t −1,16 |
+| W2 idem si ≤ −2 % | 30 trades, −146,2 $, t −0,97 | 69 trades, −26,5 $, t −0,30 |
+| N1 achat quand la liquidité nette monte | 529 trades, +39,8 $, t 1,26 (l'achat de chaque séance fait +24,5 $) | +7,8 $, t 0,57 |
+| N2 achat ou vente selon la liquidité nette | +11,0 $, t 0,52 | −0,6 $, t −0,05 |
+| V1 achat quand la prime de variance est haute | +12,0 $, t 0,27 | +6,4 $, t 0,24 |
+| V2 achat ou vente selon la prime de variance | −20,9 $, t −0,79 | −8,2 $, t −0,53 |
+
+- **Le week-end crypto marche à l'envers sur la séance du NQ.** Après un week-end de baisse du bitcoin, le NQ a plutôt
+  **monté** de 9 h 30 à 16 h le lundi, avant comme depuis 2022. Le lundi s'ouvre souvent en baisse, puis la séance
+  rattrape. L'étude parle du rendement du lundi d'une clôture à l'autre, qui contient l'écart d'ouverture ; ce n'est pas
+  ce qu'on peut trader de 9 h 30 à 16 h.
+- **L'inverse de W1 (achat du lundi après un week-end bitcoin négatif) est une idée trouvée après coup.** Elle ne peut
+  pas être adoptée sur ces chiffres. Elle va au suivi en direct, sous le nom W1i, comme une hypothèse nouvelle.
+- **La liquidité nette (N1)** bat l'achat de chaque séance depuis 2022, mais trop peu pour être sûr (t 1,26).
