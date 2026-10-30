@@ -1129,3 +1129,25 @@ changer aucune.
 - **Limite, dite d'avance.** Le choix des pièces se fait sur les années mêmes où on les mesure. Le portefeuille est
   donc flatteur par construction. Il ne sera dit fiable qu'après le suivi en direct, qui le jouera chaque soir.
   Code : `flux/portefeuille.py`.
+
+### Résultats de la partie 13
+
+Le détail est dans `resultats/partie13/portefeuille.md`.
+
+**Pièces retenues par la règle (8)** : R1, R2, L2, ORB 5 min, cassure de la veille, Supertrend, pivots et zone. S2b
+n'est pas retenue : sur l'ère 0DTE, elle fait −1 489 $ sur 699 séances (t −0,89).
+
+**Le portefeuille, 1 MNQ par règle (jusqu'à 8 MNQ en même temps) :**
+
+| Période | Total | t | Pire séance | Plus forte baisse | Challenges validés (1 / 2 MNQ par règle) |
+|---|---|---|---|---|---|
+| Ère 0DTE (mai 2022 - oct. 2026) | +135 155 $ | 2,67 | −5 799 $ | −16 166 $ | 54 % / 61 % |
+| 2023 - 2026 | +71 933 $ | 1,66 | −5 131 $ | −16 166 $ | 49 % / 56 % |
+| 2025 - 2026 | +35 981 $ | 1,11 | −5 131 $ | −16 166 $ | 48 % / 53 % |
+
+- **2022, année de fortes tendances, fait près de la moitié du gain** (+63 223 $).
+- **Depuis 2023, le portefeuille ne fait guère mieux qu'un challenge joué à pile ou face**, qui en valide environ
+  45 %. Ses pièces de tendance (corrélation moyenne de 0,42) sont souvent en position ensemble : 561 séances sur
+  1 092 en ont au moins 5.
+- **Conclusion : ce portefeuille n'est pas une stratégie fiable.** Ses pires séances (−5 000 $ à 1 MNQ par règle)
+  dépassent de loin la limite du jour de Bulenox (1 100 $). Il reste suivi, sans argent.
