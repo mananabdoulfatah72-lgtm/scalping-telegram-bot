@@ -52,12 +52,12 @@
   "lignes": 2955
  },
  "gdelt": {
-  "heure_utc": "2026-10-30 01:02",
+  "heure_utc": "2026-10-30 01:30",
   "series": 0,
   "fichiers_ecrits": 0
  },
  "finra": {
-  "heure_utc": "2026-10-30 01:07",
+  "heure_utc": "2026-10-30 01:30",
   "jours_demandes": 161,
   "jours_recus": 0,
   "fichiers_ecrits": 0,
