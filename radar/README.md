@@ -261,15 +261,14 @@ Fichiers : `resultats/protocole2/` (un `scan_<marché>.txt` par marché, `resume
 | Marché | Séances | Familles d'exploration | Barre des placebos | Survivantes |
 |---|---|---|---|---|
 | NQ | 4 065 | 654 | 3,52 | 2 |
-| ES | 4 041 | — | 3,00 | 0 |
-| RTY | 2 378 | — | 3,00 | 0 |
-| YM | 2 769 | — | 3,00 | 0 |
-| Or (GC) | 2 771 | — | 3,00 | 0 |
-| Pétrole (CL) | 2 770 | — | 3,00 | 0 |
-| Euro (6E) | 2 774 | — | 3,00 | 0 |
-| Bitcoin (BTC) | 2 269 | — | 3,00 | 0 |
+| ES | 4 041 | 185 | 3,00 | 0 |
+| RTY | 2 378 | 0 | 3,00 | 0 |
+| YM | 2 769 | 14 | 3,00 | 0 |
+| Or (GC) | 2 771 | 3 | 3,00 | 0 |
+| Pétrole (CL) | 2 770 | 4 | 3,00 | 0 |
+| Euro (6E) | 2 774 | 0 | 3,00 | 0 |
+| Bitcoin (BTC) | 2 269 | 0 | 3,00 | 0 |
 
-Les familles d'exploration des autres marchés sont dans leur `scan_<marché>.txt`.
 
 **Régressions logistiques.** Aucune sur 828 (barre 3,84). Les meilleures : ES, 12 h 15 → clôture, t 3,07 ; NQ,
 11 h 15 → clôture, t 3,02.
