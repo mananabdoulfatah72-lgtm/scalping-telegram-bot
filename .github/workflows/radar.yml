@@ -1,9 +1,9 @@
 name: Radar des marches (collecte 24 h sur 24, analyse, strategie)
 
 on:
-  schedule:   # n'agit que depuis la branche par defaut du depot (regle de GitHub)
-    - cron: "20 22 * * 1-5"
-    - cron: "20 3 * * 2-6"
+  schedule:   # n'agit que depuis la branche par defaut (main) ; le code et les donnees restent sur BRANCHE
+    - cron: "20 22 * * 1-5"    # apres la cloture : options, FINRA, gamma, rapport du soir
+    - cron: "20 8 * * 2-6"     # apres la mise a jour des minutes du NQ sur main (robot-zone) : suivi en direct
     - cron: "20 12 * * 6"
   push:
     branches: [claude/optimistic-ptolemy-xs24ra]
@@ -18,6 +18,9 @@ on:
 permissions:
   contents: write
 
+env:
+  BRANCHE: claude/optimistic-ptolemy-xs24ra
+
 concurrency: radar
 
 jobs:
@@ -27,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ env.BRANCHE }}
 
       - uses: actions/setup-python@v5
         with:

@@ -6,8 +6,9 @@ git add radar/
 [ -d flux/veille ] && git add flux/veille/
 git diff --cached --quiet && exit 0
 git commit -q -m "Radar : $1 du $(date -u +%Y-%m-%d)"
+CIBLE="${BRANCHE:-$GITHUB_REF_NAME}"          # jamais main : le planning de main range tout sur la branche de travail
 for essai in 1 2 3 4; do
-  git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+  git pull -q --rebase origin "$CIBLE" && git push -q origin "HEAD:$CIBLE" && exit 0
   sleep $((10 * essai))
 done
 exit 1
