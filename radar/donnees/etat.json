@@ -52,13 +52,18 @@
   "lignes": 2955
  },
  "gdelt": {
-  "heure_utc": "2026-10-30 00:42",
+  "heure_utc": "2026-10-30 01:02",
   "series": 0,
   "fichiers_ecrits": 0
  },
  "finra": {
-  "heure_utc": "2026-10-30 00:44",
-  "erreur": "KeyError: 'Symbol'"
+  "heure_utc": "2026-10-30 01:07",
+  "jours_demandes": 2090,
+  "jours_recus": 1929,
+  "fichiers_ecrits": 10,
+  "entetes_inconnus": {
+   "FNSQ": "20101122|A|68036|515549|Q"
+  }
  },
  "incertitude": {
   "heure_utc": "2026-10-30 00:48",
