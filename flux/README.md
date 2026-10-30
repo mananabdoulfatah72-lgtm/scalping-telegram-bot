@@ -988,3 +988,16 @@ variables **d'order flow seulement**, sur les 131 séances de la seconde de Data
   - S'il n'y a pas de survivante, ce sont les 5 meilleures familles de confirmation à t ≥ 2.
   - Une règle n'est dite « qui marche » qu'après 40 trades sur ces séances, avec t ≥ le seuil de Bonferroni pour le
     nombre de règles suivies.
+
+### Résultats de la partie 10
+
+Le détail est dans `resultats/partie10/scan.md`.
+- **Données.** 131 séances : 75 pour l'exploration, 56 pour la confirmation. 23 variables, 5 jours de la semaine.
+- **Étape 1.** Seulement 11 familles atteignent t ≥ 3.
+- **Placebos.** Leur meilleur t de confirmation va de 0,90 à 3,60, ce qui donne une barre de 3,57.
+- **Survivantes : 0.**
+- **Règle figée pour les séances de FluxNQ.** Une seule des familles de confirmation atteint t ≥ 2 : acheter le
+  matin, de 9 h 45 à 11 h 30 toutes les 15 minutes, pour 60 minutes, si l'écart d'ouverture est dans le
+  5e quintile (t 4,09 puis 2,92 ; 68 trades ; +58,8 $). C'est une règle de prix plus que d'order flow.
+- **Aucune variable d'order flow n'arrive en tête.** Delta, carnet, gros lots, footprint et intensité ne donnent pas
+  de famille qui tienne en confirmation sur ces 131 séances.
