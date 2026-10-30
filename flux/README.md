@@ -1295,3 +1295,15 @@ Le détail est dans `resultats/partie16/historique.md`.
   le hasard, une fois payés le glissement et la commission. C'est ce que dit la recherche : leur effet ne dure que 1 à
   2 ticks.
 - **Les 74 520 réglages du DOM** (G2 sur 3, 5 et 10 niveaux ; G5) restent à explorer sur les séances de FluxNQ.
+
+### Note du 30 octobre 2026 : le DOM de l'utilisateur n'affiche qu'un niveau
+
+L'utilisateur indique que son DOM (Quantower et Rithmic, compte Bulenox) n'affiche qu'un niveau de chaque côté. Les
+règles restent figées telles quelles. Voici ce que cela change pour elles, dit avant la séance :
+- **D3 et D4 (murs) ne peuvent pas se déclencher.** Un mur doit faire au moins 5 fois la quantité médiane des niveaux
+  visibles. Avec un seul niveau par côté, c'est impossible.
+- **D1 (déséquilibre) et D2 (retrait) deviennent des règles du premier niveau.** Ce premier niveau est déjà dans
+  l'historique de Databento : sa version de la grille (G2 niveau 1) n'a rien donné sur 131 séances (partie 16).
+- **Les 74 520 réglages « DOM » de la grille se ramènent eux aussi au premier niveau.**
+- **Pour juger de vraies règles de carnet**, il faudrait recevoir la profondeur du CME, c'est-à-dire plusieurs niveaux.
+  FluxNQ l'enregistre déjà si elle arrive.
