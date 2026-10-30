@@ -4,80 +4,97 @@
 
 | Marché | Dernier | Jour | z du jour | 5 jours | 20 jours |
 |---|---|---|---|---|---|
-| Livre | 1.34 | +0.56 % | +1.6 | -0.1 % | +1.5 % |
-| Euro | 1.12 | +0.48 % | +1.3 | -0.1 % | -0.2 % |
-| Yen | 0.01 | +0.57 % | +1.8 | -0.3 % | +0.6 % |
-| Apple | 348.91 | +1.48 % | +1.7 | +0.2 % | +5.6 % |
-| Amazon | 243.79 | -4.25 % | -2.1 | -2.6 % | -1.8 % |
-| Broadcom | 345.00 | -1.94 % | -0.7 | +6.7 % | +0.4 % |
-| Bitcoin | 76,393.00 | -2.91 % | -2.0 | -4.5 % | -7.9 % |
-| Petrole | 104.45 | +1.62 % | +0.7 | +5.0 % | +12.5 % |
-| Dollar (DXY) | 101.74 | -0.44 % | -1.5 | +0.1 % | -0.4 % |
-| S&P 500 (ES) | 7,669.75 | -1.46 % | -2.3 | -0.5 % | -0.7 % |
-| Ether | 2,185.00 | -3.26 % | -1.8 | -6.1 % | -12.7 % |
-| Or | 4,014.00 | -0.93 % | -0.9 | -1.1 % | -4.5 % |
-| Alphabet | 283.82 | -12.64 % | -9.6 | -12.5 % | -16.1 % |
-| Cuivre | 6.57 | -1.09 % | -0.9 | +3.2 % | +1.3 % |
-| HYG | 77.58 | -0.01 % | -0.1 | +0.6 % | +0.9 % |
-| Meta | 624.52 | +1.96 % | +0.8 | -3.7 % | -14.0 % |
-| Microsoft | 530.14 | -0.16 % | -0.1 | +1.7 % | +3.4 % |
-| Gaz | 2.90 | +2.91 % | +0.9 | +3.7 % | -2.3 % |
-| Nasdaq 100 (NQ) | 28,849.00 | -3.77 % | -3.1 | -1.0 % | -6.2 % |
-| Nvidia | 213.66 | -0.80 % | -0.4 | +0.7 % | -7.5 % |
-| Russell (RTY) | 2,851.20 | +0.41 % | +0.4 | +2.0 % | +0.9 % |
-| Argent | 51.53 | -3.61 % | -1.7 | -5.9 % | -15.2 % |
-| SMH | 561.67 | -1.06 % | -0.4 | +7.3 % | -9.1 % |
-| TLT | 81.49 | +0.62 % | +0.9 | -0.3 % | +4.9 % |
-| TQQQ | 69.26 | -4.28 % | -1.2 | +4.3 % | -12.0 % |
-| Tesla | 403.30 | -0.23 % | -0.1 | +7.7 % | +13.9 % |
-| Dow (YM) | 52,385.00 | -0.59 % | -1.0 | -1.3 % | +2.2 % |
-| T-Bond | 108.00 | +1.17 % | +1.8 | +0.2 % | +4.8 % |
-| T-Note 10 ans | 106.69 | +0.84 % | +2.3 | +0.3 % | +1.9 % |
-| FTSE | 10,722.10 | +0.26 % | +0.4 | -0.0 % | +2.8 % |
-| DAX | 26,039.68 | +1.31 % | +1.4 | +2.6 % | +4.4 % |
-| Hang Seng | 23,146.87 | +0.82 % | +0.7 | +0.2 % | -6.0 % |
-| Nikkei | 62,770.80 | -2.92 % | -1.6 | +0.1 % | -9.0 % |
-| Semi-conducteurs (SOX) | 11,518.20 | -1.42 % | -0.5 | +7.3 % | -10.2 % |
-| Euro Stoxx 50 | 6,207.07 | +0.64 % | +0.7 | +2.0 % | +0.5 % |
+| Livre | 1.34 | +0.13 % | +0.4 | +0.0 % | +1.0 % |
+| Euro | 1.12 | -0.10 % | -0.3 | -0.4 % | -0.9 % |
+| Yen | 0.01 | +0.66 % | +2.3 | -0.1 % | +0.6 % |
+| Apple | 345.41 | -1.00 % | -1.2 | -0.7 % | +3.5 % |
+| Amazon | 235.74 | -3.30 % | -1.5 | -4.9 % | -6.3 % |
+| Broadcom | 327.92 | -4.95 % | -1.9 | +1.9 % | -7.7 % |
+| Bitcoin | 76,680.47 | -1.41 % | -0.9 | -4.2 % | -7.5 % |
+| Petrole | 104.50 | +2.45 % | +1.0 | +1.2 % | +14.7 % |
+| Dollar (DXY) | 102.06 | +0.02 % | +0.1 | +0.2 % | +0.1 % |
+| S&P 500 (ES) | 7,650.50 | -1.34 % | -2.1 | -0.1 % | -1.6 % |
+| Ether | 2,219.11 | -1.35 % | -0.7 | -4.6 % | -11.4 % |
+| Or | 3,914.90 | -2.89 % | -3.0 | -2.3 % | -5.9 % |
+| Alphabet | 279.82 | -1.41 % | -0.4 | -12.6 % | -18.5 % |
+| Cuivre | 6.51 | -1.06 % | -0.9 | +0.5 % | +0.3 % |
+| HYG | 77.39 | -0.24 % | -1.0 | +0.4 % | +0.6 % |
+| Meta | 618.30 | -1.00 % | -0.4 | -3.8 % | -15.1 % |
+| Microsoft | 521.77 | -1.58 % | -1.3 | -0.5 % | +0.8 % |
+| Gaz | 2.88 | -2.51 % | -0.8 | +9.0 % | -5.2 % |
+| Nasdaq 100 (NQ) | 28,742.00 | -2.77 % | -2.2 | -1.3 % | -7.5 % |
+| Nvidia | 206.68 | -3.27 % | -1.7 | -2.0 % | -11.7 % |
+| Russell (RTY) | 2,830.60 | -1.28 % | -1.3 | +1.7 % | -0.7 % |
+| Argent | 49.31 | -5.51 % | -2.6 | -8.2 % | -17.8 % |
+| SMH | 529.31 | -5.76 % | -2.5 | +0.4 % | -16.1 % |
+| TLT | 81.80 | +0.38 % | +0.6 | +0.6 % | +5.6 % |
+| TQQQ | 63.09 | -8.91 % | -2.4 | -4.8 % | -22.1 % |
+| Tesla | 397.00 | -1.56 % | -0.6 | +6.7 % | +7.1 % |
+| Dow (YM) | 52,182.00 | -0.63 % | -1.1 | -0.4 % | +1.4 % |
+| T-Bond | 107.72 | +0.41 % | +0.6 | +0.4 % | +4.8 % |
+| T-Note 10 ans | 106.55 | +0.34 % | +0.9 | +0.4 % | +2.1 % |
+| FTSE | 10,743.93 | +0.20 % | +0.3 | +0.5 % | +2.7 % |
+| DAX | 25,897.90 | -0.54 % | -0.6 | +2.8 % | +2.6 % |
+| Hang Seng | 23,294.42 | +1.46 % | +1.2 | +0.9 % | -5.4 % |
+| Nikkei | 63,290.11 | -2.12 % | -1.1 | +1.0 % | -8.2 % |
+| Semi-conducteurs (SOX) | 10,822.56 | -6.04 % | -2.3 | +0.4 % | -17.6 % |
+| Euro Stoxx 50 | 6,156.27 | -0.82 % | -0.9 | +1.5 % | -1.3 % |
 
-**Mouvements inhabituels** (|z| ≥ 2,5 sur les 20 derniers jours), 7 sur 169 séries :
+**Mouvements inhabituels** (|z| ≥ 2,5 sur les 20 derniers jours), 23 sur 169 séries :
 
-- Alphabet : -12.64 % (z -9.6)
-- GOOG : -12.29 % (z -9.6)
-- BTC=F : -6.18 % (z -4.0)
-- Nasdaq 100 (NQ) : -3.77 % (z -3.1)
-- PL=F : -5.16 % (z -3.1)
-- ZT=F : +0.27 % (z +2.7)
-- ZF=F : +0.61 % (z +2.7)
+- INTC : -28.04 % (z -9.6)
+- QCOM : -9.57 % (z -5.1)
+- COIN : -13.53 % (z -4.3)
+- ^GVZ : +15.93 % (z +4.3)
+- IBIT : -5.23 % (z -3.4)
+- BITO : -5.25 % (z -3.4)
+- LE=F : -2.19 % (z -3.2)
+- BTC=F : -4.74 % (z -3.1)
+- Or : -2.89 % (z -3.0)
+- SOXL : -21.63 % (z -2.8)
+- SVXY : -4.11 % (z -2.8)
+- EWJ : -2.12 % (z -2.8)
+- VXX : +8.01 % (z +2.7)
+- SOXX : -7.22 % (z -2.7)
+- AMD : -9.43 % (z -2.7)
+- XLK : -4.18 % (z -2.7)
+- GLD : -2.86 % (z -2.6)
+- Argent : -5.51 % (z -2.6)
+- GS : -3.31 % (z -2.6)
+- SLV : -6.02 % (z -2.6)
 
 ## Volatilité
 
 | Indice | Niveau | Rang sur 1 an |
 |---|---|---|
-| VIX | 17.20 | 84 % |
-| VXN (Nasdaq) | 25.18 | 89 % |
-| VIX 9 jours | 15.87 | 82 % |
-| VIX 3 mois | 19.37 | 87 % |
-| VVIX | 98.01 | 89 % |
+| VIX | 18.77 | 95 % |
+| VXN (Nasdaq) | 26.56 | 95 % |
+| VIX 9 jours | 17.76 | 92 % |
+| VIX 3 mois | 20.38 | 97 % |
+| VVIX | 106.06 | 94 % |
 | SKEW | 151.03 | 79 % |
-| MOVE (taux) | 93.54 | 59 % |
+| MOVE (taux) | 97.21 | 66 % |
 
-VIX / VIX 3 mois : 0.89 (courbe normale)
+VIX / VIX 3 mois : 0.92 (courbe normale)
 
 ## Options du Nasdaq 100 (CBOE, photo du soir)
 
-- Gamma des teneurs de marché : -0.96 milliards $ par 1 % (négatif : ils les amplifient)
-- Niveau de bascule 1 ; mur de calls 29,675 ; mur de puts 29,400 ; NDX 29,403
-- Puts / calls : 1.29 en positions ouvertes, 1.03 en volume
+- Gamma des teneurs de marché : -3.44 milliards $ par 1 % (négatif : ils les amplifient)
+- Niveau de bascule 1 ; mur de calls 29,675 ; mur de puts 29,000 ; NDX 28,637
+- Puts / calls : 1.28 en positions ouvertes, 1.33 en volume
+
+## Régime gamma (règle L2 du bot FluxNQ, règle 9)
+
+GEX de SqueezeMetrics du 2026-10-29 : rang 48 % sur 252 séances. L2 inactive à la prochaine séance (il faut 80 %).
 
 ## Attention du public (Wikipédia, veille)
 
-- Federal Reserve : z +3.7
-- Bitcoin : z +2.4
-- Interest rate : z +2.1
-- Unemployment : z +1.9
+- Federal Reserve : z +2.6
+- Bitcoin : z +2.3
 - ChatGPT : z +1.9
-- Dot-com bubble : z +1.8
+- Dot-com bubble : z +1.7
+- Bank run : z +1.1
+- Nvidia : z +0.8
 
 ## Sentiment
 
@@ -91,7 +108,7 @@ VIX / VIX 3 mois : 0.89 (courbe normale)
 - Prises en pension inversées (milliards) : 0.35 (2026-10-29)
 - Compte du Trésor (millions) : 999,727.00 (2026-10-28)
 - Stress financier (St. Louis) : -0.58 (2026-10-23)
-- Incertitude des politiques économiques : 250.73 (2026-10-27)
+- Incertitude des politiques économiques : 251.10 (2026-10-29)
 
 ## Ventes à découvert (FINRA, veille)
 
@@ -104,8 +121,6 @@ VIX / VIX 3 mois : 0.89 (courbe normale)
 
 ## Résultats des grandes valeurs (7 prochains jours)
 
-- AMZN : 2026-10-29 16:00
-- INTC : 2026-10-29 16:00
 - AAPL : 2026-11-02 15:00
 - PLTR : 2026-11-02 15:00
 - AMD : 2026-11-03 15:00
@@ -120,12 +135,12 @@ VIX / VIX 3 mois : 0.89 (courbe normale)
 - yahoo_heure : symboles 37, fichiers_ecrits 2
 - yahoo_minute : symboles 28, jours_ecrits 0
 - dix_gex : lignes 3898, derniere 2026-10-29, fichiers_ecrits 0
-- wikipedia : articles 28, fichiers_ecrits 0
-- fred : series 39, manquantes [], fichiers_ecrits 0
+- wikipedia : articles 28, fichiers_ecrits 1
+- fred : series 39, manquantes [], fichiers_ecrits 2
 - cnn_peur_avidite : erreur pas de reponse
 - aaii : lignes 2050, fichiers_ecrits 0
 - options_cboe : sous_jacents 3, fichiers_ecrits 1
-- resultats : symboles 35, lignes 2955
+- resultats : symboles 35, lignes 2961
 - gdelt : series 0, fichiers_ecrits 0
 - finra : jours_demandes 161, jours_recus 0, fichiers_ecrits 0, entetes_inconnus {}
 - incertitude : lignes 15277, derniere 2026-10-29, fichiers_ecrits 0
