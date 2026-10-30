@@ -52,13 +52,13 @@
   "lignes": 2954
  },
  "gdelt": {
-  "heure_utc": "2026-10-29 22:27",
+  "heure_utc": "2026-10-30 00:42",
   "series": 0,
   "fichiers_ecrits": 0
  },
  "finra": {
-  "heure_utc": "2026-10-29 22:29",
-  "erreur": "KeyError: 'ShortExemptVolume'"
+  "heure_utc": "2026-10-30 00:43",
+  "erreur": "KeyError: 'Symbol'"
  },
  "incertitude": {
   "heure_utc": "2026-10-30 00:26",
