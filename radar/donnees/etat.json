@@ -58,12 +58,10 @@
  },
  "finra": {
   "heure_utc": "2026-10-30 01:07",
-  "jours_demandes": 2090,
-  "jours_recus": 1929,
-  "fichiers_ecrits": 10,
-  "entetes_inconnus": {
-   "FNSQ": "20101122|A|68036|515549|Q"
-  }
+  "jours_demandes": 161,
+  "jours_recus": 0,
+  "fichiers_ecrits": 0,
+  "entetes_inconnus": {}
  },
  "incertitude": {
   "heure_utc": "2026-10-30 00:48",
