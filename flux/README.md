@@ -950,3 +950,41 @@ Le détail est dans `resultats/partie9/historique.md`.
   30 octobre 2026.
 - **Un détail de calcul a été corrigé avant d'avoir la séance du 30 octobre.** Les stops et les objectifs exprimés en
   multiples de A sont arrondis au tick, du côté prudent. Le tableau ci-dessus est calculé après cette correction.
+
+## Partie 10 : scan order flow façon radar (fixé le 30 octobre 2026 à 9 h 55 New York, avant tout calcul et avant la séance du jour)
+
+Le code est `flux/of_scan.py`. Il applique la méthode du radar (règles à une ou deux conditions, placebos) à des
+variables **d'order flow seulement**, sur les 131 séances de la seconde de Databento (avril - octobre 2026).
+
+### Données et variables
+- **Décisions.** Toutes les 15 minutes, de 9 h 45 à 15 h 30, regroupées en 3 fenêtres :
+  - matin, de 9 h 45 à 11 h 30 ;
+  - mi-journée, de 11 h 45 à 13 h 30 ;
+  - après-midi, de 13 h 45 à 15 h 30.
+- **Trades.** Entrée à l'ouverture de la minute de décision ; sortie 15, 30 ou 60 minutes plus tard (au plus tard à
+  15 h 59). Frais de 3 $ par aller-retour et par MNQ.
+- **Échelle.** a = range moyen des minutes de la séance jusque-là, avec un plancher de 1 point.
+- **Variables**, toutes connues à la décision :
+
+  | Groupe | Variables |
+  |---|---|
+  | Prix | mouvement depuis l'ouverture, sur 5, 15, 30 et 60 minutes (÷ a) ; place dans le range du jour ; range du jour ÷ a ; écart au VWAP et au POC de la séance (÷ a) ; écart d'ouverture |
+  | Delta | (achats − ventes) ÷ volume sur 5, 15, 30 et 60 minutes et depuis l'ouverture ; mouvement de 15 minutes par unité de delta (absorption) |
+  | Intensité | transactions et volume des 5 dernières minutes ÷ leur moyenne de la séance |
+  | Carnet (premier niveau) | déséquilibre moyen (quantité à l'achat − à la vente) ÷ total, sur 5 et sur 15 minutes |
+  | Gros lots (20 contrats et plus) | volume signé ÷ volume, sur 15 minutes ; nombre sur 30 minutes ÷ sa moyenne de la séance |
+  | Footprint | minutes à déséquilibres empilés (au moins 3 prix de suite où les achats font au moins 3 fois les ventes), moins celles côté vente, sur 15 minutes |
+  | Calendrier | jour de la semaine |
+
+### Règles et jugement
+- **Conditions et règles.** Mêmes 7 tranches par variable qu'au radar ; une ou deux conditions × fenêtre × durée ×
+  sens.
+- **Exploration** du 1er avril au 15 juillet 2026. Une famille (variables, fenêtre) garde sa meilleure règle si elle a
+  au moins 60 trades et t ≥ 3. Les 2 000 meilleures familles passent en confirmation.
+- **Confirmation** du 16 juillet au 1er octobre 2026 : au moins 30 trades, gain moyen positif, et t ≥ le 95e centile
+  du meilleur t de 20 placebos (variables décalées de séances entières), avec un plancher de 3.
+- **Coffre : l'avenir.**
+  - Les survivantes sont figées et jouées sur les séances de FluxNQ, à commencer par celle du 30 octobre 2026.
+  - S'il n'y a pas de survivante, ce sont les 5 meilleures familles de confirmation à t ≥ 2.
+  - Une règle n'est dite « qui marche » qu'après 40 trades sur ces séances, avec t ≥ le seuil de Bonferroni pour le
+    nombre de règles suivies.
