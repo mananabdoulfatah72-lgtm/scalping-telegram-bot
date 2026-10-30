@@ -1243,3 +1243,42 @@ d'historique gratuit ; elle sera jugée sur les séances qui viennent.
 ### Correction de la collecte
 Le niveau de bascule du gamma prenait par erreur le plus petit prix d'exercice. C'est maintenant le changement de signe
 du gamma cumulé, à 10 % du prix au plus. La règle MUR ne l'utilise pas.
+
+## Partie 16 : grille order flow d'environ 200 000 réglages (fixée le 30 octobre 2026 à 11 h 20 New York, avant la séance de FluxNQ et avant tout calcul)
+
+Le code est `flux/of_grille.py`.
+
+### Les signaux (à chaque seconde, avec ce qui est connu à cette seconde)
+A est le range moyen des minutes des 30 dernières minutes (plancher 2 points).
+
+| Famille | Réglages | Sens |
+|---|---|---|
+| G1 delta | fenêtre 5, 10, 30, 60 ou 120 s ; \|achats − ventes\| ÷ volume ≥ 0,5 / 0,6 / 0,7 / 0,8 ; volume ≥ 1, 2 ou 4 fois la moyenne par seconde de la séance | suivre ou contrer le delta |
+| G2 carnet | niveaux 1 (et 3, 5, 10 avec le DOM) ; (achat − vente) ÷ total ≥ 0,2 / 0,3 / 0,4 / 0,5 / 0,6 (ou ≤ l'opposé), tenu 5, 15, 30 ou 60 s | suivre ou contrer le côté chargé |
+| G3 divergence | mouvement sur 30, 60 ou 300 s ≥ 0,5 A ou 1 A, avec un delta de la même fenêtre de signe opposé | suivre le delta ou suivre le prix |
+| G4 balayage | dans une seconde : range ≥ 1, 2 ou 3 points ; ≥ 70, 80 ou 90 % du volume d'un côté ; volume ≥ 3, 5 ou 10 fois la moyenne | suivre ou contrer |
+| G5 retrait (DOM seulement) | la somme d'un côté sur 5 niveaux tombe de 30, 40 ou 50 % en 3, 5 ou 10 s, par rapport à sa moyenne des 60 s d'avant | côté qui tient, ou l'inverse |
+| G6 gros lots | volume signé des transactions de 20 contrats et plus sur 30, 60 ou 300 s ≥ 50, 100 ou 200 contrats | suivre ou contrer |
+
+### Les sorties et les heures
+- **Sorties** : stop de 0,5 / 1 / 1,5 / 2 / 3 / 4 A × objectif de 0,5 / 1 / 1,5 / 2 / 3 / 4 A × durée maximale de 2, 5,
+  15, 30 ou 60 minutes.
+- **Fenêtres d'entrée** : 10 h - 15 h 30, 10 h - 12 h, ou 13 h - 15 h 30.
+- **Exécution** : comme la partie 9, avec une position à la fois, au plus 4 trades par jour, 1 tick de glissement et
+  2 $ de commission.
+
+### Jugement des réglages du tape et du premier niveau (G1, G2 niveau 1, G3, G4, G6), sur les 131 séances
+- **Exploration** du 1er avril au 15 juillet 2026, **confirmation** du 16 juillet au 1er octobre 2026.
+- **Une famille** est un signal (famille + réglages) et une fenêtre d'entrée. Elle garde sa meilleure sortie à
+  l'exploration, si elle a au moins 60 trades et t ≥ 3.
+- **Confirmation.** Il faut au moins 30 trades, un gain moyen positif, et t ≥ le 95e centile du meilleur t de
+  confirmation de 10 placebos, avec un plancher de 3. Un placebo est la même grille avec les signaux décalés de
+  séances entières.
+- **Coffre : l'avenir.** Les survivantes, ou à défaut les 5 meilleures de confirmation à t ≥ 2, sont figées avant
+  la séance du 30 octobre 2026 et jouées sur les séances de FluxNQ.
+
+### Les réglages qui demandent plusieurs niveaux du DOM (G2 sur 3, 5 ou 10 niveaux ; G5)
+- **Ils sont explorés sur les séances de FluxNQ seulement.** Les 20 premières séances servent à choisir, les
+  20 suivantes à confirmer.
+- **La séance du 30 octobre ne donne qu'un classement.** Ce n'est pas un résultat. Il est publié avec le meilleur
+  résultat de 10 placebos sur cette même séance, pour montrer ce que le hasard seul produit.
