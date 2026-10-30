@@ -1,0 +1,102 @@
+[
+ {
+  "decalage": 2513,
+  "familles": 11,
+  "t_C_max": 1.8784836692063425
+ },
+ {
+  "decalage": 2294,
+  "familles": 13,
+  "t_C_max": 0.7688029023409948
+ },
+ {
+  "decalage": 402,
+  "familles": 16,
+  "t_C_max": 0.7456466679141418
+ },
+ {
+  "decalage": 1629,
+  "familles": 8,
+  "t_C_max": 0.4253614192948231
+ },
+ {
+  "decalage": 2513,
+  "familles": 11,
+  "t_C_max": 1.8784836692063425
+ },
+ {
+  "decalage": 2309,
+  "familles": 35,
+  "t_C_max": 1.1518450746166138
+ },
+ {
+  "decalage": 654,
+  "familles": 19,
+  "t_C_max": 0.9175634395926572
+ },
+ {
+  "decalage": 1234,
+  "familles": 8,
+  "t_C_max": 0.8272886475595678
+ },
+ {
+  "decalage": 1625,
+  "familles": 15,
+  "t_C_max": 0.7021339308868007
+ },
+ {
+  "decalage": 1324,
+  "familles": 8,
+  "t_C_max": 1.751856824218625
+ },
+ {
+  "decalage": 735,
+  "familles": 5,
+  "t_C_max": 1.2213942327444547
+ },
+ {
+  "decalage": 1167,
+  "familles": 30,
+  "t_C_max": 2.497077983461233
+ },
+ {
+  "decalage": 1712,
+  "familles": 11,
+  "t_C_max": 0.774549115227239
+ },
+ {
+  "decalage": 1976,
+  "familles": 30,
+  "t_C_max": 2.408782971106832
+ },
+ {
+  "decalage": 1040,
+  "familles": 8,
+  "t_C_max": 0.43034688487080747
+ },
+ {
+  "decalage": 1426,
+  "familles": 11,
+  "t_C_max": 1.0679487299211052
+ },
+ {
+  "decalage": 1871,
+  "familles": 11,
+  "t_C_max": 1.3521819278621519
+ },
+ {
+  "decalage": 2341,
+  "familles": 25,
+  "t_C_max": 0.6904960430464675
+ },
+ {
+  "decalage": 1154,
+  "familles": 27,
+  "t_C_max": 2.243784395312034
+ },
+ {
+  "decalage": 1885,
+  "familles": 20,
+  "t_C_max": 1.0727236712836659
+ }
+]

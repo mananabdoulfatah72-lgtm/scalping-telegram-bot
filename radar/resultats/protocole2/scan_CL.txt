@@ -1,0 +1,8 @@
+Protocole 2, CL : 2770 seances (2016-01-04 - 2026-09-28), 109 variables continues, 20 du calendrier, 20 heures d'entree, 89 couples entree-duree ; frais 4.00 $
+Etape 1 : 4 familles (t_E >= 3) ; placebos : 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.32, 0.46, 0.71, 0.72, 0.85, 1.17, 1.21, 1.28, 1.30, 1.54
+Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 99 s
+
+  t_E  3.12  t_C  0.83  n_C  122  moy_C   +13.81 $  CL : vente a 12 h 15, 120 min si vix_rang Q5 et gex Q1
+  t_E  3.72  t_C -0.33  n_C  131  moy_C    -3.77 $  CL : achat a 11 h 00, jusqu a la cloture si d_bv Q3
+  t_E  3.13  t_C -0.42  n_C  104  moy_C    -2.97 $  CL : vente a 10 h 15, 30 min si y_tech_rel Q4
+  t_E  3.34  t_C -0.84  n_C  104  moy_C    -4.41 $  CL : vente a 10 h 30, 15 min si y_tech_rel Q4

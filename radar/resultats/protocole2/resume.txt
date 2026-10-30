@@ -1,0 +1,19 @@
+Radar, protocole 2 (radar/README.md, fixe le 30 octobre 2026)
+
+Survivantes de la confirmation (tous marches) : 2
+Regressions logistiques : 828 modeles, barre t >= 3.84 hors echantillon avant 2023, retenus 0
+
+  t_E  3.19  t_C  3.73  n_C  211  moy_C   +65.84 $  NQ : achat a 13 h 30, 120 min si place Q5
+  t_E  3.13  t_C  3.61  n_C   90  moy_C   +58.01 $  NQ : achat a 13 h 00, 120 min si d_hv Q5 et eff Q5
+
+Meilleures regressions hors echantillon :
+  ES   e 165 H   0  n 1052  moy   +23.22 $  t  3.07
+  NQ   e 105 H   0  n 1024  moy   +51.32 $  t  3.02
+  RTY  e  60 H 120  n  374  moy   +15.57 $  t  2.66
+  NQ   e 135 H   0  n 1004  moy   +40.34 $  t  2.65
+  ES   e 315 H   0  n  966  moy   +15.38 $  t  2.64
+  NQ   e 165 H   0  n 1013  moy   +30.66 $  t  2.22
+  NQ   e 210 H  15  n 1056  moy    +6.79 $  t  2.17
+  CL   e  15 H  60  n  398  moy   +10.29 $  t  2.09
+  NQ   e 120 H   0  n  974  moy   +29.51 $  t  2.06
+  NQ   e 285 H   0  n 1021  moy   +23.26 $  t  2.03

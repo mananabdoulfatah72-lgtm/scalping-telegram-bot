@@ -1,0 +1,14 @@
+Protocole 2, YM : 2769 seances (2016-01-04 - 2026-09-28), 109 variables continues, 20 du calendrier, 24 heures d'entree, 109 couples entree-duree ; frais 3.00 $
+Etape 1 : 14 familles (t_E >= 3) ; placebos : 0.43, 0.43, 0.69, 0.70, 0.75, 0.77, 0.77, 0.83, 0.92, 1.07, 1.07, 1.15, 1.22, 1.35, 1.75, 1.88, 1.88, 2.24, 2.41, 2.50
+Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 134 s
+
+  t_E  3.28  t_C  1.94  n_C  144  moy_C   +19.16 $  YM : achat a 13 h 30, jusqu a la cloture si vix_ma20 Q2
+  t_E  3.17  t_C  1.79  n_C  113  moy_C   +25.53 $  YM : achat a 11 h 00, 120 min si fred_chomage_ins Q5
+  t_E  3.39  t_C  1.75  n_C  144  moy_C   +20.59 $  YM : achat a 11 h 30, jusqu a la cloture si vix_ma20 Q2
+  t_E  3.01  t_C  1.68  n_C  144  moy_C   +16.97 $  YM : achat a 13 h 00, jusqu a la cloture si vix_ma20 Q2
+  t_E  3.11  t_C  1.62  n_C  144  moy_C   +14.61 $  YM : achat a 14 h 00, jusqu a la cloture si GC_r30 10 % bas et vix_ma20 Q2
+  t_E  3.11  t_C  1.62  n_C  144  moy_C   +14.61 $  YM : achat a 14 h 00, jusqu a la cloture si vix_ma20 Q2
+  t_E  3.14  t_C  1.62  n_C  144  moy_C   +15.75 $  YM : achat a 13 h 15, jusqu a la cloture si vix_ma20 Q2
+  t_E  3.18  t_C  1.50  n_C  144  moy_C   +17.10 $  YM : achat a 11 h 45, jusqu a la cloture si vix_ma20 Q2
+  t_E  3.01  t_C  1.06  n_C  144  moy_C    +9.08 $  YM : achat a 14 h 15, jusqu a la cloture si vix_ma20 Q2
+  t_E  3.01  t_C  1.06  n_C  144  moy_C    +9.08 $  YM : achat a 14 h 15, jusqu a la cloture si GC_r30 10 % bas et vix_ma20 Q2

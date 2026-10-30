@@ -148,9 +148,9 @@ def variables_nq(d):
 
 def serie_jour(d):
     """Cours de cloture ajuste des changements de contrat (log), RTH."""
-    C, O = d["c"][:, 389], d["o"][:, 0]
+    C, O = d["c"][:, -1], d["o"][:, 0]
     pm = d["prec_meme"]
-    r = np.where(pm >= 0, np.log(C / np.where(pm >= 0, d["c"][np.maximum(pm, 0), 389], np.nan)), np.log(C / O))
+    r = np.where(pm >= 0, np.log(C / np.where(pm >= 0, d["c"][np.maximum(pm, 0), -1], np.nan)), np.log(C / O))
     r = np.where(d["complete"], r, 0.0)
     return np.cumsum(np.nan_to_num(r)), r
 
@@ -165,8 +165,8 @@ def variables_jour(d, aux):
     f = {}
     p = np.maximum(pt, 0)
     v = pt >= 0
-    f["j_ret"] = np.where(v, (C[p, 389] - O[p, 0]) / a, np.nan)
-    f["j_place"] = np.where(v, (C[p, 389] - L[p].min(1)) / np.maximum(Hh[p].max(1) - L[p].min(1), 1e-9), np.nan)
+    f["j_ret"] = np.where(v, (C[p, -1] - O[p, 0]) / a, np.nan)
+    f["j_place"] = np.where(v, (C[p, -1] - L[p].min(1)) / np.maximum(Hh[p].max(1) - L[p].min(1), 1e-9), np.nan)
     f["j_amp"] = np.where(v, aux["rng"][p] / a, np.nan)
     lp, r = serie_jour(d)
     sig = pd.Series(np.where(d["complete"], r, np.nan)).rolling(20, min_periods=10).std().values
@@ -294,7 +294,7 @@ def variables_externes(d):
     f["g_largeur"] = veille((ret > 0).mean(axis=1).where(ret.notna().sum(axis=1) >= 8), jours)
     f["g_dispersion"] = veille(ret.std(axis=1), jours)
     gap = (piv_o / piv_c.shift(1) - 1).reindex(jours)
-    ouvnq = (d["o"][:, 0] - np.where(d["prec_meme"] >= 0, d["c"][np.maximum(d["prec_meme"], 0), 389], np.nan)) / \
+    ouvnq = (d["o"][:, 0] - np.where(d["prec_meme"] >= 0, d["c"][np.maximum(d["prec_meme"], 0), -1], np.nan)) / \
         d["o"][:, 0]
     f["g_ecart_rel"] = gap.mean(axis=1).values - ouvnq
     f["g_ecart_disp"] = gap.std(axis=1).values

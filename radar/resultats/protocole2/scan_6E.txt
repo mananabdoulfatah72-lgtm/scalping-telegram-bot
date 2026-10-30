@@ -1,0 +1,4 @@
+Protocole 2, 6E : 2774 seances (2016-01-04 - 2026-09-28), 109 variables continues, 20 du calendrier, 24 heures d'entree, 112 couples entree-duree ; frais 4.50 $
+Etape 1 : 0 familles (t_E >= 3) ; placebos : 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00
+Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 122 s
+

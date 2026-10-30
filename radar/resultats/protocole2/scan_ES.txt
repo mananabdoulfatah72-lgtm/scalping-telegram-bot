@@ -1,0 +1,14 @@
+Protocole 2, ES : 4041 seances (2011-01-03 - 2026-09-25), 109 variables continues, 20 du calendrier, 24 heures d'entree, 109 couples entree-duree ; frais 4.50 $
+Etape 1 : 185 familles (t_E >= 3) ; placebos : 1.23, 1.59, 1.80, 1.88, 1.92, 2.01, 2.04, 2.07, 2.09, 2.12, 2.13, 2.24, 2.29, 2.43, 2.48, 2.49, 2.54, 2.54, 2.62, 2.68
+Barre de confirmation 3.00 ; survivantes (sans doublons) : 0 ; calcul 193 s
+
+  t_E  3.46  t_C  2.34  n_C   79  moy_C   +35.16 $  ES : achat a 11 h 15, 60 min si r60 Q5 et d_cv Q5
+  t_E  3.03  t_C  2.02  n_C   61  moy_C   +40.25 $  ES : achat a 13 h 45, 60 min si age_h Q2 et NQ_ouv Q5
+  t_E  3.10  t_C  1.90  n_C   47  moy_C   +24.77 $  ES : achat a 12 h 00, jusqu a la cloture si j_ma50 Q4 et y_vxn Q1
+  t_E  3.05  t_C  1.81  n_C   60  moy_C   +41.91 $  ES : achat a 10 h 15, jusqu a la cloture si aaii_ecart 10 % haut
+  t_E  3.14  t_C  1.66  n_C   84  moy_C   +14.90 $  ES : achat a 11 h 15, 60 min si d_hv Q5 et or60 Q5
+  t_E  3.00  t_C  1.60  n_C   60  moy_C   +37.81 $  ES : achat a 10 h 45, jusqu a la cloture si aaii_ecart 10 % haut
+  t_E  3.72  t_C  1.56  n_C   47  moy_C   +21.65 $  ES : achat a 14 h 00, jusqu a la cloture si j_ma50 Q4 et y_vxn Q1
+  t_E  3.16  t_C  1.50  n_C   47  moy_C   +21.89 $  ES : achat a 11 h 45, jusqu a la cloture si j_ma50 Q4 et y_vxn Q1
+  t_E  3.06  t_C  1.43  n_C   60  moy_C   +35.69 $  ES : achat a 11 h 00, jusqu a la cloture si aaii_ecart 10 % haut
+  t_E  3.22  t_C  1.42  n_C   96  moy_C   +45.28 $  ES : achat a 9 h 45, jusqu a la cloture si d_hv 10 % haut et d_bv Q5
