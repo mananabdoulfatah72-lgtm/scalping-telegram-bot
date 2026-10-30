@@ -1014,3 +1014,36 @@ Le détail est dans `flux/gap_15ans.py` et `resultats/partie10/gap_15ans.md`.
   perdent plus de 1 000 $ (1 MNQ par entrée, jusqu'à 8 entrées le même matin).
 - **Conclusion : 2026 est une bonne année pour cette règle, pas un avantage.** Elle n'est pas adoptée et reste
   seulement suivie, sans argent.
+
+## Partie 11 : règles tirées de la recherche récente sur l'ère 0DTE (fixées le 30 octobre 2026 avant tout calcul)
+
+### Ce que dit la recherche
+- Depuis que les options sur le S&P 500 expirent chaque jour (mai 2022), l'élan intrajournalier s'est éteint en
+  moyenne. Les retournements du flux se sont renforcés.
+- Les teneurs de marché « longs en gamma » renforcent les retournements. « Courts en gamma », ils renforcent l'élan
+  (Dim, Eraker et Vilkov ; Baltussen et al. 2021 ; Adams et al.).
+- Le rendement de la nuit annoncerait un retournement à l'ouverture (Iwanaga et Sakemoto).
+
+Ces études ont été lues après les résultats des parties 8 et 10 : on savait déjà que la règle R1 (13 h 30) perdait en
+2025-2026. Les règles conditionnées au gamma, elles, n'ont jamais été calculées.
+
+### Règles
+**Gamma.** On prend le GEX de SqueezeMetrics de la veille. Son rang est calculé sur les 252 séances d'avant : bas =
+au plus 20 %, haut = au moins 80 %. Le code est `flux/gamma_0dte.py`.
+
+| Règle | Signal | Trade |
+|---|---|---|
+| L1 fin de séance, gamma bas | gamma bas | à 15 h 30, dans le sens du mouvement depuis l'ouverture ; sortie à 16 h |
+| L2 fin de séance, gamma haut | gamma haut | à 15 h 30, contre le mouvement depuis l'ouverture ; sortie à 16 h |
+| L3 après-midi, gamma bas | gamma au plus 40 % et, à 13 h 30, NQ dans les 14 % du haut de son range | achat à 13 h 30, sortie à 15 h 30 (symétrique : vente dans les 14 % du bas) |
+| L4 après-midi, gamma haut | gamma au moins 60 % et même place qu'en L3 | contre : vente en haut du range, achat en bas ; de 13 h 30 à 15 h 30 |
+| L5 ouverture après la nuit | écart d'ouverture dans les 10 % les plus forts des 252 séances d'avant (ou les plus faibles), en pourcentage | contre l'écart, de l'ouverture de 9 h 30 à celle de 10 h |
+
+### Calcul et jugement
+- **Frais.** 3 $ par aller-retour par MNQ, au prix d'aujourd'hui ; minutes du NQ.
+- **Jugement sur l'ère 0DTE**, du 16 mai 2022 au 29 octobre 2026. Une règle passe si :
+  - t ≥ 2,33 (Bonferroni unilatéral à 5 % pour 5 règles) ;
+  - le gain moyen est positif ;
+  - au moins 3 des 5 années 2022 - 2026 sont gagnantes.
+- **2011 - mai 2022** est publié à titre de comparaison.
+- **Une règle qui passe** va au suivi en direct, sans argent. **Une qui échoue** est publiée telle quelle.
