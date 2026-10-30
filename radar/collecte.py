@@ -68,6 +68,8 @@ WIKI = ["Stock_market_crash", "Recession", "Inflation", "Stock_market", "Bear_ma
         "Bitcoin", "Nvidia", "Artificial_intelligence", "ChatGPT", "Tariff", "United_States_debt_ceiling",
         "Quantitative_easing", "Stagflation", "Dot-com_bubble", "Black_Monday_(1987)", "Volatility_(finance)",
         "Options_(finance)", "Day_trading", "GameStop", "Gold_as_an_investment", "Yield_curve"]
+FRED_ESSENTIELLES = ["BAMLH0A0HYM2", "T10Y2Y", "DFII10", "RRPONTSYD", "WTREGEN", "WRESBAL", "STLFSI4", "NFCI",
+                     "USEPUINDXD", "ICSA"]
 FRED = ["DGS10", "DGS2", "DGS3MO", "T10Y2Y", "T10Y3M", "T10YIE", "DFII10", "BAMLH0A0HYM2", "BAMLC0A0CM", "DTWEXBGS",
         "DEXJPUS", "DEXUSEU", "VIXCLS", "VXNCLS", "RRPONTSYD", "WALCL", "WTREGEN", "WRESBAL", "NFCI", "ANFCI",
         "STLFSI4", "ICSA", "CCSA", "SOFR", "EFFR", "DCOILWTICO", "DHHNGSP", "USEPUINDXD", "WLEMUINDXD", "SP500",
@@ -300,7 +302,7 @@ def finra():
                 return None
             t = pd.concat(parts)
             for c in ("ShortVolume", "ShortExemptVolume", "TotalVolume"):
-                t[c] = pd.to_numeric(t[c], errors="coerce")
+                t[c] = pd.to_numeric(t[c], errors="coerce") if c in t else 0.0     # colonne absente des vieux fichiers
             t = t.groupby("Symbol", as_index=False)[["ShortVolume", "ShortExemptVolume", "TotalVolume"]].sum()
         if not len(t):
             return None
@@ -352,11 +354,11 @@ def fred():
     de suite)."""
     cols = {}
     debut, echecs = time.time(), 0
-    for s in FRED:
-        if time.time() - debut > 360 or echecs >= 4:
+    for s in FRED_ESSENTIELLES + [x for x in FRED if x not in FRED_ESSENTIELLES]:
+        if time.time() - debut > 600 or echecs >= 4:
             break
         try:
-            r = requests.get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={s}", timeout=20, headers=NAVIGATEUR)
+            r = requests.get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={s}", timeout=60, headers=RECHERCHE)
         except requests.RequestException:
             r = None
         if r is None or r.status_code != 200 or not r.content[:200].strip():
@@ -370,6 +372,21 @@ def fred():
     t = long(pd.DataFrame(cols), "fred:") if cols else None
     n = ranger(t, DONNEES / "jour" / "alt", "date", ["date", "serie"])
     noter("fred", series=len(cols), manquantes=sorted(set(FRED) - set(cols)), fichiers_ecrits=n)
+
+
+def incertitude():
+    """Indice quotidien d'incertitude des politiques economiques (Baker, Bloom et Davis), tire des journaux americains."""
+    r = get("https://www.policyuncertainty.com/media/All_Daily_Policy_Data.csv")
+    if r is None or r.status_code != 200:
+        noter("incertitude", erreur=getattr(r, "status_code", "pas de reponse"))
+        return
+    t = pd.read_csv(io.BytesIO(r.content))
+    t.columns = [c.strip().lower() for c in t.columns]
+    t["date"] = pd.to_datetime(dict(year=t["year"], month=t["month"], day=t["day"]))
+    col = [c for c in t.columns if "daily" in c or "policy" in c][0]
+    s = t.set_index("date")[[col]].rename(columns={col: "epu"})
+    n = ranger(long(s, "incertitude:"), DONNEES / "jour" / "alt", "date", ["date", "serie"])
+    noter("incertitude", lignes=len(s), derniere=str(s.index[-1].date()), fichiers_ecrits=n)
 
 
 def cnn():
@@ -476,7 +493,8 @@ def options_cboe():
     noter("options_cboe", sous_jacents=len({l["serie"].split(":")[1] for l in lignes}), fichiers_ecrits=n)
 
 
-SOURCES = [yahoo_jour, yahoo_heure, yahoo_minute, finra, dix_gex, wiki, fred, cnn, aaii, gdelt, options_cboe, resultats]
+SOURCES = [yahoo_jour, yahoo_heure, yahoo_minute, finra, dix_gex, wiki, fred, incertitude, cnn, aaii, gdelt,
+           options_cboe, resultats]
 
 
 def main():

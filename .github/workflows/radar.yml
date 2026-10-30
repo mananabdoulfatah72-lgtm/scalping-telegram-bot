@@ -39,7 +39,7 @@ jobs:
         timeout-minutes: 40
         run: python3 radar/collecte.py
         env:
-          RADAR_SOURCES: yahoo_jour,yahoo_heure,yahoo_minute,dix_gex,wiki,fred,cnn,aaii,options_cboe,resultats
+          RADAR_SOURCES: yahoo_jour,yahoo_heure,yahoo_minute,dix_gex,wiki,fred,incertitude,cnn,aaii,options_cboe,resultats
 
       - name: Enregistrer
         if: always()

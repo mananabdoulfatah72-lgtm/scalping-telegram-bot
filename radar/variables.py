@@ -374,6 +374,8 @@ def variables_nouvelles(d):
             f[nom] = veille(x, jours, lag)
         if "aaii:bullish" in alt and "aaii:bearish" in alt:
             f["aaii_ecart"] = veille((alt["aaii:bullish"] - alt["aaii:bearish"]).dropna(), jours, 1)
+        if "incertitude:epu" in alt and "fred_incertitude" not in f:
+            f["fred_incertitude"] = veille(zscore_avant(alt["incertitude:epu"].dropna(), 60), jours, 2)
         if "cnn:fear_and_greed_historical" in alt:
             f["cnn_peur"] = veille(alt["cnn:fear_and_greed_historical"].dropna(), jours, 1)
     ya = lire_long("yahoo")
