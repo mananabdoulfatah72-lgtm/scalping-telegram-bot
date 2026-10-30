@@ -1,53 +1,55 @@
 {
  "yahoo_jour": {
-  "heure_utc": "2026-10-30 14:21",
-  "symboles": 169,
-  "manquants": [],
+  "heure_utc": "2026-10-30 14:51",
+  "symboles": 168,
+  "manquants": [
+   "HO=F"
+  ],
   "fichiers_ecrits": 1
  },
  "yahoo_heure": {
-  "heure_utc": "2026-10-30 14:21",
+  "heure_utc": "2026-10-30 14:51",
   "symboles": 37,
   "fichiers_ecrits": 2
  },
  "yahoo_minute": {
-  "heure_utc": "2026-10-30 14:22",
+  "heure_utc": "2026-10-30 14:51",
   "symboles": 28,
   "jours_ecrits": 0
  },
  "dix_gex": {
-  "heure_utc": "2026-10-30 14:22",
+  "heure_utc": "2026-10-30 14:51",
   "lignes": 3898,
   "derniere": "2026-10-29",
   "fichiers_ecrits": 0
  },
  "wikipedia": {
-  "heure_utc": "2026-10-30 14:23",
-  "articles": 28,
+  "heure_utc": "2026-10-30 14:54",
+  "articles": 27,
   "fichiers_ecrits": 1
  },
  "fred": {
-  "heure_utc": "2026-10-30 14:23",
+  "heure_utc": "2026-10-30 14:54",
   "series": 39,
   "manquantes": [],
   "fichiers_ecrits": 2
  },
  "cnn_peur_avidite": {
-  "heure_utc": "2026-10-30 14:24",
+  "heure_utc": "2026-10-30 14:55",
   "erreur": "pas de reponse"
  },
  "aaii": {
-  "heure_utc": "2026-10-30 14:24",
+  "heure_utc": "2026-10-30 14:55",
   "lignes": 2050,
   "fichiers_ecrits": 0
  },
  "options_cboe": {
-  "heure_utc": "2026-10-30 14:24",
+  "heure_utc": "2026-10-30 14:55",
   "sous_jacents": 3,
   "fichiers_ecrits": 1
  },
  "resultats": {
-  "heure_utc": "2026-10-30 14:25",
+  "heure_utc": "2026-10-30 14:56",
   "symboles": 35,
   "lignes": 2961
  },
@@ -64,7 +66,7 @@
   "entetes_inconnus": {}
  },
  "incertitude": {
-  "heure_utc": "2026-10-30 14:23",
+  "heure_utc": "2026-10-30 14:54",
   "lignes": 15277,
   "derniere": "2026-10-29",
   "fichiers_ecrits": 0
