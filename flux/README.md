@@ -1099,3 +1099,33 @@ Le gamma et son rang sont ceux de la partie 11 (GEX de la veille, rang sur 252 s
 - **Ensuite**, que quelque chose passe ou non, la demande de l'utilisateur est appliquée : combiner les meilleures
   pièces trouvées. C'est un **portefeuille de candidates**, publié avec sa limite : ses pièces ont été choisies en
   connaissant une partie de ces années. Il ne sera dit fiable qu'après le suivi en direct.
+
+### Résultats de la partie 12
+
+Le détail est dans `resultats/partie12/gamma_jour.md`. **Aucune règle ne passe.** Sur l'ère 0DTE :
+
+| Règle | Résultat | Par journée | t |
+|---|---|---|---|
+| M1 (gamma ≥ 80 %, contre, 30 min) | −9 901 $ | −32,3 $ | −1,44 |
+| M2 (gamma ≥ 60 %, contre, 30 min) | −19 881 $ | −37,8 $ | −1,91 |
+| M3 (gamma ≥ 80 %, contre, 15 min) | −20 895 $ | −68,1 $ | −2,67 |
+| M4 (gamma ≤ 20 %, avec, 30 min) | −20 033 $ | −115,8 $ | −1,83 |
+
+- **Avant frais, le retournement de M1 vaut à peine +0,3 $ par trade.** Les 3 $ de frais par trade l'écrasent.
+- **L'effet que capte L2 ne se multiplie pas dans la journée.** Il reste propre à la dernière demi-heure.
+
+## Partie 13 : portefeuille des meilleures candidates (demande de l'utilisateur, règle fixée le 30 octobre 2026 avant le calcul)
+
+Rien de nouveau ne passe ses barres. À la demande de l'utilisateur, on combine les meilleures pièces déjà figées, sans en
+changer aucune.
+- **Candidates.** S2b, ORB 5 min (H1), cassure de la veille (H5), Supertrend (H12), pivots (F3), zone d'origine, R1,
+  R2 et L2.
+- **Calcul.** Gains par séance pour 1 MNQ, au prix d'aujourd'hui, frais compris (code de `flux/veille.py`).
+- **Règle d'entrée dans le portefeuille.** Sur l'ère 0DTE (16 mai 2022 - 29 octobre 2026), une candidate entre si :
+  - son t (sur les séances où elle trade) est d'au moins 1 ;
+  - au moins 3 de ses 5 années sont gagnantes.
+- **Portefeuille.** 1 MNQ par règle retenue, tout additionné par séance. On le mesure par année et par séance (perte
+  maximale), puis sur des challenges Bulenox 50K simulés avec un départ à chaque séance de l'ère 0DTE.
+- **Limite, dite d'avance.** Le choix des pièces se fait sur les années mêmes où on les mesure. Le portefeuille est
+  donc flatteur par construction. Il ne sera dit fiable qu'après le suivi en direct, qui le jouera chaque soir.
+  Code : `flux/portefeuille.py`.
