@@ -863,3 +863,19 @@ Données récupérées par un robot GitHub Actions (`.github/workflows/donnees-c
 **0 finaliste : le coffre 2019 - 2026 n'a rien à juger.** Les positions hebdomadaires des géants publiées par la CFTC ne
 donnent pas le sens de la séance du NQ. La plus proche (G3, contre les fonds à levier quand leur position est extrême)
 reste dans ce que donnent des signaux décalés au hasard.
+
+## Partie 8 : radar des marchés et suivi en direct (29 - 30 octobre 2026)
+
+Tout est dans `radar/README.md`. Le radar collecte chaque soir plus de 150 séries et des sources peu utilisées : FINRA,
+Wikipédia, FRED, incertitude, AAII, options du CBOE, résultats. Il a scanné environ 27 millions de règles et 98 modèles
+d'apprentissage sur le NQ, selon un protocole fixé avant le calcul.
+
+**Une seule règle a passé la confirmation**, puis elle a échoué au coffre 2023 - 2026 (t 0,78) : acheter à 13 h 30
+quand le NQ est en haut de son range, et garder 2 heures. **Aucune stratégie n'est donc constituée.**
+
+`flux/veille.py` suit en direct, sans argent, depuis le 30 octobre 2026 :
+- S2b, ORB, cassure de la veille, Supertrend et pivots ;
+- la règle du radar ;
+- la zone d'origine, comme référence.
+
+Le workflow `radar.yml` fait tourner la collecte, ce suivi et le rapport du soir (`radar/RAPPORT.md`, Telegram).

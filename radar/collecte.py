@@ -436,10 +436,17 @@ def aaii():
 def gdelt():
     """Volume et ton des articles du monde entier (GDELT), par jour, sur les 3 derniers mois (limite de l'outil)."""
     cols = {}
+    debut = time.time()
     for nom, q in GDELT.items():
         for mode in ("timelinevol", "timelinetone"):
-            r = get(f"https://api.gdeltproject.org/api/v2/doc/doc?query={requests.utils.quote(q)}%20sourcelang:english"
-                    f"&mode={mode}&format=json&timespan=3months&timelinesmooth=0", essais=2, attente=10)
+            if time.time() - debut > 180:                       # l'outil limite fort : 3 minutes au plus
+                break
+            try:
+                r = requests.get(f"https://api.gdeltproject.org/api/v2/doc/doc?query={requests.utils.quote(q)}"
+                                 f"%20sourcelang:english&mode={mode}&format=json&timespan=3months&timelinesmooth=0",
+                                 timeout=30, headers=RECHERCHE)
+            except requests.RequestException:
+                r = None
             time.sleep(6)
             if r is None or r.status_code != 200:
                 continue

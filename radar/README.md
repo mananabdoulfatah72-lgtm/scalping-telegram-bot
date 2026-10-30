@@ -23,13 +23,14 @@ Le radar est une machine qui tourne 24 h sur 24. Elle a quatre rôles :
 | Yahoo, jour | 35 futures de la CME (indices, énergie, métaux, taux, devises, grains, bétail, bitcoin) ; 34 indices (VIX, VXN, VIX9D, VIX3M, VVIX, SKEW, MOVE, OVX, taux, dollar, Asie, Europe, Amérique latine) ; 62 ETF (secteurs, levier ×3, obligations, crédit, facteurs) ; 35 grandes valeurs ; 3 cryptos | le début de chaque série |
 | Yahoo, heure | 37 marchés | 730 jours, puis chaque jour |
 | Yahoo, minute | 28 marchés (NQ, ES, YM, RTY, pétrole, or, argent, cuivre, gaz, taux, euro, yen, VIX, dollar, QQQ, TQQQ, SPY, SMH, 8 grandes valeurs, bitcoin) | 28 jours, puis chaque jour (archive qui grandit) |
-| FINRA | volumes vendus à découvert de 120 titres (QQQ, ETF à levier, valeurs du Nasdaq 100) : la matière du DIX, ici pour le Nasdaq | août 2009 |
+| FINRA | volumes vendus à découvert de 120 titres (QQQ, ETF à levier, valeurs du Nasdaq 100) : la matière du DIX, ici pour le Nasdaq ; fichier consolidé depuis 2017, somme des places de déclaration avant | août 2009 |
 | SqueezeMetrics | DIX et GEX du S&P 500 | mai 2011 |
 | Wikipédia | consultations de 30 pages (krach, récession, inflation, Fed, Nvidia, IA, bitcoin…) | juillet 2015 |
 | FRED | 39 séries (taux, écarts de crédit, dollar, liquidité de la Fed, compte du Trésor, stress financier, incertitude des politiques économiques, chômage…) | le début de chaque série |
-| CNN | indice peur et avidité et ses 7 composantes | selon ce que CNN donne |
+| Incertitude | indice quotidien d'incertitude des politiques économiques (Baker, Bloom, Davis), tiré des journaux | 1985 |
+| CNN | indice peur et avidité et ses 7 composantes | **refusé** aux serveurs de GitHub (pas de réponse) |
 | AAII | sentiment des particuliers (haussiers, neutres, baissiers) | 1987 |
-| GDELT | volume et ton des articles du monde entier sur 8 thèmes | 3 mois, puis chaque jour |
+| GDELT | volume et ton des articles du monde entier sur 8 thèmes | **rien reçu** jusqu'ici (l'outil limite les appels) |
 | CBOE | photo du soir des options NDX, QQQ et SPX : gamma des teneurs de marché, niveau de bascule, murs de calls et de puts, ratios puts/calls | chaque jour à partir d'aujourd'hui |
 | Résultats | dates de publication des résultats des 35 grandes valeurs | jusqu'à 25 ans |
 
@@ -141,3 +142,63 @@ Pour m survivantes, une règle passe si :
 - La collecte grossit chaque jour : minutes de 28 marchés, gamma des options du CBOE, ton des nouvelles.
 - Une variable qui n'existe qu'à partir d'aujourd'hui sera scannée quand elle aura 250 séances. Les 150 premières
   serviront à choisir, les 100 suivantes à confirmer. Les survivantes seront ensuite figées et suivies en direct.
+
+## Résultats du passage officiel (30 octobre 2026)
+
+Fichiers : `resultats/scan.txt` (étapes 1 et 2), `resultats/scan_coffre.txt`, `resultats/ia.txt`,
+`resultats/STRATEGIE.md`, `resultats/scan_familles.csv.gz` (les 227 familles), `resultats/scan_placebos.json`.
+
+### Ce qui a été scanné
+- **Séances.** 4 065 séances du NQ (2011 - 29 octobre 2026), dont 3 878 jouables.
+- **Variables.** 104 variables continues, dont 35 de la séance en cours et 69 connues avant l'ouverture, plus
+  20 variables du calendrier.
+- **Règles.** 748 conditions, soit environ 27 millions de règles (une ou deux conditions × 49 couples entrée-durée ×
+  2 sens).
+- **Modèles.** 98 modèles d'apprentissage.
+- **Sources absentes.** Les données de CNN et de GDELT n'ont pas pu être récupérées ; ces variables sont absentes,
+  comme prévu par le protocole.
+
+### Étapes
+| Étape | Résultat |
+|---|---|
+| 1. Exploration 2011 - 2018 | 227 familles à t ≥ 3 |
+| Placebos (20) | meilleur t de confirmation : 1,12 à 3,53 ; barre **3,33** |
+| 2. Confirmation 2019 - 2022 | **1 survivante** : achat à 13 h 30, sortie à 15 h 30, si la dernière clôture est dans les 14 % du haut du range du jour (place > 0,859) ; t 3,19 puis 3,73 ; 211 trades ; +65,84 $ par trade |
+| Modèle d'apprentissage | 0 sur 98 (le meilleur : régression logistique, 11 h 30 → clôture, t 2,60 hors échantillon 2015 - 2022, pour une barre de 3,3) |
+| 3. Coffre 2023 - 2026 | **échec** : 221 trades, +11,21 $ par trade, t 0,78 (il fallait 1,64) ; 2023 +3 587 $, 2024 +601 $, 2025 −413 $, 2026 −1 296 $ |
+
+**Correction faite avant l'ouverture du coffre.** Le code jugeait le meilleur placebo sur toutes ses règles, même
+celles à 3 trades : un placebo donnait ainsi t 10,24 et la barre montait à 3,87. Le protocole exige au moins 40 trades
+et un gain positif des vraies règles ; les placebos sont maintenant jugés pareil, ce qui donne la barre de 3,33. Cette
+correction et l'étape 2 ont été enregistrées (commit `2fc8cf9`) avant l'ouverture du coffre.
+
+### Conclusion
+**Aucune stratégie.** Rien n'a passé le coffre. Ce que le scan apprend :
+1. **Un seul effet a traversé la confirmation : l'élan de l'après-midi quand le NQ est au plus haut du jour.** C'est
+   une forme du momentum intrajournalier publié (Gao, Han, Li et Zhou 2018 ; Baltussen, Da, Lammers et Martens 2021).
+   Il était fort de 2011 à 2023 et ne l'est plus depuis 2025.
+2. **Aucune des sources peu utilisées n'a donné de règle qui tienne en confirmation.** Ces sources sont :
+   - les ventes à découvert de la FINRA, dont un « DIX du Nasdaq » ;
+   - l'attention sur Wikipédia ;
+   - le crédit et la liquidité de la FRED ;
+   - l'indice d'incertitude des politiques économiques ;
+   - le sentiment AAII ;
+   - les résultats des grandes valeurs ;
+   - l'Asie et l'Europe avant l'ouverture ;
+   - 168 marchés en données quotidiennes.
+3. **Le modèle d'apprentissage qui combine tout ne passe pas sa barre.**
+
+### Suivi
+- **La règle de 13 h 30** (R1) est suivie en direct, sans argent, depuis le 30 octobre 2026 dans `flux/veille.py`.
+  La barre est d'au moins 40 séances avec trade et t ≥ 2,45 (Bonferroni pour les 7 candidates suivies).
+- **La collecte continue chaque soir.** Les variables qui n'existent que depuis le 29 octobre 2026 seront scannées selon
+  le dernier point du protocole : minutes de 28 marchés, gamma des options du NDX et de QQQ, murs de calls et de puts.
+
+## Lancer à la main
+
+```
+KB=<copie de claude/keen-babbage-r686cl> ROBOT=<zone/robot/nq_1min.csv.gz de main> RADAR_CALCUL=<dossier> python3 radar/variables.py
+RADAR_CALCUL=<dossier> python3 radar/scan.py --placebos 20      # puis --coffre, une seule fois
+RADAR_CALCUL=<dossier> python3 radar/ia.py                      # puis --coffre
+RADAR_CALCUL=<dossier> python3 radar/strategie.py
+```

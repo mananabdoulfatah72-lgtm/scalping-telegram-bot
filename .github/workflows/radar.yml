@@ -11,6 +11,7 @@ on:
       - radar/collecte.py
       - radar/rapport.py
       - radar/enregistrer.sh
+      - flux/veille.py
       - .github/workflows/radar.yml
   workflow_dispatch:
 
@@ -71,6 +72,19 @@ jobs:
           RADAR_SOURCES: finra
           RADAR_FINRA_ANCIENS: "1"
 
+      - name: Suivi en direct des strategies candidates (flux/veille.py, sans argent)
+        if: always()
+        timeout-minutes: 20
+        run: |
+          pip install -q numba scipy
+          git fetch -q --depth=1 origin main
+          git show origin/main:zone/robot/nq_1min.csv.gz > "$RUNNER_TEMP/nq_robot.csv.gz"
+          python3 flux/veille.py "$RUNNER_TEMP/nq_robot.csv.gz"
+        env:
+          DEBUT_SUIVI: "2026-10-30"
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+
       - name: Rapport du soir
         if: always() && hashFiles('radar/rapport.py') != ''
         run: python3 radar/rapport.py
@@ -80,4 +94,4 @@ jobs:
 
       - name: Enregistrer
         if: always()
-        run: radar/enregistrer.sh "historique FINRA et rapport"
+        run: radar/enregistrer.sh "historique FINRA, suivi en direct et rapport"

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Machine de veille (flux/README.md, partie 8) : chaque soir de semaine, joue sur les nouvelles seances du NQ les
-strategies candidates figees (S2b, ORB 5 min, cassure de la veille, Supertrend, pivots, et la zone d'origine comme
-reference), tient leur journal depuis le debut du suivi, les mesure contre la barre fixee d'avance et envoie le point sur
-Telegram. Aucun reglage n'est change par la machine : c'est le seul test que rien ne peut biaiser (l'avenir).
+strategies candidates figees (S2b, ORB 5 min, cassure de la veille, Supertrend, pivots, la regle du radar, et la zone
+d'origine comme reference), tient leur journal depuis le debut du suivi, les mesure contre la barre fixee d'avance et
+envoie le point sur Telegram. Aucun reglage n'est change par la machine : c'est le seul test que rien ne peut biaiser (l'avenir).
 
 Lancer : python3 flux/veille.py <minutes NQ au format du robot (t,o,h,l,c,v,contrat)>
 Variables : DEBUT_SUIVI (AAAA-MM-JJ, defaut 2026-10-30), TELEGRAM_TOKEN et CHAT_ID (facultatifs)."""
@@ -25,8 +25,9 @@ import partie_h as H  # noqa: E402
 DOSSIER = ICI / "veille"
 DEBUT_SUIVI = pd.Timestamp(os.getenv("DEBUT_SUIVI", "2026-10-30"))
 NOMS = {"S2b": "S2b cassure ratee", "H1": "ORB 5 min", "H5": "cassure de la veille", "H12": "Supertrend 10-3",
-        "F3": "pivots R1/S1", "ZONE": "zone d'origine (reference)"}
-BARRE_TRADES, BARRE_T = 40, 2.39            # 40 seances avec trade, t >= 2,39 (Bonferroni unilateral 5 % pour 6)
+        "F3": "pivots R1/S1", "R1": "radar : achat 13 h 30 en haut du range", "ZONE": "zone d'origine (reference)"}
+BARRE_TRADES, BARRE_T = 40, 2.45            # 40 seances avec trade, t >= 2,45 (Bonferroni unilateral 5 % pour 7)
+PLACE_R1 = 0.8591989517211914               # radar/resultats/scan.txt : 5e quintile de la place a 13 h 30 (2011-2018)
 TICK = 0.25
 
 
@@ -89,9 +90,21 @@ def s2b(d):
     return g
 
 
+def r1(d):
+    """Radar, seule survivante de la confirmation (radar/README.md, echouee au coffre 2023 - 2026) : a 13 h 30, si la
+    derniere cloture est dans les 14 % du haut du range du jour, achat a l'ouverture de 13 h 30, vente a celle de
+    15 h 30 ; $ par MNQ au prix de reference, frais 3 $ l'aller-retour (comme radar/scan.py)."""
+    O, Hh, L, C = d["o"], d["h"], d["l"], d["c"]
+    ok = d["complete"] & ~d["ech"]
+    hi, lo = Hh[:, :240].max(1), L[:, :240].min(1)
+    place = (C[:, 239] - lo) / np.where(hi > lo, hi - lo, np.nan)
+    g = (O[:, 360] - O[:, 240]) * float(d["pref"]) / O[:, 0] * float(d["pt"]) - 3.0
+    return np.where(ok & (place > PLACE_R1), g, np.nan)
+
+
 def gains(d):
     jours = pd.DatetimeIndex(d["jours"].astype("datetime64[D]"))
-    out = {"S2b": s2b(d)}
+    out = {"S2b": s2b(d), "R1": r1(d)}
     h = H.toutes(d)
     out.update({"H1": h["H1"][0], "H5": h["H5"][0], "H12": h["H12"][0], "F3": F.toutes(d)["F3"][0]})
     _, _, _, _, tr = G.calcul(d)
