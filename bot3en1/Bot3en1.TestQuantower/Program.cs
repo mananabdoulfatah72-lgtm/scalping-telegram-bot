@@ -29,6 +29,11 @@ using TradingPlatform.BusinessLayer;
 // achetees ecrite dans test_nuits.txt (seance qui suit).
 // Challenge de 30 jours (vague 13) : TAILLE=4 (MNQ par source), OBJECTIF=53000 (arret a l'objectif + 50 $), DATE_FIN=AAAA-MM-JJ,
 // TAILLE_FIN=6, SEANCES_FIN=5, FREIN=0, LIMITE=1050. Controles : plus aucun ordre apres l'objectif ; journees jouees a plus de TAILLE (fin de course).
+// Audit du 31 octobre 2026, le premier jour seulement (heure de New York) : MAIN=12:00 ferme la position MNQ a la main a la fin de
+// cette minute (le bot ne doit pas la rouvrir) ; REPRISE=12:00 relance le bot a cette minute sans l'arreter (coupure de
+// Quantower : la position reste ouverte), avec l'historique des transactions de la seance pour le rattrapage. COUPURE=12:00 : coupure
+// Rithmic de 3 minutes a la fin de cette minute (plus de transactions, liste des positions vide, ordres refuses), puis retour de la
+// position : le bot ne doit pas la prendre pour une fermeture a la main.
 class Program
 {
     static int Main(string[] a)
@@ -87,6 +92,32 @@ class Program
             strat.SoldeManuel = double.Parse(Environment.GetEnvironmentVariable("SOLDE_MANUEL") ?? "0", inv);
         }
         var tic = typeof(Bot3en1Strategy).GetMethod("Tic", BindingFlags.NonPublic | BindingFlags.Instance);
+        // transactions d'une minute, comme celles emises plus bas (historique du rattrapage d'une relance)
+        IEnumerable<(DateTime t, double p, double q, AggressorFlag f)> Ticks(DateTime j, int m)
+        {
+            var b = seances[j].b[m];
+            if (!b.Presente) yield break;
+            agr.TryGetValue((j, m), out var av);
+            var t0 = j.AddMinutes(570 + m);
+            yield return (Utc(t0.AddSeconds(1)), b.O, Math.Max(b.V - av.Item1 - av.Item2, 0), AggressorFlag.None);
+            yield return (Utc(t0.AddSeconds(2)), b.H, av.Item1, AggressorFlag.Buy);
+            yield return (Utc(t0.AddSeconds(3)), b.L, av.Item2, AggressorFlag.Sell);
+            yield return (Utc(t0.AddSeconds(4)), b.C, 0, AggressorFlag.None);
+        }
+        strat.SymboleNQ.Histoire = p =>
+        {
+            var h = new HistoricalData();
+            foreach (var j in seances.Keys.Where(j => j >= p.FromTime.Date.AddDays(-1) && j <= p.ToTime.Date))
+                for (int m = 0; m < Moteur.N; m++)
+                    foreach (var x in Ticks(j, m))
+                        if (x.t >= p.FromTime && x.t < p.ToTime)
+                            h.Items.Add(new HistoryItemLast { TimeLeft = x.t, Price = x.p, Volume = x.q, AggressorFlag = x.f });
+            return h;
+        };
+        var evenementMain = Environment.GetEnvironmentVariable("MAIN") is string em ? TimeSpan.Parse(em, inv) : (TimeSpan?)null;
+        var evenementReprise = Environment.GetEnvironmentVariable("REPRISE") is string er ? TimeSpan.Parse(er, inv) : (TimeSpan?)null;
+        var evenementCoupure = Environment.GetEnvironmentVariable("COUPURE") is string ec ? TimeSpan.Parse(ec, inv) : (TimeSpan?)null;
+        Position[] cachees = null;
         var lancement = TimeSpan.Parse(Environment.GetEnvironmentVariable("LANCEMENT") ?? "09:29", inv);
         horloge.DateTimeUtcNow = Utc(jours[0].Add(lancement));
         strat.Lancer();
@@ -98,6 +129,7 @@ class Program
         }
         if (strat.Arretee) { Console.WriteLine(string.Join("\n", strat.Logs)); return 1; }
         var moteur = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
+        var audit = new List<string>();
         int Pos(Symbol sy) { var p = Core.Instance.Liste.FirstOrDefault(x => x.Symbol == sy); return p == null ? 0 : (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity; }
         var nuits = new List<string>();
         var violations = new List<string>();
@@ -113,7 +145,8 @@ class Program
             for (int m = 0; m <= der; m++)
             {
                 var t0 = j.AddMinutes(570 + m);
-                if (b[m].Presente)
+                bool coupe = j == jours[0] && evenementCoupure is TimeSpan hc0 && t0 > j.Add(hc0) && t0 <= j.Add(hc0).AddMinutes(3);
+                if (b[m].Presente && !coupe)
                 {
                     agr.TryGetValue((j, m), out var av);
                     double reste = Math.Max(b[m].V - av.Item1 - av.Item2, 0);
@@ -127,6 +160,42 @@ class Program
                     T(b[m].L, av.Item2, AggressorFlag.Sell, 3);
                     if (strat.StopPoints > 0) { horloge.DateTimeUtcNow = Utc(t0.AddSeconds(3.5)); tic.Invoke(strat, null); }   // stop vu au plus bas
                     T(b[m].C, 0, AggressorFlag.None, 4);
+                }
+                if (j == jours[0] && evenementMain is TimeSpan hm && t0 == j.Add(hm))
+                {
+                    int avant = Pos(strat.SymboleMNQ);
+                    Core.Instance.Liste.RemoveAll(x => x.Symbol == strat.SymboleMNQ);
+                    Core.Instance.Ordres.Add($"{Utc(t0.AddSeconds(30)):yyyy-MM-dd HH:mm:ss} A LA MAIN : position MNQ {avant} -> 0");
+                    audit.Add($"fermeture a la main a {hm:hh\\:mm} (New York) : position MNQ {avant} -> 0");
+                }
+                if (j == jours[0] && evenementCoupure is TimeSpan hc && t0 == j.Add(hc))
+                {
+                    cachees = Core.Instance.Liste.ToArray();
+                    Core.Instance.Liste.Clear();
+                    Core.Instance.Coupe = true;
+                    audit.Add($"coupure Rithmic de {hc:hh\\:mm} a {hc.Add(TimeSpan.FromMinutes(3)):hh\\:mm} (New York) : position MNQ {cachees.Where(x => x.Symbol == strat.SymboleMNQ).Sum(x => (x.Side == Side.Buy ? 1 : -1) * (int)x.Quantity)} cachee");
+                }
+                if (j == jours[0] && evenementCoupure is TimeSpan hc2 && t0 == j.Add(hc2).AddMinutes(3))
+                {
+                    Core.Instance.Liste.AddRange(cachees);
+                    Core.Instance.Coupe = false;
+                    audit.Add($"connexion revenue : position MNQ {Pos(strat.SymboleMNQ)}");
+                }
+                if (j == jours[0] && evenementReprise is TimeSpan hr && t0 == j.Add(hr))
+                {
+                    // coupure : l'ancienne instance ne recoit plus rien (pas d'arret, la position reste ouverte), une nouvelle est lancee
+                    foreach (var sy in new[] { strat.SymboleNQ, strat.SymboleMES })
+                        if (sy != null) typeof(Symbol).GetField("NewLast", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(sy, null);
+                    var neuf = new Bot3en1Strategy();
+                    foreach (var f in typeof(Bot3en1Strategy).GetFields(BindingFlags.Public | BindingFlags.Instance)) f.SetValue(neuf, f.GetValue(strat));
+                    int avant = Pos(strat.SymboleMNQ);
+                    strat = neuf;
+                    horloge.DateTimeUtcNow = Utc(t0.AddSeconds(30));
+                    strat.Lancer();
+                    ((IDisposable)typeof(Bot3en1Strategy).GetField("horloge", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat))?.Dispose();
+                    moteur = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
+                    tic.Invoke(strat, null);
+                    audit.Add($"relance sans arret a {hr:hh\\:mm} (New York) : position MNQ avant {avant}, juste apres {Pos(strat.SymboleMNQ)}");
                 }
                 horloge.DateTimeUtcNow = Utc(t0.AddMinutes(1).AddSeconds(3));
                 tic.Invoke(strat, null);
@@ -236,6 +305,7 @@ class Program
             var grosses = parJournee.Where(kv => kv.Value > strat.Taille).Select(kv => $"{kv.Key:MM-dd} ({kv.Value})").ToList();
             Console.WriteLine($"fin de course : journees a plus de {strat.Taille} par contrat : {(grosses.Count == 0 ? "aucune" : string.Join(", ", grosses))}");
         }
+        foreach (var l in audit) Console.WriteLine(l);
         if (strat.JetonTelegram != "") System.Threading.Thread.Sleep(8000);   // reponses de Telegram (envois sans attente)
         Console.WriteLine($"erreurs : {strat.Logs.Count(l => l.StartsWith("[Error]"))}");
         if (sansNQ) Console.WriteLine($"flux NQ coupe : {strat.Logs.Count(l => l.Contains("aucune transaction NQ"))} alerte(s) « aucune transaction NQ »,"

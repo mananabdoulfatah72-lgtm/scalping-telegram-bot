@@ -78,6 +78,16 @@ class Program
         Poser(v, "ZoneTenue", -1);
         Ok(v.PositionMNQ == v.PositionNette && v.PositionMES == 0, "ancien mode : tout en MNQ, comme avant");
 
+        // 6. audit du 31 octobre 2026 : position de zone fermee a la main (le 14 octobre, le bot l'avait rouverte)
+        var h = AvecHistorique(true); h.DebutSeance(new DateTime(2026, 10, 27), "Z26"); h.Taille = 4;
+        Poser(h, "ZoneVirtuelle", -1); Poser(h, "ZoneTenue", -1); Poser(h, "EntreeZone", 25000.0);
+        h.ZoneFermeeALaMain(24900);
+        Ok(h.ZoneTenue == 0 && h.ZoneVirtuelle == -1 && h.PositionMNQ == 0, "fermee a la main : plus de position voulue, trade suivi jusqu'a sa fin");
+        Ok(Math.Abs(h.RealiseJour - 4 * (100 - 1.5) * 2) < 1e-9 && Math.Abs(h.RealiseAPlat - 4 * (200 - 3.0)) < 1e-9,
+           "fermee a la main : gain compte au prix de la fermeture (4 MNQ, +100 points)");
+        h.ZoneFermeeALaMain(24800);
+        Ok(Math.Abs(h.RealiseJour - 4 * (100 - 1.5) * 2) < 1e-9, "deuxieme appel sans position : rien ne change");
+
         // 6. challenge de 30 jours (vague 13, version D) : arret a l'objectif et taille de fin de course
         Ok(RegleCompte.PlafondEffectif(0, 0, 50000) == 0, "sans plafond ni objectif : aucun plafond");
         Ok(RegleCompte.PlafondEffectif(500, 0, 50000) == 500, "compte Master : plafond 500 $ inchange");

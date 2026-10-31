@@ -93,7 +93,17 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
   - l'adaptateur aligne la position sur MNQ par un ordre au marché.
 - **Démarrage après 9 h 30 :**
   - les minutes passées sont rattrapées grâce à l'historique de Quantower ;
-  - la zone ne prend pas un trade déjà commencé, seulement les signaux suivants.
+  - la zone ne prend pas un trade déjà commencé, seulement les signaux suivants ;
+  - **sauf s'il est déjà le sien (audit du 31 octobre 2026)** : si le compte tient exactement la position du trade de
+    zone rejoué (bot relancé sans avoir été arrêté, par exemple après une coupure de Quantower), le bot garde ce trade
+    et le gère par ses règles. Avant, il le fermait (27 octobre : position gagnante fermée à la relance).
+- **Position fermée hors du bot (audit du 31 octobre 2026) :** si la position MNQ de la zone revient à zéro sans ordre
+  du bot (fermeture à la main, ou par le courtier), le bot ne la rouvre plus. Le trade compte comme terminé, et la zone
+  attend que le prix revienne dans la bande avant toute nouvelle entrée, comme pour un trade écarté par le filtre. Avant,
+  le bot la rouvrait dans la minute (14 octobre). Une coupure Rithmic vide aussi la liste des positions : la fermeture
+  n'est donc retenue que si la position reste à zéro 30 secondes alors que des transactions NQ arrivent. Pendant une
+  coupure, le bot n'envoie plus d'ordre à l'aveugle et reprend normalement au retour de la position. Une fermeture
+  partielle (4 MNQ ramenés à 2) n'est pas reconnue : le bot remet la taille voulue, comme avant.
 - **Changement d'échéance (mars, juin, septembre, décembre) :**
   - le RSI(2) se ferme la veille, comme dans le backtest ;
   - le bot prévient si les symboles choisis ne sont plus ceux du jour. Il faut alors choisir les nouveaux (NQ et

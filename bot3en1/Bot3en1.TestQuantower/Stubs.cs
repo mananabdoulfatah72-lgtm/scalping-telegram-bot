@@ -53,8 +53,14 @@ namespace TradingPlatform.BusinessLayer
         public List<Position> Liste = new List<Position>();
         public Position[] Positions => Liste.ToArray();
         public List<string> Ordres = new List<string>();
+        public bool Coupe;                                  // connexion coupee (test COUPURE) : ordres refuses
         public TradingOperationResult PlaceOrder(PlaceOrderRequestParameters p)
         {
+            if (Coupe)
+            {
+                Ordres.Add($"{TimeUtils.DateTimeUtcNow:yyyy-MM-dd HH:mm:ss} REFUSE (connexion coupee) {p.Side} {p.Quantity} {p.Symbol?.Name}");
+                return new TradingOperationResult { Status = TradingOperationResultStatus.Failure, Message = "connexion coupee" };
+            }
             // remplissage immediat au dernier prix connu (test)
             int q = (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity;
             var pos = Liste.FirstOrDefault(x => x.Account == p.Account && x.Symbol == p.Symbol);
