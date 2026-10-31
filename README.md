@@ -4,8 +4,8 @@ Chaque robot suit un compte **virtuel** de 50 000 $ : aucun ordre reel, aucun ar
 
 | Robot | Ce qu'il fait | Demarre le | Solde virtuel | Dernier jour | Depuis le depart | Detail |
 |---|---|---|---|---|---|---|
-| Melange tendance + achat | futures, 19 marches, garde la nuit | 2026-09-25 | 48,910 $ | -136 $ (2026-10-29) | -1,090 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
-| Tendance seule | futures, 19 marches, garde la nuit | 2026-09-25 | 48,333 $ | -234 $ (2026-10-29) | -1,667 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
+| Melange tendance + achat | futures, 19 marches, garde la nuit | 2026-09-25 | 48,811 $ | -83 $ (2026-10-30) | -1,189 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
+| Tendance seule | futures, 19 marches, garde la nuit | 2026-09-25 | 47,936 $ | -355 $ (2026-10-30) | -2,064 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
 | Version 7 | 5 actions technologie par mois, 50 % investi | 2026-09-29 | 47,032 $ | -1,908 $ (2026-10-29) | -2,968 $ | [detail](version7/robot/TABLEAU_DE_BORD.md) |
 | Zone de bruit + challenge Phidias 50K | Nasdaq MNQ, intraday | 2026-09-28 | 50,244 $ (challenge n°1) | +0 $ (2026-10-29) | +244 $ | [detail](zone/robot/TABLEAU_DE_BORD.md) |
 
@@ -13,6 +13,7 @@ Chaque robot suit un compte **virtuel** de 50 000 $ : aucun ordre reel, aucun ar
 
 | Date | Melange tendance + achat | Tendance seule | Version 7 | Zone de bruit + challenge Phidias 50K |
 |---|---|---|---|---|
+| 2026-10-30 | -83 | -355 |  |  |
 | 2026-10-29 | -136 | -234 | -1,908 | +0 |
 | 2026-10-28 | +118 | +58 | +377 | +0 |
 | 2026-10-27 | +34 | +96 | +332 | +74 |
@@ -27,7 +28,6 @@ Chaque robot suit un compte **virtuel** de 50 000 $ : aucun ordre reel, aucun ar
 | 2026-10-14 | -369 | -204 | -698 | +410 |
 | 2026-10-13 | -93 | -292 | -281 | +0 |
 | 2026-10-12 | +5 | +267 | -604 | -166 |
-| 2026-10-09 | +81 | +112 | +43 | +0 |
 
 Pour juger un robot, il faut plusieurs mois : des jours et des semaines negatifs sont normaux. Le detail de chaque robot compare son resultat a ce que donnait son historique.
 
