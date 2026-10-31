@@ -74,3 +74,31 @@ Les mêmes rejeux, par période, en $ au prix d'aujourd'hui (`audit/rejeux.py`) 
   12 au 30 octobre pour 1 MNQ. Si le compte réel a perdu sur cette période, la cause est ailleurs : réglages qui ont
   changé en cours de route, taille, exécution, redémarrages, autres stratégies sur le compte. Il faut le journal et
   l'historique de Quantower pour la trouver.
+
+## Corrections candidates, fixées le 31 octobre 2026 avant de les calculer
+
+Ces trois corrections viennent des pertes du bot d'origine (zone + filtre delta) du 14 au 26 octobre. Elles sont
+écrites avant d'être testées, une seule valeur chacune. Les autres valeurs ne sont publiées qu'à titre de
+sensibilité ; on ne choisit pas la meilleure.
+
+| Code | Erreur visée | Règle ajoutée (désactivée par défaut) | Séances |
+|---|---|---|---|
+| C1 | entrée trop tardive (26 octobre : 1,66 fois la largeur de la bande au-delà du niveau) | pas d'entrée si le prix est déjà au-delà du niveau de plus d'**une fois** la largeur de la bande (`DepassementMax = 1`). Le trade est traité comme un trade écarté : le bot attend que le prix revienne avant toute nouvelle entrée | 26 oct. |
+| C2 | piégé dans le bruit (21 octobre : deux achats perdants de suite au même niveau) | après une sortie perdante, plus d'entrée dans le même sens pendant la séance (`PasDeRetourApresPerte`) | 21 oct. |
+| C3 | delta trop faible pour confirmer (21 octobre : +239 et +115) | le filtre delta demande \|delta 30 min\| ≥ 300 contrats au lieu d'un simple bon signe (`DeltaMin = 300`) | 21 oct. |
+
+**Comment chaque correction est jugée.**
+- C1 et C2 sont jugées sur 2011 - 2026 (zone sans filtre, la seule testable sur 15 ans), puis sur avril - octobre
+  2026 avec le filtre delta (Databento).
+- C3 ne peut être jugée que sur avril - octobre 2026 et sur la quinzaine d'octobre (données Rithmic), parce qu'il faut
+  les volumes acheteurs et vendeurs.
+- Les critères sont ceux du protocole ci-dessus.
+
+**Corrections de logique (sans effet sur la stratégie), à vérifier dans le code de l'adaptateur Quantower :**
+- **14 octobre.** Le bot a rouvert une vente de 4 MNQ juste après une fermeture faite à la main.
+- **27 octobre.** Le bot relancé en pleine séance a fermé une position ouverte et gagnante, parce qu'il ne savait plus
+  qu'elle était à lui.
+
+**Hors du champ des règles.**
+- Les arrêts à la main du 14 et du 22 octobre.
+- Les trades du 30 octobre, qui ne viennent pas du bot (10 et 13 MNQ, absents du journal).
