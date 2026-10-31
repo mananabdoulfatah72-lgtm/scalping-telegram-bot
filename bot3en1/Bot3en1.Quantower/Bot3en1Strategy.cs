@@ -32,29 +32,29 @@ namespace Bot3en1
         [InputParameter("MES (mode a plat : RSI(2) de nuit et zone freinee), meme echeance, ex. MESZ6", 35)] public Symbol SymboleMES;
         [InputParameter("Dossier des donnees du bot", 40)] public string Dossier = @"C:\Bot3en1";
         [InputParameter("MNQ par source (Bulenox : 4 pendant le challenge de 30 jours, 1 sur le compte Master)", 50, 1, 6, 1, 0)] public int Taille = 1;
-        [InputParameter("Zone : entree a la cassure, cochee par defaut depuis le 26 octobre 2026 a la demande de l'utilisateur (entre deux controles, des qu'une minute cloture au-dela des niveaux du dernier controle, le bot entre tout de suite ; controles, niveaux et sorties inchanges ; decoche = entree seulement aux controles de 30 minutes)", 51)]
-        public bool EntreeCassure = true;
-        [InputParameter("Zone : entree a la cassure confirmee par le volume, cochee par defaut depuis le 26 octobre 2026 a la demande de l'utilisateur (la minute de la cassure doit avoir un volume d'au moins 2 fois la moyenne des 30 minutes d'avant ; sans effet aux controles)", 52)]
-        public bool ConfirmationVolume = true;
-        [InputParameter("Zone : multiple du volume pour confirmer la cassure, 1 par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (1 = la minute de la cassure a au moins le volume moyen des 30 minutes d'avant ; 2 = au moins le double)", 53, 0.5, 5, 0.5, 1)]
-        public double MultipleVolume = 1.0;
-        [InputParameter("Zone : pas d'entree tardive, cochee par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (entree seulement a la minute ou le prix franchit le niveau, avec le volume, aux controles comme entre eux ; une cassure ratee n'est pas rattrapee plus haut ou plus bas)", 54)]
-        public bool SansEntreeTardive = true;
-        [InputParameter("Zone : fenetre de confirmation en minutes, 5 par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (si la minute de la cassure n'a pas le volume, une des minutes suivantes peut confirmer tant que le prix reste au-dela du niveau ; 0 = seulement la minute de la cassure)", 56, 0, 30, 1, 0)]
-        public int FenetreConfirmation = 5;
-        [InputParameter("Zone : filtre Q1, sens de l'ouverture, decoche par defaut (achat seulement si l'ouverture de 9 h 30 est au-dessus ou au niveau de la cloture de la veille, vente seulement si elle est en dessous ou au niveau ; scalping/README.md partie Q)", 57)]
+        [InputParameter("Zone : entree a la cassure entre deux controles, decochee par defaut depuis le 31 octobre 2026 = zone d'origine, entree seulement aux controles de 30 minutes (cochee : -73 % de gain sur 15 ans, audit/README.md)", 51)]
+        public bool EntreeCassure = false;
+        [InputParameter("Zone : cassure confirmee par le volume, decochee par defaut depuis le 31 octobre 2026 = zone d'origine (sans effet si l'entree a la cassure est decochee)", 52)]
+        public bool ConfirmationVolume = false;
+        [InputParameter("Zone : multiple du volume pour confirmer la cassure, 2 par defaut (sans effet si l'entree a la cassure est decochee)", 53, 0.5, 5, 0.5, 1)]
+        public double MultipleVolume = 2.0;
+        [InputParameter("Zone : pas d'entree tardive, decochee par defaut depuis le 31 octobre 2026 = zone d'origine (cochee : entree seulement a la minute ou le prix franchit le niveau)", 54)]
+        public bool SansEntreeTardive = false;
+        [InputParameter("Zone : fenetre de confirmation en minutes, 0 par defaut depuis le 31 octobre 2026 (sans effet si l'entree a la cassure est decochee)", 56, 0, 30, 1, 0)]
+        public int FenetreConfirmation = 0;
+        [InputParameter("Zone : filtre Q1, sens de l'ouverture, decoche par defaut = zone d'origine (achat seulement si l'ouverture de 9 h 30 est au-dessus ou au niveau de la cloture de la veille, vente seulement si elle est en dessous ou au niveau ; scalping/README.md partie Q)", 57)]
         public bool FiltreOuverture = false;
-        [InputParameter("Zone : filtre Q2, tendance de fond, decoche par defaut (achat seulement si la veille a cloture au-dessus de la moyenne des 20 dernieres clotures, vente seulement en dessous ; scalping/README.md partie Q)", 58)]
+        [InputParameter("Zone : filtre Q2, tendance de fond, decoche par defaut = zone d'origine (achat seulement si la veille a cloture au-dessus de la moyenne des 20 dernieres clotures, vente seulement en dessous ; scalping/README.md partie Q)", 58)]
         public bool FiltreTendance = false;
-        [InputParameter("Zone : une seule entree par seance et sortie seulement au retour sous le niveau casse, cochee par defaut depuis le 26 octobre 2026 au soir a la demande de l'utilisateur (sortie a un controle de 30 minutes si le prix est repasse de l'autre cote du niveau casse a l'entree, au lieu de la limite du controle ou du VWAP ; sinon a 16 h ; limite de perte du jour inchangee)", 55)]
-        public bool LaisserCourir = true;
-        [InputParameter("Zone : pas de sortie aux controles, cochee par defaut depuis le 27 octobre 2026 a la demande de l'utilisateur (le trade est garde jusqu'a 16 h, ou jusqu'a la limite de perte du jour ; decoche = sortie a un controle au retour sous le niveau casse)", 59)]
-        public bool SortieFinDeJour = true;
-        [InputParameter("Zone : stop en points au-dela du niveau casse, 70 par defaut depuis le 27 octobre 2026 a la demande de l'utilisateur (achat : niveau casse - 70 ; vente : niveau casse + 70 ; verifie a chaque prix recu ; 0 = aucun stop)", 47, 0, 1000, 5, 0)]
-        public double StopPoints = 70;
-        [InputParameter("Filtre delta de la zone : decoche par defaut depuis le 26 octobre 2026 = la zone seule, chaque cassure verifiee a un controle est prise quel que soit le delta (coche = ancien bot, cassure ecartee si le delta 30 min va contre elle)", 48)]
-        public bool FiltreDeltaActif = false;
-        [InputParameter("Filtre delta : relance, decochee par defaut depuis le 20 octobre 2026 (un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 49)]
+        [InputParameter("Zone : une seule entree par seance et sortie au retour sous le niveau casse, decochee par defaut depuis le 31 octobre 2026 = zone d'origine (sortie a un controle si le prix repasse la limite du controle ou le VWAP ; cochee : -30 % de gain sur 15 ans)", 55)]
+        public bool LaisserCourir = false;
+        [InputParameter("Zone : pas de sortie aux controles, decochee par defaut depuis le 31 octobre 2026 = zone d'origine (sortie a un controle si le prix repasse la limite ou le VWAP, sinon a 16 h)", 59)]
+        public bool SortieFinDeJour = false;
+        [InputParameter("Zone : stop en points au-dela du niveau casse, 0 par defaut depuis le 31 octobre 2026 = zone d'origine (0 = aucun stop ; achat : niveau casse - X ; vente : niveau casse + X)", 47, 0, 1000, 5, 0)]
+        public double StopPoints = 0;
+        [InputParameter("Filtre delta de la zone : coche par defaut depuis le 31 octobre 2026 = zone d'origine du challenge (cassure ecartee si le delta 30 min va contre elle ; decoche = la zone seule)", 48)]
+        public bool FiltreDeltaActif = true;
+        [InputParameter("Filtre delta : relance, decochee par defaut = zone d'origine (cochee : un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 49)]
         public bool RelanceFiltre = false;
         [InputParameter("Plafond de gain du jour en $ (0 = aucun ; Bulenox : 500 sur le compte Master seulement, 0 pendant le challenge ; Static : 500 sur le compte Pro)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
         [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1000, 100 $ de marge avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
@@ -79,7 +79,7 @@ namespace Bot3en1
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
-        const string Version = "27 octobre 2026 (regle de l'utilisateur : entree a la cassure avec volume, fenetre de confirmation, une entree par seance, stop au niveau casse +/- 70 points, sinon 16 h ou limite du jour)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
+        const string Version = "31 octobre 2026 (audit : zone d'origine par defaut, position fermee a la main jamais rouverte, trade repris apres une relance)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
         Moteur bot;
         TimeZoneInfo ny;
         Timer horloge;

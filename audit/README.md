@@ -120,8 +120,9 @@ filtre delta) du 14 au 27 octobre, avec le plus haut et le plus bas des minutes 
 | 27 oct., achat 11 h → 14 h | +50 pts | +154 pts | −11 pts |
 | 27 oct., achat 15 h → 16 h | −10 pts | +58 pts | −20 pts |
 
-- **Aucune perte ne vient d'un gain rendu.** Les six trades perdants n'ont jamais été en gain de plus de 58 points
-  (moins d'une demi-largeur de bande) : ils sont partis contre le bot dès l'entrée.
+- **Aucune perte ne vient d'un gain rendu.** Les six trades perdants n'ont jamais été en gain de plus de 58 points,
+  soit au plus un quart de la largeur de bande (98 à 230 points ces jours-là) : ils sont partis contre le bot dès
+  l'entrée.
 - **Les gagnants ont rendu une partie de leur pic** : 108 points le 14, 114 le 22, 104 le 27. C'est là que la
   question « trop gourmand » se pose.
 
@@ -134,3 +135,107 @@ revienne dans la zone. Sinon, rien ne change (`ProtegerGain = 1`, désactivé pa
 - **Sensibilité publiée, pas choisie :** 0,5 et 2 largeurs de bande.
 - **Jugée comme C1 et C2 :** sur 2011 - 2026 sans le filtre, puis sur avril - octobre 2026 avec le filtre, avec les
   quatre critères du protocole.
+
+## Résultats des quatre corrections candidates (calculés après les avoir fixées)
+
+Rejeu du moteur C# : 15 ans sans le filtre (2011 - 29 octobre 2026, 3 580 trades), puis avril - octobre 2026 avec le
+filtre et le vrai delta (Databento, 88 trades). Gains en $ pour 1 MNQ au prix d'aujourd'hui (`audit/rejeux.py`).
+
+| | Zone d'origine | C1 entrée tardive | C2 pas de retour après perte | C3 delta ≥ 300 | C4 gain rendu |
+|---|---|---|---|---|---|
+| 15 ans : gain, t | +32 676 $, t 1,71 | +22 865 $, t 1,31 | +34 955 $, t 2,11 | non mesurable | +27 320 $, t 1,58 |
+| 2011 - 2018 | −7 788 $ | −9 489 $ | **+5 240 $** | | −13 352 $ |
+| 2019 - 2022 | +21 016 $ | +16 560 $ | +15 596 $ | | +19 045 $ |
+| 2023 - 2026 | +19 448 $ | +15 794 $ | +14 119 $ | | **+21 627 $** |
+| Plus forte baisse sur 15 ans | −27 750 $ | −25 623 $ | **−11 914 $** | | −25 218 $ |
+| Gagnants supprimés / perdants supprimés | | +73 751 $ / −63 940 $ | +93 932 $ / −96 211 $ | +793 $ / −749 $ | |
+| Avril - octobre 2026, avec le filtre | +3 571 $, t 1,26 | +1 948 $ | +2 399 $ | +3 526 $ | **+5 402 $**, t 1,90 |
+| Verdict | | **rejetée** | **rejetée** | **rejetée** | **rejetée** |
+
+- **C1 (entrée trop tardive) : rejetée.** Elle baisse les trois périodes. Les entrées loin du niveau gagnent en
+  moyenne : sur 15 ans, les 483 trades qu'elle supprime rapportaient +9 800 $. Le 26 octobre était une perte normale.
+  Sensibilité : 0,75 et 1,5 largeur font aussi moins bien.
+- **C2 (piégé dans le bruit) : rejetée.** C'est la plus tentante : sur 15 ans, elle monte le gain (+7 %) et le t
+  (2,11), et elle divise la plus forte baisse par plus de deux. Mais tout vient de 2011 - 2018. Elle perd sur
+  2019 - 2022 et 2023 - 2026 (−10 750 $ en tout), et sur avril - octobre 2026 avec le filtre (−1 172 $). Elle échoue
+  au critère 2, fixé d'avance. Elle n'est pas adoptée. Elle reste à suivre, sans argent.
+- **C3 (delta faible) : rejetée.** Elle supprime 13 trades sur 7 mois, autant gagnants que perdants (+793 $ /
+  −749 $). C'est trop peu pour juger, et elle échoue au critère 3.
+- **C4 (gain rendu, « profit trop gourmand ») : rejetée.** Elle aurait bien marché sur avril - octobre 2026
+  (+1 831 $, t 1,90). Mais sur 15 ans, elle fait perdre 16 % et baisse 2011 - 2018 et 2019 - 2022. C'est le piège
+  d'une règle qui colle aux derniers mois. La zone gagne sur les journées de tendance qui reculent puis repartent ;
+  couper à mi-chemin coupe ces journées. Sensibilité : 0,5 et 2 largeurs font aussi moins bien sur 15 ans
+  (+20 199 $ et +30 112 $).
+- **Conclusion.** Aucune règle de stratégie de la zone d'origine n'est en faute. Ses pertes d'octobre entrent dans ce
+  qu'elle perd d'habitude. Les erreurs à corriger sont ailleurs : réglages, logique de l'adaptateur et opérations.
+
+## Les trades réels du 13 au 30 octobre, un par un
+
+Heures de New York. Montants du compte (4 MNQ), lus dans l'export Rithmic et le journal du bot.
+
+| Jour | Ce qui s'est passé | Classe | Évitable ? | Règle ou cause | Correction |
+|---|---|---|---|---|---|
+| 14 oct. | Vente de zone à 11 h 30 (30 393,50). À 12 h 35, rachat de 4 MNQ à la main (+1 178 $). Le bot a revendu 4 MNQ aussitôt (« position 0 -> -4 »). Arrêt du bot à 12 h 39 (−180 $). La zone seule gardait jusqu'à 16 h : +207 points. | **O + L** | oui | l'adaptateur réaligne toute position sur celle du moteur, même fermée à la main | **le bot ne rouvre plus une position fermée hors de lui** (testé) |
+| 20 oct. | Achat à 10 h 30 (29 879, delta +3 968, dépassement 0,60). Retournement immédiat, jamais plus de +18 points. Limite du jour à 11 h 12 : −1 072 $ (−1 002 $ estimés par le bot). | **N** (+ E faible) | non | perte normale ; 70 $ de glissement à la sortie au marché | aucune |
+| 21 oct. | Achat à 13 h (delta +239), sorti à 14 h (−254 $). Nouvel achat à 14 h 30 (delta +115), limite du jour (−756 $). | **N** | non | perte normale (C2 et C3 visaient ce jour : rejetées) | aucune |
+| 22 oct. | Vente à 10 h 30. Bot arrêté à la main à 14 h 02 (+1 814 $). Gardée jusqu'à 16 h : +1 468 $. | **O** (favorable) | — | intervention à la main | aucune |
+| 23 oct. | Achat à 11 h, sorti à 11 h 30 (−114 $). | **N** | non | perte normale | aucune |
+| 26 oct. | Achat à 11 h, dépassement 1,66. La zone d'origine prend le même trade. Limite du jour : −989 $. | **N** | non | perte normale (C1 visait ce jour : rejetée) | aucune |
+| 27 oct. | Réglages modifiés : achat à la cassure à 10 h 55. Bot relancé à 11 h 50 sans arrêt : il a fermé sa propre position (+937 $). | **C + L** | oui | relance en cours de séance : le bot oubliait son trade et fermait la position | **le bot reprend son trade s'il est encore sur le compte** (testé) ; réglages d'origine |
+| 29 oct. | Réglages modifiés : vente à la cassure de 10 h 10, stop de 70 points touché à 10 h 17 (−706 $). La zone d'origine ne trade pas ce jour-là. | **C** | oui | entrée à la cassure + stop 70 | **réglages d'origine par défaut** |
+| 30 oct. | Trades de 10 et 13 MNQ, absents du journal du bot. | hors champ | — | pas le bot | aucune |
+
+**Autre constat : la perte max suivie.** Le plancher affiché par le bot est passé de 48 500 $ à 49 500 $ le 21 octobre.
+Le réglage « perte max suivie en fin de journée » semble avoir été mis à 1 500 $ au lieu de 2 500 $ (Bulenox 50K). Ce
+réglage ne sert qu'au frein et aux messages, mais il faut le remettre à la vraie valeur du compte Bulenox.
+
+## Anciennes règles et nouvelles règles
+
+| Règle | Avant | Maintenant | Pertes concernées |
+|---|---|---|---|
+| Position fermée hors du bot | rouverte à l'alignement suivant (dans la minute) | **pas rouverte**. Le trade est compté terminé au prix de la fermeture, sans relance. La zone attend le retour du prix dans la bande | 14 oct. |
+| Relance du bot en pleine séance, position encore ouverte | trade oublié, position fermée | **trade repris et géré par les règles** si le compte tient exactement la position du trade rejoué ; sinon, comme avant | 27 oct. |
+| Liste des positions vide pendant une coupure Rithmic | ordres de réalignement envoyés à l'aveugle | **aucun ordre pendant 30 s ni tant que le flux NQ est coupé** ; une fermeture n'est retenue que si la position reste à zéro 30 s pendant que des transactions NQ arrivent | (prévention) |
+| Réglages par défaut de la zone | ceux du 26 - 27 octobre (cassure, volume, pas d'entrée tardive, fenêtre 5, une entrée par séance, pas de sortie aux contrôles, stop 70, filtre décoché) | **zone d'origine** : entrée et sorties aux contrôles de 30 minutes, filtre delta coché, relance décochée, sans stop. Les libellés ont changé, donc Quantower n'applique plus les anciennes valeurs enregistrées | 27 et 29 oct. |
+| Règles de stratégie de la zone (entrée, filtre, sorties, 16 h) | — | **inchangées** (C1 à C4 rejetées) | 20, 21, 23, 26 oct. (normales) |
+
+## Risques de régression, et ce qui a été vérifié
+
+- **Rien ne change sans ces événements.** Six configurations d'avril au 30 octobre 2026, ancienne et nouvelle version,
+  dans l'adaptateur Quantower imité transaction par transaction : mode à plat avec et sans le filtre, ancien mode avec
+  plafond, challenge de 30 jours, réglages de l'utilisateur du 26 - 27 octobre, filtre avec relance. Les ordres, les
+  deux journaux et les logs sont identiques octet pour octet (30 fichiers sur 30). Le rejeu du moteur sur 15 ans et sur
+  avril - octobre 2026 est identique aussi, C1 à C4 désactivées.
+- **Réglages par défaut.** Le bot lancé sans aucun réglage de zone donne, d'avril à octobre, exactement les ordres et les
+  journaux de la zone d'origine réglée à la main (83 trades gardés, 30 écartés).
+- **Scénarios (séances réelles du 14 et du 22 octobre, 4 MNQ, mode à plat).**
+
+  | Scénario | Ancienne version | Nouvelle version |
+  |---|---|---|
+  | Fermeture à la main à 12 h 35 le 14 oct. | revend 4 MNQ à 12 h 36 | ne rouvre pas ; message « fermee hors du bot » |
+  | Relance du bot sans arrêt à 12 h le 22 oct. | ferme la vente, puis revend à 13 h (+180 $ au lieu de +364 $ dans le test) | garde la vente jusqu'à 16 h (+364 $, comme sans relance) |
+  | Coupure Rithmic de 3 minutes à 12 h le 22 oct. | 3 ordres envoyés pendant la coupure (refusés) | aucun ordre ; position retrouvée ; même résultat que sans coupure |
+
+- **Moteur :** `Bot3en1.TestAPlat`, 37 contrôles sur 37 (3 nouveaux sur la fermeture à la main).
+- **Risques qui restent :**
+  - une fermeture partielle (4 MNQ ramenés à 2) n'est pas reconnue : le bot remet la taille voulue, comme avant ;
+  - si Rithmic rétablit les prix plus de 30 s avant les positions, le bot peut croire à une fermeture. Il ne rouvre
+    alors plus le trade, et il fermera la position quand elle réapparaîtra. Le journal et Telegram le signalent
+    aussitôt (« position MNQ fermee hors du bot ») : vérifier le compte si ce message arrive sans fermeture à la main ;
+  - après une relance, le prix d'entrée du trade repris est celui du rejeu (clôture de la minute du contrôle), pas le
+    prix rempli : la limite de perte du jour peut s'écarter de quelques dollars ;
+  - une fermeture faite par le courtier (liquidation) est traitée comme une fermeture à la main : le bot ne rouvre pas.
+    C'est voulu.
+
+## Ce qu'il faut faire sur le PC
+
+1. Fermer Quantower, puis mettre le bot à jour avec la ligne d'installation habituelle, collée dans PowerShell :
+   `irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/optimistic-ptolemy-xs24ra/bot3en1/telecharger.ps1 | iex`
+2. Ouvrir les réglages du bot. Les réglages de zone sont revenus à la zone d'origine, parce que leurs libellés ont
+   changé. Vérifier au lancement la ligne du journal : « entree aux controles de 30 minutes seulement, …, aucun stop,
+   sorties d'origine (aux controles, limite de la zone ou VWAP, et 16 h), …, filtre delta COCHE …, relance du filtre
+   decochee ».
+3. Remettre « perte max suivie en fin de journée » à la valeur du compte Bulenox (2 500 $ pour un 50K), si ce n'est
+   pas déjà le cas.
+4. Ne plus fermer ni arrêter le bot au milieu d'un trade. Le 14 et le 22 octobre, la règle faisait mieux ou presque
+   aussi bien que la main. Si c'est nécessaire, le bot ne rouvrira plus la position.

@@ -33,7 +33,8 @@ using TradingPlatform.BusinessLayer;
 // cette minute (le bot ne doit pas la rouvrir) ; REPRISE=12:00 relance le bot a cette minute sans l'arreter (coupure de
 // Quantower : la position reste ouverte), avec l'historique des transactions de la seance pour le rattrapage. COUPURE=12:00 : coupure
 // Rithmic de 3 minutes a la fin de cette minute (plus de transactions, liste des positions vide, ordres refuses), puis retour de la
-// position : le bot ne doit pas la prendre pour une fermeture a la main.
+// position : le bot ne doit pas la prendre pour une fermeture a la main. DEFAUTS=1 : aucun reglage de zone impose, ceux du bot par
+// defaut (zone d'origine depuis le 31 octobre 2026 : filtre delta coche, entree et sorties aux controles, sans stop).
 class Program
 {
     static int Main(string[] a)
@@ -65,17 +66,20 @@ class Program
             TailleFin = int.Parse(Environment.GetEnvironmentVariable("TAILLE_FIN") ?? "0", inv),
             SeancesFin = int.Parse(Environment.GetEnvironmentVariable("SEANCES_FIN") ?? "5", inv)
         };
-        strat.FiltreDeltaActif = Environment.GetEnvironmentVariable("SANS_FILTRE") != "1";   // les tests de reference gardent le filtre
-        strat.EntreeCassure = Environment.GetEnvironmentVariable("CASSURE") == "1";          // et l'entree aux seuls controles
-        strat.ConfirmationVolume = Environment.GetEnvironmentVariable("VOLUME") == "1";
-        strat.MultipleVolume = double.Parse(Environment.GetEnvironmentVariable("VOLMULT") ?? "2", inv);
-        strat.SansEntreeTardive = Environment.GetEnvironmentVariable("SANS_TARDIVE") == "1";
-        strat.FenetreConfirmation = int.Parse(Environment.GetEnvironmentVariable("FENETRE") ?? "0", inv);
-        strat.FiltreOuverture = Environment.GetEnvironmentVariable("Q1") == "1";
-        strat.FiltreTendance = Environment.GetEnvironmentVariable("Q2") == "1";
-        strat.SortieFinDeJour = Environment.GetEnvironmentVariable("SANS_SORTIE") == "1";
-        strat.StopPoints = double.Parse(Environment.GetEnvironmentVariable("STOP") ?? "0", inv);
-        strat.LaisserCourir = Environment.GetEnvironmentVariable("COURIR") == "1";
+        if (Environment.GetEnvironmentVariable("DEFAUTS") != "1")   // DEFAUTS=1 : reglages de zone par defaut du bot (zone d'origine)
+        {
+            strat.FiltreDeltaActif = Environment.GetEnvironmentVariable("SANS_FILTRE") != "1";   // les tests de reference gardent le filtre
+            strat.EntreeCassure = Environment.GetEnvironmentVariable("CASSURE") == "1";          // et l'entree aux seuls controles
+            strat.ConfirmationVolume = Environment.GetEnvironmentVariable("VOLUME") == "1";
+            strat.MultipleVolume = double.Parse(Environment.GetEnvironmentVariable("VOLMULT") ?? "2", inv);
+            strat.SansEntreeTardive = Environment.GetEnvironmentVariable("SANS_TARDIVE") == "1";
+            strat.FenetreConfirmation = int.Parse(Environment.GetEnvironmentVariable("FENETRE") ?? "0", inv);
+            strat.FiltreOuverture = Environment.GetEnvironmentVariable("Q1") == "1";
+            strat.FiltreTendance = Environment.GetEnvironmentVariable("Q2") == "1";
+            strat.SortieFinDeJour = Environment.GetEnvironmentVariable("SANS_SORTIE") == "1";
+            strat.StopPoints = double.Parse(Environment.GetEnvironmentVariable("STOP") ?? "0", inv);
+            strat.LaisserCourir = Environment.GetEnvironmentVariable("COURIR") == "1";
+        }
         if (Environment.GetEnvironmentVariable("RELANCE") is string relance) strat.RelanceFiltre = relance == "1";   // sinon le reglage par defaut
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";
         bool sansNQ = Environment.GetEnvironmentVariable("SANS_NQ") == "1";

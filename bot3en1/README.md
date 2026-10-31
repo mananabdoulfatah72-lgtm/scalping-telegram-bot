@@ -1,4 +1,4 @@
-# Bot 3 en 1 pour Quantower (zone de bruit, entrée à la cassure + filtre delta, décoché par défaut + RSI(2))
+# Bot 3 en 1 pour Quantower (zone de bruit d'origine + filtre delta, réglages par défaut depuis le 31 octobre 2026, + RSI(2))
 
 Le bot qui trade pour de vrai, sur un compte Rithmic (par exemple DayTraders) avec Quantower. Il regroupe :
 - **la zone de bruit** (V1, `zone/robot.py` sur main) : contrôle toutes les 30 minutes de 10 h à 15 h 30, sortie au
@@ -23,7 +23,7 @@ Taille : 1 MNQ par source. La position nette sur MNQ est la somme des deux (zone
 | `Bot3en1.Replay/` | Rejeu de vérification sur des barres historiques. |
 | `Bot3en1.TestQuantower/` | Joue l'adaptateur, transaction par transaction, contre une imitation de Quantower. |
 | `Bot3en1.TestPlafond/` | Contrôles du plafond du jour (système Static) sur le moteur seul, avec des prix fabriqués. |
-| `telecharger.ps1` | Installation en une ligne à coller dans PowerShell : télécharge seulement ce dossier, puis lance `installer.ps1`. Recoller la ligne met le bot à jour : `irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/exciting-fermat-sea2l2/bot3en1/telecharger.ps1 \| iex` |
+| `telecharger.ps1` | Installation en une ligne à coller dans PowerShell : télécharge seulement ce dossier, puis lance `installer.ps1`. Recoller la ligne met le bot à jour : `irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/optimistic-ptolemy-xs24ra/bot3en1/telecharger.ps1 \| iex` |
 | `installer.bat`, `installer.ps1` | Installation sur le PC (double-clic) : dans Quantower et/ou Optimus Flow (une version de Quantower, gratuite avec la démo Optimus Futures). Si la plateforme n'est pas trouvée, glisser son dossier sur `installer.bat` ou coller son chemin quand le script le demande. Sans winget (Windows Server 2022 des serveurs loués), le kit .NET s'installe avec le script officiel de Microsoft. |
 
 ## Vérifications faites (3 octobre 2026)
@@ -104,6 +104,16 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
   n'est donc retenue que si la position reste à zéro 30 secondes alors que des transactions NQ arrivent. Pendant une
   coupure, le bot n'envoie plus d'ordre à l'aveugle et reprend normalement au retour de la position. Une fermeture
   partielle (4 MNQ ramenés à 2) n'est pas reconnue : le bot remet la taille voulue, comme avant.
+- **Réglages par défaut : la zone d'origine (31 octobre 2026, audit `audit/README.md`)** : entrée et sorties aux
+  contrôles de 30 minutes, filtre delta coché, relance décochée, pas d'entrée à la cassure, pas de confirmation par le
+  volume, plusieurs entrées par séance, sortie aux contrôles, aucun stop. C'est la zone qui a lancé le challenge.
+  - Pourquoi : sur 15 ans, les réglages du 26 - 27 octobre ramènent le gain de +20 956 $ à +2 688 $ (−87 %), et les
+    pertes du 27 et du 29 octobre viennent d'eux. Les quatre corrections de stratégie testées (entrée tardive, retour
+    après une perte, delta faible, gain rendu) sont rejetées : la zone d'origine reste telle quelle.
+  - Les libellés des réglages de zone ont changé : Quantower n'applique plus les valeurs enregistrées avant. Les
+    réglages du 26 - 27 octobre restent disponibles, à cocher à la main.
+  - Vérifié : lancé sans aucun réglage de zone, le bot donne d'avril à octobre 2026 exactement les ordres et les
+    journaux de la zone d'origine réglée à la main.
 - **Changement d'échéance (mars, juin, septembre, décembre) :**
   - le RSI(2) se ferme la veille, comme dans le backtest ;
   - le bot prévient si les symboles choisis ne sont plus ceux du jour. Il faut alors choisir les nouveaux (NQ et

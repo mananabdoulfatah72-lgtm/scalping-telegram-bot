@@ -106,8 +106,10 @@ namespace Bot3en1
         public double DepassementMax = 0;
         public bool PasDeRetourApresPerte = false;
         public double DeltaMin = 0;
+        public double ProtegerGain = 0;              // C4 : sortie a un controle si la moitie d'un gain d'au moins ProtegerGain largeurs de bande est rendue
         int sensPerdant;
-        bool fermeeALaMain;
+        bool fermeeALaMain, gainRendu;
+        double gainMax, largeurEntree;
         public double PrixStop { get; private set; } = double.NaN;
         int minuteEntree = -1;
         public int Tendance { get; private set; }
@@ -263,7 +265,7 @@ namespace Bot3en1
             Jour = jour.Date; Contrat = contrat;
             for (int i = 0; i < N; i++) barres[i] = new Barre();
             cumTv = cumV = cumT = 0; nPresentes = 0;
-            ZoneVirtuelle = 0; ZoneTenue = 0; DejaEntre = false; NiveauCasse = double.NaN; PrixStop = double.NaN; minuteEntree = -1; finFenetre = -1; sensFenetre = 0; debutFenetre = -1; sensPerdant = 0; fermeeALaMain = false;   // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
+            ZoneVirtuelle = 0; ZoneTenue = 0; DejaEntre = false; NiveauCasse = double.NaN; PrixStop = double.NaN; minuteEntree = -1; finFenetre = -1; sensFenetre = 0; debutFenetre = -1; sensPerdant = 0; fermeeALaMain = false; gainRendu = false; gainMax = 0; largeurEntree = 0;   // Arret et RealiseJour : remis a zero a 18 h (NouvelleJournee)
             // veille : cloture de la derniere seance complete du meme contrat, sans changement de contrat entre les deux
             Veille = double.NaN;
             for (int i = Historique.Count - 1; i >= 0; i--)
@@ -346,6 +348,7 @@ namespace Bot3en1
             double typique = (b.H + b.L + b.C) / 3;
             cumTv += typique * b.V; cumV += b.V; cumT += typique;
             int k = (m % PAS == 0) ? m / PAS - 1 : -1;
+            if (ProtegerGain > 0 && ZoneTenue != 0) gainMax = Math.Max(gainMax, ZoneTenue * (b.C - EntreeZone));
             if (StopPoints > 0 && ZoneVirtuelle != 0 && m > minuteEntree && !double.IsNaN(PrixStop)
                 && (ZoneVirtuelle > 0 ? b.L <= PrixStop : b.H >= PrixStop))
                 SortieStop(m, ZoneVirtuelle > 0 ? Math.Min(b.O, PrixStop) - 0.25 : Math.Max(b.O, PrixStop) + 0.25, sortie);
@@ -403,6 +406,7 @@ namespace Bot3en1
                 : Arret ? "plus de trade aujourd'hui (objectif ou limite du jour atteint)"
                 : ZoneVirtuelle == 0 && LaisserCourir && DejaEntre ? "plus d'entree aujourd'hui (laisser courir : une seule entree par seance)"
                 : ZoneVirtuelle == 0 && SansEntreeTardive && (p > haut || p < bas) ? "prix deja au-dela du niveau sans cassure confirmee : pas d'entree tardive"
+                : ZoneVirtuelle != 0 && gainRendu ? "trade sorti (gain rendu) : pas de nouvelle entree avant que le prix revienne dans la zone"
                 : ZoneVirtuelle != 0 && fermeeALaMain ? "trade ferme a la main : le bot ne le rouvre pas et attend sa fin (prix revenu dans la zone ou 16 h)"
                 : ZoneVirtuelle != 0 ? $"trade ecarte toujours en cours : {(Relance ? "relance au prochain controle si le delta passe du bon cote" : "relance decochee, le bot attend sa fin")}"
                 : "pas de signal : prix dans la zone";
@@ -420,13 +424,23 @@ namespace Bot3en1
             double sortH = LaisserCourir ? NiveauCasse : Math.Max(haut, vw), sortB = LaisserCourir ? NiveauCasse : Math.Min(bas, vw);
             if (!SortieFinDeJour && ZoneVirtuelle > 0 && p <= sortH) SortieZone(m, p, "sortie", s);
             else if (!SortieFinDeJour && ZoneVirtuelle < 0 && p >= sortB) SortieZone(m, p, "sortie", s);
-            else if (Relance && FiltreDelta && ZoneVirtuelle != 0 && ZoneTenue == 0 && !Arret && !fermeeALaMain)
+            else if (ProtegerGain > 0 && ZoneTenue != 0 && gainMax >= ProtegerGain * largeurEntree && ZoneTenue * (p - EntreeZone) <= 0.5 * gainMax)
+            {
+                // C4 (audit) : la moitie du gain maximal est rendue ; le trade devient un trade ecarte (pas de retour avant la zone)
+                double g = gainMax;
+                SortieSansFinDuTrade(p);
+                gainRendu = true;
+                s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p,
+                    Texte = $"sortie {Heure(m)} a {p:F2} (gain rendu : maximum +{g:F2} points, la moitie ou plus rendue)" });
+            }
+            else if (Relance && FiltreDelta && ZoneVirtuelle != 0 && ZoneTenue == 0 && !Arret && !fermeeALaMain && !gainRendu)
             {
                 // trade ecarte encore vivant (prix toujours hors de la zone et du bon cote du VWAP) : nouvelle chance
                 double dr = Delta(m);
                 if (Math.Sign(dr) == ZoneVirtuelle)
                 {
                     ZoneTenue = ZoneVirtuelle; EntreeZone = p;
+                    gainMax = 0; largeurEntree = (ZoneTenue > 0 ? refH : refB) * Sigma[k];
                     if (ModeAPlat) entreeZoneES = PrixES;
                     s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p,
                         Texte = $"{(ZoneTenue > 0 ? "achat" : "vente")} {Heure(m)} a {p:F2} (relance : delta 30 min {dr:+0;-0;0}, GARDE)" });
@@ -493,6 +507,7 @@ namespace Bot3en1
                 if (garde && !Arret)
                 {
                     ZoneTenue = sens; EntreeZone = p;
+                    gainMax = 0; largeurEntree = (sens > 0 ? refH : refB) * Sigma[k];
                     if (ModeAPlat) entreeZoneES = PrixES;
                     s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p,
                         Texte = $"{(sens > 0 ? "achat" : "vente")} {h} a {p:F2} (delta 30 min {d:+0;-0;0}, GARDE{(force && Math.Sign(d) != sens ? ", cassure forte" : "")})"
@@ -529,7 +544,7 @@ namespace Bot3en1
                 if (ZoneTenue * (p - EntreeZone) - 1.5 < 0) sensPerdant = ZoneTenue;
                 s.Add(new Signal { Minute = m, Source = "zone", PrixReference = p, Texte = $"{quoi} {Heure(m)} a {p:F2}{apres}" });
             }
-            ZoneVirtuelle = 0; ZoneTenue = 0; fermeeALaMain = false;
+            ZoneVirtuelle = 0; ZoneTenue = 0; fermeeALaMain = false; gainRendu = false;
         }
 
         /// <summary>Decision du RSI(2) a l'ouverture de la minute de decision (15 h 50 un jour normal), sur la cloture de la
@@ -635,11 +650,17 @@ namespace Bot3en1
         public void ZoneFermeeALaMain(double prix)
         {
             if (ZoneTenue == 0) return;
-            if (ModeAPlat) RealiseAPlat += Taille * (2 * ZoneTenue * (prix - EntreeZone) - 3.0);
+            SortieSansFinDuTrade(prix);
+            fermeeALaMain = true;
+        }
+
+        /// <summary>Position de zone fermee au prix donne, le trade restant suivi comme un trade ecarte (ZoneVirtuelle gardee).</summary>
+        void SortieSansFinDuTrade(double prix)
+        {
+            if (ModeAPlat) RealiseAPlat += ZoneSurMES ? Taille * (5 * ZoneTenue * Es(PrixES, entreeZoneES) - 4.5) : Taille * (2 * ZoneTenue * (prix - EntreeZone) - 3.0);
             RealiseJour += Taille * (ZoneTenue * (prix - EntreeZone) - 1.5) * 2;
             if (ZoneTenue * (prix - EntreeZone) - 1.5 < 0) sensPerdant = ZoneTenue;
             ZoneTenue = 0;
-            fermeeALaMain = true;
         }
 
         /// <summary>Reprend la position du RSI(2) enregistree par le bot (fichier d'etat) apres un redemarrage.</summary>
