@@ -102,3 +102,35 @@ sensibilité ; on ne choisit pas la meilleure.
 **Hors du champ des règles.**
 - Les arrêts à la main du 14 et du 22 octobre.
 - Les trades du 30 octobre, qui ne viennent pas du bot (10 et 13 MNQ, absents du journal).
+
+## Correction candidate C4, fixée le 31 octobre 2026 avant de la calculer : le gain rendu (« profit trop gourmand »)
+
+L'utilisateur demande aussi où le profit a été trop gourmand. Mesure faite sur les trades du bot d'origine (zone +
+filtre delta) du 14 au 27 octobre, avec le plus haut et le plus bas des minutes entre l'entrée et la sortie :
+
+| Trade | Résultat | Gain maximal en cours | Perte maximale en cours |
+|---|---|---|---|
+| 14 oct., vente 11 h 30 → 16 h | +207 pts | +315 pts | −9 pts |
+| 20 oct., achat 10 h 30 → 11 h 30 | −137 pts | +18 pts | −190 pts |
+| 21 oct., achat 13 h → 14 h | −34 pts | +33 pts | −36 pts |
+| 21 oct., achat 14 h 30 → 15 h | −145 pts | +1 pt | −150 pts |
+| 22 oct., vente 10 h 30 → 16 h | +184 pts | +297 pts | −50 pts |
+| 23 oct., achat 11 h → 11 h 30 | −22 pts | +3 pts | −65 pts |
+| 26 oct., achat 11 h → 16 h | −115 pts | +17 pts | −158 pts |
+| 27 oct., achat 11 h → 14 h | +50 pts | +154 pts | −11 pts |
+| 27 oct., achat 15 h → 16 h | −10 pts | +58 pts | −20 pts |
+
+- **Aucune perte ne vient d'un gain rendu.** Les six trades perdants n'ont jamais été en gain de plus de 58 points
+  (moins d'une demi-largeur de bande) : ils sont partis contre le bot dès l'entrée.
+- **Les gagnants ont rendu une partie de leur pic** : 108 points le 14, 114 le 22, 104 le 27. C'est là que la
+  question « trop gourmand » se pose.
+
+**C4, une seule valeur.** À chaque contrôle (10 h 30 à 15 h 30), si le trade tenu a atteint, sur les clôtures des
+minutes depuis l'entrée, un gain d'au moins **une largeur de bande** (référence × σ du contrôle d'entrée, l'unité du
+« dépassement ») et que le prix du contrôle a rendu **la moitié** de ce gain maximal ou plus, le bot sort au prix du
+contrôle. Le trade est ensuite traité comme un trade écarté : pas de nouvelle entrée (ni de relance) avant que le prix
+revienne dans la zone. Sinon, rien ne change (`ProtegerGain = 1`, désactivé par défaut).
+
+- **Sensibilité publiée, pas choisie :** 0,5 et 2 largeurs de bande.
+- **Jugée comme C1 et C2 :** sur 2011 - 2026 sans le filtre, puis sur avril - octobre 2026 avec le filtre, avec les
+  quatre critères du protocole.
