@@ -1,52 +1,59 @@
 {
  "debut": "2026-09-28",
- "derniere_date": "2026-10-29",
- "solde": 47032.03833881198,
+ "derniere_date": "2026-10-30",
+ "solde": 45697.64892123526,
  "plus_haut": 51007.18833984882,
  "montants": {
-  "AMD": 4628.272270782938,
-  "CSCO": 5062.887377327074,
-  "LRCX": 3870.907953021733,
-  "MU": 4385.384786492649,
-  "NOW": 4090.835951187588
+  "AMAT": 4569.764892123527,
+  "AMD": 4569.764892123527,
+  "LRCX": 4569.764892123527,
+  "MU": 4569.764892123527,
+  "NOW": 4569.764892123527
  },
- "liquidites": 24993.75,
- "dernier_reequilibrage": "2026-09-30",
+ "liquidites": 22848.824460617627,
+ "dernier_reequilibrage": "2026-10-30",
  "ordres": [
+  {
+   "ticker": "AMAT",
+   "sens": "Achat",
+   "montant": 4570.36,
+   "actions": 11.72,
+   "prix": 390.09
+  },
   {
    "ticker": "AMD",
    "sens": "Achat",
-   "montant": 5000.0,
-   "actions": 8.17,
-   "prix": 611.76
+   "montant": 445.59,
+   "actions": 0.88,
+   "prix": 504.8
   },
   {
    "ticker": "CSCO",
-   "sens": "Achat",
-   "montant": 5000.0,
-   "actions": 46.46,
-   "prix": 107.63
+   "sens": "Vente",
+   "montant": 4872.66,
+   "actions": 46.62,
+   "prix": 104.51
   },
   {
    "ticker": "LRCX",
    "sens": "Achat",
-   "montant": 5000.0,
-   "actions": 15.22,
-   "prix": 328.51
+   "montant": 931.96,
+   "actions": 3.9,
+   "prix": 239.11
   },
   {
    "ticker": "MU",
    "sens": "Achat",
-   "montant": 5000.0,
-   "actions": 4.69,
-   "prix": 1065.11
+   "montant": 417.46,
+   "actions": 0.47,
+   "prix": 884.74
   },
   {
    "ticker": "NOW",
    "sens": "Achat",
-   "montant": 5000.0,
-   "actions": 37.31,
-   "prix": 134.01
+   "montant": 649.24,
+   "actions": 6.18,
+   "prix": 105.12
   }
  ],
  "challenge": {
@@ -54,5 +61,5 @@
   "date": "2026-09-30",
   "depart": 49987.5
  },
- "frais_dernier_reequilibrage": 12.5
+ "frais_dernier_reequilibrage": 5.94
 }

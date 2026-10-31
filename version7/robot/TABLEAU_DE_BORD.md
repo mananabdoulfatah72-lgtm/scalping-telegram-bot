@@ -1,6 +1,6 @@
 # Robot version 7 : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-10-29**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
+Mis a jour le **2026-10-30**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
 
 Regle : chaque fin de mois, les 5 actions technologie au meilleur rendement de 6 mois a 1 mois, 10 % du compte chacune, 50 % non investis.
 
@@ -8,44 +8,37 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **47,032 $** |
-| Gain depuis le depart | -2,968 $ (-5.9%) |
-| Baisse depuis le plus haut | -7.8% |
-| Dernier reequilibrage | 2026-09-30 |
-| Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | en cours depuis le 2026-09-30 : -2,955 $ sur +5 000 $ (perdu a -5 000 $, ou -2 500 $ en un jour) |
+| Solde virtuel | **45,698 $** |
+| Gain depuis le depart | -4,302 $ (-8.6%) |
+| Baisse depuis le plus haut | -10.4% |
+| Dernier reequilibrage | 2026-10-30 |
+| Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | en cours depuis le 2026-09-30 : -4,290 $ sur +5 000 $ (perdu a -5 000 $, ou -2 500 $ en un jour) |
 
 ## Positions
 
 | Action | Montant | Part du compte |
 |---|---|---|
-| CSCO | 5,063 $ | 10.8% |
-| AMD | 4,628 $ | 9.8% |
-| MU | 4,385 $ | 9.3% |
-| NOW | 4,091 $ | 8.7% |
-| LRCX | 3,871 $ | 8.2% |
-| Non investi | 24,994 $ | 53.1% |
+| AMAT | 4,570 $ | 10.0% |
+| AMD | 4,570 $ | 10.0% |
+| LRCX | 4,570 $ | 10.0% |
+| MU | 4,570 $ | 10.0% |
+| NOW | 4,570 $ | 10.0% |
+| Non investi | 22,849 $ | 50.0% |
 
-## Ordres a passer demain a la cloture (dernier jour du mois)
+## Derniers ordres (2026-10-30, a la cloture, avant 6 $ de frais)
 
-- Achat AMAT : 4,703 $ (environ 11.2 actions)
-- Achat AMD : 75 $ (environ 0.1 actions)
-- Vente CSCO : 5,063 $ (environ 46.6 actions)
-- Achat LRCX : 832 $ (environ 3.3 actions)
-- Achat MU : 318 $ (environ 0.3 actions)
-- Achat NOW : 612 $ (environ 5.6 actions)
-
-## Derniers ordres (2026-09-30, a la cloture, avant 12 $ de frais)
-
-- Achat AMD : 5,000 $
-- Achat CSCO : 5,000 $
-- Achat LRCX : 5,000 $
-- Achat MU : 5,000 $
-- Achat NOW : 5,000 $
+- Achat AMAT : 4,570 $
+- Achat AMD : 446 $
+- Vente CSCO : 4,873 $
+- Achat LRCX : 932 $
+- Achat MU : 417 $
+- Achat NOW : 649 $
 
 <details><summary>10 derniers jours</summary>
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-10-30 | -1,334 $ | 45,698 $ |
 | 2026-10-29 | -1,908 $ | 47,032 $ |
 | 2026-10-28 | +377 $ | 48,940 $ |
 | 2026-10-27 | +332 $ | 48,563 $ |
@@ -55,6 +48,5 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 | 2026-10-21 | +349 $ | 48,480 $ |
 | 2026-10-20 | -36 $ | 48,131 $ |
 | 2026-10-19 | +409 $ | 48,167 $ |
-| 2026-10-16 | -1,086 $ | 47,758 $ |
 
 </details>
