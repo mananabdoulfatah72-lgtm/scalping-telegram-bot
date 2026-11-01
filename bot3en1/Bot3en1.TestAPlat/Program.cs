@@ -87,6 +87,9 @@ class Program
            "fermee a la main : gain compte au prix de la fermeture (4 MNQ, +100 points)");
         h.ZoneFermeeALaMain(24800);
         Ok(Math.Abs(h.RealiseJour - 4 * (100 - 1.5) * 2) < 1e-9, "deuxieme appel sans position : rien ne change");
+        Ok(h.AnnulerFermetureALaMain() && h.ZoneTenue == -1 && h.RealiseJour == 0 && h.RealiseAPlat == 0 && h.PositionMNQ == -4,
+           "position revenue telle quelle (coupure) : trade repris, gain compte annule");
+        Ok(!h.AnnulerFermetureALaMain(), "pas de deuxieme annulation");
 
         // 6. challenge de 30 jours (vague 13, version D) : arret a l'objectif et taille de fin de course
         Ok(RegleCompte.PlafondEffectif(0, 0, 50000) == 0, "sans plafond ni objectif : aucun plafond");

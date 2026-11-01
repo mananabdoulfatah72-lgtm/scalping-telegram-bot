@@ -35,6 +35,9 @@ using TradingPlatform.BusinessLayer;
 // Rithmic de 3 minutes a la fin de cette minute (plus de transactions, liste des positions vide, ordres refuses), puis retour de la
 // position : le bot ne doit pas la prendre pour une fermeture a la main. DEFAUTS=1 : aucun reglage de zone impose, ceux du bot par
 // defaut (zone d'origine depuis le 31 octobre 2026 : filtre delta coche, entree et sorties aux controles, sans stop).
+// Revue du code du 1er novembre 2026 (premier jour seulement) : RETARD_POSITIONS=1 avec COUPURE (transactions revenues avant
+// les positions) ; REPRISE_SANS_POSITIONS=1 avec REPRISE (positions chargees apres le lancement) ; MAIN_APRES_ENTREE=1
+// (fermeture a la main 5 s apres que le bot a vu son ordre d'entree rempli) ; STOP_DE=12:00 STOP_A=12:10 (fichier STOP).
 class Program
 {
     static int Main(string[] a)
@@ -121,7 +124,7 @@ class Program
         var evenementMain = Environment.GetEnvironmentVariable("MAIN") is string em ? TimeSpan.Parse(em, inv) : (TimeSpan?)null;
         var evenementReprise = Environment.GetEnvironmentVariable("REPRISE") is string er ? TimeSpan.Parse(er, inv) : (TimeSpan?)null;
         var evenementCoupure = Environment.GetEnvironmentVariable("COUPURE") is string ec ? TimeSpan.Parse(ec, inv) : (TimeSpan?)null;
-        Position[] cachees = null;
+        Position[] cachees = null; bool mainFaite = false;
         var lancement = TimeSpan.Parse(Environment.GetEnvironmentVariable("LANCEMENT") ?? "09:29", inv);
         horloge.DateTimeUtcNow = Utc(jours[0].Add(lancement));
         strat.Lancer();
@@ -179,8 +182,11 @@ class Program
                     Core.Instance.Coupe = true;
                     audit.Add($"coupure Rithmic de {hc:hh\\:mm} a {hc.Add(TimeSpan.FromMinutes(3)):hh\\:mm} (New York) : position MNQ {cachees.Where(x => x.Symbol == strat.SymboleMNQ).Sum(x => (x.Side == Side.Buy ? 1 : -1) * (int)x.Quantity)} cachee");
                 }
-                if (j == jours[0] && evenementCoupure is TimeSpan hc2 && t0 == j.Add(hc2).AddMinutes(3))
+                int retard = int.Parse(Environment.GetEnvironmentVariable("RETARD_POSITIONS") ?? "0", inv);   // revue : positions revenues N minutes apres les transactions
+                if (j == jours[0] && evenementCoupure is TimeSpan hc3 && t0 == j.Add(hc3).AddMinutes(3) && retard > 0) { Core.Instance.Coupe = false; audit.Add($"transactions revenues, positions pas encore : {Pos(strat.SymboleMNQ)}"); }
+                if (j == jours[0] && evenementCoupure is TimeSpan hc2 && t0 == j.Add(hc2).AddMinutes(3 + retard))
                 {
+                    if (retard > 0) { horloge.DateTimeUtcNow = Utc(t0.AddSeconds(5)); strat.SymboleNQ.Emettre(new Last { Time = Utc(t0.AddSeconds(5)), Price = b[m].C, Size = 1, AggressorFlag = AggressorFlag.None }); horloge.DateTimeUtcNow = Utc(t0.AddSeconds(5.5)); tic.Invoke(strat, null); }   // revue : un tic 0,5 s apres la premiere transaction, positions pas encore revenues
                     Core.Instance.Liste.AddRange(cachees);
                     Core.Instance.Coupe = false;
                     audit.Add($"connexion revenue : position MNQ {Pos(strat.SymboleMNQ)}");
@@ -195,14 +201,30 @@ class Program
                     int avant = Pos(strat.SymboleMNQ);
                     strat = neuf;
                     horloge.DateTimeUtcNow = Utc(t0.AddSeconds(30));
+                    Position[] cacheesR = null;
+                    if (Environment.GetEnvironmentVariable("REPRISE_SANS_POSITIONS") == "1") { cacheesR = Core.Instance.Liste.ToArray(); Core.Instance.Liste.Clear(); }
                     strat.Lancer();
+                    if (cacheesR != null) { Core.Instance.Liste.AddRange(cacheesR); audit.Add("revue : positions chargees apres le lancement"); }
                     ((IDisposable)typeof(Bot3en1Strategy).GetField("horloge", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat))?.Dispose();
                     moteur = (Moteur)typeof(Bot3en1Strategy).GetField("bot", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(strat);
                     tic.Invoke(strat, null);
                     audit.Add($"relance sans arret a {hr:hh\\:mm} (New York) : position MNQ avant {avant}, juste apres {Pos(strat.SymboleMNQ)}");
+                    audit.Add($"revue : apres la relance, RealiseAPlat {moteur.RealiseAPlat:F1}, RealiseJour {moteur.RealiseJour:F1}, ZoneTenue {moteur.ZoneTenue}, ZoneVirtuelle {moteur.ZoneVirtuelle}");
                 }
+                if (j == jours[0] && Environment.GetEnvironmentVariable("STOP_DE") is string sd && t0 == j.Add(TimeSpan.Parse(sd, inv))) { File.WriteAllText(Path.Combine(dossier, "STOP"), ""); audit.Add($"revue : fichier STOP cree a {sd}"); }
+                if (j == jours[0] && Environment.GetEnvironmentVariable("STOP_A") is string sa && t0 == j.Add(TimeSpan.Parse(sa, inv))) { File.Delete(Path.Combine(dossier, "STOP")); audit.Add($"revue : fichier STOP retire a {sa}, position MNQ {Pos(strat.SymboleMNQ)}"); }
                 horloge.DateTimeUtcNow = Utc(t0.AddMinutes(1).AddSeconds(3));
+                int posAvantTic = Pos(strat.SymboleMNQ);
                 tic.Invoke(strat, null);
+                if (j == jours[0] && Environment.GetEnvironmentVariable("MAIN_APRES_ENTREE") == "1" && !mainFaite && posAvantTic == 0 && Pos(strat.SymboleMNQ) != 0)
+                {
+                    mainFaite = true;
+                    horloge.DateTimeUtcNow = Utc(t0.AddMinutes(1).AddSeconds(5)); tic.Invoke(strat, null);   // le bot voit l'ordre rempli (tic de 0,5 s en direct)
+                    int av = Pos(strat.SymboleMNQ);
+                    Core.Instance.Liste.RemoveAll(x => x.Symbol == strat.SymboleMNQ);
+                    Core.Instance.Ordres.Add($"{Utc(t0.AddMinutes(1).AddSeconds(8)):yyyy-MM-dd HH:mm:ss} A LA MAIN (5 s apres l'entree) : position MNQ {av} -> 0");
+                    audit.Add($"revue : fermeture a la main 5 s apres l'ordre d'entree : position MNQ {av} -> 0");
+                }
             }
             horloge.DateTimeUtcNow = Utc(j.AddHours(16).AddSeconds(30));
             tic.Invoke(strat, null);

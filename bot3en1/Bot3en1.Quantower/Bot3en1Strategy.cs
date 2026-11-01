@@ -32,7 +32,7 @@ namespace Bot3en1
         [InputParameter("MES (mode a plat : RSI(2) de nuit et zone freinee), meme echeance, ex. MESZ6", 35)] public Symbol SymboleMES;
         [InputParameter("Dossier des donnees du bot", 40)] public string Dossier = @"C:\Bot3en1";
         [InputParameter("MNQ par source (Bulenox : 4 pendant le challenge de 30 jours, 1 sur le compte Master)", 50, 1, 6, 1, 0)] public int Taille = 1;
-        [InputParameter("Zone : entree a la cassure entre deux controles, decochee par defaut depuis le 31 octobre 2026 = zone d'origine, entree seulement aux controles de 30 minutes (cochee : -73 % de gain sur 15 ans, audit/README.md)", 51)]
+        [InputParameter("Zone : entree a la cassure entre deux controles, decochee par defaut depuis le 31 octobre 2026 = zone d'origine, entree seulement aux controles de 30 minutes (cochee : moins de gain sur 15 ans, audit/README.md)", 51)]
         public bool EntreeCassure = false;
         [InputParameter("Zone : cassure confirmee par le volume, decochee par defaut depuis le 31 octobre 2026 = zone d'origine (sans effet si l'entree a la cassure est decochee)", 52)]
         public bool ConfirmationVolume = false;
@@ -46,7 +46,7 @@ namespace Bot3en1
         public bool FiltreOuverture = false;
         [InputParameter("Zone : filtre Q2, tendance de fond, decoche par defaut = zone d'origine (achat seulement si la veille a cloture au-dessus de la moyenne des 20 dernieres clotures, vente seulement en dessous ; scalping/README.md partie Q)", 58)]
         public bool FiltreTendance = false;
-        [InputParameter("Zone : une seule entree par seance et sortie au retour sous le niveau casse, decochee par defaut depuis le 31 octobre 2026 = zone d'origine (sortie a un controle si le prix repasse la limite du controle ou le VWAP ; cochee : -30 % de gain sur 15 ans)", 55)]
+        [InputParameter("Zone : une seule entree par seance et sortie au retour sous le niveau casse, decochee par defaut depuis le 31 octobre 2026 = zone d'origine (sortie a un controle si le prix repasse la limite du controle ou le VWAP ; cochee : moins de gain sur 15 ans)", 55)]
         public bool LaisserCourir = false;
         [InputParameter("Zone : pas de sortie aux controles, decochee par defaut depuis le 31 octobre 2026 = zone d'origine (sortie a un controle si le prix repasse la limite ou le VWAP, sinon a 16 h)", 59)]
         public bool SortieFinDeJour = false;
@@ -92,6 +92,8 @@ namespace Bot3en1
         int dernierMNQ;                              // position MNQ vue au dernier alignement (fermeture a la main reconnue)
         DateTime zeroVuDepuis = DateTime.MinValue;   // position MNQ voulue disparue du compte depuis (confirmation)
         double prixZeroVu;
+        int positionFermee;                          // position MNQ retenue comme fermee hors du bot (reprise si elle revient telle quelle)
+        DateTime repriseAttendueJusqua = DateTime.MinValue;   // relance : position du trade rejoue pas encore lue sur le compte
         DateTime dernierTick = DateTime.MinValue;
         double dernierPrix, prixAvantPause;          // dernier prix du NQ, et dernier prix avant la pause de 17 h
         DateTime journeeTrading;                     // journee de trading de la firme (de 18 h la veille a 17 h)
@@ -575,6 +577,7 @@ namespace Bot3en1
                 bot.ZoneSurMES = freinActif;
             }
             bot.DebutSeance(jour, Calendrier.Contrat(jour), derniereMinute);
+            positionFermee = 0; repriseAttendueJusqua = DateTime.MinValue;
             if (ModeAPlat && bot.JourFed) Dire("jour d'annonce de la Fed : pas de zone aujourd'hui (le RSI(2) de nuit continue)");
             if (ModeAPlat && bot.ZoneSurMES && bot.ZoneActive) Dire("frein actif : la zone trade sur MES aujourd'hui");
             decisionRsiFaite = seanceFinie = false;
@@ -591,10 +594,15 @@ namespace Bot3en1
                 int tenue = bot.ZoneTenue, voulue = ModeAPlat ? bot.PositionMNQ : bot.PositionNette;
                 int compte = SymboleMNQ != null ? PositionReelle(SymboleMNQ) : 0;
                 bool reprise = tenue != 0 && voulue != 0 && compte == voulue && (!ModeAPlat || !bot.ZoneSurMES);
-                if (!reprise) bot.OublierZoneTenue();
+                // positions pas encore chargees par Quantower : 60 s d'attente, sans ordre, avant de decider
+                bool attendre = !reprise && tenue != 0 && voulue != 0 && compte == 0 && (!ModeAPlat || !bot.ZoneSurMES);
+                if (attendre) repriseAttendueJusqua = Maintenant().AddSeconds(60);
+                else if (!reprise) bot.OublierZoneTenue();
                 if (ModeAPlat) bot.RestaurerRealiseAPlat(realiseAvant);   // les trades rejoues n'ont pas ete pris (ou sont deja comptes)
                 dernierMNQ = compte;
-                Dire(reprise
+                Dire(attendre
+                    ? $"demarrage en cours de seance : le trade de zone rejoue ({(tenue > 0 ? "achat" : "vente")} {voulue} MNQ) n'est pas encore sur le compte lu ; le bot attend 60 s, sans ordre, que Quantower charge les positions"
+                    : reprise
                     ? $"demarrage en cours de seance : le trade de zone en cours est repris ({(tenue > 0 ? "achat" : "vente")}, {compte} MNQ sur le compte, entree a {bot.EntreeZone:F2}) et gere par les regles comme avant la relance"
                     : $"demarrage en cours de seance : la zone ne prendra que les nouveaux signaux apres {maintenant:HH:mm}"
                       + (bot.Relance ? " (relance cochee : un trade deja en cours peut aussi etre pris a un controle si le delta passe de son cote)" : ""));
@@ -897,10 +905,37 @@ namespace Bot3en1
 
         void AlignerSymbole(Symbol symbole, string nom, int voulu, ref DateTime attente)
         {
+            int reel = PositionReelle(symbole);
+            if (symbole == SymboleMNQ && voulu != 0 && reel == voulu) dernierMNQ = reel;   // position voulue en place, meme pendant l'attente
+            if (symbole == SymboleMNQ && repriseAttendueJusqua != DateTime.MinValue)
+            {
+                // relance : on attend que le compte montre la position du trade rejoue
+                if (voulu != 0 && reel == voulu) { repriseAttendueJusqua = DateTime.MinValue; Dire($"position lue sur le compte ({reel} MNQ) : le trade de zone en cours est repris et gere par les regles"); }
+                else if (voulu != 0 && reel == 0 && Maintenant() < repriseAttendueJusqua) return;
+                else
+                {
+                    repriseAttendueJusqua = DateTime.MinValue;
+                    if (voulu != 0) { bot.OublierZoneTenue(); Dire($"pas de position du trade rejoue sur le compte apres 60 s (lu : {reel} MNQ) : le bot ne le reprend pas ; la zone ne prendra que les nouveaux signaux"); return; }
+                }
+            }
             if ((Maintenant() - attente).TotalSeconds < 15) return;     // laisser le temps a l'ordre precedent
-            int reel = PositionReelle(symbole), ecart = voulu - reel;
+            int ecart = voulu - reel;
             if (symbole == SymboleMNQ)
             {
+                // position revenue telle quelle apres avoir ete retenue comme fermee hors du bot : c'etait une coupure (les prix
+                // sont revenus avant les positions). Le trade est repris au lieu d'etre ferme.
+                if (positionFermee != 0 && voulu == 0 && reel == positionFermee)
+                {
+                    int pf = positionFermee;
+                    positionFermee = 0;
+                    if (bot.AnnulerFermetureALaMain())
+                    {
+                        dernierMNQ = reel;
+                        SauverEtat();
+                        Dire($"position MNQ revenue telle quelle ({reel} MNQ) : ce n'etait pas une fermeture a la main mais une coupure ; le trade de zone est repris", true);
+                        return;
+                    }
+                }
                 // audit du 31 octobre 2026 : la position voulue etait en place et elle est revenue a zero sans ordre du bot :
                 // fermeture a la main. Le bot ne la rouvre pas ; le trade de zone est termine et traite comme ecarte.
                 // Une coupure Rithmic vide aussi la liste des positions : la fermeture n'est retenue que si la position reste a zero
@@ -911,8 +946,10 @@ namespace Bot3en1
                     if (zeroVuDepuis == DateTime.MinValue) { zeroVuDepuis = Maintenant(); prixZeroVu = dernierPrix; }
                     if ((Maintenant() - zeroVuDepuis).TotalSeconds < 30 || dernierTick <= zeroVuDepuis) return;
                     bot.ZoneFermeeALaMain(prixZeroVu);
+                    positionFermee = voulu;
                     dernierMNQ = 0;
                     zeroVuDepuis = DateTime.MinValue;
+                    SauverEtat();
                     Dire($"position MNQ fermee hors du bot (a la main ou par le courtier, vers {prixZeroVu:F2}) : le bot ne la rouvre pas ;"
                          + " le trade de zone est termine, aucune nouvelle entree avant que le prix revienne dans la zone", true);
                     return;
@@ -950,6 +987,7 @@ namespace Bot3en1
                     Quantity = Math.Abs(reel), OrderTypeId = OrderType.Market
                 });
                 attente = Maintenant();
+                if (symbole == SymboleMNQ) dernierMNQ = 0;   // fermee par le bot (fichier STOP, filet, arret) : pas une fermeture a la main
                 Dire($"tout ferme : {raison}", true);
             }
         }

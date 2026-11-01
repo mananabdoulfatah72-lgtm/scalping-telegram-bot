@@ -2,13 +2,13 @@
 
 Le bot qui trade pour de vrai, sur un compte Rithmic (par exemple DayTraders) avec Quantower. Il regroupe :
 - **la zone de bruit** (V1, `zone/robot.py` sur main) : contrôle toutes les 30 minutes de 10 h à 15 h 30, sortie au
-  plus tard à 16 h (heure de New York). **Depuis le 26 octobre 2026, entrée à la cassure par défaut** (réglage « Zone :
-  entree a la cassure ») : entre deux contrôles, le bot entre dès qu'une minute clôture au-delà des niveaux du dernier
-  contrôle ;
+  plus tard à 16 h (heure de New York). **Depuis le 31 octobre 2026, réglages par défaut = zone d'origine** : entrée et
+  sorties aux contrôles de 30 minutes, sans stop (audit des pertes : `audit/README.md`). Les réglages du 26 - 27 octobre
+  (entrée à la cassure, etc.) restent disponibles, décochés ;
 - **le filtre delta** (H1, `orderflow/`) : une entrée de zone n'est prise que si le delta (achats agressifs − ventes
   agressives) des 30 minutes du NQ va dans son sens. Le delta est lu en direct dans les transactions Rithmic, plus
-  besoin de Databento. **Décoché par défaut depuis le 26 octobre 2026** (réglage « Filtre delta de la zone ») : la zone
-  seule prend chaque cassure vue à un contrôle ;
+  besoin de Databento. **Coché par défaut depuis le 31 octobre 2026** (zone d'origine du challenge ; réglage « Filtre
+  delta de la zone ») ;
 - **le RSI(2)** de Connors (`tournoi8/`) : décision à 15 h 50 (heure de New York), position tenue la nuit et le
   week-end si la règle le dit.
 
@@ -97,19 +97,31 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
   - **sauf s'il est déjà le sien (audit du 31 octobre 2026)** : si le compte tient exactement la position du trade de
     zone rejoué (bot relancé sans avoir été arrêté, par exemple après une coupure de Quantower), le bot garde ce trade
     et le gère par ses règles. Avant, il le fermait (27 octobre : position gagnante fermée à la relance).
-- **Position fermée hors du bot (audit du 31 octobre 2026) :** si la position MNQ de la zone revient à zéro sans ordre
-  du bot (fermeture à la main, ou par le courtier), le bot ne la rouvre plus. Le trade compte comme terminé, et la zone
-  attend que le prix revienne dans la bande avant toute nouvelle entrée, comme pour un trade écarté par le filtre. Avant,
-  le bot la rouvrait dans la minute (14 octobre). Une coupure Rithmic vide aussi la liste des positions : la fermeture
-  n'est donc retenue que si la position reste à zéro 30 secondes alors que des transactions NQ arrivent. Pendant une
-  coupure, le bot n'envoie plus d'ordre à l'aveugle et reprend normalement au retour de la position. Une fermeture
-  partielle (4 MNQ ramenés à 2) n'est pas reconnue : le bot remet la taille voulue, comme avant.
+  - Si Quantower n'a pas encore chargé les positions, le bot attend 60 s, sans ordre, avant de décider.
+  - Le rejeu a besoin du côté agresseur des transactions dans l'historique de Quantower, pour le filtre delta. Sans
+    lui, le trade est écarté au rejeu et il n'est pas repris.
+- **Position fermée hors du bot (audit du 31 octobre 2026, revu le 1er novembre) :** si la position MNQ de la zone
+  revient à zéro sans ordre du bot (fermeture à la main, ou par le courtier), le bot ne la rouvre plus.
+  - Le trade compte comme terminé, et la zone attend que le prix revienne dans la bande avant toute nouvelle entrée,
+    comme pour un trade écarté par le filtre. Le gain est sauvegardé tout de suite. Avant, le bot la rouvrait dans la
+    minute (14 octobre).
+  - Une coupure Rithmic vide aussi la liste des positions. La fermeture n'est donc retenue qu'après 30 secondes à zéro,
+    avec au moins une transaction NQ reçue depuis. En attendant, aucun ordre n'est envoyé à l'aveugle.
+  - **Si la position revient telle quelle** (les prix sont revenus avant les positions), la fermeture est annulée et
+    le trade continue.
+  - Une fermeture faite par le bot lui-même (fichier STOP, filet de 16 h 30, arrêt) n'est jamais prise pour une
+    fermeture à la main.
+  - **Limites :**
+    - une fermeture partielle (4 MNQ ramenés à 2) n'est pas reconnue : le bot remet la taille voulue, comme avant ;
+    - en ancien mode avec un RSI(2) tenu, et les jours de frein (zone sur MES), la fermeture à la main n'est pas
+      reconnue non plus.
 - **Réglages par défaut : la zone d'origine (31 octobre 2026, audit `audit/README.md`)** : entrée et sorties aux
   contrôles de 30 minutes, filtre delta coché, relance décochée, pas d'entrée à la cassure, pas de confirmation par le
   volume, plusieurs entrées par séance, sortie aux contrôles, aucun stop. C'est la zone qui a lancé le challenge.
-  - Pourquoi : sur 15 ans, les réglages du 26 - 27 octobre ramènent le gain de +20 956 $ à +2 688 $ (−87 %), et les
-    pertes du 27 et du 29 octobre viennent d'eux. Les quatre corrections de stratégie testées (entrée tardive, retour
-    après une perte, delta faible, gain rendu) sont rejetées : la zone d'origine reste telle quelle.
+  - Pourquoi : sur 15 ans (1 MNQ au prix d'aujourd'hui), les réglages du 26 - 27 octobre ramènent le gain de
+    +79 847 $ à +10 339 $, et la perte du 29 octobre vient d'eux.
+  - Les sept corrections de stratégie testées sont rejetées : entrée tardive, retour après une perte, delta faible,
+    gain rendu, stop à la minute, taille selon le risque, distance au VWAP. La zone d'origine reste telle quelle.
   - Les libellés des réglages de zone ont changé : Quantower n'applique plus les valeurs enregistrées avant. Les
     réglages du 26 - 27 octobre restent disponibles, à cocher à la main.
   - Vérifié : lancé sans aucun réglage de zone, le bot donne d'avril à octobre 2026 exactement les ordres et les

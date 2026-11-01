@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Audit du bot 3 en 1 (audit/README.md) : lit les sorties de Bot3en1.Replay (une ligne par entree ou sortie de la zone)
 et calcule, pour chaque jeu de reglages, les trades, le gain par periode (en $ pour 1 MNQ au prix de reference du
-projet, 30 900 points, frais de 3 $ l'aller-retour comme le rejeu), le t par seance et la plus forte baisse.
+projet, 30 900 points, frais fixes de 3 $ l'aller-retour comme le rejeu), le t par seance et la plus forte baisse.
 
 Lancer : python3 audit/rejeux.py <dossier des sorties du rejeu> <nom> [<nom> ...]"""
 import re
@@ -27,7 +27,9 @@ def trades(fichier):
         elif ouvert is not None:
             j0, s, e, txt = ouvert
             brut = (s * (prix - e) - 1.5) * 2
-            out.append(dict(jour=pd.Timestamp(j0), sens=s, entree=e, sortie=prix, brut=brut, ajuste=brut * PREF / e,
+            # points ramenes au prix d'aujourd'hui ; les frais restent 3 $ par MNQ (correction du 1er novembre 2026 : avant,
+            # ils etaient aussi multiplies par 30 900 / prix, soit environ 13 fois en 2011)
+            out.append(dict(jour=pd.Timestamp(j0), sens=s, entree=e, sortie=prix, brut=brut, ajuste=(s * (prix - e) * PREF / e - 1.5) * 2,
                             entree_txt=txt.split(" ", 1)[1], sortie_txt=l.split(" ", 1)[1]))
             ouvert = None
     return pd.DataFrame(out)
