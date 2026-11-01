@@ -273,3 +273,9 @@ challenge.
 - **Variantes :** C5, C6, et C5 + C6 ensemble, une seule valeur chacune.
 - **Critères :** les quatre du protocole. Pour C6, le critère 3 compare les dollars retirés aux trades gagnants et
   aux trades perdants.
+
+**C7, fixée le 1er novembre 2026 après le calcul de C5 et C6 mais avant le sien : pas d'entrée trop loin du VWAP.**
+Le 20 octobre, l'achat de 10 h 30 a été pris 264 points au-dessus du VWAP, soit 2,7 largeurs de bande, juste après une
+hausse de 240 points en 30 minutes. C7 refuse l'entrée si le prix est à plus de **2 largeurs de bande** du VWAP, du
+côté du trade. Le trade est alors traité comme un trade écarté (`VwapMax = 2`, désactivé par défaut). Elle est jugée
+comme les autres. Elle est écrite après avoir vu le 20 octobre : seul le calcul sur 15 ans, qu'elle n'a pas vu, compte.
