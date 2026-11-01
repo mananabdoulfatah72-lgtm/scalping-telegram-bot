@@ -742,6 +742,60 @@ On fait la même chose sans le filtre, sur les mêmes 7 mois, pour séparer l'ef
   - passer à 2 MNQ seulement si les revues de chaque semaine confirment les chiffres récents pendant un à deux mois ;
   - 3 et 4 MNQ perdent trop de comptes dans les deux tableaux (29 à 68 %).
 
+## Les indicateurs de toutes les versions testées (1er novembre 2026)
+
+Mêmes calculs pour chaque version : 1 MNQ au prix d'aujourd'hui, frais fixes de 3 $.
+- **t** : sur les séances avec trade.
+- **Sharpe** : annualisé, sur toutes les séances.
+- **Gain / perte** : gain moyen d'un gagnant divisé par la perte moyenne d'un perdant.
+- **PF** : total des gains divisé par le total des pertes.
+- **Gain par an / pire baisse** : le gain moyen d'une année, rapporté à la plus forte baisse du cumul.
+
+**15 ans (2011 - 2026), sans le filtre delta :**
+
+| Version | Trades par mois | Gagnants | Gain / perte | PF | Par trade | t | Sharpe | Pire baisse | Gain par an / pire baisse |
+|---|---|---|---|---|---|---|---|---|---|
+| Réglages du 26 - 27 octobre | 12,5 | 46,5 % | 1,18 | 1,03 | +4 $ | 0,49 | 0,12 | −19 885 $ | 0,03 |
+| Entrée à la cassure seule | 30,7 | 35,8 % | 2,02 | 1,13 | +10 $ | 2,62 | 0,65 | −10 506 $ | 0,35 |
+| Zone d'origine | 18,6 | 38,7 % | 1,97 | 1,25 | +22 $ | 4,22 | 1,05 | −6 346 $ | 0,78 |
+| + C1 entrée tardive | 16,1 | 38,5 % | 1,98 | 1,24 | +21 $ | 3,68 | 0,92 | −5 711 $ | 0,70 |
+| + C7 loin du VWAP | 17,8 | 38,6 % | 1,99 | 1,26 | +22 $ | 4,22 | 1,05 | −9 119 $ | 0,53 |
+| + C4 gain rendu | 18,6 | 43,3 % | 1,63 | 1,25 | +21 $ | 4,34 | 1,08 | −7 199 $ | 0,64 |
+| + C2 | 13,2 | 38,7 % | 2,04 | 1,29 | +27 $ | 4,14 | 1,03 | −4 966 $ | 0,86 |
+| + Q1 seul | 12,9 | 40,5 % | 2,02 | 1,38 | +32 $ | **5,27** | **1,31** | −5 810 $ | 0,85 |
+| + C2 + Q2 | 6,3 | 41,7 % | 1,95 | 1,39 | +36 $ | 3,63 | 0,90 | −6 467 $ | 0,42 |
+| + C2 + Q1b | 11,3 | 39,8 % | 2,06 | 1,36 | +32 $ | 4,69 | 1,17 | −5 266 $ | 0,83 |
+| + C2 + Q1c | 12,0 | 41,1 % | 2,00 | 1,39 | +36 $ | 4,95 | 1,23 | **−3 705 $** | **1,39** |
+| + C2 + Q1 + C1 | 8,1 | 40,6 % | 2,00 | 1,36 | +29 $ | 3,92 | 0,97 | −4 244 $ | 0,67 |
+| **+ C2 + Q1 (bot de lundi)** | 9,0 | 40,9 % | **2,13** | **1,47** | **+41 $** | **5,27** | **1,31** | −4 046 $ | 1,10 |
+
+**Avril - octobre 2026, avec le vrai delta (7 mois, petit échantillon) :**
+
+| Version | Trades par mois | Gagnants | Gain / perte | PF | Par trade | t | Sharpe | Pire baisse |
+|---|---|---|---|---|---|---|---|---|
+| Zone d'origine + filtre | 12,2 | 37,5 % | 2,45 | 1,47 | +41 $ | 1,27 | 1,63 | −1 640 $ |
+| + C2 | 10,6 | 35,5 % | 2,43 | 1,34 | +32 $ | 0,87 | 1,12 | −1 551 $ |
+| + Q1 seul | 9,6 | 44,9 % | 2,83 | **2,31** | **+88 $** | **2,27** | **2,87** | −1 200 $ |
+| + C2 + Q2 | 5,0 | 36,1 % | 2,09 | 1,18 | +16 $ | 0,35 | 0,46 | −1 862 $ |
+| + C2 + Q1b | 8,9 | 40,6 % | 2,61 | 1,79 | +63 $ | 1,54 | 1,98 | −1 185 $ |
+| + C2 + Q1c | 9,2 | 40,9 % | 2,05 | 1,42 | +42 $ | 0,90 | 1,17 | −1 791 $ |
+| + C2 + Q1 + C1 | 7,2 | 46,2 % | 2,52 | 2,16 | +71 $ | 1,89 | 2,40 | −900 $ |
+| **+ C2 + Q1 (bot de lundi)** | 8,2 | 44,1 % | 2,79 | 2,20 | +84 $ | 1,88 | 2,40 | −1 185 $ |
+
+**Ce qu'on peut affirmer, et ce qu'on ne peut pas affirmer :**
+- **Toutes les versions de la zone d'origine tiennent sur 15 ans** (t de 3,6 à 5,3).
+- **Les réglages du 26 - 27 octobre ne tiennent pas** (t 0,49, Sharpe 0,12, PF 1,03).
+- **C2 + Q1 est la version la plus équilibrée, pas la meilleure sur chaque chiffre.**
+  - Elle est à égalité pour le meilleur t et le meilleur Sharpe sur 15 ans, et elle a le meilleur PF, le meilleur gain
+    par trade et le meilleur rapport gain / perte.
+  - Q1c a une pire baisse plus faible sur 15 ans, mais elle fait moins bien sur les 7 derniers mois.
+  - Q1 seul fait aussi bien sur 15 ans et un peu mieux sur les 7 derniers mois. C2 a été gardé parce qu'il baisse le
+    risque de perdre le challenge (24,7 % contre 28,8 %).
+- **Sur 7 mois, aucun t n'atteint 2,5 avec le filtre** : l'échantillon est trop court pour départager les versions.
+  C'est le t de 15 ans qui compte.
+- **La zone est la seule stratégie du projet validée sur 15 ans.** Les autres pistes n'ont pas franchi leur barre fixée
+  d'avance : FluxNQ (ordres), règle L2 (t 2,06 pour une barre à 2,24), radar.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
