@@ -585,6 +585,22 @@ conditions sont remplies :
 - Les deux options restent dans le moteur pour le rejeu, désactivées : `Q1EcartMin`, `Q1MinuteFin`. Avec Q1 coché et
   sans elles, le bot est identique octet pour octet.
 
+## L'entrée tardive sur le bot de lundi (C2 + Q1, 6 MNQ), inscrite le 1er novembre 2026 avant de la calculer
+
+**La question de l'utilisateur.** Le 26 octobre, le bot est entré beaucoup trop tard : 1,63 largeur de bande
+au-delà du niveau. Le prix s'est retourné juste après, jusqu'à la limite du jour. C1 avait été rejetée sur la zone
+seule. Les trades ont changé avec C2 et Q1, donc on la juge de nouveau, sur le bot de lundi.
+
+**Deux variantes, une seule valeur chacune :**
+- **C1 :** pas d'entrée si le prix est déjà à plus d'**une** largeur de bande au-delà du niveau. Le trade est alors
+  traité comme un trade écarté.
+- **C1-demi :** l'entrée tardive (plus d'une largeur) est prise à **la moitié de la taille**, soit 3 MNQ au lieu de 6.
+
+**Juge : le même que pour les exceptions à Q1**, face à C2 + Q1 avec 6 MNQ.
+1. Depuis l'état du compte, la réussite monte sur 15 ans et sur avril - octobre 2026.
+2. L'échec ne monte pas de plus d'un point.
+3. Sur les challenges de 22 séances, la réussite ne baisse pas.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
