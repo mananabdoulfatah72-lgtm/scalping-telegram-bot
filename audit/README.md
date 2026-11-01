@@ -713,6 +713,35 @@ Sinon, C2 reste coché.
 - Monter la taille une fois le plancher bloqué n'aide pas non plus : chaque retrait ramène le compte près de 52 600 $.
 - **Conseil pour le Master : 1 MNQ.**
 
+### Le Master avec le filtre delta (avril - octobre 2026, années reconstituées)
+
+Le vrai delta n'existe que depuis avril 2026. Méthode :
+- les vraies journées du bot (filtre delta, C2 et Q1, limite du jour) sont remélangées par semaines entières ;
+- 2 000 années possibles sont construites ainsi ;
+- même règles de retrait que plus haut.
+
+On fait la même chose sans le filtre, sur les mêmes 7 mois, pour séparer l'effet du filtre de celui de la période.
+
+| Taille | Gain moyen par mois | Au moins un retrait | Compte perdu | Premier retrait | Reçu en moyenne sur l'année |
+|---|---|---|---|---|---|
+| 1 MNQ, avec le filtre | +691 $ | 90 % | 0 % | 109 séances (environ 5 mois) | 3 091 $ |
+| **2 MNQ, avec le filtre** | +1 356 $ | **92 %** | **5 %** | 84 séances (environ 4 mois) | **4 319 $** |
+| 3 MNQ, avec le filtre | +1 863 $ | 72 % | 29 % | 73 séances | 4 026 $ |
+| 4 MNQ, avec le filtre | +1 668 $ | 53 % | 50 % | 59 séances | 3 543 $ |
+| 1 MNQ, sans le filtre | +684 $ | 87 % | 0 % | 107 séances | 2 838 $ |
+| 3 MNQ, sans le filtre | +1 797 $ | 63 % | 38 % | 72 séances | 3 273 $ |
+| 4 MNQ, sans le filtre | +1 673 $ | 46 % | 58 % | 54 séances | 2 871 $ |
+
+- **Le filtre aide** (plus de retraits, moins de comptes perdus), mais l'écart avec le tableau des 15 ans vient surtout
+  de la période. Avril - octobre 2026 a été une bonne période pour la zone : 1 MNQ y fait environ +690 $ par mois,
+  contre +357 $ en moyenne sur 15 ans.
+- **Ces années reconstituées répètent les mêmes 7 mois.** Si les mois suivants ressemblent plus à la moyenne des
+  15 ans, les résultats seront entre les deux tableaux.
+- **Conseil :**
+  - commencer le Master à 1 MNQ ;
+  - passer à 2 MNQ seulement si les revues de chaque semaine confirment les chiffres récents pendant un à deux mois ;
+  - 3 et 4 MNQ perdent trop de comptes dans les deux tableaux (29 à 68 %).
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
