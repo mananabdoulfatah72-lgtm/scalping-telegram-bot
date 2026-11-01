@@ -601,6 +601,32 @@ seule. Les trades ont changé avec C2 et Q1, donc on la juge de nouveau, sur le 
 2. L'échec ne monte pas de plus d'un point.
 3. Sur les challenges de 22 séances, la réussite ne baisse pas.
 
+### Résultats de l'entrée tardive sur le bot de lundi (calculés après l'avoir inscrite)
+
+| C2 + Q1, 6 MNQ | Depuis l'état actuel, 15 ans : réussis / échoués | Avril - oct. 2026 : réussis / échoués | 22 séances, départs 2011 / 2019 : réussis | 15 ans, 6 MNQ avec limite |
+|---|---|---|---|---|
+| **sans règle (proposé)** | **29,9 %** / 24,7 % | 32,6 % / 22,2 % | **34,17 % / 36,05 %** | **+287 629 $ (t 4,11)** |
+| C1, pas d'entrée tardive | 25,7 % / 19,6 % | 28,8 % / 14,4 % | 27,45 % / 29,21 % | +187 561 $ (t 3,09) |
+| C1-demi, moitié de taille | 27,8 % / 20,1 % | 36,1 % / 13,2 % | 31,74 % / 35,84 % | +269 499 $ (t 4,25) |
+
+- **Les entrées tardives sont les meilleurs trades** (C2 + Q1, 15 ans, 6 MNQ).
+  - Elles font 18 % des trades.
+  - Elles gagnent 43 % du temps, en moyenne +526 $ par trade.
+  - Les autres gagnent 40 % du temps, en moyenne +185 $ par trade.
+  - Un prix déjà loin du niveau au contrôle signale une forte poussée, souvent une journée de tendance. Le 26 octobre
+    est le mauvais côté d'une pièce gagnante.
+- **C1 : rejetée.** Elle aurait évité le 26 octobre, mais elle retire les meilleurs trades : la réussite tombe de
+  29,9 % à 25,7 %.
+- **C1-demi : rejetée.**
+  - Elle baisse nettement l'échec, et elle fait mieux sur avril - octobre 2026.
+  - Mais sur 15 ans, la réussite baisse (−2,1 points depuis l'état actuel, −2,4 sur les challenges de 2011) :
+    conditions 1 et 3.
+  - Le 26 octobre, elle aurait perdu −732 $ au lieu de −1 013 $.
+- **Pourquoi le bot entre « tard ».** Il ne regarde le prix qu'aux contrôles de 30 minutes. Le 26 octobre, la cassure
+  a eu lieu entre deux contrôles, et le prix était déjà 200 points plus haut au contrôle de 11 h. Entrer dès la
+  cassure, c'est l'entrée à la cassure du 26 - 27 octobre : sur 15 ans, elle fait −27 %, parce qu'elle prend toutes
+  les fausses cassures entre deux contrôles. Attendre le contrôle est justement le filtre du bruit.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
