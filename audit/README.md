@@ -323,6 +323,33 @@ de trade de zone ce jour-là.
    - Durée et taille : 22 séances, 4 MNQ, puis 6 MNQ les 5 dernières.
    - Départs : chaque séance de 2011 à 2026, puis de 2019 à 2026.
 
+## Nouveau critère pour les corrections C1 à C7, fixé le 1er novembre 2026 avant de le calculer
+
+**La demande.** L'utilisateur précise que son but n'est pas le gain maximal (« sans surentabilité ») : il ne veut plus
+reprendre ces pertes, et il veut passer son challenge. Le critère du protocole refusait toute correction qui baisse le
+gain sur 15 ans : il ne correspond donc pas à ce but. La couche R1 / R2 (règles du bot de l'ami) est abandonnée à sa
+demande. Résultats publiés pour mémoire : R1 et R2 ne baissent pas les échecs sans baisser les réussites.
+
+**Le nouveau juge : des challenges Bulenox 50K simulés** (`audit/risque.py`).
+- Règles du challenge :
+  - objectif +3 000 $ ;
+  - perte max suivie de 2 500 $ en fin de journée, avec plancher bloqué à 50 100 $ ;
+  - échec dès que le compte touche le plancher pendant la séance.
+- Durée et taille : 22 séances, 4 MNQ, puis 6 MNQ les 5 dernières.
+- Le trade : limite de perte du jour de 1 000 $ vérifiée sur chaque minute, frais de 3 $ par MNQ, gains au prix
+  d'aujourd'hui.
+- Départs : chaque séance de 2011 à 2026, puis de 2019 à 2026.
+
+Les trades viennent du rejeu de chaque correction sur 15 ans, sans le filtre delta. C3 n'est donc pas jugeable : il
+lui faut le vrai delta. C6 change la taille : elle est simulée avec la taille qu'elle donne à chaque trade.
+
+**Une correction de perte est adoptée si :**
+1. elle évite ou réduit la perte d'octobre qu'elle vise ;
+2. sur les deux plages de départs, elle baisse le taux d'échec, sans baisser le taux de réussite de plus d'un point ;
+3. la zone reste nettement gagnante sur 15 ans (t ≥ 3).
+
+Les valeurs des corrections restent celles fixées avant : aucune n'est réglée de nouveau.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
