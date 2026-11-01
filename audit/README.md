@@ -696,6 +696,23 @@ Sinon, C2 reste coché.
 - **Avec 1 MNQ, le premier retrait arrive en général après 7 mois environ.** Avec 2 MNQ, c'est plus tôt, mais plus
   d'un compte sur trois est perdu.
 
+### Le Master à 3 ou 4 MNQ (C2 + Q1, 12 mois, mêmes règles de retrait)
+
+| Taille | Au moins un retrait | Compte perdu | Perdu sans aucun retrait | Premier retrait (médiane) | Reçu en moyenne | Gain moyen par mois avant retraits |
+|---|---|---|---|---|---|---|
+| **1 MNQ** | **52 %** | **6 %** | 6 % | 142 séances (environ 7 mois) | **925 $** | +357 $ |
+| 3 MNQ | 40 % | 65 % (en général au bout de 3 mois) | 58 % | 73 séances | 974 $ | +1 045 $ |
+| 4 MNQ | 36 % | 68 % (en général au bout de 2 mois) | 62 % | 61 séances | 902 $ | +1 189 $ |
+| 1 MNQ, puis 2 une fois le plancher bloqué | 50 % | 16 % | | 132 séances | 946 $ | |
+| 1 MNQ, puis 3 une fois le plancher bloqué | 42 % | 31 % | | 131 séances | 832 $ | |
+
+- Avec 3 ou 4 MNQ, on gagne plus par mois tant que le compte vit. Mais deux comptes sur trois touchent la perte max
+  suivie dans l'année, le plus souvent avant le premier retrait.
+- Ce qui est reçu en moyenne ne monte pas : environ 900 à 1 000 $, comme avec 1 MNQ, mais pour un risque dix fois plus
+  grand.
+- Monter la taille une fois le plancher bloqué n'aide pas non plus : chaque retrait ramène le compte près de 52 600 $.
+- **Conseil pour le Master : 1 MNQ.**
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
