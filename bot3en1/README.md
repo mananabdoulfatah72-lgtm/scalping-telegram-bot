@@ -384,20 +384,15 @@ Bulenox oblige à être à plat avant 16 h 59 (New York) : le RSI(2) gardé plus
 | Mode a plat chaque jour | coché | coché |
 | RSI(2) de nuit sur MES | **décoché** | **décoché** |
 | MNQ, MES, NQ | échéance du moment (ex. MNQZ6, MESZ6, NQZ6) | idem |
-| MNQ par source | **4** | **1** |
-| Plafond de gain du jour | 0 | **500** |
+| MNQ par source | **6 depuis le 1er novembre 2026** (avec Q1 ; 4 avant) | **1** |
+| Plafond de gain du jour | 0 | **0** (le plafond de 500 $ coupait les meilleures journées : audit du 1er novembre 2026) |
 | Limite de perte du jour | **1 000** (100 $ de marge avant les 1 100 $ de Bulenox) | 1 000 |
 | Frein | **0** | **750** |
-| Zone : entrée à la cassure | **coché** (choix de l'utilisateur, 26 octobre 2026) | **décoché conseillé** (voir plus bas) |
-| Zone : entrée à la cassure confirmée par le volume | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
-| Zone : multiple du volume | **1** (choix de l'utilisateur) | (sans effet) |
-| Zone : pas d'entrée tardive | **coché** (choix de l'utilisateur) | décoché |
-| Zone : fenêtre de confirmation en minutes | **5** (choix de l'utilisateur) | (sans effet) |
-| Zone : filtres Q1 et Q2 | décochés (ils font baisser les chances de valider en 13 séances) | **cochés conseillé** |
-| Zone : pas de sortie aux contrôles | **coché** (choix de l'utilisateur, 27 octobre 2026) | décoché |
-| Zone : stop en points au-delà du niveau cassé | **70** (choix de l'utilisateur, 27 octobre 2026) | 70 |
-| Zone : une seule entrée par séance et sortie au niveau cassé | **coché** (choix de l'utilisateur) | décoché |
-| Zone : laisser courir | **coché** (choix de l'utilisateur, 26 octobre 2026) | décoché |
+| Zone : réglages du 26 - 27 octobre (cassure, volume, pas d'entrée tardive, fenêtre, une entrée par séance, pas de sortie aux contrôles, stop) | **décochés / 0 depuis le 31 octobre 2026** (zone d'origine, audit) | décochés / 0 |
+| Filtre delta de la zone | **coché** | coché |
+| Zone : pas de nouvelle entrée dans le même sens après une perte (C2) | **coché** | coché |
+| Zone : filtre Q1, sens de l'ouverture | **coché depuis le 1er novembre 2026** (choix de l'utilisateur, `audit/README.md`) | **coché** |
+| Zone : filtre Q2, tendance de fond | décoché (trop peu de trades) | décoché |
 | Filtre delta de la zone | décoché | décoché |
 | Solde de départ / perte max / blocage | 50 000 / 2 500 / 100 | 50 000 / 2 500 / 100 |
 | Plus haut de fin de journée déjà atteint | 0 (compte neuf) | 0 (compte neuf) |

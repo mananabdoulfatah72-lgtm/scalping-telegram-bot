@@ -665,6 +665,37 @@ Sinon, C2 reste coché.
   - Sur avril - octobre 2026 : 12 retirés, dont 6 gagnants (11 juin +3 457 $, 6 mai +2 181 $, 15 avril +1 557 $,
     20 mai +1 305 $, 22 septembre +1 055 $, 24 juillet +636 $).
 
+## Le compte Master avec C2 et Q1 (simulation du 1er novembre 2026)
+
+**Règles de retrait de Bulenox, d'après des guides de 2026, à vérifier sur le centre d'aide de Bulenox :**
+- 10 jours de trading par retrait, retrait d'au moins 1 000 $ ;
+- 52 600 $ gardés sur le compte : il faut donc 53 600 $ pour un premier retrait ;
+- les trois premiers retraits limités à 1 500 $ ;
+- la meilleure journée doit faire au plus 40 % du gain ;
+- 100 % des 10 000 premiers dollars pour l'utilisateur, versements le mercredi.
+
+**Simulation.**
+- Les journées de 15 ans (sans le filtre delta), à partir d'un départ toutes les 5 séances, suivies 12 mois.
+- Limite du jour de 1 000 $, plancher à 2 500 $ du plus haut, bloqué à 50 100 $.
+- Frein simulé à demi-taille.
+- La meilleure journée est comptée depuis le dernier retrait.
+
+| Sur 12 mois | Au moins un retrait | Compte perdu | Premier retrait (médiane) | Reçu en moyenne |
+|---|---|---|---|---|
+| C2 sans Q1, 1 MNQ, sans plafond | 45,3 % | 12,5 % | 134 séances | 861 $ |
+| **C2 + Q1, 1 MNQ, sans plafond** | **52,4 %** | **6,4 %** | 142 séances | **925 $** |
+| C2 + Q1, 1 MNQ, plafond de 500 $ | 23,0 % | 6,4 % | 176 séances | 374 $ |
+| C2 + Q1, 1 MNQ, plafond de 1 000 $ | 48,7 % | 6,4 % | 144 séances | 845 $ |
+| C2 + Q1, 2 MNQ, sans plafond | 51,7 % | 37,7 % | 102 séances | 1 219 $ |
+| C2 + Q1, 4 MNQ, sans plafond | 35,6 % | 67,7 % | 61 séances | 902 $ |
+
+- **Q1 et C2 aident aussi sur le Master :** plus de comptes payés (52 % au lieu de 45 %), deux fois moins de comptes
+  perdus.
+- **Le plafond de gain de 500 $ par jour, conseillé jusqu'ici pour le Master, est à enlever.** Il coupe les
+  meilleures journées alors que les pertes vont jusqu'à 1 000 $.
+- **Avec 1 MNQ, le premier retrait arrive en général après 7 mois environ.** Avec 2 MNQ, c'est plus tôt, mais plus
+  d'un compte sur trois est perdu.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
