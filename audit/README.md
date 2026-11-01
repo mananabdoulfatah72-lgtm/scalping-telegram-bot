@@ -419,6 +419,60 @@ mais testés seulement sur les réglages du 26 - 27 octobre, jamais sur la zone 
 - Le juge est le critère des challenges simulés du 1er novembre, vu plus haut.
 - Les définitions restent celles du 27 octobre : aucune valeur n'est réglée de nouveau.
 
+### Résultats de Q1, Q2 et C4 avec C2 (calculés après les avoir inscrits)
+
+Les mêmes challenges simulés, comparés au bot actuel (zone d'origine + C2) :
+
+| Variante | Gain 15 ans (4 MNQ) | t | Réussis 2011 / 2019 | Échoués 2011 / 2019 | Avril - octobre 2026, vrai delta (1 MNQ) | Octobre (1 MNQ) |
+|---|---|---|---|---|---|---|
+| bot actuel (C2) | +221 350 $ | 3,71 | 35,21 % / 34,51 % | 51,00 % / 53,80 % | +2 415 $ | +226 $ |
+| C2 + Q1 sens de l'ouverture | +229 288 $ | **4,57** | 34,17 % / 36,05 % | **38,88 % / 42,67 %** | **+4 971 $** | +562 $ |
+| C2 + Q2 tendance de fond | +146 586 $ | 3,41 | 27,17 % / 31,38 % | 28,80 % / 29,84 % | +570 $ | +384 $ |
+| C2 + C4 gain rendu | +214 679 $ | 3,90 | 35,09 % / 35,65 % | 47,36 % / 52,01 % | +4 247 $ | −8 $ |
+
+**Depuis l'état du compte le 1er novembre** : +900 $ (50 900 $), plus haut de 51 000 $, 9 séances, dont les 5 dernières
+à 6 MNQ.
+
+| Bot | Réussis 2011 / 2019 | Échoués | Temps écoulé sans objectif |
+|---|---|---|---|
+| zone d'origine sans C2 | 31,5 % / 33,1 % | 35,3 % / 36,4 % | 33,2 % / 30,5 % |
+| **bot actuel (C2)** | **31,0 % / 32,0 %** | 30,3 % / 33,3 % | 38,7 % / 34,8 % |
+| C2 + Q1 | 27,4 % / 27,1 % | 19,2 % / 21,3 % | 53,4 % / 51,6 % |
+| C2 + Q2 | 20,5 % / 23,9 % | 10,4 % / 11,1 % | 69,1 % / 65,1 % |
+| C2 + C4 | 29,8 % / 32,4 % | 27,5 % / 30,9 % | 42,7 % / 36,7 % |
+
+**Décisions.**
+- **Q1 : non adoptée pour le challenge, à cocher sur le compte Master.**
+  - Elle manque le critère de 0,04 point (réussite −1,04 point sur les départs de 2011).
+  - Depuis l'état actuel, elle baisse la réussite de 4 à 5 points : avec un tiers de trades en moins, le temps manque
+    plus souvent.
+  - C'est pourtant le filtre le plus solide trouvé. Il baisse les échecs de 12 points, monte le t à 4,57, et fait
+    mieux sur avril - octobre 2026 avec le vrai delta. Le 27 octobre, la partie Q l'avait déjà trouvé bon sur les
+    deux périodes, avec d'autres réglages.
+- **Q2 : rejetée pour le challenge** : réussite −3 à −8 points. Il aurait bloqué tous les achats perdants d'octobre,
+  mais il prend trop peu de trades.
+- **C4 : non adoptée.** Elle passe le critère des challenges face à C2, mais elle aurait coupé le gagnant du
+  14 octobre (critère 1). Depuis l'état actuel, elle ne change presque rien.
+
+### Les types de pertes qui restent possibles (bot actuel, 15 ans, 4 MNQ)
+
+- **En général** : 61 % des trades perdent, en moyenne −612 $. Les gagnants rapportent en moyenne +1 247 $. Le gain
+  vient des grandes journées de tendance.
+- **A. Faux départ** (le prix repart contre le trade dès l'entrée, jamais plus de +20 points) : 29 % des trades
+  perdants. Ce sont les 20, 23 et 26 octobre.
+- **B. Gain rendu** (le trade a gagné au moins 60 points, puis finit en perte) : 38 % des trades perdants. C'est la
+  plus grande catégorie : C4 la vise, sans assez d'effet pour l'instant.
+- **C. Aller-retour** (une perte à l'achat et une perte à la vente le même jour) : 2,7 jours par an. C2 ne bloque que
+  le même sens.
+- **D. Contre le sens de l'ouverture** : 34 % des trades perdants. C'est ce que Q1 retire, avec presque autant de
+  gains.
+- **E. Limite du jour** (journée à −900 $ ou pire) : environ 1 séance sur 8, soit 32 par an (35 par an sur
+  2023 - 2026). Deux de suite : 115 fois en 15 ans.
+- **Exécution et opérations :**
+  - glissement dans une minute très rapide (−70 $ le 20 octobre) ;
+  - coupure de connexion : le bot la gère maintenant ;
+  - interventions à la main : le bot ne rouvre plus une position fermée à la main.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
