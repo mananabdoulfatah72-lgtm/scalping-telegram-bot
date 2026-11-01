@@ -285,6 +285,44 @@ vérifie chaque perte, et on ne réécrit que les règles qui tiennent sur 15 an
    aussi bien que la main. Si c'est vraiment nécessaire, le bot ne rouvrira plus la position.
 5. Chaque vendredi soir, envoyer le journal et l'export de la semaine (voir « La revue de chaque fin de semaine »).
 
+## Couche de risque R1 et R2, fixée le 1er novembre 2026 avant de la calculer (modèle du bot de l'ami)
+
+**La demande.** L'utilisateur ne veut plus reprendre les mêmes grosses pertes. Il prend pour modèle le bot d'un ami :
+« la partie la plus importante est le risque ». Ce bot a un stop par trade d'au plus 1 % du compte, une perte par jour
+limitée, et il s'arrête après une série de défaites.
+
+Les filtres C1 à C7 essayaient d'éviter les mauvais trades : aucun ne tient sur 15 ans. Cette couche ne cherche pas à
+deviner le mauvais trade. Elle limite ce qu'il peut coûter. Le bot aura encore tort parfois, mais une erreur ne doit
+plus coûter 1 000 $.
+
+**R1, stop par trade à 1 % du compte.** Une perte de trade ne doit pas dépasser 500 $ (1 % de 50 000 $).
+- Le stop est à 500 / (2 $ × MNQ) points du prix d'entrée : 62,5 points avec 4 MNQ, 41,7 points avec 6 MNQ. Il est
+  vérifié à chaque prix.
+- Après le stop, le trade est traité comme écarté : pas de nouvelle entrée avant que le prix revienne dans la zone.
+- Sur 15 ans, la distance est ramenée au prix du moment (62,5 points à 30 900, soit 0,202 % du prix).
+
+**R2, arrêt après une défaite dans la journée.** Après un trade perdant (sortie, stop ou limite), le bot ne prend plus
+de trade de zone ce jour-là.
+
+**Conditions des tests.**
+- Pertes visées : R1 vise le 20, le 21 (14 h 30) et le 26 octobre. R2 vise le 21 octobre (deuxième achat).
+- Variantes : R1, R2, et R1 + R2.
+- Rejeu : 2011 - 2026, sans le filtre (seul possible sur 15 ans).
+- Réglages simulés : 4 MNQ, limite de perte du jour de 1 000 $ vérifiée sur les plus bas et plus hauts de chaque
+  minute, frais de 3 $ par MNQ, gains au prix d'aujourd'hui.
+
+**Une règle de risque est adoptée si les quatre conditions sont remplies :**
+1. Elle réduit les pertes visées sur les séances d'octobre.
+2. Elle garde au moins 90 % du gain sur 15 ans, et au moins 90 % sur deux des trois périodes. Une règle de risque
+   paie en gain ce qu'elle retire en risque : au-delà de 10 %, le prix est trop cher.
+3. Elle réduit la pire journée et la plus forte baisse du cumul sur 15 ans.
+4. Sur des challenges Bulenox 50K simulés, elle ne baisse pas le taux de réussite de plus de 2 points, et elle baisse
+   le taux d'échec.
+   - Règles simulées : objectif +3 000 $, perte max suivie de 2 500 $ en fin de journée, avec plancher bloqué à
+     50 100 $, et échec dès que le compte la touche pendant la séance.
+   - Durée et taille : 22 séances, 4 MNQ, puis 6 MNQ les 5 dernières.
+   - Départs : chaque séance de 2011 à 2026, puis de 2019 à 2026.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
