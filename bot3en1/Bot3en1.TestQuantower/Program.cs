@@ -33,8 +33,10 @@ using TradingPlatform.BusinessLayer;
 // cette minute (le bot ne doit pas la rouvrir) ; REPRISE=12:00 relance le bot a cette minute sans l'arreter (coupure de
 // Quantower : la position reste ouverte), avec l'historique des transactions de la seance pour le rattrapage. COUPURE=12:00 : coupure
 // Rithmic de 3 minutes a la fin de cette minute (plus de transactions, liste des positions vide, ordres refuses), puis retour de la
-// position : le bot ne doit pas la prendre pour une fermeture a la main. DEFAUTS=1 : aucun reglage de zone impose, ceux du bot par
-// defaut (zone d'origine depuis le 31 octobre 2026 : filtre delta coche, entree et sorties aux controles, sans stop).
+// position : le bot ne doit pas la prendre pour une fermeture a la main. SANS_RETOUR=1 : C2 (pas de nouvelle entree dans le meme
+// sens apres une perte ; sans la variable, decoche comme avant). DEFAUTS=1 : aucun reglage de zone impose, ceux du bot par
+// defaut (zone d'origine depuis le 31 octobre 2026 : filtre delta coche, entree et sorties aux controles, sans stop ; C2 cochee
+// depuis le 1er novembre 2026).
 // Revue du code du 1er novembre 2026 (premier jour seulement) : RETARD_POSITIONS=1 avec COUPURE (transactions revenues avant
 // les positions) ; REPRISE_SANS_POSITIONS=1 avec REPRISE (positions chargees apres le lancement) ; MAIN_APRES_ENTREE=1
 // (fermeture a la main 5 s apres que le bot a vu son ordre d'entree rempli) ; STOP_DE=12:00 STOP_A=12:10 (fichier STOP).
@@ -82,6 +84,7 @@ class Program
             strat.SortieFinDeJour = Environment.GetEnvironmentVariable("SANS_SORTIE") == "1";
             strat.StopPoints = double.Parse(Environment.GetEnvironmentVariable("STOP") ?? "0", inv);
             strat.LaisserCourir = Environment.GetEnvironmentVariable("COURIR") == "1";
+            strat.PasDeRetourApresPerte = Environment.GetEnvironmentVariable("SANS_RETOUR") == "1";   // C2 (coche par defaut depuis le 1er novembre 2026)
         }
         if (Environment.GetEnvironmentVariable("RELANCE") is string relance) strat.RelanceFiltre = relance == "1";   // sinon le reglage par defaut
         bool aPlat = Environment.GetEnvironmentVariable("A_PLAT") == "1";

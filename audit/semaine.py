@@ -37,7 +37,7 @@ CORRECTIONS = {
     "C1": ("pas d'entrée si le prix est déjà à plus d'une largeur de bande au-delà du niveau",
            "rejetée : sur 15 ans, +63 830 $ au lieu de +79 847 $, moins bien sur les 3 périodes"),
     "C2": ("après une sortie perdante, plus d'entrée dans le même sens pendant la séance",
-           "rejetée : sur 15 ans, +68 332 $ au lieu de +79 847 $, moins bien sur 2019 - 2026, retire plus de gains que de pertes"),
+           "ADOPTÉE le 1er novembre 2026 (réglage coché par défaut) : sur des challenges simulés, 51 % d'échecs au lieu de 56,5 %, autant de réussites"),
     "C3": ("le filtre delta demande |delta 30 min| ≥ 300",
            "rejetée : retire autant de gagnants que de perdants (+795 $ / −748 $ sur 7 mois)"),
     "C4": ("sortie à un contrôle si la moitié d'un gain d'au moins une largeur de bande est rendue",
@@ -47,7 +47,7 @@ CORRECTIONS = {
     "C6": ("taille réduite pour que la perte jusqu'au niveau de sortie ne dépasse pas 500 $",
            "rejetée : sur 15 ans, +232 568 $ au lieu de +319 389 $ (4 MNQ), moins bien sur les 3 périodes"),
     "C7": ("pas d'entrée à plus de 2 largeurs de bande du VWAP",
-           "rejetée : sur 15 ans, +77 028 $ au lieu de +79 847 $, moins bien sur 2019 - 2026, retire plus de gagnants que de perdants"),
+           "non adoptée : passe seule, mais avec C2 elle baisse la réussite des challenges de 2,2 points ; C2 baisse plus les échecs"),
 }
 REGLAGES_MODIFIES = ("A LA CASSURE", "UNE ENTREE PAR SEANCE", "STOP A", "PAS DE SORTIE AUX CONTROLES", "filtre delta decoche",
                      "SANS ENTREE TARDIVE", "Q1 (sens de l'ouverture) COCHE", "Q2 (tendance de fond) COCHE")
@@ -240,6 +240,7 @@ def analyser(tr, J, minutes, limite, precedent):
     if precedent is not None and precedent["sens"] == s and precedent["pts"] < 0:
         causes.append("piège du bruit : nouvelle entrée dans le même sens juste après une sortie perdante")
         corrections.append("C2")
+        evitable.append("oui : C2 (adoptée le 1er novembre 2026) refuse ce trade")
     if abs(tr["delta"]) < 300:
         causes.append(f"delta faible ({tr['delta']:+d})")
         corrections.append("C3")

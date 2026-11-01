@@ -56,6 +56,8 @@ namespace Bot3en1
         public bool FiltreDeltaActif = true;
         [InputParameter("Filtre delta : relance, decochee par defaut = zone d'origine (cochee : un trade ecarte encore en cours est pris a un controle suivant si le delta va alors dans son sens, donc plus tard et plus loin de sa sortie ; relance/README.md)", 49)]
         public bool RelanceFiltre = false;
+        [InputParameter("Zone : pas de nouvelle entree dans le meme sens apres une sortie perdante de la seance, cochee par defaut depuis le 1er novembre 2026 (audit des pertes, C2 : evite le 2e achat perdant du 21 octobre ; challenges simules : moins d'echecs, autant de reussites)", 46)]
+        public bool PasDeRetourApresPerte = true;
         [InputParameter("Plafond de gain du jour en $ (0 = aucun ; Bulenox : 500 sur le compte Master seulement, 0 pendant le challenge ; Static : 500 sur le compte Pro)", 60, 0, 5000, 50, 0)] public double PlafondJour = 0;
         [InputParameter("Mode a plat : limite de perte du jour en $ (0 = aucune ; Bulenox option 2 : 1000, 100 $ de marge avant la limite de 1 100 $ de la firme)", 61, 0, 5000, 50, 0)] public double LimitePerteJour = 0;
         [InputParameter("Mode a plat : frein, zone sur MES quand le compte est a X $ ou plus sous son plus haut de fin de journee (0 = jamais ; Bulenox : 750)", 62, 0, 5000, 50, 0)] public double Frein = 750;
@@ -79,7 +81,7 @@ namespace Bot3en1
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
-        const string Version = "31 octobre 2026 (audit : zone d'origine par defaut, position fermee a la main jamais rouverte, trade repris apres une relance)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
+        const string Version = "1er novembre 2026 (audit des pertes : zone d'origine par defaut, pas de retour dans le meme sens apres une perte, position fermee a la main jamais rouverte, trade repris apres une relance)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
         Moteur bot;
         TimeZoneInfo ny;
         Timer horloge;
@@ -151,7 +153,7 @@ namespace Bot3en1
                 SymboleNQ.NewLast += SurTransaction;
                 if (ModeAPlat) SymboleMES.NewLast += SurTransactionES;
                 horloge = new Timer(_ => Tic(), null, 500, 500);
-                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? $" CONFIRMEE PAR LE VOLUME (x{MultipleVolume.ToString("0.#", CultureInfo.InvariantCulture)})" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, {(SansEntreeTardive ? $"SANS ENTREE TARDIVE (confirmation dans les {Math.Max(0, FenetreConfirmation)} minutes apres la cassure)" : "entree tardive possible aux controles")}, {(LaisserCourir ? "UNE ENTREE PAR SEANCE" : "plusieurs entrees par seance")}, {(StopPoints > 0 ? $"STOP A {StopPoints.ToString("0.##", CultureInfo.InvariantCulture)} POINTS AU-DELA DU NIVEAU CASSE, " : "aucun stop, ")}{(SortieFinDeJour ? "PAS DE SORTIE AUX CONTROLES : SORTIE SEULEMENT A 16 H OU A LA LIMITE DE PERTE DU JOUR" : LaisserCourir ? "sortie a un controle au retour sous le niveau casse, ou a 16 h" : "sorties d'origine (aux controles, limite de la zone ou VWAP, et 16 h)")}, filtres Q1 (sens de l'ouverture) {(FiltreOuverture ? "COCHE" : "decoche")} et Q2 (tendance de fond) {(FiltreTendance ? "COCHE" : "decoche")}, filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}. {EtatTexte()}");
+                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version}, entree {(EntreeCassure ? "A LA CASSURE (entre deux controles)" + (ConfirmationVolume ? $" CONFIRMEE PAR LE VOLUME (x{MultipleVolume.ToString("0.#", CultureInfo.InvariantCulture)})" : " sans confirmation par le volume") : "aux controles de 30 minutes seulement")}, {(SansEntreeTardive ? $"SANS ENTREE TARDIVE (confirmation dans les {Math.Max(0, FenetreConfirmation)} minutes apres la cassure)" : "entree tardive possible aux controles")}, {(LaisserCourir ? "UNE ENTREE PAR SEANCE" : "plusieurs entrees par seance")}, {(StopPoints > 0 ? $"STOP A {StopPoints.ToString("0.##", CultureInfo.InvariantCulture)} POINTS AU-DELA DU NIVEAU CASSE, " : "aucun stop, ")}{(SortieFinDeJour ? "PAS DE SORTIE AUX CONTROLES : SORTIE SEULEMENT A 16 H OU A LA LIMITE DE PERTE DU JOUR" : LaisserCourir ? "sortie a un controle au retour sous le niveau casse, ou a 16 h" : "sorties d'origine (aux controles, limite de la zone ou VWAP, et 16 h)")}, filtres Q1 (sens de l'ouverture) {(FiltreOuverture ? "COCHE" : "decoche")} et Q2 (tendance de fond) {(FiltreTendance ? "COCHE" : "decoche")}, filtre delta {(FiltreDeltaActif ? "COCHE (cassures ecartees si le delta va contre)" : "decoche (zone seule)")}, relance du filtre {(RelanceFiltre ? "COCHEE" : "decochee")}{(PasDeRetourApresPerte ? ", PAS DE NOUVELLE ENTREE DANS LE MEME SENS APRES UNE PERTE (C2)" : "")}. {EtatTexte()}");
             }
             catch (Exception e)
             {
@@ -327,6 +329,7 @@ namespace Bot3en1
             bot.SortieFinDeJour = SortieFinDeJour;
             bot.StopPoints = Math.Max(0, StopPoints);
             bot.Relance = RelanceFiltre;
+            bot.PasDeRetourApresPerte = PasDeRetourApresPerte;
             bot.MessageControle = true;
             bot.HeureParis = m => HeureDeParis(m);
             bot.PlafondJour = ModeAPlat ? 0 : PlafondJour;     // mode a plat : plafond gere ici, sur la valeur reelle du compte

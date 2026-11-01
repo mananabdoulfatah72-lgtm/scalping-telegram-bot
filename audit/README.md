@@ -19,7 +19,7 @@ Les erreurs de logique, de réglage et d'opération sont corrigées tout de suit
 |---|---|---|---|
 | 14 oct. | +988 $ | réouverture de la vente par le bot après ta fermeture à la main (environ −180 $) | **oui** : défaut de logique, **corrigé** |
 | 20 oct. | −1 077 $ | achat 10 h 30, limite du jour | non |
-| 21 oct. | −1 019 $ | achat 13 h (−272 $), puis achat 14 h 30, limite du jour (environ −740 $) | non |
+| 21 oct. | −1 019 $ | achat 13 h (−272 $), puis achat 14 h 30, limite du jour (environ −740 $) | le 2e achat : **oui, corrigé le 1er novembre (C2)** |
 | 22 oct. | +1 809 $ | — | — |
 | 23 oct. | −119 $ | achat 11 h | non |
 | 26 oct. | −994 $ | achat 11 h, limite du jour | non |
@@ -30,11 +30,13 @@ Les erreurs de logique, de réglage et d'opération sont corrigées tout de suit
   30 octobre (10 et 13 MNQ) ne viennent pas du bot : ils ne sont pas dans son journal.
 - **Pertes évitables : environ 886 $.** Il y a le 29 octobre (−706 $, réglages du 26 - 27 octobre) et la réouverture
   du 14 octobre (environ −180 $). Les deux causes sont corrigées.
-- **Pertes non évitables : 3 209 $** (20, 21, 23 et 26 octobre). Ce sont des pertes normales de la zone :
+- **Deuxième achat du 21 octobre (environ −740 $) : évitable, corrigé le 1er novembre (C2).**
+- **Pertes non évitées : environ 2 470 $** (20, 21 à 13 h, 23 et 26 octobre). Ce sont des pertes normales de la zone :
   - le prix est reparti contre le trade dès l'entrée, et aucun de ces trades n'a été en gain de plus d'un quart de
     largeur de bande ;
-  - sept corrections précises ont été écrites pour elles, puis testées sur 15 ans (C1 à C7). Toutes retirent plus de
-    gains qu'elles n'évitent de pertes ;
+  - sept corrections précises ont été écrites pour ces pertes, puis testées sur 15 ans et sur des challenges simulés
+    (C1 à C7). Seule C2 passe. Les autres baissent les chances de réussir le challenge, ou ne passent qu'à condition
+    de renoncer à C2 (C7, pour le 20 octobre) ;
   - le relecteur indépendant les situe entre le 75e et le 85e centile des pertes de la zone. Trois jours comme ça en
     six séances arrivent environ une fois sur onze.
 - **Ce qui fait qu'une perte normale coûte 1 000 $, c'est la taille.** Avec 4 MNQ, 125 points de NQ font la limite de
@@ -97,15 +99,19 @@ Les erreurs de logique, de réglage et d'opération sont corrigées tout de suit
    - Contrôle de 14 h 30 : prix 30 088,00, achat au-dessus de 30 058,36, VWAP 29 940,48.
    - Delta **+115 (faible)**. C'est **le deuxième achat de la journée, 30 minutes après la sortie perdante** de 14 h.
    - Le trade n'a jamais gagné plus d'1 point. Limite du jour à 14 h 51.
-2. **Évitable ?** Non avec une règle qui tient sur 15 ans.
-3. **Filtre manquant possible.** Le piège du bruit : une nouvelle entrée dans le même sens juste après une perte.
-4. **Corrections testées :**
-   - **C2, pas de nouvelle entrée dans le même sens après une sortie perdante.** Sur 15 ans, +68 332 $ au lieu de
-     +79 847 $, moins bien sur 2019 - 2026 : **rejetée**.
-   - **C3, delta d'au moins 300 contrats :** **rejetée** (voir plus haut).
-   - **C5, sortie dès qu'une minute clôture sous le niveau de sortie.** Elle aurait coupé vers −35 points à 14 h 47,
-     soit environ −300 $ au lieu de −740 $. Mais sur 15 ans, elle fait moins bien sur les trois périodes (le piège du
-     bruit à la minute) : **rejetée**.
+2. **Évitable ?** Oui : le bot savait qu'un achat venait de perdre dans la séance.
+3. **Filtre manquant.** Le piège du bruit : une nouvelle entrée dans le même sens juste après une perte.
+4. **Correction adoptée le 1er novembre : C2, pas de nouvelle entrée dans le même sens après une sortie perdante de
+   la séance.**
+   - Le 21 octobre, le bot n'aurait pas pris ce deuxième achat.
+   - Sur des challenges Bulenox simulés sur 15 ans, elle baisse les échecs et garde les réussites ; avec 4 MNQ et la
+     limite du jour, elle gagne aussi plus (voir « Résultats du nouveau critère »).
+   - Au premier critère, qui demandait de ne baisser aucun gain sur 15 ans, elle était rejetée.
+   - **Autres corrections testées :**
+     - **C3, delta d'au moins 300 contrats :** **rejetée** (voir plus haut).
+     - **C5, sortie dès qu'une minute clôture sous le niveau de sortie.** Elle aurait coupé vers −35 points à 14 h 47,
+       soit environ −300 $ au lieu de −740 $. Mais sur 15 ans, elle fait moins bien sur les trois périodes (le piège
+       du bruit à la minute) : **rejetée**.
 
 ### 23 octobre, achat à 11 h : −119 $
 
@@ -232,7 +238,8 @@ vérifie chaque perte, et on ne réécrit que les règles qui tiennent sur 15 an
 | Coupure Rithmic (liste des positions vide) | ordres de réalignement envoyés à l'aveugle | **aucun ordre** tant que la fermeture n'est pas confirmée ; si la position revient, le trade continue | (prévention) |
 | Fichier STOP, filet de 16 h 30, arrêt du bot | — | une fermeture faite par le bot n'est jamais prise pour une fermeture à la main | (prévention) |
 | Réglages par défaut | ceux du 26 - 27 octobre (cassure, volume, pas d'entrée tardive, fenêtre 5, une entrée par séance, pas de sortie aux contrôles, stop 70, filtre décoché) | **zone d'origine** : entrée et sorties aux contrôles de 30 minutes, filtre delta coché, relance décochée, sans stop | 29 oct. |
-| Règles de stratégie de la zone | — | **inchangées** : C1 à C7 rejetées | 20, 21, 23, 26 oct. |
+| Nouvelle entrée après une perte | permise | **pas de nouvelle entrée dans le même sens après une sortie perdante de la séance** (C2, réglage coché par défaut) | 21 oct. (2e achat) |
+| Autres règles de la zone | — | **inchangées** : C1, C3 à C7 non adoptées | 20, 21 (13 h), 23, 26 oct. |
 
 ## Risques de régression, et ce qui a été vérifié
 
@@ -349,6 +356,50 @@ lui faut le vrai delta. C6 change la taille : elle est simulée avec la taille q
 3. la zone reste nettement gagnante sur 15 ans (t ≥ 3).
 
 Les valeurs des corrections restent celles fixées avant : aucune n'est réglée de nouveau.
+
+### Résultats du nouveau critère (calculés après l'avoir fixé)
+
+Challenges Bulenox 50K simulés (`audit/corrections_challenge.py`). Gain sur 15 ans avec 4 MNQ et la limite du jour.
+
+| Correction | Gain 15 ans | t | Réussis 2011 / 2019 | Échoués 2011 / 2019 | Verdict |
+|---|---|---|---|---|---|
+| zone d'origine | +206 629 $ | 3,28 | 34,59 % / 35,49 % | 56,46 % / 56,76 % | |
+| C1 entrée tardive (26 oct.) | +158 037 $ | 2,80 | 32,6 % / 34,3 % | 52,0 % / 53,6 % | rejetée : réussite −2,0 / −1,2 point |
+| **C2 pas de retour après une perte (21 oct.)** | **+221 350 $** | **3,71** | 35,21 % / 34,51 % | **51,00 % / 53,80 %** | **adoptée** |
+| C4 gain rendu | +207 718 $ | 3,57 | 35,3 % / 38,3 % | 53,1 % / 53,0 % | ne vise aucune perte d'octobre (critère 1) : non adoptée |
+| C5 sortie à la minute (21 oct.) | +128 005 $ | 2,25 | 32,7 % / 34,0 % | 54,4 % / 54,3 % | rejetée : réussite en baisse |
+| C6 taille selon le risque (26 oct.) | +178 502 $ | 3,34 | 33,2 % / 33,2 % | 51,7 % / 51,6 % | rejetée : réussite −1,4 / −2,3 points |
+| C7 loin du VWAP (20 oct.) | +199 055 $ | 3,26 | 34,67 % / 35,36 % | 55,01 % / 55,10 % | passe seule |
+| C2 + C7 ensemble | +209 782 $ | 3,64 | 34,50 % / 33,27 % | 49,22 % / 53,51 % | rejetée : réussite −2,2 points sur 2019 |
+
+**Décision : C2 est adoptée.** C2 et C7 passent chacune le critère, mais pas les deux ensemble. Il fallait donc en
+garder une seule, et C2 baisse beaucoup plus les échecs :
+- de 5,5 points sur les départs de 2011, et de 3,0 points sur ceux de 2019 ;
+- pour C7, seulement de 1,5 et de 1,7 point.
+
+Avec la limite du jour, C2 gagne aussi plus sur 15 ans : les deuxièmes entrées après une perte finissent souvent à la
+limite.
+
+**Ce qu'il faut savoir de C2.**
+- Ce n'est pas une règle optimisée :
+  - une seule règle, sans valeur à régler ;
+  - écrite le 31 octobre avant tout calcul ;
+  - jugée sur 3 580 trades de 15 ans.
+- Sur avril - octobre 2026, avec le vrai delta, elle aurait fait moins bien : +2 638 $ au lieu de +5 516 $ avec 4 MNQ
+  et la limite du jour (12 trades de moins), sans baisser la plus forte baisse.
+- On garde quand même la règle des 15 ans plutôt que celle des 7 derniers mois. C'est la même règle qui a fait rejeter
+  C4, bonne sur ces 7 mois mais mauvaise sur 15 ans.
+- Le test de 15 ans est fait sans le filtre delta, qui n'existe pas avant 2026. La revue de chaque semaine suivra donc
+  ce que C2 refuse en direct : le journal écrit « achat refuse : un trade dans ce sens a deja perdu aujourd'hui ».
+- C'est un réglage du bot, coché par défaut : « Zone : pas de nouvelle entree dans le meme sens apres une sortie
+  perdante ».
+
+**Vérifié.**
+- Avec C2 cochée, l'adaptateur Quantower prend d'avril à octobre 2026 exactement les trades du rejeu du moteur avec
+  C2, sauf les deux jours de la Fed, où le mode à plat ne prend pas de zone.
+- C2 décochée, les six configurations de non-régression restent identiques à la version d'avant, hors ligne de
+  version.
+- En octobre, C2 n'aurait changé qu'un trade : le deuxième achat du 21 octobre (environ −740 $).
 
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 

@@ -126,6 +126,18 @@ Le fichier des agresseurs se fabrique depuis `orderflow/donnees` (volumes par se
     réglages du 26 - 27 octobre restent disponibles, à cocher à la main.
   - Vérifié : lancé sans aucun réglage de zone, le bot donne d'avril à octobre 2026 exactement les ordres et les
     journaux de la zone d'origine réglée à la main.
+- **Pas de nouvelle entrée dans le même sens après une perte (1er novembre 2026, audit C2)** : réglage « Zone : pas de
+  nouvelle entree dans le meme sens apres une sortie perdante », **coché par défaut**. Après un trade de zone perdant,
+  le bot ne prend plus de trade dans ce sens jusqu'à la fin de la séance ; l'autre sens reste possible.
+  - **Pourquoi :** le 21 octobre, le deuxième achat (14 h 30), pris juste après un achat perdant, a touché la limite du
+    jour.
+  - **Mesuré sur 15 ans**, avec 4 MNQ et la limite du jour : +221 350 $ au lieu de +206 629 $. Sur des challenges
+    Bulenox simulés, 51,0 % d'échecs au lieu de 56,5 %, et autant de réussites.
+  - **Sur avril - octobre 2026, avec le vrai delta**, elle aurait fait moins bien (+2 638 $ au lieu de +5 516 $) : la
+    revue de chaque semaine la suit.
+  - **Au contrôle**, le journal écrit « achat refuse : un trade dans ce sens a deja perdu aujourd'hui ».
+  - **Vérifié :** l'adaptateur donne d'avril à octobre exactement les trades du rejeu du moteur avec C2 (hors jours
+    de la Fed). Décochée, tout est identique à la version d'avant.
 - **Changement d'échéance (mars, juin, septembre, décembre) :**
   - le RSI(2) se ferme la veille, comme dans le backtest ;
   - le bot prévient si les symboles choisis ne sont plus ceux du jour. Il faut alors choisir les nouveaux (NQ et

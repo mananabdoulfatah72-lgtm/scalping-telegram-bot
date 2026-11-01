@@ -415,6 +415,8 @@ namespace Bot3en1
                 : Arret ? "plus de trade aujourd'hui (objectif ou limite du jour atteint)"
                 : ZoneVirtuelle == 0 && LaisserCourir && DejaEntre ? "plus d'entree aujourd'hui (laisser courir : une seule entree par seance)"
                 : ZoneVirtuelle == 0 && SansEntreeTardive && (p > haut || p < bas) ? "prix deja au-dela du niveau sans cassure confirmee : pas d'entree tardive"
+                : ZoneVirtuelle == 0 && PasDeRetourApresPerte && sensPerdant != 0 && (sensPerdant > 0 ? p > haut : p < bas)
+                    ? $"{(sensPerdant > 0 ? "achat" : "vente")} refuse : un trade dans ce sens a deja perdu aujourd'hui (pas de nouvelle entree dans le meme sens apres une perte)"
                 : ZoneVirtuelle != 0 && gainRendu ? "trade sorti (gain rendu) : pas de nouvelle entree avant que le prix revienne dans la zone"
                 : ZoneVirtuelle != 0 && fermeeALaMain ? "trade ferme a la main : le bot ne le rouvre pas et attend sa fin (prix revenu dans la zone ou 16 h)"
                 : ZoneVirtuelle != 0 ? $"trade ecarte toujours en cours : {(Relance ? "relance au prochain controle si le delta passe du bon cote" : "relance decochee, le bot attend sa fin")}"
