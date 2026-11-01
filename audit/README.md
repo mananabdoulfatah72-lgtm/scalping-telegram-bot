@@ -239,3 +239,37 @@ réglage ne sert qu'au frein et aux messages, mais il faut le remettre à la vra
    pas déjà le cas.
 4. Ne plus fermer ni arrêter le bot au milieu d'un trade. Le 14 et le 22 octobre, la règle faisait mieux ou presque
    aussi bien que la main. Si c'est nécessaire, le bot ne rouvrira plus la position.
+
+## Corrections candidates C5 et C6, fixées le 1er novembre 2026 avant de les calculer : les « stop loss » pris
+
+L'utilisateur demande de se concentrer sur les pertes qui ont touché un stop. Ce sont les limites de perte du jour du
+20, du 21 et du 26 octobre (environ −1 000 $ chacune) et le stop de 70 points du 29 (réglages modifiés).
+
+**Constat dans le journal du bot.** Les jours de limite, le trade de zone n'a pas été coupé par sa propre règle. Sa
+sortie n'est vérifiée qu'aux contrôles de 30 minutes. Entre deux contrôles, seule la limite du jour le protège : avec
+4 MNQ, elle coupe à environ 125 points.
+- **20 octobre.** Achat à 10 h 30 à 29 879. Le niveau de sortie est à 29 820,62, 58 points plus bas. Le prix le casse,
+  puis descend jusqu'à la limite à 11 h 12, entre deux contrôles.
+- **21 octobre, 14 h 30.** Achat à 30 088. Le niveau de sortie est à 30 058,36, 30 points plus bas. Limite à 14 h 51.
+- **26 octobre.** Achat à 11 h à 29 554,75. Le niveau de sortie est à 29 353,90, **201 points plus bas**. La limite du
+  jour (125 points) est plus proche que la sortie de la règle : le trade ne pouvait pas sortir par sa règle avant
+  d'être coupé.
+
+**C5, stop au niveau de sortie.** Entre deux contrôles, si une minute clôture au-delà du niveau de sortie affiché au
+dernier contrôle, le bot sort à cette clôture. Pour un achat, c'est une clôture sous le maximum de la limite haute et
+du VWAP du contrôle ; pour une vente, au-dessus du minimum de la limite basse et du VWAP. Aux contrôles, rien ne change
+(`StopNiveauSortie`, désactivé par défaut).
+
+**C6, taille selon le risque.** Le bot réduit la taille pour que la perte jusqu'au niveau de sortie ne dépasse pas
+500 $, soit 1 % du compte et la moitié de la limite du jour :
+- MNQ = min(taille, partie entière de 500 / (2 $ × distance en points)) ;
+- si le calcul donne 0, pas de trade.
+
+Sur 15 ans, la distance est ramenée au prix d'aujourd'hui (× 30 900 / prix), avec une taille de 4 MNQ comme dans le
+challenge.
+
+**Jugées comme C1 à C4.**
+- **Périodes :** 2011 - 2026 sans le filtre, puis avril - octobre 2026 avec le filtre.
+- **Variantes :** C5, C6, et C5 + C6 ensemble, une seule valeur chacune.
+- **Critères :** les quatre du protocole. Pour C6, le critère 3 compare les dollars retirés aux trades gagnants et
+  aux trades perdants.
