@@ -544,6 +544,30 @@ sous la cloture de la veille (… filtre Q1) ». Avant, il écrivait à tort « 
   - coupure de connexion : le bot la gère maintenant ;
   - interventions à la main : le bot ne rouvre plus une position fermée à la main.
 
+## Exceptions à Q1, inscrites le 1er novembre 2026 au soir avant de les calculer
+
+**La question de l'utilisateur.** Q1 fait rater les journées qui ouvrent en baisse puis montent toute la journée.
+Peut-on les reprendre quand les conditions sont réunies ?
+
+**Ce qui ne marche pas, par construction : « l'écart d'ouverture est comblé ».** Un jour qui ouvre en baisse, le
+niveau d'achat de la zone est au-dessus de la clôture de la veille : toute cassure à l'achat a déjà comblé l'écart.
+Cette exception annulerait Q1.
+
+**Deux exceptions, une seule valeur chacune :**
+- **Q1b, petit écart.** Q1 ne refuse le trade que si l'écart entre l'ouverture et la clôture de la veille fait au
+  moins **la moitié de la largeur de bande** du contrôle de l'entrée. Un petit écart n'est pas une vraie direction
+  d'ouverture.
+- **Q1c, après-midi.** Q1 ne s'applique qu'aux entrées jusqu'au contrôle de **12 h**. À partir de 12 h 30, une
+  cassure contre le sens de l'ouverture est permise : si le marché casse contre l'ouverture l'après-midi, c'est que
+  l'ouverture a échoué.
+
+**Juge : comparaison avec la configuration proposée** (C2 + Q1, 6 MNQ). Une exception est adoptée si les trois
+conditions sont remplies :
+1. Depuis l'état du compte (+900 $, 9 séances), elle monte la réussite sur 15 ans **et** sur avril - octobre 2026 avec
+   le vrai delta.
+2. Sur ces deux mêmes échantillons, elle ne monte pas l'échec de plus d'un point.
+3. Sur les challenges de 22 séances (départs de 2011 et de 2019), elle ne baisse pas la réussite.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
