@@ -641,6 +641,30 @@ trois conditions :
 
 Sinon, C2 reste coché.
 
+### Résultat : C2 reste coché
+
+| 6 MNQ | Depuis l'état actuel, 15 ans : réussis / échoués | Avril - oct. 2026 : réussis / échoués | 22 séances, 2011 / 2019 : réussis | 15 ans, avec limite | Avril - oct. 2026, avec limite |
+|---|---|---|---|---|---|
+| **C2 + Q1** | 29,9 % / **24,7 %** | 32,6 % / 22,2 % | 34,17 % / 36,05 % | +287 629 $ (t 4,11, baisse max −26 211 $) | +15 202 $ |
+| Q1 seul | 31,2 % / 28,8 % | 34,7 % / 22,9 % | 34,72 % / 36,05 % | +264 662 $ (t 3,67, baisse max −30 887 $) | +15 998 $ |
+
+- Sans C2, l'échec monte de 4,1 points sur 15 ans (condition 2) : **C2 reste coché**.
+- Avec la limite du jour, son coût sur avril - octobre 2026 n'est que d'environ 800 $ avec 6 MNQ, et non les
+  +7 000 $ bruts des trades qu'il retire.
+- C'est une assurance. Il baisse le risque d'échec et la plus forte baisse, et il fait rater quelques journées de
+  « deuxième chance ».
+
+**Les setups que Q1 et C2 font rater** (15 ans sans le filtre, 6 MNQ ; puis avril - octobre 2026 avec le vrai delta) :
+- **Q1 : les retournements de l'ouverture** (ouverture en baisse puis hausse, ou l'inverse).
+  - Environ 4 par mois sur 15 ans, dont 68 % le matin.
+  - 34 % de gagnants, mais de gros gagnants : +1 862 $ en moyenne, environ 5,6 trades à +2 000 $ ou plus par an.
+  - Sur avril - octobre 2026 : 17 retirés, un seul gagnant (9 juin, +2 642 $).
+- **C2 : la « deuxième chance »** (une deuxième cassure dans le même sens après un premier échec, souvent l'après-midi).
+  - Environ 5,5 par mois sur 15 ans, dont 69 % après 12 h.
+  - 39 % de gagnants (+1 468 $ en moyenne), environ 5,3 trades à +2 000 $ ou plus par an.
+  - Sur avril - octobre 2026 : 12 retirés, dont 6 gagnants (11 juin +3 457 $, 6 mai +2 181 $, 15 avril +1 557 $,
+    20 mai +1 305 $, 22 septembre +1 055 $, 24 juillet +636 $).
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
