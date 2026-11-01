@@ -417,6 +417,11 @@ namespace Bot3en1
                 : ZoneVirtuelle == 0 && SansEntreeTardive && (p > haut || p < bas) ? "prix deja au-dela du niveau sans cassure confirmee : pas d'entree tardive"
                 : ZoneVirtuelle == 0 && PasDeRetourApresPerte && sensPerdant != 0 && (sensPerdant > 0 ? p > haut : p < bas)
                     ? $"{(sensPerdant > 0 ? "achat" : "vente")} refuse : un trade dans ce sens a deja perdu aujourd'hui (pas de nouvelle entree dans le meme sens apres une perte)"
+                : ZoneVirtuelle == 0 && FiltreOuverture && (p > haut ? o0 < Veille : p < bas && o0 > Veille)
+                    ? (p > haut ? $"achat refuse : la seance a ouvert sous la cloture de la veille ({o0:F2} contre {Veille:F2}, filtre Q1)"
+                                : $"vente refusee : la seance a ouvert au-dessus de la cloture de la veille ({o0:F2} contre {Veille:F2}, filtre Q1)")
+                : ZoneVirtuelle == 0 && FiltreTendance && (p > haut ? Tendance != 1 : p < bas && Tendance != -1)
+                    ? (p > haut ? "achat refuse : tendance de fond baissiere (filtre Q2)" : "vente refusee : tendance de fond haussiere (filtre Q2)")
                 : ZoneVirtuelle != 0 && gainRendu ? "trade sorti (gain rendu) : pas de nouvelle entree avant que le prix revienne dans la zone"
                 : ZoneVirtuelle != 0 && fermeeALaMain ? "trade ferme a la main : le bot ne le rouvre pas et attend sa fin (prix revenu dans la zone ou 16 h)"
                 : ZoneVirtuelle != 0 ? $"trade ecarte toujours en cours : {(Relance ? "relance au prochain controle si le delta passe du bon cote" : "relance decochee, le bot attend sa fin")}"

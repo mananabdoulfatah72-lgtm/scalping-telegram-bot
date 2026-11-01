@@ -81,7 +81,7 @@ namespace Bot3en1
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
-        const string Version = "1er novembre 2026 (audit des pertes : zone d'origine par defaut, pas de retour dans le meme sens apres une perte, position fermee a la main jamais rouverte, trade repris apres une relance)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
+        const string Version = "1er novembre 2026 au soir (audit des pertes : zone d'origine par defaut, pas de retour dans le meme sens apres une perte, refus des filtres Q1 et Q2 ecrits au controle, position fermee a la main jamais rouverte, trade repris apres une relance)";     // ecrite au lancement : verifie que la mise a jour est bien chargee
         Moteur bot;
         TimeZoneInfo ny;
         Timer horloge;

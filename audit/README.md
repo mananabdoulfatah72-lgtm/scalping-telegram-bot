@@ -494,6 +494,37 @@ par exemple un achat sur un rebond, un jour qui a ouvert en baisse.
 - **Vérifié :** avec Q1 et C2 cochées, l'adaptateur prend d'avril à octobre exactement les trades du rejeu du moteur,
   hors jours de la Fed.
 
+**Stabilité de Q1** (1 MNQ, frais fixes, sans le filtre, avec C2) : le t monte dans les quatre périodes de quatre ans.
+
+| | 2011 - 2014 | 2015 - 2018 | 2019 - 2022 | 2023 - 2026 |
+|---|---|---|---|---|
+| bot actuel (C2) | +13 222 $ (t 1,96) | +20 529 $ (t 2,42) | +19 369 $ (t 1,99) | +15 212 $ (t 1,96) |
+| C2 + Q1 | +17 767 $ (t 3,14) | +20 635 $ (t 3,02) | +17 614 $ (t 2,16) | +15 591 $ (t 2,46) |
+
+**Séances types avec 6 MNQ et la limite de 1 000 $ :**
+
+| | Sans trade | Gagnantes (moyenne) | Perdantes (moyenne) | À la limite (−900 $ ou pire) | À +2 100 $ ou plus |
+|---|---|---|---|---|---|
+| 15 ans, bot actuel | 43 % | 18 % (+1 980 $) | 38 % (−778 $) | 22,7 % | 6,7 % |
+| 15 ans, Q1 | 60 % | 14 % (+1 971 $) | 26 % (−764 $) | 15,1 % | 5,1 % |
+| avril - octobre 2026, bot actuel | 53 % | 14 % (+1 908 $) | 33 % (−731 $) | 20,5 % | 6,6 % |
+| avril - octobre 2026, Q1 | 62 % | 15 % (+1 883 $) | 23 % (−750 $) | 14,6 % | 6,6 % |
+
+**Suroptimisation ?**
+- **Q1 lui-même, peu de risque :**
+  - c'est une seule condition, sans aucune valeur à régler (le sens de l'ouverture) ;
+  - elle a été fixée le 27 octobre pour d'autres réglages, et elle les améliorait déjà ;
+  - ici, elle améliore le t dans les quatre périodes de 15 ans, et sur avril - octobre 2026 avec le vrai delta.
+- **Ce qui reste choisi après coup :**
+  - Q1 a été retenue parmi trois filtres essayés le même jour (Q1, Q2, C4) ;
+  - la taille de 6 MNQ a été choisie parmi quatre plans, sur les mêmes données.
+- **Ce qui reste incertain :**
+  - les 15 ans sont sans le filtre delta ;
+  - les 7 mois avec le vrai delta ne font que 143 départs, qui se chevauchent.
+
+**Le bot.** Avec Q1 ou Q2 cochés, le contrôle écrit maintenant le refus. Exemple : « achat refuse : la seance a ouvert
+sous la cloture de la veille (… filtre Q1) ». Avant, il écrivait à tort « pas de signal : prix dans la zone ».
+
 ### Les types de pertes qui restent possibles (bot actuel, 15 ans, 4 MNQ)
 
 - **En général** : 61 % des trades perdent, en moyenne −612 $. Les gagnants rapportent en moyenne +1 247 $. Le gain
