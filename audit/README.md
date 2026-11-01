@@ -401,6 +401,24 @@ limite.
   version.
 - En octobre, C2 n'aurait changé qu'un trade : le deuxième achat du 21 octobre (environ −740 $).
 
+## Filtres Q1 et Q2 sur la zone d'origine, inscrits le 1er novembre 2026 avant de les calculer
+
+**Pourquoi eux.** Les quatre pertes non corrigées d'octobre (20, 21, 23 et 26) sont toutes des **achats**, pris
+pendant la baisse du NQ commencée le 13 octobre. Les deux gagnants (14 et 22) sont des **ventes**, dans le sens de
+cette baisse.
+
+**Les deux filtres existent déjà dans le bot.** Ils ont été fixés le 27 octobre (`scalping/README.md`, partie Q),
+mais testés seulement sur les réglages du 26 - 27 octobre, jamais sur la zone d'origine :
+- **Q2, tendance de fond :** achat seulement si la veille a clôturé au-dessus de la moyenne des 20 dernières
+  clôtures ; vente seulement en dessous. C'est l'équivalent des moyennes mobiles du bot de l'ami.
+- **Q1, sens de l'ouverture :** achat seulement si la séance ouvre au-dessus ou au niveau de la clôture de la veille ;
+  vente seulement en dessous ou au niveau.
+
+**Comment ils sont jugés.**
+- Chacun est testé seul, en plus de C2.
+- Le juge est le critère des challenges simulés du 1er novembre, vu plus haut.
+- Les définitions restent celles du 27 octobre : aucune valeur n'est réglée de nouveau.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
