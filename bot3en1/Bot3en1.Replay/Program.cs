@@ -12,7 +12,7 @@ using Bot3en1;
 // CASSURE=1 : entree a la cassure entre deux controles (scalping/README.md partie J, J0). COURIR=1 : laisser courir
 // (partie L, L1a : une entree par seance, sortie au niveau casse). VOLUME=1 : cassure confirmee par le volume (partie M, M1V).
 // VOLMULT=1 : multiple du volume (2 par defaut). SANS_TARDIVE=1 : entree seulement a la minute qui franchit le niveau. FENETRE=5 : confirmation possible dans les 5 minutes. Q1=1, Q2=1 : filtres de la partie Q. SANS_SORTIE=1 : pas de sortie aux controles. STOP=70 : stop a 70 points au-dela du niveau casse.
-// Audit du 31 octobre 2026 : DEPASSEMENT_MAX=1 (C1), SANS_RETOUR=1 (C2), DELTA_MIN=300 (C3), PROTEGER=1 (C4, gain rendu), STOP_NIVEAU=1 (C5), VWAP_MAX=2 (C7),
+// Audit du 31 octobre 2026 : DEPASSEMENT_MAX=1 (C1), SANS_RETOUR=1 (C2), DELTA_MIN=300 (C3), PROTEGER=1 (C4, gain rendu), STOP_NIVEAU=1 (C5), VWAP_MAX=2 (C7), Q1_ECART=0.5 (Q1b), Q1_FIN=150 (Q1c, Q1 jusqu'a 12 h),
 // NIVEAU=1 (niveau de sortie ecrit a chaque entree, pour C6).
 class Program
 {
@@ -54,7 +54,9 @@ class Program
                                                     DeltaMin = double.Parse(Environment.GetEnvironmentVariable("DELTA_MIN") ?? "0", inv),
                                                     ProtegerGain = double.Parse(Environment.GetEnvironmentVariable("PROTEGER") ?? "0", inv),
                                                     StopNiveauSortie = Environment.GetEnvironmentVariable("STOP_NIVEAU") == "1",
-                                                    VwapMax = double.Parse(Environment.GetEnvironmentVariable("VWAP_MAX") ?? "0", inv) };
+                                                    VwapMax = double.Parse(Environment.GetEnvironmentVariable("VWAP_MAX") ?? "0", inv),
+                                                    Q1EcartMin = double.Parse(Environment.GetEnvironmentVariable("Q1_ECART") ?? "0", inv),
+                                                    Q1MinuteFin = int.Parse(Environment.GetEnvironmentVariable("Q1_FIN") ?? "-1", inv) };
         bool niveau = Environment.GetEnvironmentVariable("NIVEAU") == "1";   // niveau de sortie ecrit a chaque entree (C6)
         var trades = new List<string>();
         double zone = 0, rsi = 0, entreeZ = 0, entreeR = 0; int sensZ = 0, nZone = 0, nEcartes = 0, nRsi = 0;

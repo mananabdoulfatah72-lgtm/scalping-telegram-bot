@@ -568,6 +568,23 @@ conditions sont remplies :
 2. Sur ces deux mêmes échantillons, elle ne monte pas l'échec de plus d'un point.
 3. Sur les challenges de 22 séances (départs de 2011 et de 2019), elle ne baisse pas la réussite.
 
+### Résultats des exceptions à Q1 (calculés après les avoir inscrites)
+
+| Avec C2, 6 MNQ | Depuis l'état actuel, 15 ans : réussis / échoués | Depuis l'état actuel, avril - oct. 2026 : réussis / échoués | 22 séances, départs 2011 / 2019 : réussis | 15 ans (1 MNQ) |
+|---|---|---|---|---|
+| **Q1 (proposée)** | 29,9 % / **24,7 %** | 32,6 % / **22,2 %** | 34,17 % / 36,05 % | +71 607 $ (t 5,27) |
+| Q1b petit écart | 31,3 % / 31,8 % | 31,2 % / 26,4 % | 35,44 % / 36,60 % | +70 532 $ (t 4,69) |
+| Q1c après-midi | 33,7 % / 31,5 % | 32,6 % / 29,9 % | 36,25 % / 39,33 % | +82 768 $ (t 4,95) |
+
+**Les deux exceptions sont rejetées.**
+- Elles reprennent bien des journées de retournement : la réussite monte un peu sur 15 ans.
+- Mais l'échec monte d'environ 7 points (condition 2), et elles ne font pas mieux sur avril - octobre 2026 (condition
+  1).
+- Q1c gagne plus sur 15 ans, mais en prenant plus de risque. C'est une piste pour le compte Master, pas pour finir le
+  challenge.
+- Les deux options restent dans le moteur pour le rejeu, désactivées : `Q1EcartMin`, `Q1MinuteFin`. Avec Q1 coché et
+  sans elles, le bot est identique octet pour octet.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**

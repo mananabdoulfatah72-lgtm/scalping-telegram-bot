@@ -106,6 +106,8 @@ namespace Bot3en1
         public double DepassementMax = 0;
         public bool PasDeRetourApresPerte = false;
         public double DeltaMin = 0;
+        public double Q1EcartMin = 0;               // Q1b : Q1 seulement si |ouverture - veille| >= Q1EcartMin largeurs de bande (0 = toujours)
+        public int Q1MinuteFin = -1;                // Q1c : Q1 seulement jusqu'a cette minute de seance (150 = 12 h ; -1 = toute la seance)
         public double VwapMax = 0;                   // C7 : pas d'entree a plus de VwapMax largeurs de bande du VWAP (0 = aucun)
         public bool StopNiveauSortie = false;        // C5 : sortie a la minute qui cloture au-dela du niveau de sortie du dernier controle
         public double NiveauSortieEntree { get; private set; } = double.NaN;   // niveau de sortie a l'entree (audit, C6)
@@ -417,7 +419,7 @@ namespace Bot3en1
                 : ZoneVirtuelle == 0 && SansEntreeTardive && (p > haut || p < bas) ? "prix deja au-dela du niveau sans cassure confirmee : pas d'entree tardive"
                 : ZoneVirtuelle == 0 && PasDeRetourApresPerte && sensPerdant != 0 && (sensPerdant > 0 ? p > haut : p < bas)
                     ? $"{(sensPerdant > 0 ? "achat" : "vente")} refuse : un trade dans ce sens a deja perdu aujourd'hui (pas de nouvelle entree dans le meme sens apres une perte)"
-                : ZoneVirtuelle == 0 && FiltreOuverture && (p > haut ? o0 < Veille : p < bas && o0 > Veille)
+                : ZoneVirtuelle == 0 && (p > haut ? Q1Refuse(1, m, k) : p < bas && Q1Refuse(-1, m, k))
                     ? (p > haut ? $"achat refuse : la seance a ouvert sous la cloture de la veille ({o0:F2} contre {Veille:F2}, filtre Q1)"
                                 : $"vente refusee : la seance a ouvert au-dessus de la cloture de la veille ({o0:F2} contre {Veille:F2}, filtre Q1)")
                 : ZoneVirtuelle == 0 && FiltreTendance && (p > haut ? Tendance != 1 : p < bas && Tendance != -1)
@@ -467,6 +469,15 @@ namespace Bot3en1
             if (ZoneVirtuelle != 0) niveauSortie = ZoneVirtuelle > 0 ? sortH : sortB;
         }
 
+        bool Q1Refuse(int sens, int m, int k)
+        {
+            double o0 = barres[0].O;
+            if (!FiltreOuverture || !(sens > 0 ? o0 < Veille : o0 > Veille)) return false;
+            if (Q1MinuteFin >= 0 && m > Q1MinuteFin) return false;
+            if (Q1EcartMin > 0 && Math.Abs(o0 - Veille) < Q1EcartMin * (sens > 0 ? Math.Max(o0, Veille) : Math.Min(o0, Veille)) * Sigma[k]) return false;
+            return true;
+        }
+
         /// <summary>Pas d'entree tardive : entree a la minute qui franchit le niveau du controle k, ou a une des
         /// FenetreConfirmation minutes suivantes si le prix est toujours au-dela, avec le volume si ConfirmationVolume.</summary>
         void CassureFenetre(int m, int k, double p, List<Signal> s, bool auControle)
@@ -510,7 +521,7 @@ namespace Bot3en1
             {
                 int sens = p > haut ? 1 : -1;
                 if (PasDeRetourApresPerte && sens == sensPerdant) return;
-                if (FiltreOuverture && (sens > 0 ? o0 < Veille : o0 > Veille)) return;
+                if (Q1Refuse(sens, m, k)) return;
                 if (FiltreTendance && Tendance != sens) return;
                 ZoneVirtuelle = sens;
                 DejaEntre = true; NiveauCasse = sens > 0 ? haut : bas; minuteEntree = m;
