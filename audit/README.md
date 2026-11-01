@@ -627,6 +627,20 @@ seule. Les trades ont changé avec C2 et Q1, donc on la juge de nouveau, sur le 
   cassure, c'est l'entrée à la cassure du 26 - 27 octobre : sur 15 ans, elle fait −27 %, parce qu'elle prend toutes
   les fausses cassures entre deux contrôles. Attendre le contrôle est justement le filtre du bruit.
 
+## C2 sert-il encore avec Q1 ? (inscrit le 1er novembre 2026 avant de le calculer)
+
+**Le constat.** Sur avril - octobre 2026, avec le vrai delta, les 12 trades que C2 retire comptent 6 gagnants, pour
+environ +7 000 $ avec 6 MNQ. Les 17 trades que Q1 retire ne comptent qu'un gagnant, pour environ −15 300 $. C2 a été
+adopté sur 15 ans sans Q1 : il faut juger ce qu'il apporte une fois Q1 coché.
+
+**Règle, la même que pour les exceptions à Q1.** On décoche C2 si Q1 seul, face à C2 + Q1 avec 6 MNQ, remplit les
+trois conditions :
+1. depuis l'état du compte, la réussite monte sur 15 ans **et** sur avril - octobre 2026 ;
+2. l'échec ne monte pas de plus d'un point sur ces deux échantillons ;
+3. la réussite des challenges de 22 séances ne baisse pas.
+
+Sinon, C2 reste coché.
+
 ## Annexe A : protocole (fixé le 31 octobre 2026, avant de recevoir les fichiers du bot)
 
 **Données demandées à l'utilisateur.**
