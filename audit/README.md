@@ -454,6 +454,46 @@ Les mêmes challenges simulés, comparés au bot actuel (zone d'origine + C2) :
 - **C4 : non adoptée.** Elle passe le critère des challenges face à C2, mais elle aurait coupé le gagnant du
   14 octobre (critère 1). Depuis l'état actuel, elle ne change presque rien.
 
+### Q1 en détail, et ce qui peut aider à finir le challenge (1er novembre 2026)
+
+**Ce que fait Q1.** Le bot n'achète que si la séance a ouvert au-dessus ou au niveau de la clôture de la veille. Il ne
+vend que si elle a ouvert en dessous ou au niveau. Il ne prend donc plus une cassure à contre-sens de l'ouverture :
+par exemple un achat sur un rebond, un jour qui a ouvert en baisse.
+
+| | Trades par mois | Gagnants | Gain moyen | Perte moyenne | Par trade (4 MNQ) |
+|---|---|---|---|---|---|
+| 15 ans, bot actuel (C2) | 13,4 | 38,7 % | +1 247 $ | −612 $ | +108 $ |
+| 15 ans, C2 + Q1 | 9,2 | 40,9 % | +1 249 $ | −586 $ | +164 $ |
+| 15 ans, trades que Q1 retire | 4,2 | 34,0 % | +1 241 $ | −663 $ | −16 $ |
+| avril - octobre 2026, vrai delta, bot actuel | 10,9 | 35,5 % | +1 418 $ | −584 $ | +127 $ |
+| avril - octobre 2026, C2 + Q1 | 8,4 | 44,1 % | +1 405 $ | −504 $ | +337 $ |
+| avril - octobre 2026, trades que Q1 retire | 2,4 | **5,9 % (1 sur 17)** | | −749 $ | −601 $ |
+
+- **Journées à −900 $ ou pire (4 MNQ, 15 ans) :** 31 par an pour le bot actuel, 20,5 avec Q1. Deux de suite : 7,2 par
+  an, 3,4 avec Q1. C'est ce qui baisse les échecs.
+- **Octobre :**
+  - le 20, l'ouverture est 128 points sous la clôture de la veille, et le 23, 117 points dessous : les achats sont
+    refusés ;
+  - le 26, l'ouverture est 106 points au-dessus : l'achat est gardé ;
+  - le 14 et le 22, l'ouverture est en baisse : les ventes gagnantes sont gardées.
+
+**Depuis l'état du compte** (+900 $, 9 séances), par taille :
+
+| Bot et taille | Réussis 15 ans | Échoués 15 ans | Réussis avril - oct. 2026 | Échoués avril - oct. 2026 |
+|---|---|---|---|---|
+| bot actuel, 4 MNQ puis 6 MNQ | 31,0 % | 30,3 % | 24,5 % | 31,5 % |
+| bot actuel, 6 MNQ tout du long | 32,3 % | 35,9 % | 29,2 % | 31,9 % |
+| C2 + Q1, 4 MNQ puis 6 MNQ | 27,4 % | 19,2 % | 29,4 % | 16,8 % |
+| **C2 + Q1, 6 MNQ tout du long** | **29,9 %** | **24,7 %** | **32,6 %** | **22,2 %** |
+| C2 + Q1, 8 MNQ tout du long | 31,8 % | 34,0 % | 36,3 % | 27,4 % |
+
+- Avril - octobre 2026 donne 143 départs qui se chevauchent : c'est un petit échantillon.
+- **Option proposée à l'utilisateur, à lui de choisir : Q1 cochée et 6 MNQ dès maintenant.**
+  - Sur 15 ans : réussite presque inchangée (−1,1 point) et échecs en baisse de 5,6 points.
+  - Sur avril - octobre 2026, avec le vrai delta : réussite en hausse de 8 points et échecs en baisse de 9 points.
+- **Vérifié :** avec Q1 et C2 cochées, l'adaptateur prend d'avril à octobre exactement les trades du rejeu du moteur,
+  hors jours de la Fed.
+
 ### Les types de pertes qui restent possibles (bot actuel, 15 ans, 4 MNQ)
 
 - **En général** : 61 % des trades perdent, en moyenne −612 $. Les gagnants rapportent en moyenne +1 247 $. Le gain
