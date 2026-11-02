@@ -704,3 +704,9 @@ Cette règle vient de la partie 11 de `flux/README.md` : la recherche sur l'ère
 **Suivi.**
 - `flux/veille.py` suit L2 chaque soir, sans argent.
 - Le rapport du radar dit chaque soir si L2 sera active à la séance suivante.
+
+## Supertrend NQ (stratégie à part, 2 novembre 2026)
+
+Voir `SUPERTREND.md` : Supertrend 10-3 sur les bougies de 5 minutes du NQ, ordres sur MNQ, à plat à 21 h 55 (Paris).
+Projets `Supertrend.Core` (moteur, rejeu identique au test sur 15 ans), `Supertrend.Quantower` (stratégie, DLL
+`SupertrendNQ`), `Supertrend.Replay`, `Supertrend.TestQuantower`. Installée par la même ligne PowerShell que le bot.

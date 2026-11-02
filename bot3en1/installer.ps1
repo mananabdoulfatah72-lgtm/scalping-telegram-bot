@@ -107,9 +107,28 @@ foreach ($p in $plateformes) {
             Write-Host "ATTENTION : FluxNQ n'a pas compile (le bot 3 en 1 est bien installe). Envoie installation_bot3en1.txt a Claude." -ForegroundColor Yellow
         }
     }
+    # Supertrend NQ (strategie a part) : compile a part ; s'il echoue, le bot 3 en 1 reste installe
+    $st = "$PSScriptRoot\Supertrend.Quantower\Supertrend.Quantower.csproj"
+    if (Test-Path $st) {
+        Remove-Item -Recurse -Force "$PSScriptRoot\Supertrend.Quantower\obj", "$PSScriptRoot\Supertrend.Quantower\bin" -ErrorAction SilentlyContinue
+        $ancien = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+        dotnet restore $st -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" | Out-Host
+        dotnet build $st -c Release --no-restore -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" -nologo | Out-Host
+        $codeSt = $LASTEXITCODE
+        $ErrorActionPreference = $ancien
+        if ($codeSt -eq 0) {
+            $destSt = Join-Path $p.Base "Settings\Scripts\Strategies\SupertrendNQ"
+            New-Item -ItemType Directory -Force -Path $destSt | Out-Null
+            Copy-Item "$PSScriptRoot\Supertrend.Quantower\bin\Release\$tfm\SupertrendNQ.dll" $destSt -Force
+            Write-Host "Supertrend NQ installe dans $destSt" -ForegroundColor Green
+        } else {
+            Write-Host "ATTENTION : Supertrend NQ n'a pas compile (le bot 3 en 1 est bien installe). Envoie installation_bot3en1.txt a Claude." -ForegroundColor Yellow
+        }
+    }
 }
 New-Item -ItemType Directory -Force -Path "C:\Bot3en1" | Out-Null
-Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1, Export transactions NQ ou FluxNQ (voir le guide)."
+New-Item -ItemType Directory -Force -Path "C:\SupertrendNQ" | Out-Null
+Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1, Supertrend NQ, Export transactions NQ ou FluxNQ (voir le guide)."
 Write-Host "INSTALLATION TERMINEE" -ForegroundColor Green
 }
 catch {
