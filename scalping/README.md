@@ -1477,3 +1477,34 @@ pour après le challenge (compte Master), pas pour les 13 séances qui restent.
 **Q1 + Q2 ensemble (27 octobre 2026, mesuré après coup, hors des règles fixées) : `reglages_27oct_q12.py`.** 824 trades,
 t +1,60 / +2,44, 126 journées à −1 000 $ ; challenge avec 1 000 $ de marge : 11,5 % validés, 38,4 % perdus, 50,1 % expirés.
 Ajoutés au bot comme réglages décochés par défaut.
+
+## Partie R (2 novembre 2026) : trois études publiées jamais testées dans le projet, sur NQ et ES (règles fixées avant tout calcul)
+
+Demande de l'utilisateur : « développe une toute autre stratégie basée sur une autre étude, comme pour la zone […] je
+ne veux pas la zone ». Recherche du 2 novembre 2026 : chaque étude récente ou classique trouvée a été comparée à
+l'inventaire (`agents/audit.md`, parties A à Q). Déjà testées, donc écartées : Gao et al., Baltussen et al., ORB
+(5 à 60 min), VWAP (Zarattini-Aziz), tournant du mois, Fed (conférence, retournement), dérive pré-FOMC (morte depuis
+2015), dérive de nuit, gaps, Williams, Crabel, analyse technique, gamma, profil de volume, Rosa (2022, échoue hors
+échantillon selon son auteur). Restent trois études avec une règle complète :
+
+| # | Règle (sans aucun réglage) | Source |
+|---|---|---|
+| R1 | Rendement de nuit r = ouverture de 9 h 30 / clôture de 16 h de la veille (même contrat) − 1. Position **contre** r à l'ouverture de 9 h 31, sortie à la clôture de la minute de 9 h 59 (fin de la première demi-heure). Pas de trade si r = 0 ou au changement de contrat | Iwanaga et Sakemoto, « Does overnight return predict the first half-hour return for U.S. market indices? », North American Journal of Economics and Finance (2026), SSRN 5807282 |
+| R1b | Même règle, seulement si \|r\| est au-dessus du 70e centile des \|r\| des 252 séances précédentes (les « fortes » nuits) | idem |
+| R2 | **Cycle de la Fed** : t = jour d'annonce d'une réunion programmée ; semaine 0 = séances t−1 à t+3, semaine k = t+5k−1 à t+5k+3. Achat à 9 h 31, sortie à 15 h 59, les séances des semaines **paires** 0, 2, 4, 6 ; rien sinon | Cieslak, Morse et Vissing-Jorgensen, « Stock Returns over the FOMC Cycle », Journal of Finance (2019) |
+| R3 | **Veille de jour férié** : achat à 9 h 31, sortie à 15 h 59, la dernière séance complète avant un jour de fermeture de la Bourse de New York | Ariel, « High stock returns before holidays », Journal of Financial Economics (1990) |
+
+- Marchés : NQ (le bot trade le MNQ) et ES (les études portent sur le S&P 500) : 8 tests. Minutes 2011 → fin des
+  données (NQ : 29 octobre 2026 ; ES : 25 septembre 2026), séances complètes seulement.
+- Adaptation obligatoire, écrite ici : les études R2 et R3 mesurent des rendements de clôture à clôture ; Bulenox impose
+  d'être à plat à 16 h 59, donc seule la séance de jour est jouée (la part de nuit de l'effet est perdue).
+- Frais : 1 $ + 1 tick par ordre (MNQ 3,00 $, MES 4,50 $ l'aller-retour), gain au prix d'aujourd'hui (× prix de
+  référence du projet / ouverture de la séance), 1 contrat micro.
+- Mesure : gain net de chaque séance tradée, t de la moyenne ; périodes 2011 → 2022 et 2023 → fin ; pour information,
+  depuis la publication.
+- Placebo : 200 tirages. R1, R1b : les mêmes positions redistribuées au hasard entre les mêmes séances. R2, R3 : achat
+  sur autant de séances tirées au hasard. « Bat le placebo » = t au-dessus de 95 % des tirages.
+- **Retenue** : t ≥ 2,50 (Bonferroni, 8 tests, unilatéral 5 %), moyenne positive sur les deux périodes, bat le placebo.
+  **Intéressante** : t ≥ 1,65, positive sur les deux périodes, au-dessus de 90 % des tirages. Sinon : rejetée.
+- Une règle retenue passe ensuite au simulateur du challenge (`audit/machine6`, plancher suivi en temps réel) avant
+  toute proposition pour le bot.
