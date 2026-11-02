@@ -1,0 +1,63 @@
+vague g graine 0 : 1123 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 1, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague g graine 1 : 1252 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 1, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague g graine 2 : 961 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 1, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague g graine 3 : 1272 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 1, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague g graine 4 : 1199 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 1, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague g graine 5 : 1218 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 1, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague f graine 0 : 402 genomes, meilleur -1.65 {'T': 4, 'L': 1000, 'G': 0, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 0, 'O': 0, 'F1': 0.25, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 1, 'F6': 1}
+vague f graine 1 : 417 genomes, meilleur -1.65 {'T': 4, 'L': 1000, 'G': 0, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 0, 'O': 0, 'F1': 0.25, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 1, 'F6': 1}
+vague f graine 2 : 370 genomes, meilleur -1.65 {'T': 4, 'L': 1000, 'G': 0, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 0, 'O': 0, 'F1': 0.25, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 1, 'F6': 1}
+vague f graine 3 : 375 genomes, meilleur -1.65 {'T': 4, 'L': 1000, 'G': 0, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 0, 'O': 0, 'F1': 0.25, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 1, 'F6': 1}
+vague f graine 4 : 395 genomes, meilleur -1.65 {'T': 4, 'L': 1000, 'G': 0, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 0, 'O': 0, 'F1': 0.25, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 1, 'F6': 1}
+vague f graine 5 : 427 genomes, meilleur -1.65 {'T': 4, 'L': 1000, 'G': 0, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 0, 'O': 0, 'F1': 0.25, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 1, 'F6': 1}
+vague t graine 0 : 2045 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 1, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague t graine 1 : 1648 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 1, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague t graine 2 : 1781 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 1, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague t graine 3 : 2308 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 1, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague t graine 4 : 2014 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 1, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+vague t graine 5 : 1875 genomes, meilleur +13.43 {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 1, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+
+genomes distincts evalues (toutes vagues) : 14793
+
+Tournoi (2020 - 2023), score = P(reussite) - 0,5 x P(echec) :
+  tour de 32 -> 16 : +10.1, +10.1, +11.0, +10.5, +11.0, +10.5, +9.4, +10.5, +11.5, +10.9, +11.2, +10.7, +11.8, +8.4, +9.6, +8.4
+  tour de 16 -> 8 : +10.1, +10.1, +11.0, +11.8, +11.0, +11.2, +10.9, +11.5
+  tour de 8 -> 4 : +11.5, +10.9, +11.2, +11.8
+
+FINALISTE {'T': 6, 'L': 1000, 'G': 300, 'S': 0, 'P': 0, 'B': 1, 'R': 0, 'N': 0, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+  entrainement : score +14.6 (reussis 16.9 %, echoues 4.7 %)
+  tournoi      : score +11.5 (reussis 17.3 %, echoues 11.6 %)
+  1. bat le meilleur temoin sur 2020 - 2023 (-3.3) : True
+  2. pire voisin O=500 : -2.6 contre +26.1 : False
+  3. pessimiste + 1 tick : +11.3 : True
+  4. t des journees 15 ans : 3.88 : True
+
+FINALISTE {'T': 6, 'L': 1000, 'G': 300, 'S': 0.5, 'P': 0, 'B': 1, 'R': 0, 'N': 0, 'J': 1, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+  entrainement : score +15.5 (reussis 17.2 %, echoues 3.4 %)
+  tournoi      : score +10.9 (reussis 16.1 %, echoues 10.5 %)
+  1. bat le meilleur temoin sur 2020 - 2023 (-3.3) : True
+  2. pire voisin O=500 : -1.6 contre +26.4 : False
+  3. pessimiste + 1 tick : +10.9 : True
+  4. t des journees 15 ans : 3.74 : True
+
+FINALISTE {'T': 6, 'L': 1000, 'G': 300, 'S': 0.5, 'P': 0, 'B': 0, 'R': 0, 'N': 0, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 210, 'F4': 30, 'F5': 0, 'F6': 0}
+  entrainement : score +15.0 (reussis 17.4 %, echoues 4.8 %)
+  tournoi      : score +11.2 (reussis 18.1 %, echoues 13.9 %)
+  1. bat le meilleur temoin sur 2020 - 2023 (-3.3) : True
+  2. pire voisin O=500 : -1.7 contre +26.2 : False
+  3. pessimiste + 1 tick : +11.0 : True
+  4. t des journees 15 ans : 4.26 : True
+
+FINALISTE {'T': 6, 'L': 1000, 'G': 300, 'S': 0.5, 'P': 0, 'B': 1, 'R': 0, 'N': 0, 'J': 0, 'O': 0, 'F1': 0, 'F2': 99, 'F3': 360, 'F4': 30, 'F5': 0, 'F6': 0}
+  entrainement : score +14.9 (reussis 17.0 %, echoues 4.1 %)
+  tournoi      : score +11.8 (reussis 17.3 %, echoues 11.1 %)
+  1. bat le meilleur temoin sur 2020 - 2023 (-3.3) : True
+  2. pire voisin O=500 : -1.6 contre +26.7 : False
+  3. pessimiste + 1 tick : +11.6 : True
+  4. t des journees 15 ans : 3.83 : True
+
+temoin a 4 MNQ / 1000 : entrainement -3.6 (14.4 % / 35.9 %), tournoi -7.7 (17.9 % / 51.3 %)
+
+temoin b 6 MNQ / 1000 : entrainement -5.7 (20.7 % / 52.8 %), tournoi -11.2 (20.6 % / 63.8 %)
+
+temoin c 2 MNQ / 500 : entrainement -3.3 (2.4 % / 11.2 %), tournoi -3.3 (5.6 % / 17.9 %)

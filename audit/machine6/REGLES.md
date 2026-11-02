@@ -68,3 +68,20 @@ Pas de gène sans mécanisme (jour de la semaine, sens seul, mois…).
   5. coffre 2024 → 2026 : bat le meilleur témoin (ouvert une fois, résultat publié quel qu'il soit).
 - Descriptif, pas un test : les finalistes sur avril → octobre 2026 avec le vrai delta (`f_c2q1`).
 - Nombre total de génomes évalués publié avec les résultats.
+
+## Version 2 (2 novembre 2026, après la vague 1, avant tout calcul de la vague 2, coffre toujours fermé)
+
+Vu dans la vague 1 (`resultats/vagues_tournoi.txt`) : tout le gain vient du gène G (limite du jour ramenée chaque matin à
+solde − plancher − marge). Les 4 finalistes ratent le contrôle 2, toujours à cause du même voisin : O = 500 $ (objectif du
+jour). Passer de « aucun objectif du jour » à « arrêt à +500 $ » n'est pas un petit pas de réglage mais une autre règle
+(elle empêche d'atteindre +3 000 $ en 8 séances). **Ce défaut de la règle écrite est corrigé ici, après avoir vu les
+résultats ; les deux lectures du contrôle 2 sont publiées.**
+
+1. Nouveau gène GC, garde-plancher **en temps réel** : aucune, ou marge 200, 350, 500 $. À chaque minute, si (valeur du
+   compte au pire prix − plancher du moment) ≤ marge : tout est fermé à ce niveau (1 point de glissement) et plus de trade
+   ce jour-là ; un jour qui commence avec (solde − plancher) ≤ marge + 50 $ ne trade pas.
+2. Contrôle 2, lecture corrigée : le voisin de O = « aucun » est O = 1 500 $ (le moins contraignant), pas 500 $.
+3. Vague 4 : tous les gènes + GC, 6 graines, mêmes réglages de l'algorithme. Tournoi : les 32 meilleurs de toutes les
+   vagues (1 à 4). Coffre : ouvert une seule fois, pour les 4 finalistes de ce tournoi, ceux de la vague 1 et les témoins.
+4. Descriptif publié pour chaque finaliste : part des comptes « en vie » au 12 novembre qui restent bloqués près du
+   plancher (moins de 300 $ de marge).
