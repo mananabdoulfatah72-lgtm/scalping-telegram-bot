@@ -89,7 +89,7 @@ def charger(minutes_csv, trades_txt, cache=None):
 
 
 # parametres de gestion (vecteur float) : indices
-P_T, P_L, P_G, P_S, P_P, P_B, P_R, P_N, P_J, P_O, P_PESS, P_GLISSE, P_EOD, P_PREF = range(14)
+P_T, P_L, P_G, P_S, P_P, P_B, P_R, P_N, P_J, P_O, P_PESS, P_GLISSE, P_EOD, P_PREF, P_GC = range(15)
 
 
 @nb.njit(cache=True)
@@ -99,14 +99,14 @@ def fenetre(debut, nseances, prm, solde0, haut0, O, H, L, C, jt_debut, jt_fin, t
     issue : 1 reussi, -1 echoue, 0 ni l'un ni l'autre, 9 pas assez de seances."""
     T = prm[P_T]; Lim = prm[P_L]; G = prm[P_G]; S = prm[P_S]; Pt = prm[P_P]; B = prm[P_B]; R = prm[P_R]
     NMAX = prm[P_N]; J = prm[P_J]; Oj = prm[P_O]; pess = prm[P_PESS] > 0; gl = prm[P_GLISSE]; eod = prm[P_EOD] > 0
-    pref = prm[P_PREF]
+    pref = prm[P_PREF]; GC = prm[P_GC]
     solde = solde0
     haut = haut0
     nj = O.shape[0]
     for q in range(nseances):
         d = debut + q
         if d >= nj:
-            return 9, solde, q
+            return 9, solde, q, haut
         plancher = min(haut - perte_max, depart_bloque(blocage))
         lim = Lim
         if G > 0:
@@ -115,6 +115,10 @@ def fenetre(debut, nseances, prm, solde0, haut0, O, H, L, C, jt_debut, jt_fin, t
                 if eod:
                     haut = max(haut, solde)
                 continue
+        if GC > 0 and solde - plancher <= GC + 50:
+            if eod:
+                haut = max(haut, solde)
+            continue
         jour_val = 0.0
         arret = False
         ntr = 0
@@ -158,7 +162,12 @@ def fenetre(debut, nseances, prm, solde0, haut0, O, H, L, C, jt_debut, jt_fin, t
                 pire = adv if not sorti else sortie
                 v_adv = solde + jour_val + T * (2 * s * (pire - e) * k - FRAIS)
                 if v_adv <= plancher:
-                    return -1, v_adv, q
+                    return -1, v_adv, q, haut
+                if GC > 0 and v_adv - plancher <= GC:
+                    niveau = e + s * ((plancher + GC - solde - jour_val) / T + FRAIS) / (2 * k)
+                    sortie = (min(o, niveau) - GLISSE_LIMITE - gl) if s > 0 else (max(o, niveau) + GLISSE_LIMITE + gl)
+                    sorti = True
+                    arret = True
                 if jour_val + T * (2 * s * (pire - e) * k - FRAIS) <= -lim:
                     niveau = e + s * ((-lim - jour_val) / T + FRAIS) / (2 * k)
                     sortie = (min(o, niveau) - GLISSE_LIMITE - gl) if s > 0 else (max(o, niveau) + GLISSE_LIMITE + gl)
@@ -183,7 +192,7 @@ def fenetre(debut, nseances, prm, solde0, haut0, O, H, L, C, jt_debut, jt_fin, t
                 v_cl = jour_val + T * (2 * s * (cc - e) * k - FRAIS)
                 # objectif du challenge (a la cloture de la minute, comme le bot)
                 if not eod and solde + v_cl >= objectif + 50:
-                    return 1, solde + v_cl, q
+                    return 1, solde + v_cl, q, haut
                 if Oj > 0 and v_cl >= Oj:
                     sortie = cc - s * gl
                     sorti = True
@@ -200,7 +209,7 @@ def fenetre(debut, nseances, prm, solde0, haut0, O, H, L, C, jt_debut, jt_fin, t
             r = T * (2 * s * (sortie - e) * k - FRAIS)
             jour_val += r
             if not eod and solde + jour_val >= objectif + 50:
-                return 1, solde + jour_val, q
+                return 1, solde + jour_val, q, haut
             if J > 0 and r > 0:
                 arret = True
             if Oj > 0 and jour_val >= Oj:
@@ -208,9 +217,9 @@ def fenetre(debut, nseances, prm, solde0, haut0, O, H, L, C, jt_debut, jt_fin, t
         solde += jour_val
         if eod:
             if solde >= objectif:
-                return 1, solde, q
+                return 1, solde, q, haut
             haut = max(haut, solde)
-    return 0, solde, nseances
+    return 0, solde, nseances, haut
 
 
 @nb.njit(cache=True)
@@ -222,10 +231,13 @@ def depart_bloque(blocage):
 def lot(debuts, nseances, prm, solde0, haut0, O, H, L, C, jt_debut, jt_fin, t_sens, t_me, t_mx, t_e, t_x, t_w, t_niv,
         pris, objectif, perte_max, blocage):
     res = np.zeros(len(debuts), np.int64)
+    marge = np.zeros(len(debuts))
     for z in range(len(debuts)):
-        res[z] = fenetre(debuts[z], nseances, prm, solde0, haut0, O, H, L, C, jt_debut, jt_fin, t_sens, t_me, t_mx, t_e,
-                         t_x, t_w, t_niv, pris, objectif, perte_max, blocage, 0)[0]
-    return res
+        r = fenetre(debuts[z], nseances, prm, solde0, haut0, O, H, L, C, jt_debut, jt_fin, t_sens, t_me, t_mx, t_e,
+                    t_x, t_w, t_niv, pris, objectif, perte_max, blocage, 0)
+        res[z] = r[0]
+        marge[z] = r[1] - min(r[3] - perte_max, blocage)
+    return res, marge
 
 
 @nb.njit(cache=True)

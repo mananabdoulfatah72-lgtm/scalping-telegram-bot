@@ -15,7 +15,7 @@ GENES = [  # nom, valeurs (dans l'ordre des pas), index de la valeur de base, fa
     ("T", [1, 2, 3, 4, 5, 6], 3, "g"), ("L", [300, 400, 500, 600, 700, 800, 900, 1000], 7, "g"),
     ("G", [0, 150, 300], 0, "g"), ("S", [0, 0.5, 1, 1.5], 0, "g"), ("P", [0, 1, 2, 3], 0, "g"),
     ("B", [0, 1, 2], 0, "g"), ("R", [0, 1, 2], 0, "g"), ("N", [1, 2, 0], 2, "g"), ("J", [0, 1], 0, "g"),
-    ("O", [0, 500, 750, 1000, 1500], 0, "g"),
+    ("O", [0, 500, 750, 1000, 1500], 0, "g"), ("GC", [0, 200, 350, 500], 0, "c"),
     ("F1", [0, 0.1, 0.25], 0, "f"), ("F2", [99, 1.5, 1.0], 0, "f"), ("F3", [360, 330, 270, 210], 0, "f"),
     ("F4", [30, 60], 0, "f"), ("F5", [0, 1, 2], 0, "f"), ("F6", [0, 1, 2], 0, "f")]
 NG = len(GENES)
@@ -34,7 +34,7 @@ def valeurs(g):
 def parametres(g, pess=0, gl=0.0):
     v = valeurs(g)
     p = B.prm(T=v["T"], L=v["L"], G=v["G"], S=v["S"], P=v["P"], B=v["B"], R=v["R"], N=v["N"], Jr=v["J"], O=v["O"],
-              pess=pess, gl=gl)
+              pess=pess, gl=gl, GC=v["GC"])
     pris = (D["t_dep"] >= v["F1"]) & (D["t_dep"] <= v["F2"]) & (D["t_me"] <= v["F3"]) & (D["t_me"] >= v["F4"])
     if v["F5"] == 1:
         pris &= SIGH[td]
@@ -49,8 +49,8 @@ def parametres(g, pess=0, gl=0.0):
 
 def score(g, per, pess=0, gl=0.0):
     p, pris = parametres(g, pess, gl)
-    r, e, x, n = B.issues(p, PER[per], pris)
-    return r - 0.5 * e, r, e
+    r, e, x, n, bl = B.issues(p, PER[per], pris)
+    return r - 0.5 * e, r, e, bl
 
 
 def complexite(g):
@@ -59,8 +59,8 @@ def complexite(g):
 
 def vague(arg):
     famille, graine = arg
-    rng = np.random.default_rng(1000 * graine + {"g": 1, "f": 2, "t": 3}[famille])
-    libres = [i for i in range(NG) if famille == "t" or GENES[i][3] == famille]
+    rng = np.random.default_rng(1000 * graine + {"g": 1, "f": 2, "t": 3, "t2": 4}[famille])
+    libres = [i for i in range(NG) if (famille == "t" and GENES[i][3] != "c") or famille == "t2" or GENES[i][3] == famille]
     cache = {}
 
     def note(g):
@@ -100,7 +100,7 @@ def vague(arg):
 def main():
     out = Path(__file__).parent / "resultats"
     out.mkdir(exist_ok=True)
-    taches = [(f, s) for f in ("g", "f", "t") for s in range(6)]
+    taches = [(f, s) for f in ("g", "f", "t", "t2") for s in range(6)]
     with Pool(4) as pool:
         res = pool.map(vague, taches)
     tous = {}
@@ -132,19 +132,27 @@ def main():
     meilleur_tem_tou = max(score(g, "tou")[0] for g in tem.values())
     finalistes = []
     for g in tour:
-        s_ent, r_ent, e_ent = score(g, "ent")
-        s_tou, r_tou, e_tou = score(g, "tou")
+        s_ent, r_ent, e_ent, bl_ent = score(g, "ent")
+        s_tou, r_tou, e_tou, bl_tou = score(g, "tou")
         c1 = s_tou > meilleur_tem_tou
-        voisins = []
+        voisins, voisins2 = [], []
         for i in range(NG):
+            ordre = [1, 2, 3, 4, 0] if GENES[i][0] == "O" else list(range(len(GENES[i][1])))
+            pos = ordre.index(g[i])
             for dlt in (-1, 1):
                 j = g[i] + dlt
                 if 0 <= j < len(GENES[i][1]):
                     v = list(g); v[i] = j; v = tuple(v)
                     voisins.append((GENES[i][0], GENES[i][1][j], score(v, "ent")[0] + score(v, "tou")[0]))
+                if 0 <= pos + dlt < len(ordre):
+                    j2 = ordre[pos + dlt]
+                    v = list(g); v[i] = j2; v = tuple(v)
+                    voisins2.append((GENES[i][0], GENES[i][1][j2], score(v, "ent")[0] + score(v, "tou")[0]))
         ref = s_ent + s_tou
         pire_v = min(voisins, key=lambda z: z[2])
-        c2 = pire_v[2] >= ref - 0.1 * abs(ref)
+        pire_v2 = min(voisins2, key=lambda z: z[2])
+        c2 = pire_v2[2] >= ref - 0.1 * abs(ref)
+        c2_ecrit = pire_v[2] >= ref - 0.1 * abs(ref)
         s_st = score(g, "tou", pess=1, gl=0.25)[0]
         c3 = s_st > meilleur_tem_tou
         p, pris = parametres(g)
@@ -153,15 +161,17 @@ def main():
         t = j.mean() / j.std(ddof=1) * np.sqrt(len(j))
         c4 = t >= 3
         finalistes.append(dict(genome=list(g), valeurs=valeurs(g), complexite=complexite(g), ent=[s_ent, r_ent, e_ent],
-                               tou=[s_tou, r_tou, e_tou], stress_tou=s_st, pire_voisin=pire_v, t_15ans=t,
+                               tou=[s_tou, r_tou, e_tou], stress_tou=s_st, pire_voisin=pire_v, pire_voisin_corrige=pire_v2, controle2_ecrit=bool(c2_ecrit), bloques_tou=bl_tou, t_15ans=t,
                                controles=[bool(c1), bool(c2), bool(c3), bool(c4)]))
         lignes.append(f"\nFINALISTE {valeurs(g)}\n  entrainement : score {s_ent:+.1f} (reussis {r_ent:.1f} %, echoues {e_ent:.1f} %)"
                       f"\n  tournoi      : score {s_tou:+.1f} (reussis {r_tou:.1f} %, echoues {e_tou:.1f} %)"
                       f"\n  1. bat le meilleur temoin sur 2020 - 2023 ({meilleur_tem_tou:+.1f}) : {c1}"
-                      f"\n  2. pire voisin {pire_v[0]}={pire_v[1]} : {pire_v[2]:+.1f} contre {ref:+.1f} : {c2}"
+                      f"\n  2. pire voisin (lecture corrigee) {pire_v2[0]}={pire_v2[1]} : {pire_v2[2]:+.1f} contre {ref:+.1f} : {c2}"
+                      f" ; lecture ecrite {pire_v[0]}={pire_v[1]} : {pire_v[2]:+.1f} : {c2_ecrit}"
+                      f"\n     comptes en vie bloques pres du plancher (tournoi) : {bl_tou:.0f} %"
                       f"\n  3. pessimiste + 1 tick : {s_st:+.1f} : {c3}\n  4. t des journees 15 ans : {t:.2f} : {c4}")
     for nom, g in tem.items():
-        s1, r1, e1 = score(g, "ent"); s2, r2, e2 = score(g, "tou")
+        s1, r1, e1, _ = score(g, "ent"); s2, r2, e2, _ = score(g, "tou")
         lignes.append(f"\ntemoin {nom} : entrainement {s1:+.1f} ({r1:.1f} % / {e1:.1f} %), tournoi {s2:+.1f} ({r2:.1f} % / {e2:.1f} %)")
     (out / "vagues_tournoi.txt").write_text("\n".join(lignes) + "\n")
     json.dump(dict(finalistes=finalistes, temoins={k: list(v) for k, v in tem.items()}, n_genomes=len(tous),
