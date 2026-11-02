@@ -84,7 +84,7 @@ namespace SupertrendNQ
             }
             if (m == A_PLAT && Position != 0 && executer < 0)
             {
-                Fermer(Position, Entree, MinuteEntree, A_PLAT + 1, c, s, "15 h 55, a plat");
+                Fermer(Position, Entree, MinuteEntree, A_PLAT + 1, c, s, "a plat de fin de seance");
                 Position = 0;
             }
             return s;
@@ -155,6 +155,9 @@ namespace SupertrendNQ
         /// <summary>Plus de nouvelle position aujourd'hui (limite du jour, objectif) ; la position eventuelle est oubliee.</summary>
         public void Arreter() { Abandonner(); Trader = false; }
 
-        public static string Heure(int m) => $"{(570 + m) / 60}h{(570 + m) % 60:00}";
+        /// <summary>Heure d'une minute dans les messages : celle de Paris si l'hote la donne, sinon New York.</summary>
+        public Func<int, string> HeureLocale;
+        string Heure(int m) => HeureLocale?.Invoke(m) ?? HeureNY(m) + " (New York)";
+        public static string HeureNY(int m) => $"{(570 + m) / 60}h{(570 + m) % 60:00}";
     }
 }

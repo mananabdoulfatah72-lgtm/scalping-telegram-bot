@@ -103,6 +103,21 @@ namespace SupertrendNQ
             Dire("arretee. Rien ne reste ouvert sur MNQ.");
         }
 
+        /// <summary>Heure de Paris d'une minute de la seance du jour (9 h 30 New York + m), ex. "15h35 (Paris)".</summary>
+        string HeureDeParis(int m)
+        {
+            try
+            {
+                TimeZoneInfo paris = null;
+                foreach (var id in new[] { "Romance Standard Time", "Europe/Paris" })
+                    try { paris = TimeZoneInfo.FindSystemTimeZoneById(id); break; } catch { }
+                if (paris == null) return null;
+                var t = TimeZoneInfo.ConvertTimeFromUtc(TimeZoneInfo.ConvertTimeToUtc(jour.AddMinutes(570 + m), ny), paris);
+                return $"{t.Hour}h{t.Minute:00} (Paris)";
+            }
+            catch { return null; }
+        }
+
         static TimeZoneInfo TrouverFuseau()
         {
             foreach (var id in new[] { "Eastern Standard Time", "America/New_York" })
@@ -138,6 +153,7 @@ namespace SupertrendNQ
             var jours = Rejeu.LireJours(Rejeu.Lignes(local), jour.AddDays(-1));
             if (jours.Count < 5) throw new Exception($"historique trop court ({jours.Count} seances)");
             bot = new MoteurST { Periode = Math.Max(2, Periode), Multiple = Multiple };
+            bot.HeureLocale = m => HeureDeParis(m);
             Rejeu.Jouer(bot, jours);
             bot.Trades.Clear();
             var derniere = jours.Keys.Last();
