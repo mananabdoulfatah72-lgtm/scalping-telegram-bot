@@ -1,0 +1,11 @@
+verification (partie H : t 2,92, +28,6 $ par seance, 2,4 allers-retours) : 9628 trades, 3940 seances, 2.4 trades par seance, +27.0 $ par seance, t 2.79, <=2022 t 2.67, >=2023 t 0.94
+
+Challenge depuis 50 000 $, plancher 49 000 $ (temps reel), 8 seances : reussis / echoues (%)
+  Supertrend 1 MNQ, limite 1000   2011-19  2.6 / 32.3   2020-23  7.9 / 46.0   2024-26  2.8 / 39.8
+  Supertrend 2 MNQ, limite 1000   2011-19 15.5 / 63.1   2020-23 21.7 / 67.9   2024-26 13.6 / 74.3
+  Supertrend 3 MNQ, limite 1000   2011-19 20.7 / 73.3   2020-23 23.8 / 74.5   2024-26 18.8 / 79.0
+  Supertrend 4 MNQ, limite 1000   2011-19 22.3 / 76.2   2020-23 23.4 / 76.2   2024-26 19.4 / 80.2
+  Supertrend 6 MNQ, limite 1000   2011-19 23.3 / 76.3   2020-23 23.4 / 76.6   2024-26 20.3 / 79.7
+  Supertrend 4 MNQ, limite 700    2011-19 21.0 / 75.9   2020-23 23.6 / 76.1   2024-26 19.2 / 80.5
+  Supertrend 6 MNQ, limite 700    2011-19 21.9 / 77.6   2020-23 23.3 / 76.6   2024-26 20.6 / 79.4
+  (zone, meme simulateur : 4 MNQ / 1000 -> 2011-19 14.4 / 35.9, 2020-23 17.9 / 51.3, 2024-26 15.6 / 48.5 ; 6 MNQ / 1000 -> 20.7 / 52.8, 20.6 / 63.8, 20.3 / 63.5)
