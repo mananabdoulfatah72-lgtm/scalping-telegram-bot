@@ -1,0 +1,18 @@
+Partie R : seuil de retenue t >= 2.50 ; placebo 200 tirages
+
+| Marche | Regle | Trades | t | Net par trade | 2011-2022 | 2023-fin | Depuis publication | Bat le placebo | Verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| NQ | R1 | 3760 | +1.52 | +6.1 $ | +1.85 (+8.6 $) | -0.19 (-1.6 $) | -0.25 (234) | 100 % | rejetee |
+| NQ | R1b | 1077 | +2.23 | +20.5 $ | +2.44 (+25.8 $) | +0.25 (+4.6 $) | +1.03 (89) | 100 % | interessante |
+| NQ | R2 | 2070 | +0.76 | +10.5 $ | +0.23 (+3.7 $) | +1.24 (+31.6 $) | +0.10 (1026) | 40 % | rejetee |
+| NQ | R3 | 130 | +0.91 | +40.0 $ | +1.23 (+61.6 $) | -0.26 (-23.5 $) | +0.91 (130) | 75 % | rejetee |
+
+NQ : 3940 seances completes, 148 veilles de jour ferie, 3977 seances dans les semaines 0 a 6 du cycle de la Fed
+
+| ES | R1 | 3710 | -0.59 | -1.1 $ | -0.08 (-0.2 $) | -1.20 (-4.0 $) | +0.17 (209) | 100 % | rejetee |
+| ES | R1b | 1016 | -0.03 | -0.1 $ | +0.18 (+1.0 $) | -0.45 (-3.8 $) | +1.23 (72) | 96 % | rejetee |
+| ES | R2 | 2058 | -0.04 | -0.3 $ | -0.44 (-3.6 $) | +0.84 (+10.3 $) | -0.58 (1014) | 18 % | rejetee |
+| ES | R3 | 130 | +1.32 | +28.4 $ | +1.44 (+37.9 $) | +0.02 (+0.7 $) | +1.32 (130) | 88 % | rejetee |
+
+ES : 3917 seances completes, 148 veilles de jour ferie, 3953 seances dans les semaines 0 a 6 du cycle de la Fed
+

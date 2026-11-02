@@ -1508,3 +1508,22 @@ l'inventaire (`agents/audit.md`, parties A à Q). Déjà testées, donc écarté
   **Intéressante** : t ≥ 1,65, positive sur les deux périodes, au-dessus de 90 % des tirages. Sinon : rejetée.
 - Une règle retenue passe ensuite au simulateur du challenge (`audit/machine6`, plancher suivi en temps réel) avant
   toute proposition pour le bot.
+
+### Résultats de la partie R (2 novembre 2026) : `resultats/r/partie_r.txt`
+
+**Aucune règle retenue ; une seule intéressante (R1b sur le NQ), qui s'éteint depuis 2023.**
+
+| Marché | Règle | Trades | t | Net par trade | 2011 - 2022 | 2023 - fin | Bat le placebo | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| NQ | R1 contre la nuit, 1re demi-heure | 3 760 | +1,52 | +6,1 $ | +1,85 | −0,19 | 100 % | rejetée |
+| NQ | R1b idem, fortes nuits seulement | 1 077 | **+2,23** | +20,5 $ | +2,44 | +0,25 | 100 % | **intéressante** |
+| NQ | R2 cycle de la Fed | 2 070 | +0,76 | +10,5 $ | +0,23 | +1,24 | 40 % | rejetée |
+| NQ | R3 veille de jour férié | 130 | +0,91 | +40,0 $ | +1,23 | −0,26 | 75 % | rejetée |
+| ES | R1 | 3 710 | −0,59 | −1,1 $ | −0,08 | −1,20 | 100 % | rejetée |
+| ES | R1b | 1 016 | −0,03 | −0,1 $ | +0,18 | −0,45 | 96 % | rejetée |
+| ES | R2 | 2 058 | −0,04 | −0,3 $ | −0,44 | +0,84 | 18 % | rejetée |
+| ES | R3 | 130 | +1,32 | +28,4 $ | +1,44 | +0,02 | 88 % | rejetée |
+
+- R1b confirme l'étude d'Iwanaga et Sakemoto sur le NQ jusqu'en 2022, puis s'éteint (t +0,25 depuis 2023), comme
+  l'écrivent les auteurs (« affaibli après les années 2010 ») et les tests indépendants de 2025.
+- Le cycle de la Fed et la veille de jour férié ne survivent pas à la séance de jour seule (la part de nuit est perdue).
