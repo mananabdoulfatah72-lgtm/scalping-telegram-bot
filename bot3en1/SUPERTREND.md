@@ -45,8 +45,8 @@ le Strategies manager sous le nom **Supertrend NQ (10-3, 5 min)**.
 | Compte | le compte qui tradera le Supertrend (**jamais le même que le bot 3 en 1 en même temps**) |
 | NQ (prix et barres) | NQZ6 (contrat du moment) |
 | MNQ (ordres) | MNQZ6 (même échéance) |
-| MNQ par trade | 1 pour commencer |
-| Limite de perte du jour | en $ ; tout est fermé et plus de trade jusqu'au lendemain |
+| MNQ par trade | **1** |
+| Limite de perte du jour | **400** (par défaut) ; tout est fermé et plus de trade jusqu'au lendemain |
 | Objectif | solde à atteindre (53 000 sur un challenge 50K), 0 sur un compte financé |
 | Supertrend : ATR / multiple | **10 et 3** (seuls réglages testés : ne pas changer) |
 | Dossier | C:\SupertrendNQ |

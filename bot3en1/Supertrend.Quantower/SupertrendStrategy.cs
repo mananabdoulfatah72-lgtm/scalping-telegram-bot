@@ -23,7 +23,7 @@ namespace SupertrendNQ
         [InputParameter("MNQ (ordres), meme echeance, ex. MNQZ6", 30)] public Symbol SymboleMNQ;
         [InputParameter("MNQ par trade", 40, 1, 20, 1, 0)] public int Taille = 1;
         [InputParameter("Limite de perte du jour en $ (tout ferme, plus de trade jusqu'au lendemain ; 0 = aucune)", 50, 0, 100000, 50, 0)]
-        public double LimiteJour = 500;
+        public double LimiteJour = 400;
         [InputParameter("Objectif : solde du compte a atteindre (tout ferme a l'objectif + 50 $, plus aucun trade ensuite ; 0 = aucun)", 55, 0, 10000000, 100, 0)]
         public double Objectif = 0;
         [InputParameter("Supertrend : ATR sur combien de barres de 5 min (teste : 10)", 60, 2, 100, 1, 0)] public int Periode = 10;
