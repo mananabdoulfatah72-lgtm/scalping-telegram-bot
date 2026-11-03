@@ -1,0 +1,1259 @@
+<title>Terminal Quant NQ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Mise en page : un terminal de marche — barre de commande, touches de fonction, panneaux denses sur fond noir, ambre pour
+   l'interface, blanc pour les valeurs, vert / rouge pour le sens du prix. Un seul theme sombre, choisi expres. */
+:root {
+  --noir: #000000; --panneau: #0b0b0c; --panneau2: #121214; --trait: #26262b; --grille: #18181b;
+  --ambre: #ffa028; --ambre-pale: #c98a3c; --blanc: #f2f2ee; --gris: #8d8d95; --gris2: #5b5b63;
+  --hausse: #2fd16f; --baisse: #ff4f4f; --cyan: #3cc8ff; --violet: #b48cff;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --cond: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--noir); }
+body { color: var(--blanc); font-family: var(--mono); font-size: 13px; line-height: 1.45; margin: 0;
+  padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px)); padding-block: 0 24px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--noir); }
+button, input, select { font: inherit; color: inherit; }
+.tete { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--noir); padding-top: 8px; display: grid; gap: 6px; }
+.barre { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; border-bottom: 1px solid var(--trait); padding-bottom: 6px; }
+.logo { font-family: var(--cond); font-weight: 700; letter-spacing: .08em; color: var(--noir); background: var(--ambre); padding: 2px 8px; font-size: 14px; }
+.cmd { display: flex; align-items: center; gap: 6px; flex: 1 1 260px; min-width: 0; }
+.cmd label { color: var(--ambre); font-weight: 600; }
+.cmd input { flex: 1; min-width: 0; background: var(--panneau2); border: 1px solid var(--trait); color: var(--ambre); padding: 4px 8px; text-transform: uppercase; }
+.cmd input:focus { outline: 1px solid var(--ambre); }
+.go { background: var(--hausse); color: var(--noir); border: 0; font-weight: 700; padding: 4px 10px; cursor: pointer; }
+.horloge { color: var(--gris); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.touches { display: flex; flex-wrap: wrap; gap: 4px; }
+.touches button { background: var(--panneau2); border: 1px solid var(--trait); color: var(--ambre); padding: 3px 9px; cursor: pointer; font-family: var(--cond); font-weight: 600; letter-spacing: .04em; }
+.touches button b { color: var(--gris); font-weight: 500; margin-right: 6px; }
+.touches button[aria-current="page"] { background: var(--ambre); color: var(--noir); border-color: var(--ambre); }
+.touches button[aria-current="page"] b { color: var(--noir); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 1px solid var(--ambre); outline-offset: 1px; }
+.bande { display: flex; gap: 0; overflow-x: auto; border: 1px solid var(--trait); background: var(--panneau); }
+.bande div { padding: 4px 12px; border-right: 1px solid var(--trait); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.bande .k { color: var(--ambre); margin-right: 6px; }
+.vue { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 10px; }
+.grille2 { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 10px; }
+.grille3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.g11 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+@media (max-width: 900px) { .grille2, .grille3, .g11 { grid-template-columns: minmax(0, 1fr); } }
+.panneau { background: var(--panneau); border: 1px solid var(--trait); min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; }
+.panneau > h2 { margin: 0; font-family: var(--cond); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ambre); background: var(--panneau2);
+  padding: 4px 8px; border-bottom: 1px solid var(--trait); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-weight: 600; text-wrap: balance; }
+.panneau > h2 span { color: var(--gris); letter-spacing: .02em; text-transform: none; font-family: var(--mono); font-weight: 400; }
+.corps { padding: 8px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; min-width: 0; }
+.toile { position: relative; width: 100%; }
+.toile canvas { display: block; width: 100%; }
+.info { position: absolute; pointer-events: none; background: rgba(0,0,0,.88); border: 1px solid var(--ambre-pale); padding: 4px 6px; font-size: 11px; white-space: nowrap; z-index: 2; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 3px 6px; text-align: right; border-bottom: 1px solid var(--grille); white-space: nowrap; }
+th { color: var(--ambre-pale); font-weight: 500; font-family: var(--cond); letter-spacing: .04em; text-transform: uppercase; font-size: 11px; }
+td:first-child, th:first-child { text-align: left; }
+.defile { overflow-x: auto; min-width: 0; }
+.h { color: var(--hausse); } .b { color: var(--baisse); } .a { color: var(--ambre); } .g { color: var(--gris); } .c { color: var(--cyan); } .v { color: var(--violet); }
+.chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1px; background: var(--trait); border: 1px solid var(--trait); }
+.chiffres div { background: var(--panneau); padding: 6px 8px; display: grid; gap: 1px; }
+.chiffres .l { color: var(--gris); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; font-family: var(--cond); }
+.chiffres .n { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.note { color: var(--gris); font-size: 12px; max-width: 80ch; font-family: var(--cond); font-size: 13px; }
+.ctrl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ctrl select, .ctrl input[type=number] { background: var(--panneau2); border: 1px solid var(--trait); padding: 3px 6px; color: var(--blanc); }
+.ctrl select { max-width: 100%; min-width: 0; }
+.ctrl input[type=number] { width: 7ch; }
+.btn { background: var(--panneau2); border: 1px solid var(--trait); color: var(--ambre); padding: 4px 10px; cursor: pointer; }
+.btn:hover { border-color: var(--ambre); }
+.btn.achat { background: #0d3a1f; border-color: var(--hausse); color: var(--hausse); font-weight: 700; }
+.btn.vente { background: #3a0d0d; border-color: var(--baisse); color: var(--baisse); font-weight: 700; }
+.btn[disabled] { opacity: .35; cursor: not-allowed; }
+.puce { display: inline-block; padding: 0 6px; border: 1px solid currentColor; font-size: 11px; }
+.journal { max-height: 260px; overflow: auto; }
+.echelle { display: grid; gap: 1px; font-variant-numeric: tabular-nums; }
+.echelle div { display: grid; grid-template-columns: 12ch 1fr; gap: 8px; padding: 2px 6px; background: var(--panneau2); }
+.barres-h { display: grid; gap: 3px; }
+.barres-h div { display: grid; grid-template-columns: 11ch 1fr 7ch; gap: 6px; align-items: center; }
+.barres-h i { display: block; height: 10px; }
+.relief { position: relative; height: 360px; background: var(--noir); overflow: hidden; }
+.relief canvas { width: 100%; height: 100%; display: block; }
+.etiq span { position: absolute; transform: translate(-50%, -50%); font-size: 10px; color: var(--gris); pointer-events: none; white-space: nowrap; }
+/* station : tout sur un ecran */
+.st-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.direct { display: inline-flex; align-items: center; gap: 6px; color: var(--baisse); font-family: var(--cond); font-weight: 700; letter-spacing: .12em; border: 1px solid var(--baisse); padding: 1px 8px; }
+.direct i { width: 8px; height: 8px; border-radius: 50%; background: var(--baisse); animation: pouls 1.2s infinite; }
+@keyframes pouls { 50% { opacity: .2; } }
+.st-horloge { color: var(--ambre); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 14px; }
+.st-aide { font-size: 11px; font-family: var(--cond); }
+.st-bar select { background: var(--panneau2); border: 1px solid var(--trait); padding: 3px 6px; color: var(--blanc); max-width: 100%; }
+.defileur { overflow: hidden; border: 1px solid var(--trait); background: var(--panneau); white-space: nowrap; }
+.defileur-in { display: inline-block; padding: 4px 0; animation: defile 45s linear infinite; }
+.defileur-in > span { margin: 0 20px; }
+@keyframes defile { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.station { display: grid; gap: 6px; grid-template-columns: 240px minmax(0, 1fr) 330px; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) 200px;
+  grid-template-areas: "watch chart hero" "feed chart vol" "bottom bottom bottom"; height: var(--st-h, 760px); min-height: 640px; }
+.st-bas { display: grid; gap: 6px; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, .9fr); min-height: 0; }
+.st-bas > .panneau { min-height: 0; }
+.a-watch { grid-area: watch; } .a-chart { grid-area: chart; } .a-hero { grid-area: hero; } .a-vol { grid-area: vol; } .a-feed { grid-area: feed; }
+.a-bottom { grid-area: bottom; }
+.station .panneau { overflow: hidden; grid-template-rows: auto minmax(0, 1fr); }
+.station .relief { height: 100%; }
+@media (max-width: 1200px) { .station { height: auto; min-height: 0; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: none; grid-auto-rows: auto;
+  grid-template-areas: "chart chart" "hero vol" "watch feed" "bottom bottom"; } .station .relief { height: 260px !important; } .station .a-feed .flux { max-height: 300px; }
+  .st-bas { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .a-chart .toile { min-height: 520px; } }
+@media (max-width: 760px) { .station { grid-template-columns: minmax(0, 1fr); grid-template-areas: "chart" "watch" "hero" "feed" "bottom" "vol"; } .st-bas { grid-template-columns: minmax(0, 1fr); } }
+.compact { padding: 6px; gap: 6px; }
+.quotes { display: grid; gap: 4px; }
+.quote { display: grid; grid-template-columns: 1fr auto; gap: 0 8px; padding: 4px 6px; background: var(--panneau2); font-size: 12px; }
+.quote b { font-size: 15px; }
+.quote canvas { grid-column: 1 / -1; width: 100%; height: 28px; }
+.flux { display: grid; align-content: start; gap: 0; overflow: auto; max-height: 100%; font-size: 12px; }
+.flux div { display: grid; grid-template-columns: 6ch minmax(0, 1fr); gap: 6px; padding: 3px 4px; border-bottom: 1px solid var(--grille); }
+.flux .neuf { animation: neuf 1.4s ease-out; }
+@keyframes neuf { from { background: rgba(255, 160, 40, .28); } to { background: transparent; } }
+.jauges { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+.jauges canvas { width: 100%; height: 72px; display: block; }
+.petit3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.petit3 .n { font-size: 13px; }
+.journal.court { max-height: 92px; }
+.station .echelle div { grid-template-columns: 10ch 1fr; font-size: 12px; padding: 1px 6px; }
+.station .note { font-size: 11px; }
+.station .corps { min-height: 0; overflow: auto; }
+.station table { font-size: 12px; }
+.station th, .station td { padding: 2px 4px; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="tete">
+  <div class="barre">
+    <span class="logo">NQ QUANT</span>
+    <form class="cmd" id="f-cmd">
+      <label for="cmd">&gt;</label>
+      <input id="cmd" autocomplete="off" spellcheck="false" placeholder="ST · MKT · MON · SIG · STR · LAB · EXE · GP · IA" aria-label="Commande">
+      <button class="go" type="submit">GO</button>
+    </form>
+    <span class="horloge" id="horloge">—</span>
+  </div>
+  <nav class="touches" id="touches" aria-label="Fonctions">
+    <button data-v="station"><b>F0</b>STATION</button>
+    <button data-v="marche"><b>F1</b>ACTIVITÉ</button>
+    <button data-v="surveillance"><b>F2</b>SURVEILLANCE</button>
+    <button data-v="signaux"><b>F3</b>SIGNAUX</button>
+    <button data-v="strategie"><b>F4</b>STRATÉGIE</button>
+    <button data-v="labo"><b>F5</b>LABO</button>
+    <button data-v="execution"><b>F6</b>EXÉCUTION</button>
+    <button data-v="pro"><b>F7</b>GRAPHIQUE PRO</button>
+    <button data-v="ia"><b>F8</b>IA</button>
+  </nav>
+  <div class="bande" id="bande"></div>
+</div>
+
+<!-- F0 station : tout sur un ecran -->
+<section class="vue" id="v-station" hidden>
+  <div class="st-bar">
+    <span class="direct"><i></i>REPLAY</span>
+    <span class="st-horloge" id="st-horloge">—</span>
+    <button class="btn" type="button" id="st-lecture">❚❚ Pause</button>
+    <select id="st-vitesse" aria-label="Vitesse du replay"><option value="900">×1</option><option value="450" selected>×2</option><option value="180">×5</option><option value="70">×12</option></select>
+    <select id="st-jour" aria-label="Séance"></select>
+    <span class="g st-aide">Vraies séances du NQ rejouées en continu, 5 minutes par pas. Données jusqu'au 2 novembre 2026.</span>
+  </div>
+  <div class="defileur" aria-hidden="true"><div class="defileur-in" id="st-tape"></div></div>
+  <div class="station">
+    <div class="panneau a-watch"><h2>Cotations <span id="st-q-heure"></span></h2><div class="corps compact">
+      <div id="st-quotes" class="quotes"></div>
+      <div class="echelle" id="st-niveaux"></div>
+    </div></div>
+    <div class="panneau a-chart"><h2>NQZ6 · 15 minutes <span>rubans EMA 8-89, Bollinger 20-2, RSI, MACD, signal ML</span></h2><div class="corps compact"><div class="toile" id="st-chart"></div></div></div>
+    <div class="panneau a-hero"><h2>Ruban EMA lumineux <span>s'élève avec le prix</span></h2><div class="relief" id="st-ema" style="height:100%;min-height:250px"><div class="etiq" id="st-ema-etiq"></div></div></div>
+    <div class="panneau a-vol"><h2>Volume par prix <span>60 séances</span></h2><div class="relief" id="st-vol" style="height:100%;min-height:250px"><div class="etiq" id="st-vol-etiq"></div></div></div>
+    <div class="panneau a-feed"><h2>Flux des signaux <span id="st-feed-n"></span></h2><div class="corps compact"><div class="flux" id="st-feed"></div></div></div>
+    <div class="a-bottom st-bas">
+    <div class="panneau a-agents"><h2>Agents <span>1 MNQ</span></h2><div class="corps compact"><div class="defile"><table id="st-agents"></table></div><div class="note" id="st-agents-note"></div></div></div>
+    <div class="panneau a-risk"><h2>Risque <span>à l'heure du replay</span></h2><div class="corps compact"><div class="jauges" id="st-jauges"></div></div></div>
+    <div class="panneau a-exec"><h2>Ordres · papier <span>remplis à la barre suivante</span></h2><div class="corps compact">
+      <div class="ctrl"><select id="st-qte" aria-label="MNQ"><option>1</option><option>2</option><option>3</option></select>
+        <button class="btn achat" type="button" id="st-achat">ACHAT</button><button class="btn vente" type="button" id="st-vente">VENTE</button><button class="btn" type="button" id="st-plat">À PLAT</button></div>
+      <div class="chiffres petit3" id="st-pos"></div>
+      <div class="journal court"><table id="st-ordres"></table></div>
+    </div></div>
+    <div class="panneau a-atr"><h2>Structure de la volatilité <span>amplitude des 15 min</span></h2><div class="relief" id="st-atr" style="height:100%;min-height:150px"><div class="etiq" id="st-atr-etiq"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- F1 activite de marche -->
+<section class="vue" id="v-marche">
+  <div class="grille2">
+    <div class="panneau"><h2>NQZ6 · 260 dernières séances (9 h 30 - 16 h New York) <span id="q-titre"></span></h2>
+      <div class="corps"><div class="toile" id="g-quot"></div><div class="note">Bougies de séance. Lignes : moyenne mobile de 20 séances (ambre) et de 50 séances (cyan).</div></div></div>
+    <div class="panneau"><h2>État du marché <span id="etat-date"></span></h2><div class="corps">
+      <div class="chiffres" id="etat-chiffres"></div>
+      <div class="note" id="etat-texte"></div>
+    </div></div>
+  </div>
+  <div class="grille2">
+    <div class="panneau"><h2>Séance du <span id="dj-titre" style="color:var(--ambre)"></span> <span>barres de 5 min, heure de Paris</span></h2>
+      <div class="corps"><div class="toile" id="g-dj"></div></div></div>
+    <div class="panneau"><h2>Calendrier <span>exact, règles du bot</span></h2><div class="corps"><div class="defile"><table id="t-cal"></table></div></div></div>
+  </div>
+</section>
+
+<!-- F2 surveillance -->
+<section class="vue" id="v-surveillance" hidden>
+  <div class="grille2">
+    <div class="panneau"><h2>Moniteur de la dernière séance <span id="mon-titre"></span></h2><div class="corps">
+      <div class="ctrl"><button class="btn" id="mon-jouer" type="button">▶ Rejouer</button><button class="btn" id="mon-fin" type="button">Fin de séance</button>
+        <span class="g" id="mon-heure">—</span></div>
+      <div class="toile" id="g-mon"></div>
+      <div class="journal"><table id="t-alertes"></table></div>
+    </div></div>
+    <div class="panneau"><h2>Niveaux de la prochaine séance <span>calculés sur le 2 novembre</span></h2><div class="corps">
+      <div class="echelle" id="echelle"></div>
+      <div class="defile"><table id="t-zone"></table></div>
+      <div class="note">Écart de la zone de bruit à chaque contrôle : achat au-dessus du plus haut entre l'ouverture et la clôture de la veille + écart, vente sous le plus bas des deux − écart (moyenne des 14 séances précédentes).</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- F3 signaux -->
+<section class="vue" id="v-signaux" hidden>
+  <div class="panneau"><h2>Signaux techniques · séance <span id="sig-titre"></span></h2><div class="corps">
+    <div class="ctrl">
+      <label for="sig-jour" class="g">Séance</label><select id="sig-jour"></select>
+      <button class="btn" type="button" id="sig-prec">◀</button><button class="btn" type="button" id="sig-suiv">▶</button>
+      <label class="g"><input type="checkbox" id="sig-st" checked> Supertrend</label>
+      <label class="g"><input type="checkbox" id="sig-zone" checked> Zone</label>
+      <label class="g"><input type="checkbox" id="sig-vwap" checked> VWAP</label>
+    </div>
+    <div class="toile" id="g-sig"></div>
+    <div class="chiffres" id="sig-chiffres"></div>
+    <div class="defile"><table id="t-sig"></table></div>
+    <div class="note" id="sig-note"></div>
+  </div></div>
+</section>
+
+<!-- F4 strategie -->
+<section class="vue" id="v-strategie" hidden>
+  <div class="panneau"><h2>Les deux agents <span>1 MNQ, gains au prix d'aujourd'hui, 3 $ de frais par aller-retour, 2011 - 2 nov. 2026</span></h2><div class="corps">
+    <div class="defile"><table id="t-agents"></table></div>
+    <div class="toile" id="g-courbes"></div>
+    <div class="note" id="agents-note"></div>
+  </div></div>
+  <div class="g11">
+    <div class="panneau"><h2>Chaque année <span>$ pour 1 MNQ</span></h2><div class="corps"><div class="toile" id="g-annees"></div></div></div>
+    <div class="panneau"><h2>Depuis le 13 octobre <span>séances réelles Rithmic</span></h2><div class="corps"><div class="defile"><table id="t-recent"></table></div></div></div>
+  </div>
+  <div class="panneau"><h2>Risque du challenge Bulenox <span>plancher suivi en temps réel (Option 1), objectif 53 000 $</span></h2><div class="corps">
+    <div class="ctrl">
+      <select id="r-agent" aria-label="Agent"><option value="st">Supertrend NQ</option><option value="zone">Bot 3 en 1 (zone)</option></select>
+      <select id="r-compte" aria-label="Compte"><option value="actuel">Ton compte : 50 000 $, plancher 49 000 $, 8 séances</option><option value="nouveau">Nouveau compte : plancher 47 500 $, 22 séances</option></select>
+      <select id="r-per" aria-label="Période"><option value="15ans">Départs 2011 - 2026</option><option value="2024">Départs 2024 - 2026</option></select>
+    </div>
+    <div class="defile"><table id="t-risque"></table></div>
+    <div class="note">Chaque case : réussis / échoués (%), sur tous les départs possibles de la période. Le reste des comptes est encore en vie à la fin, sans avoir atteint l'objectif. Simulateur minute par minute (audit/machine6), vérifié contre l'audit.</div>
+  </div></div>
+  <div class="panneau"><h2>Relief de l'agitation intraday <span>variation moyenne de chaque demi-heure, en points de base, 2011 - 2026</span></h2><div class="corps">
+    <div class="relief" id="relief"><div class="etiq" id="relief-etiq"></div></div>
+    <div class="note">L'ouverture (15 h 30 à Paris) et la dernière demi-heure bougent le plus ; 2020 et 2022 forment les crêtes. Fais tourner le relief avec la souris ou le doigt.</div>
+  </div></div>
+</section>
+
+<!-- F5 labo -->
+<section class="vue" id="v-labo" hidden>
+  <div class="grille2">
+    <div class="panneau"><h2>Labo d'hypothèses <span>15 ans de séances complètes</span></h2><div class="corps">
+      <div class="ctrl">
+        <span class="a">SI</span>
+        <select id="l-v1"></select><select id="l-o1"><option value=">">&gt;</option><option value="<">&lt;</option></select><input type="number" id="l-s1" step="0.1" value="0.5">
+        <span class="a">ET</span>
+        <select id="l-v2"></select><select id="l-o2"><option value=">">&gt;</option><option value="<">&lt;</option></select><input type="number" id="l-s2" step="0.1" value="0">
+      </div>
+      <div class="ctrl">
+        <span class="a">ALORS</span>
+        <select id="l-pos"><option value="1">acheter</option><option value="-1">vendre</option></select>
+        <select id="l-res"></select>
+        <button class="btn" type="button" id="l-go">Tester</button>
+        <select id="l-ex" aria-label="Exemples"><option value="">Exemples…</option></select>
+      </div>
+      <div class="chiffres" id="l-chiffres"></div>
+      <div class="toile" id="g-labo"></div>
+      <div class="defile"><table id="t-labo"></table></div>
+    </div></div>
+    <div class="panneau"><h2>Garde-fou <span>contre la chance</span></h2><div class="corps">
+      <div class="chiffres" id="l-garde"></div>
+      <div class="note" id="l-garde-texte"></div>
+      <div class="note">Une règle qui sort ici n'est qu'une piste. Pour devenir un atout : l'écrire avant de la tester sur des données qu'elle n'a pas vues, comme pour toutes les études du projet (règles fixées, coffre, placebos). Le labo refuse les tests qui regardent l'avenir : une condition connue à 10 h ne peut pas prédire un mouvement qui commence à 9 h 30.</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- F6 execution -->
+<section class="vue" id="v-execution" hidden>
+  <div class="grille2">
+    <div class="panneau"><h2>Console d'exécution · papier <span id="x-titre"></span></h2><div class="corps">
+      <div class="ctrl">
+        <label for="x-jour" class="g">Séance</label><select id="x-jour"></select>
+        <button class="btn" type="button" id="x-lecture">▶ Lecture</button>
+        <button class="btn" type="button" id="x-pas">Barre suivante</button>
+        <select id="x-vitesse" aria-label="Vitesse"><option value="900">×1</option><option value="350">×3</option><option value="120">×8</option></select>
+        <button class="btn" type="button" id="x-reinit">Recommencer</button>
+        <label class="g"><input type="checkbox" id="x-agents"> Signaux des agents</label>
+      </div>
+      <div class="toile" id="g-exe"></div>
+      <div class="ctrl">
+        <label for="x-qte" class="g">MNQ</label><select id="x-qte"><option>1</option><option>2</option><option>3</option><option>4</option></select>
+        <button class="btn achat" type="button" id="x-achat">ACHAT</button>
+        <button class="btn vente" type="button" id="x-vente">VENTE</button>
+        <button class="btn" type="button" id="x-plat">TOUT FERMER</button>
+        <label for="x-lim" class="g">Limite du jour $</label><input type="number" id="x-lim" value="400" step="50" min="0">
+      </div>
+    </div></div>
+    <div class="panneau"><h2>Position et ordres <span>remplis à l'ouverture de la barre suivante</span></h2><div class="corps">
+      <div class="chiffres" id="x-chiffres"></div>
+      <div class="journal"><table id="t-ordres"></table></div>
+      <div class="note" id="x-note">Rejoue une vraie séance du NQ barre par barre et passe tes ordres MNQ. Rien n'est envoyé au courtier : les vrais ordres passent par tes agents dans Quantower.</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- F7 graphique pro -->
+<section class="vue" id="v-pro" hidden>
+  <div class="panneau"><h2>Graphique pro · bougies de 15 minutes <span id="p-titre"></span></h2><div class="corps">
+    <div class="ctrl">
+      <select id="p-mk" aria-label="Marché"><option value="NQ">NQ · Nasdaq 100</option><option value="ES">ES · S&amp;P 500 (données jusqu'au 25 sept.)</option></select>
+      <label for="p-depart" class="g">Rejouer depuis</label><select id="p-depart"></select>
+      <button class="btn" type="button" id="p-lecture">▶ Lecture</button>
+      <button class="btn" type="button" id="p-pas">+1 barre</button>
+      <select id="p-vitesse" aria-label="Vitesse"><option value="700">×1</option><option value="250">×3</option><option value="80">×10</option></select>
+      <button class="btn" type="button" id="p-fin">Aujourd'hui</button>
+      <label for="p-larg" class="g">Fenêtre</label><select id="p-larg"><option value="52">2 séances</option><option value="130" selected>5 séances</option><option value="260">10 séances</option></select>
+    </div>
+    <div class="toile" id="g-pro"></div>
+    <div class="chiffres" id="p-hud"></div>
+  </div></div>
+  <div class="grille3">
+    <div class="panneau"><h2>Ruban EMA lumineux <span>8 → 89, fenêtre affichée</span></h2><div class="corps"><div class="relief" id="r-ema" style="height:300px"><div class="etiq" id="r-ema-etiq"></div></div></div></div>
+    <div class="panneau"><h2>Paysage du volume par prix <span>60 séances</span></h2><div class="corps"><div class="relief" id="r-vol" style="height:300px"><div class="etiq" id="r-vol-etiq"></div></div></div></div>
+    <div class="panneau"><h2>Structure de la volatilité <span>amplitude de chaque 15 min</span></h2><div class="corps"><div class="relief" id="r-atr" style="height:300px"><div class="etiq" id="r-atr-etiq"></div></div></div></div>
+  </div>
+  <div class="note">Les trois reliefs suivent le replay : le ruban montre les six EMA de la fenêtre (rapides en ambre, lentes en cyan), le paysage s'élève séance après séance avec le volume échangé à chaque prix (la ligne blanche est le prix courant), et la structure montre l'amplitude de chaque quart d'heure, séance par séance.</div>
+</section>
+
+<!-- F8 apprentissage automatique -->
+<section class="vue" id="v-ia" hidden>
+  <div class="grille2">
+    <div class="panneau"><h2>Signal d'apprentissage automatique · NQ <span>régression logistique, ré-entraînée chaque année sur le passé seul</span></h2><div class="corps">
+      <div class="chiffres" id="ia-chiffres"></div>
+      <div class="toile" id="g-ia"></div>
+      <div class="defile"><table id="t-ia"></table></div>
+    </div></div>
+    <div class="panneau"><h2>Ce que le modèle regarde <span>poids du dernier modèle (2026)</span></h2><div class="corps">
+      <div class="barres-h" id="ia-poids"></div>
+      <div class="note" id="ia-texte"></div>
+    </div></div>
+  </div>
+</section>
+
+<script type="application/json" id="donnees">__DONNEES__</script>
+<script type="application/json" id="donnees2">__DONNEES2__</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+"use strict";
+const D = JSON.parse(document.getElementById("donnees").textContent);
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const COL = {}; ["noir","panneau","trait","grille","ambre","ambre-pale","blanc","gris","gris2","hausse","baisse","cyan","violet"].forEach(k => COL[k] = css("--" + k));
+const nf = (v, d = 0) => v == null || isNaN(v) ? "—" : (Math.abs(v) < 0.5 * Math.pow(10, -d) ? 0 : v).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const sg = (v, d = 0) => v == null || isNaN(v) ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + nf(Math.abs(v), d);
+const usd = (v, d = 0) => sg(v, d) + " $";
+const cl = v => v > 0 ? "h" : v < 0 ? "b" : "g";
+const MOIS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+const JOURS = ["lundi","mardi","mercredi","jeudi","vendredi"];
+const dateFr = j => { const [a, m, d] = j.split("-").map(Number); return `${d} ${MOIS[m - 1]} ${a}`; };
+// ecart Paris - New York : 6 h, 5 h quand New York est a l'heure d'ete et pas Paris
+function decalage(j) {
+  const [a, m, d] = j.split("-").map(Number), t = Date.UTC(a, m - 1, d);
+  const dim = (mo, n) => { const x = new Date(Date.UTC(a, mo, 1)); const off = (7 - x.getUTCDay()) % 7; return Date.UTC(a, mo, 1 + off + 7 * (n - 1)); };
+  const dernierDim = mo => { const x = new Date(Date.UTC(a, mo + 1, 0)); return Date.UTC(a, mo, x.getUTCDate() - x.getUTCDay()); };
+  const us = t >= dim(2, 2) && t < dim(10, 1), eu = t >= dernierDim(2) && t < dernierDim(9);
+  return us && !eu ? 5 : 6;
+}
+const heure = (j, m) => { const t = 570 + m + 60 * decalage(j); return `${Math.floor(t / 60)}h${String(t % 60).padStart(2, "0")}`; };
+
+// ------------------------------------------------------------------ graphique a bougies (canvas)
+function graphique(cont, o) {
+  cont.innerHTML = "";
+  const cv = document.createElement("canvas"); cont.appendChild(cv);
+  const bulle = document.createElement("div"); bulle.className = "info"; bulle.hidden = true; cont.appendChild(bulle);
+  const H = o.hauteur || 300, dpr = Math.min(2, devicePixelRatio || 1);
+  let W = 0, geo = null;
+  function dessiner(survol) {
+    W = cont.clientWidth || 600;
+    cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+    const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+    const b = o.barres, n = o.n || b.length, vis = o.jusqua != null ? o.jusqua + 1 : n;
+    const g = { l: 6, r: 62, t: 8, b: 20 };
+    let lo = Infinity, hi = -Infinity;
+    for (let i = 0; i < vis; i++) { lo = Math.min(lo, b[i][2]); hi = Math.max(hi, b[i][1]); }
+    (o.lignes || []).forEach(L => L.v.forEach((v, i) => { if (v != null && i < vis && (!L.limiter || (v > lo - (hi - lo) * .6 && v < hi + (hi - lo) * .6))) { lo = Math.min(lo, v); hi = Math.max(hi, v); } }));
+    (o.niveaux || []).forEach(L => { lo = Math.min(lo, L.y); hi = Math.max(hi, L.y); });
+    const pad = (hi - lo) * .06 || 1; lo -= pad; hi += pad;
+    const pw = (W - g.l - g.r) / n, X = i => g.l + (i + .5) * pw, Y = v => g.t + (H - g.t - g.b) * (hi - v) / (hi - lo);
+    geo = { X, Y, pw, g, n, lo, hi };
+    x.font = `11px ${css("--mono")}`; x.textBaseline = "middle";
+    const pas = (() => { const r = (hi - lo) / 6, p = Math.pow(10, Math.floor(Math.log10(r))), m = r / p; return (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p; })();
+    for (let v = Math.ceil(lo / pas) * pas; v <= hi; v += pas) { x.strokeStyle = COL.grille; x.beginPath(); x.moveTo(g.l, Y(v)); x.lineTo(W - g.r, Y(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(nf(v, pas < 1 ? 2 : 0), W - g.r + 6, Y(v)); }
+    (o.etiquettesX || []).forEach(([i, t]) => { if (i < n) { x.fillStyle = COL.gris; const w2 = x.measureText(t).width / 2; x.textAlign = "center"; x.fillText(t, Math.max(g.l + w2, Math.min(W - g.r - w2, X(i))), H - 9); x.textAlign = "left"; } });
+    (o.niveaux || []).forEach(L => { x.strokeStyle = L.c; x.setLineDash([4, 4]); x.beginPath(); x.moveTo(g.l, Y(L.y)); x.lineTo(W - g.r, Y(L.y)); x.stroke(); x.setLineDash([]); x.fillStyle = L.c; x.fillText(L.t, g.l + 4, Y(L.y) - 7); });
+    (o.marches || []).forEach(M => { x.strokeStyle = M.c; x.lineWidth = 1; x.setLineDash([2, 3]);
+      M.points.forEach(([i0, i1, v]) => { if (i0 < vis) { x.beginPath(); x.moveTo(X(i0) - pw / 2, Y(v)); x.lineTo(X(Math.min(i1, vis - 1)) + pw / 2, Y(v)); x.stroke(); } }); x.setLineDash([]); });
+    for (let i = 0; i < vis; i++) {
+      const [op, h, l, c] = b[i], up = c >= op;
+      x.strokeStyle = x.fillStyle = up ? COL.hausse : COL.baisse;
+      x.beginPath(); x.moveTo(X(i), Y(h)); x.lineTo(X(i), Y(l)); x.stroke();
+      const bw = Math.max(1, pw * .7), y0 = Y(Math.max(op, c)), y1 = Y(Math.min(op, c));
+      x.fillRect(X(i) - bw / 2, y0, bw, Math.max(1, y1 - y0));
+    }
+    (o.lignes || []).forEach(L => { x.lineWidth = L.w || 1.4; if (L.tirets) x.setLineDash(L.tirets);
+      let prev = null;
+      L.v.forEach((v, i) => { if (i >= vis || v == null) { prev = null; return; } const c = typeof L.c === "function" ? L.c(i) : L.c;
+        if (prev && prev.c === c) { x.strokeStyle = c; x.beginPath(); x.moveTo(X(i - 1), Y(prev.v)); x.lineTo(X(i), Y(v)); x.stroke(); }
+        prev = { v, c }; }); x.setLineDash([]); x.lineWidth = 1; });
+    (o.marques || []).forEach(M => { if (M.i >= vis) return; const yy = Y(M.p); x.fillStyle = M.c; x.beginPath();
+      if (M.forme === "haut") { x.moveTo(X(M.i), yy + 2); x.lineTo(X(M.i) - 6, yy + 12); x.lineTo(X(M.i) + 6, yy + 12); }
+      else if (M.forme === "bas") { x.moveTo(X(M.i), yy - 2); x.lineTo(X(M.i) - 6, yy - 12); x.lineTo(X(M.i) + 6, yy - 12); }
+      else { x.arc(X(M.i), yy, 4, 0, 7); } x.fill(); if (M.t) { x.fillText(M.t, X(M.i) + 8, yy); } });
+    if (o.jusqua != null && o.jusqua < n - 1) { x.strokeStyle = COL.ambre; x.beginPath(); x.moveTo(X(o.jusqua) + pw / 2, g.t); x.lineTo(X(o.jusqua) + pw / 2, H - g.b); x.stroke(); }
+    const dern = b[vis - 1][3]; x.fillStyle = COL.ambre; x.fillRect(W - g.r + 1, Y(dern) - 8, g.r - 2, 16); x.fillStyle = COL.noir; x.fillText(nf(dern, 2), W - g.r + 4, Y(dern));
+    if (survol != null && survol < vis) {
+      x.strokeStyle = COL["gris2"]; x.beginPath(); x.moveTo(X(survol), g.t); x.lineTo(X(survol), H - g.b); x.stroke();
+      const [op, h, l, c] = b[survol];
+      bulle.innerHTML = `<b class="a">${o.libelle ? o.libelle(survol) : survol}</b><br>O ${nf(op, 2)} · H ${nf(h, 2)}<br>B ${nf(l, 2)} · C <b class="${c >= op ? "h" : "b"}">${nf(c, 2)}</b>` + (o.extra ? o.extra(survol) : "");
+      bulle.hidden = false; bulle.style.left = Math.min(W - bulle.offsetWidth - 4, X(survol) + 12) + "px"; bulle.style.top = "8px";
+    } else bulle.hidden = true;
+  }
+  const maj = ev => { if (!geo) return; const r = cv.getBoundingClientRect(); const i = Math.floor((ev.clientX - r.left - geo.g.l) / geo.pw); dessiner(i >= 0 && i < geo.n ? i : null); };
+  cv.addEventListener("pointermove", maj); cv.addEventListener("pointerdown", maj); cv.addEventListener("pointerleave", () => dessiner(null));
+  dessiner(null);
+  return { redessiner: () => dessiner(null), maj: n2 => { Object.assign(o, n2); dessiner(null); } };
+}
+
+// courbes simples (series de [x, y])
+function courbes(cont, o) {
+  cont.innerHTML = "";
+  const cv = document.createElement("canvas"); cont.appendChild(cv);
+  const bulle = document.createElement("div"); bulle.className = "info"; bulle.hidden = true; cont.appendChild(bulle);
+  const H = o.hauteur || 260, dpr = Math.min(2, devicePixelRatio || 1);
+  function dessiner(survol) {
+    const W = cont.clientWidth || 600; cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+    const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+    const g = { l: 8, r: 120, t: 10, b: 22 }, n = o.series[0].v.length;
+    let lo = 0, hi = 0; o.series.forEach(s => s.v.forEach(v => { lo = Math.min(lo, v); hi = Math.max(hi, v); }));
+    const pad = (hi - lo) * .06; lo -= pad; hi += pad;
+    const X = i => g.l + (W - g.l - g.r) * i / (n - 1), Y = v => g.t + (H - g.t - g.b) * (hi - v) / (hi - lo);
+    x.font = `11px ${css("--mono")}`; x.textBaseline = "middle";
+    const pas = (() => { const r = (hi - lo) / 5, p = Math.pow(10, Math.floor(Math.log10(r))), m = r / p; return (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p; })();
+    for (let v = Math.ceil(lo / pas) * pas; v <= hi; v += pas) { x.strokeStyle = v === 0 ? COL["gris2"] : COL.grille; x.beginPath(); x.moveTo(g.l, Y(v)); x.lineTo(W - g.r, Y(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(nf(v), W - g.r + 6, Y(v)); }
+    (o.etiquettesX || []).forEach(([i, t]) => { x.fillStyle = COL.gris; const w2 = x.measureText(t).width / 2; x.textAlign = "center"; x.fillText(t, Math.max(g.l + w2, Math.min(W - g.r - w2, X(i))), H - 9); x.textAlign = "left"; });
+    o.series.forEach(s => { x.strokeStyle = s.c; x.lineWidth = s.w || 1.6; x.beginPath(); s.v.forEach((v, i) => i ? x.lineTo(X(i), Y(v)) : x.moveTo(X(i), Y(v))); x.stroke();
+      x.fillStyle = s.c; x.beginPath(); x.arc(X(n - 1), Y(s.v[n - 1]), 3, 0, 7); x.fill(); x.fillText(s.nom, X(n - 1) + 8, Y(s.v[n - 1]) + (s.decale || 0)); });
+    x.lineWidth = 1;
+    if (survol != null) { x.strokeStyle = COL["gris2"]; x.beginPath(); x.moveTo(X(survol), g.t); x.lineTo(X(survol), H - g.b); x.stroke();
+      bulle.innerHTML = `<b class="a">${o.libelle(survol)}</b>` + o.series.map(s => `<br><span style="color:${s.c}">${s.nom}</span> ${usd(s.v[survol])}`).join("");
+      bulle.hidden = false; bulle.style.left = Math.min(W - bulle.offsetWidth - 4, X(survol) + 12) + "px"; bulle.style.top = "8px"; } else bulle.hidden = true;
+    cv.onpointermove = cv.onpointerdown = ev => { const r = cv.getBoundingClientRect(); const i = Math.round((ev.clientX - r.left - g.l) / (W - g.l - g.r) * (n - 1)); dessiner(i >= 0 && i < n ? i : null); };
+    cv.onpointerleave = () => dessiner(null);
+  }
+  dessiner(null);
+  return { redessiner: () => dessiner(null) };
+}
+
+function barresV(cont, o) {
+  cont.innerHTML = ""; const cv = document.createElement("canvas"); cont.appendChild(cv);
+  const H = o.hauteur || 220, dpr = Math.min(2, devicePixelRatio || 1);
+  function dessiner() {
+    const W = cont.clientWidth || 600; cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+    const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+    const g = { l: 8, r: 56, t: 14, b: 22 }, n = o.lib.length, k = o.series.length;
+    let lo = 0, hi = 0; o.series.forEach(s => s.v.forEach(v => { lo = Math.min(lo, v); hi = Math.max(hi, v); }));
+    const pad = (hi - lo) * .08; lo -= pad; hi += pad;
+    const Y = v => g.t + (H - g.t - g.b) * (hi - v) / (hi - lo), bw = (W - g.l - g.r) / n;
+    x.font = `10px ${css("--mono")}`; x.textBaseline = "middle";
+    x.strokeStyle = COL["gris2"]; x.beginPath(); x.moveTo(g.l, Y(0)); x.lineTo(W - g.r, Y(0)); x.stroke();
+    x.fillStyle = COL.gris; x.fillText(nf(hi - pad), W - g.r + 4, Y(hi - pad)); x.fillText("0", W - g.r + 4, Y(0)); if (lo < -pad) x.fillText(nf(lo + pad), W - g.r + 4, Y(lo + pad));
+    o.lib.forEach((t, i) => { o.series.forEach((s, j) => { const v = s.v[i], w = bw * .8 / k, x0 = g.l + i * bw + bw * .1 + j * w;
+      x.fillStyle = s.c; x.fillRect(x0, Math.min(Y(0), Y(v)), w - 1, Math.max(1, Math.abs(Y(v) - Y(0)))); });
+      if (n < 20 || i % 2 === 0) { x.fillStyle = COL.gris; x.textAlign = "center"; x.fillText(t, g.l + (i + .5) * bw, H - 9); x.textAlign = "left"; } });
+    o.series.forEach((s, j) => { x.fillStyle = s.c; x.fillRect(g.l + 4 + j * 140, 2, 8, 8); x.fillStyle = COL.gris; x.fillText(s.nom, g.l + 16 + j * 140, 6); });
+  }
+  dessiner(); return { redessiner: dessiner };
+}
+
+// ------------------------------------------------------------------ bande et horloge
+const M = D.marche, SE = D.seances, dernSe = SE[SE.length - 1];
+function bande() {
+  const var_ = M.dernier - M.veille;
+  $("bande").innerHTML = [
+    ["NQZ6", `<b class="${cl(var_)}">${nf(M.dernier, 2)}</b>`], ["VAR.", `<span class="${cl(var_)}">${sg(var_, 2)} (${sg(var_ / M.veille * 100, 2)} %)</span>`],
+    ["HAUT", nf(M.haut, 2)], ["BAS", nf(M.bas, 2)], ["ATR 5 MIN", nf(M.atr5, 1) + " pts"],
+    ["SUPERTREND", `<span class="${M.st_sens > 0 ? "h" : "b"}">${M.st_sens > 0 ? "HAUSSIER" : "BAISSIER"}</span> ${nf(M.st_ligne, 2)}`],
+    ["VOL. 20 J", nf(M.vol20, 1) + " %"], ["DONNÉES", dateFr(M.date) + " · clôture 22 h Paris"]
+  ].map(([k, v]) => `<div><span class="k">${k}</span>${v}</div>`).join("");
+}
+function horloge() {
+  try { $("horloge").textContent = new Intl.DateTimeFormat("fr-FR", { weekday: "short", hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Europe/Paris" }).format(new Date()) + " Paris"; } catch (e) {}
+}
+bande(); horloge(); setInterval(horloge, 1000);
+
+// ------------------------------------------------------------------ F1 activite
+let gQuot, gDj;
+function vueMarche() {
+  const Q = M.quotidien, n = Q.length, cl_ = Q.map(q => q[4]);
+  const mm = k => cl_.map((_, i) => i >= k - 1 ? cl_.slice(i - k + 1, i + 1).reduce((a, b) => a + b, 0) / k : null);
+  const et = []; Q.forEach((q, i) => { if (i === 0 || q[0].slice(5, 7) !== Q[i - 1][0].slice(5, 7)) et.push([i, MOIS[+q[0].slice(5, 7) - 1]]); });
+  gQuot = graphique($("g-quot"), { barres: Q.map(q => [q[1], q[2], q[3], q[4]]), hauteur: 320, etiquettesX: et.filter((_, k) => k % 2 === 0),
+    lignes: [{ v: mm(20), c: COL.ambre }, { v: mm(50), c: COL.cyan }], libelle: i => dateFr(Q[i][0]),
+    extra: i => i ? `<br>variation <span class="${cl(Q[i][4] - Q[i - 1][4])}">${sg((Q[i][4] / Q[i - 1][4] - 1) * 100, 2)} %</span>` : "" });
+  const p20 = (cl_[n - 1] / cl_[n - 21] - 1) * 100;
+  $("q-titre").textContent = `20 séances : ${sg(p20, 1)} %`;
+  $("etat-date").textContent = dateFr(M.date);
+  $("etat-chiffres").innerHTML = [
+    ["Clôture", nf(M.dernier, 2)], ["Ouverture", nf(M.ouverture, 2)], ["Amplitude", nf(M.haut - M.bas, 2) + " pts"],
+    ["Amplitude moy. 20 j", nf(M.range_moy20, 0) + " pts"], ["Volatilité 20 j", nf(M.vol20, 1) + " %"], ["Médiane 1 an", nf(M.vol20_med, 1) + " %"]
+  ].map(([l, v]) => `<div><span class="l">${l}</span><span class="n">${v}</span></div>`).join("");
+  const reg = M.vol20 > M.vol20_med ? "au-dessus" : "en dessous";
+  $("etat-texte").innerHTML = `Le Supertrend est <b class="${M.st_sens > 0 ? "h" : "b"}">${M.st_sens > 0 ? "haussier" : "baissier"}</b> depuis la séance du ${dateFr(M.date)} ; sa ligne est à <b>${nf(M.st_ligne, 2)}</b>, soit ${nf(Math.abs(M.dernier - M.st_ligne), 0)} points de la clôture. La volatilité des 20 dernières séances est ${reg} de sa médiane sur un an : les journées de tendance y sont plus fréquentes, les zigzags aussi.`;
+  $("dj-titre").textContent = dateFr(dernSe.jour);
+  gDj = graphique($("g-dj"), seanceOpts(dernSe, { st: true, zone: false, vwap: true }, 260));
+  const auj = "2026-11-03";
+  $("t-cal").innerHTML = `<thead><tr><th>Date</th><th>Événement</th><th></th></tr></thead><tbody>` + D.calendrier.map(([d, t, k]) =>
+    `<tr><td class="${d < auj ? "g" : ""}">${dateFr(d)}</td><td style="text-align:left;white-space:normal">${t}</td><td><span class="puce ${k === "fed" || k === "challenge" ? "a" : k === "contrat" ? "c" : "g"}">${k}</span></td></tr>`).join("") + "</tbody>";
+}
+
+// options d'une seance de 5 min (signaux)
+function seanceOpts(s, voir, H, jusqua) {
+  const et = []; for (let b = 0; b < 78; b += 12) et.push([b, heure(s.jour, b * 5)]);
+  const lignes = [];
+  if (voir.vwap) lignes.push({ v: s.vwap, c: COL.ambre, tirets: [5, 4], w: 1.2 });
+  if (voir.st) lignes.push({ v: s.ligne, c: i => s.sens[i] > 0 ? COL.hausse : COL.baisse, w: 1.8, limiter: true });
+  const marches = voir.zone && s.bandes.length ? [{ c: COL.violet, points: s.bandes.flatMap(([m, h, l], k) => { const i0 = m / 5, i1 = k < 11 ? s.bandes[k + 1][0] / 5 - 1 : 77; return [[i0, i1, h], [i0, i1, l]]; }) }] : [];
+  const marques = [];
+  if (voir.st) s.st.forEach(([sens, mi, mo, e, x]) => { marques.push({ i: Math.floor(mi / 5), p: e, c: COL.cyan, forme: sens > 0 ? "haut" : "bas" }); });
+  if (voir.zone) s.zone.forEach(([sens, mi, mo, e, x]) => { marques.push({ i: Math.min(77, Math.floor(mi / 5)), p: e, c: COL.violet, forme: sens > 0 ? "haut" : "bas" }); marques.push({ i: Math.min(77, Math.floor(mo / 5)), p: x, c: COL.violet }); });
+  return { barres: s.barres, n: 78, hauteur: H, etiquettesX: et, lignes, marches, marques, jusqua,
+    niveaux: s.veille ? [{ y: s.veille, c: COL["gris2"], t: "clôture veille " + nf(s.veille, 2) }] : [],
+    libelle: i => heure(s.jour, i * 5) + " Paris", extra: i => `<br>VWAP ${nf(s.vwap[i], 2)}<br>Supertrend <span class="${s.sens[i] > 0 ? "h" : "b"}">${nf(s.ligne[i], 2)}</span>` };
+}
+
+// ------------------------------------------------------------------ F2 surveillance
+let monI = 77, monMinuterie = null, gMon;
+function alertes(s) {
+  const out = [];
+  let dessusVeille = null, sens = s.sens[0], dessusVwap = null;
+  s.barres.forEach(([o, h, l, c], i) => {
+    const t = heure(s.jour, i * 5 + 5);
+    const dv = c > s.veille; if (dessusVeille !== null && dv !== dessusVeille) out.push([i, t, dv ? "repasse au-dessus de la clôture de la veille" : "repasse sous la clôture de la veille", dv ? 1 : -1]); dessusVeille = dv;
+    const dw = c > s.vwap[i]; if (i >= 6 && dessusVwap !== null && dw !== dessusVwap) out.push([i, t, dw ? "clôture au-dessus du VWAP" : "clôture sous le VWAP", dw ? 1 : -1]); dessusVwap = dw;
+    if (s.sens[i] !== sens) out.push([i, t, `Supertrend ${s.sens[i] > 0 ? "haussier" : "baissier"} (ligne ${nf(s.ligne[i], 2)})`, s.sens[i]]); sens = s.sens[i];
+    s.bandes.forEach(([m, hh, ll]) => { if (m === i * 5 + 5 || (m === (i + 1) * 5 && false)) {} });
+  });
+  s.bandes.forEach(([m, hh, ll]) => { const i = m / 5 - 1; if (i < 0 || i > 77) return; const c = s.barres[i][3];
+    if (c > hh) out.push([i, heure(s.jour, m), `contrôle : prix au-dessus du haut de la zone (${nf(hh, 2)})`, 1]);
+    else if (c < ll) out.push([i, heure(s.jour, m), `contrôle : prix sous le bas de la zone (${nf(ll, 2)})`, -1]); });
+  s.st.forEach(([sens, mi, mo, e, x, pts]) => { out.push([Math.floor(mi / 5), heure(s.jour, mi), `Supertrend NQ : ${sens > 0 ? "ACHAT" : "VENTE"} à ${nf(e, 2)}`, sens, "c"]); });
+  s.zone.forEach(([sens, mi, mo, e, x, pts]) => { out.push([Math.min(77, Math.floor(mi / 5)), heure(s.jour, mi), `Bot 3 en 1 : ${sens > 0 ? "ACHAT" : "VENTE"} à ${nf(e, 2)}`, sens, "v"]);
+    out.push([Math.min(77, Math.floor(mo / 5)), heure(s.jour, mo), `Bot 3 en 1 : sortie à ${nf(x, 2)} (${sg(pts, 2)} pts)`, Math.sign(pts), "v"]); });
+  return out.sort((a, b) => a[0] - b[0]);
+}
+function vueSurveillance() {
+  const s = dernSe;
+  $("mon-titre").textContent = dateFr(s.jour);
+  const A = alertes(s);
+  const peindre = () => {
+    gMon = graphique($("g-mon"), seanceOpts(s, { st: true, zone: true, vwap: true }, 280, monI));
+    $("mon-heure").textContent = monI >= 77 ? "séance complète" : `jusqu'à ${heure(s.jour, monI * 5 + 5)} Paris`;
+    $("t-alertes").innerHTML = `<thead><tr><th>Heure</th><th>Alerte</th></tr></thead><tbody>` + A.filter(a => a[0] <= monI).reverse().map(([i, t, txt, sens, cc]) =>
+      `<tr><td class="a">${t}</td><td style="text-align:left;white-space:normal" class="${cc || cl(sens)}">${txt}</td></tr>`).join("") + "</tbody>";
+  };
+  peindre();
+  $("mon-jouer").onclick = () => { clearInterval(monMinuterie); monI = 0; monMinuterie = setInterval(() => { monI++; if (monI >= 77) { monI = 77; clearInterval(monMinuterie); } peindre(); }, 250); };
+  $("mon-fin").onclick = () => { clearInterval(monMinuterie); monI = 77; peindre(); };
+  // niveaux de la prochaine seance
+  const v = M.dernier, niv = [
+    ["Ligne Supertrend", M.st_ligne, M.st_sens > 0 ? "h" : "b"], ["Plus haut du 2 nov.", M.haut, "g"], ["Clôture du 2 nov.", v, "a"], ["Plus bas du 2 nov.", M.bas, "g"],
+    ["Zone 16 h : haut si ouverture = clôture", v + M.zone_ecart[0], "v"], ["Zone 16 h : bas si ouverture = clôture", v - M.zone_ecart[0], "v"]
+  ].sort((a, b) => b[1] - a[1]);
+  $("echelle").innerHTML = niv.map(([t, p, c]) => `<div><span class="${c}">${nf(p, 2)}</span><span>${t}</span></div>`).join("");
+  $("t-zone").innerHTML = `<thead><tr><th>Contrôle (Paris)</th><th>Écart</th><th>En %</th></tr></thead><tbody>` + M.zone_ecart.map((e, k) =>
+    `<tr><td>${heure("2026-11-03", (k + 1) * 30)}</td><td>${nf(e, 1)} pts</td><td>${nf(M.zone_pct[k], 3)} %</td></tr>`).join("") + "</tbody>";
+}
+
+// ------------------------------------------------------------------ F3 signaux
+let sigK = SE.length - 1, gSig;
+function vueSignaux() {
+  const sel = $("sig-jour");
+  if (!sel.options.length) {
+    SE.forEach((s, k) => { const o = document.createElement("option"); o.value = k; o.textContent = `${dateFr(s.jour)}${s.complete ? "" : " (incomplète)"}`; sel.appendChild(o); });
+    sel.onchange = () => { sigK = +sel.value; vueSignaux(); };
+    $("sig-prec").onclick = () => { sigK = Math.max(0, sigK - 1); vueSignaux(); };
+    $("sig-suiv").onclick = () => { sigK = Math.min(SE.length - 1, sigK + 1); vueSignaux(); };
+    ["sig-st", "sig-zone", "sig-vwap"].forEach(id => $(id).onchange = vueSignaux);
+  }
+  sel.value = sigK;
+  const s = SE[sigK];
+  $("sig-titre").textContent = dateFr(s.jour);
+  gSig = graphique($("g-sig"), seanceOpts(s, { st: $("sig-st").checked, zone: $("sig-zone").checked, vwap: $("sig-vwap").checked }, 360));
+  const amp = Math.max(...s.barres.map(b => b[1])) - Math.min(...s.barres.map(b => b[2]));
+  $("sig-chiffres").innerHTML = [
+    ["Ouverture", nf(s.barres[0][0], 2)], ["Clôture", nf(s.barres[77][3], 2)], ["Amplitude", nf(amp, 0) + " pts"],
+    ["Supertrend NQ", `<span class="${cl(s.st_usd)}">${usd(s.st_usd)}</span>`], ["Bot 3 en 1", `<span class="${cl(s.zone_usd)}">${usd(s.zone_usd)}</span>`]
+  ].map(([l, v]) => `<div><span class="l">${l}</span><span class="n">${v}</span></div>`).join("");
+  const lignes = [];
+  s.st.forEach(([sens, mi, mo, e, x, pts]) => lignes.push([mi, "Supertrend NQ", sens, mi, mo, e, x, pts, "c"]));
+  s.zone.forEach(([sens, mi, mo, e, x, pts, dl]) => lignes.push([mi, "Bot 3 en 1" + (dl != null ? ` (delta ${sg(dl)})` : ""), sens, mi, mo, e, x, pts, "v"]));
+  lignes.sort((a, b) => a[0] - b[0]);
+  $("t-sig").innerHTML = `<thead><tr><th>Agent</th><th>Sens</th><th>Entrée</th><th>Prix</th><th>Sortie</th><th>Prix</th><th>Points</th><th>$ (1 MNQ)</th></tr></thead><tbody>` +
+    (lignes.length ? lignes.map(([_, nom, sens, mi, mo, e, x, pts, cc]) => `<tr><td class="${cc}">${nom}</td><td class="${sens > 0 ? "h" : "b"}">${sens > 0 ? "achat" : "vente"}</td><td>${heure(s.jour, mi)}</td><td>${nf(e, 2)}</td><td>${mo >= 385 ? heure(s.jour, 385) + " (fin)" : heure(s.jour, mo)}</td><td>${nf(x, 2)}</td><td class="${cl(pts)}">${sg(pts, 2)}</td><td class="${cl(pts)}">${usd(2 * pts - 3)}</td></tr>`).join("")
+      : `<tr><td colspan="8" class="g" style="text-align:left">Aucun trade ce jour-là.</td></tr>`) + "</tbody>";
+  $("sig-note").textContent = (s.delta_reel ? "Bot 3 en 1 rejoué avec le vrai delta Rithmic (filtre coché, C2 et Q1)." : "Avant le 13 octobre : bot 3 en 1 rejoué sans le filtre delta (transactions agresseurs non exportées), C2 et Q1 cochés.")
+    + " Triangles : entrées (cyan Supertrend, violet zone) ; points violets : sorties de la zone ; marches violettes : haut et bas de la zone à chaque contrôle ; ligne verte / rouge : Supertrend ; tirets ambre : VWAP.";
+}
+
+// ------------------------------------------------------------------ F4 strategie
+let gCourbes, gAnnees, reliefPret = false;
+function vueStrategie() {
+  const A = D.agents, Z = A.zone, S = A.st;
+  const ligne = (nom, cc, a) => `<tr><td class="${cc}">${nom}</td><td>${nf(a.seance.t, 2)}</td><td>${usd(a.seance.moy, 1)}</td><td>${nf(a.depuis2023.t, 2)}</td><td>${usd(a.depuis2023.moy, 1)}</td><td>${nf(a.trades)}</td><td>${nf(a.trades_par_seance, 2)}</td><td>${nf(a.gagnants, 0)} %</td><td>${usd(a.par_trade, 1)}</td><td>${nf(a.pf, 2)}</td><td class="b">${usd(a.pire_baisse)}</td></tr>`;
+  $("t-agents").innerHTML = `<thead><tr><th>Agent</th><th>t 15 ans</th><th>Par séance</th><th>t depuis 2023</th><th>Par séance</th><th>Trades</th><th>Par séance</th><th>Gagnants</th><th>Par trade</th><th>PF</th><th>Pire baisse</th></tr></thead><tbody>`
+    + ligne("Bot 3 en 1 (zone, C2, Q1)", "v", Z) + ligne("Supertrend NQ (10-3, 5 min)", "c", S) + "</tbody>";
+  const cz = Z.courbe, cs = S.courbe, et = []; cz.forEach(([d], i) => { if (i === 0 || d.slice(0, 4) !== cz[i - 1][0].slice(0, 4)) if (+d.slice(0, 4) % 2 === 1) et.push([i, d.slice(0, 4)]); });
+  gCourbes = courbes($("g-courbes"), { hauteur: 280, etiquettesX: et, libelle: i => "semaine du " + dateFr(cz[i][0]),
+    series: [{ nom: "Bot 3 en 1", v: cz.map(c => c[1]), c: COL.violet, decale: -7 }, { nom: "Supertrend", v: cs.map(c => c[1]), c: COL.cyan, decale: 7 }] });
+  $("agents-note").innerHTML = `Corrélation des résultats quotidiens : <b>${nf(A.correlation, 2)}</b>. Les deux suivent l'élan du Nasdaq, mais pas aux mêmes moments. La zone gagne plus régulièrement (t ${nf(Z.seance.t, 1)}), le Supertrend gagne plus par séance mais avec beaucoup plus de bruit (t ${nf(S.seance.t, 1)}), et il faiblit depuis 2023.`;
+  const ans = Object.keys(Z.annees);
+  gAnnees = barresV($("g-annees"), { lib: ans.map(a => a.slice(2)), series: [{ nom: "Bot 3 en 1", v: ans.map(a => Z.annees[a]), c: COL.violet }, { nom: "Supertrend", v: ans.map(a => S.annees[a] || 0), c: COL.cyan }] });
+  let ts = 0, tz = 0;
+  $("t-recent").innerHTML = `<thead><tr><th>Séance</th><th>Supertrend</th><th>Trades</th><th>Bot 3 en 1</th><th>Trades</th></tr></thead><tbody>` + A.recent.map(([j, s, z, ns, nz]) => { ts += s; tz += z;
+    return `<tr><td>${dateFr(j)}</td><td class="${cl(s)}">${usd(s)}</td><td class="g">${ns}</td><td class="${cl(z)}">${usd(z)}</td><td class="g">${nz}</td></tr>`; }).join("")
+    + `<tr><td class="a">Total</td><td class="${cl(ts)}"><b>${usd(ts)}</b></td><td></td><td class="${cl(tz)}"><b>${usd(tz)}</b></td><td></td></tr></tbody>`;
+  risque();
+  ["r-agent", "r-compte", "r-per"].forEach(id => $(id).onchange = risque);
+  if (!reliefPret) { reliefPret = true; relief(); }
+}
+function risque() {
+  const ag = $("r-agent").value, cp = $("r-compte").value, per = $("r-per").value, tailles = ag === "st" ? [1, 2, 3, 4] : [1, 2, 3, 4, 5, 6], lims = [300, 400, 500, 600, 800, 1000, 0];
+  $("t-risque").innerHTML = `<thead><tr><th>Taille</th>${lims.map(l => `<th>Limite ${l ? nf(l) + " $" : "aucune"}</th>`).join("")}</tr></thead><tbody>` + tailles.map(T => `<tr><td>${T} MNQ</td>${lims.map(l => {
+    const r = D.risque[`${ag}|${cp}|${T}|${l}|${per}`]; if (!r) return "<td>—</td>";
+    const [ok_, ko] = r, fond = `background:linear-gradient(90deg, rgba(47,209,111,${Math.min(.5, ok_ / 60)}) ${ok_}%, rgba(255,79,79,${Math.min(.45, ko / 120)}) ${ok_}% ${ok_ + ko}%, transparent ${ok_ + ko}%)`;
+    return `<td style="${fond}"><span class="h">${nf(ok_, 1)}</span> / <span class="b">${nf(ko, 1)}</span></td>`; }).join("")}</tr>`).join("") + "</tbody>";
+}
+function relief() {
+  const T3 = window.THREE, cont = $("relief");
+  if (!T3 || !T3.OrbitControls) { cont.insertAdjacentHTML("beforeend", `<p class="note" style="padding:12px">Le relief a besoin de WebGL et de Three.js, qui ne s'est pas chargé.</p>`); return; }
+  let r; try { r = new T3.WebGLRenderer({ antialias: true }); } catch (e) { cont.insertAdjacentHTML("beforeend", `<p class="note" style="padding:12px">WebGL indisponible.</p>`); return; }
+  r.setPixelRatio(Math.min(2, devicePixelRatio || 1)); cont.insertBefore(r.domElement, $("relief-etiq"));
+  const sc = new T3.Scene(); sc.background = new T3.Color(COL.noir);
+  const cam = new T3.PerspectiveCamera(40, 1, .1, 200); cam.position.set(14, 11, 16);
+  const ctl = new T3.OrbitControls(cam, r.domElement); ctl.enableDamping = true; ctl.target.set(0, 1.5, 0); ctl.autoRotate = !matchMedia("(prefers-reduced-motion: reduce)").matches; ctl.autoRotateSpeed = .5;
+  sc.add(new T3.AmbientLight(0xffffff, .45)); const dl = new T3.DirectionalLight(0xffffff, .9); dl.position.set(8, 14, 6); sc.add(dl);
+  const V = D.relief.valeurs, A_ = D.relief.annees, nz = V.length, nx = V[0].length, larg = 14, prof = 12;
+  const mx = Math.max(...V.flat()), mn = Math.min(...V.flat());
+  const geo = new T3.PlaneGeometry(larg, prof, nx - 1, nz - 1); geo.rotateX(-Math.PI / 2);
+  const pos = geo.attributes.position, cols = [];
+  const ca = new T3.Color(COL.panneau), cb = new T3.Color(COL.ambre), cc = new T3.Color("#ffe3b0");
+  for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) { const k = j * nx + i, v = V[j][i], u = (v - mn) / (mx - mn);
+    pos.setY(k, u * 5); const c = u < .6 ? ca.clone().lerp(cb, u / .6) : cb.clone().lerp(cc, (u - .6) / .4); cols.push(c.r, c.g, c.b); }
+  geo.setAttribute("color", new T3.Float32BufferAttribute(cols, 3)); geo.computeVertexNormals();
+  sc.add(new T3.Mesh(geo, new T3.MeshStandardMaterial({ vertexColors: true, roughness: .55, metalness: .1, side: T3.DoubleSide })));
+  sc.add(new T3.LineSegments(new T3.WireframeGeometry(geo), new T3.LineBasicMaterial({ color: COL.ambre, transparent: true, opacity: .12 })));
+  const grille = new T3.GridHelper(30, 30, 0x222222, 0x141414); grille.position.y = -0.01; sc.add(grille);
+  const etq = $("relief-etiq"), labs = [];
+  const lab = (t, p) => { const s = document.createElement("span"); s.textContent = t; etq.appendChild(s); labs.push({ s, p: new T3.Vector3(...p) }); };
+  [0, 2, 4, 6, 8, 10, 12].forEach(i => lab(heure("2026-11-02", i * 30), [-larg / 2 + larg * i / (nx - 1), 0, prof / 2 + .9]));
+  A_.forEach((a, j) => { if (j % 3 === 0 || j === nz - 1) lab(String(a), [-larg / 2 - 1.2, 0, -prof / 2 + prof * j / (nz - 1)]); });
+  const redim = () => { const w = cont.clientWidth, h = cont.clientHeight; r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };
+  new ResizeObserver(redim).observe(cont); redim();
+  const v3 = new T3.Vector3();
+  (function boucle() { if (!$("v-strategie").hidden) { ctl.update(); r.render(sc, cam);
+    const w = cont.clientWidth, h = cont.clientHeight; labs.forEach(l => { v3.copy(l.p).project(cam); l.s.style.left = (v3.x + 1) / 2 * w + "px"; l.s.style.top = (1 - v3.y) / 2 * h + "px"; }); }
+    requestAnimationFrame(boucle); })();
+}
+
+// ------------------------------------------------------------------ F5 labo
+const LB = D.labo;
+const VARS = { gap: ["Écart d'ouverture (%)", 0], veille: ["Variation de la veille (%)", 0], r30: ["Première demi-heure (%)", 30], regime: ["Volatilité 20 j (centile sur 1 an)", 0], dow: ["Jour (0 = lundi … 4 = vendredi)", 0] };
+const RES = { oc: ["ouverture → clôture (15 h 30 - 22 h)", 0], premiere_h: ["première heure (15 h 30 - 16 h 30)", 0], r10c: ["10 h → clôture (16 h - 22 h)", 30], derniere_h: ["dernière heure (21 h - 22 h)", 330] };
+const EXEMPLES = [
+  ["Gros écart d'ouverture à la hausse → vendre la première heure", { v1: "gap", o1: ">", s1: 0.5, v2: "", pos: -1, res: "premiere_h" }],
+  ["Première demi-heure en hausse → acheter jusqu'à la clôture", { v1: "r30", o1: ">", s1: 0.3, v2: "", pos: 1, res: "r10c" }],
+  ["Veille en forte baisse → acheter la journée", { v1: "veille", o1: "<", s1: -1.5, v2: "", pos: 1, res: "oc" }],
+  ["Volatilité haute et première demi-heure en baisse → vendre", { v1: "regime", o1: ">", s1: 70, v2: "r30", o2: "<", s2: -0.3, pos: -1, res: "r10c" }],
+  ["Vendredi → acheter la dernière heure", { v1: "dow", o1: ">", s1: 3.5, v2: "", pos: 1, res: "derniere_h" }]
+];
+let nTests = 0; try { nTests = +localStorage.getItem("labo-tests") || 0; } catch (e) {}
+function invNorm(p) { // Acklam
+  const a = [-39.69683028665376, 220.9460984245205, -275.9285104469687, 138.357751867269, -30.66479806614716, 2.506628274631], b = [-54.47609879822406, 161.5858368580409, -155.6989798598866, 66.80131188771972, -13.28068155288572],
+    c = [-0.007784894002430293, -0.3223964580411365, -2.400758277161838, -2.549732539343734, 4.374664141464968, 2.938163982698783], d = [0.007784695709041462, 0.3224671290700398, 2.445134137142996, 3.754408661907416];
+  const q = p < .5 ? p : 1 - p; let x;
+  if (q < .02425) { const t = Math.sqrt(-2 * Math.log(q)); x = (((((c[0] * t + c[1]) * t + c[2]) * t + c[3]) * t + c[4]) * t + c[5]) / ((((d[0] * t + d[1]) * t + d[2]) * t + d[3]) * t + 1); }
+  else { const t = q - .5, r2 = t * t; x = (((((a[0] * r2 + a[1]) * r2 + a[2]) * r2 + a[3]) * r2 + a[4]) * r2 + a[5]) * t / (((((b[0] * r2 + b[1]) * r2 + b[2]) * r2 + b[3]) * r2 + b[4]) * r2 + 1); }
+  return p < .5 ? x : -x;
+}
+let gLabo;
+function vueLabo() {
+  if (!$("l-v1").options.length) {
+    const rem = (sel, vide) => { if (vide) sel.add(new Option("(aucune)", "")); Object.entries(VARS).forEach(([k, [t]]) => sel.add(new Option(t, k))); };
+    rem($("l-v1"), false); rem($("l-v2"), true);
+    Object.entries(RES).forEach(([k, [t]]) => $("l-res").add(new Option(t, k)));
+    EXEMPLES.forEach(([t], i) => $("l-ex").add(new Option(t, i)));
+    $("l-ex").onchange = () => { const e = EXEMPLES[+$("l-ex").value]; if (!e) return; const x = e[1];
+      $("l-v1").value = x.v1; $("l-o1").value = x.o1; $("l-s1").value = x.s1; $("l-v2").value = x.v2 || ""; if (x.v2) { $("l-o2").value = x.o2; $("l-s2").value = x.s2; }
+      $("l-pos").value = x.pos; $("l-res").value = x.res; tester(true); };
+    $("l-go").onclick = () => tester(true);
+    $("l-v1").value = "gap"; $("l-o1").value = ">"; $("l-s1").value = 0.5; $("l-v2").value = ""; $("l-pos").value = -1; $("l-res").value = "premiere_h";
+    tester(false);
+  }
+  garde();
+}
+function garde() {
+  const n = Math.max(1, nTests), seuil = invNorm(1 - 0.05 / (2 * n));
+  $("l-garde").innerHTML = `<div><span class="l">Tests faits ici</span><span class="n">${nTests}</span></div><div><span class="l">t exigé (Bonferroni)</span><span class="n a">${nf(seuil, 2)}</span></div>`;
+  $("l-garde-texte").innerHTML = `Plus tu essaies de règles, plus l'une d'elles semblera bonne par hasard. Après ${nTests} test(s), une règle doit dépasser <b>t = ${nf(seuil, 2)}</b> sur 15 ans, et rester positive sur chaque période, pour mériter un vrai test.`;
+}
+function tester(compter) {
+  const v1 = $("l-v1").value, v2 = $("l-v2").value, res = $("l-res").value, pos = +$("l-pos").value;
+  const t0 = RES[res][1], av = [v1, v2].filter(Boolean).find(v => VARS[v][1] > t0);
+  if (av) { $("l-chiffres").innerHTML = `<div><span class="l">Refusé</span><span class="n b">regard vers l'avenir</span></div>`;
+    $("t-labo").innerHTML = `<tbody><tr><td style="text-align:left;white-space:normal" class="b">« ${VARS[av][0]} » n'est connue qu'à 16 h (Paris), après le début de « ${RES[res][0]} ». Choisis un résultat qui commence plus tard.</td></tr></tbody>`; $("g-labo").innerHTML = ""; return; }
+  const cond = (v, o, s, i) => { if (!v) return true; const x = v === "dow" ? LB.dow[i] : LB[v][i]; if (x == null) return false; return o === ">" ? x > s : x < s; };
+  const s1 = +$("l-s1").value, s2 = +$("l-s2").value, o1 = $("l-o1").value, o2 = $("l-o2").value;
+  const pts = [], periodes = { "2011-2018": [], "2019-2022": [], "2023-2026": [] }, an = [];
+  for (let i = 0; i < LB.jour.length; i++) {
+    if (!LB.complete[i] || LB[res][i] == null || !cond(v1, o1, s1, i) || !cond(v2, o2, s2, i)) continue;
+    const g = pos * LB[res][i] / 100 * 28135 * 2 - 3;   // $ pour 1 MNQ au prix du 2 novembre, frais compris
+    pts.push(g); an.push(LB.an[i]);
+    (LB.an[i] <= 2018 ? periodes["2011-2018"] : LB.an[i] <= 2022 ? periodes["2019-2022"] : periodes["2023-2026"]).push(g);
+  }
+  if (compter) { nTests++; try { localStorage.setItem("labo-tests", nTests); } catch (e) {} }
+  garde();
+  const st = x => { if (x.length < 3) return { n: x.length, m: NaN, t: NaN, p: NaN }; const m = x.reduce((a, b) => a + b, 0) / x.length, sd = Math.sqrt(x.reduce((a, b) => a + (b - m) ** 2, 0) / (x.length - 1)); return { n: x.length, m, t: m / sd * Math.sqrt(x.length), p: x.filter(v => v > 0).length / x.length * 100 }; };
+  const T = st(pts), seuil = invNorm(1 - 0.05 / (2 * Math.max(1, nTests)));
+  const verdict = isNaN(T.t) ? "trop peu de séances" : T.t >= seuil && Object.values(periodes).every(p => st(p).m > 0) ? "piste à écrire et tester" : T.t >= 1.65 ? "faible : probablement du hasard" : "rien";
+  $("l-chiffres").innerHTML = [["Séances", nf(T.n)], ["Par séance", `<span class="${cl(T.m)}">${usd(T.m, 1)}</span>`], ["Gagnantes", nf(T.p, 0) + " %"], ["t", `<span class="${T.t >= seuil ? "h" : "a"}">${nf(T.t, 2)}</span>`], ["Verdict", `<span class="${verdict.startsWith("piste") ? "h" : "a"}" style="font-size:13px">${verdict}</span>`]]
+    .map(([l, v]) => `<div><span class="l">${l}</span><span class="n">${v}</span></div>`).join("");
+  $("t-labo").innerHTML = `<thead><tr><th>Période</th><th>Séances</th><th>Par séance</th><th>Gagnantes</th><th>t</th></tr></thead><tbody>` + Object.entries(periodes).map(([k, p]) => { const s = st(p);
+    return `<tr><td>${k}</td><td>${nf(s.n)}</td><td class="${cl(s.m)}">${usd(s.m, 1)}</td><td>${nf(s.p, 0)} %</td><td>${nf(s.t, 2)}</td></tr>`; }).join("") + "</tbody>";
+  if (pts.length > 1) { let c = 0; const cum = pts.map(v => c += v); const et = []; an.forEach((a, i) => { if (i === 0 || a !== an[i - 1]) if (a % 3 === 2) et.push([i, String(a)]); });
+    gLabo = courbes($("g-labo"), { hauteur: 220, etiquettesX: et, libelle: i => `séance ${i + 1} (${an[i]})`, series: [{ nom: "cumul 1 MNQ", v: cum, c: COL.ambre }] }); }
+  else $("g-labo").innerHTML = "";
+}
+
+// ------------------------------------------------------------------ F6 execution (papier)
+const X = { k: SE.length - 1, i: -1, pos: 0, prix: 0, real: 0, ordres: [], attente: null, arret: false, minut: null, g: null };
+function vueExecution() {
+  const sel = $("x-jour");
+  if (!sel.options.length) {
+    SE.forEach((s, k) => { if (s.complete) sel.add(new Option(dateFr(s.jour), k)); });
+    sel.onchange = () => { X.k = +sel.value; reinit(); };
+    $("x-reinit").onclick = reinit; $("x-pas").onclick = () => avancer(); $("x-lecture").onclick = lecture;
+    $("x-achat").onclick = () => ordre(1); $("x-vente").onclick = () => ordre(-1); $("x-plat").onclick = () => ordre(0);
+    $("x-agents").onchange = peindreX; $("x-vitesse").onchange = () => { if (X.minut) { lecture(); lecture(); } };
+    sel.value = X.k; reinit();
+  }
+  peindreX();
+}
+function reinit() { clearInterval(X.minut); X.minut = null; $("x-lecture").textContent = "▶ Lecture"; Object.assign(X, { i: 0, pos: 0, prix: 0, real: 0, ordres: [], attente: null, arret: false }); peindreX(); }
+function lecture() { if (X.minut) { clearInterval(X.minut); X.minut = null; $("x-lecture").textContent = "▶ Lecture"; return; }
+  $("x-lecture").textContent = "❚❚ Pause"; X.minut = setInterval(() => { if (!avancer()) { clearInterval(X.minut); X.minut = null; $("x-lecture").textContent = "▶ Lecture"; } }, +$("x-vitesse").value); }
+const s0 = () => SE[X.k];
+function ordre(sens) {
+  if (X.arret || X.i >= 76) return;
+  const q = +$("x-qte").value;
+  X.attente = sens === 0 ? { cible: 0 } : { cible: X.pos + sens * q };
+  if (Math.abs(X.attente.cible) > 4) X.attente.cible = Math.sign(X.attente.cible) * 4;
+  peindreX();
+}
+function latent(p) { return X.pos * (p - X.prix) * 2 - Math.abs(X.pos) * 1.5; }
+function executer(cible, p, motif) {
+  const s = s0(), delta = cible - X.pos; if (!delta) return;
+  if (X.pos !== 0 && (Math.sign(cible) !== Math.sign(X.pos) || Math.abs(cible) < Math.abs(X.pos))) {
+    const ferme = Math.sign(cible) !== Math.sign(X.pos) ? X.pos : X.pos - cible;
+    X.real += ferme * (p - X.prix) * 2 - Math.abs(ferme) * 3;
+    if (Math.sign(cible) === Math.sign(X.pos)) { /* reduction : prix moyen inchange */ } else { X.prix = p; }
+  } else if (X.pos !== 0) { X.prix = (X.prix * Math.abs(X.pos) + p * Math.abs(delta)) / Math.abs(cible); }
+  else X.prix = p;
+  X.pos = cible; if (cible === 0) X.prix = 0;
+  X.ordres.push({ t: heure(s.jour, (X.i + 1) * 5), cote: delta > 0 ? "achat" : "vente", q: Math.abs(delta), p, pos: cible, motif });
+}
+function avancer() {
+  const s = s0(); if (X.i >= 77) return false;
+  X.i++;
+  const [o, h, l, c] = s.barres[X.i];
+  if (X.attente && !X.arret) { executer(X.attente.cible, o, "ordre"); X.attente = null; }
+  const lim = +$("x-lim").value;
+  if (X.pos !== 0 && lim > 0) { const pire = X.pos > 0 ? l : h, v = X.real + latent(pire);
+    if (v <= -lim) { const niveau = X.prix - (lim + X.real) / (2 * X.pos); executer(0, niveau - Math.sign(X.pos) * 1, "limite du jour"); X.arret = true; } }
+  if (X.i >= 77 && X.pos !== 0) executer(0, c, "fin de séance");
+  peindreX(); return X.i < 77;
+}
+function peindreX() {
+  const s = s0(), voir = $("x-agents").checked;
+  $("x-titre").textContent = dateFr(s.jour);
+  const opts = seanceOpts(s, { st: voir, zone: voir, vwap: true }, 340, Math.max(0, X.i));
+  opts.marques = (opts.marques || []).concat(X.ordres.map(o2 => ({ i: Math.max(0, SE[X.k].barres.findIndex((_, b) => heure(s.jour, (b) * 5) === o2.t)), p: o2.p, c: COL.ambre, forme: o2.cote === "achat" ? "haut" : "bas" })));
+  X.g = graphique($("g-exe"), opts);
+  const p = s.barres[Math.max(0, X.i)][3], lat = X.pos ? latent(p) : 0, jour = X.real + lat;
+  $("x-chiffres").innerHTML = [["Heure", X.i < 0 ? "—" : heure(s.jour, X.i * 5 + 5)], ["Dernier", nf(p, 2)], ["Position", `<span class="${cl(X.pos)}">${X.pos > 0 ? "+" : ""}${X.pos} MNQ</span>`],
+    ["Prix moyen", X.pos ? nf(X.prix, 2) : "—"], ["Latent", `<span class="${cl(lat)}">${usd(lat)}</span>`], ["Journée", `<span class="${cl(jour)}">${usd(jour)}</span>`],
+    ["Supertrend ce jour", `<span class="${cl(s.st_usd)}">${usd(s.st_usd)}</span>`], ["Bot 3 en 1 ce jour", `<span class="${cl(s.zone_usd)}">${usd(s.zone_usd)}</span>`]]
+    .map(([l2, v]) => `<div><span class="l">${l2}</span><span class="n">${v}</span></div>`).join("");
+  $("t-ordres").innerHTML = `<thead><tr><th>Heure</th><th>Ordre</th><th>Prix</th><th>Position</th><th>Motif</th></tr></thead><tbody>` +
+    (X.attente ? `<tr><td class="a">prochaine barre</td><td class="a">vers ${X.attente.cible} MNQ</td><td>au marché</td><td></td><td>en attente</td></tr>` : "") +
+    X.ordres.slice().reverse().map(o2 => `<tr><td>${o2.t}</td><td class="${o2.cote === "achat" ? "h" : "b"}">${o2.cote} ${o2.q}</td><td>${nf(o2.p, 2)}</td><td>${o2.pos}</td><td class="g">${o2.motif}</td></tr>`).join("") + "</tbody>";
+  const fini = X.i >= 77;
+  ["x-achat", "x-vente", "x-plat"].forEach(id => $(id).disabled = X.arret || fini || X.i < 0);
+  $("x-note").innerHTML = X.arret ? `<span class="b">Limite du jour atteinte : tout est fermé, plus d'ordre aujourd'hui.</span>` : fini ? `Séance terminée : ton résultat <b class="${cl(X.real)}">${usd(X.real)}</b>, Supertrend ${usd(s.st_usd)}, bot 3 en 1 ${usd(s.zone_usd)} (1 MNQ).`
+    : "Rejoue une vraie séance du NQ barre par barre et passe tes ordres MNQ (remplis à l'ouverture de la barre suivante, 3 $ de frais par aller-retour). Rien n'est envoyé au courtier : les vrais ordres passent par tes agents dans Quantower.";
+}
+
+// ------------------------------------------------------------------ F7 graphique pro (15 min) et reliefs synchronises
+const D2 = JSON.parse(document.getElementById("donnees2").textContent);
+const R = { mk: "NQ", i: null, minut: null, larg: 130, scenes: null };
+const EMAS = [8, 13, 21, 34, 55, 89];
+const coulEma = k => { const a = [255, 160, 40], b = [60, 200, 255], t = k / 5; return `rgb(${a.map((v, j) => Math.round(v + (b[j] - v) * t)).join(",")})`; };
+function vuePro() {
+  if (!$("p-depart").options.length) {
+    $("p-mk").onchange = () => { R.mk = $("p-mk").value; R.i = null; remplirDeparts(); peindrePro(); };
+    $("p-depart").onchange = () => { arretPro(); R.i = +$("p-depart").value * 26; peindrePro(); };
+    $("p-lecture").onclick = () => { if (R.minut) arretPro(); else { $("p-lecture").textContent = "❚❚ Pause"; R.minut = setInterval(() => { const M2 = D2[R.mk]; if (R.i >= M2.barres.length - 1) { arretPro(); return; } R.i++; peindrePro(); }, +$("p-vitesse").value); } };
+    $("p-pas").onclick = () => { const M2 = D2[R.mk]; R.i = Math.min(M2.barres.length - 1, R.i + 1); peindrePro(); };
+    $("p-fin").onclick = () => { arretPro(); R.i = null; peindrePro(); };
+    $("p-larg").onchange = () => { R.larg = +$("p-larg").value; peindrePro(); };
+    $("p-vitesse").onchange = () => { if (R.minut) { arretPro(); $("p-lecture").click(); } };
+    remplirDeparts();
+  }
+  peindrePro();
+}
+function arretPro() { clearInterval(R.minut); R.minut = null; $("p-lecture").textContent = "▶ Lecture"; }
+function remplirDeparts() { const s = $("p-depart"); s.innerHTML = ""; D2[R.mk].jours.forEach((j, k) => s.add(new Option(dateFr(j), k))); s.value = Math.max(0, D2[R.mk].jours.length - 5); }
+function peindrePro() {
+  const M2 = D2[R.mk], n = M2.barres.length, fin = R.i == null ? n - 1 : R.i, deb = Math.max(0, fin - R.larg + 1);
+  const jourDe = k => M2.jours[Math.floor(k / 26)], hDe = k => heure(jourDe(k), (k % 26) * 15);
+  $("p-titre").textContent = `${R.mk} · ${dateFr(jourDe(fin))} ${hDe(fin)} (Paris)`;
+  proGraph($("g-pro"), M2, deb, fin);
+  const I = M2.ind, c = M2.barres[fin][3], ruban = EMAS.map(e => I["ema" + e][fin]);
+  const haussier = ruban.every((v, k) => k === 0 || ruban[k - 1] >= v), baissier = ruban.every((v, k) => k === 0 || ruban[k - 1] <= v);
+  const pb = (c - I.bb_b[fin]) / (I.bb_h[fin] - I.bb_b[fin]);
+  const pv = R.mk === "NQ" ? 2 : 5;
+  const hud = [["Dernier", nf(c, 2)], ["Ruban EMA", haussier ? `<span class="h">haussier</span>` : baissier ? `<span class="b">baissier</span>` : `<span class="a">mêlé</span>`],
+    ["Bollinger %b", nf(pb * 100, 0) + " %"], ["RSI 14", `<span class="${I.rsi[fin] > 70 ? "b" : I.rsi[fin] < 30 ? "h" : ""}">${nf(I.rsi[fin], 1)}</span>`],
+    ["MACD hist.", `<span class="${cl(I.macd_h[fin])}">${sg(I.macd_h[fin], 2)}</span>`], ["ATR 15 min", `${nf(I.atr[fin], 1)} pts · ${nf(I.atr[fin] * pv, 0)} $/micro`],
+    ["Volatilité (rang)", `<span class="${I.bbw_rang[fin] > 80 ? "b" : I.bbw_rang[fin] < 20 ? "c" : ""}">${nf(I.bbw_rang[fin], 0)} %</span>`]];
+  if (R.mk === "NQ") {
+    const p = M2.proba[fin]; hud.push(["Signal ML (1 h)", p == null ? "—" : `<span class="${p > .55 ? "h" : p < .45 ? "b" : "g"}">${nf(p * 100, 0)} % hausse</span>`]);
+    const s = SE.find(x => x.jour === jourDe(fin)), m = (fin % 26) * 15 + 15;
+    const posST = s ? (s.st.find(t => t[1] <= m && t[2] > m) || [0])[0] : 0, posZ = s ? (s.zone.find(t => t[1] < m && t[2] >= m) || [0])[0] : 0;
+    hud.push(["Supertrend NQ", posST ? `<span class="${posST > 0 ? "h" : "b"}">${posST > 0 ? "acheteur" : "vendeur"}</span>` : `<span class="g">à plat</span>`]);
+    hud.push(["Bot 3 en 1", posZ ? `<span class="${posZ > 0 ? "h" : "b"}">${posZ > 0 ? "acheteur" : "vendeur"}</span>` : `<span class="g">à plat</span>`]);
+  }
+  $("p-hud").innerHTML = hud.map(([l, v]) => `<div><span class="l">${l}</span><span class="n" style="font-size:14px">${v}</span></div>`).join("");
+  maj3D(M2, deb, fin);
+}
+function proGraph(cont, M2, deb, fin) {
+  cont.innerHTML = ""; const cv = document.createElement("canvas"); cont.appendChild(cv);
+  const bulle = document.createElement("div"); bulle.className = "info"; bulle.hidden = true; cont.appendChild(bulle);
+  const avecML = R.mk === "NQ", dpr = Math.min(2, devicePixelRatio || 1);
+  const panes = [["prix", .46], ["volume", .08], ["RSI 14", .11], ["MACD 12-26-9", .12], ["ATR 14 · largeur Bollinger", .1]].concat(avecML ? [["signal ML", .1]] : []);
+  const H = avecML ? 640 : 580, I = M2.ind, B = M2.barres, n = fin - deb + 1;
+  function dessiner(survol) {
+    const W = cont.clientWidth || 800; cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+    const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+    const g = { l: 6, r: 64, t: 4, b: 20 }, pw = (W - g.l - g.r) / Math.max(n, 20), X = k => g.l + (k - deb + .5) * pw;
+    x.font = `10px ${css("--mono")}`; x.textBaseline = "middle";
+    const tot = panes.reduce((a, p) => a + p[1], 0); let y0 = g.t; const zones = {};
+    panes.forEach(([nom, f]) => { const h = (H - g.t - g.b) * f / tot; zones[nom] = [y0, y0 + h]; y0 += h; });
+    const echelle = (nom, lo, hi) => { const [a, b] = zones[nom]; return v => a + 4 + (b - a - 8) * (hi - v) / (hi - lo || 1); };
+    const axe = (nom, Y, vals, fmt) => { vals.forEach(v => { x.strokeStyle = COL.grille; x.beginPath(); x.moveTo(g.l, Y(v)); x.lineTo(W - g.r, Y(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(fmt(v), W - g.r + 5, Y(v)); }); };
+    Object.entries(zones).forEach(([nom, [a, b]]) => { x.strokeStyle = COL.trait; x.beginPath(); x.moveTo(g.l, b); x.lineTo(W - g.r, b); x.stroke(); x.fillStyle = COL["ambre-pale"]; x.fillText(nom.toUpperCase(), g.l + 4, a + 9); });
+    const rng = (keys, f0 = () => true) => { let lo = Infinity, hi = -Infinity; for (let k = deb; k <= fin; k++) keys.forEach(kk => { const v = kk(k); if (v != null && isFinite(v) && f0(v)) { lo = Math.min(lo, v); hi = Math.max(hi, v); } }); return [lo, hi]; };
+    // prix
+    let [plo, phi] = rng([k => B[k][2], k => B[k][1], k => I.bb_h[k], k => I.bb_b[k]]); const pp = (phi - plo) * .04; plo -= pp; phi += pp;
+    const Yp = echelle("prix", plo, phi);
+    const pas = (() => { const r = (phi - plo) / 5, p = Math.pow(10, Math.floor(Math.log10(r))), m = r / p; return (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p; })();
+    const vals = []; for (let v = Math.ceil(plo / pas) * pas; v <= phi; v += pas) vals.push(v); axe("prix", Yp, vals, v => nf(v, 0));
+    // separateurs de seance
+    for (let k = deb; k <= fin; k++) if (k % 26 === 0) { x.strokeStyle = COL.trait; x.setLineDash([2, 3]); x.beginPath(); x.moveTo(X(k) - pw / 2, g.t); x.lineTo(X(k) - pw / 2, H - g.b); x.stroke(); x.setLineDash([]);
+      const t = dateFr(M2.jours[k / 26]).replace(/ 20\d\d$/, ""); x.fillStyle = COL.gris; x.fillText(t, Math.min(W - g.r - 40, X(k) - pw / 2 + 3), H - 9); }
+    // Bollinger
+    x.fillStyle = "rgba(180,140,255,0.07)"; x.beginPath(); for (let k = deb; k <= fin; k++) if (I.bb_h[k] != null) x.lineTo(X(k), Yp(I.bb_h[k])); for (let k = fin; k >= deb; k--) if (I.bb_b[k] != null) x.lineTo(X(k), Yp(I.bb_b[k])); x.fill();
+    const ligne = (arr, Y, c, w = 1, tir) => { x.strokeStyle = c; x.lineWidth = w; if (tir) x.setLineDash(tir); x.beginPath(); let d0 = false; for (let k = deb; k <= fin; k++) { const v = arr[k]; if (v == null) { d0 = false; continue; } d0 ? x.lineTo(X(k), Y(v)) : x.moveTo(X(k), Y(v)); d0 = true; } x.stroke(); x.setLineDash([]); x.lineWidth = 1; };
+    ligne(I.bb_h, Yp, COL.violet, 1, [3, 3]); ligne(I.bb_b, Yp, COL.violet, 1, [3, 3]); ligne(I.bb_m, Yp, "rgba(180,140,255,.5)", 1);
+    EMAS.slice().reverse().forEach((e, kk) => ligne(I["ema" + e], Yp, coulEma(5 - kk), 1.3));
+    for (let k = deb; k <= fin; k++) { const [o, h, l, c] = B[k], up = c >= o; x.strokeStyle = x.fillStyle = up ? COL.hausse : COL.baisse;
+      x.beginPath(); x.moveTo(X(k), Yp(h)); x.lineTo(X(k), Yp(l)); x.stroke(); const bw = Math.max(1, pw * .65), ya = Yp(Math.max(o, c)), yb = Yp(Math.min(o, c)); x.fillRect(X(k) - bw / 2, ya, bw, Math.max(1, yb - ya)); }
+    if (R.mk === "NQ") SE.forEach(s => { const k0 = D2.NQ.jours.indexOf(s.jour); if (k0 < 0) return;
+      s.st.forEach(([sens, mi, mo, e]) => { const k = k0 * 26 + Math.floor(mi / 15); if (k >= deb && k <= fin) { x.fillStyle = COL.cyan; const yy = Yp(e); x.beginPath(); if (sens > 0) { x.moveTo(X(k), yy + 3); x.lineTo(X(k) - 5, yy + 12); x.lineTo(X(k) + 5, yy + 12); } else { x.moveTo(X(k), yy - 3); x.lineTo(X(k) - 5, yy - 12); x.lineTo(X(k) + 5, yy - 12); } x.fill(); } });
+      s.zone.forEach(([sens, mi, mo, e]) => { const k = k0 * 26 + Math.floor(mi / 15); if (k >= deb && k <= fin) { x.fillStyle = COL.violet; x.beginPath(); x.arc(X(k), Yp(e), 4, 0, 7); x.fill(); } }); });
+    const cf = B[fin][3]; x.fillStyle = COL.ambre; x.fillRect(W - g.r + 1, Yp(cf) - 8, g.r - 2, 16); x.fillStyle = COL.noir; x.fillText(nf(cf, 2), W - g.r + 3, Yp(cf));
+    // volume
+    let vmax = 0; for (let k = deb; k <= fin; k++) vmax = Math.max(vmax, B[k][4]); const [va, vb] = zones.volume;
+    for (let k = deb; k <= fin; k++) { x.fillStyle = B[k][3] >= B[k][0] ? "rgba(47,209,111,.55)" : "rgba(255,79,79,.55)"; const hh = (vb - va - 6) * B[k][4] / (vmax || 1); x.fillRect(X(k) - pw * .35, vb - 2 - hh, pw * .7, hh); }
+    // RSI
+    const Yr = echelle("RSI 14", 0, 100); axe("RSI 14", Yr, [30, 70], v => v); ligne(I.rsi, Yr, COL.ambre, 1.3);
+    // MACD
+    let [mlo, mhi] = rng([k => I.macd[k], k => I.macd_s[k], k => I.macd_h[k]]); const Ym = echelle("MACD 12-26-9", Math.min(mlo, 0), Math.max(mhi, 0)); axe("MACD 12-26-9", Ym, [0], () => "0");
+    for (let k = deb; k <= fin; k++) { const v = I.macd_h[k]; if (v == null) continue; x.fillStyle = v >= 0 ? "rgba(47,209,111,.6)" : "rgba(255,79,79,.6)"; x.fillRect(X(k) - pw * .35, Math.min(Ym(0), Ym(v)), pw * .7, Math.abs(Ym(v) - Ym(0))); }
+    ligne(I.macd, Ym, COL.cyan, 1.2); ligne(I.macd_s, Ym, COL.ambre, 1.2);
+    // ATR et largeur
+    let [alo, ahi] = rng([k => I.atr[k]]); const Ya = echelle("ATR 14 · largeur Bollinger", 0, ahi * 1.05); axe("ATR 14 · largeur Bollinger", Ya, [Math.round(ahi / 2)], v => nf(v) + " pts"); ligne(I.atr, Ya, COL.blanc, 1.3);
+    const Yw = echelle("ATR 14 · largeur Bollinger", 0, 100); ligne(I.bbw_rang, Yw, COL.violet, 1, [2, 2]);
+    if (avecML) { const Yl = echelle("signal ML", .3, .7); axe("signal ML", Yl, [.45, .55], v => nf(v * 100) + " %");
+      for (let k = deb; k <= fin; k++) { const p = M2.proba[k]; if (p == null) continue; x.fillStyle = p > .55 ? COL.hausse : p < .45 ? COL.baisse : COL["gris2"]; x.fillRect(X(k) - pw * .35, Math.min(Yl(.5), Yl(p)), pw * .7, Math.max(1, Math.abs(Yl(p) - Yl(.5)))); } }
+    if (survol != null) { x.strokeStyle = COL["gris2"]; x.beginPath(); x.moveTo(X(survol), g.t); x.lineTo(X(survol), H - g.b); x.stroke();
+      const [o, h, l, c, v] = B[survol];
+      bulle.innerHTML = `<b class="a">${dateFr(M2.jours[Math.floor(survol / 26)])} ${heure(M2.jours[Math.floor(survol / 26)], (survol % 26) * 15)}</b><br>O ${nf(o, 2)} H ${nf(h, 2)}<br>B ${nf(l, 2)} C <b class="${c >= o ? "h" : "b"}">${nf(c, 2)}</b><br>vol. ${nf(v)} · RSI ${nf(I.rsi[survol], 1)}<br>MACD ${sg(I.macd_h[survol], 2)} · ATR ${nf(I.atr[survol], 1)}` + (avecML && M2.proba[survol] != null ? `<br>ML ${nf(M2.proba[survol] * 100, 0)} % hausse` : "");
+      bulle.hidden = false; bulle.style.left = Math.min(W - bulle.offsetWidth - 4, X(survol) + 12) + "px"; bulle.style.top = "10px"; } else bulle.hidden = true;
+    cv.onpointermove = cv.onpointerdown = ev => { const r = cv.getBoundingClientRect(); const k = deb + Math.floor((ev.clientX - r.left - g.l) / pw); dessiner(k >= deb && k <= fin ? k : null); };
+    cv.onpointerleave = () => dessiner(null);
+  }
+  dessiner(null);
+}
+// --- reliefs 3D synchronises
+function scene3(cont, etq, cam0) {
+  const T3 = window.THREE; if (!T3 || !T3.OrbitControls) return null;
+  let r; try { r = new T3.WebGLRenderer({ antialias: true }); } catch (e) { return null; }
+  r.setPixelRatio(Math.min(2, devicePixelRatio || 1)); cont.insertBefore(r.domElement, etq);
+  const sc = new T3.Scene(); sc.background = new T3.Color(COL.noir); sc.fog = new T3.FogExp2(0x000000, .025);
+  const cam = new T3.PerspectiveCamera(40, 1, .1, 200); cam.position.set(...cam0);
+  const ctl = new T3.OrbitControls(cam, r.domElement); ctl.enableDamping = true; ctl.target.set(0, 1.5, 0);
+  const gr = new T3.GridHelper(30, 30, 0x2a2a2a, 0x141414); sc.add(gr);
+  const S3 = { T3, r, sc, cam, ctl, cont, etq, labs: [] };
+  S3.redim = () => { const w = cont.clientWidth, h = cont.clientHeight; if (!w) return; r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };
+  new ResizeObserver(S3.redim).observe(cont); S3.redim();
+  S3.lab = (t, p) => { const s = document.createElement("span"); s.textContent = t; etq.appendChild(s); const l = { s, p: new T3.Vector3(...p) }; S3.labs.push(l); return l; };
+  return S3;
+}
+function surface(S3, nx, nz, larg, prof) {
+  const T3 = S3.T3, geo = new T3.PlaneGeometry(larg, prof, nx - 1, nz - 1); geo.rotateX(-Math.PI / 2);
+  geo.setAttribute("color", new T3.Float32BufferAttribute(new Float32Array(nx * nz * 3), 3));
+  const m = new T3.Mesh(geo, new T3.MeshBasicMaterial({ vertexColors: true, side: T3.DoubleSide, transparent: true, opacity: .9 }));
+  const fil = new T3.LineSegments(new T3.WireframeGeometry(geo), new T3.LineBasicMaterial({ color: 0xffa028, transparent: true, opacity: .18, blending: T3.AdditiveBlending }));
+  S3.sc.add(m); S3.sc.add(fil); return { geo, m, fil, nx, nz };
+}
+function rampe3(T3, u) { const a = new T3.Color(0x120a00), b = new T3.Color(0xffa028), c = new T3.Color(0xfff2d0); u = Math.max(0, Math.min(1, u)); return u < .65 ? a.lerp(b, u / .65) : b.lerp(c, (u - .65) / .35); }
+function majFil(Sf, S3) { S3.sc.remove(Sf.fil); Sf.fil.geometry.dispose(); Sf.fil = new S3.T3.LineSegments(new S3.T3.WireframeGeometry(Sf.geo), Sf.fil.material); S3.sc.add(Sf.fil); }
+function maj3D(M2, deb, fin) {
+  if (!window.THREE || !window.THREE.OrbitControls) return;
+  if (!R.scenes) {
+    const a = scene3($("r-ema"), $("r-ema-etiq"), [9, 8, 11]), b = scene3($("r-vol"), $("r-vol-etiq"), [-10, 9, 11]), c = scene3($("r-atr"), $("r-atr-etiq"), [10, 9, 10]);
+    if (!a || !b || !c) { R.scenes = "aucune"; return; }
+    R.scenes = { a, b, c, ema: surface(a, 130, 6, 12, 6), vol: surface(b, 121, 60, 12, 12), atr: surface(c, 26, 60, 10, 12) };
+    const T3 = window.THREE;
+    R.scenes.prixLigne = new T3.Line(new T3.BufferGeometry(), new T3.LineBasicMaterial({ color: 0xffffff })); a.sc.add(R.scenes.prixLigne);
+    R.scenes.prixVol = new T3.Mesh(new T3.BoxGeometry(.05, .05, 12.4), new T3.MeshBasicMaterial({ color: 0xffffff })); b.sc.add(R.scenes.prixVol);
+    R.scenes.labEma = [a.lab("EMA 8", [-6.8, 0, -3]), a.lab("EMA 89", [-6.8, 0, 3])];
+    R.scenes.labVol = [b.lab("", [-6, 0, 6.8]), b.lab("", [6, 0, 6.8]), b.lab("séances →", [6.8, 0, 0])];
+    c.lab("15h30", [-5, 0, 6.8]); c.lab("21h45", [5, 0, 6.8]); c.lab("séances →", [5.8, 0, 0]);
+    const boucle = () => { if (!$("v-pro").hidden && typeof R.scenes === "object") [R.scenes.a, R.scenes.b, R.scenes.c].forEach(S3 => { S3.ctl.update(); S3.r.render(S3.sc, S3.cam);
+      const w = S3.cont.clientWidth, h = S3.cont.clientHeight, v3 = new S3.T3.Vector3(); S3.labs.forEach(l => { v3.copy(l.p).project(S3.cam); l.s.style.left = (v3.x + 1) / 2 * w + "px"; l.s.style.top = (1 - v3.y) / 2 * h + "px"; }); });
+      requestAnimationFrame(boucle); };
+    boucle();
+  }
+  if (typeof R.scenes !== "object") return;
+  const T3 = window.THREE, Sx = R.scenes, I = M2.ind, B = M2.barres;
+  // ruban EMA : 130 dernieres barres (ou moins), 6 EMA
+  { const Sf = Sx.ema, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, d0 = Math.max(0, fin - 129);
+    let lo = Infinity, hi = -Infinity; for (let k = d0; k <= fin; k++) EMAS.forEach(e => { const v = I["ema" + e][k]; lo = Math.min(lo, v); hi = Math.max(hi, v); B[k] && (lo = Math.min(lo, B[k][3]), hi = Math.max(hi, B[k][3])); });
+    for (let z = 0; z < 6; z++) for (let i = 0; i < 130; i++) { const k = Math.min(fin, d0 + Math.round(i * (fin - d0) / 129)), v = I["ema" + EMAS[z]][k], u = (v - lo) / (hi - lo || 1), idx = z * 130 + i;
+      pos.setY(idx, u * 5); const cc = new T3.Color(coulEma(z)).multiplyScalar(.35 + .65 * u); col.setXYZ(idx, cc.r, cc.g, cc.b); }
+    pos.needsUpdate = col.needsUpdate = true; majFil(Sf, Sx.a);
+    const pts = []; for (let i = 0; i < 130; i++) { const k = Math.min(fin, d0 + Math.round(i * (fin - d0) / 129)); pts.push(new T3.Vector3(-6 + 12 * i / 129, (B[k][3] - lo) / (hi - lo || 1) * 5, -3.6)); }
+    Sx.prixLigne.geometry.setFromPoints(pts); }
+  // paysage du volume : seances jusqu'au curseur, la seance en cours construite barre par barre
+  { const Sf = Sx.vol, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, P_ = M2.profils, sCur = Math.floor(fin / 26), cf = B[fin][3];
+    const cCur = Math.round((cf - P_.bas) / P_.pas), c0 = Math.max(0, Math.min(P_.cases - 121, cCur - 60));
+    const enCours = new Array(P_.cases).fill(0); for (let k = sCur * 26; k <= fin; k++) { const [o, h, l, c, v] = B[k], a = Math.floor((l - P_.bas) / P_.pas), b2 = Math.floor((h - P_.bas) / P_.pas), nb = Math.max(1, b2 - a + 1); for (let q = a; q <= b2; q++) if (q >= 0 && q < P_.cases) enCours[q] += v / nb; }
+    let mx = 1; for (let s = 0; s <= sCur; s++) for (let q = c0; q < c0 + 121; q++) mx = Math.max(mx, s === sCur ? enCours[q] || 0 : P_.valeurs[s][q] || 0);
+    for (let s = 0; s < 60; s++) for (let q = 0; q < 121; q++) { const val = s < sCur ? (P_.valeurs[s][c0 + q] || 0) : s === sCur ? (enCours[c0 + q] || 0) : 0, u = Math.sqrt(val / mx), idx = s * 121 + q;
+      pos.setY(idx, u * 4); const cc = rampe3(T3, u * (s === sCur ? 1.15 : .9)); col.setXYZ(idx, cc.r, cc.g, cc.b); }
+    pos.needsUpdate = col.needsUpdate = true; majFil(Sf, Sx.b);
+    Sx.prixVol.position.set(-6 + 12 * (cCur - c0) / 120, .05, 0);
+    Sx.labVol[0].s.textContent = nf(P_.bas + c0 * P_.pas); Sx.labVol[1].s.textContent = nf(P_.bas + (c0 + 120) * P_.pas); }
+  // structure de la volatilite : amplitude de chaque quart d'heure, seances jusqu'au curseur
+  { const Sf = Sx.atr, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color; let mx = 1; for (let k = 0; k <= fin; k++) mx = Math.max(mx, B[k][1] - B[k][2]);
+    for (let s = 0; s < 60; s++) for (let q = 0; q < 26; q++) { const k = s * 26 + q, val = k <= fin ? B[k][1] - B[k][2] : 0, u = val / mx, idx = s * 26 + q;
+      pos.setY(idx, u * 4); const cc = k === fin ? new T3.Color(0xffffff) : rampe3(T3, u * 1.1); col.setXYZ(idx, cc.r, cc.g, cc.b); }
+    pos.needsUpdate = col.needsUpdate = true; majFil(Sf, Sx.c); }
+}
+
+// ------------------------------------------------------------------ F8 apprentissage automatique
+let gIa;
+function vueIa() {
+  const ML = D2.NQ.ml, B0 = ML.bilan;
+  $("ia-chiffres").innerHTML = [["Signaux testés", nf(B0.tout.signaux)], ["Par signal", `<span class="${cl(B0.tout.par_signal)}">${usd(B0.tout.par_signal, 1)}</span>`], ["t (2014 - 2026)", nf(B0.tout.t, 2)],
+    ["t avant 2023", nf(B0.avant2023.t, 2)], ["t depuis 2023", nf(B0.depuis2023.t, 2)], ["Années positives", `${ML.annees.filter(a => a.par_signal > 0).length} / ${ML.annees.length}`]]
+    .map(([l, v]) => `<div><span class="l">${l}</span><span class="n">${v}</span></div>`).join("");
+  gIa = barresV($("g-ia"), { hauteur: 220, lib: ML.annees.map(a => String(a.annee).slice(2)), series: [{ nom: "Résultat de l'année, 1 MNQ par signal", v: ML.annees.map(a => a.total), c: COL.ambre }] });
+  $("t-ia").innerHTML = `<thead><tr><th>Année</th><th>Barres</th><th>Bonne direction</th><th>Heures en hausse</th><th>Signaux</th><th>Par signal</th><th>t</th></tr></thead><tbody>` + ML.annees.map(a =>
+    `<tr><td>${a.annee}</td><td>${nf(a.barres)}</td><td>${nf(a.precision, 1)} %</td><td class="g">${nf(a.hausse, 1)} %</td><td>${nf(a.signaux)}</td><td class="${cl(a.par_signal)}">${usd(a.par_signal, 1)}</td><td>${nf(a.t, 2)}</td></tr>`).join("") + "</tbody>";
+  const mx = Math.max(...ML.poids.map(p => Math.abs(p[1])));
+  $("ia-poids").innerHTML = ML.poids.map(([n, w]) => `<div><span style="font-size:11px">${n}</span><i style="width:${Math.abs(w) / mx * 100}%;background:${w > 0 ? COL.hausse : COL.baisse}"></i><span class="${cl(w)}">${sg(w, 3)}</span></div>`).join("");
+  $("ia-texte").innerHTML = `Le modèle lit 11 informations connues à la clôture de chaque bougie de 15 minutes (rendements, RSI, MACD, Bollinger, ATR, écart des EMA, heure) et estime la probabilité que le NQ soit plus haut une heure plus tard. Il est ré-entraîné chaque 1er janvier sur les années précédentes seulement, puis jugé sur l'année qu'il n'a jamais vue. Il achète au-dessus de 55 %, vend sous 45 %, 3 $ de frais par aller-retour.<br><br><b>Verdict : ce n'est pas un atout.</b> Il ne devine la direction que 52 à 56 % du temps, à peine mieux que « le NQ monte plus souvent qu'il ne baisse ». Ses gains changent de signe d'une année à l'autre (2023 et 2024 bonnes, 2025 mauvaise) et son t sur 13 ans (${nf(B0.tout.t, 2)}) reste loin du seuil de 2,5 exigé. Le signal est affiché dans le graphique pro pour l'étudier, pas pour trader.`;
+}
+
+// ------------------------------------------------------------------ F0 station : une horloge, tous les panneaux
+const ST = { s: SE.length - 1, m: 0, minut: null, joue: false, rel: null, ordres: [], pos: 0, prix: 0, real: 0, attente: null, vus: new Set(), init: false };
+const NQ2 = D2.NQ;
+function evenementsSeance(k) {
+  const s = SE[k], out = alertes(s).map(([i, t, txt, sens, cc]) => ({ m: (i + 1) * 5, t, txt, cls: cc || cl(sens) }));
+  const k0 = NQ2.jours.indexOf(s.jour);
+  if (k0 >= 0) for (let b = 0; b < 26; b++) { const g = k0 * 26 + b, m = (b + 1) * 15, t = heure(s.jour, m), I = NQ2.ind, p = NQ2.proba[g];
+    if (p != null && (p > .55 || p < .45)) out.push({ m, t, txt: `signal ML : ${nf(p * 100, 0)} % de chances de hausse sur 1 h`, cls: p > .55 ? "h" : "b" });
+    if (I.rsi[g] != null && (I.rsi[g] > 70 || I.rsi[g] < 30)) out.push({ m, t, txt: `RSI 14 à ${nf(I.rsi[g], 0)} (${I.rsi[g] > 70 ? "suracheté" : "survendu"})`, cls: "a" });
+    const c = NQ2.barres[g][3]; if (I.bb_h[g] != null && c > I.bb_h[g]) out.push({ m, t, txt: "clôture au-dessus de la bande de Bollinger haute", cls: "h" });
+    if (I.bb_b[g] != null && c < I.bb_b[g]) out.push({ m, t, txt: "clôture sous la bande de Bollinger basse", cls: "b" }); }
+  return out.sort((a, b) => a.m - b.m);
+}
+let EV = [];
+function ajusterStation() {
+  const st = document.querySelector(".station"); if (!st || $("v-station").hidden) return;
+  const h = innerHeight - st.getBoundingClientRect().top - window.scrollY - 10;
+  document.documentElement.style.setProperty("--st-h", Math.max(640, h) + "px");
+}
+function vueStation() {
+  ajusterStation();
+  if (!ST.init) {
+    ST.init = true;
+    SE.forEach((s, k) => { if (s.complete) $("st-jour").add(new Option(dateFr(s.jour), k)); });
+    $("st-jour").value = ST.s;
+    $("st-jour").onchange = () => { ST.s = +$("st-jour").value; nouvelleSeance(); tic(true); };
+    $("st-lecture").onclick = () => ST.joue ? pause() : jouer();
+    $("st-vitesse").onchange = () => { if (ST.joue) { pause(); jouer(); } };
+    $("st-achat").onclick = () => ordreSt(1); $("st-vente").onclick = () => ordreSt(-1); $("st-plat").onclick = () => ordreSt(0);
+    nouvelleSeance();
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) jouer(); else { ST.m = 390; tic(true); }
+  } else tic(true);
+}
+function nouvelleSeance() { EV = evenementsSeance(ST.s); ST.m = 0; ST.vus = new Set(); ST.ordres = []; ST.pos = 0; ST.prix = 0; ST.real = 0; ST.attente = null; $("st-feed").innerHTML = ""; $("st-jour").value = ST.s; }
+function jouer() { ST.joue = true; $("st-lecture").textContent = "❚❚ Pause"; clearInterval(ST.minut); ST.minut = setInterval(avancerSt, +$("st-vitesse").value); }
+function pause() { ST.joue = false; $("st-lecture").textContent = "▶ Lecture"; clearInterval(ST.minut); }
+function avancerSt() {
+  if ($("v-station").hidden) return;
+  ST.m += 5;
+  if (ST.m > 390) { let k = ST.s + 1; while (k < SE.length && !SE[k].complete) k++; if (k >= SE.length) { k = 0; while (!SE[k].complete) k++; } ST.s = k; nouvelleSeance(); }
+  tic(false);
+}
+function ordreSt(sens) { if (ST.m >= 385 || ST.m < 5) return; const q = +$("st-qte").value; ST.attente = sens === 0 ? 0 : Math.max(-3, Math.min(3, ST.pos + sens * q)); tic(true); }
+function executerSt(cible, p, motif) {
+  const d = cible - ST.pos; if (!d) return;
+  if (ST.pos !== 0 && Math.sign(cible) !== Math.sign(ST.pos)) { ST.real += ST.pos * (p - ST.prix) * 2 - Math.abs(ST.pos) * 3; ST.prix = cible ? p : 0; }
+  else if (ST.pos !== 0 && Math.abs(cible) < Math.abs(ST.pos)) { const f = ST.pos - cible; ST.real += f * (p - ST.prix) * 2 - Math.abs(f) * 3; }
+  else ST.prix = ST.pos ? (ST.prix * Math.abs(ST.pos) + p * Math.abs(d)) / Math.abs(cible) : p;
+  ST.pos = cible; if (!cible) ST.prix = 0;
+  ST.ordres.unshift({ t: heure(SE[ST.s].jour, ST.m - 5), c: d > 0 ? "achat" : "vente", q: Math.abs(d), p, motif });
+}
+function tic(force) {
+  const s = SE[ST.s], nb5 = Math.min(78, Math.floor(ST.m / 5)), b5 = s.barres;
+  if (nb5 >= 1 && ST.attente !== null && !force) { executerSt(ST.attente, b5[nb5 - 1][0], "ordre"); ST.attente = null; }
+  if (ST.m >= 385 && ST.pos) executerSt(0, b5[Math.min(77, nb5 - 1)][3], "fin de séance");
+  const prix = nb5 ? b5[nb5 - 1][3] : b5[0][0];
+  $("st-horloge").textContent = `${dateFr(s.jour)} · ${heure(s.jour, Math.min(ST.m, 390))} Paris`;
+  // flux des signaux
+  const nouveaux = EV.filter(e => e.m <= ST.m && !ST.vus.has(e)); nouveaux.forEach(e => ST.vus.add(e));
+  if (force) { $("st-feed").innerHTML = ""; EV.filter(e => e.m <= ST.m).forEach(e => ajouterFlux(e, false)); } else nouveaux.forEach(e => ajouterFlux(e, true));
+  $("st-feed-n").textContent = `${EV.filter(e => e.m <= ST.m).length} aujourd'hui`;
+  // graphique 15 min : barres terminees + barre en cours construite avec les barres de 5 min
+  const k0 = NQ2.jours.indexOf(s.jour), q = Math.floor(ST.m / 15), fin = k0 * 26 + Math.min(25, Math.max(0, q - 1));
+  let partielle = null;
+  if (ST.m % 15 !== 0 && q < 26) { const a = q * 3, bb = b5.slice(a, nb5); if (bb.length) partielle = [bb[0][0], Math.max(...bb.map(x => x[1])), Math.min(...bb.map(x => x[2])), bb[bb.length - 1][3], 0]; }
+  const finAff = Math.max(0, q === 0 ? k0 * 26 - 1 : fin);
+  chartStation(finAff, partielle, s);
+  cotations(s, nb5, prix, finAff);
+  agentsSt(s, prix);
+  jauges(finAff, prix);
+  positionSt(prix);
+  tape(s, prix, finAff);
+  if (!ST.rel) ST.rel = reliefsStation();
+  if (ST.rel) ST.rel.maj(NQ2, Math.max(0, finAff - 129), Math.max(0, finAff));
+}
+function ajouterFlux(e, neuf) {
+  const d = document.createElement("div"); if (neuf) d.className = "neuf";
+  d.innerHTML = `<span class="a">${e.t}</span><span class="${e.cls}">${e.txt}</span>`;
+  $("st-feed").prepend(d); while ($("st-feed").children.length > 60) $("st-feed").lastChild.remove();
+}
+function chartStation(fin, partielle, s) {
+  const cont = $("st-chart"), panel = cont.closest(".panneau");
+  const H = innerWidth > 1200 ? Math.max(300, panel.clientHeight - 40) : 520;
+  cont.innerHTML = ""; const cv = document.createElement("canvas"); cont.appendChild(cv);
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cont.clientWidth || 800;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const I = NQ2.ind, B = NQ2.barres, larg = W < 600 ? 52 : 104, deb = Math.max(0, fin - larg + 2), n = larg;
+  const g = { l: 6, r: 66, t: 4, b: 18 }, pw = (W - g.l - g.r) / n, X = k => g.l + (k - deb + .5) * pw;
+  const panes = [["prix", .58], ["volume", .07], ["RSI 14", .11], ["MACD", .11], ["signal ML", .13]];
+  let y0 = g.t; const Z = {}; panes.forEach(([nm, f]) => { const h = (H - g.t - g.b) * f; Z[nm] = [y0, y0 + h]; y0 += h; });
+  const sc = (nm, lo, hi) => { const [a, b] = Z[nm]; return v => a + 4 + (b - a - 8) * (hi - v) / (hi - lo || 1); };
+  x.font = `10px ${css("--mono")}`; x.textBaseline = "middle";
+  Object.entries(Z).forEach(([nm, [a, b]]) => { x.strokeStyle = COL.trait; x.beginPath(); x.moveTo(g.l, b); x.lineTo(W - g.r, b); x.stroke(); x.fillStyle = COL["ambre-pale"]; x.fillText(nm.toUpperCase(), g.l + 4, a + 9); });
+  const kmax = partielle ? fin + 1 : fin;
+  let lo = Infinity, hi = -Infinity; for (let k = deb; k <= fin; k++) { lo = Math.min(lo, B[k][2], I.bb_b[k] ?? Infinity); hi = Math.max(hi, B[k][1], I.bb_h[k] ?? -Infinity); }
+  if (partielle) { lo = Math.min(lo, partielle[2]); hi = Math.max(hi, partielle[1]); }
+  const pp = (hi - lo) * .04; lo -= pp; hi += pp; const Yp = sc("prix", lo, hi);
+  const pas = (() => { const r = (hi - lo) / 6, p = Math.pow(10, Math.floor(Math.log10(r))), m = r / p; return (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p; })();
+  for (let v = Math.ceil(lo / pas) * pas; v <= hi; v += pas) { x.strokeStyle = COL.grille; x.beginPath(); x.moveTo(g.l, Yp(v)); x.lineTo(W - g.r, Yp(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(nf(v), W - g.r + 5, Yp(v)); }
+  for (let k = deb; k <= kmax; k++) if (k % 26 === 0) { x.strokeStyle = COL.trait; x.setLineDash([2, 3]); x.beginPath(); x.moveTo(X(k) - pw / 2, g.t); x.lineTo(X(k) - pw / 2, H - g.b); x.stroke(); x.setLineDash([]);
+    x.fillStyle = COL.gris; x.fillText(dateFr(NQ2.jours[k / 26]).replace(/ 20\d\d$/, ""), Math.min(W - g.r - 50, X(k) - pw / 2 + 3), H - 8); }
+  x.fillStyle = "rgba(180,140,255,0.07)"; x.beginPath(); for (let k = deb; k <= fin; k++) if (I.bb_h[k] != null) x.lineTo(X(k), Yp(I.bb_h[k])); for (let k = fin; k >= deb; k--) if (I.bb_b[k] != null) x.lineTo(X(k), Yp(I.bb_b[k])); x.fill();
+  const ligne = (arr, Y, c, w = 1.2, tir) => { x.strokeStyle = c; x.lineWidth = w; if (tir) x.setLineDash(tir); x.beginPath(); let on = false; for (let k = deb; k <= fin; k++) { const v = arr[k]; if (v == null) { on = false; continue; } on ? x.lineTo(X(k), Y(v)) : x.moveTo(X(k), Y(v)); on = true; } x.stroke(); x.setLineDash([]); x.lineWidth = 1; };
+  ligne(I.bb_h, Yp, COL.violet, 1, [3, 3]); ligne(I.bb_b, Yp, COL.violet, 1, [3, 3]);
+  EMAS.slice().reverse().forEach((e, kk) => ligne(I["ema" + e], Yp, coulEma(5 - kk), 1.4));
+  const bougie = (k, o, h, l, c, enCours) => { const up = c >= o; x.strokeStyle = x.fillStyle = up ? COL.hausse : COL.baisse; if (enCours) x.globalAlpha = .75;
+    x.beginPath(); x.moveTo(X(k), Yp(h)); x.lineTo(X(k), Yp(l)); x.stroke(); const bw = Math.max(1, pw * .65), ya = Yp(Math.max(o, c)), yb = Yp(Math.min(o, c)); x.fillRect(X(k) - bw / 2, ya, bw, Math.max(1, yb - ya)); x.globalAlpha = 1; };
+  for (let k = deb; k <= fin; k++) bougie(k, ...B[k].slice(0, 4));
+  if (partielle) bougie(fin + 1, ...partielle.slice(0, 4), true);
+  // entrees des agents jusqu'a l'heure du replay
+  SE.forEach(se => { const kk = NQ2.jours.indexOf(se.jour); if (kk < 0) return; const avant = se.jour < s.jour;
+    const tri = (sens, mi, e, c) => { if (!avant && mi > ST.m) return; const k = kk * 26 + Math.floor(mi / 15); if (k < deb || k > kmax) return; x.fillStyle = c; const yy = Yp(e); x.beginPath();
+      if (sens > 0) { x.moveTo(X(k), yy + 3); x.lineTo(X(k) - 5, yy + 12); x.lineTo(X(k) + 5, yy + 12); } else { x.moveTo(X(k), yy - 3); x.lineTo(X(k) - 5, yy - 12); x.lineTo(X(k) + 5, yy - 12); } x.fill(); };
+    se.st.forEach(([sens, mi, mo, e]) => tri(sens, mi, e, COL.cyan)); se.zone.forEach(([sens, mi, mo, e]) => tri(sens, mi, e, COL.violet)); });
+  const dern = partielle ? partielle[3] : B[fin][3];
+  x.fillStyle = COL.ambre; x.fillRect(W - g.r + 1, Yp(dern) - 8, g.r - 2, 16); x.fillStyle = COL.noir; x.fillText(nf(dern, 2), W - g.r + 3, Yp(dern));
+  x.strokeStyle = COL.ambre; x.setLineDash([1, 3]); x.beginPath(); x.moveTo(g.l, Yp(dern)); x.lineTo(W - g.r, Yp(dern)); x.stroke(); x.setLineDash([]);
+  let vmax = 1; for (let k = deb; k <= fin; k++) vmax = Math.max(vmax, B[k][4]); const [va, vb] = Z.volume;
+  for (let k = deb; k <= fin; k++) { x.fillStyle = B[k][3] >= B[k][0] ? "rgba(47,209,111,.55)" : "rgba(255,79,79,.55)"; const hh = (vb - va - 6) * B[k][4] / vmax; x.fillRect(X(k) - pw * .35, vb - 2 - hh, pw * .7, hh); }
+  const Yr = sc("RSI 14", 0, 100); [30, 70].forEach(v => { x.strokeStyle = COL.grille; x.beginPath(); x.moveTo(g.l, Yr(v)); x.lineTo(W - g.r, Yr(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(v, W - g.r + 5, Yr(v)); }); ligne(I.rsi, Yr, COL.ambre, 1.3);
+  let mlo = 0, mhi = 0; for (let k = deb; k <= fin; k++) [I.macd[k], I.macd_s[k], I.macd_h[k]].forEach(v => { if (v != null) { mlo = Math.min(mlo, v); mhi = Math.max(mhi, v); } });
+  const Ym = sc("MACD", mlo, mhi); for (let k = deb; k <= fin; k++) { const v = I.macd_h[k]; if (v == null) continue; x.fillStyle = v >= 0 ? "rgba(47,209,111,.6)" : "rgba(255,79,79,.6)"; x.fillRect(X(k) - pw * .35, Math.min(Ym(0), Ym(v)), pw * .7, Math.abs(Ym(v) - Ym(0))); }
+  ligne(I.macd, Ym, COL.cyan); ligne(I.macd_s, Ym, COL.ambre);
+  const Yl = sc("signal ML", .3, .7); [.45, .55].forEach(v => { x.strokeStyle = COL.grille; x.beginPath(); x.moveTo(g.l, Yl(v)); x.lineTo(W - g.r, Yl(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(nf(v * 100) + " %", W - g.r + 5, Yl(v)); });
+  for (let k = deb; k <= fin; k++) { const p = NQ2.proba[k]; if (p == null) continue; x.fillStyle = p > .55 ? COL.hausse : p < .45 ? COL.baisse : COL["gris2"]; x.fillRect(X(k) - pw * .35, Math.min(Yl(.5), Yl(p)), pw * .7, Math.max(1, Math.abs(Yl(p) - Yl(.5)))); }
+}
+function sparkline(cv, vals, c) {
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth || 200, H = 28; cv.width = W * dpr; cv.height = H * dpr;
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); if (vals.length < 2) return;
+  const lo = Math.min(...vals), hi = Math.max(...vals), Y = v => 2 + (H - 4) * (hi - v) / (hi - lo || 1), X = i => W * i / 77;
+  x.strokeStyle = c; x.lineWidth = 1.3; x.beginPath(); vals.forEach((v, i) => i ? x.lineTo(X(i), Y(v)) : x.moveTo(X(i), Y(v))); x.stroke();
+  x.fillStyle = c; x.beginPath(); x.arc(X(vals.length - 1), Y(vals[vals.length - 1]), 2.5, 0, 7); x.fill();
+}
+function cotations(s, nb5, prix, fin) {
+  $("st-q-heure").textContent = heure(s.jour, Math.min(ST.m, 390));
+  const b = s.barres.slice(0, Math.max(1, nb5)), hi = Math.max(...b.map(v => v[1])), lo = Math.min(...b.map(v => v[2])), vr = prix - s.veille;
+  const es = D2.ES, ke = es.jours.indexOf(s.jour);
+  let esTxt = `<div class="quote"><span class="a">ESZ6 · S&amp;P 500</span><span class="g">pas de données</span><span class="g" style="grid-column:1/-1;font-size:11px">Minutes ES disponibles jusqu'au 25 sept. 2026</span></div>`;
+  if (ke >= 0) { const q = Math.max(0, Math.min(25, Math.floor(ST.m / 15) - 1)), c = es.barres[ke * 26 + q][3], o = es.barres[ke * 26][0];
+    esTxt = `<div class="quote"><span class="a">ESZ6 · S&amp;P 500</span><b class="${cl(c - o)}">${nf(c, 2)}</b><span class="g">depuis l'ouverture</span><span class="${cl(c - o)}">${sg((c / o - 1) * 100, 2)} %</span></div>`; }
+  $("st-quotes").innerHTML = `<div class="quote"><span class="a">NQZ6 · Nasdaq 100</span><b class="${cl(vr)}">${nf(prix, 2)}</b><span class="g">vs veille</span><span class="${cl(vr)}">${sg(vr, 2)} (${sg(vr / s.veille * 100, 2)} %)</span><span class="g">plus haut / bas</span><span>${nf(hi, 0)} / ${nf(lo, 0)}</span><canvas id="st-spark"></canvas></div>` + esTxt;
+  sparkline($("st-spark"), b.map(v => v[3]), vr >= 0 ? COL.hausse : COL.baisse);
+  const i5 = Math.max(0, nb5 - 1), niv = [["VWAP", s.vwap[i5], "a"], [`Supertrend ${s.sens[i5] > 0 ? "▲" : "▼"}`, s.ligne[i5], s.sens[i5] > 0 ? "h" : "b"], ["Clôture veille", s.veille, "g"]];
+  const band = s.bandes.filter(([m]) => m <= Math.max(30, ST.m)).pop(); if (band) { niv.push(["Zone haut", band[1], "v"]); niv.push(["Zone bas", band[2], "v"]); }
+  niv.push(["Dernier", prix, "blanc"]);
+  $("st-niveaux").innerHTML = niv.sort((a, b2) => b2[1] - a[1]).map(([t, p, c]) => `<div><span class="${c === "blanc" ? "" : c}" style="${c === "blanc" ? "color:var(--noir);background:var(--ambre);padding:0 3px" : ""}">${nf(p, 2)}</span><span>${t}</span></div>`).join("");
+}
+function agentsSt(s, prix) {
+  const etat = (trades, entreeOuverture) => { let real = 0, pos = 0, e = 0, n = 0;
+    trades.forEach(([sens, mi, mo, en, xx]) => { if (mi > ST.m) return; n++; if (mo <= ST.m) real += sens * (xx - en) * 2 - 3; else { pos = sens; e = en; } });
+    const lat = pos ? pos * (prix - e) * 2 - 3 : 0; return { real, pos, e, lat, n }; };
+  const a = etat(s.st), z = etat(s.zone);
+  const ligne = (nom, cc, r) => `<tr><td class="${cc}">${nom}</td><td class="${cl(r.pos)}">${r.pos > 0 ? "acheteur" : r.pos < 0 ? "vendeur" : "à plat"}</td><td>${r.pos ? nf(r.e, 2) : "—"}</td><td class="${cl(r.lat)}">${r.pos ? usd(r.lat) : "—"}</td><td class="${cl(r.real + r.lat)}">${usd(r.real + r.lat)}</td><td class="g">${r.n}</td></tr>`;
+  $("st-agents").innerHTML = `<thead><tr><th>Agent</th><th>Position</th><th>Entrée</th><th>Latent</th><th>Journée</th><th>Trades</th></tr></thead><tbody>` + ligne("Supertrend NQ", "c", a) + ligne("Bot 3 en 1", "v", z)
+    + `<tr><td class="a">Toi (papier)</td><td class="${cl(ST.pos)}">${ST.pos ? (ST.pos > 0 ? "+" : "") + ST.pos + " MNQ" : "à plat"}</td><td>${ST.pos ? nf(ST.prix, 2) : "—"}</td><td class="${cl(ST.pos * (prix - ST.prix))}">${ST.pos ? usd(ST.pos * (prix - ST.prix) * 2 - Math.abs(ST.pos) * 1.5) : "—"}</td><td class="${cl(ST.real)}">${usd(ST.real + (ST.pos ? ST.pos * (prix - ST.prix) * 2 - Math.abs(ST.pos) * 1.5 : 0))}</td><td class="g">${ST.ordres.length}</td></tr></tbody>`;
+  const A = D.agents; $("st-agents-note").innerHTML = `Sur 15 ans : Bot 3 en 1 t ${nf(A.zone.seance.t, 1)}, ${usd(A.zone.seance.moy, 0)} par séance · Supertrend t ${nf(A.st.seance.t, 1)}, ${usd(A.st.seance.moy, 0)} par séance.`;
+}
+function jauge(cv, val, min, max, titre, txt, couleurs) {
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth || 160, H = 72; cv.width = W * dpr; cv.height = H * dpr;
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const cx = W / 2, cy = 50, r = Math.min(W / 2 - 10, 38), u = Math.max(0, Math.min(1, (val - min) / (max - min)));
+  x.lineWidth = 9; x.strokeStyle = COL.grille; x.beginPath(); x.arc(cx, cy, r, Math.PI, 2 * Math.PI); x.stroke();
+  const c = couleurs(u); x.strokeStyle = c; x.beginPath(); x.arc(cx, cy, r, Math.PI, Math.PI + Math.PI * u); x.stroke();
+  x.fillStyle = COL.blanc; x.font = `600 14px ${css("--mono")}`; x.textAlign = "center"; x.fillText(txt, cx, cy - 6);
+  x.fillStyle = COL.gris; x.font = `10px ${css("--cond")}`; x.fillText(titre.toUpperCase(), cx, H - 8); x.textAlign = "left";
+}
+function jauges(fin, prix) {
+  if (!$("st-jauges").children.length) $("st-jauges").innerHTML = '<canvas id="j1"></canvas><canvas id="j2"></canvas><canvas id="j3"></canvas><canvas id="j4"></canvas>';
+  const I = NQ2.ind, k = Math.max(0, fin), atr = I.atr[k] || 0, rang = I.bbw_rang[k] || 0, p = NQ2.proba[k];
+  const feu = u => u < .5 ? COL.hausse : u < .8 ? COL.ambre : COL.baisse;
+  jauge($("j1"), atr * 2, 0, 400, "ATR 15 min par MNQ", nf(atr * 2) + " $", feu);
+  jauge($("j2"), rang, 0, 100, "Régime de volatilité", nf(rang) + " %", feu);
+  jauge($("j3"), p == null ? .5 : p, .3, .7, "Signal ML (1 h)", p == null ? "—" : nf(p * 100) + " %", u => u > .625 ? COL.hausse : u < .375 ? COL.baisse : COL.gris);
+  const jour = ST.real + (ST.pos ? ST.pos * (prix - ST.prix) * 2 : 0);
+  jauge($("j4"), Math.max(0, -jour), 0, 400, "Limite du jour (400 $)", usd(jour), feu);
+}
+function positionSt(prix) {
+  const lat = ST.pos ? ST.pos * (prix - ST.prix) * 2 - Math.abs(ST.pos) * 1.5 : 0;
+  $("st-pos").innerHTML = [["Position", `<span class="${cl(ST.pos)}">${ST.pos} MNQ</span>`], ["Latent", `<span class="${cl(lat)}">${usd(lat)}</span>`], ["Réalisé", `<span class="${cl(ST.real)}">${usd(ST.real)}</span>`]]
+    .map(([l, v]) => `<div><span class="l">${l}</span><span class="n">${v}</span></div>`).join("");
+  $("st-ordres").innerHTML = `<tbody>${ST.attente !== null ? `<tr><td class="a">en attente</td><td class="a" colspan="3">vers ${ST.attente} MNQ au marché</td></tr>` : ""}` + ST.ordres.slice(0, 8).map(o => `<tr><td>${o.t}</td><td class="${o.c === "achat" ? "h" : "b"}">${o.c} ${o.q}</td><td>${nf(o.p, 2)}</td><td class="g">${o.motif}</td></tr>`).join("") + "</tbody>";
+  const fini = ST.m >= 385; ["st-achat", "st-vente", "st-plat"].forEach(id => $(id).disabled = fini || ST.m < 5);
+}
+function tape(s, prix, fin) {
+  const I = NQ2.ind, k = Math.max(0, fin), vr = prix - s.veille;
+  const items = [["NQZ6", `<span class="${cl(vr)}">${nf(prix, 2)} ${vr >= 0 ? "▲" : "▼"} ${sg(vr / s.veille * 100, 2)} %</span>`], ["VWAP", nf(s.vwap[Math.max(0, Math.floor(ST.m / 5) - 1)], 2)],
+    ["EMA 8 / 55", I.ema8[k] > I.ema55[k] ? `<span class="h">haussier</span>` : `<span class="b">baissier</span>`], ["RSI", nf(I.rsi[k], 0)], ["ATR 15 min", nf(I.atr[k], 1) + " pts"],
+    ["ML", NQ2.proba[k] == null ? "—" : nf(NQ2.proba[k] * 100, 0) + " %"], ["SUPERTREND", s.sens[Math.max(0, Math.floor(ST.m / 5) - 1)] > 0 ? `<span class="h">acheteur</span>` : `<span class="b">vendeur</span>`],
+    ["ZONE", s.bandes.length ? `${nf(s.bandes[0][2], 0)} – ${nf(s.bandes[0][1], 0)}` : "—"], ["SÉANCE", dateFr(s.jour)]];
+  const h = items.map(([a, b]) => `<span><span class="a">${a}</span> ${b}</span>`).join("");
+  $("st-tape").innerHTML = h + h;
+}
+function reliefsStation() {
+  if (!window.THREE || !window.THREE.OrbitControls) { ["st-ema", "st-vol", "st-atr"].forEach(id => $(id).insertAdjacentHTML("beforeend", `<p class="note" style="padding:12px">Le relief a besoin de WebGL et de Three.js, qui ne s'est pas chargé.</p>`)); return null; }
+  const a = scene3($("st-ema"), $("st-ema-etiq"), [8, 7, 10]), b = scene3($("st-vol"), $("st-vol-etiq"), [-10, 9, 11]), c = scene3($("st-atr"), $("st-atr-etiq"), [10, 9, 10]);
+  if (!a || !b || !c) return null;
+  const T3 = window.THREE, Q = { a, b, c, ema: surface(a, 130, 6, 12, 6), vol: surface(b, 121, 60, 12, 12), atr: surface(c, 26, 60, 10, 12) };
+  a.ctl.autoRotate = b.ctl.autoRotate = c.ctl.autoRotate = !matchMedia("(prefers-reduced-motion: reduce)").matches; a.ctl.autoRotateSpeed = .35; b.ctl.autoRotateSpeed = -.3; c.ctl.autoRotateSpeed = .3;
+  Q.prix = new T3.Line(new T3.BufferGeometry(), new T3.LineBasicMaterial({ color: 0xffffff })); a.sc.add(Q.prix);
+  Q.lueur = new T3.Mesh(new T3.SphereGeometry(.16, 16, 12), new T3.MeshBasicMaterial({ color: 0xffffff })); a.sc.add(Q.lueur);
+  Q.prixVol = new T3.Mesh(new T3.BoxGeometry(.05, .05, 12.4), new T3.MeshBasicMaterial({ color: 0xffffff })); b.sc.add(Q.prixVol);
+  a.lab("EMA 8", [-6.8, 0, -3]); a.lab("EMA 89", [-6.8, 0, 3]); c.lab("15h30", [-5, 0, 6.8]); c.lab("21h45", [5, 0, 6.8]);
+  Q.lv = [b.lab("", [-6, 0, 6.8]), b.lab("", [6, 0, 6.8])];
+  const boucle = () => { if (!$("v-station").hidden) [a, b, c].forEach(S3 => { S3.ctl.update(); S3.r.render(S3.sc, S3.cam);
+    const w = S3.cont.clientWidth, h = S3.cont.clientHeight, v3 = new T3.Vector3(); S3.labs.forEach(l => { v3.copy(l.p).project(S3.cam); l.s.style.left = (v3.x + 1) / 2 * w + "px"; l.s.style.top = (1 - v3.y) / 2 * h + "px"; }); });
+    requestAnimationFrame(boucle); };
+  boucle();
+  Q.maj = (M2, deb, fin) => {
+    const I = M2.ind, B = M2.barres;
+    { const Sf = Q.ema, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, d0 = Math.max(0, fin - 129);
+      let lo = Infinity, hi = -Infinity; for (let k = d0; k <= fin; k++) { EMAS.forEach(e => { const v = I["ema" + e][k]; lo = Math.min(lo, v); hi = Math.max(hi, v); }); lo = Math.min(lo, B[k][3]); hi = Math.max(hi, B[k][3]); }
+      for (let z = 0; z < 6; z++) for (let i = 0; i < 130; i++) { const k = Math.min(fin, d0 + Math.round(i * (fin - d0) / 129)), u = (I["ema" + EMAS[z]][k] - lo) / (hi - lo || 1), idx = z * 130 + i;
+        pos.setY(idx, u * 5); const cc = new T3.Color(coulEma(z)).multiplyScalar(.3 + .7 * u); col.setXYZ(idx, cc.r, cc.g, cc.b); }
+      pos.needsUpdate = col.needsUpdate = true; majFil(Sf, a);
+      const pts = []; for (let i = 0; i < 130; i++) { const k = Math.min(fin, d0 + Math.round(i * (fin - d0) / 129)); pts.push(new T3.Vector3(-6 + 12 * i / 129, (B[k][3] - lo) / (hi - lo || 1) * 5, -3.6)); }
+      Q.prix.geometry.setFromPoints(pts); Q.lueur.position.copy(pts[pts.length - 1]); }
+    { const Sf = Q.vol, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, P_ = M2.profils, sCur = Math.floor(fin / 26), cf = B[fin][3];
+      const cCur = Math.round((cf - P_.bas) / P_.pas), c0 = Math.max(0, Math.min(P_.cases - 121, cCur - 60));
+      const enCours = new Array(P_.cases).fill(0); for (let k = sCur * 26; k <= fin; k++) { const [o, h, l, c2, v] = B[k], a0 = Math.floor((l - P_.bas) / P_.pas), b0 = Math.floor((h - P_.bas) / P_.pas), nb = Math.max(1, b0 - a0 + 1); for (let q = a0; q <= b0; q++) if (q >= 0 && q < P_.cases) enCours[q] += v / nb; }
+      let mx = 1; for (let s2 = 0; s2 <= sCur; s2++) for (let q = c0; q < c0 + 121; q++) mx = Math.max(mx, s2 === sCur ? enCours[q] || 0 : P_.valeurs[s2][q] || 0);
+      for (let s2 = 0; s2 < 60; s2++) for (let q = 0; q < 121; q++) { const val = s2 < sCur ? (P_.valeurs[s2][c0 + q] || 0) : s2 === sCur ? (enCours[c0 + q] || 0) : 0, u = Math.sqrt(val / mx), idx = s2 * 121 + q;
+        pos.setY(idx, u * 4); const cc = rampe3(T3, u * (s2 === sCur ? 1.15 : .9)); col.setXYZ(idx, cc.r, cc.g, cc.b); }
+      pos.needsUpdate = col.needsUpdate = true; majFil(Sf, b);
+      Q.prixVol.position.set(-6 + 12 * (cCur - c0) / 120, .05, 0); Q.lv[0].s.textContent = nf(P_.bas + c0 * P_.pas); Q.lv[1].s.textContent = nf(P_.bas + (c0 + 120) * P_.pas); }
+    { const Sf = Q.atr, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color; let mx = 1; for (let k = 0; k <= fin; k++) mx = Math.max(mx, B[k][1] - B[k][2]);
+      for (let s2 = 0; s2 < 60; s2++) for (let q = 0; q < 26; q++) { const k = s2 * 26 + q, val = k <= fin ? B[k][1] - B[k][2] : 0, u = val / mx, idx = s2 * 26 + q;
+        pos.setY(idx, u * 4); const cc = k === fin ? new T3.Color(0xffffff) : rampe3(T3, u * 1.1); col.setXYZ(idx, cc.r, cc.g, cc.b); }
+      pos.needsUpdate = col.needsUpdate = true; majFil(Sf, c); }
+  };
+  return Q;
+}
+
+// ------------------------------------------------------------------ navigation
+const VUES = { station: vueStation, marche: vueMarche, surveillance: vueSurveillance, signaux: vueSignaux, strategie: vueStrategie, labo: vueLabo, execution: vueExecution, pro: vuePro, ia: vueIa };
+const CODES = { ST: "station", STATION: "station", LP: "station", MKT: "marche", ACT: "marche", MON: "surveillance", SIG: "signaux", GP: "pro", PRO: "pro", STR: "strategie", RSK: "strategie", LAB: "labo", EXE: "execution", EMSX: "execution", IA: "ia", ML: "ia" };
+function montrer(v) {
+  if (!VUES[v]) v = "station";
+  Object.keys(VUES).forEach(k => $("v-" + k).hidden = k !== v);
+  $("bande").hidden = v === "station";
+  document.querySelectorAll("#touches button").forEach(b => b.setAttribute("aria-current", b.dataset.v === v ? "page" : "false"));
+  VUES[v]();
+}
+document.querySelectorAll("#touches button").forEach(b => b.onclick = () => { location.hash = b.dataset.v; });
+$("f-cmd").addEventListener("submit", ev => { ev.preventDefault(); const c = $("cmd").value.trim().toUpperCase().split(/\s+/).pop(); if (CODES[c]) { location.hash = CODES[c]; $("cmd").value = ""; } else $("cmd").value = "CODE INCONNU : " + c; });
+addEventListener("keydown", ev => { const k = ev.key.match(/^F([1-8])$/); if (k) { ev.preventDefault(); location.hash = Object.keys(VUES)[+k[1]]; } });
+addEventListener("hashchange", () => montrer(location.hash.slice(1)));
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => montrer(location.hash.slice(1) || "station"), 200); });
+montrer(location.hash.slice(1) || "station");
+</script>
