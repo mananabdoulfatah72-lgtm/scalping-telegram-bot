@@ -1,0 +1,398 @@
+<title>Labo ML NQ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&display=swap">
+<style>
+/* Carnet de laboratoire du terminal NQ : même famille que la station (noir, ambre, Plex), lu de haut en bas.
+   Verdict d'abord, puis les niveaux de l'article dans leur ordre. Un seul thème sombre, choisi exprès. */
+:root {
+  --fond: #0a0a0b; --panneau: #111113; --panneau2: #18181b; --trait: #26262b; --grille: #1d1d21;
+  --texte: #ecebe6; --gris: #93939b; --gris2: #5d5d66; --ambre: #ffa028;
+  --hausse: #2fd16f; --baisse: #ff5a5a;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --cond: "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--fond); }
+body { color: var(--texte); font-family: var(--sans); font-size: 15px; line-height: 1.55; margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--fond); }
+.page { max-width: 1180px; margin: 0 auto; display: grid; gap: 40px; }
+.tete { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--fond); border-bottom: 1px solid var(--trait);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-block: 10px 8px; }
+.logo { font-family: var(--cond); font-weight: 700; letter-spacing: .08em; color: #000; background: var(--ambre); padding: 2px 8px; font-size: 14px; }
+.tete nav { display: flex; flex-wrap: wrap; gap: 4px 14px; font-family: var(--cond); font-weight: 600; letter-spacing: .04em; font-size: 13px; }
+.tete nav a { color: var(--gris); text-decoration: none; }
+.tete nav a:hover, .tete nav a:focus-visible { color: var(--ambre); outline: none; }
+.tete nav b { color: var(--ambre); font-weight: 600; margin-right: 4px; }
+h1 { font-family: var(--cond); font-weight: 700; font-size: clamp(28px, 4.4vw, 44px); line-height: 1.08; margin: 0; letter-spacing: .01em; text-wrap: balance; }
+h1 span { color: var(--ambre); }
+h2 { font-family: var(--cond); font-weight: 700; font-size: 24px; margin: 0; text-wrap: balance; display: flex; gap: 12px; align-items: baseline; }
+h2 .no { font-family: var(--mono); font-size: 13px; color: var(--ambre); border: 1px solid var(--ambre); padding: 0 6px; letter-spacing: .06em; }
+h3 { font-family: var(--cond); font-weight: 600; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--ambre); margin: 0; }
+p { margin: 0; max-width: 68ch; }
+.chapeau { display: grid; gap: 14px; padding-top: 28px; }
+.chapeau p { color: var(--gris); font-size: 16px; }
+.chapeau code, p code { font-family: var(--mono); font-size: .9em; color: var(--texte); }
+section { display: grid; gap: 18px; scroll-margin-top: 64px; }
+.duo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 860px) { .duo, .trio { grid-template-columns: minmax(0, 1fr); } }
+.bloc { background: var(--panneau); border: 1px solid var(--trait); display: grid; gap: 10px; padding: 14px; min-width: 0; align-content: start; }
+.bloc > p { font-size: 14px; color: var(--gris); }
+.lecture { display: grid; gap: 10px; }
+.lecture p { font-size: 15px; }
+.lecture strong { color: var(--texte); }
+.graphe { position: relative; width: 100%; }
+.graphe canvas { display: block; width: 100%; }
+.bulle { position: absolute; pointer-events: none; background: rgba(10,10,11,.94); border: 1px solid var(--gris2); padding: 5px 8px; font: 12px/1.45 var(--mono);
+  white-space: nowrap; z-index: 3; color: var(--texte); }
+.bulle i { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; }
+.legende { display: flex; flex-wrap: wrap; gap: 4px 16px; font: 12px var(--mono); color: var(--gris); }
+.legende span { display: inline-flex; align-items: center; gap: 6px; }
+.legende i { width: 14px; height: 3px; display: inline-block; border-radius: 2px; }
+.tableau { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font: 13px/1.4 var(--mono); font-variant-numeric: tabular-nums; }
+th, td { padding: 5px 8px; text-align: right; border-bottom: 1px solid var(--grille); white-space: nowrap; }
+th { color: var(--gris); font: 600 11px var(--cond); letter-spacing: .06em; text-transform: uppercase; }
+td:first-child, th:first-child { text-align: left; }
+tr.fort td { background: rgba(255,160,40,.07); }
+.h { color: var(--hausse); } .b { color: var(--baisse); } .g { color: var(--gris); } .a { color: var(--ambre); }
+.puce { display: inline-block; padding: 0 7px; font: 600 11px var(--cond); letter-spacing: .08em; border: 1px solid currentColor; }
+.puce.oui { color: var(--hausse); } .puce.non { color: var(--gris); }
+.chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: var(--trait); border: 1px solid var(--trait); }
+.chiffres div { background: var(--panneau); padding: 12px 14px; display: grid; gap: 2px; align-content: start; }
+.chiffres .l { font: 600 11px var(--cond); letter-spacing: .08em; text-transform: uppercase; color: var(--gris); }
+.chiffres .n { font: 600 24px var(--mono); font-variant-numeric: tabular-nums; }
+.chiffres .d { font-size: 13px; color: var(--gris); }
+.barres { display: grid; gap: 4px; font: 12px var(--mono); }
+.barres div { display: grid; grid-template-columns: minmax(0, 15em) minmax(0, 1fr) 6ch; gap: 8px; align-items: center; }
+.barres em { font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.barres i { display: block; height: 10px; background: var(--s1); border-radius: 0 3px 3px 0; }
+.barres div.bruit em, .barres div.bruit span { color: var(--ambre); }
+.barres div.bruit i { background: var(--ambre); }
+.barres div.sous i { background: var(--gris2); }
+.note { font-size: 13px; color: var(--gris); max-width: 80ch; }
+a { color: var(--ambre); }
+:focus-visible { outline: 1px solid var(--ambre); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="page">
+<header class="tete">
+  <span class="logo">NQ LABO ML</span>
+  <nav aria-label="Sections">
+    <a href="#verdict"><b>▸</b>Verdict</a><a href="#n1"><b>1</b>Fondations</a><a href="#n2"><b>2</b>Probabilités</a>
+    <a href="#n3"><b>3</b>ML</a><a href="#n4"><b>4</b>Deep learning</a><a href="#n5"><b>V</b>Prédiction</a><a href="#compte"><b>$</b>Ton compte</a>
+  </nav>
+</header>
+
+<div class="chapeau">
+  <h1>Le programme de l'article, <span>sur tes vraies données</span></h1>
+  <p>Algèbre linéaire, probabilités, ML tabulaire, deep learning et marchés de prédiction, appliqués à 15 ans de minutes du NQ
+  et à 143 marchés du radar. Les règles ont été écrites et poussées avant tout calcul (<code>ml/REGLES.md</code>), et les
+  dix tests d'avantage sont corrigés ensemble pour les tests multiples.</p>
+</div>
+
+<section id="verdict">
+  <h2><span class="no">VERDICT</span>Les dix tests d'avantage, corrigés ensemble</h2>
+  <div class="lecture" id="verdict-texte">__VERDICT__</div>
+  <div class="bloc"><div class="tableau"><table id="t-famille"></table></div>
+    <p class="note">p unilatérale : probabilité d'un résultat au moins aussi bon sans aucun avantage. Seuil BH : Benjamini-Hochberg à 5 % sur les dix tests.
+    Moitiés : t avant et depuis 2023 (allocation : écart de Sharpe avec les poids égaux). « Avantage » = survit à BH et reste positif sur les deux moitiés.</p></div>
+</section>
+
+<section id="n1">
+  <h2><span class="no">NIVEAU 1</span>Fondations : matrices et optimisation</h2>
+  <div class="duo">
+    <div class="bloc"><h3>Spectre de 143 marchés (ACP, 2015 - 2026)</h3><div class="graphe" id="g-spectre"></div>
+      <div class="legende" id="l-spectre"></div><p id="p-spectre"></p></div>
+    <div class="bloc"><h3>Les 5 premiers facteurs</h3><div class="tableau"><table id="t-facteurs"></table></div>
+      <p id="p-nq"></p></div>
+  </div>
+  <div class="duo">
+    <div class="bloc"><h3>Rosenbrock : trajets des trois optimiseurs</h3><div class="graphe" id="g-rosen"></div><div class="legende" id="l-rosen"></div></div>
+    <div class="bloc"><h3>Pas nécessaires pour arriver à 0,001 de (1, 1)</h3><div class="tableau"><table id="t-optim"></table></div>
+      <p id="p-optim"></p></div>
+  </div>
+</section>
+
+<section id="n2">
+  <h2><span class="no">NIVEAU 2</span>Probabilités : queues épaisses, Bayes, tests multiples</h2>
+  <div class="duo">
+    <div class="bloc"><h3>Rendements quotidiens du NQ (2000 - 2026), échelle logarithmique</h3><div class="graphe" id="g-queues"></div>
+      <div class="legende" id="l-queues"></div></div>
+    <div class="bloc"><h3>Probabilité d'une forte baisse</h3><div class="tableau"><table id="t-queues"></table></div><p id="p-queues"></p></div>
+  </div>
+  <div class="duo">
+    <div class="bloc"><h3>Bayes : gain moyen du Supertrend par séance (a priori sceptique)</h3><div class="graphe" id="g-bayes"></div>
+      <div class="legende" id="l-bayes"></div><div class="tableau"><table id="t-bayes"></table></div></div>
+    <div class="bloc"><h3>1 000 règles tirées au hasard sur le vrai NQ</h3><div class="graphe" id="g-multi"></div>
+      <div class="legende" id="l-multi"></div><p id="p-multi"></p></div>
+  </div>
+</section>
+
+<section id="n3">
+  <h2><span class="no">NIVEAU 3</span>ML tabulaire : cinq modèles, marche en avant purgée</h2>
+  <div class="bloc"><h3>Résultat cumulé hors échantillon, 1 MNQ par signal, 3 $ de frais (2014 - 2026)</h3>
+    <div class="graphe" id="g-modeles"></div><div class="legende" id="l-modeles"></div>
+    <div class="tableau"><table id="t-modeles"></table></div></div>
+  <div class="duo">
+    <div class="bloc"><h3>SHAP : ce qui fait décider M2 (2026)</h3><div class="barres" id="b-shap"></div>
+      <p>Une variable témoin faite de bruit pur sert de juge : ce qui n'importe pas plus qu'elle est du bruit.</p></div>
+    <div class="bloc"><h3>Vérifications ajoutées après coup sur M2</h3><div class="tableau"><table id="t-verif"></table></div>
+      <p id="p-verif"></p></div>
+  </div>
+  <div class="bloc"><h3>Bollinger (retour à la moyenne) seul, puis filtré par M2</h3><div class="tableau"><table id="t-bb"></table></div></div>
+</section>
+
+<section id="n4">
+  <h2><span class="no">NIVEAU 4</span>Deep learning : transformer à quantiles et perte de Sharpe</h2>
+  <div class="duo">
+    <div class="bloc"><h3>Perte pinball par année (plus bas = mieux)</h3><div class="graphe" id="g-pinball"></div><div class="legende" id="l-pinball"></div></div>
+    <div class="bloc"><h3>Transformer contre bases simples (2019 - 2026)</h3><div class="tableau"><table id="t-tf"></table></div><p id="p-tf"></p></div>
+  </div>
+  <div class="bloc"><h3>Allocation de 16 ETF : 1 $ placé en 2012, frais de rotation compris (échelle logarithmique)</h3>
+    <div class="graphe" id="g-alloc"></div><div class="legende" id="l-alloc"></div><div class="tableau"><table id="t-alloc"></table></div><p id="p-alloc"></p></div>
+</section>
+
+<section id="n5">
+  <h2><span class="no">PARTIE V</span>Marché de prédiction LMSR (simulation)</h2>
+  <div class="duo">
+    <div class="bloc"><h3>Le prix rejoint-il la vraie probabilité (62 %) ?</h3><div class="graphe" id="g-lmsr"></div><div class="legende" id="l-lmsr"></div></div>
+    <div class="bloc lecture" id="p-lmsr"></div>
+  </div>
+</section>
+
+<section id="compte">
+  <h2><span class="no">TON COMPTE</span>M2 et Supertrend sur ton challenge Bulenox</h2>
+  <div class="chiffres" id="c-compte"></div>
+  <p class="note">Ajouté après coup, hors règles fixées. Départ à chaque séance de janvier 2023 à juin 2026 : solde 50 000 $, plancher 49 000 $ qui suit
+  le plus haut latent (Option 1), objectif 53 050 $, limite du jour 400 $, 1 MNQ, une position à la fois, 3 $ de frais. Les départs se
+  chevauchent : ce sont des scénarios historiques, pas des tirages indépendants.</p>
+</section>
+</div>
+
+<script type="application/json" id="donnees">__DONNEES__</script>
+<script>
+"use strict";
+const D = JSON.parse(document.getElementById("donnees").textContent);
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C = {}; ["texte", "gris", "gris2", "trait", "grille", "ambre", "hausse", "baisse", "s1", "s2", "s3", "s4", "s5", "panneau"].forEach(k => C[k] = css("--" + k));
+const SERIES = [C.s1, C.s2, C.s3, C.s4, C.s5];
+const nf = (v, d = 0) => v == null || !isFinite(v) ? "—" : (Math.abs(v) < .5 * 10 ** -d ? 0 : v).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const sg = (v, d = 0) => v == null || !isFinite(v) ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + nf(Math.abs(v), d);
+const pc = (v, d = 0) => nf(v * 100, d) + " %";
+const cl = v => v > 0 ? "h" : v < 0 ? "b" : "g";
+const tab = (id, tete, lignes) => { $(id).innerHTML = `<thead><tr>${tete.map(t => `<th>${t}</th>`).join("")}</tr></thead><tbody>${lignes.join("")}</tbody>`; };
+const legende = (id, items) => { $(id).innerHTML = items.map(([n, c, tir]) => `<span><i style="background:${tir ? `repeating-linear-gradient(90deg,${c} 0 4px,transparent 4px 7px)` : c}"></i>${n}</span>`).join(""); };
+
+// ------------------------------------------------------------------ toile et bulle communes
+function toile(id, h) {
+  const cont = $(id); cont.innerHTML = ""; const cv = document.createElement("canvas"); cont.appendChild(cv);
+  const b = document.createElement("div"); b.className = "bulle"; b.hidden = true; cont.appendChild(b);
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cont.clientWidth || 600, H = h || Math.max(220, Math.min(340, W * .55));
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.font = `11px ${css("--mono")}`; x.textBaseline = "middle";
+  return { x, W, H, cv, bulle: b, cont };
+}
+function graduations(lo, hi, n = 5) {
+  const r = (hi - lo) / n, p = 10 ** Math.floor(Math.log10(r)), m = r / p, pas = (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p, out = [];
+  for (let v = Math.ceil(lo / pas) * pas; v <= hi + 1e-9; v += pas) out.push(+v.toFixed(10)); return out;
+}
+function montrerBulle(T, px, py, html) {
+  const b = T.bulle; b.innerHTML = html; b.hidden = false;
+  const w = b.offsetWidth, h = b.offsetHeight; b.style.left = Math.min(T.W - w - 2, Math.max(2, px + 12)) + "px"; b.style.top = Math.max(2, Math.min(T.H - h - 2, py - h - 8)) + "px";
+}
+// courbes : series [{nom, v, c, tir, epais}], xs (nombres), etiquette(i), logY, fy (format y)
+function courbes(id, o) {
+  const T = toile(id, o.h), { x, W, H } = T, g = { l: 8, r: 64, t: 10, b: 24 };
+  const n = o.series[0].v.length, X = i => g.l + (W - g.l - g.r) * i / Math.max(1, n - 1);
+  const tr = o.logY ? v => Math.log10(v) : v => v;
+  let lo = Infinity, hi = -Infinity; o.series.forEach(s => s.v.forEach(v => { if (v != null && isFinite(tr(v))) { lo = Math.min(lo, tr(v)); hi = Math.max(hi, tr(v)); } }));
+  (o.yAussi || []).forEach(v => { lo = Math.min(lo, tr(v)); hi = Math.max(hi, tr(v)); });
+  const pad = (hi - lo) * .06 || 1; lo -= pad; hi += pad;
+  const Y = v => g.t + (H - g.t - g.b) * (hi - tr(v)) / (hi - lo);
+  const ticks = o.logY ? graduations(lo, hi, 4).map(t => 10 ** t) : graduations(lo, hi, 5);
+  ticks.forEach(t => { x.strokeStyle = C.grille; x.beginPath(); x.moveTo(g.l, Y(t)); x.lineTo(W - g.r, Y(t)); x.stroke(); x.fillStyle = C.gris; x.fillText((o.fy || nf)(t), W - g.r + 6, Y(t)); });
+  if (!o.logY && lo < 0 && hi > 0) { x.strokeStyle = C.gris2; x.beginPath(); x.moveTo(g.l, Y(0)); x.lineTo(W - g.r, Y(0)); x.stroke(); }
+  (o.reperes || []).forEach(([v, c, lab]) => { x.strokeStyle = c; x.setLineDash([4, 4]); x.beginPath(); x.moveTo(g.l, Y(v)); x.lineTo(W - g.r, Y(v)); x.stroke(); x.setLineDash([]);
+    if (lab) { x.fillStyle = C.gris; x.fillText(lab, g.l + 4, Y(v) - 8); } });
+  // axe x
+  x.fillStyle = C.gris; let dern = -1e9;
+  (o.xTicks || []).forEach(([i, lab]) => { const px = X(i); if (px - dern < 44 || px > W - g.r - 10) return; dern = px; x.fillRect(px, H - g.b, 1, 4); x.fillText(lab, Math.min(px - 2, W - g.r - 30), H - 9); });
+  o.series.forEach(s => { x.strokeStyle = s.c; x.lineWidth = s.epais || 2; x.setLineDash(s.tir ? [5, 4] : []); x.beginPath(); let on = false;
+    s.v.forEach((v, i) => { if (v == null || !isFinite(tr(v))) { on = false; return; } on ? x.lineTo(X(i), Y(v)) : x.moveTo(X(i), Y(v)); on = true; }); x.stroke(); x.setLineDash([]); x.lineWidth = 1;
+    const k = s.v.length - 1; if (s.v[k] != null) { x.fillStyle = s.c; x.beginPath(); x.arc(X(k), Y(s.v[k]), 3, 0, 7); x.fill(); } });
+  const survol = ev => { const r = T.cv.getBoundingClientRect(), px = ev.clientX - r.left; const i = Math.round((px - g.l) / (W - g.l - g.r) * (n - 1));
+    if (i < 0 || i >= n) { T.bulle.hidden = true; return; }
+    redessiner(); x.strokeStyle = C.gris; x.beginPath(); x.moveTo(X(i), g.t); x.lineTo(X(i), H - g.b); x.stroke();
+    montrerBulle(T, X(i), ev.clientY - r.top, `<div class="g">${o.etiquette ? o.etiquette(i) : i}</div>` + o.series.map(s => `<div><i style="background:${s.c}"></i>${s.nom} : ${(o.fv || o.fy || nf)(s.v[i])}</div>`).join("")); };
+  const image = x.getImageData(0, 0, T.cv.width, T.cv.height), redessiner = () => x.putImageData(image, 0, 0);
+  T.cv.addEventListener("pointermove", survol); T.cv.addEventListener("pointerleave", () => { redessiner(); T.bulle.hidden = true; });
+  return T;
+}
+
+// ------------------------------------------------------------------ verdict
+function verdict() {
+  const f = D.famille.slice().sort((a, b) => a.p - b.p);
+  tab("t-famille", ["Test", "Période", "t", "p", "Seuil BH", "BH", "1re moitié", "2e moitié", "Verdict"], f.map(r => `<tr class="${r.avantage ? "fort" : ""}"><td>${r.nom}</td><td class="g">${r.periode}</td>
+    <td>${r.t == null ? "—" : sg(r.t, 2)}</td><td>${nf(r.p, 4)}</td><td class="g">${nf(r.seuil_bh, 4)}</td><td class="${r.bh ? "h" : "g"}">${r.bh ? "oui" : "non"}</td>
+    <td class="${cl(r.avant)}">${sg(r.avant, 2)}</td><td class="${cl(r.apres)}">${sg(r.apres, 2)}</td><td><span class="puce ${r.avantage ? "oui" : "non"}">${r.avantage ? "AVANTAGE" : "NON"}</span></td></tr>`));
+}
+
+// ------------------------------------------------------------------ niveau 1
+function niveau1() {
+  const A = D.n1.acp_radar, T = toile("g-spectre"), { x, W, H } = T, g = { l: 8, r: 52, t: 10, b: 24 }, n = A.valeurs.length;
+  const lo = Math.log10(Math.min(...A.valeurs)) - .1, hi = Math.log10(A.valeurs[0]) + .1, Y = v => g.t + (H - g.t - g.b) * (hi - Math.log10(v)) / (hi - lo);
+  const bw = (W - g.l - g.r) / n;
+  [0.01, 0.1, 1, 10, 100].filter(t => Math.log10(t) >= lo && Math.log10(t) <= hi).forEach(t => { x.strokeStyle = C.grille; x.beginPath(); x.moveTo(g.l, Y(t)); x.lineTo(W - g.r, Y(t)); x.stroke(); x.fillStyle = C.gris; x.fillText(nf(t, t < 1 ? 2 : 0), W - g.r + 6, Y(t)); });
+  A.valeurs.forEach((v, i) => { x.fillStyle = v > A.borne_mp ? C.s1 : C.gris2; x.fillRect(g.l + i * bw + .5, Y(v), Math.max(1, bw - 1), H - g.b - Y(v)); });
+  x.strokeStyle = C.ambre; x.setLineDash([5, 4]); x.beginPath(); x.moveTo(g.l, Y(A.borne_mp)); x.lineTo(W - g.r, Y(A.borne_mp)); x.stroke(); x.setLineDash([]);
+  x.fillStyle = C.gris; [1, 10, 50, 100, 143].forEach(k => x.fillText(k, g.l + (k - .5) * bw - 4, H - 9));
+  legende("l-spectre", [["au-dessus du bruit", C.s1], ["dans le bruit", C.gris2], [`borne de bruit pur λ+ = ${nf(A.borne_mp, 2)}`, C.ambre, true]]);
+  T.cv.addEventListener("pointermove", ev => { const r = T.cv.getBoundingClientRect(), i = Math.floor((ev.clientX - r.left - g.l) / bw); if (i < 0 || i >= n) { T.bulle.hidden = true; return; }
+    montrerBulle(T, ev.clientX - r.left, ev.clientY - r.top, `composante ${i + 1}<br>valeur propre ${nf(A.valeurs[i], 2)}<br>${pc(A.part[i], 1)} de la variance`); });
+  T.cv.addEventListener("pointerleave", () => T.bulle.hidden = true);
+  $("p-spectre").innerHTML = `La première composante porte <strong>${pc(A.part[0], 0)}</strong> de la variance, les cinq premières ${pc(A.cumul["5"], 0)}, les dix premières ${pc(A.cumul["10"], 0)}. `
+    + `<strong>${A.reelles} composantes</strong> dépassent ce que donnerait du bruit pur de même taille ; le reste est indiscernable du hasard.`;
+  const NOMSF = ["Marché actions", "Taux et dollar", "Énergie", "Semi-conducteurs contre défensives", "Pétrole contre actions hors US"];
+  tab("t-facteurs", ["Facteur", "Variance", "Porté par"], A.facteurs.map((f, k) => `<tr><td>${k + 1}. ${NOMSF[k]}</td><td>${pc(f.part, 1)}</td><td class="g" style="white-space:normal;text-align:left">${f.plus.slice(0, 4).map(p => p[0]).join(", ")} ; contre ${f.moins.slice(0, 2).map(p => p[0]).join(", ")}</td></tr>`));
+  const Q = D.n1.acp_nq;
+  $("p-nq").innerHTML = `Même exercice sur les 13 demi-heures de chaque séance du NQ (${nf(Q.seances)} séances) : <strong>${Q.reelles} composantes</strong> à peine au-dessus du bruit, `
+    + `la première ne porte que ${pc(Q.part[0], 1)} de la variance (7,7 % si tout était indépendant). D'une demi-heure à l'autre, le NQ est presque sans mémoire.`;
+  // Rosenbrock
+  const R = toile("g-rosen"), xr = R.x, Wr = R.W, Hr = R.H, x0 = -1.5, x1 = 1.5, y0 = -.6, y1 = 1.6;
+  const PX = a => (a - x0) / (x1 - x0) * Wr, PY = b => (y1 - b) / (y1 - y0) * Hr;
+  const im = xr.createImageData(Math.ceil(Wr), Math.ceil(Hr));
+  for (let j = 0; j < im.height; j++) for (let i = 0; i < im.width; i++) { const a = x0 + (x1 - x0) * i / im.width, b = y1 - (y1 - y0) * j / im.height, f = (1 - a) ** 2 + 100 * (b - a * a) ** 2;
+    const u = Math.min(1, Math.log10(1 + f) / 3.2), k = (j * im.width + i) * 4, bande = (Math.log10(1 + f) * 6) % 1 < .07 ? 14 : 0;
+    im.data[k] = 17 + 30 * (1 - u) + bande; im.data[k + 1] = 17 + 22 * (1 - u) + bande; im.data[k + 2] = 19 + 8 * (1 - u) + bande; im.data[k + 3] = 255; }
+  const off = document.createElement("canvas"); off.width = im.width; off.height = im.height; off.getContext("2d").putImageData(im, 0, 0); xr.drawImage(off, 0, 0, Wr, Hr);
+  const meths = [["GD", C.s4], ["Momentum", C.s1], ["Adam", C.s2]];
+  meths.forEach(([m, c]) => { const ch = D.n1.optim.chemins[m]; if (!ch) return; xr.strokeStyle = c; xr.lineWidth = 2; xr.beginPath(); ch.forEach(([a, b], i) => i ? xr.lineTo(PX(a), PY(b)) : xr.moveTo(PX(a), PY(b))); xr.stroke(); });
+  xr.fillStyle = C.texte; [[-1, 1, "départ"], [1, 1, "minimum (1, 1)"]].forEach(([a, b, t]) => { xr.beginPath(); xr.arc(PX(a), PY(b), 4, 0, 7); xr.fill(); xr.fillText(t, PX(a) + 8, PY(b) - 10); });
+  const mb = D.n1.optim.meilleur;
+  legende("l-rosen", meths.map(([m, c]) => [`${m} : ${mb[m] ? nf(mb[m][1]) + " pas (pas " + mb[m][0] + ")" : "—"}`, c]));
+  const G = D.n1.optim.grille;
+  tab("t-optim", ["Pas", ...G.map(v => String(v).replace(".", ","))], Object.entries(D.n1.optim.pas).map(([m, r]) => `<tr><td>${m}</td>${G.map(lr => { const v = r[String(lr)];
+    return `<td class="${typeof v === "number" ? "" : "g"}">${typeof v === "number" ? nf(v) : v === "non" ? "trop lent" : "explose"}</td>`; }).join("")}</tr>`));
+  $("p-optim").innerHTML = `Sur cette vallée étroite, la descente simple met <strong>${nf(mb.GD[1])} pas</strong> au mieux. Adam y arrive en ${nf(mb.Adam[1])} pas et supporte des pas 100 fois plus grands ; `
+    + `le momentum bien réglé fait encore mieux (${nf(mb.Momentum[1])} pas) mais explose dès que le pas grandit. Le code de l'article (pas 0,001, 10 000 pas) s'arrête en (${nf(D.n1.optim.article[0], 4)} ; ${nf(D.n1.optim.article[1], 4)}).`;
+}
+
+// ------------------------------------------------------------------ niveau 2
+function niveau2() {
+  const Qd = D.n2.queues[0], T = toile("g-queues"), { x, W, H } = T, g = { l: 8, r: 52, t: 10, b: 24 };
+  const n = Qd.histo.length, [a0, a1] = Qd.bornes, lb = (a1 - a0) / n, tot = Qd.n;
+  const Xv = v => g.l + (W - g.l - g.r) * (v - a0) / (a1 - a0), lo = -1, hi = Math.log10(Math.max(...Qd.histo)) + .15, Y = c => g.t + (H - g.t - g.b) * (hi - Math.log10(Math.max(c, .1))) / (hi - lo);
+  [1, 10, 100, 1000].forEach(t => { if (Math.log10(t) > hi) return; x.strokeStyle = C.grille; x.beginPath(); x.moveTo(g.l, Y(t)); x.lineTo(W - g.r, Y(t)); x.stroke(); x.fillStyle = C.gris; x.fillText(nf(t), W - g.r + 6, Y(t)); });
+  Qd.histo.forEach((c, i) => { if (!c) return; x.fillStyle = C.gris2; const xa = Xv(a0 + i * lb); x.fillRect(xa + .5, Y(c), Math.max(1, Xv(a0 + (i + 1) * lb) - xa - 1), H - g.b - Y(c)); });
+  const dens = (f, c) => { x.strokeStyle = c; x.lineWidth = 2; x.beginPath(); let on = false; for (let i = 0; i <= 400; i++) { const v = a0 + (a1 - a0) * i / 400, cnt = f(v) * tot * lb; if (cnt < .1) { on = false; continue; } on ? x.lineTo(Xv(v), Y(cnt)) : x.moveTo(Xv(v), Y(cnt)); on = true; } x.stroke(); x.lineWidth = 1; };
+  const gam = z => { const c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, .1208650973866179e-2, -.5395239384953e-5]; let y = z, t = z + 5.5; t -= (z + .5) * Math.log(t); let s = 1.000000000190015; c.forEach(k => s += k / ++y); return Math.exp(-t + Math.log(2.5066282746310005 * s / z)); };
+  const nu = Qd.student_df, loc = Qd.student_loc, sc = Qd.student_echelle, kst = gam((nu + 1) / 2) / (Math.sqrt(nu * Math.PI) * gam(nu / 2) * sc);
+  dens(v => Math.exp(-((v - Qd.moyenne) ** 2) / (2 * Qd.ecart ** 2)) / (Qd.ecart * Math.sqrt(2 * Math.PI)), C.s1);
+  dens(v => kst * (1 + ((v - loc) / sc) ** 2 / nu) ** (-(nu + 1) / 2), C.s2);
+  x.fillStyle = C.gris; [-.1, -.05, 0, .05, .1].forEach(v => { if (v < a0 || v > a1) return; x.fillRect(Xv(v), H - g.b, 1, 4); x.fillText(sg(v * 100, 0) + " %", Xv(v) - 14, H - 9); });
+  legende("l-queues", [["séances observées", C.gris2], ["loi normale ajustée", C.s1], [`Student (${nf(nu, 1)} degrés de liberté)`, C.s2]]);
+  T.cv.addEventListener("pointermove", ev => { const r = T.cv.getBoundingClientRect(), i = Math.floor((ev.clientX - r.left - g.l) / ((W - g.l - g.r) / n)); if (i < 0 || i >= n) { T.bulle.hidden = true; return; }
+    montrerBulle(T, ev.clientX - r.left, ev.clientY - r.top, `de ${sg((a0 + i * lb) * 100, 2)} % à ${sg((a0 + (i + 1) * lb) * 100, 2)} %<br>${nf(Qd.histo[i])} séances`); });
+  T.cv.addEventListener("pointerleave", () => T.bulle.hidden = true);
+  const f = p => !p ? "jamais" : 1 / p < 1e7 ? `1 sur ${nf(1 / p)}` : `1 sur 10<sup>${nf(Math.log10(1 / p))}</sup>`;
+  const lignes = [];
+  D.n2.queues.forEach(q => q.seuils.forEach(s => lignes.push(`<tr><td>${q.nom.startsWith("NQ quotidien") ? "en 1 jour" : "en 5 minutes"} : ${nf(-s.seuil * 100, 1)} %</td><td>${f(s.normale)}</td><td>${f(s.student)}</td><td class="a">${f(s.observe)}</td></tr>`)));
+  tab("t-queues", ["Baisse d'au moins", "Loi normale", "Student", "Observé"], lignes);
+  const q5 = D.n2.queues[1];
+  $("p-queues").innerHTML = `La loi normale est rejetée sans appel (aplatissement en excès ${nf(Qd.aplatissement, 1)} par jour, ${nf(q5.aplatissement, 1)} sur 5 minutes). `
+    + `Elle annonce une baisse de 5 % en un jour une fois tous les ${nf(1 / Qd.seuils[1].normale)} jours ; le NQ l'a fait ${Qd.seuils[1].n_obs} fois en 26 ans. La Student colle beaucoup mieux.`;
+  // Bayes
+  const tj = D.n2.bayes.trajectoire, an = tj.map(t => t[0].slice(0, 4));
+  courbes("g-bayes", { series: [{ nom: "haut (moyenne + 2 écarts)", v: tj.map(t => t[1] + 2 * t[2]), c: C.gris2, epais: 1 }, { nom: "gain moyen estimé", v: tj.map(t => t[1]), c: C.s1 },
+    { nom: "bas (moyenne − 2 écarts)", v: tj.map(t => t[1] - 2 * t[2]), c: C.gris2, epais: 1 }], xTicks: tj.map((t, i) => [i, t[0].slice(0, 4)]).filter((t, i) => i === 0 || an[i] !== an[i - 1]),
+    etiquette: i => tj[i][0], fy: v => sg(v, 0) + " $", yAussi: [0] });
+  legende("l-bayes", [["gain moyen par séance estimé", C.s1], ["intervalle à 95 %", C.gris2]]);
+  tab("t-bayes", ["Période", "Séances", "Gain moyen", "P(> 0), sans a priori", "P(> 0), sceptique"], Object.entries(D.n2.bayes.periodes).map(([k, b]) =>
+    `<tr><td>${k}</td><td>${nf(b.seances)}</td><td class="${cl(b.moyenne)}">${sg(b.moyenne, 1)} $</td><td>${pc(b.p_mu_pos_jeffreys, 1)}</td><td class="a">${pc(b.p_mu_pos_sceptique, 1)}</td></tr>`));
+  // tests multiples
+  const tr = D.n2.multiples.t_regles, M = toile("g-multi"), xm = M.x, Wm = M.W, Hm = M.H, gm = { l: 8, r: 40, t: 10, b: 24 }, lo2 = -7, hi2 = 4, nb = 44, w = (hi2 - lo2) / nb;
+  const cnt = new Array(nb).fill(0); tr.forEach(t => { const k = Math.floor((t - lo2) / w); if (k >= 0 && k < nb) cnt[k]++; });
+  const mx = Math.max(...cnt), Xm = v => gm.l + (Wm - gm.l - gm.r) * (v - lo2) / (hi2 - lo2), Ym = c => gm.t + (Hm - gm.t - gm.b) * (1 - c / (mx * 1.1));
+  graduations(0, mx * 1.1, 4).forEach(t => { xm.strokeStyle = C.grille; xm.beginPath(); xm.moveTo(gm.l, Ym(t)); xm.lineTo(Wm - gm.r, Ym(t)); xm.stroke(); xm.fillStyle = C.gris; xm.fillText(nf(t), Wm - gm.r + 6, Ym(t)); });
+  cnt.forEach((c, k) => { const v = lo2 + k * w; xm.fillStyle = v + w <= -1.96 || v >= 1.96 ? C.s2 : C.s1; xm.fillRect(Xm(v) + .5, Ym(c), Xm(v + w) - Xm(v) - 1, Hm - gm.b - Ym(c)); });
+  xm.strokeStyle = C.texte; xm.lineWidth = 1.5; xm.beginPath(); for (let i = 0; i <= 200; i++) { const v = lo2 + (hi2 - lo2) * i / 200, c = 1000 * w * Math.exp(-v * v / 2) / Math.sqrt(2 * Math.PI); i ? xm.lineTo(Xm(v), Ym(c)) : xm.moveTo(Xm(v), Ym(c)); } xm.stroke(); xm.lineWidth = 1;
+  xm.fillStyle = C.gris; [-6, -4, -2, 0, 2, 4].forEach(v => { xm.fillRect(Xm(v), Hm - gm.b, 1, 4); xm.fillText(sg(v), Xm(v) - 6, Hm - 9); });
+  legende("l-multi", [["t des règles", C.s1], ["|t| > 1,96 (p < 0,05)", C.s2], ["ce que donnerait le pur hasard sans frais", C.texte]]);
+  M.cv.addEventListener("pointermove", ev => { const r = M.cv.getBoundingClientRect(), k = Math.floor(((ev.clientX - r.left - gm.l) / (Wm - gm.l - gm.r)) * nb); if (k < 0 || k >= nb) { M.bulle.hidden = true; return; }
+    montrerBulle(M, ev.clientX - r.left, ev.clientY - r.top, `t de ${sg(lo2 + k * w, 2)} à ${sg(lo2 + (k + 1) * w, 2)}<br>${cnt[k]} règles`); });
+  M.cv.addEventListener("pointerleave", () => M.bulle.hidden = true);
+  const B = D.n2.multiples.bruit, R = D.n2.multiples.nq;
+  $("p-multi").innerHTML = `Avec du bruit pur, ${B.p05} stratégies sur 1 000 sortent « significatives » et aucune ne survit à Bonferroni. Sur le vrai NQ, ${R.p05} règles ont p < 0,05, `
+    + `mais <strong>${R.p05_gagnantes} seule est gagnante</strong> : les autres sont significativement perdantes, à cause des 3 $ de frais. Les 10 meilleures règles de 2011-2022 (t moyen ${nf(R.illustration_top10_avant.t_avant, 2)}) `
+    + `tombent à t ${sg(R.illustration_top10_avant.t_apres, 2)} sur 2023-2026.`;
+}
+
+// ------------------------------------------------------------------ niveau 3
+function niveau3() {
+  const R = D.n3, J = R.jours, NOMS = { M0: "M0 logistique (l'actuel)", M1: "M1 logistique L1", M2: "M2 XGBoost de l'article", M3: "M3 XGBoost simple", M4: "M4 XGBoost complexe" };
+  const ms = Object.keys(NOMS), ticks = J.map((j, i) => [i, j.slice(0, 4)]).filter((t, i) => i === 0 || J[i].slice(0, 4) !== J[i - 1].slice(0, 4));
+  const pas = Math.max(1, Math.floor(J.length / 700)), idx = J.map((_, i) => i).filter(i => i % pas === 0 || i === J.length - 1);
+  courbes("g-modeles", { series: ms.map((m, k) => ({ nom: NOMS[m], v: idx.map(i => R.modeles[m].courbe[i]), c: SERIES[k], epais: m === "M2" ? 2.5 : 1.6 })), h: 320,
+    xTicks: ticks.map(([i, l]) => [idx.findIndex(v => v >= i), l]), etiquette: i => J[idx[i]], fy: v => sg(v, 0) + " $" });
+  legende("l-modeles", ms.map((m, k) => [NOMS[m], SERIES[k]]));
+  tab("t-modeles", ["Modèle", "Précision", "AUC", "Signaux", "$ par séance", "Avant frais", "t", "Sharpe", "t 2014-2022", "t 2023-2026"], ms.map(m => { const r = R.modeles[m];
+    return `<tr class="${m === "M2" ? "fort" : ""}"><td>${NOMS[m]}</td><td>${pc(r.precision, 1)}</td><td>${nf(r.auc, 3)}</td><td>${nf(r.signaux)}</td><td class="${cl(r.tout.par_seance)}">${sg(r.tout.par_seance, 1)}</td>
+      <td class="g">${sg(r.brut.par_seance, 1)}</td><td>${sg(r.tout.t, 2)}</td><td>${sg(r.tout.sharpe, 2)}</td><td class="${cl(r.avant.t)}">${sg(r.avant.t, 2)}</td><td class="${cl(r.apres.t)}">${sg(r.apres.t, 2)}</td></tr>`; }));
+  const mx = R.shap[0][1];
+  $("b-shap").innerHTML = R.shap.map(([n, v]) => `<div class="${n === "BRUIT TÉMOIN" ? "bruit" : v <= R.seuil_bruit ? "sous" : ""}"><em title="${n}">${n === "BRUIT TÉMOIN" ? "bruit témoin" : n}</em><i style="width:${Math.max(.5, v / mx * 100)}%"></i><span>${nf(v * 1000, 1)}</span></div>`).join("");
+  const V = D.n3_verif.M2;
+  tab("t-verif", ["Test", "$ par séance", "Écart type", "t", "t 2023-2026"], Object.entries(V).map(([k, [s, n]]) =>
+    `<tr><td style="white-space:normal">${k}</td><td class="${cl(s.par_seance)}">${sg(s.par_seance, 1)}</td><td class="g">${nf(s.ecart)}</td><td>${sg(s.t, 2)}</td><td class="${cl(s.t_apres)}">${sg(s.t_apres, 2)}</td></tr>`));
+  $("p-verif").innerHTML = `Étiquettes mélangées : le résultat tombe à zéro, donc le calcul ne triche pas. Entrer à l'ouverture de la bougie suivante ne change presque rien : ce n'est pas un artefact d'exécution. `
+    + `En revanche <strong>l'avantage est mince</strong> : avec 6 $ de frais au lieu de 3 $, t passe sous 2, et depuis 2023 il n'est plus significatif seul.`;
+  const lb = (nm, r) => `<tr><td>${nm}</td><td>${nf(r.trades)}</td><td class="g">${sg(r.brut.par_seance, 1)}</td><td class="${cl(r.tout.par_seance)}">${sg(r.tout.par_seance, 1)}</td><td>${sg(r.tout.t, 2)}</td><td class="${cl(r.avant.t)}">${sg(r.avant.t, 2)}</td><td class="${cl(r.apres.t)}">${sg(r.apres.t, 2)}</td></tr>`;
+  tab("t-bb", ["Stratégie", "Trades", "$ par séance avant frais", "Après frais", "t", "t 2014-2022", "t 2023-2026"], [lb("Bollinger seul", R.bollinger), lb("Bollinger + M2", R.bollinger_ml)]);
+}
+
+// ------------------------------------------------------------------ niveau 4
+function niveau4() {
+  const A = D.n4a, ans = Object.keys(A.annees), noms = [["transformer", "Transformer"], ["lineaire", "Linéaire quantile"], ["fixe", "Quantiles fixes"]];
+  courbes("g-pinball", { series: noms.map(([k, n], i) => ({ nom: n, v: ans.map(y => A.annees[y][k].pinball), c: SERIES[i] })), xTicks: ans.map((y, i) => [i, y]), etiquette: i => ans[i], fy: v => nf(v, 1), fv: v => nf(v, 3) });
+  legende("l-pinball", noms.map(([k, n], i) => [n, SERIES[i]]));
+  tab("t-tf", ["Modèle", "Pinball", "Couverture 10-90 %", "$ par séance", "t", "t 2023-2026"], noms.map(([k, n]) => { const r = A[k], t = r.trading;
+    return `<tr><td>${n}</td><td>${nf(r.pinball, 3)}</td><td>${pc(r.couverture, 1)}</td><td class="${t ? cl(t.par_seance) : "g"}">${t ? sg(t.par_seance, 1) : "—"}</td><td>${t ? sg(t.t, 2) : "—"}</td><td>${t ? sg(t.t_apres, 2) : "—"}</td></tr>`; }));
+  $("p-tf").innerHTML = __TEXTE_TF__;
+  const S = D.n4b, meths = ["Perte de Sharpe", "Poids égaux", "Inverse volatilité", "Markowitz variance min.", "Markowitz Sharpe max."], d = S.dates;
+  courbes("g-alloc", { series: meths.map((m, i) => ({ nom: m, v: S[m].courbe, c: SERIES[i], epais: i === 0 ? 2.5 : 1.6 })), logY: true, h: 300,
+    xTicks: d.map((t, i) => [i, t.slice(0, 4)]).filter((t, i) => i === 0 || d[i].slice(0, 4) !== d[i - 1].slice(0, 4)), etiquette: i => d[i], fy: v => nf(v, 1) + " $", fv: v => nf(v, 2) + " $" });
+  legende("l-alloc", meths.map((m, i) => [m, SERIES[i]]));
+  tab("t-alloc", ["Méthode", "Sharpe net", "2012-2022", "2023-2026", "Rendement annuel", "Volatilité", "Pire baisse"], meths.map(m => { const r = S[m];
+    return `<tr class="${m === "Perte de Sharpe" ? "fort" : ""}"><td>${m}</td><td>${nf(r.sharpe, 2)}</td><td>${nf(r.sharpe_avant, 2)}</td><td>${nf(r.sharpe_apres, 2)}</td><td class="${cl(r.rendement)}">${sg(r.rendement * 100, 1)} %</td><td>${pc(r.vol, 1)}</td><td class="b">${pc(r.pire_baisse, 0)}</td></tr>`; }));
+  $("p-alloc").innerHTML = __TEXTE_ALLOC__;
+}
+
+// ------------------------------------------------------------------ partie V et compte
+function partie5() {
+  const L = D.n5, ch = L.convergence.chemins, k = Object.keys(ch);
+  courbes("g-lmsr", { series: k.map((b, i) => ({ nom: `information privée ± ${nf(+b * 100)} %`, v: ch[b].map(v => v * 100), c: SERIES[i] })), reperes: [[62, C.ambre, "vraie probabilité 62 %"]],
+    xTicks: [0, 50, 100, 150, 199].map(i => [i, nf((i + 1) * 10)]), etiquette: i => `après ${nf((i + 1) * 10)} traders`, fy: v => nf(v, 0) + " %", yAussi: [50, 70] });
+  legende("l-lmsr", [...k.map((b, i) => [`information privée ± ${nf(+b * 100)} %`, SERIES[i]]), ["vraie probabilité", C.ambre, true]]);
+  const I = L.identites;
+  $("p-lmsr").innerHTML = `<p>Le prix LMSR <strong>est</strong> la fonction softmax des parts émises : après quatre achats, prix ${I.prix.map(v => nf(v, 4)).join(" / ")}, softmax identique, somme ${nf(I.somme, 6)}.</p>`
+    + `<p>La perte du teneur de marché est bornée par b·ln(n) = ${nf(I.perte_max_theorique, 2)} $ ; un trader qui connaît le résultat lui prend ${nf(I.perte_max_observee, 2)} $, pas un centime de plus.</p>`
+    + `<p>Avec 2 000 traders qui savent chacun un peu, le prix se rapproche de la vraie probabilité ; plus l'information privée est bruitée, plus il flotte.</p>`
+    + `<p class="note">Simulation seulement : Polymarket est bloqué en France par l'Autorité nationale des jeux depuis novembre 2024.</p>`;
+}
+function compte() {
+  const R = D.n3_compte, m = R["M2 (XGBoost)"], s = R["Supertrend NQ"];
+  $("c-compte").innerHTML = [["M2 : objectif atteint", pc(m.reussite, 0), "h", `médiane ${nf(m.seances_reussite)} séances`], ["M2 : plancher touché", pc(m.echec, 0), "b", `${sg(m.par_seance, 1)} $ par séance en moyenne`],
+    ["Supertrend : objectif atteint", pc(s.reussite, 0), "h", `médiane ${nf(s.seances_reussite)} séances`], ["Supertrend : plancher touché", pc(s.echec, 0), "b", `${sg(s.par_seance, 1)} $ par séance en moyenne`]]
+    .map(([l, n, c, d]) => `<div><span class="l">${l}</span><span class="n ${c}">${n}</span><span class="d">${d}</span></div>`).join("");
+}
+function tout() { verdict(); niveau1(); niveau2(); niveau3(); niveau4(); partie5(); compte(); }
+tout();
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(tout, 200); });
+</script>
