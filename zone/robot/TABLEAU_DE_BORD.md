@@ -18,12 +18,12 @@ Voyant VERT (fourchette normale) : +367 $ pour 1 MNQ apres 26 seance(s) ; le bac
 
 ## Trades du 2026-11-02
 
-- achat 10h30 a 28,849.25 -> sortie 11h00 a 28,720.75
-- vente 15h30 a 28,218.25 -> sortie 16h00 a 28,137.25
+- achat 10h30 a 28,849.75 -> sortie 11h00 a 28,720.75
+- vente 15h30 a 28,218.25 -> sortie 16h00 a 28,138.75
 
 ## Pour la seance du 2026-11-03 (a utiliser en direct)
 
-Cloture de la veille (16 h New York) : **28,137.25**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
+Cloture de la veille (16 h New York) : **28,138.75**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
 
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
@@ -68,7 +68,7 @@ Pas encore de trade de zone mesure depuis le 2026-10-01.
 
 ## Second moteur : rebond apres forte baisse (suivi a part, hors compte)
 
-**ACHAT le 2026-11-03 a l'ouverture de 9 h 30, sortie a 15 h 59** (1 MNQ, suivi a part, hors compte de challenge ; meme un jour de changement de contrat). Derniere seance complete : -2.04% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.17%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
+**ACHAT le 2026-11-03 a l'ouverture de 9 h 30, sortie a 15 h 59** (1 MNQ, suivi a part, hors compte de challenge ; meme un jour de changement de contrat). Derniere seance complete : -2.03% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.17%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
 
 ## Derniers jours
 
