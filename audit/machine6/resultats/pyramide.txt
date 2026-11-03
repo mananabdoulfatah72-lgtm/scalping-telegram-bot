@@ -1,0 +1,23 @@
+15 ans (2011 - octobre 2026), limite du jour 400 $, gains au prix d'aujourd'hui
+  1 MNQ sans ajout (temoin)         +15.7 $/seance (t 2.23) ; depuis 2023   +6.6 $ (t 0.47) ; pire journee -428 $ ; journees coupees a -400 $ : 34 %
+  ajout tous les 0,5 N (Turtles)    +35.1 $/seance (t 2.27) ; depuis 2023  +41.5 $ (t 1.31) ; pire journee -511 $ ; journees coupees a -400 $ : 69 %
+  ajout tous les 1 N                +43.4 $/seance (t 3.00) ; depuis 2023  +18.6 $ (t 0.66) ; pire journee -511 $ ; journees coupees a -400 $ : 62 %
+
+Challenge depuis 50 000 $, plancher 49 000 $ (temps reel), 8 seances : reussis / echoues
+  1 MNQ sans ajout (temoin)        15 ans :   2.9 % /  30.3 %
+  1 MNQ sans ajout (temoin)        2024-26 :   2.3 % /  34.1 %
+  ajout tous les 0,5 N (Turtles)   15 ans :  20.2 % /  66.1 %
+  ajout tous les 0,5 N (Turtles)   2024-26 :  20.7 % /  66.6 %
+  ajout tous les 1 N               15 ans :  20.2 % /  61.9 %
+  ajout tous les 1 N               2024-26 :  17.4 % /  66.2 %
+
+13 octobre - 2 novembre 2026 (export Rithmic), limite 400 $ (prix reels)
+  1 MNQ sans ajout (temoin)        total  +2484 $ ; jours gagnants 7/15 ; plus bas du cumul -402 $ ; jours : -402 +628 -402 +1210 -145 -232 +198 +772 -402 -92 +368 -402 -402 +914 +872
+  ajout tous les 0,5 N (Turtles)   total   -706 $ ; jours gagnants 3/15 ; plus bas du cumul -706 $ ; jours : -404 +1834 -404 -408 -408 -406 +17 +2300 -404 -404 -404 -402 -402 -404 -406
+  ajout tous les 1 N               total  +3996 $ ; jours gagnants 4/15 ; plus bas du cumul -402 $ ; jours : -402 +1654 -402 +3886 -406 -404 -22 +1616 -402 -404 -404 -402 -402 +897 -406
+
+(descriptif, apres la regle) 1 MNQ sans ajout : effet de la limite du jour sur 15 ans et sur le challenge
+  limite  aucune : +24.4 $/seance (t 2.73), journees coupees   0 %, challenge  4.0 % / 38.0 %
+  limite     400 : +15.7 $/seance (t 2.23), journees coupees  34 %, challenge  2.9 % / 30.3 %
+  limite     600 : +18.3 $/seance (t 2.39), journees coupees  18 %, challenge  3.8 % / 34.5 %
+  limite     800 : +22.8 $/seance (t 2.86), journees coupees  10 %, challenge  3.9 % / 36.3 %
