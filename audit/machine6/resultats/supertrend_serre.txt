@@ -1,0 +1,13 @@
+1 MNQ, gains au prix d'aujourd'hui, 3 $ de frais par aller-retour
+ligne a 1.0 ATR : 8.6 trades par seance, frais 26 $ par seance
+    limite aucune :  -11.9 $/seance (t -1.46), depuis 2023   -2.5 $ (t -0.14), challenge  3.4 % / 41.1 %
+    limite    400 :  -14.3 $/seance (t -2.20), depuis 2023   -5.1 $ (t -0.37), challenge  1.9 % / 33.2 %
+ligne a 1.5 ATR : 5.6 trades par seance, frais 17 $ par seance
+    limite aucune :   +6.4 $/seance (t +0.78), depuis 2023  +15.4 $ (t +0.88), challenge  3.2 % / 38.2 %
+    limite    400 :   +4.6 $/seance (t +0.67), depuis 2023  +17.8 $ (t +1.26), challenge  2.5 % / 29.9 %
+ligne a 2.0 ATR : 4.0 trades par seance, frais 12 $ par seance
+    limite aucune :  +11.8 $/seance (t +1.38), depuis 2023  +22.9 $ (t +1.30), challenge  3.3 % / 38.0 %
+    limite    400 :   +8.5 $/seance (t +1.25), depuis 2023  +21.5 $ (t +1.53), challenge  2.6 % / 29.6 %
+ligne a 3.0 ATR : 2.6 trades par seance, frais 8 $ par seance
+    limite aucune :  +24.4 $/seance (t +2.73), depuis 2023  +16.2 $ (t +0.90), challenge  4.0 % / 38.0 %
+    limite    400 :  +15.7 $/seance (t +2.23), depuis 2023   +6.6 $ (t +0.47), challenge  2.9 % / 30.3 %
