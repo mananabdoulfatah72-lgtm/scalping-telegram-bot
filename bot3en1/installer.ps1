@@ -125,10 +125,32 @@ foreach ($p in $plateformes) {
             Write-Host "ATTENTION : Supertrend NQ n'a pas compile (le bot 3 en 1 est bien installe). Envoie installation_bot3en1.txt a Claude." -ForegroundColor Yellow
         }
     }
+    # Relais NQ (station en direct, aucun ordre) : compile a part ; s'il echoue, le reste est installe
+    $rl = "$PSScriptRoot\Relais.Quantower\Relais.Quantower.csproj"
+    if (Test-Path $rl) {
+        Remove-Item -Recurse -Force "$PSScriptRoot\Relais.Quantower\obj", "$PSScriptRoot\Relais.Quantower\bin" -ErrorAction SilentlyContinue
+        $ancien = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+        dotnet restore $rl -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" | Out-Host
+        dotnet build $rl -c Release --no-restore -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" -nologo | Out-Host
+        $codeRl = $LASTEXITCODE
+        $ErrorActionPreference = $ancien
+        if ($codeRl -eq 0) {
+            $destRl = Join-Path $p.Base "Settings\Scripts\Strategies\RelaisNQ"
+            New-Item -ItemType Directory -Force -Path $destRl | Out-Null
+            Copy-Item "$PSScriptRoot\Relais.Quantower\bin\Release\$tfm\RelaisNQ.dll" $destRl -Force
+            Write-Host "Relais NQ installe dans $destRl" -ForegroundColor Green
+        } else {
+            Write-Host "ATTENTION : le Relais NQ n'a pas compile (les bots sont bien installes). Envoie installation_bot3en1.txt a Claude." -ForegroundColor Yellow
+        }
+    }
 }
 New-Item -ItemType Directory -Force -Path "C:\Bot3en1" | Out-Null
 New-Item -ItemType Directory -Force -Path "C:\SupertrendNQ" | Out-Null
-Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1, Supertrend NQ, Export transactions NQ ou FluxNQ (voir le guide)."
+New-Item -ItemType Directory -Force -Path "C:\StationNQ" | Out-Null
+$page = "$PSScriptRoot\Relais.Quantower\station-direct.html"
+if (Test-Path $page) { Copy-Item $page "C:\StationNQ\station-direct.html" -Force; Write-Host "Page de la station copiee dans C:\StationNQ" -ForegroundColor Green }
+Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1, Supertrend NQ, Relais NQ, Export transactions NQ ou FluxNQ (voir le guide)."
+Write-Host "Station en direct : lance la strategie Relais NQ, puis ouvre http://localhost:8765 dans Chrome ou Edge."
 Write-Host "INSTALLATION TERMINEE" -ForegroundColor Green
 }
 catch {

@@ -1,0 +1,323 @@
+// ================================================================== mode direct : tout est recalcule a partir des minutes du relais
+const MODELE = JSON.parse(document.getElementById("modele").textContent);
+let SE = [], NQ2 = null, NS = 0, K_EN_COURS = -1, EV = [];
+const RS = 30;                                                     // seances montrees dans les reliefs
+const ST = { s: 0, m: 0, rel: null, ordres: [], pos: 0, prix: 0, real: 0, attente: null, init: false };
+const LIVE = { nq: {}, es: {}, jours: [], esJours: [], compte: null, ny: null, utc: 0, connecte: false, coupe: false, dernierFlux: 0,
+  symboles: {}, nqDernier: null, esDernier: null, age: null, ouverte: false, lignes: new Set(), nbLignes: 0 };
+const VUS = new Set(), AGENTS = {};
+const lire = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } };
+const ecrire = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const parisHM = ms => { try { return new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" }).format(new Date(ms)).replace(":", "h"); } catch (e) { return ""; } };
+// horloge de New York vue comme UTC : cle de tri commune aux signaux calcules et aux lignes des agents
+const cleNy = (jour, m) => Date.UTC(+jour.slice(0, 4), +jour.slice(5, 7) - 1, +jour.slice(8, 10)) + (570 + m) * 60000;
+const ecartNy = () => LIVE.ny && LIVE.utc ? Date.UTC(+LIVE.ny.slice(0, 4), +LIVE.ny.slice(5, 7) - 1, +LIVE.ny.slice(8, 10), +LIVE.ny.slice(11, 13), +LIVE.ny.slice(14, 16), +LIVE.ny.slice(17, 19)) - LIVE.utc : -5 * 3600000;
+
+// ------------------------------------------------------------------ indicateurs 15 min et signal ML (memes formules que le terminal)
+function emaArr(x, n) { const a = 2 / (n + 1), o = new Array(x.length); o[0] = x[0]; for (let i = 1; i < x.length; i++) o[i] = a * x[i] + (1 - a) * o[i - 1]; return o; }
+function indicateurs15(B) {
+  const c = B.map(b => b[3]), h = B.map(b => b[1]), l = B.map(b => b[2]), n = c.length, I = {};
+  EMAS.forEach(e => I["ema" + e] = emaArr(c, e));
+  I.bb_h = new Array(n).fill(null); I.bb_m = new Array(n).fill(null); I.bb_b = new Array(n).fill(null);
+  for (let i = 19; i < n; i++) { let s = 0; for (let k = i - 19; k <= i; k++) s += c[k]; const m = s / 20; let v = 0; for (let k = i - 19; k <= i; k++) v += (c[k] - m) ** 2; const sd = Math.sqrt(v / 20);
+    I.bb_m[i] = m; I.bb_h[i] = m + 2 * sd; I.bb_b[i] = m - 2 * sd; }
+  I.rsi = new Array(n).fill(null); let au = 0, ad = 0;
+  for (let i = 1; i < n; i++) { const d = c[i] - c[i - 1], up = Math.max(d, 0), dn = Math.max(-d, 0);
+    if (i <= 14) { au += up / 14; ad += dn / 14; if (i === 14) I.rsi[i] = ad === 0 ? 100 : 100 - 100 / (1 + au / ad); }
+    else { au = (au * 13 + up) / 14; ad = (ad * 13 + dn) / 14; I.rsi[i] = ad === 0 ? 100 : 100 - 100 / (1 + au / ad); } }
+  const e12 = emaArr(c, 12), e26 = emaArr(c, 26); I.macd = c.map((_, i) => e12[i] - e26[i]); I.macd_s = emaArr(I.macd, 9); I.macd_h = I.macd.map((v, i) => v - I.macd_s[i]);
+  I.atr = new Array(n).fill(null); let atr = 0;
+  for (let i = 0; i < n; i++) { const pc = i ? c[i - 1] : c[0], tr = Math.max(h[i] - l[i], Math.abs(h[i] - pc), Math.abs(l[i] - pc));
+    if (i < 13) atr += tr / 14; else if (i === 13) { atr += tr / 14; I.atr[i] = atr; } else { atr = (atr * 13 + tr) / 14; I.atr[i] = atr; } }
+  const bw = c.map((_, i) => I.bb_m[i] == null ? null : (I.bb_h[i] - I.bb_b[i]) / I.bb_m[i]);
+  I.bbw_rang = new Array(n).fill(null);
+  for (let i = 0; i < n; i++) { if (bw[i] == null) continue; const w = []; for (let k = Math.max(0, i - 499); k <= i; k++) if (bw[k] != null) w.push(bw[k]);
+    if (w.length < 100) continue; let moins = 0, egal = 0; w.forEach(v => { if (v < bw[i]) moins++; else if (v === bw[i]) egal++; }); I.bbw_rang[i] = (moins + (egal + 1) / 2) / w.length * 100; }
+  return I;
+}
+function probaML(B, I) {
+  const c = B.map(b => b[3]), n = c.length, lr = c.map((v, i) => i ? Math.log(v / c[i - 1]) : 0), p = new Array(n).fill(null);
+  const somme = (i, k) => { if (i < k - 1) return null; let s = 0; for (let j = i - k + 1; j <= i; j++) s += lr[j]; return s; };
+  for (let i = 0; i < n; i++) {
+    const b = B[i][5], f = [lr[i], somme(i, 4), somme(i, 16), I.rsi[i] == null ? null : (I.rsi[i] - 50) / 50, I.macd_h[i] / c[i] * 100,
+      I.bb_m[i] == null ? null : (c[i] - I.bb_m[i]) / (I.bb_h[i] - I.bb_m[i]), I.atr[i] == null ? null : I.atr[i] / c[i] * 100,
+      I.bbw_rang[i] == null ? null : I.bbw_rang[i] / 100, (I.ema8[i] - I.ema55[i]) / c[i] * 100, Math.sin(2 * Math.PI * b / 26), Math.cos(2 * Math.PI * b / 26)];
+    if (f.some(v => v == null || !isFinite(v))) continue;
+    let z = MODELE.w[0]; f.forEach((v, k) => z += MODELE.w[k + 1] * (v - MODELE.mu[k]) / MODELE.sd[k]); p[i] = 1 / (1 + Math.exp(-z));
+  }
+  return p;
+}
+
+// ------------------------------------------------------------------ seances reconstruites a partir des minutes
+// fin : derniere minute remplie (389 pour une seance passee, minute en cours aujourd'hui) ; F : minutes terminees
+function tableaux(lignes, fin, F) {
+  const O = new Array(390).fill(NaN), H = O.slice(), L = O.slice(), C = O.slice(), V = new Array(390).fill(0);
+  lignes.forEach(([m, o, h, l, c, v]) => { if (m >= 0 && m <= fin) { O[m] = o; H[m] = h; L[m] = l; C[m] = c; V[m] = v || 0; } });
+  const nb = C.filter(x => !isNaN(x)).length, bords = !isNaN(C[0]) && !isNaN(C[389]);
+  for (let m = 1; m <= fin; m++) if (isNaN(C[m])) C[m] = C[m - 1];
+  for (let m = fin - 1; m >= 0; m--) if (isNaN(C[m])) C[m] = C[m + 1];
+  for (let m = 0; m <= fin; m++) { if (isNaN(O[m])) O[m] = C[m]; if (isNaN(H[m])) H[m] = Math.max(O[m], C[m]); if (isNaN(L[m])) L[m] = Math.min(O[m], C[m]); }
+  return { O, H, L, C, V, fin, F, complete: F >= 390 && bords && nb >= 370 };
+}
+function construire() {
+  const jours = LIVE.jours.slice().sort(), auj = LIVE.ny ? LIVE.ny.slice(0, 10) : null;
+  const mNow = LIVE.ny ? (+LIVE.ny.slice(11, 13)) * 60 + (+LIVE.ny.slice(14, 16)) - 570 : 9999;
+  const T = jours.map(j => j === auj ? (mNow < 0 ? null : tableaux(LIVE.nq[j] || [], Math.min(389, mNow), Math.min(390, mNow))) : tableaux(LIVE.nq[j] || [], 389, 390));
+  const garde = T.map(t => t && t.fin >= 0 && !isNaN(t.C[0]));
+  const J = jours.filter((_, k) => garde[k]), TT = T.filter((_, k) => garde[k]);
+  if (!TT.length) { NS = 0; return { mNow, auj }; }
+  // barres de 5 min (en cours comprise) et Supertrend 10-3 continu sur les barres terminees
+  const b5 = TT.map(t => { const nb = Math.min(78, Math.ceil((t.fin + 1) / 5)), out = [];
+    for (let b = 0; b < nb; b++) { const a = 5 * b, z = Math.min(a + 4, t.fin); let h = -Infinity, l = Infinity; for (let m = a; m <= z; m++) { h = Math.max(h, t.H[m]); l = Math.min(l, t.L[m]); } out.push([t.O[a], h, l, t.C[z]]); } return out; });
+  const seq = []; b5.forEach((bs, s) => bs.forEach((b, i) => seq.push([s, i, b, i >= Math.floor(TT[s].F / 5)])));
+  let atr = 0, hb = NaN, lb = NaN, dir = 1, nb = 0, cp = NaN; const ligneS = TT.map(() => []), sensS = TT.map(() => []);
+  seq.forEach(([s, i, [o, h, l, c], enCours]) => {
+    if (enCours) { ligneS[s][i] = dir > 0 ? lb : hb; sensS[s][i] = nb >= 10 ? dir : 0; return; }   // la barre en cours ne decide rien
+    if (nb >= 1) { const tr = Math.max(h - l, Math.abs(h - cp), Math.abs(l - cp)); atr = nb === 1 ? tr : (atr * 9 + tr) / 10;
+      const mid = (h + l) / 2; let h2 = mid + 3 * atr, l2 = mid - 3 * atr;
+      if (nb > 1) { h2 = (h2 < hb || cp > hb) ? h2 : hb; l2 = (l2 > lb || cp < lb) ? l2 : lb; if (dir > 0 && c < l2) dir = -1; else if (dir < 0 && c > h2) dir = 1; }
+      hb = h2; lb = l2; }
+    ligneS[s][i] = dir > 0 ? lb : hb; sensS[s][i] = nb >= 10 ? dir : 0; cp = c; nb++;
+  });
+  // zone de bruit : 14 seances completes precedentes ; veille = cloture de la derniere seance complete
+  const mv = TT.map(t => Array.from({ length: 12 }, (_, k) => Math.abs(t.C[(k + 1) * 30] / t.O[0] - 1)));
+  SE = TT.map((t, s) => {
+    const prec = TT.map((x, k) => k).filter(k => k < s && TT[k].complete);
+    const veille = prec.length ? TT[prec[prec.length - 1]].C[389] : t.O[0];
+    let bandes = [];
+    if (prec.length >= 14) { const p14 = prec.slice(-14), sig = Array.from({ length: 12 }, (_, k) => p14.reduce((a, q) => a + mv[q][k], 0) / 14);
+      const rh = Math.max(t.O[0], veille), rb = Math.min(t.O[0], veille); bandes = sig.map((sg_, k) => [(k + 1) * 30, rh * (1 + sg_), rb * (1 - sg_)]); }
+    const vw = []; let ct = 0, cv = 0, cs = 0;
+    for (let m = 0; m <= t.fin; m++) { const ty = (t.H[m] + t.L[m] + t.C[m]) / 3; ct += ty * t.V[m]; cv += t.V[m]; cs += ty; if (m % 5 === 4 || m === t.fin) vw.push(cv > 0 ? ct / cv : cs / (m + 1)); }
+    // regle du Supertrend NQ (1 MNQ, comme le moteur verifie) : decision a la cloture de la barre, ordre a l'ouverture de la minute suivante
+    const st = []; let pos = 0, mi = 0, e = 0; const nbF = Math.floor(t.F / 5);
+    for (let b = 0; b < Math.min(76, nbF); b++) { const sens = sensS[s][b], cible = sens === 0 ? pos : sens, m = 5 * b + 5; if (m > t.fin) break;
+      if (cible !== pos && pos !== 0) { st.push([pos, mi, m, e, t.O[m], pos * (t.O[m] - e)]); pos = 0; }
+      if (cible !== 0 && pos === 0 && m <= 360) { pos = cible; mi = m; e = t.O[m]; } }
+    if (pos !== 0) { if (t.F >= 385) st.push([pos, mi, 385, e, t.C[384], pos * (t.C[384] - e)]); else st.push([pos, mi, 9999, e, t.C[t.fin], pos * (t.C[t.fin] - e)]); }
+    return { jour: J[s], complete: t.complete, veille, barres: b5[s], vwap: vw, ligne: ligneS[s], sens: sensS[s], bandes, st, zone: [],
+      st_usd: st.reduce((a, x) => a + 2 * x[5] - 3, 0), zone_usd: 0 };
+  });
+  // barres de 15 min (la bougie en cours comprise : ses indicateurs bougent avec le prix), signal ML, profils de volume
+  const B = [], jr = []; K_EN_COURS = -1;
+  TT.forEach((t, s) => { jr.push(J[s]); const nqF = Math.floor(t.F / 15), nqT = Math.min(26, Math.ceil((t.fin + 1) / 15));
+    for (let q = 0; q < 26; q++) { if (q >= nqT) { B.push(null); continue; } const a = 15 * q, z = Math.min(a + 14, t.fin); let h = -Infinity, l = Infinity, v = 0;
+      for (let m = a; m <= z; m++) { h = Math.max(h, t.H[m]); l = Math.min(l, t.L[m]); v += t.V[m]; }
+      B.push([t.O[a], h, l, t.C[z], v, q]); if (q >= nqF) K_EN_COURS = B.length - 1; } });
+  const dernier = B.reduce((k, b, i) => b ? i : k, 0), Bc = [];
+  for (let i = 0; i <= dernier; i++) Bc.push(B[i] || (Bc.length ? [...Bc[Bc.length - 1].slice(0, 5), i % 26] : [0, 0, 0, 0, 0, i % 26]));
+  const I = indicateurs15(Bc), P = probaML(Bc, I);
+  let lo = Infinity, hi = -Infinity; TT.forEach(t => { for (let m = 0; m <= t.fin; m++) { lo = Math.min(lo, t.L[m]); hi = Math.max(hi, t.H[m]); } });
+  const bas = Math.floor(lo / 25) * 25, cases = Math.max(1, Math.ceil((hi - bas) / 25));
+  const valeurs = TT.map(t => { const p = new Array(cases).fill(0); for (let m = 0; m <= t.fin; m++) { const k = Math.max(0, Math.min(cases - 1, Math.floor(((t.H[m] + t.L[m] + t.C[m]) / 3 - bas) / 25))); p[k] += t.V[m]; } return p; });
+  NQ2 = { jours: jr, barres: Bc, ind: I, proba: P, profils: { bas, pas: 25, cases, valeurs } };
+  NS = SE.length;
+  return { mNow, auj };
+}
+
+// ------------------------------------------------------------------ connexion au relais
+async function chargerHistorique() {
+  etat("connexion au relais…", "a");
+  const r = await fetch("/historique", { cache: "no-store" }); if (!r.ok) throw new Error("relais injoignable (" + r.status + ")");
+  const h = await r.json();
+  LIVE.nq = h.nq.minutes; LIVE.jours = h.nq.jours.slice();
+  if (h.es) { LIVE.es = h.es.minutes; LIVE.esJours = h.es.jours.slice(); }
+  LIVE.symboles = h.symboles || {};
+  $("d-symbole").textContent = LIVE.symboles.nq || "NQ";
+  document.title = `${LIVE.symboles.nq || "NQ"} en direct · Station`;
+}
+function brancherFlux() {
+  const es = new EventSource("/flux");
+  es.onopen = () => { LIVE.connecte = true; if (LIVE.coupe) { LIVE.coupe = false; chargerHistorique().then(ticLive).catch(() => {}); } };
+  es.onerror = () => { LIVE.connecte = false; LIVE.coupe = true; etat("relais coupé : nouvelle tentative…", "b"); };
+  es.onmessage = ev => { try { recevoir(JSON.parse(ev.data)); } catch (e) { console.error(e); } };
+}
+function majMinute(src, js, jour, m, barre) {
+  if (!barre || m < 0 || m > 389) return;
+  if (!src[jour]) { src[jour] = []; js.push(jour); js.sort(); }
+  const L = src[jour], i = L.findIndex(r => r[0] === m), row = [m, ...barre];
+  if (i >= 0) L[i] = row; else L.push(row);
+}
+let attenteCalcul = false;
+function recevoir(d) {
+  LIVE.dernierFlux = Date.now();
+  if (d.utc) LIVE.utc = Date.parse(d.utc);
+  if (d.ny) LIVE.ny = d.ny;
+  (d.journaux || []).forEach(journal);
+  if (!d.debut) {
+    LIVE.compte = d.compte;
+    if (d.nq) { LIVE.nqDernier = d.nq.dernier || null; LIVE.age = d.nq.age; majMinute(LIVE.nq, LIVE.jours, d.nq.jour, d.nq.m - 1, d.nq.prec); majMinute(LIVE.nq, LIVE.jours, d.nq.jour, d.nq.m, d.nq.barre); }
+    if (d.es) { LIVE.esDernier = d.es.dernier || null; majMinute(LIVE.es, LIVE.esJours, d.es.jour, d.es.m - 1, d.es.prec); majMinute(LIVE.es, LIVE.esJours, d.es.jour, d.es.m, d.es.barre); }
+  }
+  if (!attenteCalcul) { attenteCalcul = true; requestAnimationFrame(() => { attenteCalcul = false; ticLive(); }); }
+}
+// une ligne du journal d'un agent : "AAAA-MM-JJ HH:MM:SS UTC texte"
+function journal(j) {
+  const cle = j.agent + "|" + j.ligne; if (LIVE.lignes.has(cle)) return; LIVE.lignes.add(cle);
+  const m = j.ligne.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC (.*)$/); if (!m) return;
+  const texte = m[7], nom = j.agent.replace(/^Bot3en1$/i, "Bot 3 en 1").replace(/^SupertrendNQ$/i, "Supertrend NQ");
+  const t = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]), hp = parisHM(t);
+  const pos = texte.match(/\(position (-?\d+) -> (-?\d+)\)/);
+  const action = pos ? Math.sign(+pos[2]) : /^(achat|vente)\b/.test(texte) ? (texte.startsWith("achat") ? 1 : -1) : /^(sortie|fin de seance)|position MNQ fermee|arretee/.test(texte) ? 0 : null;
+  const a = AGENTS[nom] || (AGENTS[nom] = { nom, pos: 0, derniere: "", heure: "" });
+  if (action !== null) a.pos = action; a.derniere = texte; a.heure = hp;
+  if (LIVE.utc && LIVE.utc - t > 16 * 3600000) return;                       // ancienne seance : etat de l'agent seulement
+  LIVE.nbLignes++;
+  const cls = /ERREUR|ALERTE|ATTENTION|limite|OBJECTIF/.test(texte) ? "b" : action === 1 ? "h" : action === -1 ? "b" : nom.startsWith("Super") ? "c" : "v";
+  ajouterFlux({ t: hp, k: t + ecartNy(), txt: `<b>${esc(nom)}</b> : ${esc(texte.length > 160 ? texte.slice(0, 160) + "…" : texte)}`, cls }, ST.init);
+}
+function etat(t, cls) { $("d-etat").textContent = t; $("d-etat").className = cls || ""; }
+// flux trie du plus recent au plus ancien, quelle que soit l'heure d'arrivee
+function ajouterFlux(e, neuf) {
+  const f = $("st-feed"), d = document.createElement("div"); if (neuf) d.className = "neuf"; d.dataset.k = e.k || 0;
+  d.innerHTML = `<span class="a">${e.t}</span><span class="${e.cls}">${e.txt}</span>`;
+  let apres = null; for (const x of f.children) if (+x.dataset.k <= (e.k || 0)) { apres = x; break; }
+  f.insertBefore(d, apres); while (f.children.length > 80) f.lastChild.remove();
+}
+
+// ------------------------------------------------------------------ rendu en direct
+function ticLive() {
+  if (!LIVE.jours.length || !LIVE.ny) return;                                // l'heure vient du relais
+  const { mNow, auj } = construire(); if (!NS) return;
+  ST.s = NS - 1; const s = SE[ST.s], estAuj = s.jour === auj;
+  const ouverte = LIVE.ouverte = estAuj && mNow >= 0 && mNow <= 389;
+  ST.m = estAuj ? Math.max(0, Math.min(390, mNow)) : 390;
+  const frais = LIVE.connecte && Date.now() - LIVE.dernierFlux < 5000, vivant = LIVE.age != null && LIVE.age < 120;
+  const [cBadge, tBadge] = !frais ? ["rouge", "COUPÉ"] : !ouverte ? ["ambre", "HORS SÉANCE"] : vivant ? ["vert", "DIRECT"] : ["ambre", "PAS DE TRANSACTION"];
+  $("d-badge").className = "direct " + cBadge; $("d-badge").lastChild.textContent = tBadge;
+  etat(!frais ? "aucune donnée du relais : vérifie que Quantower et la stratégie « Relais NQ » tournent"
+    : LIVE.age == null ? "relais branché, aucune transaction NQ reçue depuis son lancement"
+    : `dernière transaction NQ il y a ${nf(LIVE.age, 0)} s`, !frais ? "b" : vivant ? "g" : "a");
+  $("st-horloge").textContent = LIVE.ny ? `${dateFr(LIVE.ny.slice(0, 10))} · ${LIVE.ny.slice(11, 19)} New York · ${parisHM(LIVE.utc)} Paris` : "—";
+  // signaux calcules : une seule fois chacun, quand leur barre est terminee
+  const sec = LIVE.ny ? +LIVE.ny.slice(17, 19) : 59;
+  EV = evenementsSeance(ST.s).filter(e => e.m < ST.m || (e.m === ST.m && (!ouverte || sec >= 2)));
+  EV.forEach(e => { const k = s.jour + "|" + e.m + "|" + e.txt; if (!VUS.has(k)) { VUS.add(k); ajouterFlux({ ...e, k: cleNy(s.jour, e.m) }, ST.init); } });
+  ST.init = true;
+  $("st-feed-n").textContent = `${EV.length} calculés · ${LIVE.nbLignes} des agents`;
+  // prix : derniere transaction ; graphique : bougies de 15 min, celle en cours bouge a chaque transaction
+  const fin = NQ2.barres.length - 1, prix = LIVE.nqDernier || NQ2.barres[fin][3];
+  chartStation(fin, null, s);
+  cotationsLive(s, prix, ouverte);
+  agentsLive(s, prix);
+  jaugesLive(fin);
+  if (ST.attente !== null) { if (ouverte) executerSt(ST.attente, prix, "ordre"); ST.attente = null; }
+  if (ST.pos && (!ouverte || ST.m >= 385)) executerSt(0, prix, "fin de séance");
+  positionSt(prix);
+  tape(s, prix, fin);
+  if (!ST.rel) ST.rel = reliefsLive(s);
+  if (ST.rel) ST.rel.maj(prix);
+}
+function cotationsLive(s, prix, ouverte) {
+  $("st-q-heure").textContent = LIVE.ny ? LIVE.ny.slice(11, 16) + " NY" : "";
+  const b = s.barres, hi = Math.max(...b.map(v => v[1])), lo = Math.min(...b.map(v => v[2]));
+  const ref = ouverte ? s.veille : b[b.length - 1][3], vr = prix - ref, txtRef = ouverte ? "vs veille" : `vs clôture ${heure(s.jour, 390)}`;
+  let esTxt = `<div class="quote"><span class="a">ES · S&amp;P 500</span><span class="g">non suivi</span><span class="g" style="grid-column:1/-1;font-size:11px">Choisis un symbole ES dans les réglages du relais pour l'afficher.</span></div>`;
+  if (LIVE.esDernier) { const ej = LIVE.esJours[LIVE.esJours.length - 1], rows = (LIVE.es[ej] || []).slice().sort((x, y) => x[0] - y[0]), o = rows.length ? rows[0][1] : LIVE.esDernier;
+    esTxt = `<div class="quote"><span class="a">${esc(LIVE.symboles.es || "ES")} · S&amp;P 500</span><b class="${cl(LIVE.esDernier - o)}">${nf(LIVE.esDernier, 2)}</b><span class="g">depuis l'ouverture</span><span class="${cl(LIVE.esDernier - o)}">${sg((LIVE.esDernier / o - 1) * 100, 2)} %</span></div>`; }
+  $("st-quotes").innerHTML = `<div class="quote"><span class="a">${esc(LIVE.symboles.nq || "NQ")} · Nasdaq 100</span><b class="${cl(vr)}">${nf(prix, 2)}</b><span class="g">${txtRef}</span><span class="${cl(vr)}">${sg(vr, 2)} (${sg(vr / ref * 100, 2)} %)</span><span class="g">plus haut / bas</span><span>${nf(hi, 0)} / ${nf(lo, 0)}</span><canvas id="st-spark"></canvas></div>` + esTxt;
+  sparkline($("st-spark"), b.map(v => v[3]), vr >= 0 ? COL.hausse : COL.baisse);
+  const i5 = b.length - 1, niv = [["VWAP", s.vwap[s.vwap.length - 1], "a"], [`Supertrend ${s.sens[i5] > 0 ? "▲" : "▼"}`, s.ligne[i5], s.sens[i5] > 0 ? "h" : "b"], ["Clôture veille", s.veille, "g"]];
+  const band = s.bandes.filter(([m]) => m <= Math.max(30, ST.m)).pop(); if (band) { niv.push(["Zone haut", band[1], "v"]); niv.push(["Zone bas", band[2], "v"]); }
+  niv.push(["Dernier", prix, "blanc"]);
+  $("st-niveaux").innerHTML = niv.filter(x => x[1] != null && isFinite(x[1])).sort((a, b2) => b2[1] - a[1]).map(([t, p, c]) => `<div><span class="${c === "blanc" ? "" : c}" style="${c === "blanc" ? "color:var(--noir);background:var(--ambre);padding:0 3px" : ""}">${nf(p, 2)}</span><span>${t}</span></div>`).join("");
+}
+// plancher Option 1 : il monte avec le plus haut solde vu (solde - 2 500 $), jamais au-dessus de 50 100 $
+function plancher(sol) {
+  let pl = +lire("plancher", "49000") || 49000;
+  if (sol != null && sol - 2500 > pl && pl < 50100) { pl = Math.min(50100, Math.round(sol - 2500)); ecrire("plancher", pl); $("d-plancher").value = pl; }
+  return pl;
+}
+function agentsLive(s, prix) {
+  const C0 = LIVE.compte, lignes = [];
+  if (C0) lignes.push(`<tr><td class="a">Compte ${esc(C0.nom || "")}</td><td class="${cl(C0.position)}">${C0.position ? (C0.position > 0 ? "+" : "") + C0.position + " MNQ" : "à plat"}</td><td>${C0.prix ? nf(C0.prix, 2) : "—"}</td><td class="${cl(C0.latent)}">${C0.position ? usd(C0.latent) : "—"}</td><td>${C0.solde != null ? nf(C0.solde, 0) + " $" : "—"}</td></tr>`);
+  Object.values(AGENTS).forEach(a => lignes.push(`<tr><td class="${a.nom.startsWith("Super") ? "c" : "v"}">${esc(a.nom)}</td><td class="${cl(a.pos)}">${a.pos > 0 ? "acheteur" : a.pos < 0 ? "vendeur" : "à plat"}</td><td colspan="3" style="text-align:left;white-space:normal;font-size:11px" class="g">${a.heure} ${esc(a.derniere.slice(0, 110))}</td></tr>`));
+  const r = s.st, o = r.length && r[r.length - 1][2] === 9999 ? r[r.length - 1] : null;
+  lignes.push(`<tr><td class="c">Règle Supertrend (calcul)</td><td class="${cl(o ? o[0] : 0)}">${o ? (o[0] > 0 ? "acheteur" : "vendeur") : "à plat"}</td><td>${o ? nf(o[3], 2) : "—"}</td><td class="${o ? cl(o[0] * (prix - o[3])) : ""}">${o ? usd(o[0] * (prix - o[3]) * 2 - 3) : "—"}</td><td class="${cl(s.st_usd)}">${usd(s.st_usd)} jour</td></tr>`);
+  $("st-agents").innerHTML = `<thead><tr><th>Qui</th><th>Position</th><th>Entrée</th><th>Latent</th><th>Solde / jour</th></tr></thead><tbody>${lignes.join("")}</tbody>`;
+  const sol = C0 && C0.solde != null ? C0.solde + (C0.latent || 0) : null, pl = plancher(sol);
+  $("st-agents-note").innerHTML = sol != null ? `Distance au plancher (${nf(pl)} $) : <b class="${sol - pl < 400 ? "b" : sol - pl < 800 ? "a" : "h"}">${usd(sol - pl)}</b>, latent compris.`
+    : "Choisis le compte et le symbole MNQ dans les réglages du relais pour voir la vraie position et le solde.";
+}
+function jaugesLive(fin) {
+  if (!$("st-jauges").children.length) $("st-jauges").innerHTML = '<canvas id="j1"></canvas><canvas id="j2"></canvas><canvas id="j3"></canvas><canvas id="j4"></canvas>';
+  const I = NQ2.ind, atr = I.atr[fin] || 0, rang = I.bbw_rang[fin] || 0, p = NQ2.proba[fin];
+  const feu = u => u < .5 ? COL.hausse : u < .8 ? COL.ambre : COL.baisse;
+  jauge($("j1"), atr * 2, 0, 400, "ATR 15 min par MNQ", nf(atr * 2) + " $", feu);
+  jauge($("j2"), rang, 0, 100, "Régime de volatilité", nf(rang) + " %", feu);
+  jauge($("j3"), p == null ? .5 : p, .3, .7, "Signal ML (1 h)", p == null ? "—" : nf(p * 100) + " %", u => u > .625 ? COL.hausse : u < .375 ? COL.baisse : COL.gris);
+  const lim = +lire("limite", "400") || 400, C0 = LIVE.compte, j = (LIVE.ny || "").slice(0, 10);
+  let jour = null;
+  if (C0 && C0.solde != null) { let deb = +lire("solde-" + j, "0"); if (!deb) { deb = C0.solde; ecrire("solde-" + j, deb); } jour = C0.solde - deb + (C0.latent || 0); }
+  jauge($("j4"), jour == null ? 0 : Math.max(0, -jour), 0, lim, `Jour réel / limite ${nf(lim)} $`, jour == null ? "—" : usd(jour), feu);
+}
+function ordreSt(sens) { if (!LIVE.ouverte) return; const q = +$("st-qte").value; ST.attente = sens === 0 ? 0 : Math.max(-3, Math.min(3, ST.pos + sens * q)); ticLive(); }
+function executerSt(cible, p, motif) {
+  const d = cible - ST.pos; if (!d) return;
+  if (ST.pos !== 0 && Math.sign(cible) !== Math.sign(ST.pos)) { ST.real += ST.pos * (p - ST.prix) * 2 - Math.abs(ST.pos) * 3; ST.prix = cible ? p : 0; }
+  else if (ST.pos !== 0 && Math.abs(cible) < Math.abs(ST.pos)) { const f = ST.pos - cible; ST.real += f * (p - ST.prix) * 2 - Math.abs(f) * 3; }
+  else ST.prix = ST.pos ? (ST.prix * Math.abs(ST.pos) + p * Math.abs(d)) / Math.abs(cible) : p;
+  ST.pos = cible; if (!cible) ST.prix = 0;
+  ST.ordres.unshift({ t: parisHM(LIVE.utc), c: d > 0 ? "achat" : "vente", q: Math.abs(d), p, motif });
+}
+
+// ------------------------------------------------------------------ reliefs 3D : ruban EMA, volume par prix, amplitude des 15 min
+function reliefsLive(s0) {
+  if (!window.THREE || !window.THREE.OrbitControls) { ["st-ema", "st-vol", "st-atr"].forEach(id => $(id).insertAdjacentHTML("beforeend", `<p class="note" style="padding:12px">Le relief a besoin de WebGL et de Three.js, qui ne s'est pas chargé (connexion internet ?).</p>`)); return null; }
+  const a = scene3($("st-ema"), $("st-ema-etiq"), [8, 7, 10]), b = scene3($("st-vol"), $("st-vol-etiq"), [-10, 9, 11]), c = scene3($("st-atr"), $("st-atr-etiq"), [10, 9, 10]);
+  if (!a || !b || !c) return null;
+  const T3 = window.THREE, Q = { ema: surface(a, 130, 6, 12, 6), vol: surface(b, 121, RS, 12, 12), atr: surface(c, 26, RS, 10, 12) };
+  a.ctl.autoRotate = b.ctl.autoRotate = c.ctl.autoRotate = !matchMedia("(prefers-reduced-motion: reduce)").matches; a.ctl.autoRotateSpeed = .35; b.ctl.autoRotateSpeed = -.3; c.ctl.autoRotateSpeed = .3;
+  Q.prix = new T3.Line(new T3.BufferGeometry(), new T3.LineBasicMaterial({ color: 0xffffff })); a.sc.add(Q.prix);
+  Q.lueur = new T3.Mesh(new T3.SphereGeometry(.16, 16, 12), new T3.MeshBasicMaterial({ color: 0xffffff })); a.sc.add(Q.lueur);
+  Q.prixVol = new T3.Mesh(new T3.BoxGeometry(.05, .05, 12.4), new T3.MeshBasicMaterial({ color: 0xffffff })); b.sc.add(Q.prixVol);
+  a.lab("EMA 8", [-6.8, 0, -3]); a.lab("EMA 89", [-6.8, 0, 3]); c.lab(heure(s0.jour, 0), [-5, 0, 6.8]); c.lab(heure(s0.jour, 375), [5, 0, 6.8]);
+  Q.lv = [b.lab("", [-6, 0, 6.8]), b.lab("", [6, 0, 6.8])];
+  const boucle = () => { [a, b, c].forEach(S3 => { S3.ctl.update(); S3.r.render(S3.sc, S3.cam);
+    const w = S3.cont.clientWidth, h = S3.cont.clientHeight, v3 = new T3.Vector3(); S3.labs.forEach(l => { v3.copy(l.p).project(S3.cam); l.s.style.left = (v3.x + 1) / 2 * w + "px"; l.s.style.top = (1 - v3.y) / 2 * h + "px"; }); });
+    requestAnimationFrame(boucle); };
+  boucle();
+  Q.maj = prix => {
+    const I = NQ2.ind, B = NQ2.barres, fin = B.length - 1;
+    { // ruban EMA : 130 dernieres barres de 15 min, la derniere suit le prix
+      const Sf = Q.ema, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, d0 = Math.max(0, fin - 129);
+      let lo = Math.min(prix, Infinity), hi = Math.max(prix, -Infinity);
+      for (let k = d0; k <= fin; k++) { EMAS.forEach(e => { const v = I["ema" + e][k]; lo = Math.min(lo, v); hi = Math.max(hi, v); }); lo = Math.min(lo, B[k][3]); hi = Math.max(hi, B[k][3]); }
+      for (let z = 0; z < 6; z++) for (let i = 0; i < 130; i++) { const k = Math.min(fin, d0 + Math.round(i * (fin - d0) / 129)), u = (I["ema" + EMAS[z]][k] - lo) / (hi - lo || 1), idx = z * 130 + i;
+        pos.setY(idx, u * 5); const cc = new T3.Color(coulEma(z)).multiplyScalar(.3 + .7 * u); col.setXYZ(idx, cc.r, cc.g, cc.b); }
+      pos.needsUpdate = col.needsUpdate = true; majFil(Sf, a);
+      const pts = []; for (let i = 0; i < 130; i++) { const k = Math.min(fin, d0 + Math.round(i * (fin - d0) / 129)), v = i === 129 ? prix : B[k][3]; pts.push(new T3.Vector3(-6 + 12 * i / 129, (v - lo) / (hi - lo || 1) * 5, -3.6)); }
+      Q.prix.geometry.setFromPoints(pts); Q.lueur.position.copy(pts[pts.length - 1]); }
+    { // volume par prix : une rangee par seance, aujourd'hui devant, minute par minute
+      const Sf = Q.vol, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, P_ = NQ2.profils, sL = P_.valeurs.length - 1;
+      const cCur = Math.round((prix - P_.bas) / P_.pas), c0 = Math.max(0, Math.min(P_.cases - 121, cCur - 60));
+      let mx = 1; for (let r = 0; r < RS; r++) { const s2 = sL - RS + 1 + r; if (s2 < 0) continue; for (let q = c0; q < c0 + 121; q++) mx = Math.max(mx, P_.valeurs[s2][q] || 0); }
+      for (let r = 0; r < RS; r++) { const s2 = sL - RS + 1 + r; for (let q = 0; q < 121; q++) { const val = s2 >= 0 ? (P_.valeurs[s2][c0 + q] || 0) : 0, u = Math.sqrt(val / mx), idx = r * 121 + q;
+        pos.setY(idx, u * 4); const cc = rampe3(T3, u * (s2 === sL ? 1.15 : .9)); col.setXYZ(idx, cc.r, cc.g, cc.b); } }
+      pos.needsUpdate = col.needsUpdate = true; majFil(Sf, b);
+      Q.prixVol.position.set(-6 + 12 * (cCur - c0) / 120, .05, 0); Q.lv[0].s.textContent = nf(P_.bas + c0 * P_.pas); Q.lv[1].s.textContent = nf(P_.bas + (c0 + 120) * P_.pas); }
+    { // amplitude de chaque barre de 15 min : une rangee par seance, la bougie en cours en blanc
+      const Sf = Q.atr, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, sL = Math.floor(fin / 26), k0 = Math.max(0, (sL - RS + 1) * 26);
+      let mx = 1; for (let k = k0; k <= fin; k++) mx = Math.max(mx, B[k][1] - B[k][2]);
+      for (let r = 0; r < RS; r++) { const s2 = sL - RS + 1 + r; for (let q = 0; q < 26; q++) { const k = s2 * 26 + q, val = s2 >= 0 && k <= fin ? B[k][1] - B[k][2] : 0, u = val / mx, idx = r * 26 + q;
+        pos.setY(idx, u * 4); const cc = k === fin ? new T3.Color(0xffffff) : rampe3(T3, u * 1.1); col.setXYZ(idx, cc.r, cc.g, cc.b); } }
+      pos.needsUpdate = col.needsUpdate = true; majFil(Sf, c); }
+  };
+  return Q;
+}
+
+// ------------------------------------------------------------------ demarrage
+async function demarrer() {
+  $("st-achat").onclick = () => ordreSt(1); $("st-vente").onclick = () => ordreSt(-1); $("st-plat").onclick = () => ordreSt(0);
+  $("d-limite").value = lire("limite", "400"); $("d-plancher").value = lire("plancher", "49000");
+  $("d-limite").onchange = () => { ecrire("limite", $("d-limite").value); ticLive(); };
+  $("d-plancher").onchange = () => { ecrire("plancher", $("d-plancher").value); ticLive(); };
+  ajusterStation();
+  try { await chargerHistorique(); }
+  catch (e) { etat(`${e.message}. Lance la stratégie « Relais NQ » dans Quantower ; la page réessaie toute seule.`, "b"); $("d-badge").className = "direct rouge"; $("d-badge").lastChild.textContent = "COUPÉ"; setTimeout(demarrer, 5000); return; }
+  brancherFlux();
+  setInterval(() => { if (Date.now() - LIVE.dernierFlux > 3000) ticLive(); }, 1000);
+}
+let rz2; addEventListener("resize", () => { clearTimeout(rz2); rz2 = setTimeout(() => { ajusterStation(); ticLive(); }, 200); });
+demarrer();

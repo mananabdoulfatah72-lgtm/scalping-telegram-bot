@@ -123,10 +123,12 @@ def ml(J, o, h, l, c, I, ok):
                         t=float(usd.mean() / usd.std(ddof=1) * np.sqrt(len(usd))) if len(usd) > 2 else 0.0,
                         total=float(usd.sum())))
         poids = w[1:]
+        modele = dict(w=[float(v) for v in w], mu=[float(v) for v in mu], sd=[float(v) for v in sd], noms=noms)
     ordre = np.argsort(-np.abs(poids))
     def bilan(sel):
         u = np.concatenate([x for Y, x in tous if sel(Y)])
         return dict(signaux=int(len(u)), par_signal=float(u.mean()), t=float(u.mean() / u.std(ddof=1) * np.sqrt(len(u))), total=float(u.sum()))
+    json.dump(modele, open(S / "terminal/modele_ml.json", "w"))
     return proba, res, [[noms[i], float(poids[i])] for i in ordre], dict(tout=bilan(lambda Y: True), avant2023=bilan(lambda Y: Y < 2023), depuis2023=bilan(lambda Y: Y >= 2023))
 
 

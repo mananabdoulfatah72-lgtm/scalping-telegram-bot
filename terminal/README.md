@@ -12,3 +12,12 @@ Page publiée : https://claude.ai/artifact/Ac9xd9zdEHsHFmzsDAEBBE (privée).
 
 Vue par défaut : la **station** (tout sur un écran, replay continu des vraies séances). Touches F1 à F8 : activité,
 surveillance, signaux, stratégie et risque, labo d'hypothèses, console papier, graphique pro, IA.
+
+## Station en direct
+
+La même station, branchée sur le marché par Quantower : guide dans `bot3en1/STATION.md`.
+
+- `direct_js.txt` : moteur de la page en direct (séances, Supertrend, zone, VWAP, bougies de 15 min, indicateurs et
+  signal ML recalculés à partir des minutes envoyées par le relais ; compte, journaux des agents, reliefs 3D).
+- `modele_ml.json` : poids du signal ML de 2026 (exportés par `prep2.py`), embarqués dans la page.
+- `assembler_direct.py` : assemble `bot3en1/Relais.Quantower/station-direct.html` à partir de `terminal.tpl.html` et du moteur.

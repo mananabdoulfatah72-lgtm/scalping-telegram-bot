@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Station NQ en direct</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Mise en page : un terminal de marche — barre de commande, touches de fonction, panneaux denses sur fond noir, ambre pour
+   l'interface, blanc pour les valeurs, vert / rouge pour le sens du prix. Un seul theme sombre, choisi expres. */
+:root {
+  --noir: #000000; --panneau: #0b0b0c; --panneau2: #121214; --trait: #26262b; --grille: #18181b;
+  --ambre: #ffa028; --ambre-pale: #c98a3c; --blanc: #f2f2ee; --gris: #8d8d95; --gris2: #5b5b63;
+  --hausse: #2fd16f; --baisse: #ff4f4f; --cyan: #3cc8ff; --violet: #b48cff;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --cond: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--noir); }
+body { color: var(--blanc); font-family: var(--mono); font-size: 13px; line-height: 1.45; margin: 0;
+  padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px)); padding-block: 0 24px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--noir); }
+button, input, select { font: inherit; color: inherit; }
+.tete { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--noir); padding-top: 8px; display: grid; gap: 6px; }
+.barre { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; border-bottom: 1px solid var(--trait); padding-bottom: 6px; }
+.logo { font-family: var(--cond); font-weight: 700; letter-spacing: .08em; color: var(--noir); background: var(--ambre); padding: 2px 8px; font-size: 14px; }
+.cmd { display: flex; align-items: center; gap: 6px; flex: 1 1 260px; min-width: 0; }
+.cmd label { color: var(--ambre); font-weight: 600; }
+.cmd input { flex: 1; min-width: 0; background: var(--panneau2); border: 1px solid var(--trait); color: var(--ambre); padding: 4px 8px; text-transform: uppercase; }
+.cmd input:focus { outline: 1px solid var(--ambre); }
+.go { background: var(--hausse); color: var(--noir); border: 0; font-weight: 700; padding: 4px 10px; cursor: pointer; }
+.horloge { color: var(--gris); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.touches { display: flex; flex-wrap: wrap; gap: 4px; }
+.touches button { background: var(--panneau2); border: 1px solid var(--trait); color: var(--ambre); padding: 3px 9px; cursor: pointer; font-family: var(--cond); font-weight: 600; letter-spacing: .04em; }
+.touches button b { color: var(--gris); font-weight: 500; margin-right: 6px; }
+.touches button[aria-current="page"] { background: var(--ambre); color: var(--noir); border-color: var(--ambre); }
+.touches button[aria-current="page"] b { color: var(--noir); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 1px solid var(--ambre); outline-offset: 1px; }
+.bande { display: flex; gap: 0; overflow-x: auto; border: 1px solid var(--trait); background: var(--panneau); }
+.bande div { padding: 4px 12px; border-right: 1px solid var(--trait); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.bande .k { color: var(--ambre); margin-right: 6px; }
+.vue { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 10px; }
+.grille2 { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 10px; }
+.grille3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.g11 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+@media (max-width: 900px) { .grille2, .grille3, .g11 { grid-template-columns: minmax(0, 1fr); } }
+.panneau { background: var(--panneau); border: 1px solid var(--trait); min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; }
+.panneau > h2 { margin: 0; font-family: var(--cond); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ambre); background: var(--panneau2);
+  padding: 4px 8px; border-bottom: 1px solid var(--trait); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-weight: 600; text-wrap: balance; }
+.panneau > h2 span { color: var(--gris); letter-spacing: .02em; text-transform: none; font-family: var(--mono); font-weight: 400; }
+.corps { padding: 8px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; min-width: 0; }
+.toile { position: relative; width: 100%; }
+.toile canvas { display: block; width: 100%; }
+.info { position: absolute; pointer-events: none; background: rgba(0,0,0,.88); border: 1px solid var(--ambre-pale); padding: 4px 6px; font-size: 11px; white-space: nowrap; z-index: 2; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 3px 6px; text-align: right; border-bottom: 1px solid var(--grille); white-space: nowrap; }
+th { color: var(--ambre-pale); font-weight: 500; font-family: var(--cond); letter-spacing: .04em; text-transform: uppercase; font-size: 11px; }
+td:first-child, th:first-child { text-align: left; }
+.defile { overflow-x: auto; min-width: 0; }
+.h { color: var(--hausse); } .b { color: var(--baisse); } .a { color: var(--ambre); } .g { color: var(--gris); } .c { color: var(--cyan); } .v { color: var(--violet); }
+.chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1px; background: var(--trait); border: 1px solid var(--trait); }
+.chiffres div { background: var(--panneau); padding: 6px 8px; display: grid; gap: 1px; }
+.chiffres .l { color: var(--gris); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; font-family: var(--cond); }
+.chiffres .n { font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.note { color: var(--gris); font-size: 12px; max-width: 80ch; font-family: var(--cond); font-size: 13px; }
+.ctrl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ctrl select, .ctrl input[type=number] { background: var(--panneau2); border: 1px solid var(--trait); padding: 3px 6px; color: var(--blanc); }
+.ctrl select { max-width: 100%; min-width: 0; }
+.ctrl input[type=number] { width: 7ch; }
+.btn { background: var(--panneau2); border: 1px solid var(--trait); color: var(--ambre); padding: 4px 10px; cursor: pointer; }
+.btn:hover { border-color: var(--ambre); }
+.btn.achat { background: #0d3a1f; border-color: var(--hausse); color: var(--hausse); font-weight: 700; }
+.btn.vente { background: #3a0d0d; border-color: var(--baisse); color: var(--baisse); font-weight: 700; }
+.btn[disabled] { opacity: .35; cursor: not-allowed; }
+.puce { display: inline-block; padding: 0 6px; border: 1px solid currentColor; font-size: 11px; }
+.journal { max-height: 260px; overflow: auto; }
+.echelle { display: grid; gap: 1px; font-variant-numeric: tabular-nums; }
+.echelle div { display: grid; grid-template-columns: 12ch 1fr; gap: 8px; padding: 2px 6px; background: var(--panneau2); }
+.barres-h { display: grid; gap: 3px; }
+.barres-h div { display: grid; grid-template-columns: 11ch 1fr 7ch; gap: 6px; align-items: center; }
+.barres-h i { display: block; height: 10px; }
+.relief { position: relative; height: 360px; background: var(--noir); overflow: hidden; }
+.relief canvas { width: 100%; height: 100%; display: block; }
+.etiq span { position: absolute; transform: translate(-50%, -50%); font-size: 10px; color: var(--gris); pointer-events: none; white-space: nowrap; }
+/* station : tout sur un ecran */
+.st-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.direct { display: inline-flex; align-items: center; gap: 6px; color: var(--baisse); font-family: var(--cond); font-weight: 700; letter-spacing: .12em; border: 1px solid var(--baisse); padding: 1px 8px; }
+.direct i { width: 8px; height: 8px; border-radius: 50%; background: var(--baisse); animation: pouls 1.2s infinite; }
+@keyframes pouls { 50% { opacity: .2; } }
+.st-horloge { color: var(--ambre); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 14px; }
+.st-aide { font-size: 11px; font-family: var(--cond); }
+.st-bar select { background: var(--panneau2); border: 1px solid var(--trait); padding: 3px 6px; color: var(--blanc); max-width: 100%; }
+.defileur { overflow: hidden; border: 1px solid var(--trait); background: var(--panneau); white-space: nowrap; }
+.defileur-in { display: inline-block; padding: 4px 0; animation: defile 45s linear infinite; }
+.defileur-in > span { margin: 0 20px; }
+@keyframes defile { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.station { display: grid; gap: 6px; grid-template-columns: 240px minmax(0, 1fr) 330px; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) 200px;
+  grid-template-areas: "watch chart hero" "feed chart vol" "bottom bottom bottom"; height: var(--st-h, 760px); min-height: 640px; }
+.st-bas { display: grid; gap: 6px; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, .9fr); min-height: 0; }
+.st-bas > .panneau { min-height: 0; }
+.a-watch { grid-area: watch; } .a-chart { grid-area: chart; } .a-hero { grid-area: hero; } .a-vol { grid-area: vol; } .a-feed { grid-area: feed; }
+.a-bottom { grid-area: bottom; }
+.station .panneau { overflow: hidden; grid-template-rows: auto minmax(0, 1fr); }
+.station .relief { height: 100%; }
+@media (max-width: 1200px) { .station { height: auto; min-height: 0; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: none; grid-auto-rows: auto;
+  grid-template-areas: "chart chart" "hero vol" "watch feed" "bottom bottom"; } .station .relief { height: 260px !important; } .station .a-feed .flux { max-height: 300px; }
+  .st-bas { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .a-chart .toile { min-height: 520px; } }
+@media (max-width: 760px) { .station { grid-template-columns: minmax(0, 1fr); grid-template-areas: "chart" "watch" "hero" "feed" "bottom" "vol"; } .st-bas { grid-template-columns: minmax(0, 1fr); } }
+.compact { padding: 6px; gap: 6px; }
+.quotes { display: grid; gap: 4px; }
+.quote { display: grid; grid-template-columns: 1fr auto; gap: 0 8px; padding: 4px 6px; background: var(--panneau2); font-size: 12px; }
+.quote b { font-size: 15px; }
+.quote canvas { grid-column: 1 / -1; width: 100%; height: 28px; }
+.flux { display: grid; align-content: start; gap: 0; overflow: auto; max-height: 100%; font-size: 12px; }
+.flux div { display: grid; grid-template-columns: 6ch minmax(0, 1fr); gap: 6px; padding: 3px 4px; border-bottom: 1px solid var(--grille); }
+.flux .neuf { animation: neuf 1.4s ease-out; }
+@keyframes neuf { from { background: rgba(255, 160, 40, .28); } to { background: transparent; } }
+.jauges { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+.jauges canvas { width: 100%; height: 72px; display: block; }
+.petit3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.petit3 .n { font-size: 13px; }
+.journal.court { max-height: 92px; }
+.station .echelle div { grid-template-columns: 10ch 1fr; font-size: 12px; padding: 1px 6px; }
+.station .note { font-size: 11px; }
+.station .corps { min-height: 0; overflow: auto; }
+.station table { font-size: 12px; }
+.station th, .station td { padding: 2px 4px; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* page en direct */
+.direct.vert { color: var(--hausse); border-color: var(--hausse); } .direct.vert i { background: var(--hausse); }
+.direct.ambre { color: var(--ambre); border-color: var(--ambre); } .direct.ambre i { background: var(--ambre); animation: none; }
+.direct.rouge { color: var(--baisse); border-color: var(--baisse); } .direct.rouge i { background: var(--baisse); animation: none; }
+.reglage { color: var(--gris); font-family: var(--cond); display: inline-flex; gap: 4px; align-items: center; white-space: nowrap; }
+.reglage input { width: 10ch; background: var(--panneau2); border: 1px solid var(--trait); color: var(--blanc); padding: 2px 6px; }
+#d-etat { font-family: var(--cond); font-size: 12px; flex: 1 1 260px; min-width: 0; }
+.flux b { font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="tete">
+  <div class="barre">
+    <span class="logo">NQ DIRECT</span>
+    <span class="direct rouge" id="d-badge"><i></i><span>CONNEXION</span></span>
+    <span class="st-horloge" id="st-horloge">—</span>
+    <span class="g">symbole <b class="a" id="d-symbole">—</b></span>
+    <label class="reglage" for="d-limite">limite du jour <input type="number" id="d-limite" min="50" step="50"> $</label>
+    <label class="reglage" for="d-plancher">plancher <input type="number" id="d-plancher" step="100"> $</label>
+    <span id="d-etat" class="g">chargement…</span>
+  </div>
+</div>
+<section class="vue" id="v-station">
+  <div class="defileur" aria-hidden="true"><div class="defileur-in" id="st-tape"></div></div>
+  <div class="station">
+    <div class="panneau a-watch"><h2>Cotations <span id="st-q-heure"></span></h2><div class="corps compact">
+      <div id="st-quotes" class="quotes"></div>
+      <div class="echelle" id="st-niveaux"></div>
+    </div></div>
+    <div class="panneau a-chart"><h2>15 minutes en direct <span>EMA 8-89, Bollinger, RSI, MACD, ML recalculés à chaque transaction</span></h2><div class="corps compact"><div class="toile" id="st-chart"></div></div></div>
+    <div class="panneau a-hero"><h2>Ruban EMA lumineux <span>boule = dernier prix</span></h2><div class="relief" id="st-ema" style="height:100%;min-height:250px"><div class="etiq" id="st-ema-etiq"></div></div></div>
+    <div class="panneau a-vol"><h2>Volume par prix <span>30 séances</span></h2><div class="relief" id="st-vol" style="height:100%;min-height:250px"><div class="etiq" id="st-vol-etiq"></div></div></div>
+    <div class="panneau a-feed"><h2>Flux des signaux <span id="st-feed-n"></span></h2><div class="corps compact"><div class="flux" id="st-feed"></div></div></div>
+    <div class="a-bottom st-bas">
+    <div class="panneau a-agents"><h2>Compte et agents <span>journaux en direct</span></h2><div class="corps compact"><div class="defile"><table id="st-agents"></table></div><div class="note" id="st-agents-note"></div></div></div>
+    <div class="panneau a-risk"><h2>Risque <span>compte réel</span></h2><div class="corps compact"><div class="jauges" id="st-jauges"></div></div></div>
+    <div class="panneau a-exec"><h2>Ordres · papier <span>rien n'est envoyé</span></h2><div class="corps compact">
+      <div class="ctrl"><select id="st-qte" aria-label="MNQ"><option>1</option><option>2</option><option>3</option></select>
+        <button class="btn achat" type="button" id="st-achat">ACHAT</button><button class="btn vente" type="button" id="st-vente">VENTE</button><button class="btn" type="button" id="st-plat">À PLAT</button></div>
+      <div class="chiffres petit3" id="st-pos"></div>
+      <div class="journal court"><table id="st-ordres"></table></div>
+    </div></div>
+    <div class="panneau a-atr"><h2>Structure de la volatilité <span>amplitude des 15 min</span></h2><div class="relief" id="st-atr" style="height:100%;min-height:150px"><div class="etiq" id="st-atr-etiq"></div></div></div>
+    </div>
+  </div>
+
+</section>
+<script type="application/json" id="modele">{"w": [0.11731828369827108, 0.02201299996557376, 0.003705811070611395, 0.036988049532664866, 0.06572150129084268, 0.023772738101344625, -0.09885745267975148, -0.008865887382508394, 0.0027583516151798173, 0.03951486078104257, 0.014358239250476988, -0.007701407156933285], "mu": [3.058975459790863e-05, 0.00010596170354670485, 0.00042425745899633, 0.048258226029052914, 0.0003710590533650447, 0.07350712599302923, 0.2727819489381118, 0.5348187747705129, 0.049409155336649545, 0.09946985977373095, -0.14426462793769262], "sd": [0.0025160362180937784, 0.004998990115608817, 0.009963674892307253, 0.28322220460564623, 0.08322867011911865, 0.6921430494573528, 0.16089240938185131, 0.2931672593247245, 0.717348424334476, 0.7196095038985738, 0.671904476859683], "noms": ["rendement 15 min", "rendement 1 h", "rendement 4 h", "RSI 14 (centre)", "MACD histogramme", "position dans Bollinger", "ATR / prix", "largeur Bollinger (rang)", "ecart EMA 8 - EMA 55", "heure (sinus)", "heure (cosinus)"]}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const COL = {}; ["noir","panneau","trait","grille","ambre","ambre-pale","blanc","gris","gris2","hausse","baisse","cyan","violet"].forEach(k => COL[k] = css("--" + k));
+const nf = (v, d = 0) => v == null || isNaN(v) ? "—" : (Math.abs(v) < 0.5 * Math.pow(10, -d) ? 0 : v).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const sg = (v, d = 0) => v == null || isNaN(v) ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + nf(Math.abs(v), d);
+const usd = (v, d = 0) => sg(v, d) + " $";
+const cl = v => v > 0 ? "h" : v < 0 ? "b" : "g";
+const MOIS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+const JOURS = ["lundi","mardi","mercredi","jeudi","vendredi"];
+const dateFr = j => { const [a, m, d] = j.split("-").map(Number); return `${d} ${MOIS[m - 1]} ${a}`; };
+// ecart Paris - New York : 6 h, 5 h quand New York est a l'heure d'ete et pas Paris
+function decalage(j) {
+  const [a, m, d] = j.split("-").map(Number), t = Date.UTC(a, m - 1, d);
+  const dim = (mo, n) => { const x = new Date(Date.UTC(a, mo, 1)); const off = (7 - x.getUTCDay()) % 7; return Date.UTC(a, mo, 1 + off + 7 * (n - 1)); };
+  const dernierDim = mo => { const x = new Date(Date.UTC(a, mo + 1, 0)); return Date.UTC(a, mo, x.getUTCDate() - x.getUTCDay()); };
+  const us = t >= dim(2, 2) && t < dim(10, 1), eu = t >= dernierDim(2) && t < dernierDim(9);
+  return us && !eu ? 5 : 6;
+}
+const heure = (j, m) => { const t = 570 + m + 60 * decalage(j); return `${Math.floor(t / 60)}h${String(t % 60).padStart(2, "0")}`; };
+const EMAS = [8, 13, 21, 34, 55, 89];
+const coulEma = k => { const a = [255, 160, 40], b = [60, 200, 255], t = k / 5; return `rgb(${a.map((v, j) => Math.round(v + (b[j] - v) * t)).join(",")})`; };
+function alertes(s) {
+  const out = [];
+  let dessusVeille = null, sens = s.sens[0], dessusVwap = null;
+  s.barres.forEach(([o, h, l, c], i) => {
+    const t = heure(s.jour, i * 5 + 5);
+    const dv = c > s.veille; if (dessusVeille !== null && dv !== dessusVeille) out.push([i, t, dv ? "repasse au-dessus de la clôture de la veille" : "repasse sous la clôture de la veille", dv ? 1 : -1]); dessusVeille = dv;
+    const dw = c > s.vwap[i]; if (i >= 6 && dessusVwap !== null && dw !== dessusVwap) out.push([i, t, dw ? "clôture au-dessus du VWAP" : "clôture sous le VWAP", dw ? 1 : -1]); dessusVwap = dw;
+    if (s.sens[i] !== sens) out.push([i, t, `Supertrend ${s.sens[i] > 0 ? "haussier" : "baissier"} (ligne ${nf(s.ligne[i], 2)})`, s.sens[i]]); sens = s.sens[i];
+    s.bandes.forEach(([m, hh, ll]) => { if (m === i * 5 + 5 || (m === (i + 1) * 5 && false)) {} });
+  });
+  s.bandes.forEach(([m, hh, ll]) => { const i = m / 5 - 1; if (i < 0 || i > 77 || i >= s.barres.length) return; const c = s.barres[i][3];
+    if (c > hh) out.push([i, heure(s.jour, m), `contrôle : prix au-dessus du haut de la zone (${nf(hh, 2)})`, 1]);
+    else if (c < ll) out.push([i, heure(s.jour, m), `contrôle : prix sous le bas de la zone (${nf(ll, 2)})`, -1]); });
+  s.st.forEach(([sens, mi, mo, e, x, pts]) => { out.push([Math.floor(mi / 5), heure(s.jour, mi), `règle Supertrend (calcul) : ${sens > 0 ? "ACHAT" : "VENTE"} à ${nf(e, 2)}`, sens, "c"]); });
+  s.zone.forEach(([sens, mi, mo, e, x, pts]) => { out.push([Math.min(77, Math.floor(mi / 5)), heure(s.jour, mi), `Bot 3 en 1 : ${sens > 0 ? "ACHAT" : "VENTE"} à ${nf(e, 2)}`, sens, "v"]);
+    out.push([Math.min(77, Math.floor(mo / 5)), heure(s.jour, mo), `Bot 3 en 1 : sortie à ${nf(x, 2)} (${sg(pts, 2)} pts)`, Math.sign(pts), "v"]); });
+  return out.sort((a, b) => a[0] - b[0]);
+}
+function scene3(cont, etq, cam0) {
+  const T3 = window.THREE; if (!T3 || !T3.OrbitControls) return null;
+  let r; try { r = new T3.WebGLRenderer({ antialias: true }); } catch (e) { return null; }
+  r.setPixelRatio(Math.min(2, devicePixelRatio || 1)); cont.insertBefore(r.domElement, etq);
+  const sc = new T3.Scene(); sc.background = new T3.Color(COL.noir); sc.fog = new T3.FogExp2(0x000000, .025);
+  const cam = new T3.PerspectiveCamera(40, 1, .1, 200); cam.position.set(...cam0);
+  const ctl = new T3.OrbitControls(cam, r.domElement); ctl.enableDamping = true; ctl.target.set(0, 1.5, 0);
+  const gr = new T3.GridHelper(30, 30, 0x2a2a2a, 0x141414); sc.add(gr);
+  const S3 = { T3, r, sc, cam, ctl, cont, etq, labs: [] };
+  S3.redim = () => { const w = cont.clientWidth, h = cont.clientHeight; if (!w) return; r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };
+  new ResizeObserver(S3.redim).observe(cont); S3.redim();
+  S3.lab = (t, p) => { const s = document.createElement("span"); s.textContent = t; etq.appendChild(s); const l = { s, p: new T3.Vector3(...p) }; S3.labs.push(l); return l; };
+  return S3;
+}
+function surface(S3, nx, nz, larg, prof) {
+  const T3 = S3.T3, geo = new T3.PlaneGeometry(larg, prof, nx - 1, nz - 1); geo.rotateX(-Math.PI / 2);
+  geo.setAttribute("color", new T3.Float32BufferAttribute(new Float32Array(nx * nz * 3), 3));
+  const m = new T3.Mesh(geo, new T3.MeshBasicMaterial({ vertexColors: true, side: T3.DoubleSide, transparent: true, opacity: .9 }));
+  const fil = new T3.LineSegments(new T3.WireframeGeometry(geo), new T3.LineBasicMaterial({ color: 0xffa028, transparent: true, opacity: .18, blending: T3.AdditiveBlending }));
+  S3.sc.add(m); S3.sc.add(fil); return { geo, m, fil, nx, nz };
+}
+function rampe3(T3, u) { const a = new T3.Color(0x120a00), b = new T3.Color(0xffa028), c = new T3.Color(0xfff2d0); u = Math.max(0, Math.min(1, u)); return u < .65 ? a.lerp(b, u / .65) : b.lerp(c, (u - .65) / .35); }
+function majFil(Sf, S3) { S3.sc.remove(Sf.fil); Sf.fil.geometry.dispose(); Sf.fil = new S3.T3.LineSegments(new S3.T3.WireframeGeometry(Sf.geo), Sf.fil.material); S3.sc.add(Sf.fil); }
+function evenementsSeance(k) {
+  const s = SE[k], out = alertes(s).map(([i, t, txt, sens, cc]) => ({ m: (i + 1) * 5, t, txt, cls: cc || cl(sens) }));
+  const k0 = NQ2.jours.indexOf(s.jour);
+  if (k0 >= 0) for (let b = 0; b < 26 && k0 * 26 + b < NQ2.barres.length; b++) { const g = k0 * 26 + b, m = (b + 1) * 15, t = heure(s.jour, m), I = NQ2.ind, p = NQ2.proba[g];
+    if (p != null && (p > .55 || p < .45)) out.push({ m, t, txt: `signal ML : ${nf(p * 100, 0)} % de chances de hausse sur 1 h`, cls: p > .55 ? "h" : "b" });
+    if (I.rsi[g] != null && (I.rsi[g] > 70 || I.rsi[g] < 30)) out.push({ m, t, txt: `RSI 14 à ${nf(I.rsi[g], 0)} (${I.rsi[g] > 70 ? "suracheté" : "survendu"})`, cls: "a" });
+    const c = NQ2.barres[g][3]; if (I.bb_h[g] != null && c > I.bb_h[g]) out.push({ m, t, txt: "clôture au-dessus de la bande de Bollinger haute", cls: "h" });
+    if (I.bb_b[g] != null && c < I.bb_b[g]) out.push({ m, t, txt: "clôture sous la bande de Bollinger basse", cls: "b" }); }
+  return out.sort((a, b) => a.m - b.m);
+}
+function ajusterStation() {
+  const st = document.querySelector(".station"); if (!st || $("v-station").hidden) return;
+  const h = innerHeight - st.getBoundingClientRect().top - window.scrollY - 10;
+  document.documentElement.style.setProperty("--st-h", Math.max(640, h) + "px");
+}
+function chartStation(fin, partielle, s) {
+  const cont = $("st-chart"), panel = cont.closest(".panneau");
+  const H = innerWidth > 1200 ? Math.max(300, panel.clientHeight - 40) : 520;
+  cont.innerHTML = ""; const cv = document.createElement("canvas"); cont.appendChild(cv);
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cont.clientWidth || 800;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const I = NQ2.ind, B = NQ2.barres, larg = W < 600 ? 52 : 104, deb = Math.max(0, fin - larg + 2), n = larg;
+  const g = { l: 6, r: 66, t: 4, b: 18 }, pw = (W - g.l - g.r) / n, X = k => g.l + (k - deb + .5) * pw;
+  const panes = [["prix", .58], ["volume", .07], ["RSI 14", .11], ["MACD", .11], ["signal ML", .13]];
+  let y0 = g.t; const Z = {}; panes.forEach(([nm, f]) => { const h = (H - g.t - g.b) * f; Z[nm] = [y0, y0 + h]; y0 += h; });
+  const sc = (nm, lo, hi) => { const [a, b] = Z[nm]; return v => a + 4 + (b - a - 8) * (hi - v) / (hi - lo || 1); };
+  x.font = `10px ${css("--mono")}`; x.textBaseline = "middle";
+  Object.entries(Z).forEach(([nm, [a, b]]) => { x.strokeStyle = COL.trait; x.beginPath(); x.moveTo(g.l, b); x.lineTo(W - g.r, b); x.stroke(); x.fillStyle = COL["ambre-pale"]; x.fillText(nm.toUpperCase(), g.l + 4, a + 9); });
+  const kmax = partielle ? fin + 1 : fin;
+  let lo = Infinity, hi = -Infinity; for (let k = deb; k <= fin; k++) { lo = Math.min(lo, B[k][2], I.bb_b[k] ?? Infinity); hi = Math.max(hi, B[k][1], I.bb_h[k] ?? -Infinity); }
+  if (partielle) { lo = Math.min(lo, partielle[2]); hi = Math.max(hi, partielle[1]); }
+  const pp = (hi - lo) * .04; lo -= pp; hi += pp; const Yp = sc("prix", lo, hi);
+  const pas = (() => { const r = (hi - lo) / 6, p = Math.pow(10, Math.floor(Math.log10(r))), m = r / p; return (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p; })();
+  for (let v = Math.ceil(lo / pas) * pas; v <= hi; v += pas) { x.strokeStyle = COL.grille; x.beginPath(); x.moveTo(g.l, Yp(v)); x.lineTo(W - g.r, Yp(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(nf(v), W - g.r + 5, Yp(v)); }
+  for (let k = deb; k <= kmax; k++) if (k % 26 === 0) { x.strokeStyle = COL.trait; x.setLineDash([2, 3]); x.beginPath(); x.moveTo(X(k) - pw / 2, g.t); x.lineTo(X(k) - pw / 2, H - g.b); x.stroke(); x.setLineDash([]);
+    x.fillStyle = COL.gris; x.fillText(dateFr(NQ2.jours[k / 26]).replace(/ 20\d\d$/, ""), Math.min(W - g.r - 50, X(k) - pw / 2 + 3), H - 8); }
+  x.fillStyle = "rgba(180,140,255,0.07)"; x.beginPath(); for (let k = deb; k <= fin; k++) if (I.bb_h[k] != null) x.lineTo(X(k), Yp(I.bb_h[k])); for (let k = fin; k >= deb; k--) if (I.bb_b[k] != null) x.lineTo(X(k), Yp(I.bb_b[k])); x.fill();
+  const ligne = (arr, Y, c, w = 1.2, tir) => { x.strokeStyle = c; x.lineWidth = w; if (tir) x.setLineDash(tir); x.beginPath(); let on = false; for (let k = deb; k <= fin; k++) { const v = arr[k]; if (v == null) { on = false; continue; } on ? x.lineTo(X(k), Y(v)) : x.moveTo(X(k), Y(v)); on = true; } x.stroke(); x.setLineDash([]); x.lineWidth = 1; };
+  ligne(I.bb_h, Yp, COL.violet, 1, [3, 3]); ligne(I.bb_b, Yp, COL.violet, 1, [3, 3]);
+  EMAS.slice().reverse().forEach((e, kk) => ligne(I["ema" + e], Yp, coulEma(5 - kk), 1.4));
+  const bougie = (k, o, h, l, c, enCours) => { const up = c >= o; x.strokeStyle = x.fillStyle = up ? COL.hausse : COL.baisse; if (enCours) x.globalAlpha = .75;
+    x.beginPath(); x.moveTo(X(k), Yp(h)); x.lineTo(X(k), Yp(l)); x.stroke(); const bw = Math.max(1, pw * .65), ya = Yp(Math.max(o, c)), yb = Yp(Math.min(o, c)); x.fillRect(X(k) - bw / 2, ya, bw, Math.max(1, yb - ya)); x.globalAlpha = 1; };
+  for (let k = deb; k <= fin; k++) bougie(k, ...B[k].slice(0, 4), k === K_EN_COURS);
+  if (partielle) bougie(fin + 1, ...partielle.slice(0, 4), true);
+  // entrees des agents jusqu'a l'heure du replay
+  SE.forEach(se => { const kk = NQ2.jours.indexOf(se.jour); if (kk < 0) return; const avant = se.jour < s.jour;
+    const tri = (sens, mi, e, c) => { if (!avant && mi > ST.m) return; const k = kk * 26 + Math.floor(mi / 15); if (k < deb || k > kmax) return; x.fillStyle = c; const yy = Yp(e); x.beginPath();
+      if (sens > 0) { x.moveTo(X(k), yy + 3); x.lineTo(X(k) - 5, yy + 12); x.lineTo(X(k) + 5, yy + 12); } else { x.moveTo(X(k), yy - 3); x.lineTo(X(k) - 5, yy - 12); x.lineTo(X(k) + 5, yy - 12); } x.fill(); };
+    se.st.forEach(([sens, mi, mo, e]) => tri(sens, mi, e, COL.cyan)); se.zone.forEach(([sens, mi, mo, e]) => tri(sens, mi, e, COL.violet)); });
+  const dern = partielle ? partielle[3] : B[fin][3];
+  x.fillStyle = COL.ambre; x.fillRect(W - g.r + 1, Yp(dern) - 8, g.r - 2, 16); x.fillStyle = COL.noir; x.fillText(nf(dern, 2), W - g.r + 3, Yp(dern));
+  x.strokeStyle = COL.ambre; x.setLineDash([1, 3]); x.beginPath(); x.moveTo(g.l, Yp(dern)); x.lineTo(W - g.r, Yp(dern)); x.stroke(); x.setLineDash([]);
+  let vmax = 1; for (let k = deb; k <= fin; k++) vmax = Math.max(vmax, B[k][4]); const [va, vb] = Z.volume;
+  for (let k = deb; k <= fin; k++) { x.fillStyle = B[k][3] >= B[k][0] ? "rgba(47,209,111,.55)" : "rgba(255,79,79,.55)"; const hh = (vb - va - 6) * B[k][4] / vmax; x.fillRect(X(k) - pw * .35, vb - 2 - hh, pw * .7, hh); }
+  const Yr = sc("RSI 14", 0, 100); [30, 70].forEach(v => { x.strokeStyle = COL.grille; x.beginPath(); x.moveTo(g.l, Yr(v)); x.lineTo(W - g.r, Yr(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(v, W - g.r + 5, Yr(v)); }); ligne(I.rsi, Yr, COL.ambre, 1.3);
+  let mlo = 0, mhi = 0; for (let k = deb; k <= fin; k++) [I.macd[k], I.macd_s[k], I.macd_h[k]].forEach(v => { if (v != null) { mlo = Math.min(mlo, v); mhi = Math.max(mhi, v); } });
+  const Ym = sc("MACD", mlo, mhi); for (let k = deb; k <= fin; k++) { const v = I.macd_h[k]; if (v == null) continue; x.fillStyle = v >= 0 ? "rgba(47,209,111,.6)" : "rgba(255,79,79,.6)"; x.fillRect(X(k) - pw * .35, Math.min(Ym(0), Ym(v)), pw * .7, Math.abs(Ym(v) - Ym(0))); }
+  ligne(I.macd, Ym, COL.cyan); ligne(I.macd_s, Ym, COL.ambre);
+  const Yl = sc("signal ML", .3, .7); [.45, .55].forEach(v => { x.strokeStyle = COL.grille; x.beginPath(); x.moveTo(g.l, Yl(v)); x.lineTo(W - g.r, Yl(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(nf(v * 100) + " %", W - g.r + 5, Yl(v)); });
+  for (let k = deb; k <= fin; k++) { const p = NQ2.proba[k]; if (p == null) continue; x.fillStyle = p > .55 ? COL.hausse : p < .45 ? COL.baisse : COL["gris2"]; x.fillRect(X(k) - pw * .35, Math.min(Yl(.5), Yl(p)), pw * .7, Math.max(1, Math.abs(Yl(p) - Yl(.5)))); }
+}
+function sparkline(cv, vals, c) {
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth || 200, H = 28; cv.width = W * dpr; cv.height = H * dpr;
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); if (vals.length < 2) return;
+  const lo = Math.min(...vals), hi = Math.max(...vals), Y = v => 2 + (H - 4) * (hi - v) / (hi - lo || 1), X = i => W * i / 77;
+  x.strokeStyle = c; x.lineWidth = 1.3; x.beginPath(); vals.forEach((v, i) => i ? x.lineTo(X(i), Y(v)) : x.moveTo(X(i), Y(v))); x.stroke();
+  x.fillStyle = c; x.beginPath(); x.arc(X(vals.length - 1), Y(vals[vals.length - 1]), 2.5, 0, 7); x.fill();
+}
+function jauge(cv, val, min, max, titre, txt, couleurs) {
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth || 160, H = 72; cv.width = W * dpr; cv.height = H * dpr;
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const cx = W / 2, cy = 50, r = Math.min(W / 2 - 10, 38), u = Math.max(0, Math.min(1, (val - min) / (max - min)));
+  x.lineWidth = 9; x.strokeStyle = COL.grille; x.beginPath(); x.arc(cx, cy, r, Math.PI, 2 * Math.PI); x.stroke();
+  const c = couleurs(u); x.strokeStyle = c; x.beginPath(); x.arc(cx, cy, r, Math.PI, Math.PI + Math.PI * u); x.stroke();
+  x.fillStyle = COL.blanc; x.font = `600 14px ${css("--mono")}`; x.textAlign = "center"; x.fillText(txt, cx, cy - 6);
+  x.fillStyle = COL.gris; x.font = `10px ${css("--cond")}`; x.fillText(titre.toUpperCase(), cx, H - 8); x.textAlign = "left";
+}
+function positionSt(prix) {
+  const lat = ST.pos ? ST.pos * (prix - ST.prix) * 2 - Math.abs(ST.pos) * 1.5 : 0;
+  $("st-pos").innerHTML = [["Position", `<span class="${cl(ST.pos)}">${ST.pos} MNQ</span>`], ["Latent", `<span class="${cl(lat)}">${usd(lat)}</span>`], ["Réalisé", `<span class="${cl(ST.real)}">${usd(ST.real)}</span>`]]
+    .map(([l, v]) => `<div><span class="l">${l}</span><span class="n">${v}</span></div>`).join("");
+  $("st-ordres").innerHTML = `<tbody>${ST.attente !== null ? `<tr><td class="a">en attente</td><td class="a" colspan="3">vers ${ST.attente} MNQ au marché</td></tr>` : ""}` + ST.ordres.slice(0, 8).map(o => `<tr><td>${o.t}</td><td class="${o.c === "achat" ? "h" : "b"}">${o.c} ${o.q}</td><td>${nf(o.p, 2)}</td><td class="g">${o.motif}</td></tr>`).join("") + "</tbody>";
+  const fini = !LIVE.ouverte || ST.m >= 385; ["st-achat", "st-vente", "st-plat"].forEach(id => $(id).disabled = fini);
+}
+function tape(s, prix, fin) {
+  const I = NQ2.ind, k = Math.max(0, fin), vr = prix - s.veille;
+  const items = [[esc(LIVE.symboles.nq || "NQ"), `<span class="${cl(vr)}">${nf(prix, 2)} ${vr >= 0 ? "▲" : "▼"} ${sg(vr / s.veille * 100, 2)} %</span>`], ["VWAP", nf(s.vwap[s.vwap.length - 1], 2)],
+    ["EMA 8 / 55", I.ema8[k] > I.ema55[k] ? `<span class="h">haussier</span>` : `<span class="b">baissier</span>`], ["RSI", nf(I.rsi[k], 0)], ["ATR 15 min", nf(I.atr[k], 1) + " pts"],
+    ["ML", NQ2.proba[k] == null ? "—" : nf(NQ2.proba[k] * 100, 0) + " %"], ["SUPERTREND", s.sens[s.sens.length - 1] > 0 ? `<span class="h">acheteur</span>` : `<span class="b">vendeur</span>`],
+    ["ZONE", s.bandes.length ? `${nf(s.bandes[0][2], 0)} – ${nf(s.bandes[0][1], 0)}` : "—"], ["SÉANCE", dateFr(s.jour)]];
+  const h = items.map(([a, b]) => `<span><span class="a">${a}</span> ${b}</span>`).join("");
+  $("st-tape").innerHTML = h + h;
+}
+// ================================================================== mode direct : tout est recalcule a partir des minutes du relais
+const MODELE = JSON.parse(document.getElementById("modele").textContent);
+let SE = [], NQ2 = null, NS = 0, K_EN_COURS = -1, EV = [];
+const RS = 30;                                                     // seances montrees dans les reliefs
+const ST = { s: 0, m: 0, rel: null, ordres: [], pos: 0, prix: 0, real: 0, attente: null, init: false };
+const LIVE = { nq: {}, es: {}, jours: [], esJours: [], compte: null, ny: null, utc: 0, connecte: false, coupe: false, dernierFlux: 0,
+  symboles: {}, nqDernier: null, esDernier: null, age: null, ouverte: false, lignes: new Set(), nbLignes: 0 };
+const VUS = new Set(), AGENTS = {};
+const lire = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } };
+const ecrire = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const parisHM = ms => { try { return new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" }).format(new Date(ms)).replace(":", "h"); } catch (e) { return ""; } };
+// horloge de New York vue comme UTC : cle de tri commune aux signaux calcules et aux lignes des agents
+const cleNy = (jour, m) => Date.UTC(+jour.slice(0, 4), +jour.slice(5, 7) - 1, +jour.slice(8, 10)) + (570 + m) * 60000;
+const ecartNy = () => LIVE.ny && LIVE.utc ? Date.UTC(+LIVE.ny.slice(0, 4), +LIVE.ny.slice(5, 7) - 1, +LIVE.ny.slice(8, 10), +LIVE.ny.slice(11, 13), +LIVE.ny.slice(14, 16), +LIVE.ny.slice(17, 19)) - LIVE.utc : -5 * 3600000;
+
+// ------------------------------------------------------------------ indicateurs 15 min et signal ML (memes formules que le terminal)
+function emaArr(x, n) { const a = 2 / (n + 1), o = new Array(x.length); o[0] = x[0]; for (let i = 1; i < x.length; i++) o[i] = a * x[i] + (1 - a) * o[i - 1]; return o; }
+function indicateurs15(B) {
+  const c = B.map(b => b[3]), h = B.map(b => b[1]), l = B.map(b => b[2]), n = c.length, I = {};
+  EMAS.forEach(e => I["ema" + e] = emaArr(c, e));
+  I.bb_h = new Array(n).fill(null); I.bb_m = new Array(n).fill(null); I.bb_b = new Array(n).fill(null);
+  for (let i = 19; i < n; i++) { let s = 0; for (let k = i - 19; k <= i; k++) s += c[k]; const m = s / 20; let v = 0; for (let k = i - 19; k <= i; k++) v += (c[k] - m) ** 2; const sd = Math.sqrt(v / 20);
+    I.bb_m[i] = m; I.bb_h[i] = m + 2 * sd; I.bb_b[i] = m - 2 * sd; }
+  I.rsi = new Array(n).fill(null); let au = 0, ad = 0;
+  for (let i = 1; i < n; i++) { const d = c[i] - c[i - 1], up = Math.max(d, 0), dn = Math.max(-d, 0);
+    if (i <= 14) { au += up / 14; ad += dn / 14; if (i === 14) I.rsi[i] = ad === 0 ? 100 : 100 - 100 / (1 + au / ad); }
+    else { au = (au * 13 + up) / 14; ad = (ad * 13 + dn) / 14; I.rsi[i] = ad === 0 ? 100 : 100 - 100 / (1 + au / ad); } }
+  const e12 = emaArr(c, 12), e26 = emaArr(c, 26); I.macd = c.map((_, i) => e12[i] - e26[i]); I.macd_s = emaArr(I.macd, 9); I.macd_h = I.macd.map((v, i) => v - I.macd_s[i]);
+  I.atr = new Array(n).fill(null); let atr = 0;
+  for (let i = 0; i < n; i++) { const pc = i ? c[i - 1] : c[0], tr = Math.max(h[i] - l[i], Math.abs(h[i] - pc), Math.abs(l[i] - pc));
+    if (i < 13) atr += tr / 14; else if (i === 13) { atr += tr / 14; I.atr[i] = atr; } else { atr = (atr * 13 + tr) / 14; I.atr[i] = atr; } }
+  const bw = c.map((_, i) => I.bb_m[i] == null ? null : (I.bb_h[i] - I.bb_b[i]) / I.bb_m[i]);
+  I.bbw_rang = new Array(n).fill(null);
+  for (let i = 0; i < n; i++) { if (bw[i] == null) continue; const w = []; for (let k = Math.max(0, i - 499); k <= i; k++) if (bw[k] != null) w.push(bw[k]);
+    if (w.length < 100) continue; let moins = 0, egal = 0; w.forEach(v => { if (v < bw[i]) moins++; else if (v === bw[i]) egal++; }); I.bbw_rang[i] = (moins + (egal + 1) / 2) / w.length * 100; }
+  return I;
+}
+function probaML(B, I) {
+  const c = B.map(b => b[3]), n = c.length, lr = c.map((v, i) => i ? Math.log(v / c[i - 1]) : 0), p = new Array(n).fill(null);
+  const somme = (i, k) => { if (i < k - 1) return null; let s = 0; for (let j = i - k + 1; j <= i; j++) s += lr[j]; return s; };
+  for (let i = 0; i < n; i++) {
+    const b = B[i][5], f = [lr[i], somme(i, 4), somme(i, 16), I.rsi[i] == null ? null : (I.rsi[i] - 50) / 50, I.macd_h[i] / c[i] * 100,
+      I.bb_m[i] == null ? null : (c[i] - I.bb_m[i]) / (I.bb_h[i] - I.bb_m[i]), I.atr[i] == null ? null : I.atr[i] / c[i] * 100,
+      I.bbw_rang[i] == null ? null : I.bbw_rang[i] / 100, (I.ema8[i] - I.ema55[i]) / c[i] * 100, Math.sin(2 * Math.PI * b / 26), Math.cos(2 * Math.PI * b / 26)];
+    if (f.some(v => v == null || !isFinite(v))) continue;
+    let z = MODELE.w[0]; f.forEach((v, k) => z += MODELE.w[k + 1] * (v - MODELE.mu[k]) / MODELE.sd[k]); p[i] = 1 / (1 + Math.exp(-z));
+  }
+  return p;
+}
+
+// ------------------------------------------------------------------ seances reconstruites a partir des minutes
+// fin : derniere minute remplie (389 pour une seance passee, minute en cours aujourd'hui) ; F : minutes terminees
+function tableaux(lignes, fin, F) {
+  const O = new Array(390).fill(NaN), H = O.slice(), L = O.slice(), C = O.slice(), V = new Array(390).fill(0);
+  lignes.forEach(([m, o, h, l, c, v]) => { if (m >= 0 && m <= fin) { O[m] = o; H[m] = h; L[m] = l; C[m] = c; V[m] = v || 0; } });
+  const nb = C.filter(x => !isNaN(x)).length, bords = !isNaN(C[0]) && !isNaN(C[389]);
+  for (let m = 1; m <= fin; m++) if (isNaN(C[m])) C[m] = C[m - 1];
+  for (let m = fin - 1; m >= 0; m--) if (isNaN(C[m])) C[m] = C[m + 1];
+  for (let m = 0; m <= fin; m++) { if (isNaN(O[m])) O[m] = C[m]; if (isNaN(H[m])) H[m] = Math.max(O[m], C[m]); if (isNaN(L[m])) L[m] = Math.min(O[m], C[m]); }
+  return { O, H, L, C, V, fin, F, complete: F >= 390 && bords && nb >= 370 };
+}
+function construire() {
+  const jours = LIVE.jours.slice().sort(), auj = LIVE.ny ? LIVE.ny.slice(0, 10) : null;
+  const mNow = LIVE.ny ? (+LIVE.ny.slice(11, 13)) * 60 + (+LIVE.ny.slice(14, 16)) - 570 : 9999;
+  const T = jours.map(j => j === auj ? (mNow < 0 ? null : tableaux(LIVE.nq[j] || [], Math.min(389, mNow), Math.min(390, mNow))) : tableaux(LIVE.nq[j] || [], 389, 390));
+  const garde = T.map(t => t && t.fin >= 0 && !isNaN(t.C[0]));
+  const J = jours.filter((_, k) => garde[k]), TT = T.filter((_, k) => garde[k]);
+  if (!TT.length) { NS = 0; return { mNow, auj }; }
+  // barres de 5 min (en cours comprise) et Supertrend 10-3 continu sur les barres terminees
+  const b5 = TT.map(t => { const nb = Math.min(78, Math.ceil((t.fin + 1) / 5)), out = [];
+    for (let b = 0; b < nb; b++) { const a = 5 * b, z = Math.min(a + 4, t.fin); let h = -Infinity, l = Infinity; for (let m = a; m <= z; m++) { h = Math.max(h, t.H[m]); l = Math.min(l, t.L[m]); } out.push([t.O[a], h, l, t.C[z]]); } return out; });
+  const seq = []; b5.forEach((bs, s) => bs.forEach((b, i) => seq.push([s, i, b, i >= Math.floor(TT[s].F / 5)])));
+  let atr = 0, hb = NaN, lb = NaN, dir = 1, nb = 0, cp = NaN; const ligneS = TT.map(() => []), sensS = TT.map(() => []);
+  seq.forEach(([s, i, [o, h, l, c], enCours]) => {
+    if (enCours) { ligneS[s][i] = dir > 0 ? lb : hb; sensS[s][i] = nb >= 10 ? dir : 0; return; }   // la barre en cours ne decide rien
+    if (nb >= 1) { const tr = Math.max(h - l, Math.abs(h - cp), Math.abs(l - cp)); atr = nb === 1 ? tr : (atr * 9 + tr) / 10;
+      const mid = (h + l) / 2; let h2 = mid + 3 * atr, l2 = mid - 3 * atr;
+      if (nb > 1) { h2 = (h2 < hb || cp > hb) ? h2 : hb; l2 = (l2 > lb || cp < lb) ? l2 : lb; if (dir > 0 && c < l2) dir = -1; else if (dir < 0 && c > h2) dir = 1; }
+      hb = h2; lb = l2; }
+    ligneS[s][i] = dir > 0 ? lb : hb; sensS[s][i] = nb >= 10 ? dir : 0; cp = c; nb++;
+  });
+  // zone de bruit : 14 seances completes precedentes ; veille = cloture de la derniere seance complete
+  const mv = TT.map(t => Array.from({ length: 12 }, (_, k) => Math.abs(t.C[(k + 1) * 30] / t.O[0] - 1)));
+  SE = TT.map((t, s) => {
+    const prec = TT.map((x, k) => k).filter(k => k < s && TT[k].complete);
+    const veille = prec.length ? TT[prec[prec.length - 1]].C[389] : t.O[0];
+    let bandes = [];
+    if (prec.length >= 14) { const p14 = prec.slice(-14), sig = Array.from({ length: 12 }, (_, k) => p14.reduce((a, q) => a + mv[q][k], 0) / 14);
+      const rh = Math.max(t.O[0], veille), rb = Math.min(t.O[0], veille); bandes = sig.map((sg_, k) => [(k + 1) * 30, rh * (1 + sg_), rb * (1 - sg_)]); }
+    const vw = []; let ct = 0, cv = 0, cs = 0;
+    for (let m = 0; m <= t.fin; m++) { const ty = (t.H[m] + t.L[m] + t.C[m]) / 3; ct += ty * t.V[m]; cv += t.V[m]; cs += ty; if (m % 5 === 4 || m === t.fin) vw.push(cv > 0 ? ct / cv : cs / (m + 1)); }
+    // regle du Supertrend NQ (1 MNQ, comme le moteur verifie) : decision a la cloture de la barre, ordre a l'ouverture de la minute suivante
+    const st = []; let pos = 0, mi = 0, e = 0; const nbF = Math.floor(t.F / 5);
+    for (let b = 0; b < Math.min(76, nbF); b++) { const sens = sensS[s][b], cible = sens === 0 ? pos : sens, m = 5 * b + 5; if (m > t.fin) break;
+      if (cible !== pos && pos !== 0) { st.push([pos, mi, m, e, t.O[m], pos * (t.O[m] - e)]); pos = 0; }
+      if (cible !== 0 && pos === 0 && m <= 360) { pos = cible; mi = m; e = t.O[m]; } }
+    if (pos !== 0) { if (t.F >= 385) st.push([pos, mi, 385, e, t.C[384], pos * (t.C[384] - e)]); else st.push([pos, mi, 9999, e, t.C[t.fin], pos * (t.C[t.fin] - e)]); }
+    return { jour: J[s], complete: t.complete, veille, barres: b5[s], vwap: vw, ligne: ligneS[s], sens: sensS[s], bandes, st, zone: [],
+      st_usd: st.reduce((a, x) => a + 2 * x[5] - 3, 0), zone_usd: 0 };
+  });
+  // barres de 15 min (la bougie en cours comprise : ses indicateurs bougent avec le prix), signal ML, profils de volume
+  const B = [], jr = []; K_EN_COURS = -1;
+  TT.forEach((t, s) => { jr.push(J[s]); const nqF = Math.floor(t.F / 15), nqT = Math.min(26, Math.ceil((t.fin + 1) / 15));
+    for (let q = 0; q < 26; q++) { if (q >= nqT) { B.push(null); continue; } const a = 15 * q, z = Math.min(a + 14, t.fin); let h = -Infinity, l = Infinity, v = 0;
+      for (let m = a; m <= z; m++) { h = Math.max(h, t.H[m]); l = Math.min(l, t.L[m]); v += t.V[m]; }
+      B.push([t.O[a], h, l, t.C[z], v, q]); if (q >= nqF) K_EN_COURS = B.length - 1; } });
+  const dernier = B.reduce((k, b, i) => b ? i : k, 0), Bc = [];
+  for (let i = 0; i <= dernier; i++) Bc.push(B[i] || (Bc.length ? [...Bc[Bc.length - 1].slice(0, 5), i % 26] : [0, 0, 0, 0, 0, i % 26]));
+  const I = indicateurs15(Bc), P = probaML(Bc, I);
+  let lo = Infinity, hi = -Infinity; TT.forEach(t => { for (let m = 0; m <= t.fin; m++) { lo = Math.min(lo, t.L[m]); hi = Math.max(hi, t.H[m]); } });
+  const bas = Math.floor(lo / 25) * 25, cases = Math.max(1, Math.ceil((hi - bas) / 25));
+  const valeurs = TT.map(t => { const p = new Array(cases).fill(0); for (let m = 0; m <= t.fin; m++) { const k = Math.max(0, Math.min(cases - 1, Math.floor(((t.H[m] + t.L[m] + t.C[m]) / 3 - bas) / 25))); p[k] += t.V[m]; } return p; });
+  NQ2 = { jours: jr, barres: Bc, ind: I, proba: P, profils: { bas, pas: 25, cases, valeurs } };
+  NS = SE.length;
+  return { mNow, auj };
+}
+
+// ------------------------------------------------------------------ connexion au relais
+async function chargerHistorique() {
+  etat("connexion au relais…", "a");
+  const r = await fetch("/historique", { cache: "no-store" }); if (!r.ok) throw new Error("relais injoignable (" + r.status + ")");
+  const h = await r.json();
+  LIVE.nq = h.nq.minutes; LIVE.jours = h.nq.jours.slice();
+  if (h.es) { LIVE.es = h.es.minutes; LIVE.esJours = h.es.jours.slice(); }
+  LIVE.symboles = h.symboles || {};
+  $("d-symbole").textContent = LIVE.symboles.nq || "NQ";
+  document.title = `${LIVE.symboles.nq || "NQ"} en direct · Station`;
+}
+function brancherFlux() {
+  const es = new EventSource("/flux");
+  es.onopen = () => { LIVE.connecte = true; if (LIVE.coupe) { LIVE.coupe = false; chargerHistorique().then(ticLive).catch(() => {}); } };
+  es.onerror = () => { LIVE.connecte = false; LIVE.coupe = true; etat("relais coupé : nouvelle tentative…", "b"); };
+  es.onmessage = ev => { try { recevoir(JSON.parse(ev.data)); } catch (e) { console.error(e); } };
+}
+function majMinute(src, js, jour, m, barre) {
+  if (!barre || m < 0 || m > 389) return;
+  if (!src[jour]) { src[jour] = []; js.push(jour); js.sort(); }
+  const L = src[jour], i = L.findIndex(r => r[0] === m), row = [m, ...barre];
+  if (i >= 0) L[i] = row; else L.push(row);
+}
+let attenteCalcul = false;
+function recevoir(d) {
+  LIVE.dernierFlux = Date.now();
+  if (d.utc) LIVE.utc = Date.parse(d.utc);
+  if (d.ny) LIVE.ny = d.ny;
+  (d.journaux || []).forEach(journal);
+  if (!d.debut) {
+    LIVE.compte = d.compte;
+    if (d.nq) { LIVE.nqDernier = d.nq.dernier || null; LIVE.age = d.nq.age; majMinute(LIVE.nq, LIVE.jours, d.nq.jour, d.nq.m - 1, d.nq.prec); majMinute(LIVE.nq, LIVE.jours, d.nq.jour, d.nq.m, d.nq.barre); }
+    if (d.es) { LIVE.esDernier = d.es.dernier || null; majMinute(LIVE.es, LIVE.esJours, d.es.jour, d.es.m - 1, d.es.prec); majMinute(LIVE.es, LIVE.esJours, d.es.jour, d.es.m, d.es.barre); }
+  }
+  if (!attenteCalcul) { attenteCalcul = true; requestAnimationFrame(() => { attenteCalcul = false; ticLive(); }); }
+}
+// une ligne du journal d'un agent : "AAAA-MM-JJ HH:MM:SS UTC texte"
+function journal(j) {
+  const cle = j.agent + "|" + j.ligne; if (LIVE.lignes.has(cle)) return; LIVE.lignes.add(cle);
+  const m = j.ligne.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC (.*)$/); if (!m) return;
+  const texte = m[7], nom = j.agent.replace(/^Bot3en1$/i, "Bot 3 en 1").replace(/^SupertrendNQ$/i, "Supertrend NQ");
+  const t = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]), hp = parisHM(t);
+  const pos = texte.match(/\(position (-?\d+) -> (-?\d+)\)/);
+  const action = pos ? Math.sign(+pos[2]) : /^(achat|vente)\b/.test(texte) ? (texte.startsWith("achat") ? 1 : -1) : /^(sortie|fin de seance)|position MNQ fermee|arretee/.test(texte) ? 0 : null;
+  const a = AGENTS[nom] || (AGENTS[nom] = { nom, pos: 0, derniere: "", heure: "" });
+  if (action !== null) a.pos = action; a.derniere = texte; a.heure = hp;
+  if (LIVE.utc && LIVE.utc - t > 16 * 3600000) return;                       // ancienne seance : etat de l'agent seulement
+  LIVE.nbLignes++;
+  const cls = /ERREUR|ALERTE|ATTENTION|limite|OBJECTIF/.test(texte) ? "b" : action === 1 ? "h" : action === -1 ? "b" : nom.startsWith("Super") ? "c" : "v";
+  ajouterFlux({ t: hp, k: t + ecartNy(), txt: `<b>${esc(nom)}</b> : ${esc(texte.length > 160 ? texte.slice(0, 160) + "…" : texte)}`, cls }, ST.init);
+}
+function etat(t, cls) { $("d-etat").textContent = t; $("d-etat").className = cls || ""; }
+// flux trie du plus recent au plus ancien, quelle que soit l'heure d'arrivee
+function ajouterFlux(e, neuf) {
+  const f = $("st-feed"), d = document.createElement("div"); if (neuf) d.className = "neuf"; d.dataset.k = e.k || 0;
+  d.innerHTML = `<span class="a">${e.t}</span><span class="${e.cls}">${e.txt}</span>`;
+  let apres = null; for (const x of f.children) if (+x.dataset.k <= (e.k || 0)) { apres = x; break; }
+  f.insertBefore(d, apres); while (f.children.length > 80) f.lastChild.remove();
+}
+
+// ------------------------------------------------------------------ rendu en direct
+function ticLive() {
+  if (!LIVE.jours.length || !LIVE.ny) return;                                // l'heure vient du relais
+  const { mNow, auj } = construire(); if (!NS) return;
+  ST.s = NS - 1; const s = SE[ST.s], estAuj = s.jour === auj;
+  const ouverte = LIVE.ouverte = estAuj && mNow >= 0 && mNow <= 389;
+  ST.m = estAuj ? Math.max(0, Math.min(390, mNow)) : 390;
+  const frais = LIVE.connecte && Date.now() - LIVE.dernierFlux < 5000, vivant = LIVE.age != null && LIVE.age < 120;
+  const [cBadge, tBadge] = !frais ? ["rouge", "COUPÉ"] : !ouverte ? ["ambre", "HORS SÉANCE"] : vivant ? ["vert", "DIRECT"] : ["ambre", "PAS DE TRANSACTION"];
+  $("d-badge").className = "direct " + cBadge; $("d-badge").lastChild.textContent = tBadge;
+  etat(!frais ? "aucune donnée du relais : vérifie que Quantower et la stratégie « Relais NQ » tournent"
+    : LIVE.age == null ? "relais branché, aucune transaction NQ reçue depuis son lancement"
+    : `dernière transaction NQ il y a ${nf(LIVE.age, 0)} s`, !frais ? "b" : vivant ? "g" : "a");
+  $("st-horloge").textContent = LIVE.ny ? `${dateFr(LIVE.ny.slice(0, 10))} · ${LIVE.ny.slice(11, 19)} New York · ${parisHM(LIVE.utc)} Paris` : "—";
+  // signaux calcules : une seule fois chacun, quand leur barre est terminee
+  const sec = LIVE.ny ? +LIVE.ny.slice(17, 19) : 59;
+  EV = evenementsSeance(ST.s).filter(e => e.m < ST.m || (e.m === ST.m && (!ouverte || sec >= 2)));
+  EV.forEach(e => { const k = s.jour + "|" + e.m + "|" + e.txt; if (!VUS.has(k)) { VUS.add(k); ajouterFlux({ ...e, k: cleNy(s.jour, e.m) }, ST.init); } });
+  ST.init = true;
+  $("st-feed-n").textContent = `${EV.length} calculés · ${LIVE.nbLignes} des agents`;
+  // prix : derniere transaction ; graphique : bougies de 15 min, celle en cours bouge a chaque transaction
+  const fin = NQ2.barres.length - 1, prix = LIVE.nqDernier || NQ2.barres[fin][3];
+  chartStation(fin, null, s);
+  cotationsLive(s, prix, ouverte);
+  agentsLive(s, prix);
+  jaugesLive(fin);
+  if (ST.attente !== null) { if (ouverte) executerSt(ST.attente, prix, "ordre"); ST.attente = null; }
+  if (ST.pos && (!ouverte || ST.m >= 385)) executerSt(0, prix, "fin de séance");
+  positionSt(prix);
+  tape(s, prix, fin);
+  if (!ST.rel) ST.rel = reliefsLive(s);
+  if (ST.rel) ST.rel.maj(prix);
+}
+function cotationsLive(s, prix, ouverte) {
+  $("st-q-heure").textContent = LIVE.ny ? LIVE.ny.slice(11, 16) + " NY" : "";
+  const b = s.barres, hi = Math.max(...b.map(v => v[1])), lo = Math.min(...b.map(v => v[2]));
+  const ref = ouverte ? s.veille : b[b.length - 1][3], vr = prix - ref, txtRef = ouverte ? "vs veille" : `vs clôture ${heure(s.jour, 390)}`;
+  let esTxt = `<div class="quote"><span class="a">ES · S&amp;P 500</span><span class="g">non suivi</span><span class="g" style="grid-column:1/-1;font-size:11px">Choisis un symbole ES dans les réglages du relais pour l'afficher.</span></div>`;
+  if (LIVE.esDernier) { const ej = LIVE.esJours[LIVE.esJours.length - 1], rows = (LIVE.es[ej] || []).slice().sort((x, y) => x[0] - y[0]), o = rows.length ? rows[0][1] : LIVE.esDernier;
+    esTxt = `<div class="quote"><span class="a">${esc(LIVE.symboles.es || "ES")} · S&amp;P 500</span><b class="${cl(LIVE.esDernier - o)}">${nf(LIVE.esDernier, 2)}</b><span class="g">depuis l'ouverture</span><span class="${cl(LIVE.esDernier - o)}">${sg((LIVE.esDernier / o - 1) * 100, 2)} %</span></div>`; }
+  $("st-quotes").innerHTML = `<div class="quote"><span class="a">${esc(LIVE.symboles.nq || "NQ")} · Nasdaq 100</span><b class="${cl(vr)}">${nf(prix, 2)}</b><span class="g">${txtRef}</span><span class="${cl(vr)}">${sg(vr, 2)} (${sg(vr / ref * 100, 2)} %)</span><span class="g">plus haut / bas</span><span>${nf(hi, 0)} / ${nf(lo, 0)}</span><canvas id="st-spark"></canvas></div>` + esTxt;
+  sparkline($("st-spark"), b.map(v => v[3]), vr >= 0 ? COL.hausse : COL.baisse);
+  const i5 = b.length - 1, niv = [["VWAP", s.vwap[s.vwap.length - 1], "a"], [`Supertrend ${s.sens[i5] > 0 ? "▲" : "▼"}`, s.ligne[i5], s.sens[i5] > 0 ? "h" : "b"], ["Clôture veille", s.veille, "g"]];
+  const band = s.bandes.filter(([m]) => m <= Math.max(30, ST.m)).pop(); if (band) { niv.push(["Zone haut", band[1], "v"]); niv.push(["Zone bas", band[2], "v"]); }
+  niv.push(["Dernier", prix, "blanc"]);
+  $("st-niveaux").innerHTML = niv.filter(x => x[1] != null && isFinite(x[1])).sort((a, b2) => b2[1] - a[1]).map(([t, p, c]) => `<div><span class="${c === "blanc" ? "" : c}" style="${c === "blanc" ? "color:var(--noir);background:var(--ambre);padding:0 3px" : ""}">${nf(p, 2)}</span><span>${t}</span></div>`).join("");
+}
+// plancher Option 1 : il monte avec le plus haut solde vu (solde - 2 500 $), jamais au-dessus de 50 100 $
+function plancher(sol) {
+  let pl = +lire("plancher", "49000") || 49000;
+  if (sol != null && sol - 2500 > pl && pl < 50100) { pl = Math.min(50100, Math.round(sol - 2500)); ecrire("plancher", pl); $("d-plancher").value = pl; }
+  return pl;
+}
+function agentsLive(s, prix) {
+  const C0 = LIVE.compte, lignes = [];
+  if (C0) lignes.push(`<tr><td class="a">Compte ${esc(C0.nom || "")}</td><td class="${cl(C0.position)}">${C0.position ? (C0.position > 0 ? "+" : "") + C0.position + " MNQ" : "à plat"}</td><td>${C0.prix ? nf(C0.prix, 2) : "—"}</td><td class="${cl(C0.latent)}">${C0.position ? usd(C0.latent) : "—"}</td><td>${C0.solde != null ? nf(C0.solde, 0) + " $" : "—"}</td></tr>`);
+  Object.values(AGENTS).forEach(a => lignes.push(`<tr><td class="${a.nom.startsWith("Super") ? "c" : "v"}">${esc(a.nom)}</td><td class="${cl(a.pos)}">${a.pos > 0 ? "acheteur" : a.pos < 0 ? "vendeur" : "à plat"}</td><td colspan="3" style="text-align:left;white-space:normal;font-size:11px" class="g">${a.heure} ${esc(a.derniere.slice(0, 110))}</td></tr>`));
+  const r = s.st, o = r.length && r[r.length - 1][2] === 9999 ? r[r.length - 1] : null;
+  lignes.push(`<tr><td class="c">Règle Supertrend (calcul)</td><td class="${cl(o ? o[0] : 0)}">${o ? (o[0] > 0 ? "acheteur" : "vendeur") : "à plat"}</td><td>${o ? nf(o[3], 2) : "—"}</td><td class="${o ? cl(o[0] * (prix - o[3])) : ""}">${o ? usd(o[0] * (prix - o[3]) * 2 - 3) : "—"}</td><td class="${cl(s.st_usd)}">${usd(s.st_usd)} jour</td></tr>`);
+  $("st-agents").innerHTML = `<thead><tr><th>Qui</th><th>Position</th><th>Entrée</th><th>Latent</th><th>Solde / jour</th></tr></thead><tbody>${lignes.join("")}</tbody>`;
+  const sol = C0 && C0.solde != null ? C0.solde + (C0.latent || 0) : null, pl = plancher(sol);
+  $("st-agents-note").innerHTML = sol != null ? `Distance au plancher (${nf(pl)} $) : <b class="${sol - pl < 400 ? "b" : sol - pl < 800 ? "a" : "h"}">${usd(sol - pl)}</b>, latent compris.`
+    : "Choisis le compte et le symbole MNQ dans les réglages du relais pour voir la vraie position et le solde.";
+}
+function jaugesLive(fin) {
+  if (!$("st-jauges").children.length) $("st-jauges").innerHTML = '<canvas id="j1"></canvas><canvas id="j2"></canvas><canvas id="j3"></canvas><canvas id="j4"></canvas>';
+  const I = NQ2.ind, atr = I.atr[fin] || 0, rang = I.bbw_rang[fin] || 0, p = NQ2.proba[fin];
+  const feu = u => u < .5 ? COL.hausse : u < .8 ? COL.ambre : COL.baisse;
+  jauge($("j1"), atr * 2, 0, 400, "ATR 15 min par MNQ", nf(atr * 2) + " $", feu);
+  jauge($("j2"), rang, 0, 100, "Régime de volatilité", nf(rang) + " %", feu);
+  jauge($("j3"), p == null ? .5 : p, .3, .7, "Signal ML (1 h)", p == null ? "—" : nf(p * 100) + " %", u => u > .625 ? COL.hausse : u < .375 ? COL.baisse : COL.gris);
+  const lim = +lire("limite", "400") || 400, C0 = LIVE.compte, j = (LIVE.ny || "").slice(0, 10);
+  let jour = null;
+  if (C0 && C0.solde != null) { let deb = +lire("solde-" + j, "0"); if (!deb) { deb = C0.solde; ecrire("solde-" + j, deb); } jour = C0.solde - deb + (C0.latent || 0); }
+  jauge($("j4"), jour == null ? 0 : Math.max(0, -jour), 0, lim, `Jour réel / limite ${nf(lim)} $`, jour == null ? "—" : usd(jour), feu);
+}
+function ordreSt(sens) { if (!LIVE.ouverte) return; const q = +$("st-qte").value; ST.attente = sens === 0 ? 0 : Math.max(-3, Math.min(3, ST.pos + sens * q)); ticLive(); }
+function executerSt(cible, p, motif) {
+  const d = cible - ST.pos; if (!d) return;
+  if (ST.pos !== 0 && Math.sign(cible) !== Math.sign(ST.pos)) { ST.real += ST.pos * (p - ST.prix) * 2 - Math.abs(ST.pos) * 3; ST.prix = cible ? p : 0; }
+  else if (ST.pos !== 0 && Math.abs(cible) < Math.abs(ST.pos)) { const f = ST.pos - cible; ST.real += f * (p - ST.prix) * 2 - Math.abs(f) * 3; }
+  else ST.prix = ST.pos ? (ST.prix * Math.abs(ST.pos) + p * Math.abs(d)) / Math.abs(cible) : p;
+  ST.pos = cible; if (!cible) ST.prix = 0;
+  ST.ordres.unshift({ t: parisHM(LIVE.utc), c: d > 0 ? "achat" : "vente", q: Math.abs(d), p, motif });
+}
+
+// ------------------------------------------------------------------ reliefs 3D : ruban EMA, volume par prix, amplitude des 15 min
+function reliefsLive(s0) {
+  if (!window.THREE || !window.THREE.OrbitControls) { ["st-ema", "st-vol", "st-atr"].forEach(id => $(id).insertAdjacentHTML("beforeend", `<p class="note" style="padding:12px">Le relief a besoin de WebGL et de Three.js, qui ne s'est pas chargé (connexion internet ?).</p>`)); return null; }
+  const a = scene3($("st-ema"), $("st-ema-etiq"), [8, 7, 10]), b = scene3($("st-vol"), $("st-vol-etiq"), [-10, 9, 11]), c = scene3($("st-atr"), $("st-atr-etiq"), [10, 9, 10]);
+  if (!a || !b || !c) return null;
+  const T3 = window.THREE, Q = { ema: surface(a, 130, 6, 12, 6), vol: surface(b, 121, RS, 12, 12), atr: surface(c, 26, RS, 10, 12) };
+  a.ctl.autoRotate = b.ctl.autoRotate = c.ctl.autoRotate = !matchMedia("(prefers-reduced-motion: reduce)").matches; a.ctl.autoRotateSpeed = .35; b.ctl.autoRotateSpeed = -.3; c.ctl.autoRotateSpeed = .3;
+  Q.prix = new T3.Line(new T3.BufferGeometry(), new T3.LineBasicMaterial({ color: 0xffffff })); a.sc.add(Q.prix);
+  Q.lueur = new T3.Mesh(new T3.SphereGeometry(.16, 16, 12), new T3.MeshBasicMaterial({ color: 0xffffff })); a.sc.add(Q.lueur);
+  Q.prixVol = new T3.Mesh(new T3.BoxGeometry(.05, .05, 12.4), new T3.MeshBasicMaterial({ color: 0xffffff })); b.sc.add(Q.prixVol);
+  a.lab("EMA 8", [-6.8, 0, -3]); a.lab("EMA 89", [-6.8, 0, 3]); c.lab(heure(s0.jour, 0), [-5, 0, 6.8]); c.lab(heure(s0.jour, 375), [5, 0, 6.8]);
+  Q.lv = [b.lab("", [-6, 0, 6.8]), b.lab("", [6, 0, 6.8])];
+  const boucle = () => { [a, b, c].forEach(S3 => { S3.ctl.update(); S3.r.render(S3.sc, S3.cam);
+    const w = S3.cont.clientWidth, h = S3.cont.clientHeight, v3 = new T3.Vector3(); S3.labs.forEach(l => { v3.copy(l.p).project(S3.cam); l.s.style.left = (v3.x + 1) / 2 * w + "px"; l.s.style.top = (1 - v3.y) / 2 * h + "px"; }); });
+    requestAnimationFrame(boucle); };
+  boucle();
+  Q.maj = prix => {
+    const I = NQ2.ind, B = NQ2.barres, fin = B.length - 1;
+    { // ruban EMA : 130 dernieres barres de 15 min, la derniere suit le prix
+      const Sf = Q.ema, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, d0 = Math.max(0, fin - 129);
+      let lo = Math.min(prix, Infinity), hi = Math.max(prix, -Infinity);
+      for (let k = d0; k <= fin; k++) { EMAS.forEach(e => { const v = I["ema" + e][k]; lo = Math.min(lo, v); hi = Math.max(hi, v); }); lo = Math.min(lo, B[k][3]); hi = Math.max(hi, B[k][3]); }
+      for (let z = 0; z < 6; z++) for (let i = 0; i < 130; i++) { const k = Math.min(fin, d0 + Math.round(i * (fin - d0) / 129)), u = (I["ema" + EMAS[z]][k] - lo) / (hi - lo || 1), idx = z * 130 + i;
+        pos.setY(idx, u * 5); const cc = new T3.Color(coulEma(z)).multiplyScalar(.3 + .7 * u); col.setXYZ(idx, cc.r, cc.g, cc.b); }
+      pos.needsUpdate = col.needsUpdate = true; majFil(Sf, a);
+      const pts = []; for (let i = 0; i < 130; i++) { const k = Math.min(fin, d0 + Math.round(i * (fin - d0) / 129)), v = i === 129 ? prix : B[k][3]; pts.push(new T3.Vector3(-6 + 12 * i / 129, (v - lo) / (hi - lo || 1) * 5, -3.6)); }
+      Q.prix.geometry.setFromPoints(pts); Q.lueur.position.copy(pts[pts.length - 1]); }
+    { // volume par prix : une rangee par seance, aujourd'hui devant, minute par minute
+      const Sf = Q.vol, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, P_ = NQ2.profils, sL = P_.valeurs.length - 1;
+      const cCur = Math.round((prix - P_.bas) / P_.pas), c0 = Math.max(0, Math.min(P_.cases - 121, cCur - 60));
+      let mx = 1; for (let r = 0; r < RS; r++) { const s2 = sL - RS + 1 + r; if (s2 < 0) continue; for (let q = c0; q < c0 + 121; q++) mx = Math.max(mx, P_.valeurs[s2][q] || 0); }
+      for (let r = 0; r < RS; r++) { const s2 = sL - RS + 1 + r; for (let q = 0; q < 121; q++) { const val = s2 >= 0 ? (P_.valeurs[s2][c0 + q] || 0) : 0, u = Math.sqrt(val / mx), idx = r * 121 + q;
+        pos.setY(idx, u * 4); const cc = rampe3(T3, u * (s2 === sL ? 1.15 : .9)); col.setXYZ(idx, cc.r, cc.g, cc.b); } }
+      pos.needsUpdate = col.needsUpdate = true; majFil(Sf, b);
+      Q.prixVol.position.set(-6 + 12 * (cCur - c0) / 120, .05, 0); Q.lv[0].s.textContent = nf(P_.bas + c0 * P_.pas); Q.lv[1].s.textContent = nf(P_.bas + (c0 + 120) * P_.pas); }
+    { // amplitude de chaque barre de 15 min : une rangee par seance, la bougie en cours en blanc
+      const Sf = Q.atr, pos = Sf.geo.attributes.position, col = Sf.geo.attributes.color, sL = Math.floor(fin / 26), k0 = Math.max(0, (sL - RS + 1) * 26);
+      let mx = 1; for (let k = k0; k <= fin; k++) mx = Math.max(mx, B[k][1] - B[k][2]);
+      for (let r = 0; r < RS; r++) { const s2 = sL - RS + 1 + r; for (let q = 0; q < 26; q++) { const k = s2 * 26 + q, val = s2 >= 0 && k <= fin ? B[k][1] - B[k][2] : 0, u = val / mx, idx = r * 26 + q;
+        pos.setY(idx, u * 4); const cc = k === fin ? new T3.Color(0xffffff) : rampe3(T3, u * 1.1); col.setXYZ(idx, cc.r, cc.g, cc.b); } }
+      pos.needsUpdate = col.needsUpdate = true; majFil(Sf, c); }
+  };
+  return Q;
+}
+
+// ------------------------------------------------------------------ demarrage
+async function demarrer() {
+  $("st-achat").onclick = () => ordreSt(1); $("st-vente").onclick = () => ordreSt(-1); $("st-plat").onclick = () => ordreSt(0);
+  $("d-limite").value = lire("limite", "400"); $("d-plancher").value = lire("plancher", "49000");
+  $("d-limite").onchange = () => { ecrire("limite", $("d-limite").value); ticLive(); };
+  $("d-plancher").onchange = () => { ecrire("plancher", $("d-plancher").value); ticLive(); };
+  ajusterStation();
+  try { await chargerHistorique(); }
+  catch (e) { etat(`${e.message}. Lance la stratégie « Relais NQ » dans Quantower ; la page réessaie toute seule.`, "b"); $("d-badge").className = "direct rouge"; $("d-badge").lastChild.textContent = "COUPÉ"; setTimeout(demarrer, 5000); return; }
+  brancherFlux();
+  setInterval(() => { if (Date.now() - LIVE.dernierFlux > 3000) ticLive(); }, 1000);
+}
+let rz2; addEventListener("resize", () => { clearTimeout(rz2); rz2 = setTimeout(() => { ajusterStation(); ticLive(); }, 200); });
+demarrer();
+
+</script>
+</body>
+</html>
