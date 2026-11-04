@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Rejeu du moteur XGBoost NQ sur des minutes historiques : variables et probabilites comparees a ml/xgb_final.py. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\XGBoost.Core\*.cs" />
+    <EmbeddedResource Include="..\XGBoost.Core\modele_xgb.json" LogicalName="modele_xgb.json" />
+  </ItemGroup>
+</Project>

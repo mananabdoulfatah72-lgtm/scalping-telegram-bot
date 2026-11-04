@@ -497,7 +497,7 @@ function recevoir(d) {
 function journal(j) {
   const cle = j.agent + "|" + j.ligne; if (LIVE.lignes.has(cle)) return; LIVE.lignes.add(cle);
   const m = j.ligne.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2}) UTC (.*)$/); if (!m) return;
-  const texte = m[7], nom = j.agent.replace(/^Bot3en1$/i, "Bot 3 en 1").replace(/^SupertrendNQ$/i, "Supertrend NQ");
+  const texte = m[7], nom = j.agent.replace(/^Bot3en1$/i, "Bot 3 en 1").replace(/^SupertrendNQ$/i, "Supertrend NQ").replace(/^XGBoostNQ$/i, "XGBoost NQ");
   const t = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]), hp = parisHM(t);
   const pos = texte.match(/\(position (-?\d+) -> (-?\d+)\)/);
   const action = pos ? Math.sign(+pos[2]) : /^(achat|vente)\b/.test(texte) ? (texte.startsWith("achat") ? 1 : -1) : /^(sortie|fin de seance)|position MNQ fermee|arretee/.test(texte) ? 0 : null;

@@ -2,6 +2,7 @@
 """Niveau 4b (ml/REGLES.md) : allocation de portefeuille entrainee directement sur le Sharpe (perte = - Sharpe),
 contre poids egaux, inverse de la volatilite et Markowitz (variance minimale, Sharpe maximal), 16 ETF, test 2012 - 2026."""
 import json
+import os
 import time
 
 import numpy as np
@@ -41,7 +42,11 @@ def entrees(idx):                                     # rendements des 60 jours 
 
 W = {nm: np.full((n, k), np.nan) for nm in ("Perte de Sharpe", "Poids égaux", "Inverse volatilité", "Markowitz variance min.", "Markowitz Sharpe max.")}
 ANNEES = list(range(2012, 2027))
-for Y in ANNEES:
+CACHE = os.environ.get("CACHE_N4B", "")
+deja = bool(CACHE) and os.path.exists(CACHE)
+if deja:
+    z = np.load(CACHE); W = {nm: z[f"w{i}"] for i, nm in enumerate(W)}
+for Y in ([] if deja else ANNEES):
     tr = np.nonzero((an < Y) & (np.arange(n) >= FEN))[0]; te = np.nonzero(an == Y)[0]
     torch.manual_seed(5); rng = np.random.default_rng(5)
     net = Allocateur(); opt = torch.optim.Adam(net.parameters(), lr=1e-3)
@@ -60,7 +65,7 @@ for Y in ANNEES:
 debut = int(np.argmax(an >= 2012))
 w_mv = w_ms = np.ones(k) / k
 cons = ({"type": "eq", "fun": lambda w: w.sum() - 1},); bornes = [(0, 1)] * k
-for t in range(debut, n):
+for t in ([] if deja else range(debut, n)):
     h = Rn[t - 252:t]
     W["Poids égaux"][t] = 1 / k
     iv = 1 / (h.std(0) + 1e-9); W["Inverse volatilité"][t] = iv / iv.sum()
@@ -70,11 +75,13 @@ for t in range(debut, n):
     W["Markowitz variance min."][t] = np.clip(w_mv, 0, None) / np.clip(w_mv, 0, None).sum()
     W["Markowitz Sharpe max."][t] = np.clip(w_ms, 0, None) / np.clip(w_ms, 0, None).sum()
 print(f"references : {time.time() - t0:.0f} s")
+if CACHE and not deja:
+    np.savez(CACHE, **{f"w{i}": W[nm] for i, nm in enumerate(W)})
 
 
-def serie(w):
-    rp = (w * Rn).sum(1)
-    drift = np.vstack([w[:1], w[:-1] * (1 + Rn[:-1]) / (1 + rp[:-1, None])])
+def serie(w, Rs):
+    rp = (w * Rs).sum(1)
+    drift = np.vstack([w[:1], w[:-1] * (1 + Rs[:-1]) / (1 + rp[:-1, None])])
     rot = np.abs(w - drift).sum(1)
     return rp - 0.0005 * rot, rot
 
@@ -83,7 +90,7 @@ sel = np.arange(debut, n)
 res = {}
 nets = {}
 for nm, w in W.items():
-    r, rot = serie(w[sel] if nm != "x" else w)
+    r, rot = serie(w[sel], Rn[sel])
     nets[nm] = r
     sh = lambda v: float(v.mean() / v.std(ddof=1) * np.sqrt(252))
     a_ = an[sel]

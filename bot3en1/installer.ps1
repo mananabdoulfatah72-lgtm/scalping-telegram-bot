@@ -125,6 +125,24 @@ foreach ($p in $plateformes) {
             Write-Host "ATTENTION : Supertrend NQ n'a pas compile (le bot 3 en 1 est bien installe). Envoie installation_bot3en1.txt a Claude." -ForegroundColor Yellow
         }
     }
+    # XGBoost NQ (modele M2 du labo ML, 10 modeles embarques) : compile a part ; s'il echoue, le reste est installe
+    $xg = "$PSScriptRoot\XGBoost.Quantower\XGBoost.Quantower.csproj"
+    if (Test-Path $xg) {
+        Remove-Item -Recurse -Force "$PSScriptRoot\XGBoost.Quantower\obj", "$PSScriptRoot\XGBoost.Quantower\bin" -ErrorAction SilentlyContinue
+        $ancien = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+        dotnet restore $xg -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" | Out-Host
+        dotnet build $xg -c Release --no-restore -p:TargetFramework=$tfm -p:QuantowerBin="$($p.Bin)" -nologo | Out-Host
+        $codeXg = $LASTEXITCODE
+        $ErrorActionPreference = $ancien
+        if ($codeXg -eq 0) {
+            $destXg = Join-Path $p.Base "Settings\Scripts\Strategies\XGBoostNQ"
+            New-Item -ItemType Directory -Force -Path $destXg | Out-Null
+            Copy-Item "$PSScriptRoot\XGBoost.Quantower\bin\Release\$tfm\XGBoostNQ.dll" $destXg -Force
+            Write-Host "XGBoost NQ installe dans $destXg" -ForegroundColor Green
+        } else {
+            Write-Host "ATTENTION : XGBoost NQ n'a pas compile (les autres bots sont bien installes). Envoie installation_bot3en1.txt a Claude." -ForegroundColor Yellow
+        }
+    }
     # Relais NQ (station en direct, aucun ordre) : compile a part ; s'il echoue, le reste est installe
     $rl = "$PSScriptRoot\Relais.Quantower\Relais.Quantower.csproj"
     if (Test-Path $rl) {
@@ -146,10 +164,11 @@ foreach ($p in $plateformes) {
 }
 New-Item -ItemType Directory -Force -Path "C:\Bot3en1" | Out-Null
 New-Item -ItemType Directory -Force -Path "C:\SupertrendNQ" | Out-Null
+New-Item -ItemType Directory -Force -Path "C:\XGBoostNQ" | Out-Null
 New-Item -ItemType Directory -Force -Path "C:\StationNQ" | Out-Null
 $page = "$PSScriptRoot\Relais.Quantower\station-direct.html"
 if (Test-Path $page) { Copy-Item $page "C:\StationNQ\station-direct.html" -Force; Write-Host "Page de la station copiee dans C:\StationNQ" -ForegroundColor Green }
-Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1, Supertrend NQ, Relais NQ, Export transactions NQ ou FluxNQ (voir le guide)."
+Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1, Supertrend NQ, XGBoost NQ, Relais NQ, Export transactions NQ ou FluxNQ (voir le guide). UN SEUL bot par compte."
 Write-Host "Station en direct : lance la strategie Relais NQ, puis ouvre http://localhost:8765 dans Chrome ou Edge."
 Write-Host "INSTALLATION TERMINEE" -ForegroundColor Green
 }

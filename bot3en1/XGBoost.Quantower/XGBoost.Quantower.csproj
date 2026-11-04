@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Strategie Quantower XGBoost NQ (modele M2 du labo ML). Compilee sur le PC de l'utilisateur par installer.ps1, contre la
+       bibliotheque de Quantower (QuantowerBin). Le modele (100 arbres) est embarque dans la DLL. Separee des autres bots :
+       si elle ne compile pas, le reste s'installe quand meme. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>XGBoostNQ</AssemblyName>
+    <RootNamespace>XGBoostNQ</RootNamespace>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <QuantowerBin Condition="'$(QuantowerBin)' == ''">C:\Quantower\TradingPlatform\bin</QuantowerBin>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\XGBoost.Core\*.cs" />
+    <Compile Include="..\Bot3en1.Core\Calendrier.cs" />
+    <EmbeddedResource Include="..\XGBoost.Core\modele_xgb.json" LogicalName="modele_xgb.json" />
+    <Reference Include="TradingPlatform.BusinessLayer">
+      <HintPath>$(QuantowerBin)\TradingPlatform.BusinessLayer.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

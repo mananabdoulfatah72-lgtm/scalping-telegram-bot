@@ -27,7 +27,7 @@ namespace RelaisNQ
         [InputParameter("MNQ du compte (facultatif), ex. MNQZ6", 40)] public Symbol SymboleMNQ;
         [InputParameter("Port local (la station s'ouvre sur http://localhost:PORT)", 50, 1024, 65000, 1, 0)] public int Port = 8765;
         [InputParameter("Dossier de la station (page et copie de l'historique)", 60)] public string Dossier = @"C:\StationNQ";
-        [InputParameter("Journaux des agents a suivre (dossiers separes par ;)", 70)] public string DossiersAgents = @"C:\Bot3en1;C:\SupertrendNQ";
+        [InputParameter("Journaux des agents a suivre (dossiers separes par ;)", 70)] public string DossiersAgents = @"C:\Bot3en1;C:\SupertrendNQ;C:\XGBoostNQ";
         [InputParameter("Historique : adresse des barres du robot", 80)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
