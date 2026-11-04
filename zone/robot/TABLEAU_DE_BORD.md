@@ -19,7 +19,7 @@ Voyant VERT (fourchette normale) : +206 $ pour 1 MNQ apres 27 seance(s) ; le bac
 ## Trades du 2026-11-03
 
 - achat 11h00 a 28,405.25 -> sortie 11h30 a 28,326.50
-- rebond (suivi a part, hors compte) : achat 9h30 a 28,266.00 -> sortie 16h00 a 28,300.75, +66 $ pour 1 MNQ
+- rebond (suivi a part, hors compte) : achat 9h30 a 28,266.50 -> sortie 16h00 a 28,300.75, +66 $ pour 1 MNQ
 
 ## Pour la seance du 2026-11-04 (a utiliser en direct)
 
@@ -27,7 +27,7 @@ Cloture de la veille (16 h New York) : **28,300.75**. Apres l'ouverture de 9 h 3
 
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
-| 10h00 | 16h00 | 0.185% | 1.00185 | 0.99815 |
+| 10h00 | 16h00 | 0.186% | 1.00186 | 0.99814 |
 | 10h30 | 16h30 | 0.362% | 1.00362 | 0.99638 |
 | 11h00 | 17h00 | 0.506% | 1.00506 | 0.99494 |
 | 11h30 | 17h30 | 0.557% | 1.00557 | 0.99443 |
@@ -46,7 +46,7 @@ Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la 
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : EN POSITION (achat). Le 2026-11-04 a 15 h 50 New York : vente si le prix de 15 h 49 depasse 28,628.69 (moyenne des 5 clotures) ; sinon garder. Le jour d'un changement d'echeance : vente.
+RSI(2) : EN POSITION (achat). Le 2026-11-04 a 15 h 50 New York : vente si le prix de 15 h 49 depasse 28,628.38 (moyenne des 5 clotures) ; sinon garder. Le jour d'un changement d'echeance : vente.
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
