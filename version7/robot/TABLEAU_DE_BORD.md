@@ -1,6 +1,6 @@
 # Robot version 7 : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-03**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
+Mis a jour le **2026-11-04**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
 
 Regle : chaque fin de mois, les 5 actions technologie au meilleur rendement de 6 mois a 1 mois, 10 % du compte chacune, 50 % non investis.
 
@@ -8,9 +8,9 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **45,275 $** |
-| Gain depuis le depart | -4,725 $ (-9.5%) |
-| Baisse depuis le plus haut | -11.2% |
+| Solde virtuel | **44,670 $** |
+| Gain depuis le depart | -5,330 $ (-10.7%) |
+| Baisse depuis le plus haut | -12.4% |
 | Dernier reequilibrage | 2026-10-30 |
 | Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | PERDU le 2026-11-02 |
 
@@ -18,12 +18,12 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Action | Montant | Part du compte |
 |---|---|---|
-| NOW | 4,745 $ | 10.5% |
-| AMAT | 4,474 $ | 9.9% |
-| MU | 4,417 $ | 9.8% |
-| LRCX | 4,409 $ | 9.7% |
-| AMD | 4,381 $ | 9.7% |
-| Non investi | 22,849 $ | 50.5% |
+| NOW | 4,730 $ | 10.6% |
+| AMD | 4,425 $ | 9.9% |
+| AMAT | 4,327 $ | 9.7% |
+| LRCX | 4,232 $ | 9.5% |
+| MU | 4,107 $ | 9.2% |
+| Non investi | 22,849 $ | 51.1% |
 
 ## Derniers ordres (2026-10-30, a la cloture, avant 6 $ de frais)
 
@@ -38,6 +38,7 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-04 | -604 $ | 44,670 $ |
 | 2026-11-03 | +549 $ | 45,275 $ |
 | 2026-11-02 | -972 $ | 44,725 $ |
 | 2026-10-30 | -1,334 $ | 45,698 $ |
@@ -47,6 +48,5 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 | 2026-10-26 | +499 $ | 48,231 $ |
 | 2026-10-23 | +319 $ | 47,732 $ |
 | 2026-10-22 | -1,067 $ | 47,413 $ |
-| 2026-10-21 | +349 $ | 48,480 $ |
 
 </details>
