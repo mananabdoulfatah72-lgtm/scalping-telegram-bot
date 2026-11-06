@@ -1,11 +1,11 @@
 # Robot multi-marches : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-04**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
+Mis a jour le **2026-11-05**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
 
 | Compte | Solde | Gain | Etat |
 |---|---|---|---|
-| Melange 50/50 (tendance + achat permanent) | 48,823 $ | -1,177 $ | 🟡 Dans la zone normale |
-| Tendance seule | 47,973 $ | -2,027 $ | 🟡 Dans la zone normale |
+| Melange 50/50 (tendance + achat permanent) | 48,297 $ | -1,703 $ | 🟡 Dans la zone normale |
+| Tendance seule | 47,833 $ | -2,167 $ | 🟡 Dans la zone normale |
 
 La zone bleue de chaque graphique montre ou tombaient 8 resultats sur 10 dans l'historique 2007-2026, au meme risque. Tant que la ligne reste dedans, le compte se comporte comme prevu. Des semaines negatives sont normales : il faut plusieurs mois pour juger.
 
@@ -17,11 +17,11 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **48,823 $** (depart 50 000 $) |
-| Gain depuis le depart | -1,177 $ (-2.4%) |
-| Baisse depuis le plus haut | -2.9% |
-| Zone normale a ce stade (8 cas sur 10) | de -2,035 $ a +3,063 $ (moyenne +514 $) |
-| Challenge Phidias 50K virtuel | en cours : -1,177 $ sur +4 000 $, marge restante 1,047 $ |
+| Solde virtuel | **48,297 $** (depart 50 000 $) |
+| Gain depuis le depart | -1,703 $ (-3.4%) |
+| Baisse depuis le plus haut | -3.9% |
+| Zone normale a ce stade (8 cas sur 10) | de -2,054 $ a +3,108 $ (moyenne +527 $) |
+| Challenge Phidias 50K virtuel | en cours : -1,703 $ sur +4 000 $, marge restante 521 $ |
 
 ![Gain du compte et zone normale](courbe_melange.svg)
 
@@ -38,6 +38,7 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-05 | -526 $ | 48,297 $ |
 | 2026-11-04 | -21 $ | 48,823 $ |
 | 2026-11-03 | -17 $ | 48,844 $ |
 | 2026-11-02 | +51 $ | 48,861 $ |
@@ -47,7 +48,6 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 | 2026-10-27 | +34 $ | 48,928 $ |
 | 2026-10-26 | -143 $ | 48,894 $ |
 | 2026-10-23 | +88 $ | 49,037 $ |
-| 2026-10-22 | -283 $ | 48,966 $ |
 
 Journal complet : [journal_melange.csv](journal_melange.csv)
 
@@ -61,10 +61,10 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **47,973 $** (depart 50 000 $) |
-| Gain depuis le depart | -2,027 $ (-4.1%) |
-| Baisse depuis le plus haut | -5.3% |
-| Zone normale a ce stade (8 cas sur 10) | de -2,180 $ a +2,918 $ (moyenne +369 $) |
+| Solde virtuel | **47,833 $** (depart 50 000 $) |
+| Gain depuis le depart | -2,167 $ (-4.3%) |
+| Baisse depuis le plus haut | -5.5% |
+| Zone normale a ce stade (8 cas sur 10) | de -2,202 $ a +2,959 $ (moyenne +378 $) |
 | Challenge Phidias 50K virtuel | perdu le 2026-10-22 |
 
 ![Gain du compte et zone normale](courbe.svg)
@@ -85,6 +85,7 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-05 | -141 $ | 47,833 $ |
 | 2026-11-04 | -516 $ | 47,973 $ |
 | 2026-11-03 | +330 $ | 48,489 $ |
 | 2026-11-02 | +224 $ | 48,160 $ |
@@ -94,7 +95,6 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 | 2026-10-27 | +96 $ | 48,508 $ |
 | 2026-10-26 | +90 $ | 48,412 $ |
 | 2026-10-23 | +288 $ | 48,322 $ |
-| 2026-10-22 | -905 $ | 48,057 $ |
 
 Journal complet : [journal.csv](journal.csv)
 
