@@ -1,6 +1,6 @@
 # Robot version 7 : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-05**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
+Mis a jour le **2026-11-06**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
 
 Regle : chaque fin de mois, les 5 actions technologie au meilleur rendement de 6 mois a 1 mois, 10 % du compte chacune, 50 % non investis.
 
@@ -8,9 +8,9 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **41,629 $** |
-| Gain depuis le depart | -8,371 $ (-16.7%) |
-| Baisse depuis le plus haut | -18.4% |
+| Solde virtuel | **42,639 $** |
+| Gain depuis le depart | -7,361 $ (-14.7%) |
+| Baisse depuis le plus haut | -16.4% |
 | Dernier reequilibrage | 2026-10-30 |
 | Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | PERDU le 2026-11-02 |
 
@@ -18,12 +18,12 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Action | Montant | Part du compte |
 |---|---|---|
-| NOW | 4,450 $ | 10.7% |
-| AMAT | 3,740 $ | 9.0% |
-| AMD | 3,661 $ | 8.8% |
-| LRCX | 3,539 $ | 8.5% |
-| MU | 3,390 $ | 8.1% |
-| Non investi | 22,849 $ | 54.9% |
+| NOW | 4,433 $ | 10.4% |
+| AMD | 4,065 $ | 9.5% |
+| AMAT | 3,898 $ | 9.1% |
+| LRCX | 3,831 $ | 9.0% |
+| MU | 3,564 $ | 8.4% |
+| Non investi | 22,849 $ | 53.6% |
 
 ## Derniers ordres (2026-10-30, a la cloture, avant 6 $ de frais)
 
@@ -38,6 +38,7 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-06 | +1,010 $ | 42,639 $ |
 | 2026-11-05 | -3,041 $ | 41,629 $ |
 | 2026-11-04 | -604 $ | 44,670 $ |
 | 2026-11-03 | +549 $ | 45,275 $ |
@@ -47,6 +48,5 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 | 2026-10-28 | +377 $ | 48,940 $ |
 | 2026-10-27 | +332 $ | 48,563 $ |
 | 2026-10-26 | +499 $ | 48,231 $ |
-| 2026-10-23 | +319 $ | 47,732 $ |
 
 </details>
