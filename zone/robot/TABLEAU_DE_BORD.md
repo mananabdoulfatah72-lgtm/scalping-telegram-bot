@@ -19,26 +19,26 @@ Voyant VERT (fourchette normale) : +414 $ pour 1 MNQ apres 30 seance(s) ; le bac
 ## Trades du 2026-11-06
 
 - achat 10h00 a 27,356.00 -> sortie 10h30 a 27,116.25
-- rebond (suivi a part, hors compte) : achat 9h30 a 27,169.25 -> sortie 16h00 a 27,077.75, -186 $ pour 1 MNQ
+- rebond (suivi a part, hors compte) : achat 9h30 a 27,167.00 -> sortie 16h00 a 27,078.00, -181 $ pour 1 MNQ
 
 ## Pour la seance du 2026-11-09 (a utiliser en direct)
 
-Cloture de la veille (16 h New York) : **27,077.75**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
+Cloture de la veille (16 h New York) : **27,078.00**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
 
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
-| 10h00 | 16h00 | 0.443% | 1.00443 | 0.99557 |
+| 10h00 | 16h00 | 0.444% | 1.00444 | 0.99556 |
 | 10h30 | 16h30 | 0.643% | 1.00643 | 0.99357 |
-| 11h00 | 17h00 | 0.779% | 1.00779 | 0.99221 |
+| 11h00 | 17h00 | 0.780% | 1.00780 | 0.99220 |
 | 11h30 | 17h30 | 0.680% | 1.00680 | 0.99320 |
 | 12h00 | 18h00 | 0.797% | 1.00797 | 0.99203 |
 | 12h30 | 18h30 | 0.821% | 1.00821 | 0.99179 |
 | 13h00 | 19h00 | 0.919% | 1.00919 | 0.99081 |
-| 13h30 | 19h30 | 0.935% | 1.00935 | 0.99065 |
+| 13h30 | 19h30 | 0.934% | 1.00934 | 0.99066 |
 | 14h00 | 20h00 | 0.974% | 1.00974 | 0.99026 |
-| 14h30 | 20h30 | 1.008% | 1.01008 | 0.98992 |
-| 15h00 | 21h00 | 0.925% | 1.00925 | 0.99075 |
-| 15h30 | 21h30 | 0.991% | 1.00991 | 0.99009 |
+| 14h30 | 20h30 | 1.009% | 1.01009 | 0.98991 |
+| 15h00 | 21h00 | 0.926% | 1.00926 | 0.99074 |
+| 15h30 | 21h30 | 0.992% | 1.00992 | 0.99008 |
 
 Taille : un jour normal = 313 $ de risque pour 1 MNQ. Sur un compte neuf : f = 0.15 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.25 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.35 -> Phidias (coussin 2 500 $) 2 MNQ, Topstep (coussin 2 000 $) 2 MNQ. **En cours de challenge : MNQ = f x (solde - limite de perte) / 313, arrondi en dessous, au moins 1 MNQ** (exemple : f = 0,25, coussin 1 500 $ -> 1 MNQ).
 
@@ -68,7 +68,7 @@ Pas encore de trade de zone mesure depuis le 2026-10-01.
 
 ## Second moteur : rebond apres forte baisse (suivi a part, hors compte)
 
-Pas d'achat le 2026-11-09. Derniere seance complete : -0.34% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.19%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
+Pas d'achat le 2026-11-09. Derniere seance complete : -0.33% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.19%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
 
 ## Derniers jours
 
