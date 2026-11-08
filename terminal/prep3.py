@@ -176,7 +176,13 @@ marches = [dict(id=k[2:], par_seance=E3[k]["par_seance"], t=E3[k]["t"], t_1619=E
 
 courbes = {k: relief["courbes"][k] for k in relief["courbes"] if relief["courbes"][k]}
 courbes.update(courbes_extra)
-D3 = dict(jours=jours, jours_courbes=relief["jours"], courbes=courbes, lignes=lignes, rejeu=rejeu, diag=diag, marches=marches,
+# Z12 dans la station (F0) : VIX et VIX a 3 mois de la veille pour les seances du 11 aout au 2 nov., et Z12 / Bot 3 en 1
+# de 1 a 5 MNQ sur 2014 - 2026 (ml/arene/z12_tailles.py)
+ZT = json.load(open(R / "ml/arene/resultats/z12_tailles.json"))
+station_z12 = dict(vix={j: [a, b, c] for j, a, b, c in zip(ZT["periode"]["jours"], ZT["periode"]["vix"], ZT["periode"]["vix3m"], ZT["periode"]["inverse"])},
+                   tailles={k: {tt: {c: x for c, x in e.items() if c not in ("jours_periode", "trades_periode")} for tt, e in v.items()} for k, v in ZT["tailles"].items()},
+                   arene_periode={k: v["1"]["periode"] for k, v in ZT["tailles"].items()})
+D3 = dict(station_z12=station_z12, jours=jours, jours_courbes=relief["jours"], courbes=courbes, lignes=lignes, rejeu=rejeu, diag=diag, marches=marches,
           choix_A={str(k): v for k, v in CHOIX_A.items()}, debut_2017=d17,
           noms_rejeu={"zone": "Bot 3 en 1 (zone)", "B3": "B3 · Bot 3 en 1 + accord XGBoost", "xgb": "XGBoost NQ", "st": "Supertrend NQ",
                       "B1": "B1 · XGBoost + accord Supertrend", "B2": "B2 · Supertrend + accord XGBoost",

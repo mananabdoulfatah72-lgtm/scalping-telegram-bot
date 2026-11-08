@@ -125,6 +125,15 @@ td:first-child, th:first-child { text-align: left; }
 .station table { font-size: 12px; }
 .station th, .station td { padding: 2px 4px; }
 
+/* fiche d'un agent (clic dans le panneau Agents de la station) */
+#st-agents tr[data-agent] { cursor: pointer; }
+#st-agents tr[data-agent]:hover td { background: var(--panneau2); }
+.fiche { position: fixed; inset: 0; z-index: 30; background: rgba(0, 0, 0, .78); overflow: auto; display: grid; justify-items: center; align-content: start;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.fiche-boite { width: min(1180px, 100%); margin-top: 16px; border-color: var(--ambre-pale); }
+.fiche-boite > h2 b { color: var(--ambre); font-weight: 600; }
+.fiche h3 { margin: 4px 0 0; font-family: var(--cond); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ambre-pale); font-weight: 600; }
+.fiche .choisie td { background: var(--panneau2); }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 
@@ -186,6 +195,25 @@ td:first-child, th:first-child { text-align: left; }
     </div>
   </div>
 </section>
+
+<!-- fiche d'un agent de la station : du 11 aout au 2 novembre 2026 -->
+<div class="fiche" id="fiche" hidden role="dialog" aria-modal="true" aria-labelledby="fiche-titre">
+  <div class="panneau fiche-boite"><h2><b id="fiche-titre">Agent</b><button class="btn" type="button" id="fiche-fermer">✕ Fermer</button></h2><div class="corps">
+    <div class="ctrl">
+      <select id="fiche-agent" aria-label="Agent"><option value="z12">Z12 · Bot 3 en 1 sans VIX inversé</option><option value="zone">Bot 3 en 1</option><option value="st">Supertrend NQ</option></select>
+      <select id="fiche-taille" aria-label="Taille"><option value="1">1 MNQ</option><option value="2">2 MNQ</option><option value="3">3 MNQ</option><option value="4">4 MNQ</option><option value="5">5 MNQ</option></select>
+      <span class="g st-aide" id="fiche-periode"></span>
+    </div>
+    <div class="chiffres" id="fiche-chiffres"></div>
+    <div class="toile" id="fiche-courbe"></div>
+    <div class="note" id="fiche-note"></div>
+    <h3>Séance par séance</h3>
+    <div class="defile journal" style="max-height:320px"><table id="fiche-jours"></table></div>
+    <h3>Et si c'était sur 2014 - 2026 ? <span class="g" style="text-transform:none;letter-spacing:0">compte financé Bulenox, rejeu minute par minute de l'arène</span></h3>
+    <div class="defile"><table id="fiche-tailles"></table></div>
+    <div class="note" id="fiche-tailles-note"></div>
+  </div></div>
+</div>
 
 <!-- F1 activite de marche -->
 <section class="vue" id="v-marche">
@@ -1196,12 +1224,59 @@ function agentsSt(s, prix) {
   const etat = (trades, entreeOuverture) => { let real = 0, pos = 0, e = 0, n = 0;
     trades.forEach(([sens, mi, mo, en, xx]) => { if (mi > ST.m) return; n++; if (mo <= ST.m) real += sens * (xx - en) * 2 - 3; else { pos = sens; e = en; } });
     const lat = pos ? pos * (prix - e) * 2 - 3 : 0; return { real, pos, e, lat, n }; };
-  const a = etat(s.st), z = etat(s.zone);
-  const ligne = (nom, cc, r) => `<tr><td class="${cc}">${nom}</td><td class="${cl(r.pos)}">${r.pos > 0 ? "acheteur" : r.pos < 0 ? "vendeur" : "à plat"}</td><td>${r.pos ? nf(r.e, 2) : "—"}</td><td class="${cl(r.lat)}">${r.pos ? usd(r.lat) : "—"}</td><td class="${cl(r.real + r.lat)}">${usd(r.real + r.lat)}</td><td class="g">${r.n}</td></tr>`;
-  $("st-agents").innerHTML = `<thead><tr><th>Agent</th><th>Position</th><th>Entrée</th><th>Latent</th><th>Journée</th><th>Trades</th></tr></thead><tbody>` + ligne("Supertrend NQ", "c", a) + ligne("Bot 3 en 1", "v", z)
+  const a = etat(s.st), z = etat(s.zone), vx = vixVeille(s.jour), repos = !!(vx && vx[2]), q = repos ? { real: 0, pos: 0, e: 0, lat: 0, n: 0 } : z;
+  const ligne = (nom, cc, r, id) => `<tr data-agent="${id}" title="Voir la fiche du 11 août au 2 novembre"><td class="${cc}">${nom}</td><td class="${cl(r.pos)}">${r.pos > 0 ? "acheteur" : r.pos < 0 ? "vendeur" : "à plat"}</td><td>${r.pos ? nf(r.e, 2) : "—"}</td><td class="${cl(r.lat)}">${r.pos ? usd(r.lat) : "—"}</td><td class="${cl(r.real + r.lat)}">${usd(r.real + r.lat)}</td><td class="g">${r.n}</td></tr>`;
+  $("st-agents").innerHTML = `<thead><tr><th>Agent</th><th>Position</th><th>Entrée</th><th>Latent</th><th>Journée</th><th>Trades</th></tr></thead><tbody>` + ligne("Supertrend NQ", "c", a, "st") + ligne("Bot 3 en 1", "v", z, "zone")
+    + (repos ? `<tr data-agent="z12" title="Voir la fiche du 11 août au 2 novembre"><td class="h">Z12 · sans VIX inversé</td><td class="a" colspan="3">repos : VIX ${nf(vx[0], 1)} ≥ VIX 3 mois ${nf(vx[1], 1)} la veille</td><td class="g">${usd(0)}</td><td class="g">0</td></tr>` : ligne("Z12 · sans VIX inversé", "h", q, "z12"))
     + `<tr><td class="a">Toi (papier)</td><td class="${cl(ST.pos)}">${ST.pos ? (ST.pos > 0 ? "+" : "") + ST.pos + " MNQ" : "à plat"}</td><td>${ST.pos ? nf(ST.prix, 2) : "—"}</td><td class="${cl(ST.pos * (prix - ST.prix))}">${ST.pos ? usd(ST.pos * (prix - ST.prix) * 2 - Math.abs(ST.pos) * 1.5) : "—"}</td><td class="${cl(ST.real)}">${usd(ST.real + (ST.pos ? ST.pos * (prix - ST.prix) * 2 - Math.abs(ST.pos) * 1.5 : 0))}</td><td class="g">${ST.ordres.length}</td></tr></tbody>`;
-  const A = D.agents; $("st-agents-note").innerHTML = `Sur 15 ans : Bot 3 en 1 t ${nf(A.zone.seance.t, 1)}, ${usd(A.zone.seance.moy, 0)} par séance · Supertrend t ${nf(A.st.seance.t, 1)}, ${usd(A.st.seance.moy, 0)} par séance.`;
+  const A = D.agents; $("st-agents-note").innerHTML = `Sur 15 ans : Bot 3 en 1 t ${nf(A.zone.seance.t, 1)}, ${usd(A.zone.seance.moy, 0)} par séance · Supertrend t ${nf(A.st.seance.t, 1)}, ${usd(A.st.seance.moy, 0)} par séance. <span class="a">Clique un agent pour sa fiche du 11 août au 2 novembre.</span>`;
 }
+// ------------------------------------------------------------------ Z12 et fiche d'un agent (11 aout - 2 novembre 2026)
+const donnees3 = () => D3 || (D3 = JSON.parse($("donnees3").textContent));
+function vixVeille(jour) { const z = donnees3().station_z12; return z && z.vix[jour] || null; }
+const FICHE = { st: ["Supertrend NQ", COL.cyan], zone: ["Bot 3 en 1", COL.violet], z12: ["Z12 · Bot 3 en 1 sans les jours de VIX inversé", COL.hausse] };
+function ouvrirFiche(id) {
+  $("fiche-agent").value = id; $("fiche").hidden = false; document.body.style.overflow = "hidden"; peindreFiche(); $("fiche-fermer").focus();
+}
+function fermerFiche() { $("fiche").hidden = true; document.body.style.overflow = ""; }
+function peindreFiche() {
+  const id = $("fiche-agent").value, N = +$("fiche-taille").value, Z = donnees3().station_z12, [nom, coul] = FICHE[id];
+  const lignes = SE.map(s => { const vx = vixVeille(s.jour), inv = !!(vx && vx[2]), base = id === "st" ? s.st_usd : s.zone_usd;
+    const repos = id === "z12" && inv, un = repos ? 0 : base, n = repos ? 0 : (id === "st" ? s.st : s.zone).length;
+    return { j: s.jour, vx, inv, un, val: un * N, n, ref: s.zone_usd * N }; });
+  let cum = 0, haut = 0, baisse = 0; lignes.forEach(l => { cum += l.val; l.cum = cum; haut = Math.max(haut, cum); baisse = Math.min(baisse, cum - haut); });
+  const tot = cum, jt = lignes.filter(l => l.n > 0), gagn = jt.filter(l => l.val > 0).length, pire = Math.min(...lignes.map(l => l.val)), nrep = lignes.filter(l => l.inv).length;
+  const coupes = N >= 3 ? lignes.filter(l => l.val < -1100).length : 0;
+  $("fiche-titre").textContent = `${nom} · ${N} MNQ`;
+  $("fiche-periode").textContent = `${SE.length} séances, du ${dateFr(SE[0].jour)} au ${dateFr(SE[SE.length - 1].jour)}`;
+  $("fiche-chiffres").innerHTML = [["Résultat de la période", usd(tot), cl(tot)], ["Par séance", usd(tot / SE.length, 1), cl(tot)], ["Journées gagnantes", jt.length ? `${nf(gagn / jt.length * 100, 0)} % de ${jt.length}` : "—", ""],
+    ["Pire journée", usd(pire), "b"], ["Pire baisse", usd(baisse), "b"], ["Trades", nf(lignes.reduce((a, l) => a + l.n, 0)), ""],
+    ["Jours de VIX inversé", id === "z12" ? `${nrep} (repos)` : `${nrep}`, nrep ? "a" : "h"]]
+    .map(([l, v, c]) => `<div><span class="l">${l}</span><span class="n ${c}">${v}</span></div>`).join("");
+  const et = []; lignes.forEach((l, i) => { if (i === 0 || l.j.slice(5, 7) !== lignes[i - 1].j.slice(5, 7)) et.push([i, MOIS[+l.j.slice(5, 7) - 1]]); });
+  const series = [{ nom: nom.split(" · ")[0], v: lignes.map(l => l.cum), c: coul, w: 2.2 }];
+  if (id !== "zone") { let c2 = 0; series.push({ nom: "Bot 3 en 1", v: lignes.map(l => (c2 += l.ref)), c: COL.violet, w: 1.2, decale: id === "z12" ? 12 : 0 }); }
+  courbes($("fiche-courbe"), { hauteur: 240, etiquettesX: et, libelle: i => dateFr(lignes[i].j), series });
+  const ap = Z.arene_periode;
+  $("fiche-note").innerHTML = (id === "z12" ? `<b class="h">Aucun jour de VIX inversé entre le 11 août et le 2 novembre</b> : Z12 aurait tradé exactement comme le Bot 3 en 1 (les deux courbes se confondent). Z12 ne change quelque chose que les jours de tension (VIX au-dessus du VIX à 3 mois la veille au soir, environ 7 % des séances depuis 2014) : c'est là qu'il évite des journées qui grillent des comptes. ` : "")
+    + `Journées du replay de la station : le Bot 3 en 1 y suit son journal réel depuis le 13 octobre (filtre delta). La règle unique de l'arène, qui a servi à valider Z12, donne ${usd(ap.zone * N)} sur la même période en ${N} MNQ (le 16 octobre, le vrai bot n'a pas tradé à cause du filtre delta ; la règle de l'arène y gagne 858 $ en 1 MNQ).`
+    + (N >= 2 ? ` Plus de MNQ : tout est multiplié par ${N}, gains comme pertes ; la limite du bot passe à ${nf(Math.min(400 * N, 1100))} $.` : "")
+    + (coupes ? ` <span class="b">${coupes} journée(s) dépasseraient la limite de la firme (1 100 $) : le résultat réel serait coupé ces jours-là.</span>` : "");
+  $("fiche-jours").innerHTML = `<thead><tr><th>Séance</th><th>VIX veille</th><th>VIX 3 mois</th><th>État</th><th>Trades</th><th>Journée (${N} MNQ)</th><th>Cumul</th></tr></thead><tbody>`
+    + lignes.slice().reverse().map(l => `<tr><td>${dateFr(l.j)}</td><td>${l.vx ? nf(l.vx[0], 2) : "—"}</td><td>${l.vx ? nf(l.vx[1], 2) : "—"}</td>`
+      + `<td class="${l.inv ? "a" : "g"}">${l.inv ? (id === "z12" ? "repos (VIX inversé)" : "VIX inversé") : "normal"}</td><td class="g">${l.n}</td><td class="${cl(l.val)}">${usd(l.val)}</td><td class="${cl(l.cum)}">${usd(l.cum)}</td></tr>`).join("") + "</tbody>";
+  const T = Z.tailles, rang = (k, lab) => [1, 2, 3, 4, 5].map(n => { const e = T[k][n];
+    return `<tr class="${n === N && (k === "Z12") === (id !== "zone") ? "choisie" : ""}"><td>${lab} · ${n} MNQ</td><td class="g">${nf(e.limite)} $</td><td class="${cl(e.net_an)}">${usd(e.net_an)}</td><td>${nf(e.grilles_an, 2)}</td><td>${nf(e.survie_60 * 100, 0)} %</td>`
+      + `<td class="${e.grille_250 > .4 ? "b" : ""}">${nf(e.grille_250 * 100, 0)} %</td><td class="${e.grille_1an_2023 > .4 ? "b" : ""}">${nf(e.grille_1an_2023 * 100, 0)} %</td><td class="${cl(e.net_1an)}">${usd(e.net_1an)}</td><td class="b">${usd(e.pire_jour)}</td></tr>`; }).join("");
+  $("fiche-tailles").innerHTML = `<thead><tr><th>Taille</th><th>Limite du bot</th><th>Net par an</th><th>Grillés par an</th><th>En vie à 60 séances</th><th>Grillé en 1 an</th><th>Grillé en 1 an (dès 2023)</th><th>Retiré la 1re année</th><th>Pire journée</th></tr></thead><tbody>`
+    + (id === "st" ? "" : rang("Z12", "Z12")) + rang("zone", "Bot 3 en 1") + "</tbody>";
+  const z1 = T.Z12["1"], z2 = T.Z12["2"], z3 = T.Z12["3"];
+  $("fiche-tailles-note").innerHTML = `Plus de MNQ rapporte plus par an sur le long terme (Z12 : ${usd(z1.net_an)} en 1 MNQ, ${usd(z2.net_an)} en 2, ${usd(z3.net_an)} en 3), mais <b class="b">un compte neuf sur deux est grillé dans l'année dès 2 MNQ</b> (${nf(z2.grille_250 * 100, 0)} % contre ${nf(z1.grille_250 * 100, 0)} % en 1 MNQ), et la première année ne rapporte presque pas plus (${usd(z2.net_1an)} contre ${usd(z1.net_1an)}). Le plancher de 2 500 $ ne grandit pas avec la taille : en 2 MNQ, trois mauvaises journées de suite suffisent.`;
+}
+$("st-agents").addEventListener("click", ev => { const tr = ev.target.closest("tr[data-agent]"); if (tr) ouvrirFiche(tr.dataset.agent); });
+$("fiche-fermer").onclick = fermerFiche; $("fiche").addEventListener("click", ev => { if (ev.target.id === "fiche") fermerFiche(); });
+["fiche-agent", "fiche-taille"].forEach(i => $(i).onchange = peindreFiche);
+addEventListener("keydown", ev => { if (ev.key === "Escape" && !$("fiche").hidden) fermerFiche(); });
 function jauge(cv, val, min, max, titre, txt, couleurs) {
   const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth || 160, H = 72; cv.width = W * dpr; cv.height = H * dpr;
   const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -1286,7 +1361,7 @@ const ligneA = id => D3.lignes.find(l => l.id === id) || { nom: id, couleur: COL
 const nomCourt = id => ({ zone: "Bot 3 en 1", st: "Supertrend", xgb: "XGBoost" })[id] || ligneA(id).nom.split(" · ")[0];
 const morte = l => l.verdict === "tué" || l.verdict === "bruit";
 function vueArene() {
-  if (!D3) { D3 = JSON.parse($("donnees3").textContent); AR.sel = new Set(["zone", "B3", "xgb", "st"]); remplirArene(); }
+  if (!AR.sel) { donnees3(); AR.sel = new Set(["zone", "Z12", "B3", "xgb", "st"]); remplirArene(); }
   teteArene(); tableArene(); courbesArene(); verdictArene(); diagArene(); rejouer(false);
 }
 function remplirArene() {
