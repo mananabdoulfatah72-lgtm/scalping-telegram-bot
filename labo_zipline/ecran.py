@@ -31,6 +31,10 @@ for a, d in L.items():
             x["ema20"] = [px(v) for v in r["ema20"]]; x["ema50"] = [px(v) for v in r["ema50"]]
         e[nom] = x
     out[a] = e
+V2 = ICI / "resultats_vague2.json"
+if V2.exists():                                                        # vague 2 (VAGUE2.md), sans les courbes
+    v2 = json.load(open(V2))
+    out["_vague2"] = {"source": v2["source"], "tests": {k: {c: x for c, x in r.items() if c != "courbe"} for k, r in v2["resultats"].items()}}
 page = (ICI / "ecran.tpl.html").read_text()
 assert page.count("__DONNEES__") == 1
 Path(sys.argv[2]).write_text(page.replace("__DONNEES__", json.dumps(out, separators=(",", ":"), allow_nan=False).replace("</", "<\\/")))

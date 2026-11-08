@@ -1,0 +1,26 @@
+Z1   Tournant du mois · QQQ                        alpha +1.0%/an t  0.51 | Sharpe 0.50 contre 0.92 | moitiés +0.9% +1.1% | frais x2 t 0.26 | +5.7%/an contre +20.3%, baisse -15% contre -35%
+Z2   Tournant du mois · SPY                        alpha +0.3%/an t  0.16 | Sharpe 0.37 contre 0.78 | moitiés +0.1% +0.4% | frais x2 t -0.14 | +4.0%/an contre +14.7%, baisse -14% contre -34%
+Z3   Exposition gérée par la volatilité · SPY      alpha +2.0%/an t  0.67 | Sharpe 0.66 contre 0.74 | moitiés +2.1% +2.0% | frais x2 t 0.63 | +11.3%/an contre +14.7%, baisse -23% contre -34%
+Z4   Exposition gérée par la volatilité · QQQ      alpha +4.8%/an t  1.38 | Sharpe 0.86 contre 0.80 | moitiés +3.1% +5.9% | frais x2 t 1.35 | +17.6%/an contre +19.2%, baisse -21% contre -35%
+Z5   Exposition gérée par la volatilité · BTC      alpha +3.3%/an t  0.28 | Sharpe 0.86 contre 1.02 | moitiés +8.8% +5.6% | frais x2 t 0.13 | +42.0%/an contre +61.4%, baisse -74% contre -83%
+Z6   Structure du VIX · SPY                        alpha +2.4%/an t  0.94 | Sharpe 0.71 contre 0.69 | moitiés +4.6% -0.3% | frais x2 t 0.84 | +11.4%/an contre +13.5%, baisse -29% contre -34%
+Z7   Structure du VIX · QQQ                        alpha +0.6%/an t  0.22 | Sharpe 0.68 contre 0.78 | moitiés +4.1% -1.7% | frais x2 t 0.13 | +13.7%/an contre +18.3%, baisse -41% contre -35%
+Z9   Élan sur 4 semaines · BTC                     alpha +25.0%/an t  2.29 | Sharpe 1.22 contre 0.90 | moitiés +42.5% +7.3% | frais x2 t 1.94 | +59.4%/an contre +47.1%, baisse -53% contre -77%
+Z10  Élan sur 4 semaines · ETH                     alpha +33.1%/an t  2.36 | Sharpe 1.17 contre 0.82 | moitiés +39.5% +25.3% | frais x2 t 2.14 | +73.7%/an contre +43.3%, baisse -59% contre -79%
+Z11  La nuit seulement · QQQ                       alpha -6.1%/an t -2.19 | Sharpe 0.04 contre 0.81 | moitiés -6.8% -5.5% | frais x2 t -5.84 | +1.6%/an contre +18.4%, baisse -35% contre -35%
+Z8   Tendance de chaque marché · 22 fonds  exces +1.9%/an t 1.72 Sharpe 0.44 | moitiés +2.2% +1.6% | frais x2 t 1.66 | baisse -11%
+Z12  Bot 3 en 1 sans VIX inversé (240 séances évitées) : +14.4 $/séance t 4.44, net 3,279 $/an, 0.06 grillés/an, survie 100%, grillé 1 an 16% | Bot 3 en 1 : +15.3 $ t 4.26, net 3,011 $, 0.08, survie 98%, grillé 1 an 22%
+
+Famille de 12 tests, source des fonds : prix ajustés des dividendes (Yahoo, auto_adjust)
+Z1   Tournant du mois · QQQ                        non : t de l'alpha 0.51 sous 2 ; Sharpe 0.50 pas mieux que l'achat-conservation (0.92) ; frais doublés : t 0.26 ; ne survit pas à Benjamini-Hochberg
+Z2   Tournant du mois · SPY                        non : t de l'alpha 0.16 sous 2 ; Sharpe 0.37 pas mieux que l'achat-conservation (0.78) ; frais doublés : t -0.14 ; ne survit pas à Benjamini-Hochberg
+Z3   Exposition gérée par la volatilité · SPY      non : t de l'alpha 0.67 sous 2 ; Sharpe 0.66 pas mieux que l'achat-conservation (0.74) ; frais doublés : t 0.63 ; ne survit pas à Benjamini-Hochberg
+Z4   Exposition gérée par la volatilité · QQQ      non : t de l'alpha 1.38 sous 2 ; frais doublés : t 1.35 ; ne survit pas à Benjamini-Hochberg
+Z5   Exposition gérée par la volatilité · BTC      non : t de l'alpha 0.28 sous 2 ; Sharpe 0.86 pas mieux que l'achat-conservation (1.02) ; frais doublés : t 0.13 ; ne survit pas à Benjamini-Hochberg
+Z6   Structure du VIX · SPY                        non : t de l'alpha 0.94 sous 2 ; alpha négatif sur une moitié ; frais doublés : t 0.84 ; ne survit pas à Benjamini-Hochberg
+Z7   Structure du VIX · QQQ                        non : t de l'alpha 0.22 sous 2 ; Sharpe 0.68 pas mieux que l'achat-conservation (0.78) ; alpha négatif sur une moitié ; frais doublés : t 0.13 ; ne survit pas à Benjamini-Hochberg
+Z9   Élan sur 4 semaines · BTC                     RETENU
+Z10  Élan sur 4 semaines · ETH                     RETENU
+Z11  La nuit seulement · QQQ                       non : t de l'alpha -2.19 sous 2 ; Sharpe 0.04 pas mieux que l'achat-conservation (0.81) ; alpha négatif sur une moitié ; frais doublés : t -5.84 ; ne survit pas à Benjamini-Hochberg
+Z8   Tendance de chaque marché · 22 fonds          non : t 1.72 sous 2 ; ne survit pas à Benjamini-Hochberg
+Z12  Bot 3 en 1 sans les jours de VIX inversé      RETENU

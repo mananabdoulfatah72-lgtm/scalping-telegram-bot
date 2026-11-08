@@ -3,6 +3,7 @@
 (ml/arene/resultats/etape1-3.json), courbes, resultats par seance pour rejouer le compte finance dans la page, et le
 diagnostic des premieres annees (pas une regle : il sert a lire les pistes retenues).
 Lancer depuis n'importe ou : MINUTES_NQ=... CACHE_DOSSIER=... python3 terminal/prep3.py <dossier de l'arene>"""
+import glob
 import json
 import os
 import re
@@ -10,6 +11,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
 R = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(R / "ml/arene")); sys.path.insert(0, str(R / "ml"))
@@ -29,12 +31,19 @@ jours = [B.J[s] for s in B.test]
 zt = BT.zone(B); xt = BT.xgboost(B); st = BT.supertrend(B)
 sensp = lambda g: 0 if not np.isfinite(B.p[g]) else (1 if B.p[g] > 0.5 else -1)
 F = B.X["F"]
+# vague 2 du labo zipline (labo_zipline/VAGUE2.md, Z12) : pas de trade le jour J si le VIX etait >= VIX a 3 mois a la cloture de J-1
+_v = pd.concat([pd.read_csv(f) for f in sorted(glob.glob(str(R / "radar/donnees/jour/yahoo/*.csv.gz")))])
+_v = _v[_v.serie.isin(["^VIX:c", "^VIX3M:c"])].pivot_table(index="date", columns="serie", values="valeur"); _v.index = pd.to_datetime(_v.index)
+_e = (_v["^VIX:c"] - _v["^VIX3M:c"]).dropna(); _j = pd.to_datetime([B.J[s] for s in range(len(B.J))])
+INVERSE = (_e.reindex(_j.union(_e.index)).ffill().shift(1).reindex(_j) >= 0).to_numpy()
 TR = {
     "zone": zt, "xgb": xt, "st": st,
     "B3": [t for t in zt if sensp(BT.bougie_avant(t[0], t[2])) == t[1]],
     "B2": [t for t in st if sensp(BT.bougie_avant(t[0], t[2])) == t[1]],
     "B1": BT.xgboost(B, filtre=lambda i: F[i, 18] == (1 if B.p[i] > 0.5 else -1)),
 }
+TR["Z12"] = [x for x in zt if not INVERSE[x[0]]]
+TR["B3Z12"] = [x for x in TR["B3"] if not INVERSE[x[0]]]
 ECHELLES = ("zone", "B3")                      # tailles 2 et 3 MNQ seulement pour ces deux-la (piste A)
 rejeu = {}
 for k, tr in TR.items():
@@ -98,7 +107,8 @@ for Y, (ech, c) in CHOIX_A.items():
     q = aj == Y; s2A[q], s3A[q] = ECH[ech]; gA[q] = c
 un = np.full(n, 1e12); g26 = np.full(n, 2600.0)
 cas = {"A": (*tab("zone"), s2A, s3A, gA), "zone": (*tab("zone"), un, un, g26), "B3": (*tab("B3"), un, un, g26),
-       "xgb": (*tab("xgb"), un, un, g26), "st": (*tab("st"), un, un, g26)}
+       "xgb": (*tab("xgb"), un, un, g26), "st": (*tab("st"), un, un, g26), "Z12": (*tab("Z12"), un, un, g26),
+       "B3Z12": (*tab("B3Z12"), un, un, g26)}
 diag = []
 for nom_h, h, deb in (("1 an", 250, d17), ("2 ans", 500, d17), ("1 an, départs 2023 - 2025", 250, int(np.argmax(aj >= 2023)))):
     for k, (Rx, Dx, Tx, a_, b_, c_) in cas.items():
@@ -111,9 +121,10 @@ for x in diag:
 # ------------------------------------------------------------------ classement
 COUL = {"st": "#3cc8ff", "zone": "#b48cff", "xgb": "#ffa028", "B1": "#7fe0a0", "B2": "#2fd16f", "B3": "#f2f2ee", "B4": "#9be36b",
         "C1": "#e6e05a", "C2": "#c9c46a", "A": "#ffffff", "usine-st": "#1f8fb8", "usine-zone": "#8a6cc4", "usine-xgb": "#c27a1e",
-        "usine-toutes": "#8d8d95"}
+        "usine-toutes": "#8d8d95", "Z12": "#5ad1c8", "B3Z12": "#c8f0ff"}
 CHAMPS = ("par_seance", "t", "t_apres", "pire_baisse", "survie_60", "grille_250", "net_an", "grilles_an", "periode", "annees_pos")
 lignes = []
+courbes_extra = {}
 
 
 def ajout(ident, nom, famille, verdict, raison, m, periode="2014 - 2026", **x):
@@ -146,6 +157,17 @@ a = E3["A"]
 ajout("A", "A · gestion du capital (Bot 3 en 1, échelle de taille, coussin)", "Étape 3 · A capital", "adopté (règle)",
       "adoptée par la règle (net hors échantillon +37 %), mais le gain ne vient qu'après 2 ans : moins de retraits les deux premières années",
       dict(net_an=a["net_an"], grilles_an=a["grilles_an"]), "2017 - 2026", choix=a["choix"], reference=a["reference"])
+V2 = json.load(open(R / "labo_zipline/resultats_vague2.json"))["resultats"]
+for k, tr in (("Z12", TR["Z12"]), ("B3Z12", TR["B3Z12"])):
+    rr, dd, nn = BT.journees(B, tr, 1, 400.0); m = BT.mesures(B, rr, dd, nn)
+    if k == "Z12":
+        ajout(k, "Z12 · Bot 3 en 1 sans les jours de VIX inversé", "Labo zipline · vague 2 (effets publiés)", "retenu" if V2["Z12"]["retenu"] else "tué",
+              f"ne trade pas quand le VIX était au-dessus du VIX à 3 mois la veille ({V2['Z12']['seances_evitees']} séances sur 3 196) ; "
+              "comptes neufs grillés dans l'année 13 % au lieu de 22 % depuis 2017, 22 % au lieu de 31 % depuis 2023", m)
+    else:
+        ajout(k, "B3 + Z12 · accord XGBoost et VIX normal", "Labo zipline · vague 2 (effets publiés)", "indicatif",
+              "combinaison des deux pistes retenues, décidée après avoir vu leurs résultats : à confirmer sur les séances neuves", m)
+    courbes_extra[k] = [round(float(x), 1) for x in np.cumsum(rr[B.test])[::5]]
 d = E3["D"]
 ajout("D", "D · portefeuille Supertrend 7 marchés", "Étape 3 · D autres marchés", "tué",
       f"t {d['t']:.2f}, Sharpe {d['sharpe']:.2f} contre {d['sharpe_nq']:.2f} pour le NQ seul".replace(".", ","), dict(t=d["t"]), "2016 - 2026")
@@ -153,10 +175,12 @@ marches = [dict(id=k[2:], par_seance=E3[k]["par_seance"], t=E3[k]["t"], t_1619=E
            for k in E3 if k.startswith("D-")]
 
 courbes = {k: relief["courbes"][k] for k in relief["courbes"] if relief["courbes"][k]}
+courbes.update(courbes_extra)
 D3 = dict(jours=jours, jours_courbes=relief["jours"], courbes=courbes, lignes=lignes, rejeu=rejeu, diag=diag, marches=marches,
           choix_A={str(k): v for k, v in CHOIX_A.items()}, debut_2017=d17,
           noms_rejeu={"zone": "Bot 3 en 1 (zone)", "B3": "B3 · Bot 3 en 1 + accord XGBoost", "xgb": "XGBoost NQ", "st": "Supertrend NQ",
-                      "B1": "B1 · XGBoost + accord Supertrend", "B2": "B2 · Supertrend + accord XGBoost"})
+                      "B1": "B1 · XGBoost + accord Supertrend", "B2": "B2 · Supertrend + accord XGBoost",
+                      "Z12": "Z12 · Bot 3 en 1 sans VIX inversé", "B3Z12": "B3 + Z12 (indicatif)"})
 (S / "terminal").mkdir(exist_ok=True)
 json.dump(D3, open(S / "terminal/donnees3.json", "w"), separators=(",", ":"), allow_nan=False)
 print("donnees3.json", round(os.path.getsize(S / "terminal/donnees3.json") / 1e3), "ko")

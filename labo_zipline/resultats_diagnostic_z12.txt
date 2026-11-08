@@ -1,0 +1,6 @@
+240 séances sur 3196 avec le VIX inversé la veille (7.5%)
+                                          1 an dès 2017               2 ans dès 2017                1 an dès 2023   (net retiré · grillé · aucun retrait)
+Bot 3 en 1                    1 102 $ ·  22% ·  43%      4 323 $ ·  22% ·  12%        436 $ ·  31% ·  58%   années négatives : 2025
+Z12 · sans VIX inversé        1 092 $ ·  13% ·  43%      4 042 $ ·  14% ·  12%        568 $ ·  22% ·  56%   années négatives : 2019, 2025
+B3 · accord XGBoost           1 255 $ ·  11% ·  36%      4 111 $ ·   6% ·   2%        480 $ ·  33% ·  56%   années négatives : 2025
+B3 + Z12 (indicatif)          1 159 $ ·   8% ·  41%      4 257 $ ·   4% ·   3%        617 $ ·  25% ·  56%   années négatives : 2025

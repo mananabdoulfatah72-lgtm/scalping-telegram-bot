@@ -109,10 +109,14 @@ td:first-child, th:first-child { text-align: left; }
       <p class="note">Clique une ligne pour l'afficher. Un actif n'a un atout que si, sur tout l'historique : t ≥ 2, gain sur chaque moitié, Sharpe et pire baisse meilleurs que l'achat-conservation, et survie à la correction des tests multiples (Benjamini-Hochberg sur les 9).</p>
     </div></section>
   </div>
+  <section class="panneau"><h2>Vague 2 · douze effets publiés <span>chacun testé après sa publication, règles dans labo_zipline/VAGUE2.md</span></h2><div class="corps">
+    <div class="defile"><table id="t-vague2"></table></div>
+    <p class="note" id="n-vague2"></p>
+  </div></section>
   <section class="panneau"><h2>Comment c'est fait</h2><div class="corps notes">
     <p class="note"><b>La règle</b> (fixée avant tout calcul, <span class="a">labo_zipline/REGLES.md</span>) : achat quand la moyenne exponentielle 20 jours est au-dessus de celle de 50 jours et que la clôture est au-dessus de la 20 jours ; vente au stop (entrée − 2 ATR 14), à l'objectif (entrée + 4 ATR) ou quand la 20 jours repasse sous la 50 jours. Achat seulement, sans levier, tout le capital. Frais : 0,26 % par passage sur les cryptos, 0,005 $ par part sur les fonds, plus 5 points de base de glissement.</p>
     <p class="note"><b>Les données</b> : l'API publique de Kraken n'était pas joignable d'ici et ne rend que les 720 dernières bougies ; on a pris les bougies journalières gratuites que le radar du projet collecte chez Yahoo (BTC depuis 2014, ETH depuis 2017, SOL depuis 2020, fonds depuis 2015), jusqu'au 30 octobre 2026.</p>
-    <p class="note"><b>Deux pièges de zipline corrigés</b> : il n'achète que des parts entières (avec 10 000 $, un BTC à 44 000 $ donnait 0 part et aucun trade : une part vaut ici 0,001 BTC et 0,01 ETH) ; et sur son calendrier 24h/24, la stratégie voyait la clôture de la veille (dates des bougies crypto recalées d'un jour, vérifié avec une sonde). En journalier, un ordre décidé à la clôture est exécuté à la clôture suivante.</p>
+    <p class="note"><b>Trois pièges de zipline trouvés</b> : il n'achète que des parts entières (avec 10 000 $, un BTC à 44 000 $ donnait 0 part et aucun trade : une part vaut ici 0,001 BTC et 0,01 ETH) ; sur son calendrier 24h/24, la stratégie voyait la clôture de la veille (dates des bougies crypto recalées d'un jour, vérifié avec une sonde) ; et sur ce même calendrier il valorise le portefeuille à la clôture du lendemain, donc ses rendements quotidiens crypto sont étiquetés un jour trop tôt (le total est juste ; à réaligner avant toute comparaison jour par jour). En journalier, un ordre décidé à la clôture est exécuté à la clôture suivante.</p>
   </div></section>
 </main>
 
@@ -125,6 +129,7 @@ const $ = id => document.getElementById(id);
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const C = {}; ["noir", "panneau", "trait", "grille", "ambre", "blanc", "gris", "gris2", "hausse", "baisse", "bleu"].forEach(k => C[k] = css("--" + k));
 const ORDRE = ["BTC", "ETH", "SOL", "QQQ", "SPY", "IWM", "GLD", "TLT", "SMH"];
+const V2 = D._vague2 || null;
 const NOMS = { BTC: "Bitcoin", ETH: "Ether", SOL: "Solana", QQQ: "Nasdaq 100 (QQQ)", SPY: "S&P 500 (SPY)", IWM: "Russell 2000 (IWM)", GLD: "Or (GLD)", TLT: "Obligations 20 ans (TLT)", SMH: "Semi-conducteurs (SMH)" };
 const nf = (v, d = 0) => v == null || isNaN(v) ? "—" : v.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const pc = (v, d = 1) => v == null ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + nf(Math.abs(v * 100), d) + " %";
@@ -235,7 +240,22 @@ function graphiques() {
   G.cp.timeScale().fitContent(); G.cc.timeScale().fitContent();
 }
 
-boutons(); these();
+function vague2() {
+  if (!V2) return;
+  const T = V2.tests, ordre = ["Z1", "Z2", "Z3", "Z4", "Z5", "Z6", "Z7", "Z8", "Z9", "Z10", "Z11", "Z12"];
+  const conf = { Z9: ["b", "NON CONFIRMÉ"], Z10: ["h", "CONFIRMÉ"] };
+  $("t-vague2").innerHTML = `<thead><tr><th>Test</th><th>Hors échantillon</th><th>Alpha / an</th><th>t</th><th>Sharpe</th><th>Achat-cons.</th><th>Verdict</th><th>Deuxième moteur (zipline)</th></tr></thead><tbody>` + ordre.filter(k => T[k]).map(k => {
+    const r = T[k], v = r.retenu, z = k === "Z12", tsm = k === "Z8";
+    const alpha = z ? `${nf(r.par_seance, 1)} $/séance` : tsm ? pc(r.rendement_exces_an) : pc(r.alpha_an);
+    const tt = z ? r.t : tsm ? r.t : r.t_alpha, c = conf[k] || ["g", z ? "rejeu de l'arène" : "—"];
+    return `<tr><td style="white-space:normal;min-width:26ch">${k} · ${r.nom}</td><td class="g">${r.debut.slice(0, 4)} → 2026</td><td class="${cl(z ? r.par_seance : tsm ? r.rendement_exces_an : r.alpha_an)}">${alpha}</td>`
+      + `<td class="${tt >= 2 ? "h" : ""}">${nf(tt, 2)}</td><td>${r.sharpe == null ? "—" : nf(r.sharpe, 2)}</td><td class="g">${r.sharpe_bh == null ? "—" : nf(r.sharpe_bh, 2)}</td>`
+      + `<td><span class="puce ${v ? "h" : "b"}" title="${(r.raisons || []).join(" ; ")}">${v ? "RETENU" : "NON"}</span></td><td><span class="${c[0]}">${v ? c[1] : ""}</span></td></tr>`;
+  }).join("") + "</tbody>";
+  $("n-vague2").innerHTML = `Trois tests passent toutes les règles et la correction des tests multiples : <b>Z12</b> (le Bot 3 en 1 ne trade pas quand le VIX était au-dessus du VIX à 3 mois la veille : moins de comptes financés grillés, y compris depuis 2023), <b>Z10</b> et <b>Z9</b> (élan sur 4 semaines de l'ETH et du BTC). Rejoués dans zipline avec l'exécution à la clôture suivante, l'ETH garde son verdict (t 2,72) mais pas le BTC (t 1,90, alpha nul sur la seconde moitié) : <b>on ne garde que Z12 et Z10</b>. Les effets classiques sur les fonds (tournant du mois, volatilité, structure du VIX, la nuit, tendance multi-marchés) ne battent pas l'achat-conservation depuis leur publication. Données des fonds : ${V2.source}.`;
+}
+
+boutons(); these(); vague2();
 [actif, per] = lireHash();
 G = creerGraphiques();
 choisir(actif, per);

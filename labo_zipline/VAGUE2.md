@@ -55,3 +55,33 @@ doit donner le même verdict.
 - L'élan entre les grandes valeurs du Nasdaq : la liste du radar est celle des géants **d'aujourd'hui**, choisis après
   coup (biais du survivant), le test serait faux.
 - La dérive avant les réunions de la Fed : pas de calendrier fiable des réunions dans nos données.
+
+## Résultats (écrits après le calcul, 8 novembre 2026)
+
+Prix des fonds ajustés des dividendes, récupérés par GitHub Actions. Détail : `resultats_vague2.txt`, `resultats_vague2.json`.
+
+| Test | Hors échantillon | Verdict |
+|---|---|---|
+| Z1, Z2 tournant du mois (QQQ, SPY) | 2009 - 2026 | non : alpha t 0,51 et 0,16 |
+| Z3, Z4, Z5 exposition gérée par la volatilité (SPY, QQQ, BTC) | 2016 - 2026 | non : t 0,67, 1,38, 0,28 |
+| Z6, Z7 structure du VIX (SPY, QQQ) | 2015 - 2026 | non : t 0,94 et 0,22, alpha négatif sur la seconde moitié |
+| Z8 tendance de chaque marché (22 fonds) | 2012 - 2026 | non : t 1,72 |
+| Z9 élan 4 semaines BTC | 2019 - 2026 | retenu par le calcul principal (t 2,29), **non confirmé par zipline** |
+| Z10 élan 4 semaines ETH | 2019 - 2026 | **retenu, confirmé par zipline** (t 2,36 ; zipline 2,72) |
+| Z11 la nuit seulement (QQQ) | 2014 - 2026 | non : alpha −6,1 % par an, les frais mangent l'effet |
+| Z12 Bot 3 en 1 sans les jours de VIX inversé | 2014 - 2026 | **retenu** |
+
+**Deuxième moteur.** Rejoués dans zipline (`contre_verif.py`, exécution à la clôture qui suit le signal, plus prudente
+que le calcul principal qui joue à la clôture du signal), l'ETH garde son verdict (alpha +37,7 % par an, t 2,72, positif
+sur les deux moitiés) mais pas le BTC (t 1,90, alpha −0,8 % sur la seconde moitié). Seuls Z12 et Z10 sont gardés.
+
+**Troisième piège de zipline**, trouvé à cette occasion : sur le calendrier 24/7, le portefeuille de la séance J est
+valorisé à la clôture réelle de J+1, alors que la stratégie voit et exécute à la clôture de J (mesuré : écart médian
+0,0006 % avec J+1, 1,3 % avec J). Les gains totaux sont justes, mais les rendements quotidiens crypto sont étiquetés un
+jour trop tôt : sans réalignement, la première comparaison donnait un alpha gonflé (+50 % par an pour le BTC).
+
+**Z12 en détail** (`diagnostic_z12.py`, diagnostic qui ne décide rien) : 240 séances sur 3 196 évitées (7,5 %). Comptes
+neufs grillés dans l'année : 13 % contre 22 % pour le Bot 3 en 1 (départs depuis 2017), **22 % contre 31 % pour les
+départs de 2023 à 2025**, pour le même argent retiré. Net 3 279 $ par an contre 3 011 $, 0,06 master grillé par an
+contre 0,08. B3 + Z12 ensemble, combinaison décidée après avoir vu les deux résultats : 8 % grillés en un an, 4 % sur
+deux ans, 25 % sur les départs depuis 2023 ; à confirmer sur les séances neuves.

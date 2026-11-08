@@ -1279,7 +1279,7 @@ function reliefsStation() {
 
 // ------------------------------------------------------------------ F9 arene : bots, variantes et pistes sur le compte finance
 let D3 = null; const AR = { sel: null, sim: null, fin: 0, anim: null };
-const VERDICT = { "retenu": ["h", "RETENU"], "adopté (règle)": ["a", "ADOPTÉ (RÈGLE)"], "référence": ["c", "RÉFÉRENCE"], "tué": ["b", "TUÉ"], "bruit": ["g", "BRUIT"] };
+const VERDICT = { "retenu": ["h", "RETENU"], "adopté (règle)": ["a", "ADOPTÉ (RÈGLE)"], "référence": ["c", "RÉFÉRENCE"], "tué": ["b", "TUÉ"], "bruit": ["g", "BRUIT"], "indicatif": ["a", "INDICATIF"] };
 const ECH_A = { fixe: [1e12, 1e12], E1: [3500, 5000], E2: [4000, 6000], E3: [5000, 1e12] };
 const pct = v => v == null || isNaN(v) ? "—" : nf(v * 100, 0) + " %";
 const ligneA = id => D3.lignes.find(l => l.id === id) || { nom: id, couleur: COL.gris };
@@ -1305,6 +1305,7 @@ function teteArene() {
   $("a-tete").innerHTML = [
     ["Référence · Bot 3 en 1 · grillés en 1 an", pct(z.grille_250), `net ${usd(z.net_an)} par an`],
     ["Le plus sûr · B3 · grillés en 1 an", `<span class="h">${pct(b3.grille_250)}</span>`, `net ${usd(b3.net_an)} par an, accord XGBoost`],
+    ["Tient depuis 2023 · Z12 · grillés en 1 an", `<span class="h">${pct((D3.diag.find(x => x.id === "Z12" && x.horizon.includes("2023")) || {}).grille)}</span>`, `Bot 3 en 1 : ${pct((D3.diag.find(x => x.id === "zone" && x.horizon.includes("2023")) || {}).grille)} · VIX normal la veille`],
     ["Long terme · piste A · net par an", `<span class="a">${usd(a.net_an)}</span>`, "hors échantillon 2017 - 2026, moins les 2 premières années"],
     ["Pistes tuées", `<span class="b">${tues}</span> / ${D3.lignes.length - 3 + autres}`, "variantes, régimes, VWAP, 0DTE, 6 autres marchés"],
     ["Depuis 2023 · grillés en 1 an", `<span class="b">${d23.map(v => pct(v)).join(" · ")}</span>`, "comptes neufs, Bot 3 en 1 · B3"],
@@ -1344,15 +1345,17 @@ function verdictArene() {
   const z = ligneA("zone"), b3 = ligneA("B3"), a = ligneA("A"), dg = (h, id) => D3.diag.find(x => x.horizon === h && x.id === id) || {};
   const z1 = dg("1 an", "zone"), b1 = dg("1 an", "B3"), a1 = dg("1 an", "A"), z2 = dg("2 ans", "zone"), b2 = dg("2 ans", "B3"), a2 = dg("2 ans", "A");
   const z23 = dg("1 an, départs 2023 - 2025", "zone"), b23 = dg("1 an, départs 2023 - 2025", "B3"), A_ = D3.lignes.find(l => l.id === "A");
+  const q1 = dg("1 an", "Z12"), q23 = dg("1 an, départs 2023 - 2025", "Z12"), c1 = dg("1 an", "B3Z12"), c2 = dg("2 ans", "B3Z12"), q = ligneA("Z12");
   $("a-verdict").innerHTML = `
     <p><b class="c">Garde le Bot 3 en 1 en 1 MNQ.</b> C'est toujours la référence : t ${nf(z.t, 1)}, ${pct(z.survie_60)} des comptes neufs en vie après 60 séances, ${nf(z.grilles_an, 2)} master grillé par an.</p>
-    <p><b class="h">B3, la seule piste qui protège vraiment le compte</b> : le Bot 3 en 1 ne prend un trade que si XGBoost NQ va dans son sens. Sur 2014 - 2026 : ${pct(b3.grille_250)} des comptes neufs grillés dans l'année contre ${pct(z.grille_250)}, pour le même argent (${usd(b2.net)} retirés sur deux ans contre ${usd(z2.net)}). Elle survit à la correction des tests multiples. <span class="a">Mais sur les départs de 2023 à 2025 elle ne fait pas mieux</span> (${pct(b23.grille)} grillés dans l'année contre ${pct(z23.grille)}) : à suivre sur les séances neuves avant de changer le bot réel.</p>
+    <p><b class="h">B3, la piste qui protège le plus sur 2014 - 2026</b> : le Bot 3 en 1 ne prend un trade que si XGBoost NQ va dans son sens. Sur 2014 - 2026 : ${pct(b3.grille_250)} des comptes neufs grillés dans l'année contre ${pct(z.grille_250)}, pour le même argent (${usd(b2.net)} retirés sur deux ans contre ${usd(z2.net)}). Elle survit à la correction des tests multiples. <span class="a">Mais sur les départs de 2023 à 2025 elle ne fait pas mieux</span> (${pct(b23.grille)} grillés dans l'année contre ${pct(z23.grille)}) : à suivre sur les séances neuves avant de changer le bot réel.</p>
+    <p><b class="h">Z12, la piste qui tient aussi depuis 2023</b> : le Bot 3 en 1 ne trade pas le jour où le VIX était au-dessus du VIX à 3 mois la veille (marché sous tension, environ 7 % des séances). Effet publié, testé hors échantillon avec les 11 autres de la vague 2 du labo zipline, et seul à passer avec l'élan de l'ETH. ${pct(q1.grille)} des comptes neufs grillés dans l'année contre ${pct(z1.grille)}, et <b>${pct(q23.grille)} contre ${pct(z23.grille)} sur les départs de 2023 à 2025</b>, pour le même argent (${usd(q1.net)} la première année contre ${usd(z1.net)}). Net ${usd(q.net_an)} par an, ${nf(q.grilles_an, 2)} master grillé par an. <span class="g">B3 + Z12 ensemble (décidé après coup, à confirmer) : ${pct(c1.grille)} grillés en un an, ${pct(c2.grille)} sur deux ans.</span></p>
     <p><b class="a">A, grossir à 2 ou 3 MNQ quand la marge le permet</b> (coussin de 6 000 $ ces dernières années) : adoptée par la règle écrite d'avance (${usd(a.net_an)} par an hors échantillon contre ${usd(A_.reference.net_an)} pour le Bot 3 en 1 en 1 MNQ), mais le gain vient des comptes qui vivent longtemps. Les deux premières années elle retire moins (${usd(a1.net)} la première année contre ${usd(z1.net)}, ${usd(a2.net)} sur deux ans contre ${usd(z2.net)}) et ne grille pas moins de comptes. Pour un compte qui démarre : pas maintenant ; à reconsidérer quand la marge dépasse 5 000 $.</p>
     <p><b class="b">Tués</b> : les variantes (aucune usine ne bat son bot hors échantillon), le choix du bot selon le régime (B4 grille ${nf(ligneA("B4").grilles_an / A_.reference.grilles_an, 0)} fois plus de comptes que le Bot 3 en 1), la VWAP en tendance, le retournement 0DTE, le Supertrend sur six autres marchés. B1 et B2 sont moins risqués que leur propre bot, mais loin derrière le Bot 3 en 1.</p>
     <p class="g">Réserve : les règles du Bot 3 en 1 et du Supertrend ont été choisies en regardant ce même historique ; seules les probabilités de XGBoost sont hors échantillon. Choix de la piste A, année par année : ${Object.entries(A_.choix || {}).map(([y, c]) => `${y} ${c.replace("Bot 3 en 1, ", "").replace(/ \(.*\)/, "")}`).join(" ; ")} (E1 : 2 MNQ dès 3 500 $ de marge, 3 dès 5 000 $ ; E2 : 2 dès 4 000 $, 3 dès 6 000 $ ; E3 : 2 dès 5 000 $, jamais plus).</p>`;
 }
 function diagArene() {
-  const N = { A: "A · échelle + coussin", zone: "Bot 3 en 1", B3: "B3 · + accord XGBoost", xgb: "XGBoost NQ", st: "Supertrend NQ" };
+  const N = { A: "A · échelle + coussin", zone: "Bot 3 en 1", B3: "B3 · + accord XGBoost", xgb: "XGBoost NQ", st: "Supertrend NQ", Z12: "Z12 · sans VIX inversé", B3Z12: "B3 + Z12 (indicatif)" };
   let h = `<thead><tr><th>Horizon · bot</th><th>Départs</th><th>Retiré net</th><th>Grillé</th><th>Aucun retrait</th><th>1er retrait (séances)</th></tr></thead><tbody>`, hz = null;
   D3.diag.forEach(x => { if (x.horizon !== hz) { hz = x.horizon; h += `<tr><td colspan="6" class="a" style="padding-top:8px">${hz}</td></tr>`; }
     h += `<tr><td style="color:${ligneA(x.id).couleur}">${N[x.id]}</td><td class="g">${x.departs}</td><td class="${cl(x.net)}">${usd(x.net)}</td><td class="${x.grille > .3 ? "b" : ""}">${pct(x.grille)}</td><td>${pct(x.sans_retrait)}</td><td>${x.premier == null ? "—" : nf(x.premier)}</td></tr>`; });
