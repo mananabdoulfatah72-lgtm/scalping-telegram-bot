@@ -1,0 +1,22 @@
+Vague 6 : je cherche mieux pour le compte financé (trier d'autres signaux ; démarrer prudemment, puis accélérer quand le coussin existe).
+W1 (production) : 9 633 signaux  j'apprends année par année (2017 → 2026) avec 10 graines.
+W1 (production) : le modèle garde 52% des signaux de 2017 - 2026.
+Z12 · Bot 3 en 1 sans VIX inversé (2017 - 2026) : 37% des séances ; compte : survie 100%  grillé en 1 an 13%  0.05 masters grillés par an  net 3 309 $ par an, t 4.15 (depuis 2023 : 2.55)
+W1 · Supertrend trié (production) (2017 - 2026) : 76% des séances ; compte : survie 82%  grillé en 1 an 46%  0.41 masters grillés par an  net 3 774 $ par an, t 3.13 (depuis 2023 : 1.07)
+M1 · cassure des 5 premières minutes  triée : 3 891 signaux  j'apprends année par année (2017 → 2026) avec 10 graines.
+M1 · cassure des 5 premières minutes, triée : le modèle garde 49% des signaux de 2017 - 2026.
+M1 · cassure des 5 premières minutes  triée (2017 - 2026) : 48% des séances ; compte : survie 85%  grillé en 1 an 29%  0.36 masters grillés par an  net 3 359 $ par an, t 3.12 (depuis 2023 : 1.44) → tué (trade seulement 48% des séances; survie 85% sous 90 %; 0.36 masters grillés par an (au plus 0,30)).
+M2 · XGBoost NQ  trié : 7 285 signaux  j'apprends année par année (2017 → 2026) avec 10 graines.
+M2 · XGBoost NQ, trié : le modèle garde 63% des signaux de 2017 - 2026.
+M2 · XGBoost NQ  trié (2017 - 2026) : 63% des séances ; compte : survie 89%  grillé en 1 an 56%  0.62 masters grillés par an  net 133 $ par an, t 2.30 (depuis 2023 : 2.22) → tué (survie 89% sous 90 %; 56% de comptes neufs grillés dans l'année (au plus 30 %); 0.62 masters grillés par an (au plus 0,30)).
+M3 · Z12  trié : 1 588 signaux  j'apprends année par année (2017 → 2026) avec 10 graines.
+M3 · Z12, trié : le modèle garde 50% des signaux de 2017 - 2026.
+M3 · Z12  trié (2017 - 2026) : 19% des séances ; compte : survie 100%  grillé en 1 an 0%  0.00 masters grillés par an  net 2 071 $ par an, t 3.56 (depuis 2023 : 2.13) → tué (net 2 071 $ par an  moins que Z12 (3 309 $)).
+Z12 seul  même simulateur (référence de B) : net 3 309 $ par an  survie 100%  grillé en 1 an 13%  0.05 masters grillés par an  38% des séances.
+L1 · Z12  puis Z12 + W1 dès 3 500 $ de marge (limite commune) (2017 - 2026) : 52% des séances ; compte : survie 100%  grillé en 1 an 13%  0.04 masters grillés par an  net 3 330 $ par an  1re année 918 $ → tuée (net 3 330 $ par an  il faut 4 302 $).
+L2 · Z12  puis Z12 + W1 dès 5 000 $ de marge (limite commune) (2017 - 2026) : 55% des séances ; compte : survie 100%  grillé en 1 an 13%  0.04 masters grillés par an  net 3 939 $ par an  1re année 540 $ → tuée (net 3 939 $ par an  il faut 4 302 $).
+L3 · Z12  puis Z12 + W1 dès 3 500 $ (un contrat à la fois) (2017 - 2026) : 57% des séances ; compte : survie 100%  grillé en 1 an 13%  0.04 masters grillés par an  net 3 252 $ par an  1re année 641 $ → tuée (net 3 252 $ par an  il faut 4 302 $).
+L4 · Z12  puis Z12 + W1 dès 5 000 $ (un contrat à la fois) (2017 - 2026) : 62% des séances ; compte : survie 100%  grillé en 1 an 13%  0.04 masters grillés par an  net 3 198 $ par an  1re année 202 $ → tuée (net 3 198 $ par an  il faut 4 302 $).
+Vague 6 : rien ne passe toutes ses règles.
+Vague 6 terminée.
+fin code 0
