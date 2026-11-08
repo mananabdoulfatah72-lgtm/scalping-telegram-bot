@@ -1,0 +1,243 @@
+<title>Labo zipline</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Ecran de backtest dans la lignee du terminal NQ : fond noir, ambre pour l'interface, blanc pour les valeurs, vert / rouge
+   pour le sens du prix. Un seul theme sombre, choisi expres (meme monde visuel que le terminal). */
+:root {
+  --noir: #000000; --panneau: #0b0b0c; --panneau2: #131315; --trait: #27272c; --grille: #18181b;
+  --ambre: #ffa028; --ambre-pale: #c98a3c; --blanc: #f2f2ee; --gris: #8f8f97; --gris2: #5b5b63;
+  --hausse: #2fd16f; --baisse: #ff4f4f; --bleu: #6aa8ff;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --cond: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--noir); }
+body { color: var(--blanc); font-family: var(--mono); font-size: 13px; line-height: 1.45; margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 28px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--noir); }
+button { font: inherit; color: inherit; }
+button:focus-visible { outline: 1px solid var(--ambre); outline-offset: 1px; }
+.tete { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--noir); padding-top: 10px; display: grid; gap: 8px; border-bottom: 1px solid var(--trait); padding-bottom: 8px; }
+.barre { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.logo { font-family: var(--cond); font-weight: 700; letter-spacing: .08em; color: var(--noir); background: var(--ambre); padding: 2px 8px; font-size: 14px; }
+.pile { color: var(--gris); font-size: 12px; }
+.touches { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.touches button { background: var(--panneau2); border: 1px solid var(--trait); color: var(--ambre); padding: 3px 10px; cursor: pointer; font-family: var(--cond); font-weight: 600; letter-spacing: .05em; }
+.touches button[aria-pressed="true"] { background: var(--ambre); color: var(--noir); border-color: var(--ambre); }
+.touches .sep { width: 1px; height: 20px; background: var(--trait); margin: 0 4px; }
+main { display: grid; gap: 12px; margin-top: 12px; }
+.these { font-family: var(--cond); font-size: 17px; line-height: 1.35; max-width: 82ch; text-wrap: balance; margin: 0; }
+.these b { color: var(--ambre); font-weight: 600; }
+.panneau { background: var(--panneau); border: 1px solid var(--trait); min-width: 0; display: grid; align-content: start; }
+.panneau > h2 { margin: 0; font-family: var(--cond); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ambre); background: var(--panneau2);
+  padding: 5px 8px; border-bottom: 1px solid var(--trait); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-weight: 600; }
+.panneau > h2 span { color: var(--gris); letter-spacing: .02em; text-transform: none; font-family: var(--mono); font-weight: 400; }
+.corps { padding: 8px; display: grid; gap: 8px; min-width: 0; }
+.haut { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 12px; }
+.deux { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+@media (max-width: 980px) { .haut, .deux { grid-template-columns: minmax(0, 1fr); } }
+.verdict { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.puce { display: inline-block; padding: 0 7px; border: 1px solid currentColor; font-size: 11px; font-family: var(--cond); font-weight: 600; letter-spacing: .06em; white-space: nowrap; }
+.h { color: var(--hausse); } .b { color: var(--baisse); } .a { color: var(--ambre); } .g { color: var(--gris); } .bl { color: var(--bleu); }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 3px 6px; text-align: right; border-bottom: 1px solid var(--grille); white-space: nowrap; }
+th { color: var(--ambre-pale); font-weight: 500; font-family: var(--cond); letter-spacing: .04em; text-transform: uppercase; font-size: 11px; }
+td:first-child, th:first-child { text-align: left; }
+#t-mesures td:first-child { white-space: normal; font-family: var(--cond); font-size: 13px; color: var(--gris); min-width: 12ch; }
+#t-mesures td { font-size: 12px; }
+.defile { overflow-x: auto; min-width: 0; }
+.journal { max-height: 340px; overflow: auto; }
+#t-actifs tbody tr { cursor: pointer; }
+#t-actifs tbody tr:hover td { background: var(--panneau2); }
+#t-actifs tr.choisi td:first-child { color: var(--ambre); }
+.legende { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--gris); }
+.legende i { display: inline-block; width: 14px; height: 2px; vertical-align: middle; margin-right: 5px; }
+.legende i.pointille { background: none; border-top: 2px dashed; height: 0; }
+.graph { position: relative; width: 100%; }
+#c-prix { height: 460px; }
+#c-capital { height: 330px; }
+@media (max-width: 980px) { #c-capital { height: 220px; } }
+@media (max-width: 600px) { #c-prix { height: 330px; } #c-capital { height: 180px; } }
+.note { color: var(--gris); font-family: var(--cond); font-size: 14px; max-width: 86ch; margin: 0; }
+.note b { color: var(--blanc); font-weight: 600; }
+.notes { display: grid; gap: 8px; }
+.attente { color: var(--gris); padding: 20px 8px; font-family: var(--cond); }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<header class="tete">
+  <div class="barre">
+    <span class="logo">LABO ZIPLINE</span>
+    <span class="pile">zipline-reloaded 3.2.1 · pandas · Lightweight Charts 4.2 · bougies journalières · 10 000 $ de départ</span>
+  </div>
+  <div class="barre">
+    <nav class="touches" id="actifs" aria-label="Actif"></nav>
+    <nav class="touches" aria-label="Période">
+      <button type="button" id="p-fenetre" aria-pressed="true">1er janv. 2024 → 31 déc. 2025</button>
+      <button type="button" id="p-complet" aria-pressed="false">Tout l'historique</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <p class="these" id="these"></p>
+  <div class="haut">
+    <section class="panneau"><h2 id="titre-mesures">Mesures</h2><div class="corps">
+      <div class="verdict" id="verdict"></div>
+      <div class="defile"><table id="t-mesures"></table></div>
+    </div></section>
+    <section class="panneau"><h2>Capital <span>stratégie contre achat-conservation, 10 000 $ au départ</span></h2><div class="corps">
+      <div class="legende"><span><i style="background:var(--ambre)"></i>stratégie</span><span><i style="background:var(--bleu)"></i>achat-conservation</span><span id="echelle-cap"></span></div>
+      <div class="graph" id="c-capital"></div>
+    </div></section>
+  </div>
+  <section class="panneau"><h2 id="titre-prix">Prix</h2><div class="corps">
+    <div class="legende">
+      <span><i style="background:var(--ambre)"></i>moyenne exponentielle 20 j</span><span><i style="background:var(--bleu)"></i>moyenne 50 j</span>
+      <span><i class="pointille" style="color:var(--baisse)"></i>stop (entrée − 2 ATR)</span><span><i class="pointille" style="color:var(--hausse)"></i>objectif (entrée + 4 ATR)</span>
+      <span class="h">▲ achat</span><span>▼ vente : <span class="b">stop</span> · <span class="h">objectif</span> · <span class="g">fin de tendance</span></span>
+    </div>
+    <div class="graph" id="c-prix"><p class="attente" id="attente">Chargement de Lightweight Charts…</p></div>
+  </div></section>
+  <div class="deux">
+    <section class="panneau"><h2>Trades <span id="nb-trades"></span></h2><div class="corps"><div class="defile journal"><table id="t-trades"></table></div></div></section>
+    <section class="panneau"><h2>Les 9 actifs <span>historique complet, verdict écrit d'avance</span></h2><div class="corps">
+      <div class="defile"><table id="t-actifs"></table></div>
+      <p class="note">Clique une ligne pour l'afficher. Un actif n'a un atout que si, sur tout l'historique : t ≥ 2, gain sur chaque moitié, Sharpe et pire baisse meilleurs que l'achat-conservation, et survie à la correction des tests multiples (Benjamini-Hochberg sur les 9).</p>
+    </div></section>
+  </div>
+  <section class="panneau"><h2>Comment c'est fait</h2><div class="corps notes">
+    <p class="note"><b>La règle</b> (fixée avant tout calcul, <span class="a">labo_zipline/REGLES.md</span>) : achat quand la moyenne exponentielle 20 jours est au-dessus de celle de 50 jours et que la clôture est au-dessus de la 20 jours ; vente au stop (entrée − 2 ATR 14), à l'objectif (entrée + 4 ATR) ou quand la 20 jours repasse sous la 50 jours. Achat seulement, sans levier, tout le capital. Frais : 0,26 % par passage sur les cryptos, 0,005 $ par part sur les fonds, plus 5 points de base de glissement.</p>
+    <p class="note"><b>Les données</b> : l'API publique de Kraken n'était pas joignable d'ici et ne rend que les 720 dernières bougies ; on a pris les bougies journalières gratuites que le radar du projet collecte chez Yahoo (BTC depuis 2014, ETH depuis 2017, SOL depuis 2020, fonds depuis 2015), jusqu'au 30 octobre 2026.</p>
+    <p class="note"><b>Deux pièges de zipline corrigés</b> : il n'achète que des parts entières (avec 10 000 $, un BTC à 44 000 $ donnait 0 part et aucun trade : une part vaut ici 0,001 BTC et 0,01 ETH) ; et sur son calendrier 24h/24, la stratégie voyait la clôture de la veille (dates des bougies crypto recalées d'un jour, vérifié avec une sonde). En journalier, un ordre décidé à la clôture est exécuté à la clôture suivante.</p>
+  </div></section>
+</main>
+
+<script type="application/json" id="donnees">__DONNEES__</script>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+<script>
+"use strict";
+const D = JSON.parse(document.getElementById("donnees").textContent);
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C = {}; ["noir", "panneau", "trait", "grille", "ambre", "blanc", "gris", "gris2", "hausse", "baisse", "bleu"].forEach(k => C[k] = css("--" + k));
+const ORDRE = ["BTC", "ETH", "SOL", "QQQ", "SPY", "IWM", "GLD", "TLT", "SMH"];
+const NOMS = { BTC: "Bitcoin", ETH: "Ether", SOL: "Solana", QQQ: "Nasdaq 100 (QQQ)", SPY: "S&P 500 (SPY)", IWM: "Russell 2000 (IWM)", GLD: "Or (GLD)", TLT: "Obligations 20 ans (TLT)", SMH: "Semi-conducteurs (SMH)" };
+const nf = (v, d = 0) => v == null || isNaN(v) ? "—" : v.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pc = (v, d = 1) => v == null ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + nf(Math.abs(v * 100), d) + " %";
+const cl = v => v > 0 ? "h" : v < 0 ? "b" : "g";
+const dateFr = j => { const M = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]; const [a, m, d] = j.split("-").map(Number); return `${d} ${M[m - 1]} ${a}`; };
+let actif = "BTC", per = "fenetre", G = null;
+
+function these() {
+  const k = ORDRE.filter(a => D[a].verdict.atout).length;
+  const dd = ORDRE.filter(a => D[a].complet.mesures.pire_baisse > D[a].complet.achat_conservation.pire_baisse).length;
+  const sh = ORDRE.filter(a => D[a].complet.mesures.sharpe > D[a].complet.achat_conservation.sharpe);
+  $("these").innerHTML = `La règle « tendance + stop + objectif » passée dans zipline : <b>${k ? k + " actif(s) avec un atout" : "aucun atout sur les 9 actifs"}</b>. Elle réduit la pire baisse sur ${dd} actifs sur 9, mais rapporte moins par unité de risque que de simplement acheter et garder` + (sh.length ? `. Exception par le Sharpe : ${sh.join(", ")}, mais ${sh.map(a => (D[a].verdict.raisons[0] || "").replace("perd sur une moitié", "la règle perd sur une moitié de la période")).join(" ; ")}.` : ".");
+}
+function boutons() {
+  $("actifs").innerHTML = ORDRE.map((a, i) => (i === 3 ? '<span class="sep"></span>' : "") + `<button type="button" data-a="${a}" aria-pressed="${a === actif}">${a}</button>`).join("");
+  $("actifs").querySelectorAll("button").forEach(b => b.onclick = () => choisir(b.dataset.a, per));
+  $("p-fenetre").onclick = () => choisir(actif, "fenetre"); $("p-complet").onclick = () => choisir(actif, "complet");
+}
+function choisir(a, p) {
+  actif = a; per = p;
+  const h = a.toLowerCase() + (p === "complet" ? "-tout" : "");
+  if (location.hash.slice(1) !== h) history.replaceState(null, "", "#" + h);
+  $("actifs").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.a === a));
+  $("p-fenetre").setAttribute("aria-pressed", p === "fenetre"); $("p-complet").setAttribute("aria-pressed", p === "complet");
+  mesures(); trades(); tableActifs(); graphiques();
+}
+function lireHash() {
+  const h = location.hash.slice(1).toUpperCase(), a = h.split("-")[0];
+  return [ORDRE.includes(a) ? a : "BTC", h.endsWith("-TOUT") ? "complet" : "fenetre"];
+}
+function mesures() {
+  const R = D[actif][per], m = R.mesures, b = R.achat_conservation, v = D[actif].verdict;
+  $("titre-mesures").innerHTML = `${NOMS[actif]} <span>${dateFr(R.jours[0])} → ${dateFr(R.jours[R.jours.length - 1])}</span>`;
+  $("verdict").innerHTML = per === "complet"
+    ? `<span class="puce ${v.atout ? "h" : "b"}">${v.atout ? "ATOUT" : "PAS D'ATOUT"}</span><span class="g">${v.atout ? "passe les quatre règles et la correction des tests multiples" : v.raisons.join(" ; ")}</span>`
+    : `<span class="puce a">FENÊTRE DU MESSAGE</span><span class="g">deux ans d'un seul actif : rapporté tel quel, ne décide pas (verdict sur tout l'historique : ${v.atout ? "atout" : "pas d'atout"})</span>`;
+  const ligne = (n, s, bh, f, c) => `<tr><td>${n}</td><td class="${c ? cl(s) : ""}">${f(s)}</td><td class="${c && bh != null ? cl(bh) : ""} g">${bh == null ? "" : f(bh)}</td></tr>`;
+  $("t-mesures").innerHTML = `<thead><tr><th></th><th>Stratégie</th><th>Achat-cons.</th></tr></thead><tbody>`
+    + ligne("Rendement", m.rendement, b.rendement, pc, true) + ligne("Par an", m.par_an, b.par_an, pc, true)
+    + ligne("Pire baisse", m.pire_baisse, b.pire_baisse, pc, true) + ligne("Sharpe annualisé", m.sharpe, b.sharpe, x => nf(x, 2))
+    + ligne("t des rendements quotidiens", m.t, b.t, x => nf(x, 2)) + ligne("1re moitié", m.moitie1, b.moitie1, x => pc(x, 0), true)
+    + ligne("2e moitié", m.moitie2, b.moitie2, x => pc(x, 0), true)
+    + `<tr><td>Trades (allers-retours)</td><td>${nf(m.trades)}</td><td class="g">1</td></tr>`
+    + `<tr><td>Gagnants</td><td>${m.gagnants == null ? "—" : nf(m.gagnants * 100, 0) + " %"}</td><td></td></tr>`
+    + `<tr><td>Temps investi</td><td>${nf(m.en_marche * 100, 0)} %</td><td class="g">100 %</td></tr>`
+    + `<tr><td>Frais payés</td><td class="b">${nf(m.frais)} $</td><td></td></tr>`
+    + `<tr><td>Sorties</td><td>${nf(m.sorties.stop)} stop · ${nf(m.sorties.objectif)} objectif · ${nf(m.sorties["fin de tendance"])} fin</td><td></td></tr></tbody>`;
+}
+function trades() {
+  const rt = D[actif][per].allers_retours;
+  $("nb-trades").textContent = `${rt.length} allers-retours, les plus récents en haut`;
+  const coul = { stop: "b", objectif: "h", "fin de tendance": "g", "fin des données": "g" };
+  $("t-trades").innerHTML = `<thead><tr><th>Entrée</th><th>Sortie</th><th>Prix d'entrée</th><th>Prix de sortie</th><th>Résultat</th><th>Motif</th></tr></thead><tbody>`
+    + rt.slice().reverse().map(t => `<tr><td>${t.entree}</td><td>${t.sortie}</td><td>${nf(t.prix_entree, t.prix_entree < 10 ? 4 : 2)}</td><td>${nf(t.prix_sortie, t.prix_sortie < 10 ? 4 : 2)}</td><td class="${cl(t.resultat)}">${pc(t.resultat)}</td><td class="${coul[t.motif] || "g"}">${t.motif}</td></tr>`).join("")
+    + (rt.length ? "" : `<tr><td colspan="6" class="g">Aucun aller-retour terminé sur la période.</td></tr>`) + "</tbody>";
+}
+function tableActifs() {
+  $("t-actifs").innerHTML = `<thead><tr><th>Actif</th><th>Sharpe</th><th>Achat-cons.</th><th>t</th><th>Pire baisse</th><th>Achat-cons.</th><th>Verdict</th></tr></thead><tbody>` + ORDRE.map(a => {
+    const m = D[a].complet.mesures, b = D[a].complet.achat_conservation, v = D[a].verdict;
+    return `<tr data-a="${a}" class="${a === actif ? "choisi" : ""}"><td>${a}</td><td class="${m.sharpe > b.sharpe ? "h" : ""}">${nf(m.sharpe, 2)}</td><td class="g">${nf(b.sharpe, 2)}</td><td class="${m.t >= 2 ? "" : "b"}">${nf(m.t, 2)}</td>`
+      + `<td class="${m.pire_baisse > b.pire_baisse ? "h" : "b"}">${pc(m.pire_baisse, 0)}</td><td class="g">${pc(b.pire_baisse, 0)}</td><td><span class="puce ${v.atout ? "h" : "b"}">${v.atout ? "ATOUT" : "NON"}</span></td></tr>`;
+  }).join("") + "</tbody>";
+  $("t-actifs").querySelectorAll("tbody tr").forEach(tr => tr.onclick = () => choisir(tr.dataset.a, "complet"));
+}
+// ------------------------------------------------------------------ Lightweight Charts
+function creerGraphiques() {
+  const LW = window.LightweightCharts;
+  if (!LW) { $("attente").textContent = "Lightweight Charts ne s'est pas chargé (connexion au CDN). Les tableaux restent à jour."; return null; }
+  $("attente").remove();
+  const base = { autoSize: true, layout: { background: { type: "solid", color: C.panneau }, textColor: C.gris, fontFamily: css("--mono"), fontSize: 11 },
+    grid: { vertLines: { color: C.grille }, horzLines: { color: C.grille } }, rightPriceScale: { borderColor: C.trait }, timeScale: { borderColor: C.trait, minBarSpacing: 0.05 },
+    crosshair: { mode: LW.CrosshairMode.Normal, vertLine: { color: C.gris2, labelBackgroundColor: C.trait }, horzLine: { color: C.gris2, labelBackgroundColor: C.trait } },
+    localization: { locale: "fr-FR", priceFormatter: p => nf(p, Math.abs(p) < 10 ? 4 : Math.abs(p) < 1000 ? 2 : 0) } };
+  const cp = LW.createChart($("c-prix"), base), cc = LW.createChart($("c-capital"), { ...base, localization: { locale: "fr-FR", priceFormatter: p => nf(p) + " $" } });
+  const g = {
+    LW, cp, cc,
+    bougies: cp.addCandlestickSeries({ upColor: C.hausse, downColor: C.baisse, borderUpColor: C.hausse, borderDownColor: C.baisse, wickUpColor: C.hausse, wickDownColor: C.baisse }),
+    ema20: cp.addLineSeries({ color: C.ambre, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }),
+    ema50: cp.addLineSeries({ color: C.bleu, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }),
+    stop: cp.addLineSeries({ color: C.baisse, lineWidth: 1, lineStyle: LW.LineStyle.Dashed, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }),
+    objectif: cp.addLineSeries({ color: C.hausse, lineWidth: 1, lineStyle: LW.LineStyle.Dashed, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false }),
+    cap: cc.addLineSeries({ color: C.ambre, lineWidth: 2, priceLineVisible: false }),
+    bh: cc.addLineSeries({ color: C.bleu, lineWidth: 1, priceLineVisible: false }),
+  };
+  let verrou = false;
+  const lier = (a, b) => a.timeScale().subscribeVisibleLogicalRangeChange(r => { if (verrou || !r) return; verrou = true; b.timeScale().setVisibleLogicalRange(r); verrou = false; });
+  lier(cp, cc); lier(cc, cp);
+  return g;
+}
+function graphiques() {
+  if (!G) return;
+  const A = D[actif], R = A[per], K = A.complet, d0 = R.jours[0], d1 = R.jours[R.jours.length - 1];
+  $("titre-prix").innerHTML = `${actif} · bougies journalières <span>${NOMS[actif]} · ${per === "fenetre" ? "fenêtre du message" : "tout l'historique"}</span>`;
+  const dans = j => j >= d0 && j <= d1;
+  G.bougies.setData(K.bougies.filter(b => dans(b[0])).map(([time, open, high, low, close]) => ({ time, open, high, low, close })));
+  const ligne = (jours, v) => jours.map((time, i) => v[i] == null ? { time } : { time, value: v[i] }).filter(p => dans(p.time));
+  G.ema20.setData(ligne(K.jours, K.ema20)); G.ema50.setData(ligne(K.jours, K.ema50));
+  G.stop.setData(ligne(R.jours, R.stop)); G.objectif.setData(ligne(R.jours, R.objectif));
+  const court = per === "fenetre", coul = { stop: C.baisse, objectif: C.hausse, "fin de tendance": C.gris };
+  G.bougies.setMarkers(R.transactions.map(([time, s, prix, q, f, motif]) => s === "a"
+    ? { time, position: "belowBar", color: C.hausse, shape: "arrowUp", text: "" }
+    : { time, position: "aboveBar", color: coul[motif] || C.gris, shape: "arrowDown", text: court ? (motif === "fin de tendance" ? "fin" : motif) : "" }));
+  G.cap.setData(R.jours.map((time, i) => ({ time, value: R.capital[i] }))); G.bh.setData(R.jours.map((time, i) => ({ time, value: R.capital_bh[i] })));
+  const log = per === "complet" && (A.famille === "crypto" || R.capital_bh[R.capital_bh.length - 1] > 30000);
+  G.cc.priceScale("right").applyOptions({ mode: log ? G.LW.PriceScaleMode.Logarithmic : G.LW.PriceScaleMode.Normal });
+  G.cp.priceScale("right").applyOptions({ mode: per === "complet" && A.famille === "crypto" ? G.LW.PriceScaleMode.Logarithmic : G.LW.PriceScaleMode.Normal });
+  $("echelle-cap").textContent = log ? "échelle logarithmique" : "";
+  G.cp.timeScale().fitContent(); G.cc.timeScale().fitContent();
+}
+
+boutons(); these();
+[actif, per] = lireHash();
+G = creerGraphiques();
+choisir(actif, per);
+addEventListener("hashchange", () => { const [a, p] = lireHash(); if (a !== actif || p !== per) choisir(a, p); });
+</script>
