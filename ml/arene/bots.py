@@ -174,6 +174,55 @@ def _vie(res, dip, coussin, tous):
     return retire, nret, grilles
 
 
+@nb.njit(cache=True)
+def _vie_reelle(res, dip, trade, i0, i1, frais_mois, activation):
+    """Vie reelle avec les regles de retrait documentees (audit/README.md, a verifier chez Bulenox) : 10 jours de trading
+    par retrait, 52 600 $ gardes, au moins 1 000 $ par retrait, les trois premiers plafonnes a 1 500 $, meilleure journee
+    au plus 40 % du gain depuis le dernier retrait. Un compte Master grille oblige a repasser une qualification avec le
+    meme bot (objectif 53 000 $, plancher suiveur de 2 500 $ en fin de journee), payee `frais_mois` toutes les 20 seances,
+    plus `activation` a la reussite. Renvoie (retire, frais, masters grilles, qualifications ratees, retraits)."""
+    phase = 1                                   # 1 : Master ; 0 : qualification
+    solde = 50000.0; haut = 50000.0; base_ = 50000.0; meilleur = 0.0; jours = 0; nret = 0
+    retire = 0.0; frais = 0.0; grilles = 0; rates = 0; duree_q = 0
+    for i in range(i0, i1):
+        plancher = min(haut - 2500.0, 50100.0)
+        if phase == 0:
+            if duree_q % 20 == 0:
+                frais += frais_mois
+            duree_q += 1
+        if solde + dip[i] <= plancher:
+            if phase == 1:
+                grilles += 1
+            else:
+                rates += 1
+            phase = 0; duree_q = 0; solde = 50000.0; haut = 50000.0; base_ = 50000.0; meilleur = 0.0; jours = 0
+            continue
+        solde += res[i]
+        if solde > haut:
+            haut = solde
+        if phase == 0:
+            if solde >= 53000.0:
+                frais += activation; phase = 1; solde = 50000.0; haut = 50000.0; base_ = 50000.0; meilleur = 0.0; jours = 0; nret = 0
+            continue
+        if trade[i]:
+            jours += 1
+        if res[i] > meilleur:
+            meilleur = res[i]
+        dispo = solde - 52600.0
+        if nret < 3 and dispo > 1500.0:
+            dispo = 1500.0
+        if jours >= 10 and dispo >= 1000.0 and solde - base_ > 0 and meilleur <= 0.4 * (solde - base_):
+            retire += dispo; solde -= dispo; base_ = solde; meilleur = 0.0; jours = 0; nret += 1
+    return retire, frais, grilles, rates, nret
+
+
+def vie_reelle(res, dip, ntr, debut=0, fin=None, frais_mois=100.0, activation=148.0):
+    fin = len(res) if fin is None else fin
+    r, f, g, q, nr = _vie_reelle(res, dip, ntr > 0, debut, fin, frais_mois, activation)
+    ans = (fin - debut) / 252
+    return dict(net_an=(r - f) / ans, retire_an=r / ans, frais_an=f / ans, masters_grilles=int(g), qualifs_ratees=int(q), retraits=int(nr))
+
+
 def mesures(B, res, dip, horizon=60):
     j = res[B.test]; d = dip[B.test]; aj = B.an[B.test]; jours = [B.J[s] for s in B.test]
     t = lambda v: float(v.mean() / v.std(ddof=1) * np.sqrt(len(v))) if len(v) > 2 and v.std() > 0 else 0.0
