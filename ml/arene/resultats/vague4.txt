@@ -1,0 +1,19 @@
+Vague 4 : je garde les signaux du Supertrend NQ et je change ce qu'on en fait (trier les signaux, régler la taille).
+W1 · 2017 : appris sur 3 736 trades de 2011 à 2016 (gagnants 42%) ; garde 34% des 613 trades de 2017.
+W1 · 2018 : appris sur 4 349 trades de 2011 à 2017 (gagnants 41%) ; garde 50% des 580 trades de 2018.
+W1 · 2019 : appris sur 4 929 trades de 2011 à 2018 (gagnants 41%) ; garde 47% des 556 trades de 2019.
+W1 · 2020 : appris sur 5 485 trades de 2011 à 2019 (gagnants 42%) ; garde 57% des 612 trades de 2020.
+W1 · 2021 : appris sur 6 097 trades de 2011 à 2020 (gagnants 42%) ; garde 51% des 591 trades de 2021.
+W1 · 2022 : appris sur 6 688 trades de 2011 à 2021 (gagnants 42%) ; garde 56% des 629 trades de 2022.
+W1 · 2023 : appris sur 7 317 trades de 2011 à 2022 (gagnants 42%) ; garde 62% des 619 trades de 2023.
+W1 · 2024 : appris sur 7 936 trades de 2011 à 2023 (gagnants 42%) ; garde 55% des 620 trades de 2024.
+W1 · 2025 : appris sur 8 556 trades de 2011 à 2024 (gagnants 42%) ; garde 50% des 583 trades de 2025.
+W1 · 2026 : appris sur 9 139 trades de 2011 à 2025 (gagnants 42%) ; garde 54% des 494 trades de 2026.
+Supertrend NQ (2017 - 2026) : +18.8 $ par séance  t 1.97 (depuis 2023 : 0.53)  100% des séances  50% de semaines positives ; compte : survie 45%  grillé en 1 an 75%  1.25 masters grillés par an  net 2 756 $ par an
+V6 (pour comparer) (2017 - 2026) : +23.2 $ par séance  t 2.79 (depuis 2023 : 1.52)  89% des séances  54% de semaines positives ; compte : survie 63%  grillé en 1 an 61%  1.06 masters grillés par an  net 3 112 $ par an
+W1 · Supertrend trié par apprentissage (2017 - 2026) : +29.7 $ par séance  t 3.96 (depuis 2023 : 1.99)  75% des séances  54% de semaines positives ; compte : survie 82%  grillé en 1 an 44%  0.75 masters grillés par an  net 4 470 $ par an → tué (trade seulement 75% des séances).
+W2 · Supertrend  taille selon l'agitation (2017 - 2026) : +31.6 $ par séance  t 2.29 (depuis 2023 : 0.93)  100% des séances  50% de semaines positives ; compte : survie 25%  grillé en 1 an 82%  2.87 masters grillés par an  net 4 226 $ par an → tué (survie 25% (il faut 55%); 2.87 masters grillés par an (il faut au plus 1.00)).
+W3 · trié + taille selon l'agitation (2017 - 2026) : +45.4 $ par séance  t 4.18 (depuis 2023 : 2.19)  75% des séances  54% de semaines positives ; compte : survie 58%  grillé en 1 an 56%  1.17 masters grillés par an  net 8 184 $ par an → tué (trade seulement 75% des séances; 1.17 masters grillés par an (il faut au plus 1.00)).
+Correction des tests multiples faite : aucun ne fait nettement mieux que le Supertrend NQ.
+Vague 4 terminée.
+fin code 0

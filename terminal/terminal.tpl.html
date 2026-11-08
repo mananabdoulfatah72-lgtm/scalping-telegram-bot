@@ -200,7 +200,7 @@ td:first-child, th:first-child { text-align: left; }
 <div class="fiche" id="fiche" hidden role="dialog" aria-modal="true" aria-labelledby="fiche-titre">
   <div class="panneau fiche-boite"><h2><b id="fiche-titre">Agent</b><button class="btn" type="button" id="fiche-fermer">✕ Fermer</button></h2><div class="corps">
     <div class="ctrl">
-      <select id="fiche-agent" aria-label="Agent"><option value="z12">Z12 · Bot 3 en 1 sans VIX inversé</option><option value="zone">Bot 3 en 1</option><option value="st">Supertrend NQ</option></select>
+      <select id="fiche-agent" aria-label="Agent"><option value="z12">Z12 · Bot 3 en 1 sans VIX inversé</option><option value="zone">Bot 3 en 1</option><option value="st">Supertrend NQ</option><option value="v6">V6 · Supertrend + VWAP (en observation)</option></select>
       <select id="fiche-taille" aria-label="Taille"><option value="1">1 MNQ</option><option value="2">2 MNQ</option><option value="3">3 MNQ</option><option value="4">4 MNQ</option><option value="5">5 MNQ</option></select>
       <span class="g st-aide" id="fiche-periode"></span>
     </div>
@@ -1224,9 +1224,9 @@ function agentsSt(s, prix) {
   const etat = (trades, entreeOuverture) => { let real = 0, pos = 0, e = 0, n = 0;
     trades.forEach(([sens, mi, mo, en, xx]) => { if (mi > ST.m) return; n++; if (mo <= ST.m) real += sens * (xx - en) * 2 - 3; else { pos = sens; e = en; } });
     const lat = pos ? pos * (prix - e) * 2 - 3 : 0; return { real, pos, e, lat, n }; };
-  const a = etat(s.st), z = etat(s.zone), vx = vixVeille(s.jour), repos = !!(vx && vx[2]), q = repos ? { real: 0, pos: 0, e: 0, lat: 0, n: 0 } : z;
+  const a = etat(s.st), w6 = etat(v6Trades(s)), z = etat(s.zone), vx = vixVeille(s.jour), repos = !!(vx && vx[2]), q = repos ? { real: 0, pos: 0, e: 0, lat: 0, n: 0 } : z;
   const ligne = (nom, cc, r, id) => `<tr data-agent="${id}" title="Voir la fiche du 11 août au 2 novembre"><td class="${cc}">${nom}</td><td class="${cl(r.pos)}">${r.pos > 0 ? "acheteur" : r.pos < 0 ? "vendeur" : "à plat"}</td><td>${r.pos ? nf(r.e, 2) : "—"}</td><td class="${cl(r.lat)}">${r.pos ? usd(r.lat) : "—"}</td><td class="${cl(r.real + r.lat)}">${usd(r.real + r.lat)}</td><td class="g">${r.n}</td></tr>`;
-  $("st-agents").innerHTML = `<thead><tr><th>Agent</th><th>Position</th><th>Entrée</th><th>Latent</th><th>Journée</th><th>Trades</th></tr></thead><tbody>` + ligne("Supertrend NQ", "c", a, "st") + ligne("Bot 3 en 1", "v", z, "zone")
+  $("st-agents").innerHTML = `<thead><tr><th>Agent</th><th>Position</th><th>Entrée</th><th>Latent</th><th>Journée</th><th>Trades</th></tr></thead><tbody>` + ligne("Supertrend NQ", "c", a, "st") + ligne("V6 · ST + VWAP <span class=\"g\">(observation)</span>", "c", w6, "v6") + ligne("Bot 3 en 1", "v", z, "zone")
     + (repos ? `<tr data-agent="z12" title="Voir la fiche du 11 août au 2 novembre"><td class="h">Z12 · sans VIX inversé</td><td class="a" colspan="3">repos : VIX ${nf(vx[0], 1)} ≥ VIX 3 mois ${nf(vx[1], 1)} la veille</td><td class="g">${usd(0)}</td><td class="g">0</td></tr>` : ligne("Z12 · sans VIX inversé", "h", q, "z12"))
     + `<tr><td class="a">Toi (papier)</td><td class="${cl(ST.pos)}">${ST.pos ? (ST.pos > 0 ? "+" : "") + ST.pos + " MNQ" : "à plat"}</td><td>${ST.pos ? nf(ST.prix, 2) : "—"}</td><td class="${cl(ST.pos * (prix - ST.prix))}">${ST.pos ? usd(ST.pos * (prix - ST.prix) * 2 - Math.abs(ST.pos) * 1.5) : "—"}</td><td class="${cl(ST.real)}">${usd(ST.real + (ST.pos ? ST.pos * (prix - ST.prix) * 2 - Math.abs(ST.pos) * 1.5 : 0))}</td><td class="g">${ST.ordres.length}</td></tr></tbody>`;
   const A = D.agents; $("st-agents-note").innerHTML = `Sur 15 ans : Bot 3 en 1 t ${nf(A.zone.seance.t, 1)}, ${usd(A.zone.seance.moy, 0)} par séance · Supertrend t ${nf(A.st.seance.t, 1)}, ${usd(A.st.seance.moy, 0)} par séance. <span class="a">Clique un agent pour sa fiche du 11 août au 2 novembre.</span>`;
@@ -1234,16 +1234,20 @@ function agentsSt(s, prix) {
 // ------------------------------------------------------------------ Z12 et fiche d'un agent (11 aout - 2 novembre 2026)
 const donnees3 = () => D3 || (D3 = JSON.parse($("donnees3").textContent));
 function vixVeille(jour) { const z = donnees3().station_z12; return z && z.vix[jour] || null; }
-const FICHE = { st: ["Supertrend NQ", COL.cyan], zone: ["Bot 3 en 1", COL.violet], z12: ["Z12 · Bot 3 en 1 sans les jours de VIX inversé", COL.hausse] };
+// V6 (vague 3, en observation) : le Supertrend ne prend un achat que si le prix est au-dessus de la VWAP, une vente que s'il est dessous
+const v6Trades = s => s.st.filter(([sens, mi, mo, en]) => { const b = Math.floor(mi / 5) - 1, vw = b >= 0 ? s.vwap[b] : null; return vw != null && sens * (en - vw) > 0; });
+const pnlTrade = t => t[0] * (t[4] - t[3]) * 2 * 28500 / t[3] - 3;
+const FICHE = { v6: ["V6 · Supertrend + VWAP (en observation, non retenu à la vague 3)", "#48cae4"], st: ["Supertrend NQ", COL.cyan], zone: ["Bot 3 en 1", COL.violet], z12: ["Z12 · Bot 3 en 1 sans les jours de VIX inversé", COL.hausse] };
 function ouvrirFiche(id) {
   $("fiche-agent").value = id; $("fiche").hidden = false; document.body.style.overflow = "hidden"; peindreFiche(); $("fiche-fermer").focus();
 }
 function fermerFiche() { $("fiche").hidden = true; document.body.style.overflow = ""; }
 function peindreFiche() {
   const id = $("fiche-agent").value, N = +$("fiche-taille").value, Z = donnees3().station_z12, [nom, coul] = FICHE[id];
-  const lignes = SE.map(s => { const vx = vixVeille(s.jour), inv = !!(vx && vx[2]), base = id === "st" ? s.st_usd : s.zone_usd;
-    const repos = id === "z12" && inv, un = repos ? 0 : base, n = repos ? 0 : (id === "st" ? s.st : s.zone).length;
-    return { j: s.jour, vx, inv, un, val: un * N, n, ref: s.zone_usd * N }; });
+  const lignes = SE.map(s => { const vx = vixVeille(s.jour), inv = !!(vx && vx[2]), k6 = id === "v6" ? v6Trades(s) : null;
+    const base = id === "v6" ? k6.reduce((a, t) => a + pnlTrade(t), 0) : id === "st" ? s.st_usd : s.zone_usd;
+    const repos = id === "z12" && inv, un = repos ? 0 : base, n = repos ? 0 : (id === "v6" ? k6 : id === "st" ? s.st : s.zone).length;
+    return { j: s.jour, vx, inv, un, val: un * N, n, ref: (id === "v6" ? s.st_usd : s.zone_usd) * N }; });
   let cum = 0, haut = 0, baisse = 0; lignes.forEach(l => { cum += l.val; l.cum = cum; haut = Math.max(haut, cum); baisse = Math.min(baisse, cum - haut); });
   const tot = cum, jt = lignes.filter(l => l.n > 0), gagn = jt.filter(l => l.val > 0).length, pire = Math.min(...lignes.map(l => l.val)), nrep = lignes.filter(l => l.inv).length;
   const coupes = N >= 3 ? lignes.filter(l => l.val < -1100).length : 0;
@@ -1255,10 +1259,10 @@ function peindreFiche() {
     .map(([l, v, c]) => `<div><span class="l">${l}</span><span class="n ${c}">${v}</span></div>`).join("");
   const et = []; lignes.forEach((l, i) => { if (i === 0 || l.j.slice(5, 7) !== lignes[i - 1].j.slice(5, 7)) et.push([i, MOIS[+l.j.slice(5, 7) - 1]]); });
   const series = [{ nom: nom.split(" · ")[0], v: lignes.map(l => l.cum), c: coul, w: 2.2 }];
-  if (id !== "zone") { let c2 = 0; series.push({ nom: "Bot 3 en 1", v: lignes.map(l => (c2 += l.ref)), c: COL.violet, w: 1.2, decale: id === "z12" ? 12 : 0 }); }
+  if (id !== "zone" && id !== "st") { let c2 = 0; series.push({ nom: id === "v6" ? "Supertrend" : "Bot 3 en 1", v: lignes.map(l => (c2 += l.ref)), c: id === "v6" ? COL.cyan : COL.violet, w: 1.2, decale: id === "z12" ? 12 : 0 }); }
   courbes($("fiche-courbe"), { hauteur: 240, etiquettesX: et, libelle: i => dateFr(lignes[i].j), series });
   const ap = Z.arene_periode;
-  $("fiche-note").innerHTML = (id === "z12" ? `<b class="h">Aucun jour de VIX inversé entre le 11 août et le 2 novembre</b> : Z12 aurait tradé exactement comme le Bot 3 en 1 (les deux courbes se confondent). Z12 ne change quelque chose que les jours de tension (VIX au-dessus du VIX à 3 mois la veille au soir, environ 7 % des séances depuis 2014) : c'est là qu'il évite des journées qui grillent des comptes. ` : "")
+  $("fiche-note").innerHTML = (id === "v6" ? `<b class="a">En observation, sans argent.</b> V6 était le candidat le plus proche de la vague 3 (2014 - 2026 : t 2,58, depuis 2023 t 1,52 contre 0,53 pour le Supertrend, survie à 60 séances 60 % contre 46 %, 0,95 master grillé par an contre 1,21) mais sa pire baisse (−14 752 $) dépasse la limite écrite d'avance : il n'est pas retenu. On le suit ici sur les séances, à côté du Supertrend. ` : "") + (id === "z12" ? `<b class="h">Aucun jour de VIX inversé entre le 11 août et le 2 novembre</b> : Z12 aurait tradé exactement comme le Bot 3 en 1 (les deux courbes se confondent). Z12 ne change quelque chose que les jours de tension (VIX au-dessus du VIX à 3 mois la veille au soir, environ 7 % des séances depuis 2014) : c'est là qu'il évite des journées qui grillent des comptes. ` : "")
     + `Journées du replay de la station : le Bot 3 en 1 y suit son journal réel depuis le 13 octobre (filtre delta). La règle unique de l'arène, qui a servi à valider Z12, donne ${usd(ap.zone * N)} sur la même période en ${N} MNQ (le 16 octobre, le vrai bot n'a pas tradé à cause du filtre delta ; la règle de l'arène y gagne 858 $ en 1 MNQ).`
     + (N >= 2 ? ` Plus de MNQ : tout est multiplié par ${N}, gains comme pertes ; la limite du bot passe à ${nf(Math.min(400 * N, 1100))} $.` : "")
     + (coupes ? ` <span class="b">${coupes} journée(s) dépasseraient la limite de la firme (1 100 $) : le résultat réel serait coupé ces jours-là.</span>` : "");
@@ -1268,6 +1272,7 @@ function peindreFiche() {
   const T = Z.tailles, rang = (k, lab) => [1, 2, 3, 4, 5].map(n => { const e = T[k][n];
     return `<tr class="${n === N && (k === "Z12") === (id !== "zone") ? "choisie" : ""}"><td>${lab} · ${n} MNQ</td><td class="g">${nf(e.limite)} $</td><td class="${cl(e.net_an)}">${usd(e.net_an)}</td><td>${nf(e.grilles_an, 2)}</td><td>${nf(e.survie_60 * 100, 0)} %</td>`
       + `<td class="${e.grille_250 > .4 ? "b" : ""}">${nf(e.grille_250 * 100, 0)} %</td><td class="${e.grille_1an_2023 > .4 ? "b" : ""}">${nf(e.grille_1an_2023 * 100, 0)} %</td><td class="${cl(e.net_1an)}">${usd(e.net_1an)}</td><td class="b">${usd(e.pire_jour)}</td></tr>`; }).join("");
+  if (id === "v6") { $("fiche-tailles").innerHTML = ""; $("fiche-tailles-note").innerHTML = "Pas de tableau des tailles pour un agent en observation : il n'est pas candidat au compte réel."; return; }
   $("fiche-tailles").innerHTML = `<thead><tr><th>Taille</th><th>Limite du bot</th><th>Net par an</th><th>Grillés par an</th><th>En vie à 60 séances</th><th>Grillé en 1 an</th><th>Grillé en 1 an (dès 2023)</th><th>Retiré la 1re année</th><th>Pire journée</th></tr></thead><tbody>`
     + (id === "st" ? "" : rang("Z12", "Z12")) + rang("zone", "Bot 3 en 1") + "</tbody>";
   const z1 = T.Z12["1"], z2 = T.Z12["2"], z3 = T.Z12["3"];
@@ -1354,7 +1359,7 @@ function reliefsStation() {
 
 // ------------------------------------------------------------------ F9 arene : bots, variantes et pistes sur le compte finance
 let D3 = null; const AR = { sel: null, sim: null, fin: 0, anim: null };
-const VERDICT = { "retenu": ["h", "RETENU"], "adopté (règle)": ["a", "ADOPTÉ (RÈGLE)"], "référence": ["c", "RÉFÉRENCE"], "tué": ["b", "TUÉ"], "bruit": ["g", "BRUIT"], "indicatif": ["a", "INDICATIF"] };
+const VERDICT = { "retenu": ["h", "RETENU"], "adopté (règle)": ["a", "ADOPTÉ (RÈGLE)"], "référence": ["c", "RÉFÉRENCE"], "tué": ["b", "TUÉ"], "bruit": ["g", "BRUIT"], "indicatif": ["a", "INDICATIF"], "presque": ["a", "PRESQUE"] };
 const ECH_A = { fixe: [1e12, 1e12], E1: [3500, 5000], E2: [4000, 6000], E3: [5000, 1e12] };
 const pct = v => v == null || isNaN(v) ? "—" : nf(v * 100, 0) + " %";
 const ligneA = id => D3.lignes.find(l => l.id === id) || { nom: id, couleur: COL.gris };
@@ -1425,6 +1430,7 @@ function verdictArene() {
     <p><b class="c">Garde le Bot 3 en 1 en 1 MNQ.</b> C'est toujours la référence : t ${nf(z.t, 1)}, ${pct(z.survie_60)} des comptes neufs en vie après 60 séances, ${nf(z.grilles_an, 2)} master grillé par an.</p>
     <p><b class="h">B3, la piste qui protège le plus sur 2014 - 2026</b> : le Bot 3 en 1 ne prend un trade que si XGBoost NQ va dans son sens. Sur 2014 - 2026 : ${pct(b3.grille_250)} des comptes neufs grillés dans l'année contre ${pct(z.grille_250)}, pour le même argent (${usd(b2.net)} retirés sur deux ans contre ${usd(z2.net)}). Elle survit à la correction des tests multiples. <span class="a">Mais sur les départs de 2023 à 2025 elle ne fait pas mieux</span> (${pct(b23.grille)} grillés dans l'année contre ${pct(z23.grille)}) : à suivre sur les séances neuves avant de changer le bot réel.</p>
     <p><b class="h">Z12, la piste qui tient aussi depuis 2023</b> : le Bot 3 en 1 ne trade pas le jour où le VIX était au-dessus du VIX à 3 mois la veille (marché sous tension, environ 7 % des séances). Effet publié, testé hors échantillon avec les 11 autres de la vague 2 du labo zipline, et seul à passer avec l'élan de l'ETH. ${pct(q1.grille)} des comptes neufs grillés dans l'année contre ${pct(z1.grille)}, et <b>${pct(q23.grille)} contre ${pct(z23.grille)} sur les départs de 2023 à 2025</b>, pour le même argent (${usd(q1.net)} la première année contre ${usd(z1.net)}). Net ${usd(q.net_an)} par an, ${nf(q.grilles_an, 2)} master grillé par an. <span class="g">B3 + Z12 ensemble (décidé après coup, à confirmer) : ${pct(c1.grille)} grillés en un an, ${pct(c2.grille)} sur deux ans.</span></p>
+    <p><b class="a">W1, le meilleur Supertrend trouvé (vague 4)</b> : les mêmes signaux que le Supertrend NQ, triés par un modèle réappris chaque année sur le passé seul (un trade sur deux est gardé). Sur 2017 - 2026, hors échantillon : t ${nf(ligneA("W1").t, 2)} contre ${nf(ligneA("st").t, 2)} pour le Supertrend, ${pct(ligneA("W1").survie_60)} des comptes neufs en vie après 60 séances, ${nf(ligneA("W1").grilles_an, 2)} master grillé par an, net ${usd(ligneA("W1").net_an)} par an ; résultat tenu sur 10 graines du modèle. Il trade 3 séances sur 4 (la règle demandait 80 %) et grille encore environ un compte neuf sur deux dans l'année : plus sûr que le Supertrend, moins que Z12.</p>
     <p><b class="a">A, grossir à 2 ou 3 MNQ quand la marge le permet</b> (coussin de 6 000 $ ces dernières années) : adoptée par la règle écrite d'avance (${usd(a.net_an)} par an hors échantillon contre ${usd(A_.reference.net_an)} pour le Bot 3 en 1 en 1 MNQ), mais le gain vient des comptes qui vivent longtemps. Les deux premières années elle retire moins (${usd(a1.net)} la première année contre ${usd(z1.net)}, ${usd(a2.net)} sur deux ans contre ${usd(z2.net)}) et ne grille pas moins de comptes. Pour un compte qui démarre : pas maintenant ; à reconsidérer quand la marge dépasse 5 000 $.</p>
     <p><b class="b">Tués</b> : les variantes (aucune usine ne bat son bot hors échantillon), le choix du bot selon le régime (B4 grille ${nf(ligneA("B4").grilles_an / A_.reference.grilles_an, 0)} fois plus de comptes que le Bot 3 en 1), la VWAP en tendance, le retournement 0DTE, le Supertrend sur six autres marchés. B1 et B2 sont moins risqués que leur propre bot, mais loin derrière le Bot 3 en 1.</p>
     <p class="g">Réserve : les règles du Bot 3 en 1 et du Supertrend ont été choisies en regardant ce même historique ; seules les probabilités de XGBoost sont hors échantillon. Choix de la piste A, année par année : ${Object.entries(A_.choix || {}).map(([y, c]) => `${y} ${c.replace("Bot 3 en 1, ", "").replace(/ \(.*\)/, "")}`).join(" ; ")} (E1 : 2 MNQ dès 3 500 $ de marge, 3 dès 5 000 $ ; E2 : 2 dès 4 000 $, 3 dès 6 000 $ ; E3 : 2 dès 5 000 $, jamais plus).</p>`;

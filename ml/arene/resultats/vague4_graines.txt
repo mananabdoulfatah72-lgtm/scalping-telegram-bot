@@ -1,0 +1,12 @@
+graine 0 : t 3.96  depuis 2023 1.99  séances 75%  survie 82%  grillé 1 an 44%  0.75 grillés/an  net 4 470 $/an  11/08-02/11 +596 $
+graine 1 : t 3.74  depuis 2023 2.23  séances 76%  survie 83%  grillé 1 an 46%  0.66 grillés/an  net 6 596 $/an  11/08-02/11 -909 $
+graine 2 : t 2.91  depuis 2023 1.16  séances 75%  survie 73%  grillé 1 an 60%  0.61 grillés/an  net 4 055 $/an  11/08-02/11 +379 $
+graine 3 : t 3.32  depuis 2023 1.63  séances 76%  survie 80%  grillé 1 an 48%  0.58 grillés/an  net 3 641 $/an  11/08-02/11 +286 $
+graine 4 : t 2.96  depuis 2023 1.41  séances 76%  survie 78%  grillé 1 an 64%  0.52 grillés/an  net 3 176 $/an  11/08-02/11 +781 $
+graine 5 : t 3.40  depuis 2023 1.73  séances 76%  survie 78%  grillé 1 an 62%  0.60 grillés/an  net 4 389 $/an  11/08-02/11 +851 $
+graine 6 : t 3.36  depuis 2023 1.56  séances 75%  survie 75%  grillé 1 an 61%  0.55 grillés/an  net 3 936 $/an  11/08-02/11 -249 $
+graine 7 : t 3.15  depuis 2023 1.49  séances 76%  survie 74%  grillé 1 an 60%  0.84 grillés/an  net 4 177 $/an  11/08-02/11 +514 $
+graine 8 : t 3.65  depuis 2023 1.70  séances 76%  survie 79%  grillé 1 an 48%  0.39 grillés/an  net 5 399 $/an  11/08-02/11 -972 $
+graine 9 : t 3.69  depuis 2023 1.67  séances 76%  survie 83%  grillé 1 an 41%  0.38 grillés/an  net 5 171 $/an  11/08-02/11 +205 $
+moyenne des 10 graines : t 3.58  depuis 2023 1.37  séances 75%  survie 76%  grillé 1 an 56%  0.83 grillés/an  net 4 419 $/an  années positives 8/10  semaines positives 54%  11/08-02/11 +282 $
+ce que le tri regarde le plus : sens du Supertrend 6% ; trades déjà pris 6% ; heure (cosinus) 4% ; sens 4% ; ATR / prix 4% ; minute d'entrée 4% ; écart d'ouverture 4% ; rendement depuis l'ouverture 4%

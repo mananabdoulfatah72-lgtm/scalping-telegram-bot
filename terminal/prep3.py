@@ -20,6 +20,7 @@ import bots as BT  # noqa: E402
 S = Path("/tmp/claude-0/-home-user-scalping-telegram-bot/73d2fc28-0760-5668-987b-2a927564efe7/scratchpad")
 ARENE = Path(sys.argv[1]) if len(sys.argv) > 1 else S / "arene"
 ARENE3 = Path(sys.argv[2]) if len(sys.argv) > 2 else None          # dossier de l'arene apres la vague 3 (courbes V1 - V7)
+ARENE4 = Path(sys.argv[3]) if len(sys.argv) > 3 else None          # dossier de l'arene apres la vague 4 (courbes W1 - W3)
 RES = R / "ml/arene/resultats"
 E1 = json.load(open(RES / "etape1.json")); E2 = json.load(open(RES / "etape2.json")); E3 = json.load(open(RES / "etape3.json"))["resultats"]
 relief = json.load(open(ARENE / "relief.json"))
@@ -179,6 +180,17 @@ for k, r in V3.items():
     ajout(k, r["nom"], "Vague 3 · un Supertrend en mieux", "retenu" if r["retenu"] else "tué", raison, r)
     if rel3.get(k):
         courbes_extra[k] = rel3[k]
+V4 = json.load(open(RES / "vague4.json"))["candidats"]
+rel4 = json.load(open(ARENE4 / "relief.json"))["courbes"] if ARENE4 else {}
+for k, r in V4.items():
+    raison = "; ".join(r["raisons"])
+    if k == "W1":
+        raison = ("le meilleur Supertrend trouvé : sur 2017 - 2026 t 3,96 (Supertrend 1,97), depuis 2023 1,99 (0,53), survie 82 % (45 %), 0,75 master grillé par an (1,25), "
+                  "net 4 470 $ par an (2 756 $), solide sur 10 graines du modèle ; écarté seulement parce qu'il trade 75 % des séances au lieu de 80 %")
+    ajout(k, r["nom"], "Vague 4 · le même Supertrend, en mieux", "retenu" if r["retenu"] else ("presque" if k == "W1" else "tué"), raison, r, "2017 - 2026")
+    if rel4.get(k):
+        courbes_extra[k] = rel4[k]
+COUL.update({"W1": "#f9c74f", "W2": "#f8961e", "W3": "#f94144"})
 COUL.update({"V1": "#ffd166", "V2": "#f4a261", "V3": "#e76f51", "V4": "#b5e48c", "V5": "#90e0ef", "V6": "#48cae4", "V7": "#00b4d8"})
 for L_ in lignes:
     if L_["id"] in COUL:
