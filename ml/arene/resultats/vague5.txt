@@ -1,0 +1,12 @@
+Vague 5 : je mets Z12 et W1 sur le même compte pour avoir l'activité de W1 et la sécurité de Z12.
+W1 : 9 633 trades du Supertrend  j'apprends année par année (2017 → 2026) avec 10 graines.
+W1 garde 52% des signaux de 2017 - 2026 ; la version sans VIX en garde 53%.
+Supertrend NQ (2017 - 2026) : +18.8 $ par séance  t 1.97 (depuis 2023 : 0.53)  100% des séances  50% de semaines et 58% de mois positifs ; compte : survie 45%  grillé en 1 an 75%  1.25 masters grillés par an  net 2 756 $ par an
+Z12 · Bot 3 en 1 sans VIX inversé (2017 - 2026) : +16.0 $ par séance  t 4.15 (depuis 2023 : 2.55)  37% des séances  42% de semaines et 61% de mois positifs ; compte : survie 100%  grillé en 1 an 13%  0.05 masters grillés par an  net 3 309 $ par an
+W1 · Supertrend trié (10 graines) (2017 - 2026) : +26.8 $ par séance  t 3.58 (depuis 2023 : 1.37)  75% des séances  54% de semaines et 64% de mois positifs ; compte : survie 76%  grillé en 1 an 56%  0.83 masters grillés par an  net 4 419 $ par an
+P1 · Z12 + W1  limite commune (2017 - 2026) : +42.1 $ par séance  t 4.58 (depuis 2023 : 2.00)  84% des séances  55% de semaines et 71% de mois positifs ; compte : survie 75%  grillé en 1 an 46%  0.47 masters grillés par an  net 8 680 $ par an → tué (survie 75% sous 90 %; 46% de comptes neufs grillés dans l'année (au plus 30 %); 0.47 masters grillés par an (au plus 0,30)).
+P2 · Z12 + W1  un contrat à la fois (2017 - 2026) : +31.2 $ par séance  t 4.09 (depuis 2023 : 1.77)  84% des séances  55% de semaines et 68% de mois positifs ; compte : survie 78%  grillé en 1 an 44%  0.49 masters grillés par an  net 5 407 $ par an → tué (survie 78% sous 90 %; 44% de comptes neufs grillés dans l'année (au plus 30 %); 0.49 masters grillés par an (au plus 0,30)).
+P3 · W1 sans la variable VIX (2017 - 2026) : +28.2 $ par séance  t 3.73 (depuis 2023 : 1.72)  76% des séances  53% de semaines et 61% de mois positifs ; compte : survie 84%  grillé en 1 an 47%  0.31 masters grillés par an  net 6 194 $ par an → passe ses règles, en attente de la correction des tests multiples.
+Correction des tests multiples faite : P3 retenu(s).
+Vague 5 terminée.
+fin code 0
