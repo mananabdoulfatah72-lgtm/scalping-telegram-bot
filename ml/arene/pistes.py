@@ -22,7 +22,7 @@ DOSSIER = sys.argv[1]
 DX = Direct(DOSSIER)
 etat = json.load(open(os.path.join(DOSSIER, "etat.json")))
 DX.e.update({k: etat[k] for k in ("journal", "jours", "pied")})
-DX.e["lignes"] = [l for l in etat["lignes"] if l.get("statut") == "référence" or l["id"].startswith("usine")]
+DX.e["lignes"] = [l for l in etat["lignes"] if l.get("statut") == "référence" and "-" not in l["id"] or l["id"].startswith("usine")]
 rel = json.load(open(os.path.join(DOSSIER, "relief.json")))
 for l in DX.e["lignes"]:
     l["courbe"] = rel["courbes"].get(l["id"], [])
@@ -31,15 +31,15 @@ DX.maj(relief=True, force=True, phase="Étape 3 : quatre nouvelles pistes", deta
 DX.dire("Étape 3 : je lance les quatre pistes choisies ensemble (règles : ml/arene/PISTES.md).", "a")
 B = BT.Base(os.environ["CACHE_DOSSIER"])
 X = B.X; F = X["F"]; aj = B.an[B.test]; n = len(B.test); PAS = 5
-_, _, _, _, _, VOL, _ = D.nq_minutes()
-tst = lambda v: float(v.mean() / v.std(ddof=1) * np.sqrt(len(v))) if len(v) > 2 and v.std() > 0 else 0.0
+VOL = B.V
+tst = BT.tst
 TESTS = {}                                                              # famille corrigee ensemble (BH)
 
 
 def ligne(ident, nom, j, coul, stats_, statut="en cours", raison=""):
     L = DX.ligne(ident, nom, statut, coul)
     L["courbe"] = [round(float(x), 1) for x in np.cumsum(j)[::PAS]]; L["stats"] = stats_; L["raison"] = raison
-    L["tri"] = (2 if statut == "retenu" else -2 if statut == "tué" else 0) + stats_.get("survie_60", 0)
+    L["tri"] = (2 if statut == "retenu" else -2 if statut == "tué" else 0) + (stats_.get("survie_60") or 0) - (stats_.get("grilles_an") or 0)
     DX.maj(relief=True, curseur=len(L["courbe"]) - 1)
     return L
 
@@ -49,10 +49,9 @@ def journees(tr, lim=400.0, taille=1, frais=3.0):
 
 
 def profil(tr, lim=400.0):
-    r, d, _ = journees(tr, lim); r6, _, _ = journees(tr, lim, 1, 6.0)
-    m = BT.mesures(B, r, d); j = r[B.test]
-    m.update(t_frais6=tst(r6[B.test]), annees_pos=int(sum(j[aj == y].sum() > 0 for y in range(2014, 2027))))
-    return r, d, m
+    r, d, ntr = journees(tr, lim); r6, _, _ = journees(tr, lim, 1, 6.0)
+    m = BT.mesures(B, r, d, ntr); m["t_frais6"] = tst(r6[B.test])
+    return r, d, m, ntr
 
 
 def regles(m, ref):
@@ -62,12 +61,13 @@ def regles(m, ref):
     if m["annees_pos"] < 9: return f"{m['annees_pos']} années positives sur 13"
     if ref is not None:
         if m["survie_60"] < ref["survie_60"] - 1e-9: return f"survie {m['survie_60']:.0%} sous celle de son bot ({ref['survie_60']:.0%})"
-        if m["grilles"] > ref["grilles"]: return f"{m['grilles']} comptes grillés, plus que son bot ({ref['grilles']})"
+        if m["grilles_an"] > ref["grilles_an"] + 1e-9: return f"{m['grilles_an']:.2f} masters grillés par an, plus que son bot ({ref['grilles_an']:.2f})"
         if m["pire_baisse"] < 1.25 * ref["pire_baisse"]: return "pire baisse trop profonde"
     return None
 
 
-base_tr = {"zone": BT.zone(B), "xgb": BT.xgboost(B), "st": BT.supertrend(B), "xgbs": BT.xgboost(B, stop_atr=1.5)}
+base_tr = {"zone": BT.zone(B), "xgb": BT.xgboost(B), "st": BT.supertrend(B)}
+base_tr["xgbs"] = BT.appliquer_stop(B, base_tr["xgb"], 1.5)
 base = {k: profil(t) for k, t in base_tr.items()}
 DX.dire("Les bots de base sont rejoués ; je commence par la piste B (consensus et régimes).", "c")
 
@@ -81,10 +81,10 @@ pistesB = {
 }
 resultats = {}
 for k, (nom, tr, b0) in pistesB.items():
-    r, d, m = profil(tr); raison = regles(m, base[b0][2])
+    r, d, m, _ = profil(tr); raison = regles(m, base[b0][2])
     TESTS[k] = (m["t"], n); resultats[k] = dict(nom=nom, raison=raison, **m)
     ligne(k, nom, r[B.test], "#2fd16f", m, "tué" if raison else "en cours", raison or "")
-    DX.dire(f"{nom} : {m['par_seance']:+.1f} $ par séance, t {m['t']:.2f}, {m['grilles']} comptes grillés, survie {m['survie_60']:.0%} → "
+    DX.dire(f"{nom} : {m['par_seance']:+.1f} $ par séance, t {m['t']:.2f}, net {m['net_an']:,.0f} $ par an, {m['grilles_an']:.2f} masters grillés par an, survie {m['survie_60']:.0%} → ".replace(",", " ")
             + (f"tuée ({raison})" if raison else "passe ses règles, en attente de la correction des tests multiples"), "b" if raison else "h")
 
 # B4 : choix du bot selon le regime (volatilite x tendance), appris chaque annee sur le passe
@@ -94,7 +94,8 @@ rv = vol.rolling(252, min_periods=126).rank(pct=True).to_numpy(); rt = tend.roll
 cv_ = np.floor(np.nan_to_num(rv) * 3).clip(0, 2); ct_ = np.floor(np.nan_to_num(rt) * 3).clip(0, 2)
 case = np.where(np.isfinite(rv) & np.isfinite(rt), cv_ * 3 + ct_, -1)[B.test].astype(int)
 jb = {k: base[k][0][B.test] for k in ("zone", "xgb", "st")}; db = {k: base[k][1][B.test] for k in ("zone", "xgb", "st")}
-j4 = np.zeros(n); d4 = np.zeros(n); choix4 = {}
+tb = {k: base[k][3][B.test] > 0 for k in ("zone", "xgb", "st")}
+j4 = np.zeros(n); d4 = np.zeros(n); t4 = np.zeros(n, bool); choix4 = {}
 for Y in range(2017, 2027):
     passe = aj < Y; sel = aj == Y
     for c in range(9):
@@ -108,28 +109,27 @@ for Y in range(2017, 2027):
         choix4[(Y, c)] = meil
         q = sel & (case == c)
         if meil:
-            j4[q] = jb[meil][q]; d4[q] = db[meil][q]
+            j4[q] = jb[meil][q]; d4[q] = db[meil][q]; t4[q] = tb[meil][q]
 DX.dire("B4 : chaque année de 2017 à 2026, pour chacun des 9 régimes, j'ai choisi le bot sur les années d'avant seulement.", "c")
 d17 = int(np.argmax(aj >= 2017))
 
 
-def bilan17(j, d):
+def bilan17(j, d, tr):
     jj, dd = j[d17:], d[d17:]
-    ret_, nr, gr = BT._vie(jj, dd, 2600.0, 20)
-    g60 = np.array([BT._compte(jj, dd, i0, 60)[0] >= 0 for i0 in range(len(jj) - 60)])
+    v = BT.vie(np.vstack([j, j, j]), np.vstack([d, d, d]), tr, debut=d17)
+    g60 = BT.grilles_depuis(jj, dd, 60)
     a = aj[d17:]
-    return dict(par_seance=float(jj.mean()), t=tst(jj), t_avant=tst(jj[a <= 2022]), t_apres=tst(jj[a >= 2023]), retire_an=ret_ / (len(jj) / 252),
-                grilles=int(gr), survie_60=float(1 - g60.mean()))
+    return dict(par_seance=float(jj.mean()), t=tst(jj), t_avant=tst(jj[a <= 2022]), t_apres=tst(jj[a >= 2023]), survie_60=float(1 - g60.mean()), **v)
 
 
-m4 = bilan17(j4, d4); refs4 = {k: bilan17(jb[k], db[k]) for k in jb}
-meilleur = max(refs4, key=lambda k: (refs4[k]["survie_60"], refs4[k]["retire_an"]))
-raison4 = None if (m4["t"] >= 2 and m4["t_avant"] > 0 and m4["t_apres"] > 0 and m4["survie_60"] >= refs4[meilleur]["survie_60"] and m4["grilles"] <= refs4[meilleur]["grilles"]) else \
+m4 = bilan17(j4, d4, t4); refs4 = {k: bilan17(jb[k], db[k], tb[k]) for k in jb}
+meilleur = max(refs4, key=lambda k: (refs4[k]["survie_60"], refs4[k]["net_an"]))
+raison4 = None if (m4["t"] >= 2 and m4["t_avant"] > 0 and m4["t_apres"] > 0 and m4["survie_60"] >= refs4[meilleur]["survie_60"] and m4["grilles_an"] <= refs4[meilleur]["grilles_an"] + 1e-9) else \
     f"ne bat pas le meilleur bot seul ({ {'zone': 'Bot 3 en 1', 'xgb': 'XGBoost', 'st': 'Supertrend'}[meilleur] }) sur 2017 - 2026"
 TESTS["B4"] = (m4["t"], n - d17); resultats["B4"] = dict(nom="B4 · bot choisi selon le régime", raison=raison4, **m4, reference=refs4[meilleur])
 ligne("B4", "B4 · bot choisi selon le régime", np.r_[np.zeros(d17), j4[d17:]], "#2fd16f", m4, "tué" if raison4 else "en cours", raison4 or "")
-DX.dire(f"B4 : {m4['retire_an']:,.0f} $ retirés par an, {m4['grilles']} comptes grillés, survie {m4['survie_60']:.0%} (meilleur bot seul : "
-        f"{refs4[meilleur]['retire_an']:,.0f} $, {refs4[meilleur]['grilles']}, {refs4[meilleur]['survie_60']:.0%}) → {'tuée : ' + raison4 if raison4 else 'passe'}.".replace(",", " "), "b" if raison4 else "h")
+DX.dire(f"B4 : net {m4['net_an']:,.0f} $ par an, {m4['grilles_an']:.2f} masters grillés par an, survie {m4['survie_60']:.0%} (meilleur bot seul : "
+        f"{refs4[meilleur]['net_an']:,.0f} $, {refs4[meilleur]['grilles_an']:.2f}, {refs4[meilleur]['survie_60']:.0%}) → {'tuée : ' + raison4 if raison4 else 'passe'}.".replace(",", " "), "b" if raison4 else "h")
 DX.maj(force=True, progression=0.3, phase="Étape 3 : piste C (nouvelles études)")
 
 # ------------------------------------------------------------------ C. nouvelles etudes
@@ -144,10 +144,10 @@ def vwap_tendance():
             cible = int(sig[m]) if sig[m] != 0 else pos
             if cible != pos:
                 if pos:
-                    out.append((s, pos, m0, m, e, O[m + 1]))
+                    out.append((s, pos, m0, m0, m, e, O[m + 1]))
                 pos, m0, e = cible, m + 1, O[m + 1]
         if pos:
-            out.append((s, pos, m0, 388, e, O[389]))
+            out.append((s, pos, m0, m0, 388, e, O[389]))
     return out
 
 
@@ -158,18 +158,18 @@ def fin_de_seance():
             continue
         r = B.C[s, 359] / B.C[s - 1, 389] - 1
         if r != 0:
-            out.append((s, -int(np.sign(r)), 360, 388, B.O[s, 360], B.O[s, 389]))
+            out.append((s, -int(np.sign(r)), 360, 360, 388, B.O[s, 360], B.O[s, 389]))
     return out
 
 
 for k, nom, f in (("C1", "C1 · la VWAP en tendance (Zarattini et Aziz)", vwap_tendance), ("C2", "C2 · retournement de fin de séance (époque 0DTE)", fin_de_seance)):
-    tr = f(); r, d, m = profil(tr, 400.0)
+    tr = f(); r, d, m, _ = profil(tr, 400.0)
     if k == "C2":
         j = r[B.test]; m["t_0dte"] = tst(j[aj >= 2022]); m["t_controle"] = tst(j[aj <= 2021])
         raison = None if m["t_0dte"] >= 2 else f"t {m['t_0dte']:.2f} sur 2022 - 2026 (contrôle 2014 - 2021 : {m['t_controle']:.2f})"
         TESTS[k] = (m["t_0dte"], int((aj >= 2022).sum()))
     else:
-        raison = regles(m, None) or (None if m["grilles"] <= base["zone"][2]["grilles"] else f"{m['grilles']} comptes grillés, plus que le Bot 3 en 1")
+        raison = regles(m, None) or (None if m["grilles_an"] <= base["zone"][2]["grilles_an"] + 1e-9 else f"{m['grilles_an']:.2f} masters grillés par an, plus que le Bot 3 en 1")
         TESTS[k] = (m["t"], n)
     resultats[k] = dict(nom=nom, raison=raison, trades=len(tr), **m)
     ligne(k, nom, r[B.test], "#e6e05a", m, "tué" if raison else "en cours", raison or "")
@@ -229,97 +229,98 @@ DX.maj(relief=True, force=True, progression=0.65, phase="Étape 3 : piste A (ges
 
 
 # ------------------------------------------------------------------ A. gestion du capital
-@nb.njit(cache=True)
-def vie_echelle(R, Dp, s2, s3, coussin, tous, i0, i1):
-    """R, Dp : (3, n) resultats et creux a 1, 2, 3 MNQ. Taille du jour selon la marge (solde - plancher) en debut de seance."""
-    solde = 50000.0; haut = 50000.0; base_ = 50000.0; meilleur = 0.0; depuis = 0; retire = 0.0; grilles = 0
-    for i in range(i0, i1):
-        plancher = min(haut - 2500.0, 50100.0); marge = solde - plancher
-        t = 0
-        if marge >= s3:
-            t = 2
-        elif marge >= s2:
-            t = 1
-        if solde + Dp[t, i] <= plancher:
-            grilles += 1; solde = 50000.0; haut = 50000.0; base_ = 50000.0; meilleur = 0.0; depuis = 0
-            continue
-        solde += R[t, i]; depuis += 1
-        if R[t, i] > meilleur:
-            meilleur = R[t, i]
-        if solde > haut:
-            haut = solde
-        niveau = 50000.0 + coussin
-        if depuis >= tous and solde > niveau and solde - base_ > 0 and meilleur <= 0.4 * (solde - base_):
-            retire += solde - niveau; solde = niveau; base_ = niveau; meilleur = 0.0; depuis = 0
-    return retire, grilles
-
-
-ECH = {"fixe 1 MNQ": (1e12, 1e12), "E1 (2 MNQ dès 3 500 $, 3 dès 5 000 $)": (3500.0, 5000.0), "E2 (2 dès 4 000 $, 3 dès 6 000 $)": (4000.0, 6000.0), "E3 (2 dès 5 000 $, jamais plus)": (5000.0, 1e12)}
+ECH = {"fixe 1 MNQ": (1e12, 1e12), "E1 (2 MNQ dès 3 500 $ de marge, 3 dès 5 000 $)": (3500.0, 5000.0),
+       "E2 (2 dès 4 000 $, 3 dès 6 000 $)": (4000.0, 6000.0), "E3 (2 dès 5 000 $, jamais plus)": (5000.0, 1e12)}
 NOMS_BOT = {"zone": "Bot 3 en 1", "xgb": "XGBoost", "xgbs": "XGBoost stop 1,5 ATR", "st": "Supertrend"}
-RD = {}
-for b0, tr in base_tr.items():
-    Rr = np.zeros((3, n)); Dd = np.zeros((3, n))
+ORDRE = list(base_tr)
+RD = np.zeros((len(ORDRE), 3, n)); DD = np.zeros((len(ORDRE), 3, n)); TR = np.zeros((len(ORDRE), n), np.bool_)
+for bi, b0 in enumerate(ORDRE):
     for t in (1, 2, 3):
-        r, d, _ = journees(tr, min(400.0 * t, 1100.0), t); Rr[t - 1] = r[B.test]; Dd[t - 1] = d[B.test]
-    RD[b0] = (Rr, Dd)
-pols = [(b0, e, k) for b0 in base_tr for e in ECH for k in (2600.0, 4000.0, 6000.0)]
-tabA = {}
-for b0, e, k in pols:
-    ret_, gr = vie_echelle(RD[b0][0], RD[b0][1], ECH[e][0], ECH[e][1], k, 20, 0, n)
-    tabA[(b0, e, k)] = dict(retire_an=ret_ / (n / 252), grilles=int(gr))
+        r, d, ntr = journees(base_tr[b0], min(400.0 * t, 1100.0), t); RD[bi, t - 1] = r[B.test]; DD[bi, t - 1] = d[B.test]
+        if t == 1:
+            TR[bi] = ntr[B.test] > 0
+pols = [(b0, e, k) for b0 in ORDRE for e in ECH for k in (2600.0, 4000.0, 6000.0)]
+
+
+def vie_pol(b0, e, k, debut=0, fin=None):
+    bi = ORDRE.index(b0)
+    return BT.vie(RD[bi], DD[bi], TR[bi], debut, fin, ECH[e][0], ECH[e][1], k)
+
+
+tabA = {p_: vie_pol(*p_) for p_ in pols}
 ref_cle = ("zone", "fixe 1 MNQ", 2600.0)
-DX.dire(f"A : 48 politiques rejouées sur 2014 - 2026. Référence (Bot 3 en 1, 1 MNQ, coussin 2 600 $) : {tabA[ref_cle]['retire_an']:,.0f} $ par an, {tabA[ref_cle]['grilles']} comptes grillés.".replace(",", " "), "c")
-# marche avant : chaque annee, la politique qui a le plus retire sans griller plus que la reference sur les annees d'avant
-solde_choix = {}
-jA = []                                                                    # politique choisie par annee
-for Y in range(2017, 2027):
-    fin = int(np.argmax(aj >= Y))
-    rref, gref = vie_echelle(RD["zone"][0], RD["zone"][1], 1e12, 1e12, 2600.0, 20, 0, fin)
-    meil, mret = ref_cle, -1.0
-    for b0, e, k in pols:
-        r_, g_ = vie_echelle(RD[b0][0], RD[b0][1], ECH[e][0], ECH[e][1], k, 20, 0, fin)
-        if g_ <= gref and r_ > mret:
-            meil, mret = (b0, e, k), r_
-    jA.append((Y, meil))
-    DX.dire(f"A · {Y} : choisie sur 2014 - {Y - 1} → {NOMS_BOT[meil[0]]}, {meil[1]}, coussin {meil[2]:,.0f} $.".replace(",", " "), "c")
+DX.dire(f"A : {len(pols)} politiques rejouées sur 2014 - 2026 (vie réelle moyennée). Référence (Bot 3 en 1, 1 MNQ) : net {tabA[ref_cle]['net_an']:,.0f} $ par an, "
+        f"{tabA[ref_cle]['grilles_an']:.2f} masters grillés par an.".replace(",", " "), "c")
 
 
 @nb.njit(cache=True)
-def vie_suite(R, Dp, s2, s3, coussin, etat):
-    """Une annee de vie avec une politique ; etat = [solde, haut, base, meilleur, depuis, retire, grilles] (modifie)."""
-    solde, haut, base_, meilleur, depuis, retire, grilles = etat[0], etat[1], etat[2], etat[3], etat[4], etat[5], etat[6]
-    for i in range(R.shape[1]):
-        plancher = min(haut - 2500.0, 50100.0); marge = solde - plancher
-        t = 2 if marge >= s3 else (1 if marge >= s2 else 0)
-        if solde + Dp[t, i] <= plancher:
-            grilles += 1; solde = 50000.0; haut = 50000.0; base_ = 50000.0; meilleur = 0.0; depuis = 0
+def _vie_pol(RDa, DDa, TRa, bot_i, s2_i, s3_i, garde_i, i0, i1, frais_mois, activation):
+    """Vie reelle ou la politique (bot, echelle, coussin) change chaque annee selon le choix fait sur le passe."""
+    phase = 1; solde = 50000.0; haut = 50000.0; base_ = 50000.0; meilleur = 0.0; jours = 0; nret = 0
+    retire = 0.0; frais = 0.0; grilles = 0; duree_q = 0
+    for i in range(i0, i1):
+        b = bot_i[i]; plancher = min(haut - 2500.0, 50100.0); t = 0
+        if phase == 1:
+            marge = solde - plancher
+            if marge >= s3_i[i]:
+                t = 2
+            elif marge >= s2_i[i]:
+                t = 1
+        else:
+            if duree_q % 20 == 0:
+                frais += frais_mois
+            duree_q += 1
+        if solde + DDa[b, t, i] <= plancher:
+            if phase == 1:
+                grilles += 1
+            phase = 0; duree_q = 0; solde = 50000.0; haut = 50000.0; base_ = 50000.0; meilleur = 0.0; jours = 0
             continue
-        solde += R[t, i]; depuis += 1
-        if R[t, i] > meilleur:
-            meilleur = R[t, i]
+        solde += RDa[b, t, i]
         if solde > haut:
             haut = solde
-        niveau = 50000.0 + coussin
-        if depuis >= 20 and solde > niveau and solde - base_ > 0 and meilleur <= 0.4 * (solde - base_):
-            retire += solde - niveau; solde = niveau; base_ = niveau; meilleur = 0.0; depuis = 0
-    etat[0], etat[1], etat[2], etat[3], etat[4], etat[5], etat[6] = solde, haut, base_, meilleur, depuis, retire, grilles
+        if phase == 0:
+            if solde >= 53000.0:
+                frais += activation; phase = 1; solde = 50000.0; haut = 50000.0; base_ = 50000.0; meilleur = 0.0; jours = 0; nret = 0
+            continue
+        if TRa[b, i]:
+            jours += 1
+        if RDa[b, t, i] > meilleur:
+            meilleur = RDa[b, t, i]
+        dispo = solde - (50000.0 + garde_i[i])
+        if nret < 3 and dispo > 1500.0:
+            dispo = 1500.0
+        if jours >= 10 and dispo >= 1000.0 and solde - base_ > 0 and meilleur <= 0.4 * (solde - base_):
+            retire += dispo; solde -= dispo; base_ = solde; meilleur = 0.0; jours = 0; nret += 1
+    return retire, frais, grilles
 
 
-etatA = np.array([50000.0, 50000.0, 50000.0, 0.0, 0.0, 0.0, 0.0]); etatR = etatA.copy()
-for Y, (b0, e, k) in jA:
-    sel = np.nonzero(aj == Y)[0]
-    vie_suite(RD[b0][0][:, sel], RD[b0][1][:, sel], ECH[e][0], ECH[e][1], k, etatA)
-    vie_suite(RD["zone"][0][:, sel], RD["zone"][1][:, sel], 1e12, 1e12, 2600.0, etatR)
-ans17 = (n - d17) / 252
-mA = dict(retire_an=etatA[5] / ans17, grilles=int(etatA[6])); mR = dict(retire_an=etatR[5] / ans17, grilles=int(etatR[6]))
-adopteA = mA["retire_an"] > mR["retire_an"] and mA["grilles"] <= mR["grilles"]
+bot_i = np.zeros(n, np.int64); s2_i = np.full(n, 1e12); s3_i = np.full(n, 1e12); garde_i = np.full(n, 2600.0); jA = []
+for Y in range(2017, 2027):
+    fin = int(np.argmax(aj >= Y)); sel = aj == Y
+    ref = vie_pol(*ref_cle, 0, fin)
+    meil, mnet = ref_cle, -1e18
+    for p_ in pols:
+        v = vie_pol(*p_, 0, fin)
+        if v["grilles_an"] <= ref["grilles_an"] + 1e-9 and v["net_an"] > mnet:
+            meil, mnet = p_, v["net_an"]
+    jA.append((Y, meil))
+    bot_i[sel] = ORDRE.index(meil[0]); s2_i[sel] = ECH[meil[1]][0]; s3_i[sel] = ECH[meil[1]][1]; garde_i[sel] = meil[2]
+    DX.dire(f"A · {Y} : choisie sur 2014 - {Y - 1} → {NOMS_BOT[meil[0]]}, {meil[1]}, coussin {meil[2]:,.0f} $.".replace(",", " "), "c")
+acc = np.zeros(3); accR = np.zeros(3); ans_ = 0.0
+bi_ref = ORDRE.index("zone")
+for i0 in range(d17, n - 252, 20):
+    acc += np.array(_vie_pol(RD, DD, TR, bot_i, s2_i, s3_i, garde_i, i0, n, 100.0, 148.0))
+    accR += np.array(_vie_pol(RD, DD, TR, np.full(n, bi_ref, np.int64), np.full(n, 1e12), np.full(n, 1e12), np.full(n, 2600.0), i0, n, 100.0, 148.0))
+    ans_ += (n - i0) / 252
+mA = dict(net_an=(acc[0] - acc[1]) / ans_, grilles_an=acc[2] / ans_); mR = dict(net_an=(accR[0] - accR[1]) / ans_, grilles_an=accR[2] / ans_)
+adopteA = mA["net_an"] >= 1.1 * mR["net_an"] and mA["grilles_an"] <= mR["grilles_an"] + 1e-9
 resultats["A"] = dict(nom="A · gestion du capital (marche avant)", choix={Y: f"{NOMS_BOT[c[0]]}, {c[1]}, coussin {c[2]:.0f} $" for Y, c in jA}, **mA, reference=mR,
                       adoptee=bool(adopteA), politiques={f"{NOMS_BOT[b]} | {e} | {k:.0f}": v for (b, e, k), v in tabA.items()})
 L = DX.ligne("A", "A · gestion du capital (marche avant)", "retenu" if adopteA else "tué", "#ffffff")
-L["stats"] = dict(retire_an=mA["retire_an"], grilles=mA["grilles"]); L["raison"] = "" if adopteA else "ne bat pas le Bot 3 en 1 en 1 MNQ hors échantillon"
+L["stats"] = dict(net_an=mA["net_an"], grilles_an=mA["grilles_an"]); L["raison"] = "" if adopteA else "ne bat pas le Bot 3 en 1 en 1 MNQ hors échantillon"
 L["tri"] = 3 if adopteA else -3
-DX.dire(f"A · hors échantillon 2017 - 2026 : {mA['retire_an']:,.0f} $ retirés par an, {mA['grilles']} comptes grillés ; Bot 3 en 1 en 1 MNQ : {mR['retire_an']:,.0f} $ et {mR['grilles']} → "
-        f"{'ADOPTÉE' if adopteA else 'pas mieux'}.".replace(",", " "), "h" if adopteA else "b")
+DX.dire(f"A · hors échantillon 2017 - 2026 : net {mA['net_an']:,.0f} $ par an, {mA['grilles_an']:.2f} masters grillés par an ; Bot 3 en 1 en 1 MNQ : "
+        f"{mR['net_an']:,.0f} $ et {mR['grilles_an']:.2f} → {'ADOPTÉE' if adopteA else 'pas mieux'}.".replace(",", " "), "h" if adopteA else "b")
 json.dump(dict(resultats=resultats, tests={k: dict(t=v[0], n=v[1]) for k, v in TESTS.items()}), open(os.path.join(DOSSIER, "etape3.json"), "w"), default=str)
 DX.maj(relief=True, force=True, progression=1.0, phase="Étape 3 terminée", detail="quatre pistes testées", fini=True)
 DX.dire("Étape 3 terminée.", "a")
