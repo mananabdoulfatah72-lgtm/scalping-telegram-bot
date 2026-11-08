@@ -19,6 +19,7 @@ import bots as BT  # noqa: E402
 
 S = Path("/tmp/claude-0/-home-user-scalping-telegram-bot/73d2fc28-0760-5668-987b-2a927564efe7/scratchpad")
 ARENE = Path(sys.argv[1]) if len(sys.argv) > 1 else S / "arene"
+ARENE3 = Path(sys.argv[2]) if len(sys.argv) > 2 else None          # dossier de l'arene apres la vague 3 (courbes V1 - V7)
 RES = R / "ml/arene/resultats"
 E1 = json.load(open(RES / "etape1.json")); E2 = json.load(open(RES / "etape2.json")); E3 = json.load(open(RES / "etape3.json"))["resultats"]
 relief = json.load(open(ARENE / "relief.json"))
@@ -168,6 +169,20 @@ for k, tr in (("Z12", TR["Z12"]), ("B3Z12", TR["B3Z12"])):
         ajout(k, "B3 + Z12 · accord XGBoost et VIX normal", "Labo zipline · vague 2 (effets publiés)", "indicatif",
               "combinaison des deux pistes retenues, décidée après avoir vu leurs résultats : à confirmer sur les séances neuves", m)
     courbes_extra[k] = [round(float(x), 1) for x in np.cumsum(rr[B.test])[::5]]
+V3 = json.load(open(RES / "vague3.json"))["candidats"]
+rel3 = json.load(open(ARENE3 / "relief.json"))["courbes"] if ARENE3 else {}
+for k, r in V3.items():
+    raison = "; ".join(r["raisons"])
+    if k == "V6":
+        raison = ("le plus proche : mieux que le Supertrend sur le t (2,58), depuis 2023 (1,52 contre 0,53), la survie (60 % contre 46 %) "
+                  "et les comptes grillés (0,95 contre 1,21 par an), mais sa pire baisse (−14 752 $) dépasse la limite écrite d'avance")
+    ajout(k, r["nom"], "Vague 3 · un Supertrend en mieux", "retenu" if r["retenu"] else "tué", raison, r)
+    if rel3.get(k):
+        courbes_extra[k] = rel3[k]
+COUL.update({"V1": "#ffd166", "V2": "#f4a261", "V3": "#e76f51", "V4": "#b5e48c", "V5": "#90e0ef", "V6": "#48cae4", "V7": "#00b4d8"})
+for L_ in lignes:
+    if L_["id"] in COUL:
+        L_["couleur"] = COUL[L_["id"]]
 d = E3["D"]
 ajout("D", "D · portefeuille Supertrend 7 marchés", "Étape 3 · D autres marchés", "tué",
       f"t {d['t']:.2f}, Sharpe {d['sharpe']:.2f} contre {d['sharpe_nq']:.2f} pour le NQ seul".replace(".", ","), dict(t=d["t"]), "2016 - 2026")
