@@ -1,0 +1,43 @@
+name: Prix ajustes des dividendes pour le labo zipline (vague 2)
+
+on:
+  push:
+    branches: [claude/optimistic-ptolemy-xs24ra]
+    paths:
+      - labo_zipline/telecharger_ajuste.py
+      - .github/workflows/donnees-ajustees.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  telecharger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer les dependances
+        run: pip install pandas yfinance
+
+      - name: Telecharger les prix ajustes
+        run: python3 labo_zipline/telecharger_ajuste.py
+
+      - name: Enregistrer les donnees sur la branche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add labo_zipline/donnees/ajuste.csv.gz
+          git diff --cached --quiet && exit 0
+          git commit -m "Labo zipline : prix ajustes des dividendes (22 fonds, Yahoo)"
+          for essai in 1 2 3; do
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep 10
+          done
+          exit 1
