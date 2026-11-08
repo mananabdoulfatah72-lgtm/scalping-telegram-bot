@@ -133,7 +133,7 @@ td:first-child, th:first-child { text-align: left; }
     <span class="logo">NQ QUANT</span>
     <form class="cmd" id="f-cmd">
       <label for="cmd">&gt;</label>
-      <input id="cmd" autocomplete="off" spellcheck="false" placeholder="ST · MKT · MON · SIG · STR · LAB · EXE · GP · IA" aria-label="Commande">
+      <input id="cmd" autocomplete="off" spellcheck="false" placeholder="ST · MKT · MON · SIG · STR · LAB · EXE · GP · IA · ARN" aria-label="Commande">
       <button class="go" type="submit">GO</button>
     </form>
     <span class="horloge" id="horloge">—</span>
@@ -148,6 +148,7 @@ td:first-child, th:first-child { text-align: left; }
     <button data-v="execution"><b>F6</b>EXÉCUTION</button>
     <button data-v="pro"><b>F7</b>GRAPHIQUE PRO</button>
     <button data-v="ia"><b>F8</b>IA</button>
+    <button data-v="arene"><b>F9</b>ARÈNE</button>
   </nav>
   <div class="bande" id="bande"></div>
 </div>
@@ -359,8 +360,44 @@ td:first-child, th:first-child { text-align: left; }
   </div>
 </section>
 
+<!-- F9 arene : bots, variantes et pistes sur le compte finance -->
+<section class="vue" id="v-arene" hidden>
+  <div class="chiffres" id="a-tete"></div>
+  <div class="panneau"><h2>Classement sur le compte financé <span>Bulenox Master 50K Option 2 · 1 MNQ · 3 $ de frais · rejeu minute par minute · prix d'aujourd'hui</span></h2><div class="corps">
+    <div class="ctrl">
+      <select id="a-filtre" aria-label="Filtre"><option value="tout">Tout (bots, variantes, pistes)</option><option value="vivants">Retenus, adoptés et références</option><option value="tues">Tués seulement</option></select>
+      <span class="g st-aide">Clique une ligne pour ajouter ou enlever sa courbe.</span>
+    </div>
+    <div class="defile"><table id="t-arene"></table></div>
+    <div class="note">Survie 60 j : part des comptes neufs encore en vie après 60 séances. Grillé 1 an : part des comptes neufs grillés dans les 250 séances. Net/an et grillés/an : vie réelle (retraits selon les règles documentées, requalification payée après un compte grillé), moyennée sur des départs toutes les 20 séances. Les lignes « 2017 - 2026 » sont hors échantillon (choix fait chaque année sur le passé seul).</div>
+  </div></div>
+  <div class="grille2">
+    <div class="panneau"><h2>Courbes cumulées <span>$ pour 1 MNQ, 2014 - 2 nov. 2026</span></h2><div class="corps"><div class="toile" id="g-arene"></div></div></div>
+    <div class="panneau"><h2>Pour ton compte financé <span>ce que disent les chiffres</span></h2><div class="corps"><div class="note" id="a-verdict"></div></div></div>
+  </div>
+  <div class="panneau"><h2>Rejeu sur le compte financé <span>jour par jour : plancher suiveur en fin de journée, retraits, compte grillé, requalification</span></h2><div class="corps">
+    <div class="ctrl">
+      <select id="a-bot" aria-label="Bot"></select>
+      <select id="a-depart" aria-label="Départ"></select>
+      <select id="a-taille" aria-label="Taille"><option value="fixe">1 MNQ fixe</option><option value="E1">E1 : 2 MNQ dès 3 500 $ de marge, 3 dès 5 000 $</option><option value="E2">E2 : 2 dès 4 000 $, 3 dès 6 000 $</option><option value="E3">E3 : 2 dès 5 000 $, jamais plus</option><option value="A">Piste A : le choix de chaque année (marche avant)</option></select>
+      <select id="a-coussin" aria-label="Coussin"><option value="2600">coussin 2 600 $</option><option value="4000">coussin 4 000 $</option><option value="6000">coussin 6 000 $</option></select>
+      <button class="btn" type="button" id="a-lecture">▶ Rejouer</button>
+      <select id="a-vitesse" aria-label="Vitesse"><option value="1">1 séance par image</option><option value="3" selected>3 séances par image</option><option value="10">10 séances par image</option></select>
+    </div>
+    <div class="chiffres" id="a-rejeu-chiffres"></div>
+    <div class="toile" id="g-rejeu"></div>
+    <div class="defile journal court" style="max-height:180px"><table id="t-rejeu" style="font-size:12px"></table></div>
+    <div class="note">Règles du rejeu (à vérifier chez Bulenox, voir audit/README.md) : plancher = plus haut de fin de journée − 2 500 $, bloqué à 50 100 $ ; grillé si le pire moment du jour touche le plancher ; retrait après 10 jours de trading, au moins 1 000 $, coussin gardé au-dessus de 50 000 $, trois premiers retraits plafonnés à 1 500 $, meilleure journée au plus 40 % du gain depuis le dernier retrait. Compte grillé : qualification à repasser avec le même bot en 1 MNQ (objectif 53 000 $), 100 $ toutes les 20 séances et 148 $ d'activation.</div>
+  </div></div>
+  <div class="g11">
+    <div class="panneau"><h2>Les premières années d'un compte neuf <span>diagnostic, pas une règle</span></h2><div class="corps"><div class="defile"><table id="t-diag"></table></div><div class="note" id="a-diag-note"></div></div></div>
+    <div class="panneau"><h2>D · le Supertrend sur 7 marchés <span>1 micro chacun, 2016 - 2026</span></h2><div class="corps"><div class="defile"><table id="t-marches"></table></div><div class="note">Seul le NQ gagne ; le portefeuille des sept (même risque chacun) perd : piste tuée. Le Supertrend ne marche que sur le Nasdaq.</div></div></div>
+  </div>
+</section>
+
 <script type="application/json" id="donnees">__DONNEES__</script>
 <script type="application/json" id="donnees2">__DONNEES2__</script>
+<script type="application/json" id="donnees3">__DONNEES3__</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
@@ -1240,9 +1277,182 @@ function reliefsStation() {
   return Q;
 }
 
+// ------------------------------------------------------------------ F9 arene : bots, variantes et pistes sur le compte finance
+let D3 = null; const AR = { sel: null, sim: null, fin: 0, anim: null };
+const VERDICT = { "retenu": ["h", "RETENU"], "adopté (règle)": ["a", "ADOPTÉ (RÈGLE)"], "référence": ["c", "RÉFÉRENCE"], "tué": ["b", "TUÉ"], "bruit": ["g", "BRUIT"] };
+const ECH_A = { fixe: [1e12, 1e12], E1: [3500, 5000], E2: [4000, 6000], E3: [5000, 1e12] };
+const pct = v => v == null || isNaN(v) ? "—" : nf(v * 100, 0) + " %";
+const ligneA = id => D3.lignes.find(l => l.id === id) || { nom: id, couleur: COL.gris };
+const nomCourt = id => ({ zone: "Bot 3 en 1", st: "Supertrend", xgb: "XGBoost" })[id] || ligneA(id).nom.split(" · ")[0];
+const morte = l => l.verdict === "tué" || l.verdict === "bruit";
+function vueArene() {
+  if (!D3) { D3 = JSON.parse($("donnees3").textContent); AR.sel = new Set(["zone", "B3", "xgb", "st"]); remplirArene(); }
+  teteArene(); tableArene(); courbesArene(); verdictArene(); diagArene(); rejouer(false);
+}
+function remplirArene() {
+  const b = $("a-bot"); Object.entries(D3.noms_rejeu).forEach(([k, v]) => b.add(new Option(v, k))); b.value = "zone";
+  const dp = $("a-depart"), J = D3.jours; let mois = null;
+  const i11 = J.findIndex(j => j >= "2026-08-11"); dp.add(new Option("11 août 2026 (la course jusqu'au 2 nov.)", i11));
+  J.forEach((j, i) => { if (j.slice(0, 7) !== mois) { mois = j.slice(0, 7); if (i !== i11) dp.add(new Option("départ le " + dateFr(j), i)); } });
+  dp.value = J.findIndex(j => j >= "2023-01-01");
+  ["a-bot", "a-depart", "a-taille", "a-coussin"].forEach(id => $(id).onchange = () => rejouer(false));
+  $("a-filtre").onchange = tableArene;
+  $("a-lecture").onclick = () => AR.anim ? arretRejeu() : rejouer(true);
+}
+function teteArene() {
+  const z = ligneA("zone"), b3 = ligneA("B3"), a = ligneA("A"), autres = D3.marches.filter(m => m.id !== "NQ").length, tues = D3.lignes.filter(morte).length + autres;
+  const d23 = D3.diag.filter(x => x.horizon.includes("2023") && (x.id === "zone" || x.id === "B3")).map(x => x.grille);
+  $("a-tete").innerHTML = [
+    ["Référence · Bot 3 en 1 · grillés en 1 an", pct(z.grille_250), `net ${usd(z.net_an)} par an`],
+    ["Le plus sûr · B3 · grillés en 1 an", `<span class="h">${pct(b3.grille_250)}</span>`, `net ${usd(b3.net_an)} par an, accord XGBoost`],
+    ["Long terme · piste A · net par an", `<span class="a">${usd(a.net_an)}</span>`, "hors échantillon 2017 - 2026, moins les 2 premières années"],
+    ["Pistes tuées", `<span class="b">${tues}</span> / ${D3.lignes.length - 3 + autres}`, "variantes, régimes, VWAP, 0DTE, 6 autres marchés"],
+    ["Depuis 2023 · grillés en 1 an", `<span class="b">${d23.map(v => pct(v)).join(" · ")}</span>`, "comptes neufs, Bot 3 en 1 · B3"],
+  ].map(([l, n, s]) => `<div><span class="l">${l}</span><span class="n">${n}</span><span class="g st-aide">${s}</span></div>`).join("");
+}
+function tableArene() {
+  const f = $("a-filtre").value, L = D3.lignes.filter(l => f === "tout" || (f === "tues" ? morte(l) : !morte(l)));
+  const v = (x, fn, c) => x == null ? `<td class="g">—</td>` : `<td class="${c || ""}">${fn(x)}</td>`;
+  let fam = null, h = `<thead><tr><th>Bot ou piste</th><th>Verdict</th><th>Période</th><th>$/séance</th><th>t</th><th>t 2023+</th><th>Pire baisse</th><th>Survie 60 j</th><th>Grillé 1 an</th><th>Net/an</th><th>Grillés/an</th><th>11/08 → 02/11</th></tr></thead><tbody>`;
+  L.forEach(l => {
+    if (l.famille !== fam) { fam = l.famille; h += `<tr><td colspan="12" class="a" style="padding-top:8px;font-family:var(--cond);letter-spacing:.06em;text-transform:uppercase;font-size:11px">${fam}</td></tr>`; }
+    const [c, t] = VERDICT[l.verdict] || ["g", l.verdict], a = D3.courbes[l.id] ? AR.sel.has(l.id) : null;
+    h += `<tr data-id="${l.id}" style="cursor:${a == null ? "default" : "pointer"}"><td style="white-space:normal;min-width:34ch;max-width:58ch"><span style="color:${l.couleur}">${a ? "●" : a === false ? "○" : "·"}</span> ${l.nom}${l.raison ? `<div class="g" style="font-family:var(--cond);font-size:12px;line-height:1.3;margin:1px 0 2px 1.6ch">${l.raison}</div>` : ""}</td><td><span class="puce ${c}">${t}</span></td><td class="g">${l.periode_mesure}</td>`
+      + v(l.par_seance, x => usd(x, 1), cl(l.par_seance)) + v(l.t, x => nf(x, 2)) + v(l.t_apres, x => nf(x, 2)) + v(l.pire_baisse, x => usd(x), "b") + v(l.survie_60, pct) + v(l.grille_250, pct)
+      + v(l.net_an, x => usd(x), cl(l.net_an)) + v(l.grilles_an, x => nf(x, 2)) + v(l.periode, x => usd(x), cl(l.periode))
+      + "</tr>";
+  });
+  $("t-arene").innerHTML = h + "</tbody>";
+  $("t-arene").querySelectorAll("tr[data-id]").forEach(tr => tr.onclick = () => {
+    const id = tr.dataset.id; if (!D3.courbes[id]) return;
+    if (AR.sel.has(id)) AR.sel.delete(id); else { AR.sel.add(id); if (D3.rejeu[id]) { $("a-bot").value = id; rejouer(false); } }
+    tableArene(); courbesArene(); });
+}
+function courbesArene() {
+  const ids = [...AR.sel].filter(id => D3.courbes[id] && D3.courbes[id].length), cont = $("g-arene");
+  if (!ids.length) { cont.innerHTML = `<p class="note">Clique une ligne du classement pour afficher sa courbe.</p>`; return; }
+  const J = D3.jours_courbes, et = [], H = innerWidth > 900 ? 440 : 300;
+  J.forEach((d, i) => { if ((i === 0 || d.slice(0, 4) !== J[i - 1].slice(0, 4)) && +d.slice(0, 4) % 2 === 0) et.push([i, d.slice(0, 4)]); });
+  let lo = 0, hi = 0; ids.forEach(id => D3.courbes[id].forEach(x => { lo = Math.min(lo, x); hi = Math.max(hi, x); }));
+  const pad = (hi - lo) * .06, Yp = x => 10 + (H - 32) * (hi + pad - x) / (hi - lo + 2 * pad);
+  const fin = ids.map(id => [id, D3.courbes[id][D3.courbes[id].length - 1]]).sort((a, b) => b[1] - a[1]), dec = {}; let prev = -1e9;
+  fin.forEach(([id, x]) => { const y = Math.max(Yp(x), prev + 13); dec[id] = y - Yp(x); prev = y; });
+  courbes(cont, { hauteur: H, etiquettesX: et, libelle: i => "semaine du " + dateFr(J[i]),
+    series: ids.map(id => ({ nom: nomCourt(id), v: D3.courbes[id], c: ligneA(id).couleur, w: id === "B3" || id === "zone" ? 2.2 : 1.3, decale: dec[id] })) });
+}
+function verdictArene() {
+  const z = ligneA("zone"), b3 = ligneA("B3"), a = ligneA("A"), dg = (h, id) => D3.diag.find(x => x.horizon === h && x.id === id) || {};
+  const z1 = dg("1 an", "zone"), b1 = dg("1 an", "B3"), a1 = dg("1 an", "A"), z2 = dg("2 ans", "zone"), b2 = dg("2 ans", "B3"), a2 = dg("2 ans", "A");
+  const z23 = dg("1 an, départs 2023 - 2025", "zone"), b23 = dg("1 an, départs 2023 - 2025", "B3"), A_ = D3.lignes.find(l => l.id === "A");
+  $("a-verdict").innerHTML = `
+    <p><b class="c">Garde le Bot 3 en 1 en 1 MNQ.</b> C'est toujours la référence : t ${nf(z.t, 1)}, ${pct(z.survie_60)} des comptes neufs en vie après 60 séances, ${nf(z.grilles_an, 2)} master grillé par an.</p>
+    <p><b class="h">B3, la seule piste qui protège vraiment le compte</b> : le Bot 3 en 1 ne prend un trade que si XGBoost NQ va dans son sens. Sur 2014 - 2026 : ${pct(b3.grille_250)} des comptes neufs grillés dans l'année contre ${pct(z.grille_250)}, pour le même argent (${usd(b2.net)} retirés sur deux ans contre ${usd(z2.net)}). Elle survit à la correction des tests multiples. <span class="a">Mais sur les départs de 2023 à 2025 elle ne fait pas mieux</span> (${pct(b23.grille)} grillés dans l'année contre ${pct(z23.grille)}) : à suivre sur les séances neuves avant de changer le bot réel.</p>
+    <p><b class="a">A, grossir à 2 ou 3 MNQ quand la marge le permet</b> (coussin de 6 000 $ ces dernières années) : adoptée par la règle écrite d'avance (${usd(a.net_an)} par an hors échantillon contre ${usd(A_.reference.net_an)} pour le Bot 3 en 1 en 1 MNQ), mais le gain vient des comptes qui vivent longtemps. Les deux premières années elle retire moins (${usd(a1.net)} la première année contre ${usd(z1.net)}, ${usd(a2.net)} sur deux ans contre ${usd(z2.net)}) et ne grille pas moins de comptes. Pour un compte qui démarre : pas maintenant ; à reconsidérer quand la marge dépasse 5 000 $.</p>
+    <p><b class="b">Tués</b> : les variantes (aucune usine ne bat son bot hors échantillon), le choix du bot selon le régime (B4 grille ${nf(ligneA("B4").grilles_an / A_.reference.grilles_an, 0)} fois plus de comptes que le Bot 3 en 1), la VWAP en tendance, le retournement 0DTE, le Supertrend sur six autres marchés. B1 et B2 sont moins risqués que leur propre bot, mais loin derrière le Bot 3 en 1.</p>
+    <p class="g">Réserve : les règles du Bot 3 en 1 et du Supertrend ont été choisies en regardant ce même historique ; seules les probabilités de XGBoost sont hors échantillon. Choix de la piste A, année par année : ${Object.entries(A_.choix || {}).map(([y, c]) => `${y} ${c.replace("Bot 3 en 1, ", "").replace(/ \(.*\)/, "")}`).join(" ; ")} (E1 : 2 MNQ dès 3 500 $ de marge, 3 dès 5 000 $ ; E2 : 2 dès 4 000 $, 3 dès 6 000 $ ; E3 : 2 dès 5 000 $, jamais plus).</p>`;
+}
+function diagArene() {
+  const N = { A: "A · échelle + coussin", zone: "Bot 3 en 1", B3: "B3 · + accord XGBoost", xgb: "XGBoost NQ", st: "Supertrend NQ" };
+  let h = `<thead><tr><th>Horizon · bot</th><th>Départs</th><th>Retiré net</th><th>Grillé</th><th>Aucun retrait</th><th>1er retrait (séances)</th></tr></thead><tbody>`, hz = null;
+  D3.diag.forEach(x => { if (x.horizon !== hz) { hz = x.horizon; h += `<tr><td colspan="6" class="a" style="padding-top:8px">${hz}</td></tr>`; }
+    h += `<tr><td style="color:${ligneA(x.id).couleur}">${N[x.id]}</td><td class="g">${x.departs}</td><td class="${cl(x.net)}">${usd(x.net)}</td><td class="${x.grille > .3 ? "b" : ""}">${pct(x.grille)}</td><td>${pct(x.sans_retrait)}</td><td>${x.premier == null ? "—" : nf(x.premier)}</td></tr>`; });
+  $("t-diag").innerHTML = h + "</tbody>";
+  $("a-diag-note").textContent = "Un compte Master neuf toutes les 20 séances depuis 2017 (depuis 2023 pour la dernière partie), suivi pendant l'horizon : ce qui est retiré moins les frais de requalification, la part des comptes grillés au moins une fois, sans aucun retrait, et la médiane du premier retrait. Ce qui reste sur le compte à la fin n'est pas compté.";
+  $("t-marches").innerHTML = `<thead><tr><th>Marché</th><th>$/séance</th><th>t</th><th>2016-19</th><th>2020-22</th><th>2023-26</th></tr></thead><tbody>` + D3.marches.map(m =>
+    `<tr><td>${m.id}</td><td class="${cl(m.par_seance)}">${usd(m.par_seance, 1)}</td><td class="${m.t > 2 ? "h" : m.t < 0 ? "b" : ""}">${nf(m.t, 2)}</td><td>${nf(m.t_1619, 2)}</td><td>${nf(m.t_2022, 2)}</td><td>${nf(m.t_2326, 2)}</td></tr>`).join("") + "</tbody>";
+}
+// rejeu d'un compte (memes regles que ml/arene/bots.py, _vie_reelle)
+function simulerCompte(k, i0, taille, coussin) {
+  const E = D3.rejeu[k], J = D3.jours, n = J.length, R = [E.r1, E.r2 || E.r1, E.r3 || E.r1], Dp = [E.d1, E.d2 || E.d1, E.d3 || E.d1];
+  const o = { i0, solde: [], plancher: [], phase: [], t: [], cumR: [], cumF: [], cumG: [], ev: [], premier: null };
+  let phase = 1, solde = 50000, haut = 50000, base = 50000, meil = 0, jours = 0, nret = 0, dq = 0, ret = 0, fr = 0, gr = 0;
+  const note = (i, sol, pl, t) => { o.solde.push(sol); o.plancher.push(pl); o.phase.push(phase); o.t.push(t + 1); o.cumR.push(ret); o.cumF.push(fr); o.cumG.push(gr); };
+  for (let i = i0; i < n; i++) {
+    let s2, s3, garde;
+    if (taille === "A") { const c = D3.choix_A[J[i].slice(0, 4)] || ["fixe 1 MNQ", 2600]; [s2, s3] = ECH_A[c[0] === "fixe 1 MNQ" ? "fixe" : c[0]]; garde = c[1]; }
+    else { [s2, s3] = ECH_A[taille]; garde = coussin; }
+    const pl = Math.min(haut - 2500, 50100); let t = 0;
+    if (phase === 1) { const m = solde - pl; t = m >= s3 ? 2 : m >= s2 ? 1 : 0; } else { if (dq % 20 === 0) fr += 100; dq++; }
+    if (solde + Dp[t][i] <= pl) {
+      if (phase === 1) gr++;
+      o.ev.push([i, "b", (phase === 1 ? "Master grillé" : "Qualification ratée") + ` : pire moment du jour ${usd(Dp[t][i])} à ${t + 1} MNQ, plancher ${nf(pl)} $` + (phase === 1 ? " → qualification à repasser (100 $ toutes les 20 séances)" : "")]);
+      note(i, solde + Dp[t][i], pl, t); phase = 0; dq = 0; solde = haut = base = 50000; meil = 0; jours = 0; continue;
+    }
+    solde += R[t][i]; if (solde > haut) haut = solde;
+    if (phase === 0) {
+      note(i, solde, pl, t);
+      if (solde >= 53000) { fr += 148; o.ev.push([i, "c", "Qualification réussie (53 000 $) → nouveau Master, 148 $ d'activation"]); phase = 1; solde = haut = base = 50000; meil = 0; jours = 0; nret = 0; }
+      continue;
+    }
+    if (E.tr[i] === "1") jours++;
+    if (R[t][i] > meil) meil = R[t][i];
+    let dispo = solde - (50000 + garde); if (nret < 3 && dispo > 1500) dispo = 1500;
+    if (jours >= 10 && dispo >= 1000 && solde - base > 0 && meil <= 0.4 * (solde - base)) {
+      ret += dispo; solde -= dispo; base = solde; meil = 0; jours = 0; nret++; if (o.premier == null) o.premier = i;
+      o.ev.push([i, "h", `Retrait n° ${nret} : ${usd(dispo)} (il reste ${nf(solde)} $ sur le compte)`]);
+    }
+    note(i, solde, pl, t);
+  }
+  return o;
+}
+function rejouer(anime) {
+  arretRejeu();
+  const k = $("a-bot").value, ech = !!D3.rejeu[k].r2;
+  $("a-taille").disabled = !ech; if (!ech) $("a-taille").value = "fixe";
+  $("a-coussin").disabled = $("a-taille").value === "A";
+  AR.sim = simulerCompte(k, +$("a-depart").value, $("a-taille").value, +$("a-coussin").value);
+  const nb = AR.sim.solde.length;
+  if (!anime) { AR.fin = nb - 1; peindreRejeu(); return; }
+  AR.fin = 0; $("a-lecture").textContent = "❚❚ Pause";
+  const pas = () => { AR.fin = Math.min(nb - 1, AR.fin + +$("a-vitesse").value); peindreRejeu(); if (AR.fin < nb - 1) AR.anim = requestAnimationFrame(pas); else arretRejeu(); };
+  AR.anim = requestAnimationFrame(pas);
+}
+function arretRejeu() { if (AR.anim) cancelAnimationFrame(AR.anim); AR.anim = null; $("a-lecture").textContent = "▶ Rejouer"; }
+function peindreRejeu() {
+  const o = AR.sim, f = AR.fin, J = D3.jours, i = o.i0 + f, ans = (f + 1) / 252;
+  $("a-rejeu-chiffres").innerHTML = [
+    ["Jusqu'au", dateFr(J[i]), ""], ["Retiré", usd(o.cumR[f]), "h"], ["Frais de requalification", usd(-o.cumF[f]), o.cumF[f] ? "b" : "g"],
+    ["Net par an", usd((o.cumR[f] - o.cumF[f]) / Math.max(ans, 1 / 252)), cl(o.cumR[f] - o.cumF[f])], ["Masters grillés", nf(o.cumG[f]), o.cumG[f] ? "b" : "h"],
+    ["1er retrait", o.premier != null && o.premier <= i ? `${dateFr(J[o.premier])} (${nf(o.premier - o.i0)} séances)` : "pas encore", ""],
+    ["Compte", o.phase[f] ? `${nf(o.solde[f])} $ · marge ${nf(o.solde[f] - o.plancher[f])} $` : "en requalification", o.phase[f] ? "" : "a"],
+  ].map(([l, v, c]) => `<div><span class="l">${l}</span><span class="n ${c}" style="font-size:14px">${v}</span></div>`).join("");
+  $("t-rejeu").innerHTML = `<tbody>` + o.ev.filter(e => e[0] <= i).slice(-60).reverse().map(([k, c, t]) => `<tr><td class="g">${dateFr(J[k])}</td><td class="${c}" style="text-align:left;white-space:normal">${t}</td></tr>`).join("")
+    + (o.ev.some(e => e[0] <= i) ? "" : `<tr><td class="g">—</td><td class="g" style="text-align:left">Aucun événement pour l'instant : le compte grandit vers son premier retrait (10 jours de trading et ${nf(+$("a-coussin").value + 1000)} $ au-dessus de 50 000 $).</td></tr>`) + "</tbody>";
+  traceCompte($("g-rejeu"), o, f);
+}
+function traceCompte(cont, o, fin) {
+  let cv = cont.querySelector("canvas"), bulle = cont.querySelector(".info");
+  if (!cv) { cv = document.createElement("canvas"); cont.appendChild(cv); bulle = document.createElement("div"); bulle.className = "info"; bulle.hidden = true; cont.appendChild(bulle); }
+  const H = 300, dpr = Math.min(2, devicePixelRatio || 1), W = cont.clientWidth || 600, n = o.solde.length, J = D3.jours;
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+  const x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+  const g = { l: 8, r: 64, t: 12, b: 46 }; let lo = 50000, hi = 53000;
+  for (let k = 0; k < n; k++) { lo = Math.min(lo, o.solde[k], o.plancher[k]); hi = Math.max(hi, o.solde[k]); }
+  const pd = (hi - lo) * .05; lo -= pd; hi += pd;
+  const X = k => g.l + (W - g.l - g.r) * (n > 1 ? k / (n - 1) : .5), Y = v => g.t + (H - g.t - g.b) * (hi - v) / (hi - lo);
+  x.font = `11px ${css("--mono")}`; x.textBaseline = "middle";
+  const pas = (() => { const r = (hi - lo) / 6, p = Math.pow(10, Math.floor(Math.log10(r))), m = r / p; return (m < 1.5 ? 1 : m < 3 ? 2 : m < 7 ? 5 : 10) * p; })();
+  for (let v = Math.ceil(lo / pas) * pas; v <= hi; v += pas) { x.strokeStyle = COL.grille; x.beginPath(); x.moveTo(g.l, Y(v)); x.lineTo(W - g.r, Y(v)); x.stroke(); x.fillStyle = COL.gris; x.fillText(nf(v), W - g.r + 6, Y(v)); }
+  let an = null; for (let k = 0; k < n; k++) { const a = J[o.i0 + k].slice(0, 4); if (a !== an) { an = a; if (k && (n < 600 || +a % 2 === 0)) { x.fillStyle = COL.gris; x.textAlign = "center"; x.fillText(a, X(k), H - 36); x.textAlign = "left"; } } }
+  for (let k = 0; k <= fin; k++) if (!o.phase[k]) { x.fillStyle = "rgba(255,160,40,.10)"; x.fillRect(X(k) - (W - g.l - g.r) / n / 2 - .5, g.t, (W - g.l - g.r) / n + 1, H - g.t - g.b); }
+  x.strokeStyle = COL["gris2"]; x.setLineDash([2, 4]); x.beginPath(); x.moveTo(g.l, Y(50000)); x.lineTo(W - g.r, Y(50000)); x.stroke();
+  const ligneC = (arr, c, w, dash) => { x.strokeStyle = c; x.lineWidth = w; x.setLineDash(dash || []); x.beginPath(); for (let k = 0; k <= fin; k++) { const nouv = k && o.phase[k] !== o.phase[k - 1]; (k && !nouv) ? x.lineTo(X(k), Y(arr[k])) : x.moveTo(X(k), Y(arr[k])); } x.stroke(); x.setLineDash([]); x.lineWidth = 1; };
+  ligneC(o.plancher, COL.baisse, 1.2, [5, 4]); ligneC(o.solde, COL.ambre, 1.6);
+  for (let k = 0; k <= fin; k++) { const c = o.t[k] === 3 ? COL.blanc : o.t[k] === 2 ? COL.ambre : COL["gris2"]; x.fillStyle = o.phase[k] ? c : "rgba(255,160,40,.25)"; x.fillRect(X(k) - .5, H - 26, Math.max(1, (W - g.l - g.r) / n), 6); }
+  x.fillStyle = COL.gris; x.font = `10px ${css("--mono")}`; x.fillText(W < 520 ? "taille : gris 1 · ambre 2 · blanc 3 MNQ" : "taille : gris 1 MNQ · ambre 2 · blanc 3 · fond orangé = requalification", g.l, H - 8);
+  o.ev.forEach(([i, c]) => { const k = i - o.i0; if (k > fin) return; const xx = X(k), yy = Y(o.solde[k]); x.fillStyle = c === "h" ? COL.hausse : c === "b" ? COL.baisse : COL.cyan; x.beginPath();
+    if (c === "h") { x.moveTo(xx, yy - 3); x.lineTo(xx - 4, yy - 10); x.lineTo(xx + 4, yy - 10); } else if (c === "b") { x.arc(xx, yy, 4.5, 0, 7); } else { x.rect(xx - 3, yy - 3, 6, 6); } x.fill(); });
+  const dv = o.solde[fin]; x.fillStyle = COL.ambre; x.fillRect(W - g.r + 1, Y(dv) - 8, g.r - 2, 16); x.fillStyle = COL.noir; x.font = `11px ${css("--mono")}`; x.fillText(nf(dv), W - g.r + 4, Y(dv));
+  cv.onpointermove = cv.onpointerdown = ev => { const r = cv.getBoundingClientRect(), k = Math.round((ev.clientX - r.left - g.l) / (W - g.l - g.r) * (n - 1));
+    if (k < 0 || k > fin) { bulle.hidden = true; return; }
+    bulle.innerHTML = `<b class="a">${dateFr(J[o.i0 + k])}</b><br>${o.phase[k] ? "Master" : "Requalification"} · ${o.t[k]} MNQ<br>Solde ${nf(o.solde[k])} $ · plancher ${nf(o.plancher[k])} $<br>Retiré jusque-là <span class="h">${usd(o.cumR[k])}</span>`;
+    bulle.hidden = false; bulle.style.left = Math.min(W - bulle.offsetWidth - 4, X(k) + 12) + "px"; bulle.style.top = "8px"; };
+  cv.onpointerleave = () => bulle.hidden = true;
+}
+
 // ------------------------------------------------------------------ navigation
-const VUES = { station: vueStation, marche: vueMarche, surveillance: vueSurveillance, signaux: vueSignaux, strategie: vueStrategie, labo: vueLabo, execution: vueExecution, pro: vuePro, ia: vueIa };
-const CODES = { ST: "station", STATION: "station", LP: "station", MKT: "marche", ACT: "marche", MON: "surveillance", SIG: "signaux", GP: "pro", PRO: "pro", STR: "strategie", RSK: "strategie", LAB: "labo", EXE: "execution", EMSX: "execution", IA: "ia", ML: "ia" };
+const VUES = { station: vueStation, marche: vueMarche, surveillance: vueSurveillance, signaux: vueSignaux, strategie: vueStrategie, labo: vueLabo, execution: vueExecution, pro: vuePro, ia: vueIa, arene: vueArene };
+const CODES = { ST: "station", STATION: "station", LP: "station", MKT: "marche", ACT: "marche", MON: "surveillance", SIG: "signaux", GP: "pro", PRO: "pro", STR: "strategie", RSK: "strategie", LAB: "labo", EXE: "execution", EMSX: "execution", IA: "ia", ML: "ia", ARN: "arene", ARENE: "arene", AR: "arene", BOTS: "arene" };
 function montrer(v) {
   if (!VUES[v]) v = "station";
   Object.keys(VUES).forEach(k => $("v-" + k).hidden = k !== v);
@@ -1252,7 +1462,7 @@ function montrer(v) {
 }
 document.querySelectorAll("#touches button").forEach(b => b.onclick = () => { location.hash = b.dataset.v; });
 $("f-cmd").addEventListener("submit", ev => { ev.preventDefault(); const c = $("cmd").value.trim().toUpperCase().split(/\s+/).pop(); if (CODES[c]) { location.hash = CODES[c]; $("cmd").value = ""; } else $("cmd").value = "CODE INCONNU : " + c; });
-addEventListener("keydown", ev => { const k = ev.key.match(/^F([1-8])$/); if (k) { ev.preventDefault(); location.hash = Object.keys(VUES)[+k[1]]; } });
+addEventListener("keydown", ev => { const k = ev.key.match(/^F([1-9])$/); if (k) { ev.preventDefault(); location.hash = Object.keys(VUES)[+k[1]]; } });
 addEventListener("hashchange", () => montrer(location.hash.slice(1)));
 let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => montrer(location.hash.slice(1) || "station"), 200); });
 montrer(location.hash.slice(1) || "station");

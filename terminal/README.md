@@ -21,3 +21,10 @@ La même station, branchée sur le marché par Quantower : guide dans `bot3en1/S
   signal ML recalculés à partir des minutes envoyées par le relais ; compte, journaux des agents, reliefs 3D).
 - `modele_ml.json` : poids du signal ML de 2026 (exportés par `prep2.py`), embarqués dans la page.
 - `assembler_direct.py` : assemble `bot3en1/Relais.Quantower/station-direct.html` à partir de `terminal.tpl.html` et du moteur.
+
+## Vue ARÈNE (F9, 8 novembre 2026)
+
+- `prep3.py` : classement des bots, des variantes (étape 2) et des quatre pistes (étape 3) de `ml/arene/resultats`, courbes,
+  résultats par séance pour rejouer le compte financé dans la page (contrôle : la page retrouve les chiffres du Python,
+  3 011 $ par an pour le Bot 3 en 1, 3 200 $ pour B3, 3 842 $ pour la piste A), et le diagnostic des premières années.
+- `assembler.py <dossier des json> <sortie.html>` : remplace `__DONNEES__`, `__DONNEES2__` et `__DONNEES3__`.
