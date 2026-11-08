@@ -78,3 +78,34 @@ def tri(ST, p, y, an, annees=range(2017, 2027)):
         if test.any():
             garde[test] = p[test] > y[an < Y].mean()
     return [t for t, k in zip(ST, garde) if k], garde
+
+
+NOMS_PROD = list(K.NOMS[:21]) + ["sens", "minute d'entrée", "écart à la VWAP (ATR)", "rendement depuis l'ouverture", "écart d'ouverture",
+                                 "trades déjà pris", "résultat du jour"]
+
+
+def variables_prod(B, ST):
+    """Variables du bot W1 (production) : connues a la cloture de la minute qui precede l'entree, sans le bruit temoin du labo ni
+    le VIX (28 variables). Le moteur C# (bot3en1/W1.Core) doit les retrouver."""
+    O, H, L, C, V, F, ATR = B.O, B.H, B.L, B.C, B.V, B.X["F"], B.atr
+
+    def pnl(sens, e, x):
+        return sens * (x - e) * 2.0 * Dn.PREF / e - Dn.FRAIS
+    X, y, an = [], [], []
+    for k, (s, sens, m, _, fin, e, x) in enumerate(ST):
+        if k == 0 or ST[k - 1][0] != s:
+            nb_avant, res_avant = 0, 0.0
+        c = C[s, m - 1]
+        g = BT.bougie_avant(s, m)
+        tp = (H[s, :m] + L[s, :m] + C[s, :m]) / 3; vv = V[s, :m]
+        vw = (tp * vv).sum() / vv.sum() if vv.sum() > 0 else tp.mean()
+        atr = ATR[g] if g >= 0 and np.isfinite(ATR[g]) and ATR[g] > 0 else np.nan
+        gap = O[s, 0] / C[s - 1, 389] - 1 if s > 0 and B.ok[s - 1] else np.nan
+        res_dec = res_avant
+        if k > 0 and ST[k - 1][0] == s and ST[k - 1][4] == m - 1:
+            p_ = ST[k - 1]; res_dec = res_avant - pnl(p_[1], p_[5], p_[6]) + pnl(p_[1], p_[5], c)
+        X.append(np.r_[F[g, :21] if g >= 0 else np.full(21, np.nan), sens, m, sens * (c - vw) / atr, sens * (c / O[s, 0] - 1), sens * gap,
+                       nb_avant, res_dec])
+        r_ = pnl(sens, e, x); y.append(int(r_ > 0)); an.append(int(B.J[s][:4]))
+        nb_avant += 1; res_avant += r_
+    return np.array(X, float), np.array(y), np.array(an)

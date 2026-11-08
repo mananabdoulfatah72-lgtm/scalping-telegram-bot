@@ -21,6 +21,7 @@ S = Path("/tmp/claude-0/-home-user-scalping-telegram-bot/73d2fc28-0760-5668-987b
 ARENE = Path(sys.argv[1]) if len(sys.argv) > 1 else S / "arene"
 ARENE3 = Path(sys.argv[2]) if len(sys.argv) > 2 else None          # dossier de l'arene apres la vague 3 (courbes V1 - V7)
 ARENE4 = Path(sys.argv[3]) if len(sys.argv) > 3 else None          # dossier de l'arene apres la vague 4 (courbes W1 - W3)
+ARENE5 = Path(sys.argv[4]) if len(sys.argv) > 4 else None          # dossier de l'arene apres la vague 5 (courbes P1 - P3)
 RES = R / "ml/arene/resultats"
 E1 = json.load(open(RES / "etape1.json")); E2 = json.load(open(RES / "etape2.json")); E3 = json.load(open(RES / "etape3.json"))["resultats"]
 relief = json.load(open(ARENE / "relief.json"))
@@ -191,6 +192,19 @@ for k, r in V4.items():
     if rel4.get(k):
         courbes_extra[k] = rel4[k]
 COUL.update({"W1": "#f9c74f", "W2": "#f8961e", "W3": "#f94144"})
+V5 = json.load(open(RES / "vague5.json"))["tests"]
+rel5 = json.load(open(ARENE5 / "relief.json"))["courbes"] if ARENE5 else {}
+for k, r in V5.items():
+    raison = "; ".join(r["raisons"])
+    if k == "P3":
+        raison = ("retenu : W1 sans la variable VIX (c'est le bot W1 NQ, en papier dans Quantower) ; version de production (variables connues "
+                  "à la décision) sur 2017 - 2026 : t 3,13, survie 82 %, 0,41 master grillé par an, net 3 774 $ par an")
+    if k == "P1":
+        raison = "rapporte le plus (8 680 $ par an, 84 % des séances) mais grille encore 46 % des comptes neufs dans l'année : " + raison
+    ajout(k, r["nom"], "Vague 5 · l'activité de W1 avec la sécurité de Z12", "retenu" if r["retenu"] else "tué", raison, r, "2017 - 2026")
+    if rel5.get(k):
+        courbes_extra[k] = rel5[k]
+COUL.update({"P1": "#ffffff", "P2": "#e9c46a", "P3": "#f4a261"})
 COUL.update({"V1": "#ffd166", "V2": "#f4a261", "V3": "#e76f51", "V4": "#b5e48c", "V5": "#90e0ef", "V6": "#48cae4", "V7": "#00b4d8"})
 for L_ in lignes:
     if L_["id"] in COUL:
@@ -209,7 +223,20 @@ ZT = json.load(open(R / "ml/arene/resultats/z12_tailles.json"))
 station_z12 = dict(vix={j: [a, b, c] for j, a, b, c in zip(ZT["periode"]["jours"], ZT["periode"]["vix"], ZT["periode"]["vix3m"], ZT["periode"]["inverse"])},
                    tailles={k: {tt: {c: x for c, x in e.items() if c not in ("jours_periode", "trades_periode")} for tt, e in v.items()} for k, v in ZT["tailles"].items()},
                    arene_periode={k: v["1"]["periode"] for k, v in ZT["tailles"].items()})
-D3 = dict(station_z12=station_z12, jours=jours, jours_courbes=relief["jours"], courbes=courbes, lignes=lignes, rejeu=rejeu, diag=diag, marches=marches,
+# W1 (bot en papier) dans la station : decisions hors echantillon pour 2026 (modele appris sur 2011 - 2025, variables de production)
+import w1 as W1m  # noqa: E402
+STw = sorted(BT.supertrend(B), key=lambda x_: (x_[0], x_[2]))
+Xw, yw, anw = W1m.variables_prod(B, STw)
+pw = W1m.probas(Xw, yw, anw, annees=[2026]); seuil26 = float(yw[anw < 2026].mean())
+signaux_w1 = {}
+for t_, pp in zip(STw, pw):
+    jj = B.J[t_[0]]
+    if jj >= "2026-08-11" and np.isfinite(pp):
+        signaux_w1.setdefault(jj, []).append([int(t_[2]), round(float(pp), 3), bool(pp > seuil26)])
+WP = json.load(open(R / "ml/arene/resultats/w1_prod.json"))
+station_w1 = dict(signaux=signaux_w1, seuil=seuil26, diagnostic=WP["diagnostic"])
+print("W1 station :", sum(len(v) for v in signaux_w1.values()), "signaux,", sum(x[2] for v in signaux_w1.values() for x in v), "gardés, seuil", round(seuil26, 3))
+D3 = dict(station_z12=station_z12, station_w1=station_w1, jours=jours, jours_courbes=relief["jours"], courbes=courbes, lignes=lignes, rejeu=rejeu, diag=diag, marches=marches,
           choix_A={str(k): v for k, v in CHOIX_A.items()}, debut_2017=d17,
           noms_rejeu={"zone": "Bot 3 en 1 (zone)", "B3": "B3 · Bot 3 en 1 + accord XGBoost", "xgb": "XGBoost NQ", "st": "Supertrend NQ",
                       "B1": "B1 · XGBoost + accord Supertrend", "B2": "B2 · Supertrend + accord XGBoost",
