@@ -22,6 +22,8 @@ ARENE = Path(sys.argv[1]) if len(sys.argv) > 1 else S / "arene"
 ARENE3 = Path(sys.argv[2]) if len(sys.argv) > 2 else None          # dossier de l'arene apres la vague 3 (courbes V1 - V7)
 ARENE4 = Path(sys.argv[3]) if len(sys.argv) > 3 else None          # dossier de l'arene apres la vague 4 (courbes W1 - W3)
 ARENE5 = Path(sys.argv[4]) if len(sys.argv) > 4 else None          # dossier de l'arene apres la vague 5 (courbes P1 - P3)
+ARENE6 = Path(sys.argv[5]) if len(sys.argv) > 5 else None          # apres la vague 6 (M1 - M3, L1 - L4)
+ARENE7 = Path(sys.argv[6]) if len(sys.argv) > 6 else None          # apres la vague 7 (S1 - S3)
 RES = R / "ml/arene/resultats"
 E1 = json.load(open(RES / "etape1.json")); E2 = json.load(open(RES / "etape2.json")); E3 = json.load(open(RES / "etape3.json"))["resultats"]
 relief = json.load(open(ARENE / "relief.json"))
@@ -205,6 +207,19 @@ for k, r in V5.items():
     if rel5.get(k):
         courbes_extra[k] = rel5[k]
 COUL.update({"P1": "#ffffff", "P2": "#e9c46a", "P3": "#f4a261"})
+V6 = json.load(open(RES / "vague6.json")); rel6 = json.load(open(ARENE6 / "relief.json"))["courbes"] if ARENE6 else {}
+for k, r in list(V6["tri"].items()) + list(V6["politiques"].items()):
+    raison = "; ".join(r["raisons"])
+    if k == "M3":
+        raison = "aucun compte neuf grillé dans l'année sur 2017 - 2026, mais ne trade qu'une séance sur cinq : " + raison
+    ajout(k, r["nom"], "Vague 6 · trier d'autres signaux, démarrer prudemment", "retenu" if r["retenu"] else "tué", raison, r, "2017 - 2026")
+    if rel6.get(k): courbes_extra[k] = rel6[k]
+V7 = json.load(open(RES / "vague7.json")); rel7 = json.load(open(ARENE7 / "relief.json"))["courbes"] if ARENE7 else {}
+for k, r in V7["tests"].items():
+    ajout(k, r["nom"], "Vague 7 · le modèle règle la taille de Z12", "retenu" if r["retenu"] else "tué", "; ".join(r["raisons"]), r, "2017 - 2026")
+    if rel7.get(k): courbes_extra[k] = rel7[k]
+COUL.update({"M1": "#ffd166", "M2": "#ffa028", "M3": "#90e0ef", "L1": "#ffffff", "L2": "#e0e0e0", "L3": "#e9c46a", "L4": "#d4a373",
+             "S1": "#ffffff", "S2": "#f9c74f", "S3": "#90e0ef"})
 COUL.update({"V1": "#ffd166", "V2": "#f4a261", "V3": "#e76f51", "V4": "#b5e48c", "V5": "#90e0ef", "V6": "#48cae4", "V7": "#00b4d8"})
 for L_ in lignes:
     if L_["id"] in COUL:

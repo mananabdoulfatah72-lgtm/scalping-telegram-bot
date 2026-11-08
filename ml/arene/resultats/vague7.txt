@@ -1,0 +1,10 @@
+Vague 7 : au lieu de jeter les trades de Z12 que le modèle juge moins bons, je les garde en 1 MNQ et je double les bons.
+Z12 : 1 588 signaux  j'apprends année par année (2017 → 2026) avec 10 graines.
+Z12 : le modèle garde 50% des signaux de 2017 - 2026.
+Z12 (1 MNQ) (2017 - 2026) : t 4.15 (depuis 2023 : 2.55)  38% des séances ; compte : survie 100%  grillé en 1 an 13%  0.05 masters grillés par an  net 3 309 $ par an  1re année 1 092 $  1er retrait après 172 séances (médiane)
+S1 · Z12  2 MNQ sur les trades jugés bons (2017 - 2026) : t 4.19 (depuis 2023 : 2.52)  38% des séances ; compte : survie 89%  grillé en 1 an 41%  0.28 masters grillés par an  net 4 610 $ par an  1re année 1 281 $  1er retrait après 131 séances (médiane) → tué (survie 89% sous 95 %; 41% de comptes neufs grillés dans l'année (au plus 20 %); 0.28 masters grillés par an (au plus 0,15)).
+S2 · trades jugés bons seulement  en 2 MNQ (2017 - 2026) : t 3.56 (depuis 2023 : 2.13)  20% des séances ; compte : survie 94%  grillé en 1 an 31%  0.09 masters grillés par an  net 4 092 $ par an  1re année 842 $  1er retrait après 155 séances (médiane) → tué (survie 94% sous 95 %; 31% de comptes neufs grillés dans l'année (au plus 20 %); net 4 092 $ par an  il faut 4 302 $; 1re année 842 $  moins que Z12 (1 092 $)).
+S3 · trades jugés bons  1 puis 2 MNQ dès 3 500 $ de marge (2017 - 2026) : t 2.93 (depuis 2023 : 1.63)  20% des séances ; compte : survie 100%  grillé en 1 an 0%  0.00 masters grillés par an  net 2 673 $ par an  1re année 509 $  1er retrait après 316 séances (médiane) → tué (net 2 673 $ par an  il faut 4 302 $; 1re année 509 $  moins que Z12 (1 092 $)).
+Vague 7 : rien ne passe toutes ses règles.
+Vague 7 terminée.
+fin code 0
