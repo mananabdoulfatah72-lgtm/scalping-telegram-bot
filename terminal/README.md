@@ -16,6 +16,8 @@ surveillance, signaux, stratégie et risque, labo d'hypothèses, console papier,
 ## Station en direct
 
 La même station, branchée sur le marché par Quantower : guide dans `bot3en1/STATION.md`.
+Le terminal live (marchés, volatilité, volume, nouvelles, calendrier, lecture du marché) est servi par le même relais sur
+http://localhost:8765/live : `bot3en1/Relais.Quantower/live.html`, `RelaisLive.cs`, guide dans `bot3en1/STATION.md`.
 
 - `direct_js.txt` : moteur de la page en direct (séances, Supertrend, zone, VWAP, bougies de 15 min, indicateurs et
   signal ML recalculés à partir des minutes envoyées par le relais ; compte, journaux des agents, reliefs 3D).

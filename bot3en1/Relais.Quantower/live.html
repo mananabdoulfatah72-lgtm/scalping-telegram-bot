@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NQ Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Terminal live : fond noir, ambre pour l'interface, blanc pour les valeurs, vert / rouge pour le sens. Toutes les valeurs
+   viennent du relais Quantower (Rithmic) ou des sources qu'il lit (nouvelles, calendrier, cotations) ; rien n'est invente. */
+:root {
+  --noir: #000; --panneau: #0b0b0c; --panneau2: #121214; --trait: #26262b; --grille: #18181b;
+  --ambre: #ffa028; --ambre-pale: #c98a3c; --blanc: #f2f2ee; --gris: #8d8d95; --gris2: #5b5b63;
+  --hausse: #2fd16f; --baisse: #ff4f4f; --cyan: #3cc8ff; --violet: #b48cff;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --cond: "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--noir); }
+body { color: var(--blanc); font-family: var(--mono); font-size: 13px; line-height: 1.4; margin: 0; padding: 0 12px 24px; }
+button, input, select { font: inherit; color: inherit; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--ambre); text-decoration: underline; }
+.tete { position: sticky; top: 0; z-index: 5; background: var(--noir); padding-top: 8px; display: grid; gap: 6px; }
+.barre { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; border-bottom: 1px solid var(--trait); padding-bottom: 6px; }
+.logo { font-family: var(--cond); font-weight: 700; letter-spacing: .08em; color: var(--noir); background: var(--ambre); padding: 2px 8px; font-size: 14px; }
+.nav a { font-family: var(--cond); font-weight: 600; color: var(--ambre); border: 1px solid var(--trait); padding: 2px 8px; background: var(--panneau2); }
+.nav a[aria-current] { background: var(--ambre); color: var(--noir); }
+.puce { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 1px solid var(--trait); background: var(--panneau); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.puce .k { color: var(--ambre); font-family: var(--cond); font-weight: 600; letter-spacing: .05em; }
+.point { width: 8px; height: 8px; border-radius: 50%; background: var(--gris2); display: inline-block; flex: none; }
+.point.h { background: var(--hausse); } .point.b { background: var(--baisse); } .point.a { background: var(--ambre); }
+.espace { flex: 1; }
+@media (max-width: 700px) { .puce { white-space: normal; flex-wrap: wrap; max-width: 100%; } .barre > * { max-width: 100%; } }
+label.son { display: inline-flex; gap: 6px; align-items: center; color: var(--gris); cursor: pointer; }
+.bande { display: flex; overflow-x: auto; border: 1px solid var(--trait); background: var(--panneau); scrollbar-width: thin; }
+.bande div { padding: 4px 12px; border-right: 1px solid var(--trait); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.bande .k { color: var(--ambre); margin-right: 6px; font-family: var(--cond); font-weight: 600; }
+.grille { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr) minmax(0, 1.25fr); gap: 10px; margin-top: 10px; align-items: start; }
+.col { display: grid; gap: 10px; min-width: 0; }
+@media (max-width: 1250px) { .grille { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .col.centre { grid-column: 1 / -1; order: -1; } }
+@media (max-width: 800px) { .grille { grid-template-columns: minmax(0, 1fr); } .col.centre { order: 0; } }
+.panneau { background: var(--panneau); border: 1px solid var(--trait); min-width: 0; }
+.panneau > h2 { margin: 0; font-family: var(--cond); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ambre); background: var(--panneau2);
+  padding: 4px 8px; border-bottom: 1px solid var(--trait); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-weight: 600; }
+.panneau > h2 span { color: var(--gris); letter-spacing: .02em; text-transform: none; font-family: var(--mono); font-weight: 400; }
+.corps { padding: 8px; display: grid; gap: 8px; min-width: 0; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 3px 5px; text-align: right; border-bottom: 1px solid var(--grille); white-space: nowrap; }
+th { color: var(--ambre-pale); font-weight: 500; font-family: var(--cond); letter-spacing: .04em; text-transform: uppercase; font-size: 11px; }
+td:first-child, th:first-child { text-align: left; }
+.defile { overflow-x: auto; min-width: 0; }
+.h { color: var(--hausse); } .b { color: var(--baisse); } .a { color: var(--ambre); } .g { color: var(--gris); } .c { color: var(--cyan); } .v { color: var(--violet); }
+.petit { font-size: 11px; } .note { color: var(--gris); font-size: 11px; margin: 0; }
+.lecture { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.lecture li { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 8px; align-items: baseline; font-family: var(--cond); font-size: 14px; line-height: 1.35; }
+.lecture li .point { transform: translateY(-1px); }
+.lecture li b { font-weight: 600; color: var(--ambre); }
+.bref { font-family: var(--cond); font-size: 16px; font-weight: 700; letter-spacing: .02em; padding: 6px 8px; border: 1px solid var(--trait); background: var(--panneau2); }
+.tuiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 1px; background: var(--trait); border: 1px solid var(--trait); }
+.tuile { background: var(--panneau); padding: 5px 6px; display: grid; gap: 1px; font-variant-numeric: tabular-nums; min-width: 0; }
+.tuile .n { color: var(--ambre); font-family: var(--cond); font-weight: 600; font-size: 12px; }
+.tuile .x { font-size: 15px; font-weight: 600; }
+.tuile .d { font-size: 11px; }
+.cadre { border: 1px solid var(--trait); padding: 6px 8px; background: var(--panneau2); font-family: var(--cond); font-size: 13px; }
+.toile { position: relative; width: 100%; }
+.toile canvas { display: block; width: 100%; }
+.info { position: absolute; pointer-events: none; background: rgba(0,0,0,.9); border: 1px solid var(--ambre-pale); padding: 4px 6px; font-size: 11px; white-space: nowrap; z-index: 2; }
+.boutons { display: flex; flex-wrap: wrap; gap: 4px; }
+.boutons button { background: var(--panneau2); border: 1px solid var(--trait); color: var(--ambre); padding: 1px 8px; cursor: pointer; font-family: var(--cond); font-weight: 600; font-size: 12px; }
+.boutons button[aria-pressed="true"] { background: var(--ambre); color: var(--noir); border-color: var(--ambre); }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 1px solid var(--ambre); outline-offset: 1px; }
+.recherche { background: var(--panneau2); border: 1px solid var(--trait); padding: 2px 6px; color: var(--blanc); min-width: 0; width: 100%; }
+.nouv { list-style: none; margin: 0; padding: 0; max-height: 640px; overflow-y: auto; }
+.nouv li { padding: 5px 6px 6px; border-bottom: 1px solid var(--grille); border-left: 2px solid transparent; display: grid; gap: 2px; }
+.nouv li.i3 { border-left-color: var(--baisse); } .nouv li.i2 { border-left-color: var(--ambre); }
+.nouv li.neuf { background: #1c1408; }
+.nouv .meta { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; font-size: 11px; color: var(--gris); }
+.nouv .titre { font-family: var(--cond); font-size: 14px; line-height: 1.3; overflow-wrap: anywhere; }
+.etiq { font-family: var(--cond); font-size: 10.5px; font-weight: 600; letter-spacing: .04em; padding: 0 5px; border: 1px solid var(--trait); color: var(--ambre); text-transform: uppercase; }
+.etiq.r { color: var(--baisse); border-color: #5a2020; } .etiq.n { background: var(--ambre); color: var(--noir); border-color: var(--ambre); }
+.cal li { list-style: none; } .cal { margin: 0; padding: 0; display: grid; gap: 0; max-height: 360px; overflow-y: auto; }
+.cal li { display: grid; grid-template-columns: 64px 8px minmax(0, 1fr) auto; gap: 8px; padding: 4px 4px; border-bottom: 1px solid var(--grille); align-items: baseline; font-variant-numeric: tabular-nums; }
+.cal li.passe { color: var(--gris2); } .cal li.proche { background: #1f0d0d; }
+.cal .jourcal { grid-template-columns: 1fr; color: var(--ambre); font-family: var(--cond); font-weight: 600; letter-spacing: .06em; padding-top: 8px; text-transform: uppercase; font-size: 11px; }
+.imp { width: 8px; height: 8px; display: inline-block; }
+.imp.High { background: var(--baisse); } .imp.Medium { background: var(--ambre); } .imp.Low { background: var(--gris2); } .imp.Holiday { background: var(--cyan); }
+.journal { margin: 0; padding: 0; list-style: none; font-size: 12px; max-height: 210px; overflow-y: auto; }
+.journal li { padding: 2px 0; border-bottom: 1px solid var(--grille); overflow-wrap: anywhere; }
+.journal .ag { color: var(--cyan); margin-right: 6px; }
+.alerte { border: 1px solid var(--baisse); color: var(--baisse); padding: 6px 8px; font-family: var(--cond); font-size: 14px; background: #160707; }
+.sparkline { display: block; }
+td.rep { white-space: normal; text-align: left; font-size: 11px; color: var(--gris); min-width: 120px; }
+</style>
+</head>
+<body>
+<header class="tete">
+  <div class="barre">
+    <span class="logo">NQ LIVE</span>
+    <nav class="nav"><a href="/">STATION</a> <a href="/live" aria-current="page">LIVE</a></nav>
+    <span class="puce" id="p-seance"><span class="point" id="p-seance-pt"></span><span class="k">MARCHÉ</span><span id="p-seance-t">…</span></span>
+    <span class="puce"><span class="k">NEW YORK</span><span id="p-ny">--:--:--</span></span>
+    <span class="puce"><span class="k">PARIS</span><span id="p-paris">--:--:--</span></span>
+    <span class="puce" id="p-annonce"><span class="k">ANNONCE</span><span id="p-annonce-t">—</span></span>
+    <span class="espace"></span>
+    <label class="son"><input type="checkbox" id="son"> son des alertes</label>
+    <span class="puce" title="Relais Quantower sur ce PC"><span class="point" id="p-relais-pt"></span><span class="k">RELAIS</span><span id="p-relais-t">connexion…</span></span>
+  </div>
+  <div class="bande" id="bande"></div>
+</header>
+
+<div id="coupure" class="alerte" hidden style="margin-top:10px">Le relais ne répond pas : vérifie que Quantower tourne et que la stratégie « Relais NQ » est lancée. La page se reconnecte toute seule.</div>
+
+<main class="grille">
+  <div class="col">
+    <section class="panneau"><h2>Lecture du marché <span id="lec-heure"></span></h2>
+      <div class="corps"><div class="bref" id="bref">En attente des données…</div><ul class="lecture" id="lecture"></ul>
+      <p class="note">Une lecture des chiffres affichés, pas un conseil : elle ne prédit rien et ne remplace pas les règles des bots.</p></div></section>
+    <section class="panneau"><h2>Marchés <span id="mar-note">Rithmic en direct</span></h2>
+      <div class="corps"><div class="defile"><table id="t-marches"></table></div><div class="defile"><table id="t-croises"></table></div>
+      <p class="note" id="mar-legende">Var. : depuis la clôture de la veille (17 h New York). Vol. rel. : volume du jour rapporté au volume habituel à la même heure. Delta : achats moins ventes au marché.</p></div></section>
+    <section class="panneau"><h2>Les mégacaps du Nasdaq <span id="mega-note"></span></h2><div class="corps"><div class="tuiles" id="mega"></div></div></section>
+  </div>
+
+  <div class="col centre">
+    <section class="panneau"><h2>NQ · graphique <span id="gr-note"></span></h2>
+      <div class="corps">
+        <div class="boutons" role="group" aria-label="Affichage du graphique">
+          <button data-gr="us" aria-pressed="true">Séance US</button><button data-gr="nuit" aria-pressed="false">Depuis 18 h</button>
+          <span style="width:10px"></span>
+          <button data-pas="1" aria-pressed="true">1 min</button><button data-pas="5" aria-pressed="false">5 min</button>
+          <span style="width:10px"></span>
+          <button data-mq="ES" aria-pressed="false">ES</button>
+        </div>
+        <div class="toile" id="g-prix"><canvas></canvas><div class="info" hidden></div></div>
+        <p class="note">Ligne cyan : VWAP de la séance affichée. Pointillé gris : clôture de la veille. Traits ambre : annonces du calendrier ; losanges rouges : nouvelles importantes.</p>
+      </div></section>
+    <section class="panneau"><h2>Volume et flux du NQ <span id="vol-note"></span></h2>
+      <div class="corps">
+        <div class="tuiles" id="vol-tuiles"></div>
+        <div class="toile" id="g-vol"><canvas></canvas><div class="info" hidden></div></div>
+        <p class="note">Barres : volume de chaque minute (vert : plus d'achats au marché, rouge : plus de ventes). Ligne ambre : volume habituel à la même minute (séances précédentes). Courbe cyan : delta cumulé.</p>
+      </div></section>
+    <section class="panneau"><h2>Gros ordres <span id="gros-note"></span></h2><div class="corps"><div class="defile"><table id="t-gros"></table></div></div></section>
+    <section class="panneau"><h2>Agents et compte <span id="cpt-note"></span></h2><div class="corps"><div id="compte" class="cadre">—</div><ul class="journal" id="journal"></ul></div></section>
+  </div>
+
+  <div class="col">
+    <section class="panneau"><h2>Volatilité <span id="vola-note"></span></h2>
+      <div class="corps"><div class="tuiles" id="vola"></div><div class="cadre" id="z12">—</div><div class="defile"><table id="t-realise"></table></div></div></section>
+    <section class="panneau"><h2>Calendrier économique <span id="cal-note"></span></h2><div class="corps"><ul class="cal" id="cal"></ul></div></section>
+    <section class="panneau"><h2>Nouvelles <span id="nv-note"></span></h2>
+      <div class="corps">
+        <div class="boutons" id="nv-filtres" role="group" aria-label="Filtrer les nouvelles"></div>
+        <input class="recherche" id="nv-cherche" type="search" placeholder="chercher (ex. Powell, Nvidia, CPI)…" aria-label="Chercher dans les nouvelles">
+        <ul class="nouv" id="nouv"></ul>
+        <p class="note" id="nv-sources"></p>
+      </div></section>
+  </div>
+</main>
+
+<script>
+"use strict";
+// ======================================================================== outils
+const $ = id => document.getElementById(id);
+const G = 1380, US0 = 930, US1 = 1320;                    // minutes depuis 18 h : 9 h 30 = 930, 16 h = 1320
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const lienSur = u => /^https?:\/\//i.test(u || "") ? u : null;
+const fr = (x, d = 2) => x == null || !isFinite(x) ? "—" : x.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const sgn = (x, d = 2) => x == null || !isFinite(x) ? "—" : (x > 0 ? "+" : x < 0 ? "−" : "") + fr(Math.abs(x), d);
+const cls = x => x == null || !isFinite(x) || x === 0 ? "" : x > 0 ? "h" : "b";
+const kilo = x => x == null || !isFinite(x) ? "—" : x >= 1e6 ? fr(x / 1e6, 1) + " M" : x >= 1e4 ? fr(x / 1e3, 0) + " k" : fr(x, 0);
+const pause = ms => new Promise(r => setTimeout(r, ms));
+let sonActif = false;
+try { sonActif = localStorage.getItem("nqlive-son") === "1"; } catch (e) {}
+$("son").checked = sonActif;
+$("son").onchange = () => { sonActif = $("son").checked; try { localStorage.setItem("nqlive-son", sonActif ? "1" : "0"); } catch (e) {} if (sonActif) bip(660, .08); };
+let audio = null;
+function bip(f = 880, d = .15) {
+  if (!sonActif) return;
+  try { audio = audio || new AudioContext(); const o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = f; g.gain.value = .06;
+    o.connect(g); g.connect(audio.destination); o.start(); o.stop(audio.currentTime + d); } catch (e) {}
+}
+
+// heure murale d'un fuseau
+const fmtCache = {};
+function mur(date, tz) {
+  const f = fmtCache[tz] || (fmtCache[tz] = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", weekday: "short" }));
+  const p = {}; f.formatToParts(date).forEach(x => p[x.type] = x.value);
+  return { y: +p.year, mo: +p.month, d: +p.day, h: +p.hour, mi: +p.minute, s: +p.second, wd: p.weekday, iso: `${p.year}-${p.month}-${p.day}` };
+}
+const hhmm = (h, m) => `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+const ETAT = { m: {}, ordre: [], nouv: [], cal: [], cot: {}, cotListe: [], vixVeille: null, gros: [], journaux: [], compte: null,
+  v: { n: -1, c: -1, q: -1, g: -1 }, utc: null, recu: 0, ok: false, sources: [], etatCal: null, etatCot: null, vus: new Set(), premier: true };
+const maintenant = () => ETAT.utc ? new Date(ETAT.utc.getTime() + (performance.now() - ETAT.recu)) : new Date();
+function globex(nyw) { if (nyw.h >= 18) return { i: (nyw.h - 18) * 60 + nyw.mi }; if (nyw.h < 17) return { i: (nyw.h + 6) * 60 + nyw.mi }; return { i: -1 }; }
+function heureIndex(i) { const t = (18 * 60 + i) % 1440; return hhmm(Math.floor(t / 60), t % 60); }
+function decalageParis() { const d = maintenant(), a = mur(d, "America/New_York"), b = mur(d, "Europe/Paris");
+  let x = (b.h * 60 + b.mi) - (a.h * 60 + a.mi); if (x < -720) x += 1440; if (x > 720) x -= 1440; return x; }
+function heureParisIndex(i) { const t = ((18 * 60 + i + decalageParis()) % 1440 + 1440) % 1440; return hhmm(Math.floor(t / 60), t % 60); }
+function indexDe(date) { return globex(mur(date, "America/New_York")).i; }
+
+// ======================================================================== donnees du relais
+async function chargerBarres() {
+  const r = await fetch("/live/barres", { cache: "no-store" }); if (!r.ok) throw new Error("barres " + r.status);
+  const d = await r.json();
+  d.marches.forEach(x => {
+    const m = ETAT.m[x.nom] || (ETAT.m[x.nom] = { nom: x.nom });
+    Object.assign(m, { symbole: x.symbole, jour: x.jour, cloturePrec: x.cloturePrec, jourPrec: x.jourPrec, plageMoyenne: x.plageMoyenne, seances: x.seances, volMoyen: x.volMoyen });
+    m.B = new Array(G).fill(null); x.barres.forEach(b => { m.B[b[0]] = b.slice(1); });
+  });
+  ETAT.ordre = d.marches.map(x => x.nom);
+  ETAT.barresA = performance.now();
+}
+async function interroger() {
+  const v = ETAT.v, u = `/live/etat?n=${v.n}&c=${v.c}&q=${v.q}&g=${v.g}`;
+  const r = await fetch(u, { cache: "no-store" }); if (!r.ok) throw new Error("etat " + r.status);
+  const d = await r.json();
+  ETAT.utc = new Date(d.utc); ETAT.recu = performance.now(); ETAT.ok = true;
+  let resynchro = false;
+  d.marches.forEach(x => {
+    const m = ETAT.m[x.nom]; if (!m) { resynchro = true; return; }
+    if (x.jour && m.jour !== x.jour) { resynchro = true; return; }
+    m.dernier = x.dernier; m.age = x.age; m.i = x.i;
+    if (x.i >= 0 && m.B) { if (x.barre) m.B[x.i] = x.barre; if (x.prec && x.i >= 1) m.B[x.i - 1] = x.prec;
+      if (x.i >= 2 && x.prec && !m.B[x.i - 2] && m.B.slice(0, x.i - 2).some(b => b)) resynchro = true; }
+  });
+  ETAT.compte = d.compte; ETAT.journaux = d.journaux || [];
+  if (d.nouvelles) { ETAT.nouv = d.nouvelles.map(prepNouvelle); ETAT.sources = d.sources || []; nouvellesArrivees(); }
+  if (d.calendrier) ETAT.cal = d.calendrier; if (d.etatCalendrier) ETAT.etatCal = d.etatCalendrier;
+  if (d.cotations) { ETAT.cotListe = d.cotations; ETAT.cot = Object.fromEntries(d.cotations.map(c => [c.symbole, c])); }
+  if (d.etatCotations) ETAT.etatCot = d.etatCotations; if (d.vixVeille) ETAT.vixVeille = d.vixVeille;
+  if (d.gros) ETAT.gros = d.gros;
+  Object.assign(ETAT.v, d.versions);
+  if (resynchro || performance.now() - (ETAT.barresA || 0) > 300000) await chargerBarres();
+}
+
+// ======================================================================== calculs sur un marche
+function stats(m) {
+  if (!m || !m.B) return null;
+  const B = m.B; let o = null, h = -Infinity, l = Infinity, vol = 0, ach = 0, ven = 0, n = 0, pv = 0, vv = 0, pvU = 0, vvU = 0, dernierI = -1;
+  for (let i = 0; i < G; i++) { const b = B[i]; if (!b) continue; if (o == null) o = b[0]; h = Math.max(h, b[1]); l = Math.min(l, b[2]); vol += b[4]; ach += b[5]; ven += b[6]; n++;
+    const tp = (b[1] + b[2] + b[3]) / 3; pv += tp * b[4]; vv += b[4]; if (i >= US0 && i < US1) { pvU += tp * b[4]; vvU += b[4]; } dernierI = i; }
+  if (!n) return null;
+  const dernier = m.dernier || B[dernierI][3], ref = m.cloturePrec ?? o;
+  const iNow = m.i >= 0 ? m.i : dernierI;
+  let attendu = null, attendu30 = null, vol30 = 0;
+  if (m.volMoyen) { attendu = 0; for (let i = 0; i <= Math.min(iNow, G - 1); i++) attendu += m.volMoyen[i] || 0;
+    attendu30 = 0; for (let i = Math.max(0, iNow - 29); i <= iNow; i++) { attendu30 += m.volMoyen[i] || 0; vol30 += B[i] ? B[i][4] : 0; } }
+  // volatilite realisee : rendements d'une minute des 30 dernieres minutes, annualisee sur la base d'une seance US (390 minutes)
+  const rv = (k) => { const r = []; for (let i = Math.max(1, iNow - k + 1); i <= iNow; i++) if (B[i] && B[i - 1]) r.push(Math.log(B[i][3] / B[i - 1][3]));
+    if (r.length < 10) return null; const mu = r.reduce((a, b) => a + b, 0) / r.length; const s = Math.sqrt(r.reduce((a, b) => a + (b - mu) ** 2, 0) / (r.length - 1)); return s * Math.sqrt(390 * 252) * 100; };
+  // ATR sur bougies de 5 minutes (14)
+  const b5 = []; for (let i = 0; i < G; i += 5) { let x = null; for (let k = i; k < i + 5; k++) { const b = B[k]; if (!b) continue; x = x ? [x[0], Math.max(x[1], b[1]), Math.min(x[2], b[2]), b[3]] : [b[0], b[1], b[2], b[3]]; } if (x) b5.push(x); }
+  let atr = null; if (b5.length > 15) { const tr = b5.slice(1).map((x, k) => Math.max(x[1] - x[2], Math.abs(x[1] - b5[k][3]), Math.abs(x[2] - b5[k][3]))); atr = tr.slice(-14).reduce((a, b) => a + b, 0) / 14; }
+  const ouvUS = B[US0] ? B[US0][0] : null, varUS = ouvUS && iNow >= US0 ? (dernier / ouvUS - 1) * 100 : null;
+  return { dernier, ref, varP: dernier - ref, varUS, var: (dernier / ref - 1) * 100, o, h, l, vol, ach, ven, delta: ach - ven, deltaPct: ach + ven ? (ach - ven) / (ach + ven) * 100 : null,
+    vwap: vv ? pv / vv : null, vwapUS: vvU ? pvU / vvU : null, rvol: attendu ? vol / attendu * 100 : null, rvol30: attendu30 ? vol30 / attendu30 * 100 : null,
+    rv30: rv(30), rv120: rv(120), atr, plage: h - l, plagePct: m.plageMoyenne ? (h - l) / m.plageMoyenne * 100 : null, iNow, refEstVeille: m.cloturePrec != null };
+}
+function serieMarche(m, k = 120) { const r = []; if (!m || !m.B) return r; for (let i = 0; i < G; i++) if (m.B[i]) r.push(m.B[i][3]); return r.length > k ? r.filter((_, j) => j % Math.ceil(r.length / k) === 0) : r; }
+function sparkSVG(v, w = 64, h = 18, coul) {
+  const x = (v || []).filter(t => t != null && isFinite(t)); if (x.length < 2) return "";
+  const lo = Math.min(...x), hi = Math.max(...x), k = hi - lo || 1;
+  const pts = x.map((t, j) => `${(j / (x.length - 1) * w).toFixed(1)},${(h - 1 - (t - lo) / k * (h - 2)).toFixed(1)}`).join(" ");
+  const c = coul || (x[x.length - 1] >= x[0] ? "var(--hausse)" : "var(--baisse)");
+  return `<svg class="sparkline" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline fill="none" stroke="${c}" stroke-width="1.2" points="${pts}"/></svg>`;
+}
+const NOMS = { NQ: "Nasdaq 100", ES: "S&P 500", YM: "Dow Jones", RTY: "Russell 2000", CL: "Pétrole", GC: "Or", SI: "Argent", "6E": "Euro", "6J": "Yen", ZN: "T-Note 10 ans",
+  ZB: "T-Bond 30 ans", MBT: "Bitcoin", BTC: "Bitcoin", NG: "Gaz naturel", HG: "Cuivre" };
+const CROISES = [["^NDX", "Nasdaq 100 (indice)"], ["^GSPC", "S&P 500 (indice)"], ["^TNX", "Taux US 10 ans (%)"], ["DX-Y.NYB", "Dollar (DXY)"], ["BTC-USD", "Bitcoin"]];
+const MEGA = ["NVDA", "MSFT", "AAPL", "AMZN", "GOOGL", "META", "AVGO", "TSLA"];
+const cotVar = c => c && c.dernier != null && c.veille ? (c.dernier / c.veille - 1) * 100 : null;
+
+// ======================================================================== nouvelles : etiquettes et importance
+const ETIQ = [
+  ["Fed", 3, /\b(fed|fomc|powell|federal reserve|rate (cut|hike)s?|taux directeurs?|banque centrale|waller|bowman|jefferson|goolsbee|kashkari|logan|daly|hammack|musalem|barr|warsh|miran)\b/i],
+  ["Inflation", 3, /\b(cpi|pce|ppi|inflation|consumer prices|prix à la consommation)\b/i],
+  ["Emploi", 3, /\b(payrolls?|nfp|jobs report|jobless|unemployment|employment|jolts|adp|emplois?|chômage)\b/i],
+  ["Géopolitique", 2, /\b(war|strikes?|missiles?|attacks?|iran|israel|russia|ukraine|taiwan|hormuz|sanctions?|guerre|frappes?|conflit)\b/i],
+  ["Commerce", 2, /\b(tariffs?|trade (war|deal|talks)|export controls?|droits de douane)\b/i],
+  ["Mégacaps", 1, /\b(nvidia|apple|microsoft|amazon|alphabet|google|meta|broadcom|tesla|nvda|aapl|msft|amzn|googl|avgo|tsla)\b/i],
+  ["IA", 1, /\b(ai|a\.i\.|artificial intelligence|chips?|semiconductors?|openai|anthropic|data cent(er|re)s?|intelligence artificielle|IA)\b/],
+  ["Taux", 1, /\b(treasur(y|ies)|yields?|bonds?|10-year|2-year|obligataires?|rendements?)\b/i],
+  ["Pétrole", 1, /\b(oil|opec|crude|brent|wti|pétrole|opep)\b/i],
+  ["Résultats", 1, /\b(earnings|revenue|guidance|quarterly results|résultats|chiffre d'affaires)\b/i]];
+const URGENT = /\b(breaking|urgent|flash|plunges?|surges?|soars?|crash(es)?|tumbles?|sell-?off|halts?|emergency|s'effondre|chute|flambe|alert)\b/i;
+function prepNouvelle(x) {
+  const txt = x.titre + " " + (x.resume || ""), tags = [];
+  let score = 0; ETIQ.forEach(([n, s, re]) => { if (re.test(x.titre) || (s >= 2 && re.test(txt))) { tags.push(n); score = Math.max(score, s); } });
+  const urg = URGENT.test(x.titre); if (urg) { score = Math.max(score + 1, 2); tags.unshift("Urgent"); }
+  const frn = /[àâçéèêëîïôûùüœ]/i.test(x.titre) || /\b(le|la|les|des|du|une|sur|pour|avec)\b/i.test(x.titre);
+  return { ...x, d: new Date(x.date), tags, score: Math.min(score, 3), fr: frn, cle: x.titre.toLowerCase().replace(/[^a-z0-9àâçéèêëîïôûùü]+/g, " ").trim().slice(0, 70) };
+}
+function nouvellesArrivees() {
+  // doublons entre sources (meme debut de titre) : on garde le premier recu
+  const vus = new Set(), garde = [];
+  ETAT.nouv.sort((a, b) => b.d - a.d).forEach(x => { if (!vus.has(x.cle)) { vus.add(x.cle); garde.push(x); } });
+  ETAT.nouv = garde;
+  if (ETAT.premier) { garde.forEach(x => ETAT.vus.add(x.cle)); ETAT.premier = false; return; }
+  const neuves = garde.filter(x => !ETAT.vus.has(x.cle)); neuves.forEach(x => { ETAT.vus.add(x.cle); x.neuf = performance.now(); });
+  if (neuves.some(x => x.score >= 3)) bip(880, .18);
+}
+
+// ======================================================================== seance et calendrier
+function etatSeance() {
+  const ny = mur(maintenant(), "America/New_York"), mn = ny.h * 60 + ny.mi, wd = ny.wd;
+  const dur = x => x >= 60 ? `${Math.floor(x / 60)} h ${String(x % 60).padStart(2, "0")}` : `${x} min`;
+  if (wd === "Sat" || (wd === "Sun" && ny.h < 18) || (wd === "Fri" && ny.h >= 17)) return { t: "FERMÉ (week-end)", p: "week-end, le marché est fermé jusqu'à dimanche 18 h (New York)", c: "", us: false };
+  if (ny.h === 17) return { t: `PAUSE · reprise à 18 h (dans ${dur(1080 - mn)})`, p: `pause quotidienne de 17 h, reprise dans ${dur(1080 - mn)}`, c: "a", us: false };
+  if (mn >= 570 && mn < 960) return { t: `SÉANCE US · ${dur(960 - mn)} restantes`, p: `séance US en cours, ${dur(960 - mn)} avant la clôture de 16 h`, c: "h", us: true };
+  if (mn < 570) return { t: `NUIT GLOBEX · séance US dans ${dur(570 - mn)}`, p: `nuit Globex (moins de volume), ouverture de la séance US dans ${dur(570 - mn)}`, c: "a", us: false };
+  return { t: `APRÈS-SÉANCE · pause dans ${dur(1020 - mn)}`, p: `après la clôture de 16 h, pause de 17 h dans ${dur(1020 - mn)}`, c: "a", us: false };
+}
+function evenements() {
+  return ETAT.cal.map(e => ({ ...e, d: new Date(e.date) })).filter(e => !isNaN(e.d))
+    .filter(e => e.pays === "USD" ? (e.impact === "High" || e.impact === "Medium") : e.impact === "High").sort((a, b) => a.d - b.d);
+}
+function prochaine() { const t = maintenant(); return evenements().find(e => e.pays === "USD" && e.impact === "High" && e.d > t - 60000); }
+const minutesAvant = d => Math.round((d - maintenant()) / 60000);
+const dureeFr = x => { const a = Math.abs(x); return a >= 1440 ? `${Math.round(a / 1440)} j` : a >= 60 ? `${Math.floor(a / 60)} h ${String(a % 60).padStart(2, "0")}` : `${a} min`; };
+
+// ======================================================================== rendu : tete et bande
+function rendreTete() {
+  const t = maintenant(), ny = mur(t, "America/New_York"), pa = mur(t, "Europe/Paris");
+  $("p-ny").textContent = hhmm(ny.h, ny.mi) + ":" + String(ny.s).padStart(2, "0"); $("p-paris").textContent = hhmm(pa.h, pa.mi) + ":" + String(pa.s).padStart(2, "0");
+  const s = etatSeance(); $("p-seance-t").textContent = s.t; $("p-seance-pt").className = "point " + s.c;
+  const e = prochaine();
+  if (e) { const k = minutesAvant(e.d); $("p-annonce-t").innerHTML = k > 0 ? `${esc(e.titre)} dans <b class="${k <= 30 ? "b" : "a"}">${dureeFr(k)}</b>` : `<b class="b">${esc(e.titre)} : maintenant</b>`;
+    if (k === 2 && !ETAT.bipAnnonce?.[e.date]) { (ETAT.bipAnnonce ||= {})[e.date] = 1; bip(520, .3); } }
+  else $("p-annonce-t").textContent = ETAT.etatCal && ETAT.etatCal.ok === false ? "calendrier indisponible" : "aucune annonce forte à venir cette semaine";
+  const nq = ETAT.m.NQ, age = nq && nq.age != null ? nq.age : null;
+  if (!ETAT.ok) { $("p-relais-pt").className = "point b"; $("p-relais-t").textContent = "coupé"; }
+  else { const vieux = age != null && age > 30 && s.us; $("p-relais-pt").className = "point " + (vieux ? "a" : "h");
+    $("p-relais-t").textContent = age == null ? "en ligne, pas encore de transaction" : `NQ il y a ${age < 60 ? Math.round(age) + " s" : dureeFr(Math.round(age / 60))}`; }
+  const items = [];
+  ETAT.ordre.forEach(n => { const st = stats(ETAT.m[n]); if (st) items.push(`<div><span class="k">${esc(n)}</span>${fr(st.dernier, st.dernier > 1000 ? 2 : st.dernier > 20 ? 2 : 4)} <span class="${cls(st.var)}">${sgn(st.var)} %</span></div>`); });
+  [["^VIX", "VIX"], ["^VXN", "VXN"], ["^TNX", "10 ANS"], ["DX-Y.NYB", "DXY"], ["BTC-USD", "BTC"]].forEach(([s, n]) => { const c = ETAT.cot[s]; if (c && c.dernier != null) {
+    const v = s === "^TNX" ? (c.dernier - c.veille) * 100 : cotVar(c); items.push(`<div><span class="k">${n}</span>${fr(c.dernier, 2)} <span class="${s === "^VIX" || s === "^VXN" ? cls(-v) : cls(v)}">${sgn(v, s === "^TNX" ? 1 : 2)}${s === "^TNX" ? " pb" : " %"}</span></div>`); } });
+  $("bande").innerHTML = items.join("") || `<div class="g">en attente du relais…</div>`;
+}
+
+// ======================================================================== rendu : marches, megacaps
+function rendreMarches() {
+  let h = `<thead><tr><th>Marché</th><th>Dernier</th><th>Var. %</th><th>Vol. rel.</th><th>Delta</th><th></th></tr></thead><tbody>`;
+  ETAT.ordre.forEach(n => {
+    const m = ETAT.m[n], st = stats(m); if (!st) { h += `<tr title="${esc(NOMS[n] || n)}"><td><span class="a">${esc(n)}</span></td><td colspan="5" class="g">pas encore de transaction</td></tr>`; return; }
+    const d = st.dernier > 1000 ? 2 : st.dernier > 20 ? 2 : 4;
+    h += `<tr title="${esc(`${NOMS[n] || n} (${m.symbole || n}) : ${sgn(st.varP, d)} pts · plus haut ${fr(st.h, d)} · plus bas ${fr(st.l, d)} · volume ${kilo(st.vol)}`)}"><td><span class="a">${esc(n)}</span></td><td>${fr(st.dernier, d)}</td>`
+      + `<td class="${cls(st.var)}">${sgn(st.var)}${st.refEstVeille ? "" : "*"}</td>`
+      + `<td class="${st.rvol == null ? "g" : st.rvol >= 150 ? "b" : st.rvol >= 115 ? "a" : ""}">${st.rvol == null ? "—" : fr(st.rvol, 0) + " %"}</td>`
+      + `<td class="${cls(st.deltaPct)}">${st.deltaPct == null ? "—" : sgn(st.deltaPct, 0) + " %"}</td><td>${sparkSVG(serieMarche(m), 44)}</td></tr>`;
+  });
+  $("t-marches").innerHTML = h + "</tbody>";
+  const sansVeille = ETAT.ordre.some(n => { const st = stats(ETAT.m[n]); return st && !st.refEstVeille; });
+  $("mar-legende").textContent = "Var. : depuis la clôture de la veille (17 h New York)" + (sansVeille ? " ; * : depuis la première transaction reçue aujourd'hui (pas d'historique pour la veille)" : "")
+    + ". Vol. rel. : volume du jour rapporté au volume habituel à la même heure. Delta : achats moins ventes au marché, en % du volume. Survole une ligne : variation en points, plus haut, plus bas, volume.";
+  let c = `<thead><tr><th>Autres marchés</th><th>Dernier</th><th>Var.</th><th></th></tr></thead><tbody>`; let n = 0;
+  CROISES.forEach(([s, nom]) => { const q = ETAT.cot[s]; if (!q || q.dernier == null) return; n++;
+    const tnx = s === "^TNX", v = tnx ? (q.dernier - q.veille) * 100 : cotVar(q), hq = q.heure ? mur(new Date(q.heure * 1000), "Europe/Paris") : null;
+    c += `<tr title="${esc(`${q.nom || s} · cotation de ${hq ? hhmm(hq.h, hq.mi) + " (Paris)" : "?"}`)}"><td>${esc(nom)}</td><td>${fr(q.dernier, q.dernier > 1000 ? 0 : 2)}</td><td class="${cls(v)}">${sgn(v, tnx ? 1 : 2)}${tnx ? " pb" : " %"}</td><td>${sparkSVG(q.serie, 44)}</td></tr>`; });
+  $("t-croises").innerHTML = n ? c + "</tbody>" : "";
+  const ec = ETAT.etatCot; $("mar-note").textContent = "Rithmic en direct" + (ec ? ` · cotations ${ec.ok ? "Yahoo" : "indisponibles"}` : "");
+}
+function rendreMega() {
+  const t = MEGA.map(s => [s, ETAT.cot[s]]).filter(([, c]) => c && c.dernier != null);
+  if (!t.length) { $("mega").innerHTML = `<div class="tuile g">cotations indisponibles</div>`; $("mega-note").textContent = ""; return; }
+  $("mega").innerHTML = t.map(([s, c]) => { const v = cotVar(c), a = Math.min(1, Math.abs(v || 0) / 3);
+    const fond = v > 0 ? `rgba(47,209,111,${.08 + .3 * a})` : v < 0 ? `rgba(255,79,79,${.08 + .3 * a})` : "var(--panneau)";
+    return `<div class="tuile" style="background:${fond}"><span class="n">${s}</span><span class="x">${fr(c.dernier, 2)}</span><span class="d ${cls(v)}">${sgn(v)} %</span></div>`; }).join("");
+  const up = t.filter(([, c]) => cotVar(c) > 0).length; $("mega-note").textContent = `${up} sur ${t.length} en hausse`;
+}
+
+// ======================================================================== rendu : volatilite
+function rendreVola() {
+  const T = [["^VIX", "VIX", "S&P 500, 30 j"], ["^VXN", "VXN", "Nasdaq, 30 j"], ["^VIX9D", "VIX 9 j", ""], ["^VIX3M", "VIX 3 mois", ""], ["^VVIX", "VVIX", "vol. du VIX"]];
+  $("vola").innerHTML = T.map(([s, n, d]) => { const c = ETAT.cot[s]; if (!c || c.dernier == null) return "";
+    const v = cotVar(c); return `<div class="tuile" title="${esc(d)}"><span class="n">${n}</span><span class="x">${fr(c.dernier, 2)}</span><span class="d ${cls(-v)}">${sgn(v, 1)} %</span>${sparkSVG(c.serie, 70, 16, "var(--ambre)")}</div>`; }).join("")
+    || `<div class="tuile g">cotations de volatilité indisponibles</div>`;
+  const vix = ETAT.cot["^VIX"], v3 = ETAT.cot["^VIX3M"], vv = ETAT.vixVeille;
+  let z = "";
+  if (vv && vv.vix != null) {
+    const d = vv.date.split("-").reverse().slice(0, 2).join("/");
+    z += vv.inverse ? `<b class="b">Bot 3 en 1 : zone COUPÉE aujourd'hui</b> (filtre VIX : à la clôture du ${d}, VIX ${fr(vv.vix)} ≥ VIX 3 mois ${fr(vv.vix3m)}).`
+                    : `<b class="h">Bot 3 en 1 : zone autorisée aujourd'hui</b> (filtre VIX : à la clôture du ${d}, VIX ${fr(vv.vix)} < VIX 3 mois ${fr(vv.vix3m)}).`;
+  } else z += `<span class="g">Filtre VIX du Bot 3 en 1 : clôtures du CBOE indisponibles${vv && vv.erreur ? " (" + esc(vv.erreur) + ")" : ""}.</span>`;
+  if (vix && v3 && vix.dernier != null && v3.dernier != null) {
+    const inv = vix.dernier >= v3.dernier;
+    z += `<br>En ce moment : VIX ${fr(vix.dernier)} ${inv ? "≥" : "<"} VIX 3 mois ${fr(v3.dernier)} → courbe ${inv ? '<b class="b">inversée (marché sous tension)</b>' : '<b class="h">normale</b>'}`
+      + (inv !== !!(vv && vv.inverse) && vv ? ` ; <span class="a">si c'est encore le cas à la clôture, la zone sera ${inv ? "coupée" : "de nouveau autorisée"} demain</span>.` : ".");
+  }
+  $("z12").innerHTML = z;
+  const st = stats(ETAT.m.NQ), vxn = ETAT.cot["^VXN"];
+  let h = `<thead><tr><th>NQ</th><th>Valeur</th><th>Repère</th></tr></thead><tbody>`;
+  if (st) {
+    h += `<tr><td>Vol. réalisée 30 min</td><td>${st.rv30 == null ? "—" : fr(st.rv30, 1) + " %"}</td><td class="rep">${vxn && vxn.dernier && st.rv30 ? "annualisée ; VXN " + fr(vxn.dernier, 1) + " % attendus" : "annualisée"}</td></tr>`
+      + `<tr><td>Vol. réalisée 2 h</td><td>${st.rv120 == null ? "—" : fr(st.rv120, 1) + " %"}</td><td class="rep">annualisée, base séance US</td></tr>`
+      + `<tr><td>ATR 5 min (14)</td><td>${st.atr == null ? "—" : fr(st.atr, 1) + " pts"}</td><td class="rep">amplitude moyenne d'une bougie</td></tr>`
+      + `<tr><td>Plage du jour</td><td>${fr(st.plage, 2)} pts</td><td class="rep ${st.plagePct == null ? "" : st.plagePct > 130 ? "b" : st.plagePct > 100 ? "a" : ""}">${st.plagePct == null ? "moyenne inconnue" : fr(st.plagePct, 0) + " % de la moyenne (" + ETAT.m.NQ.seances + " séances)"}</td></tr>`;
+  }
+  $("t-realise").innerHTML = h + "</tbody>";
+  const ec = ETAT.etatCot; $("vola-note").textContent = ec ? (ec.ok ? "Yahoo, ~1 min" : "secours CBOE (différé)") : "";
+}
+
+// ======================================================================== rendu : calendrier
+function rendreCalendrier() {
+  const t = maintenant(), ev = evenements(), ec = ETAT.etatCal;
+  if (!ev.length) { $("cal").innerHTML = `<li class="g">${ec && ec.ok === false ? "calendrier indisponible : " + esc(ec.erreur || "") : "aucun événement important cette semaine"}</li>`; return; }
+  const jourNy = d => mur(d, "America/New_York").iso; const auj = jourNy(t);
+  let h = "", jc = null;
+  ev.filter(e => e.d > t - 6 * 3600000 || jourNy(e.d) === auj).slice(0, 40).forEach(e => {
+    const j = jourNy(e.d);
+    if (j !== jc) { jc = j; const dd = new Date(j + "T12:00:00Z"); h += `<li class="jourcal">${j === auj ? "Aujourd'hui" : dd.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" })}</li>`; }
+    const k = minutesAvant(e.d), pa = mur(e.d, "Europe/Paris"), ny = mur(e.d, "America/New_York"), passe = k < -2;
+    const pv = [e.prevision && "prév. " + e.prevision, e.precedent && "préc. " + e.precedent, e.reel && "réel " + e.reel].filter(Boolean).join(" · ");
+    h += `<li class="${passe ? "passe" : k <= 30 && e.impact === "High" ? "proche" : ""}"><span>${hhmm(pa.h, pa.mi)}<br><span class="g petit" style="white-space:nowrap">${hhmm(ny.h, ny.mi)} NY</span></span><span class="imp ${esc(e.impact)}" title="${esc(e.impact)}"></span>`
+      + `<span><span class="g">${esc(e.pays)}</span> ${esc(e.titre)}${pv ? `<br><span class="g petit">${esc(pv)}</span>` : ""}</span>`
+      + `<span class="petit ${passe ? "g" : k <= 30 ? "b" : "a"}">${passe ? "passé" : k <= 0 ? "maintenant" : "dans " + dureeFr(k)}</span></li>`;
+  });
+  $("cal").innerHTML = h;
+  $("cal-note").textContent = "heure de Paris · rouge : impact fort";
+}
+
+// ======================================================================== rendu : nouvelles
+let filtreNv = "Tout";
+const FILTRES = ["Tout", "Important", "Fed", "Inflation", "Emploi", "Géopolitique", "Mégacaps", "IA", "Taux", "Pétrole", "Français"];
+$("nv-filtres").innerHTML = FILTRES.map(f => `<button aria-pressed="${f === filtreNv}" data-f="${f}">${f}</button>`).join("");
+$("nv-filtres").onclick = e => { const b = e.target.closest("button"); if (!b) return; filtreNv = b.dataset.f; $("nv-filtres").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); rendreNouvelles(); };
+$("nv-cherche").oninput = () => rendreNouvelles();
+function ilya(d) { const k = Math.round((maintenant() - d) / 60000); return k < 1 ? "à l'instant" : "il y a " + dureeFr(k); }
+function rendreNouvelles() {
+  const q = $("nv-cherche").value.trim().toLowerCase();
+  const l = ETAT.nouv.filter(x => filtreNv === "Tout" || (filtreNv === "Important" ? x.score >= 3 : filtreNv === "Français" ? x.fr : x.tags.includes(filtreNv)))
+    .filter(x => !q || (x.titre + " " + x.source + " " + (x.resume || "")).toLowerCase().includes(q)).slice(0, 150);
+  $("nouv").innerHTML = l.map(x => {
+    const pa = mur(x.d, "Europe/Paris"), neuf = x.neuf && performance.now() - x.neuf < 300000, url = lienSur(x.lien);
+    const tags = (neuf ? `<span class="etiq n">nouveau</span>` : "") + x.tags.map(t => `<span class="etiq ${t === "Urgent" || x.score >= 3 ? "r" : ""}">${esc(t)}</span>`).join("");
+    const titre = url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(x.titre)}</a>` : esc(x.titre);
+    return `<li class="i${x.score} ${neuf ? "neuf" : ""}" title="${esc(x.resume || "")}"><div class="meta"><span class="a">${hhmm(pa.h, pa.mi)}</span><span>${ilya(x.d)}</span><span>${esc(x.source)}</span>${tags}</div><div class="titre">${titre}</div></li>`;
+  }).join("") || `<li class="g">${ETAT.nouv.length ? "aucune nouvelle pour ce filtre" : "en attente des flux…"}</li>`;
+  const ok = ETAT.sources.filter(s => s.ok), ko = ETAT.sources.filter(s => !s.ok);
+  $("nv-sources").textContent = ETAT.sources.length ? `Sources : ${ok.length} sur ${ETAT.sources.length} lues (${ok.map(s => s.source).join(", ")})` + (ko.length ? ` ; sans réponse : ${ko.map(s => s.source).join(", ")}` : "") + ". Heure de Paris." : "";
+  const h1 = ETAT.nouv.filter(x => maintenant() - x.d < 3600000); $("nv-note").textContent = `${h1.length} dans la dernière heure, ${h1.filter(x => x.score >= 3).length} importantes`;
+}
+
+// ======================================================================== graphiques
+let modeGr = "us", pasGr = 1, voirES = false;
+document.querySelectorAll("[data-gr]").forEach(b => b.onclick = () => { modeGr = b.dataset.gr; document.querySelectorAll("[data-gr]").forEach(x => x.setAttribute("aria-pressed", x === b)); dessinerPrix(); });
+document.querySelectorAll("[data-pas]").forEach(b => b.onclick = () => { pasGr = +b.dataset.pas; document.querySelectorAll("[data-pas]").forEach(x => x.setAttribute("aria-pressed", x === b)); dessinerPrix(); });
+document.querySelector("[data-mq]").onclick = e => { voirES = !voirES; e.target.setAttribute("aria-pressed", voirES); dessinerPrix(); };
+function toile(id, hauteur) {
+  const c = $(id).querySelector("canvas"), w = $(id).clientWidth, r = window.devicePixelRatio || 1;
+  c.width = Math.round(w * r); c.height = Math.round(hauteur * r); c.style.height = hauteur + "px";
+  const x = c.getContext("2d"); x.setTransform(r, 0, 0, r, 0, 0); x.clearRect(0, 0, w, hauteur); return { x, w, h: hauteur, c };
+}
+function bougies(m, i0, i1, pas) {
+  const out = [];
+  for (let i = i0; i < i1; i += pas) { let b = null; for (let k = i; k < Math.min(i + pas, i1); k++) { const y = m.B[k]; if (!y) continue;
+    b = b ? { i, o: b.o, h: Math.max(b.h, y[1]), l: Math.min(b.l, y[2]), c: y[3], v: b.v + y[4], a: b.a + y[5], s: b.s + y[6] } : { i, o: y[0], h: y[1], l: y[2], c: y[3], v: y[4], a: y[5], s: y[6] }; }
+    out.push(b); }
+  return out;
+}
+let gPrix = null;
+function dessinerPrix() {
+  const m = ETAT.m.NQ, H = innerWidth > 900 ? 420 : 300, { x, w, h } = toile("g-prix", H);
+  if (!m || !m.B) { x.fillStyle = "#8d8d95"; x.font = "12px IBM Plex Mono, monospace"; x.fillText("en attente des barres du relais…", 12, 24); gPrix = null; return; }
+  const st = stats(m), iNow = st ? st.iNow : US0;
+  let i0 = modeGr === "us" ? US0 : 0, i1 = modeGr === "us" ? US1 : G;
+  if (modeGr === "us" && iNow < US0) { i0 = Math.max(0, iNow - 240); i1 = Math.max(iNow + 30, US0 + 30); }
+  const bs = bougies(m, i0, i1, pasGr), pleines = bs.filter(Boolean);
+  if (!pleines.length) { x.fillStyle = "#8d8d95"; x.font = "12px IBM Plex Mono, monospace"; x.fillText("pas encore de transaction sur cette période", 12, 24); gPrix = null; return; }
+  const es = voirES ? ETAT.m.ES : null;
+  const D = 64, hp = H * .74, hv = H * .2, yv0 = hp + 8;
+  let lo = Math.min(...pleines.map(b => b.l)), hi = Math.max(...pleines.map(b => b.h));
+  const ref = m.cloturePrec; if (ref && ref > lo - (hi - lo) * .3 && ref < hi + (hi - lo) * .3) { lo = Math.min(lo, ref); hi = Math.max(hi, ref); }
+  const pad = (hi - lo) * .06 || 1; lo -= pad; hi += pad;
+  const W = w - D, n = bs.length, dx = W / n, X = k => k * dx + dx / 2, Y = p => 6 + (hp - 12) * (hi - p) / (hi - lo);
+  // grille de prix
+  x.font = "11px IBM Plex Mono, monospace"; x.textBaseline = "middle";
+  const pasP = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500].find(s => (hi - lo) / s <= 7) || 1000;
+  for (let p = Math.ceil(lo / pasP) * pasP; p <= hi; p += pasP) { x.strokeStyle = "#18181b"; x.beginPath(); x.moveTo(0, Y(p)); x.lineTo(W, Y(p)); x.stroke(); x.fillStyle = "#5b5b63"; x.fillText(fr(p, 0), W + 6, Y(p)); }
+  // heures
+  x.textBaseline = "top"; const pasH = (i1 - i0) > 500 ? 120 : 60;
+  for (let i = Math.ceil(i0 / pasH) * pasH; i < i1; i += pasH) { const k = (i - i0) / pasGr; x.strokeStyle = "#18181b"; x.beginPath(); x.moveTo(X(k), 0); x.lineTo(X(k), H - 14); x.stroke();
+    x.fillStyle = "#5b5b63"; x.fillText(heureParisIndex(i), Math.max(0, Math.min(W - 34, X(k) - 16)), H - 12); }
+  // annonces du calendrier et nouvelles importantes
+  const jourM = m.jour, rangs = [-1e9, -1e9, -1e9];
+  evenements().forEach(e => { const j = indexDe(e.d), ny = mur(e.d, "America/New_York"); if (j < i0 || j >= i1 || !jourM) return;
+    const jourE = ny.h >= 18 ? null : ny.iso; if (jourE && jourE !== jourM) return;
+    const k = (j - i0) / pasGr; x.strokeStyle = e.impact === "High" ? "rgba(255,160,40,.75)" : "rgba(255,160,40,.35)"; x.setLineDash([3, 3]); x.beginPath(); x.moveTo(X(k), 0); x.lineTo(X(k), hp); x.stroke(); x.setLineDash([]);
+    if (e.impact !== "High") return;
+    const txt = e.titre.replace(/\s*\(essai\)/, "").slice(0, 22), lx = Math.min(X(k) + 3, W - x.measureText(txt).width - 4), r = rangs.findIndex(v => lx > v + 6);
+    if (r < 0) return; rangs[r] = lx + x.measureText(txt).width; x.fillStyle = "#ffa028"; x.fillText(txt, lx, 2 + 13 * r); });
+  ETAT.nouv.filter(z => z.score >= 3).forEach(z => { const j = indexDe(z.d), ny = mur(z.d, "America/New_York"); if (j < i0 || j >= i1) return; const jourZ = ny.h >= 18 ? null : ny.iso; if (jourZ && jourZ !== jourM) return;
+    const k = (j - i0) / pasGr; x.fillStyle = "#ff4f4f"; x.beginPath(); x.moveTo(X(k), hp - 10); x.lineTo(X(k) + 4, hp - 5); x.lineTo(X(k), hp); x.lineTo(X(k) - 4, hp - 5); x.fill(); });
+  // cloture de la veille
+  if (ref && ref >= lo && ref <= hi) { x.strokeStyle = "#8d8d95"; x.setLineDash([2, 4]); x.beginPath(); x.moveTo(0, Y(ref)); x.lineTo(W, Y(ref)); x.stroke(); x.setLineDash([]);
+    x.textBaseline = "middle"; x.fillStyle = "#8d8d95"; x.fillText("veille", W + 6, Y(ref) - 10); }
+  // bougies
+  const cw = Math.max(1, Math.min(9, dx * .7));
+  bs.forEach((b, k) => { if (!b) return; const up = b.c >= b.o; x.strokeStyle = x.fillStyle = up ? "#2fd16f" : "#ff4f4f";
+    x.beginPath(); x.moveTo(X(k), Y(b.h)); x.lineTo(X(k), Y(b.l)); x.stroke(); const y0 = Y(Math.max(b.o, b.c)), y1 = Y(Math.min(b.o, b.c)); x.fillRect(X(k) - cw / 2, y0, cw, Math.max(1, y1 - y0)); });
+  // VWAP de la periode affichee
+  let pv = 0, vv = 0; x.strokeStyle = "#3cc8ff"; x.lineWidth = 1.4; x.beginPath(); let debut = true;
+  bs.forEach((b, k) => { if (!b) return; pv += (b.h + b.l + b.c) / 3 * b.v; vv += b.v; if (!vv) return; const y = Y(pv / vv); if (debut) { x.moveTo(X(k), y); debut = false; } else x.lineTo(X(k), y); }); x.stroke(); x.lineWidth = 1;
+  // ES en surimpression (meme variation en %)
+  if (es && es.B) { const be = bougies(es, i0, i1, pasGr), p0 = pleines[0].o, e0 = (be.find(Boolean) || {}).o; if (e0) { x.strokeStyle = "rgba(180,140,255,.8)"; x.beginPath(); let d0 = true;
+    be.forEach((b, k) => { if (!b) return; const y = Y(p0 * b.c / e0); if (d0) { x.moveTo(X(k), y); d0 = false; } else x.lineTo(X(k), y); }); x.stroke(); x.fillStyle = "#b48cff"; x.textBaseline = "top"; x.fillText("ES (même départ)", 6, 4); } }
+  // dernier prix
+  const der = st.dernier; if (der >= lo && der <= hi) { x.fillStyle = "#ffa028"; x.fillRect(W + 1, Y(der) - 8, D - 2, 16); x.fillStyle = "#000"; x.textBaseline = "middle"; x.fillText(fr(der, 2), W + 4, Y(der)); }
+  // volume (couleur du delta)
+  const vmax = Math.max(...pleines.map(b => b.v)) || 1;
+  bs.forEach((b, k) => { if (!b) return; x.fillStyle = b.a >= b.s ? "rgba(47,209,111,.55)" : "rgba(255,79,79,.55)"; const hh = hv * b.v / vmax; x.fillRect(X(k) - cw / 2, yv0 + hv - hh, cw, hh); });
+  gPrix = { bs, i0, X, dx, W, m };
+  $("gr-note").textContent = `${pasGr} min · axe en heure de Paris · ${m.symbole || "NQ"}`;
+}
+function infoPrix(ev) {
+  const g = gPrix, bx = $("g-prix"), info = bx.querySelector(".info"); if (!g) return;
+  const r = bx.getBoundingClientRect(), px = ev.clientX - r.left, k = Math.floor(px / g.dx), b = g.bs[k];
+  if (!b || px > g.W) { info.hidden = true; return; }
+  info.hidden = false; const i = g.i0 + k * pasGr;
+  info.innerHTML = `${heureParisIndex(i)} Paris · ${heureIndex(i)} NY<br>O ${fr(b.o)} H ${fr(b.h)} B ${fr(b.l)} C ${fr(b.c)}<br>volume ${kilo(b.v)} · delta <span class="${cls(b.a - b.s)}">${sgn(b.a - b.s, 0)}</span>`;
+  info.style.left = Math.min(px + 12, r.width - 200) + "px"; info.style.top = "10px";
+}
+$("g-prix").addEventListener("mousemove", infoPrix); $("g-prix").addEventListener("mouseleave", () => $("g-prix").querySelector(".info").hidden = true);
+
+function dessinerVolume() {
+  const m = ETAT.m.NQ, st = stats(m), H = 170, { x, w, h } = toile("g-vol", H);
+  if (!st) { $("vol-tuiles").innerHTML = ""; return; }
+  const sU = st.iNow >= US0 && st.iNow < US1;
+  let dU = 0; for (let i = US0; i <= Math.min(st.iNow, US1 - 1); i++) { const b = m.B[i]; if (b) dU += b[5] - b[6]; }
+  const gros30 = ETAT.gros.filter(g => g.marche === "NQ" && g.jour === m.jour && (() => { const [hh, mm] = g.heure.split(":").map(Number); const i = globex({ h: hh, mi: mm }).i; return st.iNow - i <= 30 && i <= st.iNow; })());
+  const net = gros30.reduce((a, g) => a + g.sens * g.taille, 0);
+  const T = [["Volume du jour", kilo(st.vol), st.rvol == null ? "normale inconnue" : fr(st.rvol, 0) + " % de la normale", st.rvol >= 150 ? "b" : st.rvol >= 115 ? "a" : ""],
+    ["30 dernières min", st.rvol30 == null ? "—" : fr(st.rvol30, 0) + " %", "de la normale", st.rvol30 >= 150 ? "b" : st.rvol30 >= 115 ? "a" : ""],
+    ["Delta depuis 18 h", sgn(st.delta, 0), (st.deltaPct == null ? "" : sgn(st.deltaPct, 1) + " % du volume"), cls(st.delta)],
+    ["Delta séance US", sU || st.iNow >= US1 ? sgn(dU, 0) : "—", "depuis 9 h 30 NY", cls(dU)],
+    ["Gros ordres 30 min", String(gros30.length), "net " + sgn(net, 0) + " contrats", cls(net)]];
+  $("vol-tuiles").innerHTML = T.map(([n, v, d, c]) => `<div class="tuile"><span class="n">${n}</span><span class="x ${c}">${v}</span><span class="d g">${esc(d)}</span></div>`).join("");
+  // 120 dernieres minutes
+  const i1 = st.iNow + 1, i0 = Math.max(0, i1 - 120), n = i1 - i0, D = 92, W = w - D, dx = W / 120;
+  let vmax = 1; for (let i = i0; i < i1; i++) { const b = m.B[i]; vmax = Math.max(vmax, b ? b[4] : 0, m.volMoyen ? m.volMoyen[i] || 0 : 0); }
+  const Yv = v => 8 + (H - 30) * (1 - v / vmax);
+  for (let i = i0; i < i1; i++) { const b = m.B[i]; if (!b) continue; x.fillStyle = b[5] >= b[6] ? "rgba(47,209,111,.6)" : "rgba(255,79,79,.6)"; x.fillRect((i - i0) * dx + 1, Yv(b[4]), Math.max(1, dx - 1), H - 22 - Yv(b[4])); }
+  if (m.volMoyen) { x.strokeStyle = "#ffa028"; x.beginPath(); for (let i = i0; i < i1; i++) { const y = Yv(m.volMoyen[i] || 0); i === i0 ? x.moveTo((i - i0) * dx + dx / 2, y) : x.lineTo((i - i0) * dx + dx / 2, y); } x.stroke(); }
+  // delta cumule sur la fenetre
+  let cum = 0; const cd = []; for (let i = i0; i < i1; i++) { const b = m.B[i]; cum += b ? b[5] - b[6] : 0; cd.push(cum); }
+  const lo = Math.min(0, ...cd), hi = Math.max(0, ...cd), Yd = v => 8 + (H - 30) * (hi - v) / ((hi - lo) || 1);
+  x.strokeStyle = "#3cc8ff"; x.lineWidth = 1.4; x.beginPath(); cd.forEach((v, k) => k ? x.lineTo(k * dx + dx / 2, Yd(v)) : x.moveTo(k * dx + dx / 2, Yd(v))); x.stroke(); x.lineWidth = 1;
+  x.font = "11px IBM Plex Mono, monospace"; x.fillStyle = "#5b5b63"; x.textBaseline = "top";
+  for (let i = Math.ceil(i0 / 30) * 30; i < i1; i += 30) x.fillText(heureParisIndex(i), (i - i0) * dx - 14, H - 14);
+  const dc = cd[cd.length - 1] || 0; x.fillStyle = "#3cc8ff"; x.fillText("delta 2 h", W + 6, 6); x.fillText((dc > 0 ? "+" : dc < 0 ? "−" : "") + kilo(Math.abs(dc)), W + 6, 20); x.fillStyle = "#8d8d95"; x.fillText("vol. max", W + 6, 40); x.fillText(kilo(vmax), W + 6, 54);
+  $("vol-note").textContent = "2 dernières heures · " + (m.seances ? `normale : ${m.seances} séances` : "normale inconnue");
+}
+
+// ======================================================================== rendu : gros ordres, agents
+function rendreGros() {
+  const g = ETAT.gros.slice().reverse().slice(0, 25);
+  $("t-gros").innerHTML = g.length ? `<thead><tr><th>Heure NY</th><th>Marché</th><th>Sens</th><th>Contrats</th><th>Prix</th></tr></thead><tbody>` + g.map(o =>
+    `<tr><td>${esc(o.heure)}</td><td class="a">${esc(o.marche)}</td><td class="${o.sens > 0 ? "h" : o.sens < 0 ? "b" : "g"}">${o.sens > 0 ? "ACHAT" : o.sens < 0 ? "VENTE" : "?"}</td><td>${fr(o.taille, 0)}</td><td>${fr(o.prix)}</td></tr>`).join("") + "</tbody>"
+    : `<tbody><tr><td class="g">aucun gros ordre reçu depuis le lancement du relais</td></tr></tbody>`;
+  $("gros-note").textContent = "transactions d'un seul coup au-dessus du seuil réglé dans le relais";
+}
+function rendreAgents() {
+  const c = ETAT.compte;
+  $("compte").innerHTML = c ? `<span class="a">${esc(c.nom)}</span> · solde ${c.solde == null ? "—" : fr(c.solde, 2) + " $"} · position MNQ <b class="${cls(c.position)}">${sgn(c.position, 0)}</b>`
+    + (c.position ? ` · latent <span class="${cls(c.latent)}">${sgn(c.latent, 2)} $</span>` : "") : `<span class="g">aucun compte choisi dans les réglages du relais</span>`;
+  $("journal").innerHTML = ETAT.journaux.slice(-40).reverse().map(j => `<li><span class="ag">${esc(j.agent)}</span>${esc(j.ligne)}</li>`).join("") || `<li class="g">aucune ligne des agents pour l'instant</li>`;
+}
+
+// ======================================================================== lecture du marche (raisonnement a partir des chiffres)
+function rendreLecture() {
+  const L = [], nq = stats(ETAT.m.NQ), s = etatSeance(); let score = 0, tension = 0;
+  const pt = (c, t) => L.push(`<li><span class="point ${c}"></span><span>${t}</span></li>`);
+  pt(s.us ? "h" : "a", `<b>Séance</b> : ${s.p}.`);
+  if (nq) {
+    const vw = s.us || nq.iNow >= US1 ? nq.vwapUS : nq.vwap, ecart = vw ? nq.dernier - vw : null, enAtr = ecart != null && nq.atr ? ecart / nq.atr : null;
+    score += Math.sign(nq.var) * Math.min(2, Math.abs(nq.var) / .5) + (ecart ? Math.sign(ecart) : 0);
+    pt(cls(nq.var) || "g", `<b>NQ</b> ${sgn(nq.var)} % ${nq.refEstVeille ? "sur la veille" : "depuis la première transaction reçue"} (${sgn(nq.varP, 2)} pts)` + (ecart == null ? "." :
+      `, ${ecart >= 0 ? "au-dessus" : "en dessous"} de son VWAP${s.us ? " de la séance" : ""} de ${fr(Math.abs(ecart), 1)} pts${enAtr != null ? ` (${fr(Math.abs(enAtr), 1)} ATR)` : ""} : ${ecart >= 0 ? "les acheteurs tiennent le prix moyen" : "les vendeurs tiennent le prix moyen"}.`));
+    const m30 = (() => { const B = ETAT.m.NQ.B, i = nq.iNow; const a = B[Math.max(0, i - 30)], b = B[i] || B[i - 1]; return a && b ? b[3] - a[3] : null; })();
+    if (m30 != null && nq.atr) { const k = Math.abs(m30) / nq.atr; pt(k >= 2 ? (m30 > 0 ? "h" : "b") : "g", `<b>30 dernières minutes</b> : ${sgn(m30, 1)} pts (${fr(k, 1)} fois l'ATR de 5 min) — ${k >= 4 ? "un mouvement fort et rapide" : k >= 2 ? "un mouvement net" : "pas de mouvement marqué"}.`); }
+    const autres = ["ES", "RTY", "YM"].map(n => [n, stats(ETAT.m[n])]).filter(([, x]) => x);
+    // meme repere pour tous : la veille si tous l'ont, sinon l'ouverture de 9 h 30
+    const tousVeille = nq.refEstVeille && autres.every(([, x]) => x.refEstVeille), cle = tousVeille ? "var" : "varUS";
+    if (autres.length && nq[cle] != null && autres.every(([, x]) => x[cle] != null)) { const ref = nq[cle], meme = autres.filter(([, x]) => Math.sign(x[cle]) === Math.sign(ref)), es = autres.find(([n]) => n === "ES"), ec = es ? ref - es[1][cle] : 0;
+      pt(meme.length === autres.length ? cls(ref) : "a", `<b>Confirmation</b> (${tousVeille ? "sur la veille" : "depuis 9 h 30"}) : NQ ${sgn(ref)} %, ${autres.map(([n, x]) => `${n} ${sgn(x[cle])} %`).join(", ")} — ` + (meme.length === autres.length ? "tout le marché va dans le même sens, le mouvement est large."
+        : meme.length === 0 ? "le NQ va seul contre le reste du marché : mouvement fragile, tiré par la tech." : "le marché est partagé.") + (es && Math.abs(ec) >= .4 ? ` Le NQ fait ${sgn(ec)} point de % ${ec > 0 ? "de plus" : "de moins"} que l'ES : ${ec > 0 ? "la tech mène" : "la tech est à la traîne"}.` : "")); }
+    if (nq.rvol != null) { tension += nq.rvol >= 150 ? 1 : 0; pt(nq.rvol >= 150 ? "b" : nq.rvol >= 115 ? "a" : nq.rvol < 70 ? "g" : "h", `<b>Activité</b> : volume à ${fr(nq.rvol, 0)} % de la normale à cette heure${nq.rvol30 != null ? `, ${fr(nq.rvol30, 0)} % sur les 30 dernières minutes` : ""} — ` +
+      (nq.rvol >= 200 ? "journée exceptionnelle, les mouvements peuvent aller loin" : nq.rvol >= 150 ? "marché très actif" : nq.rvol >= 115 ? "un peu plus actif que d'habitude" : nq.rvol < 70 ? "marché calme, peu de participants" : "activité normale")
+      + (nq.rvol30 != null && nq.rvol30 >= 150 ? " ; forte accélération sur la dernière demi-heure." : nq.rvol30 != null && nq.rvol30 < 60 ? " ; ralentissement sur la dernière demi-heure." : ".")); }
+    if (nq.deltaPct != null) pt(cls(nq.delta) || "g", `<b>Flux</b> : delta ${sgn(nq.delta, 0)} contrats depuis 18 h (${sgn(nq.deltaPct, 1)} % du volume) : ${Math.abs(nq.deltaPct) < 2 ? "acheteurs et vendeurs au marché s'équilibrent." : nq.delta > 0 ? "les acheteurs au marché dominent." : "les vendeurs au marché dominent."}`);
+    if (nq.plagePct != null) { tension += nq.plagePct > 130 ? 1 : 0; pt(nq.plagePct > 130 ? "b" : nq.plagePct > 100 ? "a" : "g", `<b>Amplitude</b> : la journée a déjà parcouru ${fr(nq.plage, 0)} pts, ${fr(nq.plagePct, 0)} % de la plage moyenne.`); }
+  } else pt("g", "<b>NQ</b> : pas encore de transaction reçue aujourd'hui.");
+  const vix = ETAT.cot["^VIX"], v3 = ETAT.cot["^VIX3M"], vxn = ETAT.cot["^VXN"];
+  if (vix && vix.dernier != null) { const niv = vix.dernier; tension += niv >= 25 ? 2 : niv >= 20 ? 1 : 0; const inv = v3 && v3.dernier != null && niv >= v3.dernier; tension += inv ? 1 : 0;
+    pt(niv >= 25 || inv ? "b" : niv >= 20 ? "a" : "h", `<b>Volatilité</b> : VIX ${fr(niv, 1)} (${sgn(cotVar(vix), 1)} %) — ` + (niv >= 30 ? "stress élevé" : niv >= 25 ? "marché tendu" : niv >= 20 ? "nervosité" : niv >= 15 ? "niveau normal" : "marché très calme")
+      + (v3 && v3.dernier != null ? `, courbe ${inv ? "inversée (VIX ≥ VIX 3 mois) : la peur est concentrée sur le court terme" : "normale"}` : "") + (vxn && nq && nq.rv30 ? `. Le NQ bouge en ce moment à ${fr(nq.rv30, 0)} % annualisés pour ${fr(vxn.dernier, 0)} % attendus (VXN).` : ".")); }
+  const tnx = ETAT.cot["^TNX"], dxy = ETAT.cot["DX-Y.NYB"];
+  if (tnx && tnx.dernier != null && tnx.veille) { const bp = (tnx.dernier - tnx.veille) * 100; if (Math.abs(bp) >= 3) score += bp > 0 ? -.5 : .5;
+    pt(Math.abs(bp) >= 5 ? (bp > 0 ? "b" : "h") : "g", `<b>Taux</b> : 10 ans US à ${fr(tnx.dernier, 2)} % (${sgn(bp, 1)} pb)` + (Math.abs(bp) >= 5 ? (bp > 0 ? " : la hausse des taux pèse en général sur la tech." : " : la baisse des taux soutient en général la tech.") : ", sans effet marqué.")
+      + (dxy && dxy.dernier != null ? ` Dollar ${sgn(cotVar(dxy))} %.` : "")); }
+  const mg = MEGA.map(s => ETAT.cot[s]).filter(c => c && c.dernier != null);
+  if (mg.length) { const up = mg.filter(c => cotVar(c) > 0).length, tri = mg.slice().sort((a, b) => Math.abs(cotVar(b)) - Math.abs(cotVar(a)))[0];
+    pt(up >= mg.length * .75 ? "h" : up <= mg.length * .25 ? "b" : "a", `<b>Mégacaps</b> : ${up} sur ${mg.length} en hausse ; le plus gros mouvement : ${esc(tri.symbole)} ${sgn(cotVar(tri))} %` + (up >= mg.length * .75 ? " — les poids lourds portent l'indice." : up <= mg.length * .25 ? " — les poids lourds pèsent sur l'indice." : " — les poids lourds sont partagés.")); }
+  const e = prochaine();
+  if (e) { const k = minutesAvant(e.d); if (k <= 90) tension += 1;
+    pt(k <= 30 ? "b" : k <= 90 ? "a" : "g", k > 0 ? `<b>Annonce</b> : ${esc(e.titre)} dans ${dureeFr(k)}` + (k <= 90 ? " — la volatilité monte souvent juste avant et juste après : prudence avec les positions ouvertes." : ".")
+      : `<b>Annonce</b> : ${esc(e.titre)} en cours de publication.`); }
+  const passe = evenements().filter(x => x.pays === "USD" && x.impact === "High" && maintenant() - x.d > 0 && maintenant() - x.d < 20 * 60000).pop();
+  if (passe) { tension += 1; pt("b", `<b>Annonce publiée</b> il y a ${dureeFr(-minutesAvant(passe.d))} : ${esc(passe.titre)}${passe.prevision ? ` (prévision ${esc(passe.prevision)}, précédent ${esc(passe.precedent || "—")})` : ""} — le marché digère le chiffre.`); }
+  const imp = ETAT.nouv.filter(x => x.score >= 3 && maintenant() - x.d < 3600000);
+  if (imp.length) { const cpt = {}; imp.forEach(x => x.tags.forEach(t => cpt[t] = (cpt[t] || 0) + 1)); const top = Object.entries(cpt).filter(([t]) => t !== "Urgent").sort((a, b) => b[1] - a[1]).slice(0, 2).map(([t]) => t);
+    pt("b", `<b>Nouvelles</b> : ${imp.length} importante${imp.length > 1 ? "s" : ""} dans l'heure (${top.join(", ")}). Dernière : « ${esc(imp[0].titre.slice(0, 140))} ».`); }
+  else if (ETAT.nouv.length) pt("g", "<b>Nouvelles</b> : rien d'important dans la dernière heure.");
+  const vv = ETAT.vixVeille;
+  if (vv && vv.vix != null) pt(vv.inverse ? "b" : "h", `<b>Bot 3 en 1</b> : zone ${vv.inverse ? "coupée aujourd'hui par le filtre VIX" : "autorisée aujourd'hui (filtre VIX)"}` + (e && mur(e.d, "America/New_York").iso === mur(maintenant(), "America/New_York").iso && /fomc/i.test(e.titre) ? " ; jour de la Fed : pas de zone." : "."));
+  // en bref
+  const dir = score >= 1.5 ? "HAUSSIER" : score <= -1.5 ? "BAISSIER" : "SANS DIRECTION NETTE", ten = tension >= 3 ? "tendu" : tension >= 1 ? "à surveiller" : "calme";
+  $("bref").innerHTML = nq ? `<span class="${score >= 1.5 ? "h" : score <= -1.5 ? "b" : "a"}">${dir}</span> · <span class="${tension >= 3 ? "b" : tension >= 1 ? "a" : "h"}">contexte ${ten}</span>` : "En attente des données du NQ…";
+  $("lecture").innerHTML = L.join("");
+  const ny = mur(maintenant(), "America/New_York"); $("lec-heure").textContent = `mise à jour ${hhmm(ny.h, ny.mi)} NY`;
+}
+
+// ======================================================================== boucle
+let dernierRendu = 0, dernierGr = 0;
+function rendre(force) {
+  rendreTete();
+  const t = performance.now();
+  if (force || t - dernierRendu > 2000) { dernierRendu = t; rendreMarches(); rendreMega(); rendreVola(); rendreCalendrier(); rendreGros(); rendreAgents(); rendreLecture(); }
+  if (force || t - dernierGr > 1000) { dernierGr = t; dessinerPrix(); dessinerVolume(); }
+}
+let versionNvRendue = -2;
+async function boucle() {
+  try { await chargerBarres(); } catch (e) {}
+  for (;;) {
+    try { await interroger(); $("coupure").hidden = true; }
+    catch (e) { ETAT.ok = false; $("coupure").hidden = false; }
+    if (ETAT.v.n !== versionNvRendue || (performance.now() % 30000) < 1100) { versionNvRendue = ETAT.v.n; rendreNouvelles(); }
+    rendre(false);
+    await pause(ETAT.ok ? 1000 : 3000);
+  }
+}
+addEventListener("resize", () => { dessinerPrix(); dessinerVolume(); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden) chargerBarres().then(() => rendre(true)).catch(() => {}); });
+setInterval(rendreTete, 1000);
+boucle();
+</script>
+</body>
+</html>

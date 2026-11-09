@@ -92,3 +92,93 @@ dotnet run -c Release --project Relais.TestQuantower -- <dossier vide> <minutes.
 ```
 
 puis ouvrir http://localhost:8765 pendant qu'il tourne. La page est produite par `terminal/assembler_direct.py`.
+
+## Terminal live (9 novembre 2026) : http://localhost:8765/live
+
+Le même relais sert une deuxième page, faite pour **comprendre ce qui se passe** pendant la séance, comme un terminal
+Bloomberg : les marchés, la volatilité, le volume, les nouvelles et le calendrier sur un seul écran, et une lecture en
+français qui relie ces chiffres. Elle se met à jour chaque seconde. Aucun ordre n'est passé.
+
+```
+Rithmic ──► Quantower ──► Relais NQ ──► http://localhost:8765/live
+                             │  NQ, ES et jusqu'à 6 autres contrats, transaction par transaction, de 18 h à 17 h (New York)
+                             │  nouvelles (flux RSS), calendrier économique, VIX et cotations (Yahoo, CBOE)
+                             └─ journaux des agents, position et solde du compte
+```
+
+**Ce que montre la page.**
+- **Lecture du marché** : une phrase par sujet, avec un point vert, ambre ou rouge.
+  - où en est la séance ; le NQ face à la veille et à son VWAP ;
+  - le mouvement des 30 dernières minutes ; la confirmation par l'ES, le Russell et le Dow ;
+  - l'activité (volume face à la normale), le flux (achats contre ventes au marché), l'amplitude du jour ;
+  - le VIX et sa courbe, les taux à 10 ans et le dollar, les mégacaps ;
+  - la prochaine annonce, les nouvelles importantes de l'heure, et le filtre VIX du Bot 3 en 1 pour aujourd'hui.
+
+  C'est une lecture des chiffres affichés, pas un conseil : elle ne prédit rien.
+- **Marchés** : chaque contrat de Rithmic, avec sa variation depuis la clôture de la veille, son volume face à la
+  normale à la même heure, son delta et sa courbe du jour. Puis le Nasdaq 100 et le S&P 500 au comptant, le taux à 10 ans,
+  le dollar et le Bitcoin (Yahoo).
+- **Mégacaps** : NVDA, MSFT, AAPL, AMZN, GOOGL, META, AVGO, TSLA, en couleur selon leur variation.
+- **Graphique du NQ** :
+  - séance US ou depuis 18 h, en 1 ou 5 minutes ;
+  - VWAP, clôture de la veille, ES en surimpression si on le demande ;
+  - traits pour les annonces du calendrier, losanges rouges pour les nouvelles importantes ;
+  - le détail de chaque bougie au survol.
+- **Volume et flux** :
+  - volume du jour et des 30 dernières minutes face à la normale ;
+  - delta depuis 18 h et depuis 9 h 30 ;
+  - volume de chaque minute sur 2 heures face au volume habituel, avec le delta cumulé.
+- **Gros ordres** : chaque transaction NQ ou ES d'un seul coup au-dessus du seuil réglé (20 NQ, 100 ES par défaut).
+- **Volatilité** :
+  - VIX, VXN (le VIX du Nasdaq), VIX 9 jours, VIX 3 mois et VVIX ;
+  - l'état du filtre VIX du Bot 3 en 1 pour aujourd'hui, d'après les clôtures du CBOE, et ce qu'il deviendrait demain si
+    la courbe reste comme elle est à la clôture ;
+  - la volatilité réalisée du NQ (30 minutes, 2 heures) face au VXN, l'ATR de 5 minutes, la plage du jour face à la
+    moyenne.
+- **Calendrier économique** :
+  - les annonces américaines fortes et moyennes, et les fortes des autres pays ;
+  - heure de Paris et de New York, prévision, précédent, compte à rebours ;
+  - la prochaine annonce forte est aussi en haut de la page.
+- **Nouvelles** :
+  - environ 12 flux gratuits : investingLive (ex-ForexLive, les titres macro les plus rapides), CNBC, MarketWatch, la
+    Fed, Yahoo Finance, Seeking Alpha, Investing.com, Nasdaq et Google Actualités en anglais et en français ;
+  - étiquettes en français (Fed, Inflation, Emploi, Géopolitique, Mégacaps, IA, Taux, Pétrole, Résultats, Urgent) ;
+  - les importantes en rouge, filtres et recherche ;
+  - « nouveau » pendant 5 minutes, et un son si tu coches « son des alertes ».
+- **Agents et compte** : position MNQ, latent, solde et les dernières lignes des journaux des bots.
+
+**Réglages en plus dans Relais NQ** (tout est facultatif, les valeurs par défaut marchent) :
+
+| Réglage | Quoi mettre |
+|---|---|
+| ES | **ESZ6** (recommandé : la confirmation et le graphique s'en servent) |
+| Marchés 3 à 8 | par exemple **YMZ6**, **RTYZ6**, **CLZ6**, **GCZ6**, **6EZ6**. Vide = pas de ligne. **ZN** n'est pas dans les produits permis par Bulenox : il est peut-être absent de ton abonnement de données |
+| Gros ordre NQ / ES | 20 et 100 contrats |
+| Nouvelles, calendrier, cotations, clôtures du VIX | ne pas toucher (adresses des sources gratuites) |
+
+**Les limites, à connaître.**
+- Les contrats de Rithmic sont en temps réel. Les cotations de Yahoo (VIX, taux, dollar, actions) sont relues chaque
+  minute et peuvent avoir quelques minutes de retard. Si Yahoo ne répond plus, le VIX vient du CBOE (cotation différée).
+- Les nouvelles sont relues chaque minute : un titre apparaît en général une à deux minutes après sa publication. Ce
+  sont des sources gratuites, sans garantie ; la page dit lesquelles répondent.
+- Le calendrier vient d'un fichier gratuit de la semaine en cours (relu toutes les 30 minutes) ; le résultat publié
+  (« réel ») n'y figure pas toujours.
+- La « normale » du volume et de la plage vient des 20 dernières séances que Quantower donne au relais. Sans cet
+  historique, le NQ et l'ES utilisent l'historique de la station (séance 9 h 30 - 16 h seulement) ; les autres
+  contrats affichent « — ».
+- Bulenox interdit les VPN et les VPS : le relais et la page tournent sur ton PC, comme les bots.
+
+**Testé** dans l'imitation de Quantower (`Relais.TestQuantower`), avec la séance du 2 novembre rejouée transaction par
+transaction pour le NQ. Le test utilise :
+- l'ES, le Dow et le Russell tirés du NQ, le pétrole et l'or au hasard (dans le test seulement) ;
+- des flux RSS et Atom d'essai, dont une nouvelle qui arrive pendant la séance, et une source en panne ;
+- un calendrier d'essai, des cotations d'essai et les vraies clôtures du VIX d'octobre.
+
+Tout s'affiche sans erreur, y compris sur téléphone. Les formats des vraies sources ont été vérifiés depuis GitHub
+Actions (`terminal/live/sonder_sources.py`).
+
+```
+PORT=8788 ESSAIS=$PWD/Relais.TestQuantower/essais LIVE_PAGE=$PWD/Relais.Quantower/live.html \
+  dotnet run -c Release --project Relais.TestQuantower -- <dossier vide> <minutes.csv> Relais.Quantower/station-direct.html 2026-11-02 100 90
+```
+puis ouvrir http://localhost:8788/live pendant qu'il tourne.

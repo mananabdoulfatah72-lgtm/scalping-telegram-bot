@@ -187,8 +187,11 @@ New-Item -ItemType Directory -Force -Path "C:\W1NQ" | Out-Null
 New-Item -ItemType Directory -Force -Path "C:\StationNQ" | Out-Null
 $page = "$PSScriptRoot\Relais.Quantower\station-direct.html"
 if (Test-Path $page) { Copy-Item $page "C:\StationNQ\station-direct.html" -Force; Write-Host "Page de la station copiee dans C:\StationNQ" -ForegroundColor Green }
+$pageLive = "$PSScriptRoot\Relais.Quantower\live.html"
+if (Test-Path $pageLive) { Copy-Item $pageLive "C:\StationNQ\live.html" -Force; Write-Host "Page du terminal live copiee dans C:\StationNQ" -ForegroundColor Green }
 Write-Host "Redemarre la plateforme, puis : menu Strategies > Strategies manager > Bot 3 en 1, Supertrend NQ, XGBoost NQ, W1 NQ, Relais NQ, Export transactions NQ ou FluxNQ (voir le guide). UN SEUL bot par compte."
 Write-Host "Station en direct : lance la strategie Relais NQ, puis ouvre http://localhost:8765 dans Chrome ou Edge."
+Write-Host "Terminal live (marches, volatilite, volume, nouvelles, calendrier) : meme relais, http://localhost:8765/live"
 Write-Host "INSTALLATION TERMINEE" -ForegroundColor Green
 }
 catch {

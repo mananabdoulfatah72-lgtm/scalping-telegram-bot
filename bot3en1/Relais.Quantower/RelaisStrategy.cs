@@ -18,8 +18,8 @@ namespace RelaisNQ
     /// <summary>Relais du direct pour la station NQ : ne passe aucun ordre. Lit les transactions du NQ (et de l'ES) recues de
     /// Rithmic, en fait des barres d'une minute (seance 9 h 30 - 16 h, New York), lit la position MNQ et le solde du compte, suit
     /// les journaux des agents, et sert le tout sur ce PC seulement (http://localhost:PORT) : la page de la station, l'historique
-    /// des dernieres seances et un flux continu (Server-Sent Events).</summary>
-    public class RelaisStrategy : Strategy
+    /// des dernieres seances et un flux continu (Server-Sent Events). Terminal live (RelaisLive.cs) : http://localhost:PORT/live.</summary>
+    public partial class RelaisStrategy : Strategy
     {
         [InputParameter("NQ (prix), contrat du moment, ex. NQZ6", 10)] public Symbol SymboleNQ;
         [InputParameter("ES (facultatif), ex. ESZ6", 20)] public Symbol SymboleES;
@@ -86,6 +86,7 @@ namespace RelaisNQ
                 ecoute.Start();
                 _ = Task.Run(() => Accepter(arret.Token));
                 horloge = new Timer(_ => Envoyer(), null, 250, 250);
+                DemarrerLive();
                 Log($"relais demarre (version du {Version}) : ouvre http://localhost:{Port} dans Chrome ou Edge. {nq.Jours.Count} seances NQ"
                     + $"{(SymboleES != null ? $", {es.Jours.Count} seances ES" : "")} en memoire. Aucun ordre n'est passe.", StrategyLoggingLevel.Info);
             }
@@ -103,6 +104,7 @@ namespace RelaisNQ
             lock (clients) { foreach (var c in clients) try { c.Dispose(); } catch { } clients.Clear(); }
             if (SymboleNQ != null) SymboleNQ.NewLast -= SurNQ;
             if (SymboleES != null) SymboleES.NewLast -= SurES;
+            ArreterLive();
             Log("relais arrete", StrategyLoggingLevel.Info);
         }
 
@@ -371,6 +373,7 @@ namespace RelaisNQ
                 }
                 byte[] corps; string type; int code = 200;
                 if (chemin == "/historique") { corps = Encoding.UTF8.GetBytes(HistoriqueJson()); type = "application/json; charset=utf-8"; }
+                else if (chemin.StartsWith("/live")) { (corps, type, code) = ServirLive(chemin, morceaux.Length > 1 ? morceaux[1] : ""); }
                 else if (chemin == "/" || chemin == "/index.html")
                 {
                     var page = Path.Combine(Dossier, "station-direct.html");
