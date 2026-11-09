@@ -248,8 +248,11 @@ function stats(m) {
   const dernier = m.dernier || B[dernierI][3], ref = m.cloturePrec ?? o;
   const iNow = m.i >= 0 ? m.i : dernierI;
   let attendu = null, attendu30 = null, vol30 = 0;
-  if (m.volMoyen) { attendu = 0; for (let i = 0; i <= Math.min(iNow, G - 1); i++) attendu += m.volMoyen[i] || 0;
-    attendu30 = 0; for (let i = Math.max(0, iNow - 29); i <= iNow; i++) { attendu30 += m.volMoyen[i] || 0; vol30 += B[i] ? B[i][4] : 0; } }
+  // volume relatif : seulement sur les minutes dont on connait le volume habituel (sans historique de nuit, la nuit ne compte pas)
+  let volComp = 0;
+  if (m.volMoyen) { attendu = 0; for (let i = 0; i <= Math.min(iNow, G - 1); i++) if (m.volMoyen[i] > 0) { attendu += m.volMoyen[i]; volComp += B[i] ? B[i][4] : 0; }
+    attendu30 = 0; for (let i = Math.max(0, iNow - 29); i <= iNow; i++) if (m.volMoyen[i] > 0) { attendu30 += m.volMoyen[i]; vol30 += B[i] ? B[i][4] : 0; }
+    if (!attendu) attendu = null; if (!attendu30) attendu30 = null; }
   // volatilite realisee : rendements d'une minute des 30 dernieres minutes, annualisee sur la base d'une seance US (390 minutes)
   const rv = (k) => { const r = []; for (let i = Math.max(1, iNow - k + 1); i <= iNow; i++) if (B[i] && B[i - 1]) r.push(Math.log(B[i][3] / B[i - 1][3]));
     if (r.length < 10) return null; const mu = r.reduce((a, b) => a + b, 0) / r.length; const s = Math.sqrt(r.reduce((a, b) => a + (b - mu) ** 2, 0) / (r.length - 1)); return s * Math.sqrt(390 * 252) * 100; };
@@ -258,7 +261,7 @@ function stats(m) {
   let atr = null; if (b5.length > 15) { const tr = b5.slice(1).map((x, k) => Math.max(x[1] - x[2], Math.abs(x[1] - b5[k][3]), Math.abs(x[2] - b5[k][3]))); atr = tr.slice(-14).reduce((a, b) => a + b, 0) / 14; }
   const ouvUS = B[US0] ? B[US0][0] : null, varUS = ouvUS && iNow >= US0 ? (dernier / ouvUS - 1) * 100 : null;
   return { dernier, ref, varP: dernier - ref, varUS, var: (dernier / ref - 1) * 100, o, h, l, vol, ach, ven, delta: ach - ven, deltaPct: ach + ven ? (ach - ven) / (ach + ven) * 100 : null,
-    vwap: vv ? pv / vv : null, vwapUS: vvU ? pvU / vvU : null, rvol: attendu ? vol / attendu * 100 : null, rvol30: attendu30 ? vol30 / attendu30 * 100 : null,
+    vwap: vv ? pv / vv : null, vwapUS: vvU ? pvU / vvU : null, rvol: attendu ? volComp / attendu * 100 : null, rvol30: attendu30 ? vol30 / attendu30 * 100 : null,
     rv30: rv(30), rv120: rv(120), atr, plage: h - l, plagePct: m.plageMoyenne ? (h - l) / m.plageMoyenne * 100 : null, iNow, refEstVeille: m.cloturePrec != null };
 }
 function serieMarche(m, k = 120) { const r = []; if (!m || !m.B) return r; for (let i = 0; i < G; i++) if (m.B[i]) r.push(m.B[i][3]); return r.length > k ? r.filter((_, j) => j % Math.ceil(r.length / k) === 0) : r; }
@@ -617,7 +620,11 @@ function rendreLecture() {
     pt("b", `<b>Nouvelles</b> : ${imp.length} importante${imp.length > 1 ? "s" : ""} dans l'heure (${top.join(", ")}). Dernière : « ${esc(imp[0].titre.slice(0, 140))} ».`); }
   else if (ETAT.nouv.length) pt("g", "<b>Nouvelles</b> : rien d'important dans la dernière heure.");
   const vv = ETAT.vixVeille;
-  if (vv && vv.vix != null) pt(vv.inverse ? "b" : "h", `<b>Bot 3 en 1</b> : zone ${vv.inverse ? "coupée aujourd'hui par le filtre VIX" : "autorisée aujourd'hui (filtre VIX)"}` + (e && mur(e.d, "America/New_York").iso === mur(maintenant(), "America/New_York").iso && /fomc/i.test(e.titre) ? " ; jour de la Fed : pas de zone." : "."));
+  // jour de decision de la Fed (calendrier du jour : communique, taux ou conference de presse ; pas les discours ni les minutes)
+  const aujNy = mur(maintenant(), "America/New_York").iso;
+  const fedJour = evenements().some(x => x.pays === "USD" && /fomc statement|federal funds rate|fomc press conference/i.test(x.titre) && mur(x.d, "America/New_York").iso === aujNy);
+  if (fedJour) pt("b", `<b>Bot 3 en 1</b> : pas de zone aujourd'hui, c'est un jour de décision de la Fed` + (vv && vv.vix != null ? ` (filtre VIX : ${vv.inverse ? "coupée aussi" : "elle aurait été autorisée"}).` : "."));
+  else if (vv && vv.vix != null) pt(vv.inverse ? "b" : "h", `<b>Bot 3 en 1</b> : zone ${vv.inverse ? "coupée aujourd'hui par le filtre VIX" : "autorisée aujourd'hui (filtre VIX)"}.`);
   // en bref
   const dir = score >= 1.5 ? "HAUSSIER" : score <= -1.5 ? "BAISSIER" : "SANS DIRECTION NETTE", ten = tension >= 3 ? "tendu" : tension >= 1 ? "à surveiller" : "calme";
   $("bref").innerHTML = nq ? `<span class="${score >= 1.5 ? "h" : score <= -1.5 ? "b" : "a"}">${dir}</span> · <span class="${tension >= 3 ? "b" : tension >= 1 ? "a" : "h"}">contexte ${ten}</span>` : "En attente des données du NQ…";

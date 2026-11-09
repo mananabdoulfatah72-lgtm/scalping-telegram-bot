@@ -168,6 +168,10 @@ Rithmic ──► Quantower ──► Relais NQ ──► http://localhost:8765/
   contrats affichent « — ».
 - Bulenox interdit les VPN et les VPS : le relais et la page tournent sur ton PC, comme les bots.
 
+**Démo pour s'entraîner** (sans Quantower) : `terminal/live/demo.py` produit la même page, avec un lecteur qui rejoue la
+vraie séance du 28 octobre 2026 (jour de la Fed) et un guide pas à pas. Elle est publiée sur claude.ai (page privée « NQ Live
+Démo »).
+
 **Testé** dans l'imitation de Quantower (`Relais.TestQuantower`), avec la séance du 2 novembre rejouée transaction par
 transaction pour le NQ. Le test utilise :
 - l'ES, le Dow et le Russell tirés du NQ, le pétrole et l'or au hasard (dans le test seulement) ;

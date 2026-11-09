@@ -1,0 +1,14 @@
+/* demo : barre de lecture et guide */
+.demo-barre { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; padding: 5px 8px; border: 1px solid var(--ambre-pale); background: #140d02; }
+.demo-barre button { background: var(--panneau2); border: 1px solid var(--trait); color: var(--ambre); padding: 1px 8px; cursor: pointer; font-family: var(--cond); font-weight: 600; font-size: 12px; }
+.demo-barre button[aria-pressed="true"] { background: var(--ambre); color: var(--noir); border-color: var(--ambre); }
+.demo-barre .dm-k { color: var(--gris); font-family: var(--cond); font-size: 11px; letter-spacing: .08em; margin-left: 6px; }
+.demo-barre .dm-heure { margin-left: auto; color: var(--blanc); font-variant-numeric: tabular-nums; }
+.demo-puce { border-color: var(--ambre-pale); }
+.demo-guide { border-color: var(--ambre-pale); }
+.dg-intro { margin: 0; font-family: var(--cond); font-size: 14px; color: var(--blanc); }
+.dg-maintenant { border-left: 2px solid var(--ambre); padding: 4px 0 4px 10px; display: grid; gap: 4px; }
+.dg-maintenant b { color: var(--ambre); font-family: var(--cond); font-size: 15px; }
+.dg-maintenant ul, .demo-guide ol { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-family: var(--cond); font-size: 14px; line-height: 1.35; }
+.demo-guide summary { cursor: pointer; color: var(--ambre); font-family: var(--cond); font-weight: 600; }
+.demo-guide details[open] summary { margin-bottom: 6px; }
