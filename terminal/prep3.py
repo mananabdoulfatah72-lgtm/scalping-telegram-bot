@@ -25,6 +25,7 @@ ARENE5 = Path(sys.argv[4]) if len(sys.argv) > 4 else None          # dossier de 
 ARENE6 = Path(sys.argv[5]) if len(sys.argv) > 5 else None          # apres la vague 6 (M1 - M3, L1 - L4)
 ARENE7 = Path(sys.argv[6]) if len(sys.argv) > 6 else None          # apres la vague 7 (S1 - S3)
 ARENE8 = Path(sys.argv[7]) if len(sys.argv) > 7 else None          # apres la vague 8 (R1 - R3, F1 - F4)
+ARENE9 = Path(sys.argv[8]) if len(sys.argv) > 8 else None          # apres la vague 9 (K1, K2, N1, N2)
 RES = R / "ml/arene/resultats"
 E1 = json.load(open(RES / "etape1.json")); E2 = json.load(open(RES / "etape2.json")); E3 = json.load(open(RES / "etape3.json"))["resultats"]
 relief = json.load(open(ARENE / "relief.json"))
@@ -228,6 +229,34 @@ for k, r in V8["tests"].items():
     ajout(k, r["nom"], "Vague 8 · journées sans Z12, filtres de journée", "presque" if k == "F1" else ("retenu" if r["retenu"] else "tué"), raison, r, "2014 - 2026")
     if rel8.get(k): courbes_extra[k] = rel8[k]
 COUL.update({"R1": "#b5e48c", "R2": "#99d98c", "R3": "#76c893", "F1": "#48cae4", "F2": "#0096c7", "F3": "#0077b6", "F4": "#023e8a"})
+V9 = json.load(open(RES / "vague9.json")); rel9 = json.load(open(ARENE9 / "relief.json"))["courbes"] if ARENE9 else {}
+I9 = json.load(open(RES / "vague9_info.json"))
+z9 = V9["reference"]
+ajout("Z12F", "Z12F · Z12 sans les jours de la Fed (référence de la vague 9)", "Vague 9 · règle d'inactivité, la nuit", "référence",
+      f"{z9['series5']} séries de 5 séances ou plus sans trade sur 2017 - 2026 ({z9['series5_an']:.1f} par an, la plus longue {z9['plus_longue']}) : "
+      "chez Bulenox, chacune suspend le compte et confisque le solde", z9, "2017 - 2026", series5=int(z9["series5"]), series5_an=float(z9["series5_an"]), plus_longue=int(z9["plus_longue"]))
+if rel9.get("Z12F"): courbes_extra["Z12F"] = rel9["Z12F"]
+for k, r in V9["tests"].items():
+    raison = "; ".join(r["raisons"])
+    verdict = "retenu" if r["retenu"] else "tué"
+    ent = lambda x: f"{x:,.0f}".replace(",", " ").replace("-", "−")
+    pc = lambda x: f"{x:.0%}".replace("%", " %")
+    if k == "K1":
+        c3 = I9["K1 compteur calendrier, apres 3"]
+        raison = (f"aucune série de 5 séances sans trade ; {r['jours_forces']} jours de secours en 10 ans ({r['jours_forces_w1']} avec W1), {ent(r['par_jour_force'])} $ "
+                  f"de plus par jour de secours ; comptes neufs grillés dans l'année {pc(r['grille_250'])} contre {pc(z9['grille_250'])} pour Z12F. Dans le vrai bot : compter "
+                  f"les jours comme Bulenox (demi-journées comprises) et déclencher après 3 jours sans trade, sinon 4 séries de 5 jours restent (information calculée après "
+                  f"coup, à confirmer : après 3 jours, aucune série, {pc(c3['grille_250'])} de comptes grillés, net {ent(c3['net_an'])} $ par an)")
+    if k in ("N1", "N2"):
+        verdict = "indicatif" if r["retenu"] else "tué"
+        raison = (f"la dérive de nuit existe sur le NQ (t {r['t']:.2f}, {r['annees_pos']} années positives sur 16, {ent(r['par_an'])} $ par an en 1 MNQ), mais la pire nuit "
+                  f"fait {ent(r['pire_nuit'])} $ et {r['nuits_sous_1100']} nuits passent sous −1 100 $ : sans stop, une seule nuit peut griller un compte de 50 000 $. "
+                  "Piste à tester avec un stop (vague à part)")
+    ajout(k, r["nom"], "Vague 9 · règle d'inactivité, la nuit", verdict, raison, r, "2011 - 2026" if k[0] == "N" else "2017 - 2026",
+          **({"pire_nuit": float(r["pire_nuit"]), "nuits_sous_1100": int(r["nuits_sous_1100"])} if k[0] == "N" else
+             {"series5": int(r["series5"]), "plus_longue": int(r["plus_longue"])}))
+    if rel9.get(k): courbes_extra[k] = rel9[k]
+COUL.update({"Z12F": "#5ad1c8", "K1": "#f9c74f", "K2": "#3cc8ff", "N1": "#b48cff", "N2": "#ff7ab6"})
 COUL.update({"M1": "#ffd166", "M2": "#ffa028", "M3": "#90e0ef", "L1": "#ffffff", "L2": "#e0e0e0", "L3": "#e9c46a", "L4": "#d4a373",
              "S1": "#ffffff", "S2": "#f9c74f", "S3": "#90e0ef"})
 COUL.update({"V1": "#ffd166", "V2": "#f4a261", "V3": "#e76f51", "V4": "#b5e48c", "V5": "#90e0ef", "V6": "#48cae4", "V7": "#00b4d8"})

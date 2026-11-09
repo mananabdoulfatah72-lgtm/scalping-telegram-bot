@@ -36,3 +36,22 @@ Retenu (comme piste, avant tout compte financé) si : t d'au moins 2 sur 2011 - 
 sur N1 et N2 ; positif sur 2011 - 2022 et sur 2023 - 2026 (après la publication de 2023) ; t d'au moins 1,5 avec 6 $ de
 frais ; au moins 11 années positives sur 16. On rapporte la pire nuit en $ pour 1 MNQ : sans le chemin minute par minute de
 la nuit avant 2024, le passage au compte financé (avec un stop) sera une vague à part.
+
+## Après le calcul (9 novembre 2026, `vague9.py`, `resultats/vague9.txt`)
+
+Verdict des règles ci-dessus : **K1 retenu**, K2 tué, **N1 et N2 passent leurs règles** (piste seulement).
+
+- Z12F : 94 séries de 5 séances ou plus sans trade sur 2017 - 2026 (9,7 par an, la plus longue 48 séances).
+- K1 : aucune série ; 157 jours de secours (117 avec W1, 40 avec le Supertrend), +69 $ de plus par jour de secours ; survie 98 %,
+  15 % de comptes neufs grillés dans l'année (Z12F : 4 %), 0,08 master grillé par an, net 3 285 $ par an (Z12F : 3 030 $).
+- K2 : 28 % de comptes neufs grillés dans l'année, 0,21 master grillé par an, net 2 041 $ : tué.
+- N1 : t 3,08 (2011 - 2022 : 2,46 ; depuis 2023 : 1,92), t 2,63 à 6 $ de frais, 13 années positives sur 16, 5 190 $ par an en
+  1 MNQ ; **pire nuit −3 658 $, 46 nuits sous −1 100 $, 5 sous −2 500 $, pire baisse −15 065 $** : sans stop, une nuit peut griller
+  le compte. N2 : t 2,14, 12 années sur 16. La journée 9 h 30 → 16 h sur les mêmes séances : t 0,88.
+
+**Information écrite après coup** (`vague9_info.py`, pas une règle fixée d'avance) : le rejeu compte les séances complètes ;
+si l'on compte aussi les demi-journées et jours fériés courts du fichier comme des jours sans trade (ce que Bulenox pourrait
+faire), K1 garde 4 séries de 5 jours (la plus longue 6). Déclenché après 3 jours sans trade, aucune série ne reste (et le compte
+fait mieux : 0 % de comptes grillés dans l'année, 5 943 $ par an, mais ces chiffres de compte bougent beaucoup pour un petit
+changement de règle : à confirmer sur les séances neuves). Pour le vrai bot : compter les jours comme Bulenox et déclencher
+après 3 jours sans trade, pour la marge.

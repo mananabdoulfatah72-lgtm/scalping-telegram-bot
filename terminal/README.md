@@ -27,4 +27,7 @@ La même station, branchée sur le marché par Quantower : guide dans `bot3en1/S
 - `prep3.py` : classement des bots, des variantes (étape 2) et des quatre pistes (étape 3) de `ml/arene/resultats`, courbes,
   résultats par séance pour rejouer le compte financé dans la page (contrôle : la page retrouve les chiffres du Python,
   3 011 $ par an pour le Bot 3 en 1, 3 200 $ pour B3, 3 842 $ pour la piste A), et le diagnostic des premières années.
+- `prep3.py <arène> [arène après les vagues 3, 4, 5, 6, 7, 8, 9]` : les dossiers de l'arène gardés après chaque vague
+  donnent les courbes ; sans eux, les lignes s'affichent sans courbe. La vague 9 (règle d'inactivité de Bulenox, nuit) lit
+  aussi `ml/arene/resultats/vague9_info.json` (information calculée après coup, pas une règle).
 - `assembler.py <dossier des json> <sortie.html>` : remplace `__DONNEES__`, `__DONNEES2__` et `__DONNEES3__`.
