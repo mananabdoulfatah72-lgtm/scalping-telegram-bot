@@ -70,3 +70,25 @@ On compte aussi les épisodes distincts (dates) des pertes : peu d'épisodes = �
    augmenter de plus de 2 points les pertes avant le 3e retrait.
 4. Si aucun T n'est conforme : le bot seul ne tient pas la règle d'inactivité. On le dit, et la suite dépend de la réponse
    écrite de Bulenox (seconde stratégie, W1).
+
+## Après le calcul (9 novembre 2026, `vague10.py`, `resultats/vague10.txt`)
+
+**Aucun réglage du bot seul ne tient la règle d'inactivité.**
+
+- **T0 (le bot tel qu'il est réglé) et T1** : 101 séries de 5 jours de trading sans trade en 10 ans (environ une toutes
+  les 5 semaines, la plus longue de 48 jours). 99 % des Masters sont perdus par l'inactivité avant le 3e retrait. Aucun
+  n'est perdu par le plancher : le bot ne perd presque jamais le compte en tradant, il le perd en ne tradant pas.
+- **T2 et T3 (secours du même bot, sans filtres, après 3 jours sans trade)** : 56 séries restent, la plus longue de 9
+  jours. La zone elle-même reste souvent silencieuse : 99 % des Masters sont perdus par l'inactivité.
+- **Pour information**, la limite de 400 $ et l'absence de frein ne changent rien à ce verdict.
+- **Pour information, K1c (W1 en secours après 3 jours sans trade, limite 1 000 $)** :
+  - aucune série de 5 jours ;
+  - 70 % des Masters atteignent le 3e retrait et 10 % sont perdus avant, par le plancher (2 jours de perte distincts
+    seulement : chiffre fragile) ; 20 % sont encore en cours à la fin des données ;
+  - 1er retrait en 160 séances, 3e en 454 (médianes) ; tu touches en moyenne 2 949 $ par Master (90 %, activation
+    déduite) ;
+  - dans le funded (plancher de 2 000 $, hypothèses), 40 % sont perdus dans l'année, pour 1 258 $ touchés dans l'année.
+
+  K1c dépend de la réponse écrite de Bulenox (section 20, et « activité artificielle »).
+
+Règle 4 appliquée : le bot seul ne peut pas tenir le contrat. La suite dépend de Bulenox.
