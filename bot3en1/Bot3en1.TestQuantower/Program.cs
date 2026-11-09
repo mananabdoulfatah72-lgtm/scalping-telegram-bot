@@ -19,6 +19,7 @@ using TradingPlatform.BusinessLayer;
 // VOLMULT=1 : multiple du volume (2 sans la variable). SANS_TARDIVE=1 : pas d'entree tardive. FENETRE=5 : fenetre de confirmation (0 sans la variable). Q1=1, Q2=1 : filtres de la partie Q. SANS_SORTIE=1 : pas de sortie aux controles. STOP=70 : stop a 70 points au-dela du niveau casse. Avec un stop, l'horloge passe aussi par le plus haut et le plus bas de chaque minute
 // (tic au milieu de la minute), comme le bot en direct qui verifie le stop toutes les 0,5 s. COURIR=1 : une entree par seance,
 // sortie au niveau casse.
+// VIX=vix.csv VIX3M=vix3m.csv : clotures pour le filtre VIX (SANS_VIX=1 : filtre decoche).
 // SANS_NQ=1 : aucune transaction NQ pendant la seance (16 octobre 2026) : le bot doit donner l'alerte et ne rien trader.
 // LANCEMENT=09:10 : heure de lancement le premier jour (New York), horloge avancee minute par minute jusqu'a 9 h 29.
 // SOLDE_MANUEL=51000 : solde des reglages, repris si le solde est illisible (SOLDE absent). TELEGRAM_JETON, TELEGRAM_CHAT : envoi
@@ -69,7 +70,11 @@ class Program
             ObjectifChallenge = double.Parse(Environment.GetEnvironmentVariable("OBJECTIF") ?? "0", inv),
             DateFinChallenge = Environment.GetEnvironmentVariable("DATE_FIN") ?? "",
             TailleFin = int.Parse(Environment.GetEnvironmentVariable("TAILLE_FIN") ?? "0", inv),
-            SeancesFin = int.Parse(Environment.GetEnvironmentVariable("SEANCES_FIN") ?? "5", inv)
+            SeancesFin = int.Parse(Environment.GetEnvironmentVariable("SEANCES_FIN") ?? "5", inv),
+            // filtre VIX : VIX=fichier.csv VIX3M=fichier.csv (sinon adresses absentes : clotures illisibles, la zone trade normalement)
+            FiltreVIX = Environment.GetEnvironmentVariable("SANS_VIX") != "1",
+            AdresseVIX = Environment.GetEnvironmentVariable("VIX") ?? "http://127.0.0.1:9/absent",
+            AdresseVIX3M = Environment.GetEnvironmentVariable("VIX3M") ?? "http://127.0.0.1:9/absent"
         };
         if (Environment.GetEnvironmentVariable("DEFAUTS") != "1")   // DEFAUTS=1 : reglages de zone par defaut du bot (zone d'origine)
         {

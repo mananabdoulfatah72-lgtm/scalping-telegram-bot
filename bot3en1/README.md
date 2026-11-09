@@ -43,6 +43,15 @@ Taille : 1 MNQ par source. La position nette sur MNQ est la somme des deux (zone
    publiée en ligne, elle s'installe avec Quantower), et le comportement réel des ordres chez Rithmic. D'où le test
    obligatoire sur un compte de simulation (voir le guide).
 
+**Filtre VIX (9 novembre 2026, coché par défaut).** Le bot ne trade pas la zone le jour où, la veille, le VIX a clôturé
+au-dessus ou au niveau du VIX à 3 mois (marché sous tension, environ 7 % des séances). C'est Z12 de l'arène
+(`ml/arene/VAGUE8.md`, `labo_zipline/VAGUE2.md`) : sur 2014 - 2026, deux fois moins de comptes financés neufs grillés dans
+l'année que la zone seule, pour le même argent ; avec la règle « pas de zone les jours de la Fed » (mode à plat), 7 % de
+comptes neufs grillés dans l'année au lieu de 16 %. Le bot lit les clôtures publiques de CBOE au démarrage et les relit entre
+9 h 15 et 9 h 29 (New York) ; il en garde une copie dans `C:\Bot3en1` (vix.csv, vix3m.csv) si CBOE ne répond pas ; si rien
+n'est lisible, la zone trade normalement et le journal le dit. Décoché = zone d'origine. Testé dans l'imitation de Quantower
+(13 octobre - 2 novembre 2026) : la zone du jour « inversé » n'est pas prise, les autres jours sont identiques.
+
 Relancer les vérifications (avec le kit .NET 8) :
 
 ```

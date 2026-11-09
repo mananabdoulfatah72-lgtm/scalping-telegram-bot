@@ -78,6 +78,12 @@ namespace Bot3en1
         public int SeancesFin = 5;
         [InputParameter("Telegram : jeton du bot (facultatif)", 75)] public string JetonTelegram = "";
         [InputParameter("Telegram : numero de conversation (facultatif)", 80)] public string ChatTelegram = "";
+        [InputParameter("Filtre VIX (arene, Z12) : pas de zone le jour ou le VIX a cloture au-dessus ou au niveau du VIX a 3 mois la veille (marche sous tension ; coche par defaut depuis le 9 novembre 2026 ; decoche = zone d'origine)", 45)]
+        public bool FiltreVIX = true;
+        [InputParameter("Filtre VIX : adresse des clotures du VIX (CBOE)", 92)]
+        public string AdresseVIX = "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv";
+        [InputParameter("Filtre VIX : adresse des clotures du VIX a 3 mois (CBOE)", 93)]
+        public string AdresseVIX3M = "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX3M_History.csv";
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
@@ -567,7 +573,9 @@ namespace Bot3en1
             derniereMinute = Calendrier.JourCourt(jour) ? (Calendrier.Ferie(jour) ? 209 : 224) : Moteur.N - 1;
             if (Calendrier.JourFerme(jour)) { seanceFinie = true; return; }
             for (int i = 0; i < Moteur.N; i++) barres[i] = new Barre();
-            bot.ZoneAutorisee = true;                    // coupee seulement pour la seance d'un rattrapage impossible
+            bot.ZoneAutorisee = true;                    // coupee pour la seance d'un rattrapage impossible, ou par le filtre VIX
+            vixCoupe = false; vixVerifieMatin = false;
+            if (FiltreVIX) AppliquerFiltreVIX(false);
             if (ModeAPlat)
             {
                 string js = jour.ToString("yyyy-MM-dd");
@@ -677,6 +685,77 @@ namespace Bot3en1
             else if (cote == AggressorFlag.Sell) b.Ventes += taille;
         }
 
+        // ------------------------------------------------------------------ filtre VIX (ml/arene : vagues 2 et 8, Z12)
+        bool vixCoupe, vixVerifieMatin;
+        string erreurVix = "";
+
+        /// <summary>Clotures journalieres d'un indice CBOE (CSV DATE, ..., CLOSE ; dates MM/JJ/AAAA ou AAAA-MM-JJ). Copie locale dans le
+        /// dossier du bot, utilisee si le telechargement echoue. Une adresse sans http est lue comme un fichier (tests).</summary>
+        SortedDictionary<DateTime, double> LireClotures(string adresse, string fichier)
+        {
+            string local = Path.Combine(Dossier, fichier), texte = null;
+            try
+            {
+                texte = adresse.StartsWith("http", StringComparison.OrdinalIgnoreCase) ? http.GetStringAsync(adresse).GetAwaiter().GetResult() : File.ReadAllText(adresse);
+                File.WriteAllText(local, texte);
+            }
+            catch (Exception e)
+            {
+                erreurVix = e.Message;
+                if (File.Exists(local)) texte = File.ReadAllText(local);
+            }
+            if (texte == null) return null;
+            var lignes = texte.Replace("\r", "").Split('\n');
+            var tete = lignes[0].ToUpperInvariant().Split(',').Select(x => x.Trim().Trim('"')).ToList();
+            int iD = tete.FindIndex(x => x.Contains("DATE")), iC = tete.FindIndex(x => x == "CLOSE" || x.EndsWith(" CLOSE") || x == "VIX" || x == "VIX3M");
+            if (iD < 0 || iC < 0) { erreurVix = "colonnes DATE / CLOSE introuvables"; return null; }
+            var r = new SortedDictionary<DateTime, double>();
+            foreach (var l in lignes.Skip(1))
+            {
+                var c = l.Split(',');
+                if (c.Length <= Math.Max(iD, iC)) continue;
+                if (DateTime.TryParseExact(c[iD].Trim().Trim('"'), new[] { "MM/dd/yyyy", "M/d/yyyy", "yyyy-MM-dd" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out var d)
+                    && double.TryParse(c[iC].Trim().Trim('"'), NumberStyles.Float, CultureInfo.InvariantCulture, out var v) && v > 0)
+                    r[d.Date] = v;
+            }
+            return r.Count > 0 ? r : null;
+        }
+
+        /// <summary>Z12 : si le VIX a cloture au-dessus ou au niveau du VIX a 3 mois a la derniere seance avant aujourd'hui, pas de
+        /// zone aujourd'hui. Clotures illisibles : la zone trade normalement (et le journal le dit).</summary>
+        void AppliquerFiltreVIX(bool relecture)
+        {
+            var vix = LireClotures(AdresseVIX, "vix.csv");
+            var v3 = LireClotures(AdresseVIX3M, "vix3m.csv");
+            DateTime? d = null;
+            if (vix != null && v3 != null)
+            {
+                var communs = vix.Keys.Where(x => x < jour && v3.ContainsKey(x)).ToList();
+                if (communs.Count > 0) d = communs.Max();
+            }
+            if (d == null)
+            {
+                if (!relecture) Dire($"ATTENTION : filtre VIX : clotures du VIX illisibles ({erreurVix}) : la zone trade normalement aujourd'hui", true);
+                return;
+            }
+            double a = vix[d.Value], b = v3[d.Value];
+            bool inverse = a >= b, enRetard = Calendrier.SeanceSuivante(d.Value) < jour;
+            if (inverse && !vixCoupe)
+            {
+                vixCoupe = true; bot.ZoneAutorisee = false;
+                Dire($"filtre VIX : le VIX a cloture a {a:F2}, au-dessus ou au niveau du VIX a 3 mois ({b:F2}), le {d.Value:yyyy-MM-dd} : marche sous tension, pas de zone aujourd'hui");
+            }
+            else if (!inverse && vixCoupe)
+            {
+                vixCoupe = false; bot.ZoneAutorisee = true;
+                Dire($"filtre VIX : cloture plus recente (VIX {a:F2} sous le VIX a 3 mois {b:F2}, le {d.Value:yyyy-MM-dd}) : la zone trade aujourd'hui");
+            }
+            else if (!relecture && !inverse)
+                Dire($"filtre VIX : VIX {a:F2} sous le VIX a 3 mois {b:F2} le {d.Value:yyyy-MM-dd} : la zone trade normalement");
+            if (enRetard && !relecture)
+                Dire($"ATTENTION : filtre VIX : la derniere cloture connue date du {d.Value:yyyy-MM-dd} (CBOE en retard ?) : elle est utilisee", true);
+        }
+
         void Tic()
         {
             try
@@ -689,6 +768,12 @@ namespace Bot3en1
                         jour = maintenant.Date;
                         VerifierEcheance();
                         DemarrerSeance(maintenant);
+                    }
+                    // filtre VIX : relu une fois entre 9 h 15 et 9 h 29 (New York), au cas ou CBOE publiait la cloture de la veille apres le demarrage
+                    if (FiltreVIX && !vixVerifieMatin && !seanceFinie && maintenant.TimeOfDay >= new TimeSpan(9, 15, 0) && maintenant.TimeOfDay < new TimeSpan(9, 30, 0))
+                    {
+                        vixVerifieMatin = true;
+                        AppliquerFiltreVIX(true);
                     }
                     PasserJournee(maintenant);
                     if (premierPrixANoter) { premierPrixANoter = false; Dire($"flux NQ recu ({dernierPrix:F2}) : le bot voit le marche"); }
