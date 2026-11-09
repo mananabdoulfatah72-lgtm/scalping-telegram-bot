@@ -24,6 +24,7 @@ ARENE4 = Path(sys.argv[3]) if len(sys.argv) > 3 else None          # dossier de 
 ARENE5 = Path(sys.argv[4]) if len(sys.argv) > 4 else None          # dossier de l'arene apres la vague 5 (courbes P1 - P3)
 ARENE6 = Path(sys.argv[5]) if len(sys.argv) > 5 else None          # apres la vague 6 (M1 - M3, L1 - L4)
 ARENE7 = Path(sys.argv[6]) if len(sys.argv) > 6 else None          # apres la vague 7 (S1 - S3)
+ARENE8 = Path(sys.argv[7]) if len(sys.argv) > 7 else None          # apres la vague 8 (R1 - R3, F1 - F4)
 RES = R / "ml/arene/resultats"
 E1 = json.load(open(RES / "etape1.json")); E2 = json.load(open(RES / "etape2.json")); E3 = json.load(open(RES / "etape3.json"))["resultats"]
 relief = json.load(open(ARENE / "relief.json"))
@@ -218,6 +219,15 @@ V7 = json.load(open(RES / "vague7.json")); rel7 = json.load(open(ARENE7 / "relie
 for k, r in V7["tests"].items():
     ajout(k, r["nom"], "Vague 7 · le modèle règle la taille de Z12", "retenu" if r["retenu"] else "tué", "; ".join(r["raisons"]), r, "2017 - 2026")
     if rel7.get(k): courbes_extra[k] = rel7[k]
+V8 = json.load(open(RES / "vague8.json")); rel8 = json.load(open(ARENE8 / "relief.json"))["courbes"] if ARENE8 else {}
+for k, r in V8["tests"].items():
+    raison = "; ".join(r["raisons"])
+    if k == "F1":
+        raison = ("deux fois moins de comptes neufs grillés dans l'année que Z12 (7 % contre 16 %), 0,02 master grillé par an, t 4,56 ; "
+                  "écarté de peu parce qu'il rapporte 6 % de moins (3 088 $ contre 3 279 $). C'est déjà la règle de ton vrai bot (pas de zone les jours de la Fed)")
+    ajout(k, r["nom"], "Vague 8 · journées sans Z12, filtres de journée", "presque" if k == "F1" else ("retenu" if r["retenu"] else "tué"), raison, r, "2014 - 2026")
+    if rel8.get(k): courbes_extra[k] = rel8[k]
+COUL.update({"R1": "#b5e48c", "R2": "#99d98c", "R3": "#76c893", "F1": "#48cae4", "F2": "#0096c7", "F3": "#0077b6", "F4": "#023e8a"})
 COUL.update({"M1": "#ffd166", "M2": "#ffa028", "M3": "#90e0ef", "L1": "#ffffff", "L2": "#e0e0e0", "L3": "#e9c46a", "L4": "#d4a373",
              "S1": "#ffffff", "S2": "#f9c74f", "S3": "#90e0ef"})
 COUL.update({"V1": "#ffd166", "V2": "#f4a261", "V3": "#e76f51", "V4": "#b5e48c", "V5": "#90e0ef", "V6": "#48cae4", "V7": "#00b4d8"})
