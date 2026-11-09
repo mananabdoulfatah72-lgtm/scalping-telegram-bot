@@ -1,0 +1,24 @@
+name: Sources gratuites du terminal live (sonde)
+
+on:
+  push:
+    branches: [claude/optimistic-ptolemy-xs24ra]
+    paths:
+      - terminal/live/sonder_sources.py
+      - terminal/live/sources.txt
+      - .github/workflows/sources-live.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sonder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Sonder les sources (statut, format, apercu)
+        run: python3 terminal/live/sonder_sources.py terminal/live/sources.txt
