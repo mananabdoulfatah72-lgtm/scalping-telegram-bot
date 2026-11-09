@@ -242,11 +242,15 @@ for k, r in V9["tests"].items():
     ent = lambda x: f"{x:,.0f}".replace(",", " ").replace("-", "−")
     pc = lambda x: f"{x:.0%}".replace("%", " %")
     if k == "K1":
+        verdict = "indicatif"
         c3 = I9["K1 compteur calendrier, apres 3"]
         raison = (f"aucune série de 5 séances sans trade ; {r['jours_forces']} jours de secours en 10 ans ({r['jours_forces_w1']} avec W1), {ent(r['par_jour_force'])} $ "
                   f"de plus par jour de secours ; comptes neufs grillés dans l'année {pc(r['grille_250'])} contre {pc(z9['grille_250'])} pour Z12F. Dans le vrai bot : compter "
                   f"les jours comme Bulenox (demi-journées comprises) et déclencher après 3 jours sans trade, sinon 4 séries de 5 jours restent (information calculée après "
-                  f"coup, à confirmer : après 3 jours, aucune série, {pc(c3['grille_250'])} de comptes grillés, net {ent(c3['net_an'])} $ par an)")
+                  f"coup, à confirmer : après 3 jours, aucune série, {pc(c3['grille_250'])} de comptes grillés, net {ent(c3['net_an'])} $ par an). "
+                  "RELECTURE : retenu par la règle de la vague, mais pas prêt pour le vrai compte : avec la limite du jour de 1 000 $ réglée dans le vrai bot, "
+                  "27 % de comptes neufs grillés dans l'année ; trades déclenchés par le compteur d'inactivité (risque « activité artificielle » du contrat) ; "
+                  "W1 est un modèle d'apprentissage (section 20 : accord écrit de Bulenox)")
     if k in ("N1", "N2"):
         verdict = "indicatif" if r["retenu"] else "tué"
         raison = (f"la dérive de nuit existe sur le NQ (t {r['t']:.2f}, {r['annees_pos']} années positives sur 16, {ent(r['par_an'])} $ par an en 1 MNQ), mais la pire nuit "

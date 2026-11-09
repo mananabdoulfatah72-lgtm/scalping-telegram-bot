@@ -55,3 +55,23 @@ faire), K1 garde 4 séries de 5 jours (la plus longue 6). Déclenché après 3 j
 fait mieux : 0 % de comptes grillés dans l'année, 5 943 $ par an, mais ces chiffres de compte bougent beaucoup pour un petit
 changement de règle : à confirmer sur les séances neuves). Pour le vrai bot : compter les jours comme Bulenox et déclencher
 après 3 jours sans trade, pour la marge.
+
+## Relecture (#ultrareview, 9 novembre 2026) : K1 n'est pas prêt pour le vrai compte
+
+Deux relecteurs indépendants (contrat contre résumé ; contrat contre simulateur et vrai bot). Chiffres revérifiés :
+
+- **Le vrai bot n'est pas le bot simulé.** Le README règle la limite de perte du jour à 1 000 $ sur le Master ; l'arène
+  simule 400 $. À 1 000 $, K1 grille **27 %** des comptes neufs dans l'année (règle : 20 % au plus), 0,14 master par an ;
+  Z12F reste à 4 %. L'arène simule aussi la zone sans le filtre delta, sans le frein et sans plafond, que le README coche
+  (et se contredit sur le filtre delta et le plafond).
+- **Compteur du calendrier** (demi-journées comptées, `vague9_info.py`) : K1 après 4 jours garde 4 séries de 5 jours et
+  0,21 master grillé par an (règle : 0,15) : il échoue aussi ainsi.
+- **Peu d'épisodes** : les comptes grillés de K1 viennent de 3 épisodes (janvier 2022, décembre 2023, mars 2026), ceux de
+  Z12F d'un seul. Les écarts de comptes grillés entre variantes (après 3 ou 4 jours) ne sont pas départageables.
+- **Le contrat** : le Master s'arrête au 3e retrait (passage en funded, plancher initial de 2 000 $, ou fermeture) ; la
+  part de 90 % n'était pas appliquée ; un trade déclenché par le compteur d'inactivité risque d'être vu comme « activité
+  artificielle destinée uniquement à prévenir l'inactivité » (Annexe A) ; W1 est un modèle d'apprentissage (section 20,
+  accord écrit). Sur un Master seul jusqu'au 3e retrait (limite 400 $) : K1 grillé avant le 3e retrait 17 %, Z12F 4 %.
+
+Conclusion : K1 reste une piste ; ne pas le mettre en réel sans accord écrit de Bulenox et sans re-simuler le bot tel
+qu'il est réglé.
