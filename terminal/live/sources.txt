@@ -1,23 +1,4 @@
 # genre url (sondees par .github/workflows/sources-live.yml)
-rss https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114
-rss https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=20910258
-rss https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=15839069
-rss https://feeds.content.dowjones.io/public/rss/mw_topstories
-rss https://feeds.content.dowjones.io/public/rss/mw_realtimeheadlines
-rss https://feeds.content.dowjones.io/public/rss/mw_marketpulse
-rss https://feeds.finance.yahoo.com/rss/2.0/headline?s=%5ENDX&region=US&lang=en-US
-rss https://finance.yahoo.com/news/rssindex
-rss https://www.federalreserve.gov/feeds/press_all.xml
-rss https://www.federalreserve.gov/feeds/speeches.xml
-rss https://news.google.com/rss/search?q=Nasdaq+OR+%22Wall+Street%22+when:1d&hl=en-US&gl=US&ceid=US:en
-rss https://news.google.com/rss/search?q=Wall+Street+OR+Nasdaq+OR+Fed+when:1d&hl=fr&gl=FR&ceid=FR:fr
-rss https://www.investing.com/rss/news_25.rss
-rss https://www.bls.gov/feed/bls_latest.rss
-rss https://www.forexlive.com/feed/news
-rss https://investinglive.com/feed/
-rss https://www.fxstreet.com/rss/news
-rss https://seekingalpha.com/market_currents.xml
-rss https://www.nasdaq.com/feed/rssoutbound?category=Markets
 json https://nfs.faireconomy.media/ff_calendar_thisweek.json
 json https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX?interval=1m&range=1d
 json https://query2.finance.yahoo.com/v8/finance/chart/%5EVIX3M?interval=5m&range=1d
@@ -25,4 +6,4 @@ json https://query1.finance.yahoo.com/v7/finance/spark?symbols=%5EVIX,%5EVIX3M,%
 json https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5EVIX,NVDA
 json https://cdn.cboe.com/api/global/delayed_quotes/quotes/_VIX.json
 json https://cdn.cboe.com/api/global/delayed_quotes/quotes/_VIX3M.json
-csv https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv
+json https://query1.finance.yahoo.com/v7/finance/spark?symbols=ES%3DF,NQ%3DF,%5EVXN,CL%3DF&range=1d&interval=1m

@@ -43,11 +43,11 @@ for genre, url in SOURCES:
                 print(f"      liste de {len(d)} ; premier : {json.dumps(d[0])[:400]}")
             else:
                 def forme(x, p=0):
-                    if p > 3: return "…"
-                    if isinstance(x, dict): return {k: forme(v, p + 1) for k, v in list(x.items())[:14]}
+                    if p > 7: return "…"
+                    if isinstance(x, dict): return {k: forme(v, p + 1) for k, v in list(x.items())[:40]}
                     if isinstance(x, list): return [forme(x[0], p + 1), f"x{len(x)}"] if x else []
-                    return type(x).__name__ if not isinstance(x, (int, float, str)) or p < 3 else x if not isinstance(x, str) else x[:30]
-                print("      ", json.dumps(forme(d))[:900])
+                    return x[:40] if isinstance(x, str) else x
+                print("      ", json.dumps(forme(d))[:2500])
         else:
             print("      ", b[:300].decode("utf-8", "replace").replace("\n", " | "))
     except Exception as e:
