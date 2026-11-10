@@ -19,7 +19,7 @@ Voyant VERT (fourchette normale) : +934 $ pour 1 MNQ apres 31 seance(s) ; le bac
 ## Trades du 2026-11-09
 
 - achat 10h00 a 27,742.75 -> sortie 16h00 a 28,004.75
-- RSI(2) : vente 15h50 a 28,083.25 (+1,916 $ ce jour pour 1 MNQ)
+- RSI(2) : vente 15h50 a 28,083.75 (+1,916 $ ce jour pour 1 MNQ)
 
 ## Pour la seance du 2026-11-10 (a utiliser en direct)
 
@@ -28,13 +28,13 @@ Cloture de la veille (16 h New York) : **28,004.75**. Apres l'ouverture de 9 h 3
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
 | 10h00 | 16h00 | 0.537% | 1.00537 | 0.99463 |
-| 10h30 | 16h30 | 0.706% | 1.00706 | 0.99294 |
+| 10h30 | 16h30 | 0.705% | 1.00705 | 0.99295 |
 | 11h00 | 17h00 | 0.878% | 1.00878 | 0.99122 |
 | 11h30 | 17h30 | 0.779% | 1.00779 | 0.99221 |
 | 12h00 | 18h00 | 0.899% | 1.00899 | 0.99101 |
 | 12h30 | 18h30 | 0.947% | 1.00947 | 0.99053 |
-| 13h00 | 19h00 | 1.047% | 1.01047 | 0.98953 |
-| 13h30 | 19h30 | 1.045% | 1.01045 | 0.98955 |
+| 13h00 | 19h00 | 1.046% | 1.01046 | 0.98954 |
+| 13h30 | 19h30 | 1.044% | 1.01044 | 0.98956 |
 | 14h00 | 20h00 | 1.095% | 1.01095 | 0.98905 |
 | 14h30 | 20h30 | 1.126% | 1.01126 | 0.98874 |
 | 15h00 | 21h00 | 1.074% | 1.01074 | 0.98926 |
@@ -46,7 +46,7 @@ Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la 
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : pas de position. Pas d'achat possible le 2026-11-10 (il faudrait un prix au-dessus de 28,147.84, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 23,231.07).
+RSI(2) : pas de position. Pas d'achat possible le 2026-11-10 (il faudrait un prix au-dessus de 28,147.83, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 23,233.70).
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
