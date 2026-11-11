@@ -232,5 +232,42 @@ def principal():
     print("\n".join(lignes))
 
 
+def secours(B, jouable, seuil=3):
+    """Nuits de secours : la nuit qui precede la seance i est prise si le compte vient de passer `seuil` jours de trading
+    sans trade (jours du fichier compris). Calcul global sur les seances, comme le secours T2 de la vague 10."""
+    js = {t[0] for t in B.zf}; prise = np.zeros(len(B.J), bool); vide = 0
+    for i, s in enumerate(B.test):
+        if i > 0:
+            vide += B.gap[i]
+        n = vide >= seuil and jouable[s]
+        prise[s] = n
+        vide = 0 if (n or s in js) else vide + 1
+    return prise
+
+
+def vague2():
+    B = Banc("2026-10-02"); X = Nn.construire(); jouable = np.isfinite(X["entree"]); res = {}
+    lignes = ["Partie N, vague 2 : la nuit de secours (2017 → 2 octobre 2026, un Master neuf toutes les 20 séances).", ""]
+    for ident, nom, stop, mode in (("NS75", "NS75 · le bot + la nuit de secours (stop 0,75 %) après 3 jours sans trade", 0.0075, "secours"),
+                                   ("NS50", "NS50 · le bot + la nuit de secours (stop 0,50 %) après 3 jours sans trade", 0.005, "secours"),
+                                   ("N50", "N50 · le bot + la nuit chaque soir (stop 0,50 %)", 0.005, "toutes")):
+        g, creux, _ = Nn.gains(X, stop)
+        garde = secours(B, jouable) if mode == "secours" else jouable
+        gn = np.where(garde, g, 0.0); cn = np.where(garde, creux, 0.0)
+        m = B.mesurer(B.zf, gn=gn, cn=cn, tn=garde); ms = B.mesurer(B.zf, gn=gn, cn=cn, tn=garde, inactivite=False)
+        nn = garde[B.test][B.d17:]; gg = gn[B.test][B.d17:]
+        ok = m["inactivite"] == 0 and m["plancher"] <= 0.20 and m["touche_master"] > 0
+        res[ident] = dict(nom=nom, **m, sans_regle=ms, nuits=int(nn.sum()), gain_nuits=float(gg.sum()), adoptee=bool(ok))
+        trous = [d for d in m["dates_pertes"] if "2023-02-01" <= d <= "2023-07-31"]
+        lignes += [resume(nom, m), f"    nuits prises depuis 2017 : {int(nn.sum())} ({nn.mean():.0%} des séances), gain total des nuits {gg.sum():,.0f} $ ; "
+                   f"sans la règle d'inactivité : {ms['trois']:.0%} au 3e retrait, {ms['plancher']:.0%} perdus par le plancher, touché {ms['touche_master']:,.0f} $".replace(",", " "),
+                   f"    → {'ADOPTÉE' if ok else 'non adoptée'} (inactivité {m['inactivite']:.0%}, dont dates de perte dans les trous de 2023 : {len(trous)} ; "
+                   f"perdus avant le 3e retrait {m['plancher'] + m['inactivite']:.0%} ; {m['episodes']} dates de perte distinctes)", ""]
+    (D.ICI / "resultats/compte2.txt").write_text("\n".join(lignes) + "\n")
+    json.dump(res, open(D.ICI / "resultats/compte2.json", "w"), indent=1, ensure_ascii=False)
+    print("\n".join(lignes))
+
+
 if __name__ == "__main__":
-    principal()
+    import sys
+    vague2() if len(sys.argv) > 1 and sys.argv[1] == "2" else principal()

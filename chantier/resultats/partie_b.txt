@@ -1,0 +1,10 @@
+Partie B : volatilité implicite (VXN) contre volatilité réalisée du NQ.
+
+B0 (descriptif, 3927 séances depuis 2011-01-04) : le VXN dépasse la volatilité réalisée des 21 séances suivantes de 2.8 points en moyenne, 77% du temps.
+   Vente chaque soir d'un straddle à un jour au prix du VXN  pour la valeur d'un MNQ : +93.8 $ par jour  t 12.34  69% de jours gagnants  pire jour -5 670 $  pire baisse 29 741 $ ; 31% des comptes neufs toucheraient −2 500 $ en 60 séances.
+   Ce n'est pas jouable chez Bulenox (ni options ni futures VIX), et le prix d'un vrai straddle à un jour n'est pas le VXN : chiffre indicatif.
+
+B1 : la nuit seulement quand VXN ÷ réalisée dépasse sa médiane (F3) : sans stop t 2.89 (exploration 2.33, contrôle 1.73), 24.9 $ par nuit ; toutes les nuits : t 3.50, 23.9 $ par nuit. Le filtre ne retient pas de meilleures nuits : il en retient moins.
+
+B2a toutes les séances : 791 trades  -20.2 $ par trade  t -1.26 (exploration -0.97  contrôle -0.91)  total -15 956 $ → tuée
+B2b seulement si la peur est chère : 381 trades  -29.7 $ par trade  t -1.44 (exploration -0.81  contrôle -1.53)  total -11 307 $ → tuée
