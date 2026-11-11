@@ -106,6 +106,28 @@ avant le 3e retrait ; touché moyen positif) :
   l'inactivité ». Une nuit de secours est une vraie stratégie (elle a passé ses conditions seule), mais elle est
   déclenchée par le compteur : comme K1, elle dépend de la réponse écrite de Bulenox.
 
+## Partie I : tenir la règle d'inactivité avec la zone elle-même (règles écrites le 11 novembre 2026, après les parties A à F et N, avant tout calcul de cette partie)
+
+Ce que les parties précédentes ont montré : le bot seul ne perd aucun Master par le plancher, il les perd par
+l'inactivité (5 jours de trading sans trade). Une nuit en secours ne suffit pas et coûte des comptes. Ici, le secours
+est la stratégie du bot elle-même, rendue plus sensible : pas de modèle d'apprentissage (section 20 du contrat non
+concernée), pas de seconde stratégie.
+
+- **Zone brute** : la zone corrigée V1 (`zone_failles/journal.py`, `zone_optimisation/moteur.py`) recodée ici avec
+  ses trades : bande = k × mouvement moyen des 14 séances complètes d'avant, contrôles toutes les 30 minutes, sortie
+  au retour sous la limite ou la VWAP, à plat à 16 h, pas de trade le jour d'un changement de contrat. Aucun filtre
+  (ni C2, ni Q1, ni VIX, ni Fed). **Contrôle** : à k = 1, elle doit redonner les trades de `filtre_h1/trades_zone.csv`.
+- **Jour de secours** : une séance qui commence après 3 jours de trading de suite sans trade (jours du fichier
+  compris). Ce jour-là, le bot joue la zone brute à la bande k à la place de ses réglages habituels, 1 MNQ.
+- **Candidats** : IB100 (k = 1), IB75 (k = 0,75), IB50 (k = 0,5).
+- Pour chaque k, l'avantage de la zone brute est donné (t sur toute la période, exploration, contrôle) : une bande plus
+  étroite trade plus souvent mais gagne moins (`zone_optimisation` : t 0,58 à k = 0,75 sur son contrôle).
+- **Adoptée** : même règle que la partie N (aucun Master perdu par inactivité ; au plus 20 % perdus avant le 3e
+  retrait ; touché moyen positif), sur 2017 → 2 novembre 2026. Si plusieurs passent : celle qui perd le moins de
+  Masters, puis la bande la plus large.
+- Même réserve : un trade déclenché par le compteur peut être vu par Bulenox comme une activité artificielle. La
+  réponse écrite de Bulenox passe avant ce calcul.
+
 ## Partie A : les régimes
 
 **Détecteur** (état de la séance, connu la veille à 16 h 15) :
