@@ -1,0 +1,34 @@
+Partie I : tenir la règle d'inactivité avec la zone elle-même (Master Bulenox 50K, 2017 → 2 novembre 2026).
+
+Contrôle du moteur (k = 1, jusqu'au 2026-03-31) : 3465 trades de référence, 3465 ici, 3465 identiques (jour, minute, sens), écart maximal de gain sur ces trades 1.50 point.
+
+T0 · le bot seul (Z12F  limite 1 000 $  frein)
+    0% des Masters atteignent le 3e retrait ; 0% perdus par le plancher  99% par l'inactivité (85 dates de perte distinctes) ; 1% en cours à la fin
+    1er retrait en — séances  3e en — (médianes) ; touché par Master : -148 $ ; funded : — perdus dans l'année  — $ touchés
+    séries de 5 jours sans trade : 101 (la plus longue 48) ; 15.7 $ par séance  t 4.12  36% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    sans la règle d'inactivité : 64% au 3e retrait  0% perdus par le plancher  touché 2 654 $
+
+Zone brute à k = 1.0 : 3592 trades, 59% des séances, +15.6 $ par séance, t 3.63 (exploration 3.28, contrôle 1.55).
+IB100 · le bot + la zone brute à k = 1.0 les jours de secours (624 jours depuis 2014  dont 352 avec un trade)
+    0% des Masters atteignent le 3e retrait ; 0% perdus par le plancher  99% par l'inactivité (51 dates de perte distinctes) ; 1% en cours à la fin
+    1er retrait en 40 séances  3e en — (médianes) ; touché par Master : -99 $ ; funded : — perdus dans l'année  — $ touchés
+    séries de 5 jours sans trade : 56 (la plus longue 9) ; 19.0 $ par séance  t 4.55  40% de séances tradées ; pire jour -1 010 $  3 jours à −1 000 $ ou pire
+    sans la règle d'inactivité : 65% au 3e retrait  0% perdus par le plancher  touché 2 691 $
+    → non adoptée (51 dates de perte distinctes)
+
+Zone brute à k = 0.75 : 4652 trades, 70% des séances, +12.3 $ par séance, t 2.48 (exploration 2.66, contrôle 0.26).
+IB75 · le bot + la zone brute à k = 0.75 les jours de secours (524 jours depuis 2014  dont 366 avec un trade)
+    0% des Masters atteignent le 3e retrait ; 0% perdus par le plancher  99% par l'inactivité (31 dates de perte distinctes) ; 1% en cours à la fin
+    1er retrait en 69 séances  3e en — (médianes) ; touché par Master : -44 $ ; funded : — perdus dans l'année  — $ touchés
+    séries de 5 jours sans trade : 31 (la plus longue 8) ; 18.1 $ par séance  t 4.09  42% de séances tradées ; pire jour -1 012 $  5 jours à −1 000 $ ou pire
+    sans la règle d'inactivité : 64% au 3e retrait  11% perdus par le plancher  touché 2 589 $
+    → non adoptée (31 dates de perte distinctes)
+
+Zone brute à k = 0.5 : 6105 trades, 82% des séances, +8.4 $ par séance, t 1.50 (exploration 2.12, contrôle -0.79).
+IB50 · le bot + la zone brute à k = 0.5 les jours de secours (456 jours depuis 2014  dont 375 avec un trade)
+    11% des Masters atteignent le 3e retrait ; 11% perdus par le plancher  69% par l'inactivité (12 dates de perte distinctes) ; 9% en cours à la fin
+    1er retrait en 142 séances  3e en 467 (médianes) ; touché par Master : 636 $ ; funded : 100% perdus dans l'année  0 $ touchés
+    séries de 5 jours sans trade : 8 (la plus longue 6) ; 17.9 $ par séance  t 3.95  43% de séances tradées ; pire jour -1 012 $  6 jours à −1 000 $ ou pire
+    sans la règle d'inactivité : 65% au 3e retrait  17% perdus par le plancher  touché 2 595 $
+    → non adoptée (12 dates de perte distinctes)
+

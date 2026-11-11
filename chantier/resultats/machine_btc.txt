@@ -1,0 +1,27 @@
+Partie C : la machine auto-évolutive sur bitcoin, 5 minutes, 24 h.
+Histoire de la machine : 2019-01-01 → 2022-12-31 (entraînement jusqu'au 2021-10-22, test ensuite). Contrôle jamais vu : 2023-01-01 → 2026-10-19.
+96 stratégies par génération, 40 générations, 6 graines par sorte de marché.
+
+vrai         graine 1 : 3213 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+vrai         graine 2 : 3024 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+vrai         graine 3 : 3370 stratégies essayées, élite   1 (élan 0, retour 0, cassure 0, grille 1) | au contrôle : 100% en gain, 0% à t ≥ 1,65  comptes Bulenox perdus en 60 séances 0% | champion : +15 758 $  t +1.39  100% de gagnants  pire jour 0 $  comptes perdus 0%
+vrai         graine 4 : 2998 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+vrai         graine 5 : 3192 stratégies essayées, élite   4 (élan 0, retour 0, cassure 0, grille 4) | au contrôle : 25% en gain, 0% à t ≥ 1,65  comptes Bulenox perdus en 60 séances 5% | champion : +54 015 $  t +0.65  81% de gagnants  pire jour -36 817 $  comptes perdus 20%
+vrai         graine 6 : 3104 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+permutation  graine 1 : 3117 stratégies essayées, élite  12 (élan 0, retour 12, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65  comptes Bulenox perdus en 60 séances 78% | champion : -234 360 $  t -4.84  95% de gagnants  pire jour -18 725 $  comptes perdus 77%
+permutation  graine 2 : 3090 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+permutation  graine 3 : 3126 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+permutation  graine 4 : 3128 stratégies essayées, élite   1 (élan 0, retour 1, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65  comptes Bulenox perdus en 60 séances 83% | champion : -113 194 $  t -6.51  42% de gagnants  pire jour -5 488 $  comptes perdus 83%
+permutation  graine 5 : 3136 stratégies essayées, élite  15 (élan 0, retour 15, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65  comptes Bulenox perdus en 60 séances 71% | champion : -43 204 $  t -2.93  51% de gagnants  pire jour -3 932 $  comptes perdus 73%
+permutation  graine 6 : 3104 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+signe        graine 1 : 3046 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+signe        graine 2 : 3009 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+signe        graine 3 : 3208 stratégies essayées, élite   1 (élan 0, retour 0, cassure 0, grille 1) | au contrôle : 100% en gain, 100% à t ≥ 1,65  comptes Bulenox perdus en 60 séances 0% | champion : +16 254 $  t +1.73  83% de gagnants  pire jour -202 $  comptes perdus 0%
+signe        graine 4 : 3146 stratégies essayées, élite   1 (élan 1, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65  comptes Bulenox perdus en 60 séances 59% | champion : -19 942 $  t -1.44  54% de gagnants  pire jour -2 689 $  comptes perdus 59%
+signe        graine 5 : 3026 stratégies essayées, élite   0 (élan 0, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65 | pas de champion
+signe        graine 6 : 3080 stratégies essayées, élite  10 (élan 10, retour 0, cassure 0, grille 0) | au contrôle : 0% en gain, 0% à t ≥ 1,65  comptes Bulenox perdus en 60 séances 76% | champion : -11 181 $  t -0.60  53% de gagnants  pire jour -3 487 $  comptes perdus 76%
+
+Vraies données : 5 élites, 40% en gain au contrôle, 0% à t ≥ 1,65.
+Faux marchés (placebos) : 40 élites, 2% en gain au contrôle, 2% à t ≥ 1,65 ; la meilleure machine de bruit monte à 100%.
+Champions réels avec gain positif et t ≥ 1,65 au contrôle : 0 sur 6.
+Verdict fixé d'avance : TUÉE : la machine ne fait pas mieux que le hasard.
