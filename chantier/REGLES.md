@@ -83,6 +83,29 @@ repris de la vague 10 (`ml/arene/vague10.py`, fonction `vie_contrat`) :
 - **Adoptée** si : aucun Master perdu par inactivité ; au plus 20 % de Masters perdus avant le 3e retrait ; gain moyen
   touché par Master positif. On donne le nombre de dates de perte distinctes (moins de 3 = chiffre fragile).
 
+### Partie N, vague 2 (règles écrites le 11 novembre 2026, après le résultat de la vague 1 et avant tout calcul de la vague 2)
+
+Résultat de la vague 1 : la nuit avec stop passe ses 5 conditions, mais à 1 MNQ chaque nuit elle bouge deux fois
+plus que le bot (370 $ contre 188 $ d'écart type par séance) : 43 % des Masters sont perdus par le plancher. Elle
+n'est pas adoptée. Le bot seul, lui, ne perd aucun compte par le plancher : il les perd tous par l'inactivité.
+
+D'où trois candidats, jugés par la même règle d'adoption (aucun Master perdu par inactivité ; au plus 20 % perdus
+avant le 3e retrait ; touché moyen positif) :
+
+| | Règle |
+|---|---|
+| NS75 | **nuit de secours** : la nuit F0 avec stop 0,75 % n'est prise que si le compte vient de passer 3 jours de trading de suite sans trade (jours du fichier compris, comme Bulenox compte), puis chaque nuit jusqu'au premier trade |
+| NS50 | la même avec le stop à 0,50 % |
+| N50 | la nuit F0 avec stop 0,50 % chaque nuit (le plus petit risque retenu par la vague 1) |
+
+- Une nuit absente du fichier (trous de 2023 dans les données de nuit) ne peut pas être jouée : le compteur continue.
+  Une perte par inactivité qui vient d'un trou du fichier est comptée et signalée à part.
+- Référence publiée (vague 10) : K1c, le modèle W1 en secours : 70 % au 3e retrait, 10 % perdus par le plancher,
+  2 949 $ touchés par Master, 2 dates de perte distinctes.
+- Réserve écrite d'avance : le contrat ne compte pas une « activité artificielle destinée uniquement à prévenir
+  l'inactivité ». Une nuit de secours est une vraie stratégie (elle a passé ses conditions seule), mais elle est
+  déclenchée par le compteur : comme K1, elle dépend de la réponse écrite de Bulenox.
+
 ## Partie A : les régimes
 
 **Détecteur** (état de la séance, connu la veille à 16 h 15) :
