@@ -102,8 +102,20 @@ suffit toujours pas : même à k = 0,5, la zone reste silencieuse certains jours
 2. **Règle d'inactivité : demande une réponse écrite à Bulenox avant tout.** Deux secours tiennent en simulation :
    le modèle W1 (vague 10) et la nuit de secours à stop 0,50 % (ici, pour information). Les deux sont déclenchés
    par le compteur d'inactivité, ce que le contrat peut voir comme une activité artificielle.
-3. **Ta marge actuelle (environ 1 400 $) est plus petite que deux limites du jour.** Le garde de risque
-   (`systeme/garde.py`) ramène la taille à la moitié sous 1 750 $ de marge.
+3. **Avec ta marge actuelle (environ 1 400 $), la taille décide de tout.** Le bot seul, rejoué depuis chaque séance
+   de 2017 à 2026 à partir de ta situation (solde 50 700 $, plancher 49 300 $), sur 120 séances, sans compter la
+   règle d'inactivité (`resultats/situation.txt`, descriptif) :
+
+   | Taille | Compte perdu par le plancher | Solde ≥ 53 600 $ (1er retrait possible) | Séances jusque-là (médiane) |
+   |---|---|---|---|
+   | 1 MNQ avec le frein (demi-taille sous 1 750 $ de marge) | 0 % | 24 % | 84 |
+   | 1 MNQ sans frein | 19 % | 33 % | 74 |
+   | 2 MNQ avec le frein | 25 % | 39 % | 56 |
+   | 2 MNQ sans frein | 50 % | 46 % | 39 |
+   | 4 MNQ avec le frein | 52 % | 46 % | 30 |
+   | 4 MNQ sans frein | 61 % | 39 % | 14 |
+
+   À 4 MNQ, tu perds le compte plus d'une fois sur deux. À 1 MNQ avec le frein, tu ne le perds pas, mais c'est lent.
 
 ## Les outils livrés (`systeme/`)
 
@@ -125,6 +137,11 @@ cd chantier && pip install numpy pandas numba
 python3 nuit.py && python3 compte.py && python3 compte.py 2 && python3 inactivite.py
 python3 divers.py && python3 machine.py nq && python3 machine.py btc
 ```
+
+## Contre-revue (#ultrareview)
+
+Un relecteur indépendant recalcule avec son propre code les chiffres de la nuit, du compte et de la machine. Elle était
+encore en cours à l'écriture de ce rapport : ses défauts et corrections seront ajoutés ici.
 
 ## Limites
 

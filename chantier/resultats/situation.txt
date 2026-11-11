@@ -1,0 +1,11 @@
+Situation du compte : solde 50 700 $  plus haut de fin de journée 51 800 $  plancher 49 300 $  marge 1 400 $.
+Le bot seul (Z12F, limite du jour 1 000 $), rejoué depuis chaque séance de 2017 à novembre 2026, 120 séances au plus.
+La règle d'inactivité n'est pas comptée ici (elle se règle à part). Descriptif, pas un test.
+
+taille                             perdu par le plancher  solde ≥ 53 600 $  ni l un ni l autre  séances (médiane) jusqu à 53 600 $
+1 MNQ, frein (demi-taille)                           0%               24%                 76%                                  84
+1 MNQ, sans frein                                   19%               33%                 48%                                  74
+2 MNQ, frein                                        25%               39%                 36%                                  56
+2 MNQ, sans frein                                   50%               46%                  4%                                  39
+4 MNQ, frein                                        52%               46%                  3%                                  30
+4 MNQ, sans frein                                   61%               39%                  0%                                  14
