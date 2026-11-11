@@ -18,7 +18,7 @@ Voyant VERT (fourchette normale) : +934 $ pour 1 MNQ apres 32 seance(s) ; le bac
 
 ## Pour la seance du 2026-11-11 (a utiliser en direct)
 
-Cloture de la veille (16 h New York) : **27,835.25**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
+Cloture de la veille (16 h New York) : **27,835.75**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
 
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
