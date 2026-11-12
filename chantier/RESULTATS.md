@@ -146,6 +146,41 @@ heure de Paris, quand le compteur vaut 2 ou plus) ; la nuit (1 MNQ à 18 h, heur
 dans `bot3en1/` : c'est du code qui passerait de vrais ordres sur ton compte, à décider avec toi et après la réponse
 de Bulenox.
 
+## Les bots enregistrés, rejoués depuis le début du challenge (12 novembre 2026)
+
+Du 13 octobre 2026 (première séance du challenge) au 11 novembre 2026 (dernière séance des dépôts) : 22 séances. Chaque
+bot est rejoué par son propre code (moteurs C# de `bot3en1/` de la branche `claude/optimistic-ptolemy-xs24ra`, machine de
+veille `flux/veille.py`, journaux des robots de `main`). Dollars réels pour 1 MNQ, frais compris ; « à 4 MNQ » avec la
+limite du jour de 1 000 $. Détail : `resultats/rejeu_periode.txt` ; pour refaire : `rejeu_periode.sh`.
+
+Sur la période, le NQ est passé de 30 618 à 28 484 points (−7 %), avec un plus bas à 26 738 le 5 novembre.
+
+| Bot | Trades | 1 MNQ | 4 MNQ | Après le 2 novembre (vraiment futur) |
+|---|---|---|---|---|
+| W1 (Supertrend trié par un modèle) | 27 | +6 152 $ | +15 672 $ | +3 262 $ (modèle entraîné jusqu'au 2 novembre) |
+| Supertrend NQ 10-3 | 49 | +4 884 $ | +15 744 $ | +2 933 $ |
+| Cassure de la veille (veille) | 18 séances | +3 326 $ | — | +3 391 $ |
+| XGBoost NQ | 21 | +3 191 $ | +10 030 $ | +232 $ (modèle entraîné jusqu'au 2 novembre) |
+| ORB 5 minutes (veille) | 21 séances | +2 531 $ | — | +2 342 $ |
+| Bot 3 en 1, réglages actuels (C2 + Q1), sans filtre delta | 17 | +1 724 $ | +7 930 $ | +807 $ (C2 et Q1 choisis le 1er novembre) |
+| Pivots R1/S1 (veille) | 7 séances | +1 083 $ | — | 0 $ |
+| Bot 3 en 1, zone d'origine sans filtre | 25 | +986 $ | +5 984 $ | +375 $ |
+| Bot 3 en 1, ta règle du 26 octobre | 15 | +296 $ | +1 388 $ | −498 $ |
+| Bot 3 en 1, ta règle du 27 octobre (stop 70 points) | 15 | +294 $ | +1 072 $ | −638 $ |
+| RSI(2) du bot (tenu la nuit, décoché chez Bulenox) | 2 | −1 019 $ | — | — |
+| Robot tendance (19 marchés, compte virtuel) | — | −1 498 $ | — | +587 $ |
+| Robot version 7 (actions, compte virtuel) | — | −4 165 $ | — | +922 $ |
+
+- **Contrôles** : la zone d'origine donne +986 $ par le moteur C#, +988 $ par la machine de veille et +991 $ dans le
+  journal du robot de `main` ; le rejeu des réglages actuels redonne trade par trade le journal `c2q1.txt` de l'arène ;
+  W1 redonne le total de son propre programme de rejeu (+6 152 $, 27 trades).
+- **Ce que ça dit** : sur ces 22 séances, les bots qui suivent la tendance (Supertrend, W1, cassures) gagnent le plus,
+  parce que le NQ a baissé de 7 % puis rebondi. Sur 15 ans, ces mêmes bots grillent environ un compte financé neuf
+  sur deux dans l'année à 1 MNQ (`ml/arene/VAGUE6.md`) ; la zone non. 22 séances ne suffisent pas à classer des bots.
+- **Ce qui n'est pas rejouable** : FluxNQ (il lui faut les transactions Rithmic, absentes après le 30 octobre) ; le
+  filtre delta après le 30 octobre (même raison) ; le filtre VIX après le 30 octobre (VIX absent des dépôts ; avant,
+  il n'aurait coupé aucune séance).
+
 ## Gagner plus : la taille, la nuit, le retrait (parties J, K et K2)
 
 **La nuit sur le MES (partie J).** Elle sert sous le frein, et pour tout ordre passé à la main.

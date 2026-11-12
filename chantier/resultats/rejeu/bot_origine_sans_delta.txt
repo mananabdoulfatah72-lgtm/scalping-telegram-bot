@@ -1,0 +1,58 @@
+2026-10-14 vente 11h30 a 30392.75 (delta 30 min 0, GARDE) [depassement 0.54]
+2026-10-14 RSI(2) : achat 15h50 a 30177.75 (cloture 30176.50, RSI 3.3, moyenne 200 27837.99, moyenne 5 30778.10)
+2026-10-14 sortie 16h00 15h59 a 30185.50
+2026-10-16 vente 10h00 a 29830.25 (delta 30 min 0, GARDE) [depassement 1.63]
+2026-10-16 sortie 16h00 15h59 a 29379.50
+2026-10-19 achat 11h30 a 29945.75 (delta 30 min 0, GARDE) [depassement 0.27]
+2026-10-19 sortie 12h00 a 29907.75
+2026-10-20 achat 10h30 a 29879.00 (delta 30 min 0, GARDE) [depassement 0.60]
+2026-10-20 sortie 11h30 a 29742.00
+2026-10-21 achat 13h00 a 30080.25 (delta 30 min 0, GARDE) [depassement 0.33]
+2026-10-21 sortie 14h00 a 30046.25
+2026-10-21 achat 14h30 a 30088.00 (delta 30 min 0, GARDE) [depassement 0.16]
+2026-10-21 sortie 15h00 a 29942.75
+2026-10-21 RSI(2) : vente 15h50 a 30058.00 (cloture 30058.00, RSI 72.6, moyenne 200 27943.77, moyenne 5 29813.55)
+2026-10-22 vente 10h30 a 29330.00 (delta 30 min 0, GARDE) [depassement 0.88]
+2026-10-22 sortie 16h00 15h59 a 29146.50
+2026-10-23 achat 11h00 a 29283.25 (delta 30 min 0, GARDE) [depassement 0.16]
+2026-10-23 sortie 11h30 a 29261.00
+2026-10-26 achat 11h00 a 29554.75 (delta 30 min 0, GARDE) [depassement 1.66]
+2026-10-26 sortie 16h00 15h59 a 29439.50
+2026-10-27 achat 11h00 a 29722.00 (delta 30 min 0, GARDE) [depassement 0.13]
+2026-10-27 sortie 14h00 a 29771.50
+2026-10-27 achat 15h00 a 29823.00 (delta 30 min 0, GARDE) [depassement 0.15]
+2026-10-27 sortie 16h00 15h59 a 29813.25
+2026-10-30 vente 10h30 a 28672.00 (delta 30 min 0, GARDE) [depassement 0.20]
+2026-10-30 sortie 11h00 a 28763.75
+2026-10-30 vente 12h30 a 28607.25 (delta 30 min 0, GARDE) [depassement 0.09]
+2026-10-30 RSI(2) : achat 15h50 a 28470.50 (cloture 28468.25, RSI 7.1, moyenne 200 28067.43, moyenne 5 29450.60)
+2026-10-30 sortie 16h00 15h59 a 28527.25
+2026-11-02 achat 10h30 a 28849.75 (delta 30 min 0, GARDE) [depassement 0.23]
+2026-11-02 sortie 11h00 a 28720.75
+2026-11-02 vente 15h30 a 28218.25 (delta 30 min 0, GARDE) [depassement 0.34]
+2026-11-02 sortie 16h00 15h59 a 28138.75
+2026-11-03 achat 11h00 a 28405.25 (delta 30 min 0, GARDE) [depassement 0.01]
+2026-11-03 sortie 11h30 a 28326.50
+2026-11-04 achat 10h00 a 28872.25 (delta 30 min 0, GARDE) [depassement 7.35]
+2026-11-04 sortie 11h00 a 28656.50
+2026-11-04 achat 11h00 a 28656.50 (delta 30 min 0, GARDE) [depassement 0.56]
+2026-11-04 sortie 11h30 a 28564.00
+2026-11-04 achat 12h00 a 28742.50 (delta 30 min 0, GARDE) [depassement 0.78]
+2026-11-04 sortie 13h30 a 28694.25
+2026-11-04 achat 13h30 a 28694.25 (delta 30 min 0, GARDE) [depassement 0.31]
+2026-11-04 sortie 14h00 a 28623.50
+2026-11-05 vente 10h00 a 27525.25 (delta 30 min 0, GARDE) [depassement 7.35]
+2026-11-05 sortie 16h00 15h59 a 26746.50
+2026-11-06 achat 10h00 a 27356.00 (delta 30 min 0, GARDE) [depassement 0.68]
+2026-11-06 sortie 10h30 a 27116.25
+2026-11-09 achat 10h00 a 27742.75 (delta 30 min 0, GARDE) [depassement 2.30]
+2026-11-09 RSI(2) : vente 15h50 a 28083.75 (cloture 28082.25, RSI 71.1, moyenne 200 28136.53, moyenne 5 27799.40)
+2026-11-09 sortie 16h00 15h59 a 28004.75
+2026-11-11 achat 12h00 a 28613.00 (delta 30 min 0, GARDE) [depassement 0.04]
+2026-11-11 sortie 13h00 a 28629.25
+2026-11-11 achat 13h30 a 28682.50 (delta 30 min 0, GARDE) [depassement 0.14]
+2026-11-11 sortie 14h30 a 28573.75
+
+Zone : 25 trades gardes, 0 ecartes, +986.5 $ (1 MNQ)
+RSI(2) : 2 entrees, -1019.0 $ (trades fermes)
+Total : -32.5 $

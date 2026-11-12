@@ -1,0 +1,46 @@
+Les bots enregistrés, rejoués sur les séances du challenge : du 2026-10-13 au 2026-11-11 (22 séances).
+Dollars réels pour 1 MNQ (2 $ par point), frais compris (3 $ par aller-retour). « À 4 MNQ » : avec la limite du jour de 1 000 $.
+
+1. Ton Bot 3 en 1, rejoué par son propre moteur C# (Bot3en1.Replay), partie zone :
+
+   réglages actuels (zone d'origine + C2 + Q1), sans le filtre delta : 17 trades, +1 724 $ à 1 MNQ, +7 930 $ à 4 MNQ ; 6 séances gagnantes sur 15 jouées ; pire séance -482 $ (à 4 MNQ : -1 020 $)
+   zone d'origine sans filtre (réglages du début du challenge, sans le delta) : 25 trades, +986 $ à 1 MNQ, +5 984 $ à 4 MNQ ; 6 séances gagnantes sur 17 jouées ; pire séance -866 $ (à 4 MNQ : -1 020 $)
+   ta règle du 26 octobre (cassure + volume + une entrée, laisser courir) : 15 trades, +296 $ à 1 MNQ, +1 388 $ à 4 MNQ ; 3 séances gagnantes sur 15 jouées ; pire séance -346 $ (à 4 MNQ : -1 020 $)
+   ta règle du 27 octobre (la même + pas de sortie aux contrôles + stop 70 points) : 15 trades, +294 $ à 1 MNQ, +1 072 $ à 4 MNQ ; 4 séances gagnantes sur 15 jouées ; pire séance -229 $ (à 4 MNQ : -1 020 $)
+   réglages actuels avec le filtre delta (données Rithmic : jusqu'au 30 octobre) : 6 trades, +544 $ à 1 MNQ, +2 092 $ à 4 MNQ ; 3 séances gagnantes sur 5 jouées ; pire séance -234 $ (à 4 MNQ : -1 020 $) ; période du 2026-10-13 au 2026-10-30
+   zone d'origine avec le filtre delta (jusqu'au 30 octobre) : 9 trades, -74 $ à 1 MNQ, +146 $ à 4 MNQ ; 3 séances gagnantes sur 7 jouées ; pire séance -364 $ (à 4 MNQ : -1 020 $) ; période du 2026-10-13 au 2026-10-30
+
+   RSI(2), le second moteur du bot (tenu la nuit, décoché chez Bulenox) : 2 trades, -1 019 $ à 1 MNQ (2026-10-14 → 2026-10-21 : -242 $ ; 2026-10-30 → 2026-11-09 : -776 $).
+
+2. Les autres bots C# du dépôt (rejoués par leur moteur) :
+
+   Supertrend NQ (10-3, bougies de 5 minutes) : 49 trades, +4 884 $ à 1 MNQ, +15 744 $ à 4 MNQ ; 10 séances gagnantes sur 22 ; pire séance -786 $
+   W1 (Supertrend trié par un modèle) : 27 trades, +6 152 $ à 1 MNQ, +15 672 $ à 4 MNQ ; 12 séances gagnantes sur 19 ; pire séance -567 $ ; modèle entraîné jusqu'au 2026-11-02 : seulement +3 262 $ sur les 7 séances d'après (le reste est dans l'entraînement)
+   XGBoost NQ (modèle) : 21 trades, +3 191 $ à 1 MNQ, +10 030 $ à 4 MNQ ; 11 séances gagnantes sur 17 ; pire séance -516 $ ; modèle entraîné jusqu'au 2026-11-02 : seulement +232 $ sur les 7 séances d'après (le reste est dans l'entraînement)
+
+3. Les stratégies figées de la machine de veille (flux/veille.py), converties au prix du jour :
+
+   S2b cassure ratée : 10 séances jouées, +131 $ à 1 MNQ, 6 gagnantes, pire séance -63 $
+   ORB 5 minutes : 21 séances jouées, +2 531 $ à 1 MNQ, 5 gagnantes, pire séance -394 $
+   cassure de la veille : 18 séances jouées, +3 326 $ à 1 MNQ, 4 gagnantes, pire séance -205 $
+   Supertrend 10-3 (veille) : 22 séances jouées, +4 888 $ à 1 MNQ, 10 gagnantes, pire séance -786 $
+   pivots R1/S1 : 7 séances jouées, +1 083 $ à 1 MNQ, 4 gagnantes, pire séance -238 $
+   radar : achat 13 h 30 en haut du range : 3 séances jouées, -67 $ à 1 MNQ, 1 gagnantes, pire séance -333 $
+   radar : achat 13 h au-dessus de la veille : 3 séances jouées, -22 $ à 1 MNQ, 1 gagnantes, pire séance -164 $
+   L2 : contre le mouvement à 15 h 30 : 1 séances jouées, -19 $ à 1 MNQ, 0 gagnantes, pire séance -19 $
+   W1i : lundi après un week-end bitcoin négatif : 1 séances jouées, +420 $ à 1 MNQ, 1 gagnantes, pire séance +420 $
+   murs d'options du NDX : 0 séances jouées, +0 $ à 1 MNQ, 0 gagnantes, pire séance +0 $
+   zone d'origine (référence de la veille) : 17 séances jouées, +988 $ à 1 MNQ, 6 gagnantes, pire séance -866 $
+
+4. Les robots virtuels de main (leur propre compte de 50 000 $, mis à jour chaque soir par GitHub Actions) :
+
+   Robot zone : la zone seule (1 MNQ) : +991 $ sur la période (22 séances, pire jour -865 $)
+   Robot zone : le RSI(2) (1 MNQ, valeur chaque soir) : -1 032 $ sur la période (22 séances, pire jour -3 456 $)
+   Robot zone : le rebond (1 MNQ) : +735 $ sur la période (22 séances, pire jour -186 $)
+   Robot zone : son compte de challenge Phidias : +484 $ sur la période (22 séances, pire jour -1 376 $)
+   Tendance seule (19 marchés à terme, garde la nuit) : -1 498 $ sur la période (22 séances, pire jour -905 $)
+   Mélange tendance + achat : -1 472 $ sur la période (22 séances, pire jour -526 $)
+   Version 7 (5 actions de la technologie) : -4 165 $ sur la période (22 séances, pire jour -3 041 $)
+
+Non rejouable ici : FluxNQ (il lui faut les transactions Rithmic, absentes du dépôt après le 30 octobre), et le filtre VIX du
+bot après le 30 octobre (VIX absent du dépôt après cette date ; jusque-là il n'aurait coupé aucune séance).

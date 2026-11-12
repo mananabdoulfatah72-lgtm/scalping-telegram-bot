@@ -1,0 +1,38 @@
+2026-10-14 vente 10h52 a 30423.25 (delta 30 min 0, GARDE) [depassement 0.28] (cassure entre deux controles, volume 2320 = 1.7 x la moyenne des 30 minutes)
+2026-10-14 RSI(2) : achat 15h50 a 30177.75 (cloture 30176.50, RSI 3.3, moyenne 200 27837.99, moyenne 5 30778.10)
+2026-10-14 sortie 16h00 15h59 a 30185.50
+2026-10-16 vente 10h51 a 29893.75 (delta 30 min 0, GARDE) [depassement 0.36] (cassure entre deux controles, volume 1970 = 1.3 x la moyenne des 30 minutes)
+2026-10-16 sortie 16h00 15h59 a 29379.50
+2026-10-19 achat 11h05 a 29891.75 (delta 30 min 0, GARDE) [depassement 0.08] (cassure entre deux controles, volume 3363 = 2.5 x la moyenne des 30 minutes)
+2026-10-19 stop 12h49 a 29813.39 (stop 29813.64, 70 points au-dela du niveau casse 29883.64)
+2026-10-20 achat 10h27 a 29848.00 (delta 30 min 0, GARDE) [depassement 0.51] (cassure entre deux controles, volume 4111 = 1.8 x la moyenne des 30 minutes)
+2026-10-20 stop 11h13 a 29734.91 (stop 29735.16, 70 points au-dela du niveau casse 29805.16)
+2026-10-21 achat 12h01 a 30029.75 (delta 30 min 0, GARDE) [depassement 0.04] (cassure entre deux controles, volume 1097 = 1.1 x la moyenne des 30 minutes)
+2026-10-21 stop 14h59 a 29953.23 (stop 29953.48, 70 points au-dela du niveau casse 30023.48)
+2026-10-21 RSI(2) : vente 15h50 a 30058.00 (cloture 30058.00, RSI 72.6, moyenne 200 27943.77, moyenne 5 29813.55)
+2026-10-22 vente 10h15 a 29440.75 (delta 30 min 0, GARDE) [depassement 0.08] (cassure entre deux controles, volume 3096 = 1.3 x la moyenne des 30 minutes)
+2026-10-22 sortie 16h00 15h59 a 29146.50
+2026-10-23 achat 10h40 a 29252.75 (delta 30 min 0, GARDE) [depassement 0.02] (cassure entre deux controles, volume 2384 = 1.2 x la moyenne des 30 minutes)
+2026-10-23 stop 13h08 a 29180.46 (stop 29180.71, 70 points au-dela du niveau casse 29250.71)
+2026-10-27 achat 14h45 a 29792.50 (delta 30 min 0, GARDE) [depassement 0.01] (cassure entre deux controles, volume 609 = 1.6 x la moyenne des 30 minutes)
+2026-10-27 sortie 16h00 15h59 a 29813.25
+2026-10-29 vente 10h10 a 29518.25 (delta 30 min 0, GARDE) [depassement 0.19] (cassure entre deux controles, volume 3504 = 1.2 x la moyenne des 30 minutes)
+2026-10-29 stop 10h17 a 29603.30 (stop 29603.05, 70 points au-dela du niveau casse 29533.05)
+2026-10-30 vente 10h11 a 28717.75 (delta 30 min 0, GARDE) [depassement 0.15] (cassure entre deux controles, volume 2847 = 1.1 x la moyenne des 30 minutes)
+2026-10-30 stop 10h39 a 28798.65 (stop 28798.40, 70 points au-dela du niveau casse 28728.40)
+2026-10-30 RSI(2) : achat 15h50 a 28470.50 (cloture 28468.25, RSI 7.1, moyenne 200 28067.43, moyenne 5 29450.60)
+2026-11-02 vente 14h26 a 28282.25 (delta 30 min 0, GARDE) [depassement 0.03] (cassure entre deux controles, volume 1277 = 1.1 x la moyenne des 30 minutes)
+2026-11-02 stop 14h27 a 28360.50 (stop 28360.25, 70 points au-dela du niveau casse 28290.25)
+2026-11-03 achat 10h16 a 28342.25 (delta 30 min 0, GARDE) [depassement 0.36] (cassure entre deux controles, volume 1978 = 1.0 x la moyenne des 30 minutes)
+2026-11-03 stop 14h54 a 28251.99 (stop 28252.24, 70 points au-dela du niveau casse 28322.24)
+2026-11-04 achat 11h31 a 28590.75 (delta 30 min 0, GARDE) [depassement 0.01] (cassure entre deux controles, volume 2186 = 1.1 x la moyenne des 30 minutes)
+2026-11-04 stop 15h55 a 28519.63 (stop 28519.88, 70 points au-dela du niveau casse 28589.88)
+2026-11-06 achat 10h12 a 27287.75 (delta 30 min 0, GARDE) [depassement 0.08] (cassure entre deux controles, volume 3426 = 1.1 x la moyenne des 30 minutes)
+2026-11-06 stop 10h28 a 27209.03 (stop 27209.28, 70 points au-dela du niveau casse 27279.28)
+2026-11-09 RSI(2) : vente 15h50 a 28083.75 (cloture 28082.25, RSI 71.1, moyenne 200 28136.53, moyenne 5 27799.40)
+2026-11-11 achat 11h45 a 28570.50 (delta 30 min 0, GARDE) [depassement 0.01] (cassure entre deux controles, volume 931 = 1.1 x la moyenne des 30 minutes)
+2026-11-11 stop 15h42 a 28497.53 (stop 28497.78, 70 points au-dela du niveau casse 28567.78)
+
+Zone : 15 trades gardes, 0 ecartes, +294.0 $ (1 MNQ)
+RSI(2) : 2 entrees, -1019.0 $ (trades fermes)
+Total : -725.0 $

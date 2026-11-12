@@ -1,0 +1,333 @@
+{
+ "bot_actuel_sans_delta": {
+  "total": 1723.5,
+  "trades": 17,
+  "seances_jouees": 15,
+  "gagnantes": 6,
+  "pire": -482.5,
+  "meilleure": 1554.5,
+  "apres_2nov": 807.0,
+  "seances": 22,
+  "quatre_mnq": 7930.0,
+  "pire_quatre": -1020.0,
+  "nom": "réglages actuels (zone d'origine + C2 + Q1), sans le filtre delta"
+ },
+ "bot_origine_sans_delta": {
+  "total": 986.5,
+  "trades": 25,
+  "seances_jouees": 17,
+  "gagnantes": 6,
+  "pire": -866.5,
+  "meilleure": 1554.5,
+  "apres_2nov": 375.0,
+  "seances": 22,
+  "quatre_mnq": 5984.0,
+  "pire_quatre": -1020.0,
+  "nom": "zone d'origine sans filtre (réglages du début du challenge, sans le delta)"
+ },
+ "bot_regle_26oct": {
+  "total": 296.0,
+  "trades": 15,
+  "seances_jouees": 15,
+  "gagnantes": 3,
+  "pire": -346.0,
+  "meilleure": 1025.5,
+  "apres_2nov": -498.5,
+  "seances": 22,
+  "quatre_mnq": 1388.0,
+  "pire_quatre": -1020.0,
+  "nom": "ta règle du 26 octobre (cassure + volume + une entrée, laisser courir)"
+ },
+ "bot_regle_27oct": {
+  "total": 293.93999999999505,
+  "trades": 15,
+  "seances_jouees": 15,
+  "gagnantes": 4,
+  "pire": -229.1800000000003,
+  "meilleure": 1025.5,
+  "apres_2nov": -638.1399999999994,
+  "seances": 22,
+  "quatre_mnq": 1072.4799999999814,
+  "pire_quatre": -1020.0,
+  "nom": "ta règle du 27 octobre (la même + pas de sortie aux contrôles + stop 70 points)"
+ },
+ "bot_actuel_avec_delta": {
+  "total": 544.5,
+  "trades": 6,
+  "seances_jouees": 5,
+  "gagnantes": 3,
+  "pire": -233.5,
+  "meilleure": 411.5,
+  "apres_2nov": 0.0,
+  "seances": 14,
+  "quatre_mnq": 2092.0,
+  "pire_quatre": -1020.0,
+  "nom": "réglages actuels avec le filtre delta (données Rithmic : jusqu'au 30 octobre)"
+ },
+ "bot_origine_avec_delta": {
+  "total": -73.5,
+  "trades": 9,
+  "seances_jouees": 7,
+  "gagnantes": 3,
+  "pire": -364.5,
+  "meilleure": 411.5,
+  "apres_2nov": 0.0,
+  "seances": 14,
+  "quatre_mnq": 146.0,
+  "pire_quatre": -1020.0,
+  "nom": "zone d'origine avec le filtre delta (jusqu'au 30 octobre)"
+ },
+ "rsi2": {
+  "total": -1019.0,
+  "trades": 2,
+  "detail": [
+   [
+    "2026-10-14",
+    "2026-10-21",
+    -242.5
+   ],
+   [
+    "2026-10-30",
+    "2026-11-09",
+    -776.5
+   ]
+  ]
+ },
+ "supertrend": {
+  "total": 4883.5,
+  "trades": 49,
+  "seances_jouees": 22,
+  "gagnantes": 10,
+  "pire": -786.5,
+  "meilleure": 2161.0,
+  "apres_2nov": 2933.0,
+  "seances": 22,
+  "quatre_mnq": 15744.0,
+  "nom": "Supertrend NQ (10-3, bougies de 5 minutes)",
+  "modele": false
+ },
+ "W1": {
+  "total": 6152.0,
+  "trades": 27,
+  "seances_jouees": 19,
+  "gagnantes": 12,
+  "pire": -567.0,
+  "meilleure": 2161.0,
+  "apres_2nov": 3262.0,
+  "seances": 22,
+  "quatre_mnq": 15672.0,
+  "nom": "W1 (Supertrend trié par un modèle)",
+  "modele": true
+ },
+ "XGBoost": {
+  "total": 3191.0,
+  "trades": 21,
+  "seances_jouees": 17,
+  "gagnantes": 11,
+  "pire": -516.0,
+  "meilleure": 799.0,
+  "apres_2nov": 232.5,
+  "seances": 22,
+  "quatre_mnq": 10030.0,
+  "nom": "XGBoost NQ (modèle)",
+  "modele": true
+ },
+ "veille_S2b": {
+  "total": 130.59646966019417,
+  "trades": 10,
+  "seances_jouees": 10,
+  "gagnantes": 6,
+  "pire": -62.53822572815534,
+  "meilleure": 87.03772233009708,
+  "apres_2nov": -19.685659466019416,
+  "seances": 22,
+  "nom": "S2b cassure ratée"
+ },
+ "veille_H1": {
+  "total": 2531.014520064725,
+  "trades": 21,
+  "seances_jouees": 21,
+  "gagnantes": 5,
+  "pire": -393.50105177993527,
+  "meilleure": 2161.000673786408,
+  "apres_2nov": 2341.5016620550164,
+  "seances": 22,
+  "nom": "ORB 5 minutes"
+ },
+ "veille_H5": {
+  "total": 3325.507847734628,
+  "trades": 18,
+  "seances_jouees": 18,
+  "gagnantes": 4,
+  "pire": -204.50466334951457,
+  "meilleure": 2457.0043932038834,
+  "apres_2nov": 3390.5107252427183,
+  "seances": 22,
+  "nom": "cassure de la veille"
+ },
+ "veille_H12": {
+  "total": 4888.070132686085,
+  "trades": 22,
+  "seances_jouees": 22,
+  "gagnantes": 10,
+  "pire": -785.5802568770226,
+  "meilleure": 2161.000673786408,
+  "apres_2nov": 2935.2779943365695,
+  "seances": 22,
+  "nom": "Supertrend 10-3 (veille)"
+ },
+ "veille_F3": {
+  "total": 1083.0050532362459,
+  "trades": 7,
+  "seances_jouees": 7,
+  "gagnantes": 4,
+  "pire": -238.49736763754044,
+  "meilleure": 793.4976845469256,
+  "apres_2nov": 0.0,
+  "seances": 22,
+  "nom": "pivots R1/S1"
+ },
+ "veille_R1": {
+  "total": -66.99752783171522,
+  "trades": 3,
+  "seances_jouees": 3,
+  "gagnantes": 1,
+  "pire": -333.4976382686084,
+  "meilleure": 376.00237063106795,
+  "apres_2nov": 42.50473236245955,
+  "seances": 22,
+  "nom": "radar : achat 13 h 30 en haut du range"
+ },
+ "veille_R2": {
+  "total": -22.000029449838166,
+  "trades": 3,
+  "seances_jouees": 3,
+  "gagnantes": 1,
+  "pire": -163.50042168284787,
+  "meilleure": 159.00358155339805,
+  "apres_2nov": -4.496840129449822,
+  "seances": 22,
+  "nom": "radar : achat 13 h au-dessus de la veille"
+ },
+ "veille_L2": {
+  "total": -18.50302912621359,
+  "trades": 1,
+  "seances_jouees": 1,
+  "gagnantes": 0,
+  "pire": -18.50302912621359,
+  "meilleure": -18.50302912621359,
+  "apres_2nov": 0.0,
+  "seances": 22,
+  "nom": "L2 : contre le mouvement à 15 h 30"
+ },
+ "veille_W1i": {
+  "total": 419.50428567961166,
+  "trades": 1,
+  "seances_jouees": 1,
+  "gagnantes": 1,
+  "pire": 419.50428567961166,
+  "meilleure": 419.50428567961166,
+  "apres_2nov": 0.0,
+  "seances": 22,
+  "nom": "W1i : lundi après un week-end bitcoin négatif"
+ },
+ "veille_MUR": {
+  "total": 0.0,
+  "trades": 0,
+  "seances_jouees": 0,
+  "gagnantes": 0,
+  "pire": 0.0,
+  "meilleure": 0.0,
+  "apres_2nov": 0.0,
+  "seances": 22,
+  "nom": "murs d'options du NDX"
+ },
+ "veille_ZONE": {
+  "total": 988.1146158576048,
+  "trades": 17,
+  "seances_jouees": 17,
+  "gagnantes": 6,
+  "pire": -865.7810108414241,
+  "meilleure": 1554.4992660194175,
+  "apres_2nov": 375.9662528317151,
+  "seances": 22,
+  "nom": "zone d'origine (référence de la veille)"
+ },
+ "robot_zone_gain_1_mnq": {
+  "total": 991.0,
+  "trades": 17,
+  "seances_jouees": 17,
+  "gagnantes": 6,
+  "pire": -865.0,
+  "meilleure": 1554.5,
+  "apres_2nov": 376.5,
+  "seances": 22,
+  "nom": "Robot zone : la zone seule (1 MNQ)"
+ },
+ "robot_zone_gain_rsi2_1_mnq": {
+  "total": -1032.5,
+  "trades": 13,
+  "seances_jouees": 13,
+  "gagnantes": 7,
+  "pire": -3456.0,
+  "meilleure": 1915.5,
+  "apres_2nov": -243.0,
+  "seances": 22,
+  "nom": "Robot zone : le RSI(2) (1 MNQ, valeur chaque soir)"
+ },
+ "robot_zone_gain_rebond_1_mnq": {
+  "total": 735.0,
+  "trades": 5,
+  "seances_jouees": 5,
+  "gagnantes": 3,
+  "pire": -186.0,
+  "meilleure": 787.5,
+  "apres_2nov": -119.5,
+  "seances": 22,
+  "nom": "Robot zone : le rebond (1 MNQ)"
+ },
+ "robot_zone_gain": {
+  "total": 484.0,
+  "trades": 18,
+  "seances_jouees": 18,
+  "gagnantes": 9,
+  "pire": -1376.0,
+  "meilleure": 2436.5,
+  "apres_2nov": 659.0,
+  "seances": 22,
+  "nom": "Robot zone : son compte de challenge Phidias"
+ },
+ "robot_tendance_gain": {
+  "total": -1498.2400000000002,
+  "trades": 22,
+  "seances_jouees": 22,
+  "gagnantes": 11,
+  "pire": -905.47,
+  "meilleure": 673.0,
+  "apres_2nov": 587.07,
+  "seances": 22,
+  "nom": "Tendance seule (19 marchés à terme, garde la nuit)"
+ },
+ "robot_melange_gain": {
+  "total": -1471.8999999999999,
+  "trades": 22,
+  "seances_jouees": 22,
+  "gagnantes": 8,
+  "pire": -525.55,
+  "meilleure": 203.52,
+  "apres_2nov": -530.17,
+  "seances": 22,
+  "nom": "Mélange tendance + achat"
+ },
+ "robot_version7_gain": {
+  "total": -4165.34,
+  "trades": 22,
+  "seances_jouees": 22,
+  "gagnantes": 11,
+  "pire": -3041.28,
+  "meilleure": 1638.23,
+  "apres_2nov": 922.39,
+  "seances": 22,
+  "nom": "Version 7 (5 actions de la technologie)"
+ }
+}
