@@ -1,0 +1,10 @@
+Descriptif : gain par mois, 1 MNQ au prix d'aujourd'hui, frais compris, 2017 → 2 octobre 2026 (sans frein ni plancher).
+
+le bot seul : 118 mois ; moyenne +318 $, médiane +185 $, 36% de mois perdants, pire mois -1 235 $, meilleur 3 668 $ ; un mois sur quatre sous -162 $, un sur quatre au-dessus de +744 $
+    par an : 2017 3 255 $, 2018 6 931 $, 2019 40 $, 2020 4 206 $, 2021 2 745 $, 2022 7 210 $, 2023 4 796 $, 2024 5 962 $, 2025 -639 $, 2026 2 980 $
+    séances pour gagner 2 900 $ (plancher non compté) : médiane 147, un quart en moins de 87, un quart en plus de 236, jamais atteint 8%
+
+le bot + la nuit de secours : 118 mois ; moyenne +388 $, médiane +298 $, 41% de mois perdants, pire mois -2 020 $, meilleur 4 797 $ ; un mois sur quatre sous -250 $, un sur quatre au-dessus de +905 $
+    par an : 2017 3 912 $, 2018 5 169 $, 2019 2 580 $, 2020 5 090 $, 2021 789 $, 2022 9 905 $, 2023 7 007 $, 2024 9 418 $, 2025 -2 114 $, 2026 4 073 $
+    séances pour gagner 2 900 $ (plancher non compté) : médiane 116, un quart en moins de 67, un quart en plus de 180, jamais atteint 5%
+

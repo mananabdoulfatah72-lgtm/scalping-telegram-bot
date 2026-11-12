@@ -316,7 +316,35 @@ def partie_h3(solde0=50700.0, haut0=51800.0):
     ecrire("partie_h3", L, res)
 
 
+# ====================================================================== descriptif : combien par mois
+def partie_mois():
+    """Gain par mois du bot seul et du bot avec la nuit de secours (stop 0,50 %, apres 2 jours), 1 MNQ, sans frein ni plancher."""
+    B = Cp.Banc("2026-10-02"); X = Nn.construire(); jou = np.isfinite(X["entree"])
+    g, creux, _ = Nn.gains(X, 0.005); prise, _, _ = secours_tp(B, 2)
+    gn = np.where(prise & jou, g, 0.0); cn = np.where(prise & jou, creux, 0.0)
+    mois = np.array([j[:7] for j in B.jours[B.d17:]]); res = {}
+    L = ["Descriptif : gain par mois, 1 MNQ au prix d'aujourd'hui, frais compris, 2017 → 2 octobre 2026 (sans frein ni plancher).", ""]
+    for nom, a, b in (("le bot seul", None, None), ("le bot + la nuit de secours", gn, cn)):
+        R, _ = B.journees(B.zf, 1.0, 1000.0, a, b); R = R[B.d17:]
+        r = pd.Series(R).groupby(mois).sum(); an = r.groupby(r.index.str[:4]).sum()
+        c = np.cumsum(R); d = []
+        for i in range(0, len(c) - 1, 5):
+            k = np.nonzero(c[i:] - (c[i - 1] if i else 0.0) >= 2900)[0]
+            d.append(k[0] + 1 if len(k) else np.nan)
+        d = np.array(d)
+        res[nom] = dict(mois=len(r), moyenne=float(r.mean()), mediane=float(r.median()), perdants=float(np.mean(r < 0)), pire=float(r.min()), meilleur=float(r.max()),
+                        quart_bas=float(r.quantile(.25)), quart_haut=float(r.quantile(.75)), par_an={k: float(v) for k, v in an.items()},
+                        seances_2900=dict(mediane=float(np.nanmedian(d)), rapide=float(np.nanpercentile(d, 25)), lent=float(np.nanpercentile(d, 75)), jamais=float(np.mean(np.isnan(d)))))
+        x = res[nom]
+        L += [f"{nom} : {x['mois']} mois ; moyenne {x['moyenne']:+.0f} $, médiane {x['mediane']:+.0f} $, {x['perdants']:.0%} de mois perdants, pire mois {n0(x['pire'])} $, "
+              f"meilleur {n0(x['meilleur'])} $ ; un mois sur quatre sous {x['quart_bas']:+.0f} $, un sur quatre au-dessus de {x['quart_haut']:+.0f} $",
+              "    par an : " + ", ".join(f"{k} {n0(v)} $" for k, v in x["par_an"].items()),
+              f"    séances pour gagner 2 900 $ (plancher non compté) : médiane {x['seances_2900']['mediane']:.0f}, un quart en moins de {x['seances_2900']['rapide']:.0f}, "
+              f"un quart en plus de {x['seances_2900']['lent']:.0f}, jamais atteint {x['seances_2900']['jamais']:.0%}", ""]
+    ecrire("mois", L, res)
+
+
 if __name__ == "__main__":
-    for q in sys.argv[1:] or ["g", "h1", "h2", "h3"]:
-        {"g": partie_g, "h1": partie_h1, "h2": partie_h2, "h3": partie_h3}[q]()
+    for q in sys.argv[1:] or ["g", "h1", "h2", "h3", "mois"]:
+        {"g": partie_g, "h1": partie_h1, "h2": partie_h2, "h3": partie_h3, "mois": partie_mois}[q]()
         print()

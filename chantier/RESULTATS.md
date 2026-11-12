@@ -75,7 +75,35 @@ règle d'inactivité comptée (`resultats/partie_h3.txt`, descriptif) :
 de 1 MNQ, 1 MNQ à la place de 2). À 4 MNQ, le bot seul perd déjà le compte par le plancher plus d'une fois sur deux
 (`resultats/situation.txt`). **Tant que ta marge n'est pas remontée : 1 MNQ au plus.**
 
-### 3. Pour tes trades à la main
+### 3. Combien par mois, et quand tombe un retrait
+
+1 MNQ, frais compris, 118 mois de 2017 à octobre 2026 (`resultats/mois.txt`, descriptif, sans frein ni plancher) :
+
+| | Moyenne par mois | Médiane | Mois perdants | Pire mois | Meilleur mois |
+|---|---|---|---|---|---|
+| Ton bot seul | +318 $ | +185 $ | 36 % | −1 235 $ | +3 668 $ |
+| Ton bot + la nuit de secours | +388 $ | +298 $ | 41 % | −2 020 $ | +4 797 $ |
+
+- **Ce n'est pas un salaire.** Quatre mois sur dix sont perdants, et l'année 2025 entière est perdante (−638 $ pour
+  le bot seul, −2 113 $ avec la nuit de secours).
+- À 2 MNQ, ces chiffres doublent, les pertes aussi : depuis ta marge actuelle, le compte est perdu une fois sur trois.
+
+Les retraits du compte Master, d'après ton contrat (annexe A du 23 octobre 2026) :
+
+| Condition | Valeur |
+|---|---|
+| Solde à garder sur le compte | 52 600 $ |
+| Montant de chacun des 3 premiers retraits | 1 000 à 1 500 $, dont 90 % pour toi : 900 à 1 350 $ |
+| Solde qu'il faut donc avoir pour demander | 53 600 $ au moins |
+| Jours tradés depuis le dernier retrait | 10 au moins |
+| Ta meilleure journée | pas plus de 40 % du gain fait depuis le dernier retrait |
+| Après le 3e retrait | le Master se termine et tu passes sur le compte « funded » |
+
+Ton solde est à environ 50 700 $ : il manque **2 900 $** avant le premier retrait. À 1 MNQ avec la nuit de secours,
+il faut 116 séances en médiane pour les gagner (5 à 6 mois) ; un quart du temps moins de 67 séances, un quart du
+temps plus de 180.
+
+### 4. Pour tes trades à la main
 
 - **Le sens.** La seule règle de direction validée sur 15 ans reste la zone de bruit : acheter au-dessus de la bande
   haute, vendre sous la bande basse, ne rien faire entre les deux. Un setup à contre-sens de la zone joue contre le
@@ -87,7 +115,7 @@ de 1 MNQ, 1 MNQ à la place de 2). À 4 MNQ, le bot seul perd déjà le compte p
   coûter le compte. `systeme/garde.py` calcule la taille permise avant chaque ordre et refuse ceux qui pourraient
   toucher le plancher.
 
-### 4. Le message à envoyer à Bulenox
+### 5. Le message à envoyer à Bulenox
 
 > Hello, I trade a Master 50K account with an automated strategy that can stay flat for several days. To remain
 > active, I would like to add a second strategy: buying 1 MNQ at 18:00 ET with a 0.50% stop-loss and closing it at
@@ -95,7 +123,7 @@ de 1 MNQ, 1 MNQ à la place de 2). À 4 MNQ, le bot seul perd déjà le compte p
 > risk. Do you consider it valid trading activity under the inactivity rule, or "artificial activity"? Could you
 > confirm in writing? Thank you.
 
-### 5. Pour l'automatiser
+### 6. Pour l'automatiser
 
 La règle tient en quatre lignes dans le bot : un compteur de jours de trading sans trade ; à 18 h (New York), si le
 compteur vaut 2 ou plus, un achat au marché avec un stop à 0,50 % ; à 9 h 30, la sortie ; le résultat de la nuit
@@ -296,7 +324,7 @@ git worktree add ../at origin/claude/affectionate-turing-tnz0mn
 git worktree add ../op origin/claude/optimistic-ptolemy-xs24ra
 cd chantier && pip install numpy pandas numba
 python3 nuit.py && python3 compte.py && python3 compte.py 2 && python3 inactivite.py
-python3 variantes.py g h1 h2 h3
+python3 variantes.py g h1 h2 h3 mois
 python3 divers.py && python3 machine.py nq && python3 machine.py btc
 ```
 
