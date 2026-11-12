@@ -1,0 +1,61 @@
+Partie K2 : gagner plus avec la taille selon la marge, la nuit et le retrait (Master Bulenox 50K, 2017 → 2 octobre 2026).
+Contrôle du simulateur : H2 publiait 70 % au 3e retrait, 2 % perdus par le plancher, 2 675 $ touchés ; ici 69.7%, 2.5%, 2 675 $.
+
+Secours après 2 jours sans trade : 1 MES de 8 h à 9 h (Paris), sans stop (3433 nuits : -0.7 $ en moyenne, écart type 58 $, pire -513 $, t -0.66). N1 : en plus, la nuit entière sur 1 MNQ (stop 0,50 %) chaque soir dès 2 600 $ de marge.
+R1 : retrait dès 1 000 $ disponibles ; R2 : retrait à 1 500 $.
+
+politique    3e retrait  plancher   (décalés)  inact. 1er ret. 3e ret.   touché $ / mois avant 2022  depuis  verdict
+E0-N0-R1           63%       17%     16%-17%      0%      191     623    2 451       96        117      55  référence
+E0-N0-R2           61%       16%     16%-16%      0%      217     670    2 508       94        118      52  non
+E0-N1-R1           70%       13%     13%-14%      0%      160     513    2 569      106        111      92  non
+E0-N1-R2           70%       13%     12%-15%      0%      179     543    2 740      107        114      90  non
+E1-N0-R1           62%       17%     16%-17%      0%      219     685    2 489       94        110      59  non
+E1-N0-R2           62%       18%     15%-18%      0%      231     685    2 541       94        111      60  non
+E1-N1-R1           67%       16%     14%-16%      0%      172     590    2 590      107        120      80  non
+E1-N1-R2           67%       16%     14%-16%      0%      178     613    2 674      109        122      82  non
+E2-N0-R1           60%       18%     18%-19%      0%      200     676    2 451       91        111      52  non
+E2-N0-R2           60%       18%     18%-19%      0%      216     736    2 452       87        109      45  non
+E2-N1-R1           67%       16%     14%-16%      0%      188     794    2 579       86         89      78  non
+E2-N1-R2           67%       16%     14%-16%      0%      207     814    2 652       88         91      79  non
+E3-N0-R1           60%       23%     22%-24%      0%      260     853    2 333       84         97      48  non
+E3-N0-R2           61%       22%     21%-23%      0%      268     843    2 386       86         99      51  non
+E3-N1-R1           62%       20%     20%-21%      0%      208     767    2 419       86         90      75  non
+E3-N1-R2           61%       20%     20%-22%      0%      211     781    2 463       87         91      75  non
+F2-N0-R1           52%       34%     30%-34%      0%      109     506    2 176      121        136      88  non
+F2-N0-R2           52%       33%     30%-33%      0%      115     506    2 154      121        136      86  non
+F2-N1-R1           51%       41%     39%-42%      0%       96     370    2 134      168        159     195  non
+F2-N1-R2           52%       40%     38%-42%      0%      100     373    2 176      168        159     196  non
+F4-N0-R1           31%       59%     59%-60%      0%       70     411    1 288      121        121     120  non
+F4-N0-R2           31%       59%     59%-60%      0%       75     411    1 291      121        122     120  non
+F4-N1-R1           37%       59%     59%-61%      0%       54     319    1 472      183        158     239  non
+F4-N1-R2           37%       59%     59%-61%      0%       54     319    1 479      184        159     239  non
+
+Échelles : E0 = 1 MNQ ; E1 = 2 MNQ dès 2 600 $ de marge ; E2 = 2 MNQ dès 2 600 $, 3 dès 3 600 $ ; E3 = 2 MNQ dès 2 000 $, 3 dès 3 000 $, 4 dès 4 000 $ ; F2 = 2 MNQ tout le temps ; F4 = 4 MNQ tout le temps. Sous 1 750 $ de marge : demi-taille du premier échelon.
+Adoptées : aucune. Recommandée : aucune.
+
+Descriptif : depuis l'état actuel du compte (solde 50 700 $, plus haut 51 800 $, marge 1 400 $), 250 séances au plus, depuis chaque séance de 2017 à 2025.
+politique    perdu (plancher)  au moins 1 retrait  3 retraits  1er retrait (séances)  touché en 250 séances
+E0-N0-R1                 11%                 55%          0%                    126                    750
+E0-N0-R2                 11%                 52%          0%                    158                    764
+E0-N1-R1                 11%                 57%         12%                    132                  1 274
+E0-N1-R2                 11%                 55%          5%                    136                  1 233
+E1-N0-R1                 11%                 47%          0%                    132                    721
+E1-N0-R2                 11%                 41%          0%                    125                    666
+E1-N1-R1                 11%                 58%          4%                    134                  1 069
+E1-N1-R2                 11%                 55%          6%                    135                  1 140
+E2-N0-R1                 11%                 56%          0%                    136                    875
+E2-N0-R2                 11%                 50%          0%                    135                    764
+E2-N1-R1                 11%                 53%          4%                    139                    859
+E2-N1-R2                 11%                 49%          3%                    142                    869
+E3-N0-R1                 15%                 34%          2%                    130                    534
+E3-N0-R2                 15%                 33%          2%                    130                    542
+E3-N1-R1                 15%                 35%          1%                    130                    643
+E3-N1-R2                 15%                 35%          1%                    130                    660
+F2-N0-R1                 40%                 58%          2%                     83                  1 175
+F2-N0-R2                 39%                 58%          2%                     92                  1 171
+F2-N1-R1                 43%                 59%         21%                     75                  1 565
+F2-N1-R2                 43%                 59%         21%                     80                  1 590
+F4-N0-R1                 63%                 40%          5%                     50                    921
+F4-N0-R2                 63%                 39%          4%                     50                    906
+F4-N1-R1                 66%                 43%         13%                     43                  1 123
+F4-N1-R2                 66%                 42%         13%                     44                  1 103

@@ -5,88 +5,86 @@ enregistrée avant son calcul). Détail de chaque partie : dossier `resultats/`.
 
 ## En bref
 
-- **Un atout ressort pour ton challenge : la nuit de secours.** Quand le compte a passé 2 jours de trading sans aucun
-  trade, on achète 1 MNQ à 18 h (New York) avec un stop à 0,50 %, et on vend à 9 h 30. En simulation, plus aucun
-  compte n'est perdu par la règle d'inactivité et 70 % des Masters atteignent le 3e retrait, contre 0 % pour le bot
-  seul.
-- **Copier les institutions et les banques ne donne rien.** 10 tests sur leurs positions déclarées à la CFTC : aucun
-  ne passe, et tous font moins bien qu'acheter chaque jour sans regarder personne.
-- **L'arbitrage n'est pas une solution de rechange.** Sur les futures, il a déjà été testé dans le projet et il perd.
-  Polymarket est bloqué en France depuis juillet 2026.
-- **Les six modèles du message du 11 novembre sont tués.** Aucun ne gagne sur des données qu'il n'a pas vues.
+- **Grossir la taille ne paie pas sur ce contrat.** 48 façons de jouer le compte ont été testées. À 2 MNQ, on touche
+  un peu plus et on perd le compte quatre fois plus souvent ; à 4 MNQ, on touche moins.
+- **Un seul levier améliore à la fois le gain et la sécurité : jouer la nuit quand la marge est bonne.** Achat à 18 h,
+  stop à 0,50 %, vente à 9 h 30, chaque soir dès que la marge atteint 2 600 $. Depuis ta situation : 1 274 $ touchés
+  en un an au lieu de 750 $, sans perdre plus de comptes. C'est une piste, pas une preuve : elle ne passe pas la
+  barre fixée d'avance.
+- **Correction : le secours de nuit annoncé d'abord était trop beau.** Simulé avec un vrai MES sous le frein, il perd
+  23 à 27 % des comptes, et non 2 %. Le secours le plus sûr est plus petit : 1 MES de 8 h à 9 h (Paris).
+- **Ordre de grandeur honnête : ce compte paie environ 100 à 140 $ par mois de vie, à 1 MNQ.** Le contrat plafonne
+  les trois premiers retraits à 1 500 $, puis le Master se termine.
+- **Copier les institutions et les banques ne donne rien**, l'arbitrage n'est pas une solution de rechange, et les
+  six modèles du message du 11 novembre sont tués.
 - **Ce qui tient : la zone de bruit (ton Bot 3 en 1) et la hausse lente du Nasdaq pendant la nuit.**
-- **La contre-revue a trouvé un défaut dans mes données de nuit.** Il est corrigé et tous les chiffres de ce rapport
-  sont recalculés. Elle a été coupée par la limite d'utilisation : seule la partie « nuit » a été relue par un
-  regard indépendant.
+- **La contre-revue a trouvé un défaut dans mes données de nuit**, corrigé. Elle a été coupée par la limite
+  d'utilisation : seule la partie « nuit » a été relue par un regard indépendant.
 
 Aucun système ne rapporte 847 $ par nuit ni ne transforme 100 $ en 2 981 $ en 45 minutes. Ces récits ne donnent ni
 données, ni frais, ni période de contrôle : ils ne peuvent pas être reproduits.
 
 ## Le plan pour ton challenge
 
-### 1. La nuit de secours (à faire à la main ou à automatiser)
+### 1. Ce qu'il faut faire tourner, selon ta marge
 
-| | |
-|---|---|
-| Quand | dès que le compte a passé 2 jours de trading de suite sans aucun trade |
-| Entrée | achat de 1 MNQ à 18 h, heure de New York (minuit à Paris) |
-| Stop | 0,50 % sous le prix d'entrée : environ 140 points de NQ aujourd'hui, soit −285 $ |
-| Sortie | vente à 9 h 30, heure de New York (15 h 30 à Paris), si le stop n'a pas été touché |
-| Ensuite | cette nuit compte comme un trade : le compteur d'inactivité repart de zéro |
-| Si la marge est sous 1 750 $ | 1 MES au lieu de 1 MNQ : c'est le frein de ton bot |
-
-Trois à quatre semaines par an (mi-mars, fin octobre), New York et Paris n'ont que 5 heures d'écart : l'entrée est
-alors à 23 h et la sortie à 14 h 30, heure de Paris.
-
-Ce que ça donne sur un compte Master Bulenox 50K, rejoué de 2017 à octobre 2026 (un compte neuf toutes les
-20 séances, 122 comptes) :
-
-| | Atteignent le 3e retrait | Perdus par le plancher | Perdus par l'inactivité |
+| Ta marge au-dessus du plancher | Le bot | Secours après 2 jours de trading sans trade | La nuit |
 |---|---|---|---|
-| Ton bot seul | 0 % | 0 % | 99 % |
-| Ton bot + la nuit de secours | 70 % | 2 % | 0 % |
-| Pour comparer : ton bot seul, si la règle d'inactivité n'existait pas | 65 % | 0 % | — |
+| Moins de 1 750 $ (ton cas aujourd'hui) | 1 MES (le frein) | 1 MES de 8 h à 9 h, heure de Paris, sans stop | non |
+| De 1 750 à 2 600 $ | 1 MNQ | 1 MES de 8 h à 9 h, heure de Paris, sans stop | non |
+| 2 600 $ et plus | 1 MNQ | inutile : la nuit compte comme un trade | 1 MNQ : achat à 18 h (New York), stop à 0,50 %, vente à 9 h 30 |
 
-À savoir avant de l'utiliser :
+Sur un compte Master neuf, rejoué de 2017 à octobre 2026 (122 comptes, `resultats/partie_k2.txt`) :
 
-- **Le chiffre exact est fragile.** Avec un secours plus tardif (après 3 ou 4 jours) ou un stop à 0,75 %, 41 à 63 %
-  des comptes atteignent le 3e retrait et 11 à 34 % sont perdus par le plancher. Ce qui ne change jamais : aucun
-  compte n'est plus perdu par l'inactivité.
-- **Il faut l'accord écrit de Bulenox.** Leur contrat ne compte pas une « activité artificielle destinée uniquement à
-  prévenir l'inactivité ». Cette nuit est un vrai trade (15 heures de marché, un vrai risque, un gain moyen de
-  14 $ par nuit en test), mais elle est déclenchée par le compteur. Message proposé plus bas.
-- **Fais-la d'abord tourner sans argent** pendant quelques semaines : la simulation lit la nuit sur un CFD, pas sur
-  le vrai future.
-- Le rapport du matin (`systeme/rapport_matin.py`) écrit maintenant la consigne les jours où elle s'applique.
-
-### 2. Ta taille, depuis ta marge actuelle
-
-Solde 50 700 $, plancher 49 300 $, marge 1 400 $. Rejoué depuis chaque séance de 2017 à octobre 2026, sur 120 séances,
-règle d'inactivité comptée (`resultats/partie_h3.txt`, descriptif) :
-
-| Cas | Perdu par le plancher | Perdu par l'inactivité | Solde ≥ 53 600 $ (1er retrait possible) | Toujours en vie, sans retrait |
+| | Atteignent le 3e retrait | Perdus par le plancher | 1er retrait | 3e retrait |
 |---|---|---|---|---|
-| 1 MNQ, le bot seul | 0 % | 99 % | 1 % | 0 % |
-| 1 MNQ, le bot + la nuit de secours | 6 % | 0 % | 31 % | 62 % |
-| 2 MNQ, le bot seul | 2 % | 95 % | 3 % | 0 % |
-| 2 MNQ, le bot + la nuit de secours | 34 % | 0 % | 49 % | 17 % |
+| Ton bot + le secours d'une heure | 63 % | 17 % | 191 séances | 623 séances |
+| La même chose + la nuit dès 2 600 $ de marge | 70 % | 13 % | 160 séances | 513 séances |
+| Ton bot + le secours de nuit (mon premier conseil) | 53 % | 27 % | 148 séances | 426 séances |
 
-« Frein » compris : tant que la marge est sous 1 750 $, le bot et la nuit passent en demi-taille (1 MES à la place
-de 1 MNQ, 1 MNQ à la place de 2). À 4 MNQ, le bot seul perd déjà le compte par le plancher plus d'une fois sur deux
-(`resultats/situation.txt`). **Tant que ta marge n'est pas remontée : 1 MNQ au plus.**
+Depuis ta situation (solde 50 700 $, marge 1 400 $), sur 250 séances, environ un an :
+
+| | Compte perdu | Au moins un retrait | Touché en moyenne |
+|---|---|---|---|
+| Ton bot + le secours d'une heure | 11 % | 55 % | 750 $ |
+| La même chose + la nuit dès 2 600 $ de marge | 11 % | 57 % | 1 274 $ |
+| 2 MNQ tout le temps + la nuit | 43 % | 59 % | 1 565 $ |
+| 4 MNQ tout le temps + la nuit | 66 % | 43 % | 1 123 $ |
+
+À savoir :
+
+- **La nuit dès 2 600 $ de marge est une piste.** Elle améliore tous les chiffres ci-dessus, mais sur des comptes
+  neufs elle ne touche que 10 % de plus par mois de vie ; la règle fixée d'avance demandait 25 %.
+- **Elle doit être codée dans le bot.** Le Bot 3 en 1 réaligne toute position MNQ prise à la main. Ce n'est pas fait.
+- **Le secours d'une heure ne gagne rien** (−0,7 $ en moyenne, pire résultat −513 $) : il sert seulement à garder le
+  compte actif. Il se joue sur MES, donc sans gêner le bot.
+- **Il faut l'accord écrit de Bulenox**, qui ne compte pas une « activité artificielle ».
+- **Ces pourcentages tiennent à peu d'épisodes** : presque toutes les pertes de la première ligne viennent de
+  comptes déjà au bord du plancher après la mauvaise année 2025.
+
+### 2. Pourquoi grossir ne paie pas
+
+Le Master ne paie que trois retraits de 1 500 $ au plus, alors que le plancher reste à 2 500 $. Doubler la taille
+double les pertes possibles, mais pas ce qu'on a le droit de retirer.
+
+| Taille du bot (avec le secours d'une heure) | Atteignent le 3e retrait | Perdus par le plancher | Touché par Master |
+|---|---|---|---|
+| 1 MNQ | 63 % | 17 % | 2 451 $ |
+| 2 MNQ dès 2 600 $ de marge | 62 % | 17 % | 2 489 $ |
+| 2 MNQ dès 2 600 $, 3 dès 3 600 $ | 60 % | 18 % | 2 451 $ |
+| 2 MNQ dès 2 000 $, 3 dès 3 000 $, 4 dès 4 000 $ | 60 % | 23 % | 2 333 $ |
+| 2 MNQ tout le temps | 52 % | 34 % | 2 176 $ |
+| 4 MNQ tout le temps | 31 % | 59 % | 1 288 $ |
+
+Attendre 1 500 $ au lieu de retirer dès 1 000 $ ne change presque rien non plus.
 
 ### 3. Combien par mois, et quand tombe un retrait
 
-1 MNQ, frais compris, 118 mois de 2017 à octobre 2026 (`resultats/mois.txt`, descriptif, sans frein ni plancher) :
+Ce que gagne le bot seul sur le marché, à 1 MNQ, frais compris, sur 118 mois (`resultats/mois.txt`) : +318 $ par
+mois en moyenne, 36 % de mois perdants, pire mois −1 235 $, et l'année 2025 entière perdante (−639 $).
 
-| | Moyenne par mois | Médiane | Mois perdants | Pire mois | Meilleur mois |
-|---|---|---|---|---|---|
-| Ton bot seul | +318 $ | +185 $ | 36 % | −1 235 $ | +3 668 $ |
-| Ton bot + la nuit de secours | +388 $ | +298 $ | 41 % | −2 020 $ | +4 797 $ |
-
-- **Ce n'est pas un salaire.** Quatre mois sur dix sont perdants, et l'année 2025 entière est perdante (−638 $ pour
-  le bot seul, −2 113 $ avec la nuit de secours).
-- À 2 MNQ, ces chiffres doublent, les pertes aussi : depuis ta marge actuelle, le compte est perdu une fois sur trois.
+Ce que tu touches vraiment est plus petit : **environ 100 à 140 $ par mois de vie du compte**. Les premiers 2 600 $
+gagnés doivent rester sur le compte, tu ne touches que 90 % du reste, et un compte sur six ou sept est perdu en route.
 
 Les retraits du compte Master, d'après ton contrat (annexe A du 23 octobre 2026) :
 
@@ -99,11 +97,28 @@ Les retraits du compte Master, d'après ton contrat (annexe A du 23 octobre 2026
 | Ta meilleure journée | pas plus de 40 % du gain fait depuis le dernier retrait |
 | Après le 3e retrait | le Master se termine et tu passes sur le compte « funded » |
 
-Ton solde est à environ 50 700 $ : il manque **2 900 $** avant le premier retrait. À 1 MNQ avec la nuit de secours,
-il faut 116 séances en médiane pour les gagner (5 à 6 mois) ; un quart du temps moins de 67 séances, un quart du
-temps plus de 180.
+Ton solde est à environ 50 700 $ : il manque **2 900 $** avant le premier retrait. Avec le plan du point 1, un peu
+plus d'un compte sur deux y arrive en un an, en 132 séances en médiane (6 mois).
 
-### 4. Pour tes trades à la main
+### 4. Pour gagner vraiment plus
+
+Dans ce compte, le plafond est le contrat, pas la stratégie. Ce qui peut multiplier le gain est ailleurs, et tout
+est à vérifier auprès de Bulenox avant de payer quoi que ce soit :
+
+- **Plusieurs comptes avec le même bot.** C'est la façon habituelle de grossir chez une firme : chaque compte a son
+  propre plafond de retraits. Les guides ne sont pas d'accord sur le nombre de Masters permis (3, 5 ou 11) ni sur le
+  droit de copier ses trades d'un compte à l'autre
+  ([TradingFinder](https://tradingfinder.com/props/bulenox/rules),
+  [CrossTrade](https://crosstrade.io/prop-firms/bulenox),
+  [The God Funded](https://thegodfunded.com/en/news/bulenox-launches-fast-track-and-momentum-and-removes-recurring-evaluation-subscriptions)).
+  Chaque compte coûte une qualification, et ils seraient tous perdus en même temps dans une mauvaise période.
+- **Le compte « funded » après le 3e retrait.** D'après les guides, les retraits n'y sont plus plafonnés
+  ([Prop Trading Vibes](https://proptradingvibes.com/blog/bulenox-payout-rules)). Je n'ai pas ses règles : c'est
+  seulement là que grossir la taille pourrait payer.
+- **Un nouvel avantage mesuré.** Le projet a testé plus d'un million de règles sans en trouver d'autre que la zone
+  et la nuit.
+
+### 5. Pour tes trades à la main
 
 - **Le sens.** La seule règle de direction validée sur 15 ans reste la zone de bruit : acheter au-dessus de la bande
   haute, vendre sous la bande basse, ne rien faire entre les deux. Un setup à contre-sens de la zone joue contre le
@@ -115,20 +130,63 @@ temps plus de 180.
   coûter le compte. `systeme/garde.py` calcule la taille permise avant chaque ordre et refuse ceux qui pourraient
   toucher le plancher.
 
-### 5. Le message à envoyer à Bulenox
+### 6. Le message à envoyer à Bulenox
 
-> Hello, I trade a Master 50K account with an automated strategy that can stay flat for several days. To remain
-> active, I would like to add a second strategy: buying 1 MNQ at 18:00 ET with a 0.50% stop-loss and closing it at
-> 9:30 ET, on the evening that follows two trading days without a trade. It is a real overnight position with its own
-> risk. Do you consider it valid trading activity under the inactivity rule, or "artificial activity"? Could you
-> confirm in writing? Thank you.
+> Hello, I trade a Master 50K account with an automated strategy that can stay flat for several days. Two questions.
+> (1) To remain active, I would add a small second strategy: buying 1 MES at 2:00 ET and closing it at 3:00 ET on the
+> morning that follows two trading days without a trade. It is a real position with its own risk. Do you consider it
+> valid trading activity under the inactivity rule, or "artificial activity"? (2) How many Master accounts may I hold
+> at the same time, and may I run the same automated strategy on all of them? Could you confirm in writing? Thank you.
 
-### 6. Pour l'automatiser
+### 7. Pour l'automatiser
 
-La règle tient en quatre lignes dans le bot : un compteur de jours de trading sans trade ; à 18 h (New York), si le
-compteur vaut 2 ou plus, un achat au marché avec un stop à 0,50 % ; à 9 h 30, la sortie ; le résultat de la nuit
-entame la limite du jour. Je ne l'ai pas écrite dans `bot3en1/` : c'est du code qui passerait de vrais ordres sur
-ton compte, à décider avec toi et après la réponse de Bulenox.
+Trois ajouts au bot, dans cet ordre : un compteur de jours de trading sans trade ; le secours (1 MES de 8 h à 9 h,
+heure de Paris, quand le compteur vaut 2 ou plus) ; la nuit (1 MNQ à 18 h, heure de New York, stop à 0,50 %, sortie
+à 9 h 30, seulement si la marge atteint 2 600 $), dont le résultat entame la limite du jour. Je ne les ai pas écrits
+dans `bot3en1/` : c'est du code qui passerait de vrais ordres sur ton compte, à décider avec toi et après la réponse
+de Bulenox.
+
+## Gagner plus : la taille, la nuit, le retrait (parties J, K et K2)
+
+**La nuit sur le MES (partie J).** Elle sert sous le frein, et pour tout ordre passé à la main.
+
+| 1 MES, frais 4,50 $ | t (exploration / contrôle) | Par nuit | Pire nuit | Verdict |
+|---|---|---|---|---|
+| Sans stop | 2,57 (2,21 / 1,34) | +10,5 $ | −2 574 $ | non : pire nuit, frais doublés |
+| Stop 0,50 % | 1,22 (0,91 / 0,89) | +3,9 $ | −399 $ | non |
+
+La hausse de nuit existe aussi sur le S&P, mais le MES coûte plus cher en frais et la nuit avec stop n'y passe pas.
+C'est ce qui change le secours de nuit : sous le frein, chaque nuit stoppée coûte environ 200 $ sur un vrai MES,
+contre 144 $ pour le « demi-MNQ » de la simulation d'avant, qui n'existe pas.
+
+**Les 24 politiques avec le secours d'une heure (partie K2).** N1 = la nuit chaque soir dès 2 600 $ de marge.
+Retrait dès 1 000 $ disponibles ; l'attente à 1 500 $ donne les mêmes ordres de grandeur (`resultats/partie_k2.txt`).
+
+| Taille du bot | Nuit | 3e retrait | Perdus par le plancher | 1er retrait (séances) | 3e retrait (séances) | Touché par Master | Par mois de vie | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| 1 MNQ | secours seul | 63 % | 17 % | 191 | 623 | 2 451 $ | 96 $ | référence |
+| 1 MNQ | N1 | 70 % | 13 % | 160 | 513 | 2 569 $ | 106 $ | non : +10 % seulement |
+| 2 MNQ dès 2 600 $ | secours seul | 62 % | 17 % | 219 | 685 | 2 489 $ | 94 $ | non |
+| 2 MNQ dès 2 600 $ | N1 | 67 % | 16 % | 172 | 590 | 2 590 $ | 107 $ | non |
+| 2 puis 3 MNQ | secours seul | 60 % | 18 % | 200 | 676 | 2 451 $ | 91 $ | non |
+| 2 puis 3 MNQ | N1 | 67 % | 16 % | 188 | 794 | 2 579 $ | 86 $ | non |
+| 2, 3 puis 4 MNQ | secours seul | 60 % | 23 % | 260 | 853 | 2 333 $ | 84 $ | non |
+| 2, 3 puis 4 MNQ | N1 | 62 % | 20 % | 208 | 767 | 2 419 $ | 86 $ | non |
+| 2 MNQ tout le temps | secours seul | 52 % | 34 % | 109 | 506 | 2 176 $ | 121 $ | non : trop de comptes perdus |
+| 2 MNQ tout le temps | N1 | 51 % | 41 % | 96 | 370 | 2 134 $ | 168 $ | non : trop de comptes perdus |
+| 4 MNQ tout le temps | secours seul | 31 % | 59 % | 70 | 411 | 1 288 $ | 121 $ | non : trop de comptes perdus |
+| 4 MNQ tout le temps | N1 | 37 % | 59 % | 54 | 319 | 1 472 $ | 183 $ | non : trop de comptes perdus |
+
+- Règle d'adoption : aucun compte perdu par inactivité, au plus 30 % perdus par le plancher, et au moins 25 % de
+  plus par mois de vie que la référence, dans chaque moitié de la période. **Aucune politique ne la passe.**
+- « Par mois de vie » monte avec la taille parce que les comptes y meurent vite : c'est pour cela que la règle
+  regarde aussi les comptes perdus.
+- Contrôle : le nouveau simulateur redonne exactement H2 quand on lui donne les mêmes hypothèses (69,7 %, 2,5 %,
+  2 675 $), et exactement le bot seul quand le secours ne coûte rien (65 %, 0 %).
+
+**Les mêmes politiques avec le secours de nuit (partie K).** Référence : 53 % au 3e retrait, 27 % perdus par le
+plancher, 119 $ par mois de vie. La meilleure qui reste sous 30 % de comptes perdus (2 MNQ dès 2 600 $, nuit chaque
+soir, retrait à 1 500 $) fait 59 %, 25 % et 145 $ : +22 %, sous la barre de 25 %. Aucune n'est adoptée (`resultats/partie_k.txt`).
 
 ## Contre-revue (#ultrareview)
 
@@ -191,6 +249,9 @@ Idée testée : ne garder que les heures où la hausse de nuit se fait. 3 538 nu
   Masters au 3e retrait : pas mieux que la nuit entière.
 
 ## La nuit de secours dans le compte (partie H2)
+
+**Attention : ces chiffres sont trop beaux.** Ils simulent le frein comme un « demi-MNQ », qui n'existe pas. Avec un
+vrai MES, le premier réglage donne 53 % au 3e retrait et 27 % de comptes perdus par le plancher (partie J).
 
 Master Bulenox 50K Option 2, un compte neuf toutes les 20 séances de 2017 à octobre 2026. Un trade de secours qui
 tombe dans un trou du fichier compte comme un trade à 0 $ (règle écrite avant le calcul).
@@ -311,8 +372,8 @@ suffit toujours pas : même à k = 0,5, la zone reste silencieuse certains jours
 | Fichier | Ce qu'il fait | Vérifié |
 |---|---|---|
 | `regime.py` | État du marché de la prochaine séance : CHUTE, VOLATIL, TENDANCE ou CALME | utilisé par la partie A ; affiché pour information, il ne change aucun ordre |
-| `garde.py` | Contrôle avant chaque ordre : plancher, limite du jour (nuit comprise), taille maximale, frein, jours de la Fed, fenêtre 16 h 55 - 18 h, compteur d'inactivité, consigne de la nuit de secours, limite de baisse de 15 % pour un compte personnel | `python3 garde.py` lance ses tests (dont ton cas : +1 800 $ puis −1 100 $ = marge 1 400 $) |
-| `rapport_matin.py` | Revue des trades de la veille depuis le journal du bot : résultat, pire et meilleur moment de chaque trade, écarts aux règles, marge, alertes et consigne de secours pour le soir ; envoi Telegram possible | redonne les −272 $ du trade audité du 21 octobre 2026 en 4 MNQ |
+| `garde.py` | Contrôle avant chaque ordre : plancher, limite du jour (nuit comprise), taille maximale, frein, jours de la Fed, fenêtre 16 h 55 - 18 h, compteur d'inactivité, consigne du secours d'une heure et de la nuit, limite de baisse de 15 % pour un compte personnel | `python3 garde.py` lance ses tests (dont ton cas : +1 800 $ puis −1 100 $ = marge 1 400 $) |
+| `rapport_matin.py` | Revue des trades de la veille depuis le journal du bot : résultat, pire et meilleur moment de chaque trade, écarts aux règles, marge, alertes, consigne du secours et de la nuit ; envoi Telegram possible | redonne les −272 $ du trade audité du 21 octobre 2026 en 4 MNQ |
 
 Ils ne sont pas branchés sur ton bot C# ni sur GitHub Actions : ce sont des modules à lancer ou à intégrer.
 
@@ -325,6 +386,7 @@ git worktree add ../op origin/claude/optimistic-ptolemy-xs24ra
 cd chantier && pip install numpy pandas numba
 python3 nuit.py && python3 compte.py && python3 compte.py 2 && python3 inactivite.py
 python3 variantes.py g h1 h2 h3 mois
+python3 tailles.py j k k2
 python3 divers.py && python3 machine.py nq && python3 machine.py btc
 ```
 
@@ -335,8 +397,9 @@ python3 divers.py && python3 machine.py nq && python3 machine.py btc
   tick. Le fichier a des trous en 2023.
 - Les pourcentages du compte reposent sur 122 comptes qui se chevauchent et sur une poignée de dates de perte : ce
   sont des ordres de grandeur.
-- Le frein est simulé comme une demi-taille de MNQ ; en vrai, c'est 1 MES, qui ne bouge pas exactement comme un
-  demi-MNQ.
+- Le frein du bot est simulé comme une demi-taille de MNQ ; en vrai, c'est 1 MES, qui ne bouge pas exactement comme
+  un demi-MNQ. Depuis les parties J et K, les trades de nuit et de secours sous le frein sont de vrais MES.
+- Un compte perdu coûte aussi une nouvelle qualification (frais et temps), que le simulateur ne compte pas.
 - Le filtre delta du bot ne peut pas être rejoué avant avril 2026 : le compte simule le bot sans lui.
 - Le contrat du compte « funded » après le 3e retrait n'est pas connu : ses chiffres reposent sur des hypothèses.
 - Machine sur le bitcoin : positions fermées à minuit UTC (et non après 24 h), frais de 4 points de base.

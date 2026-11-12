@@ -34,8 +34,9 @@ class Garde:
     jours_fed: frozenset = frozenset()
     inactivite_max: int = 5              # jours de trading sans trade = compte perdu
     baisse_max: float = 0.15             # compte personnel : plus d'ordre si le solde a baisse de 15 % depuis son plus haut
-    secours_apres: int = 2               # jours de trading sans trade avant la nuit de secours (chantier, partie H2)
-    stop_nuit: float = 0.005             # stop de la nuit de secours : 0,50 % sous l'entree
+    secours_apres: int = 2               # jours de trading sans trade avant le secours (chantier, parties H2 et K2)
+    marge_nuit: float = 2600.0           # marge a partir de laquelle la nuit est jouee chaque soir (piste de la partie K2)
+    stop_nuit: float = 0.005             # stop de la nuit : 0,50 % sous l'entree
     plus_haut: float = 50000.0           # plus haut des soldes de fin de journee
     sommet: float = 50000.0              # plus haut du solde (pour la limite de baisse en %)
     gain_jour: float = 0.0               # realise + latent de la journee de trading (18 h -> 17 h, nuit comprise)
@@ -94,13 +95,19 @@ class Garde:
                 r.append(f"attention : la limite du jour restante dépasse la marge ({n(self.marge)} $) : une seule perte peut coûter le compte")
         return Reponse(True, t, r)
 
-    def secours_nuit(self, prix=None):
-        """Faut-il prendre la nuit de secours ce soir (regle d'inactivite) ? None si non, sinon la consigne en clair."""
-        if self.jours_sans_trade < self.secours_apres:
+    def secours_nuit(self):
+        """Faut-il un trade de secours (regle d'inactivite) ? None si non, sinon la consigne en clair."""
+        if self.jours_sans_trade < self.secours_apres or self.marge >= self.marge_nuit:
             return None
-        contrat = "1 MES (frein : marge sous " + n(self.frein) + " $)" if self.marge < self.frein else "1 MNQ"
+        return (f"secours ({self.jours_sans_trade} jours de trading sans trade) : au prochain matin de bourse, achat de 1 MES à 8 h "
+                f"(heure de Paris), vente à 9 h, sans stop")
+
+    def module_nuit(self, prix=None):
+        """La nuit comme module de gain, seulement si la marge le permet. None sinon."""
+        if self.marge < self.marge_nuit:
+            return None
         pct = f"{self.stop_nuit * 100:.2f}".replace(".", ",")
-        s = f"nuit de secours ce soir ({self.jours_sans_trade} jours de trading sans trade) : achat de {contrat} à 18 h (New York), stop à {pct} % sous l'entrée"
+        s = f"nuit (marge de {n(self.marge)} $) : achat de 1 MNQ à 18 h (New York), stop à {pct} % sous l'entrée"
         if prix:
             s += f" (entrée à {n(prix)} : stop à {n(prix * (1 - self.stop_nuit))})"
         return s + ", vente à 9 h 30 (New York) si le stop n'a pas été touché"
@@ -139,10 +146,11 @@ def _tests():
     for _ in range(3):
         al = g.fin_de_journee(0, False)
     assert any("inactivité" in x for x in al)
-    assert "1 MES" in g.secours_nuit() and "stop à 0,50 %" in g.secours_nuit(28500)              # 3 jours sans trade, marge 400 $ : secours en MES
+    assert "1 MES" in g.secours_nuit() and g.module_nuit() is None                 # 3 jours sans trade, marge 400 $ : secours, pas de nuit
     h = Garde(); assert h.secours_nuit() is None
     h.fin_de_journee(0, False); assert h.secours_nuit() is None
-    h.fin_de_journee(0, False); assert "1 MNQ" in h.secours_nuit() and "28 358" in h.secours_nuit(28500)  # 2 jours sans trade : secours, stop a 28 357,50
+    h.fin_de_journee(0, False); assert "8 h" in h.secours_nuit() and h.module_nuit() is None   # 2 jours sans trade, marge 2 500 $
+    q = Garde(solde=52700, plus_haut=52700); assert "28 358" in q.module_nuit(28500)           # marge 2 700 $ : la nuit, stop a 28 357,50
     g = Garde(solde=52700, plus_haut=52700); assert g.plancher == 50000   # plancher arrete au solde de depart
     p = Garde(solde=8400, depart=10000, plus_haut=10000, sommet=10000, perte_max=1e9, limite_bot=1e9, frein=0)
     assert not p.verifier(1, 50, "10:30").autorise                         # compte personnel : -16 % depuis le plus haut
