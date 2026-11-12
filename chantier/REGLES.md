@@ -405,3 +405,20 @@ s'en servir dans le contrat Master : **trois leviers, 24 politiques**.
 - Réserves écrites d'avance : les seuils sont des chiffres ronds fixés ici, pas choisis sur les résultats ; mais les
   24 politiques sont jugées sur les mêmes dix années, et un compte perdu coûte aussi une nouvelle qualification
   (frais et temps), que le simulateur ne compte pas. Le compte « funded » d'après le 3e retrait reste une hypothèse.
+
+### Partie K2 (règles écrites le 12 novembre 2026, après le résultat de la partie J et avant tout calcul de K et de K2)
+
+Constat de la partie J : quand le frein est simulé avec un vrai MES (et non avec un « demi-MNQ », qui n'existe pas),
+le secours de nuit avec stop perd 23 à 27 % des Masters par le plancher, au lieu de 2 % dans H2. Les nuits stoppées
+s'empilent pendant les périodes agitées (avril 2020, janvier 2022, mai - juin 2025) : le bot ne trade pas, le compte
+est près du plancher et chaque stop coûte environ 200 $. **Le chiffre de H2 (70 % et 2 %) était donc trop beau.**
+
+D'où un second secours, le plus petit vrai trade possible : **1 MES de 8 h à 9 h (heure de Paris), sans stop**
+(l'heure d'ouverture de l'Europe, la meilleure heure de la nuit dans H1).
+
+- K2 = les 24 politiques de K avec ce secours à la place du secours de nuit. N1 reste la nuit entière sur 1 MNQ avec
+  stop 0,50 %, chaque soir dès 2 600 $ de marge.
+- Mêmes mesures et même règle d'adoption, face à la référence de K2 (E0, N0, R1 avec ce secours).
+- Publié aussi : le gain moyen, l'écart type et le pire résultat de ce trade d'une heure.
+- Réserve écrite d'avance : ce secours est conçu après avoir vu les pertes de la partie J. Son test est une
+  vérification sur les mêmes années, pas une preuve indépendante.

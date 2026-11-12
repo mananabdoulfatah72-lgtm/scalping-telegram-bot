@@ -100,20 +100,20 @@ FEN = {"A": "A · Asie : 18 h (New York) → 8 h (Paris)", "E": "E · ouverture 
        "M": "M · matin : 9 h (Paris) → 9 h 30 (New York)", "EM": "EM · 8 h (Paris) → 9 h 30 (New York)"}
 
 
-def barres():
-    t, o, h, l, c = D.cfd()
+def barres(nom="usatechidxusd"):
+    t, o, h, l, c = D.cfd(nom)
     par = pd.to_datetime(t * 60, unit="s", utc=True).tz_convert("Europe/Paris")
     return o, l, (par.hour * 60 + par.minute).to_numpy()
 
 
-def gain_chemin(ob, lb, e, x, stop, frais):
+def gain_chemin(ob, lb, e, x, stop, frais, E=E, tick=D.TICK / D.PREF):
     """Meme calcul que nuit.gains : stop lu sur les plus bas des barres, rempli a son niveau moins 1 tick (ou a l'ouverture)."""
     r = x / e - 1; bas = lb.min() / e - 1; stp = False
     if stop > 0:
         niv = e * (1 - stop); k = np.nonzero(lb <= niv)[0]
         if len(k):
             k = k[0]; px = ob[k] if (k > 0 and ob[k] < niv) else niv
-            r = px / e - 1 - D.TICK / D.PREF; bas = min(-stop, r); stp = True
+            r = px / e - 1 - tick; bas = min(-stop, r); stp = True
     g = r * E - frais
     return g, min(bas * E - frais, g), stp
 
@@ -132,7 +132,7 @@ def gains_fenetre(X, Bq, nom, stop, frais=D.FRAIS):
         if a < 0 or b < 0 or b <= a:
             continue
         x = X["sortie"][s] if b == fin else o[idx[b]]
-        g[s], creux[s], stp[s] = gain_chemin(o[idx[a:b]], l[idx[a:b]], o[idx[a]], x, stop, frais)
+        g[s], creux[s], stp[s] = gain_chemin(o[idx[a:b]], l[idx[a:b]], o[idx[a]], x, stop, frais, X.get("E", E), X.get("tick", D.TICK / D.PREF))
     return g, creux, stp
 
 

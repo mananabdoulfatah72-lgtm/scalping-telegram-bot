@@ -1,0 +1,12 @@
+Partie J : la nuit sur le MES (S&P 500 24 h), achat 18 h, vente 9 h 30 ; 1 MES au prix d'aujourd'hui (7 803 points, 5 $ par point), frais 4,50 $.
+Nuits jouables : 3435 du 2012-01-04 au 2026-10-02 (Nasdaq : 3538).
+
+variante       nuits      t  t expl  t ctrl  t a 9$  $/nuit    $/an    pire annees+ stops  verdict
+sans stop       3435   2.57    2.21    1.34    1.47    10.5    2409   -2574   12/15     0  échoue : frais doublés, pire nuit
+stop 0,50 %     3435   1.22    0.91    0.89   -0.19     3.9     888    -399    9/15   904  échoue : t/BH, frais doublés, années
+
+Lien avec la nuit du Nasdaq (sans stop, 3406 nuits communes) : corrélation 0.94.
+
+Dans le compte Master (2017 → 2 octobre 2026, un Master neuf toutes les 20 séances, compteur d'inactivité tenu compte par compte) :
+  secours après 2 jours sur 1 MNQ (1 MES sous le frein) : 53% au 3e retrait, 27% perdus par le plancher, 0% par l'inactivité ; touché 2 023 $ par Master, 119 $ par mois de vie ; 1er retrait en 148 séances, 3e en 426 ; départs décalés : 3e retrait 56% à 57%, plancher 23% à 25% → non adoptée
+  secours après 2 jours, toujours sur 1 MES : 66% au 3e retrait, 14% perdus par le plancher, 0% par l'inactivité ; touché 2 497 $ par Master, 130 $ par mois de vie ; 1er retrait en 149 séances, 3e en 438 ; départs décalés : 3e retrait 61% à 64%, plancher 13% à 18% → ADOPTÉE

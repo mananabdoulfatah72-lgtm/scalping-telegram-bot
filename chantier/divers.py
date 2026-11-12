@@ -213,10 +213,13 @@ NM = 236                                                                  # minu
 def fenetre(chemin):
     f = D.CACHE / ("fen_" + chemin.split("/")[-1].replace(".csv.gz", ".npz"))
     if f.exists():
-        z = np.load(f); return z["J"], z["O"], z["C"], z["ok"]
+        try:
+            z = np.load(f); return z["J"], z["O"], z["C"], z["ok"]
+        except ValueError:
+            pass                                                   # ancien cache (dates en objets) : on le refait
     d = D.minutes_marche(chemin); jour = d.t.str[:10].to_numpy()
     m = (d.t.str[11:13].astype(int) * 60 + d.t.str[14:16].astype(int) - 570).to_numpy(); g = (m >= 0) & (m < NM)
-    d, jour, m = d[g], jour[g], m[g]; J = np.unique(jour); s = np.searchsorted(J, jour)
+    d, jour, m = d[g], jour[g], m[g]; J = np.unique(jour).astype("U10"); s = np.searchsorted(J, jour.astype("U10"))
     O = np.full((len(J), NM), np.nan); C = O.copy(); O[s, m] = d.o.to_numpy(); C[s, m] = d.c.to_numpy()
     ok = np.isfinite(C[:, 0]) & np.isfinite(C[:, NM - 1]) & (np.isfinite(C).sum(1) >= 220)
     for i in np.nonzero(ok)[0]:

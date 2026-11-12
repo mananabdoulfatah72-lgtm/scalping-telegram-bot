@@ -15,11 +15,11 @@ FILTRES = ("F0", "F1", "F2", "F3")
 SORTIE = D.ICI / "resultats"; SORTIE.mkdir(exist_ok=True)
 
 
-def construire():
-    """Une ligne par seance complete du NQ : la nuit qui la precede (lue sur le CFD) et les filtres connus a l'entree."""
+def construire(nom="usatechidxusd"):
+    """Une ligne par seance complete du NQ : la nuit qui la precede (lue sur le CFD `nom`) et les filtres connus a l'entree."""
     M = D.nq_minutes()
     J, ok, O, C = M["J"], M["ok"], M["O"], M["C"]
-    t, o, h, l, c = D.cfd()
+    t, o, h, l, c = D.cfd(nom)
     dj, mn, _ = D.heure_ny(t)
     ordi = pd.to_datetime(dj).map(dt.date.toordinal).to_numpy()
     soir = mn >= 1080; matin = mn < 570
@@ -72,7 +72,7 @@ def construire():
 def gains(X, stop, frais=D.FRAIS):
     """Gain en $ de chaque nuit jouable pour 1 MNQ au prix d'aujourd'hui, et pire moment de la nuit (latent, en $)."""
     S = len(X["J"]); g = np.full(S, np.nan); creux = np.full(S, np.nan); stoppe = np.zeros(S, bool)
-    tick = D.TICK / D.PREF
+    tick = X.get("tick", D.TICK / D.PREF); E = X.get("E", D.PREF * 2)          # autre contrat : X["E"] = $ pour 100 % de variation
     for s in range(S):
         e = X["entree"][s]
         if not np.isfinite(e):
@@ -86,7 +86,7 @@ def gains(X, stop, frais=D.FRAIS):
                 k = k[0]
                 px = ob[k] if (k > 0 and ob[k] < niv) else niv
                 r = px / e - 1 - tick; bas = min(-stop, r); stoppe[s] = True
-        g[s] = r * D.PREF * 2 - frais; creux[s] = min(bas * D.PREF * 2 - frais, g[s])
+        g[s] = r * E - frais; creux[s] = min(bas * E - frais, g[s])
     return g, creux, stoppe
 
 
