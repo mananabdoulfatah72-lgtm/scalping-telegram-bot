@@ -341,3 +341,9 @@ Solde 50 700 $, plus haut de fin de journée 51 800 $ (marge 1 400 $), 120 séan
 2017 à 2026, **règle d'inactivité comptée** : le bot seul à 1 MNQ avec frein, puis le bot avec le module de secours
 le mieux classé de H2. On donne : perdus par le plancher, perdus par l'inactivité, solde ≥ 53 600 $ (premier retrait
 possible).
+
+**Précisions du 12 novembre 2026, écrites après le calcul de H2 (elles ne changent aucun chiffre).**
+- « Puis chaque nuit jusqu'au premier trade » : la nuit de secours compte elle-même comme un trade. Le compteur
+  repart donc de zéro après elle, et la nuit de secours suivante vient k jours de trading sans trade plus tard
+  (c'est ce que fait le code, comme le secours de la vague 10).
+- Ajouté pour information après les résultats : les mêmes Masters lancés 5, 10 ou 15 séances plus tard.

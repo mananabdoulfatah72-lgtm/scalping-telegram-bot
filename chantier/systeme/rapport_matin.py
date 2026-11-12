@@ -121,6 +121,9 @@ def revue(journal, minutes, jour, taille, solde, plus_haut, sans_trade=0, fed=()
           f"- Jours de trading de suite sans trade : {g.jours_sans_trade}.", "",
           "## Ce qui s'écarte des règles"] + ([f"- {x}" for x in ecarts] or ["- Rien : le bot a suivi ses règles."])
     L += ["", "## Pour la prochaine séance"] + ([f"- {x}" for x in alertes] or ["- Pas d'alerte sur le compte."])
+    sec = g.secours_nuit()
+    if sec:
+        L.append(f"- {sec[0].upper()}{sec[1:]}.")
     rep = g.verifier(taille, 0, "10:30")
     L.append(f"- Taille permise par le garde : {rep.taille} MNQ" + (f" ({' ; '.join(rep.raisons)})" if rep.raisons else "") + ".")
     et = etat_du_marche(minutes)

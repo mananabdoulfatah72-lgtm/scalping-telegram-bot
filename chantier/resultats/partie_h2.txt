@@ -1,0 +1,90 @@
+Partie H2 : le module de nuit dans le compte Master Bulenox 50K (2017 → 2 octobre 2026, un Master neuf toutes les 20 séances).
+Secours « toujours possible » : un trade de secours qui tombe dans un trou du fichier compte comme un trade à 0 $.
+
+T0 · le bot seul (Z12F  limite 1 000 $  frein)
+    0% des Masters atteignent le 3e retrait ; 0% perdus par le plancher  99% par l'inactivité (84 dates de perte distinctes) ; 1% en cours à la fin
+    1er retrait en — séances  3e en — (médianes) ; touché par Master : -148 $ ; funded : — perdus dans l'année  — $ touchés
+    séries de 5 jours sans trade : 100 (la plus longue 48) ; 15.4 $ par séance  t 4.05  36% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    sans la règle d'inactivité : 65% au 3e retrait, 0% perdus par le plancher, touché 2 532 $
+
+S50-k2 · le bot + la nuit entière  stop 0 50 %  en secours après 2 jours sans trade
+    70% des Masters atteignent le 3e retrait ; 2% perdus par le plancher  0% par l'inactivité (1 dates de perte distinctes) ; 28% en cours à la fin
+    1er retrait en 165 séances  3e en 527 (médianes) ; touché par Master : 2 675 $ ; funded : 47% perdus dans l'année  1 115 $ touchés
+    séries de 5 jours sans trade : 0 (la plus longue 2) ; 18.9 $ par séance  t 3.90  48% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 525 (22% des séances), dont 52 dans un trou (comptés à 0 $) ; gain total de ces nuits 8 342 $ ; sans la règle d'inactivité : 70% au 3e retrait, 2% perdus par le plancher
+    → ADOPTÉE (perdus par inactivité 0% ; perdus avant le 3e retrait 2%, règle ≤ 20 % ; touché 2 675 $ ; 1 dates de perte distinctes : chiffre fragile)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 70% à 72%, plancher 0% à 2%, inactivité 0% à 0%
+
+S50-k3 · le bot + la nuit entière  stop 0 50 %  en secours après 3 jours sans trade
+    57% des Masters atteignent le 3e retrait ; 14% perdus par le plancher  0% par l'inactivité (3 dates de perte distinctes) ; 29% en cours à la fin
+    1er retrait en 165 séances  3e en 672 (médianes) ; touché par Master : 2 286 $ ; funded : 34% perdus dans l'année  507 $ touchés
+    séries de 5 jours sans trade : 0 (la plus longue 3) ; 14.7 $ par séance  t 3.34  44% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 291 (12% des séances), dont 16 dans un trou (comptés à 0 $) ; gain total de ces nuits -1 695 $ ; sans la règle d'inactivité : 57% au 3e retrait, 14% perdus par le plancher
+    → ADOPTÉE (perdus par inactivité 0% ; perdus avant le 3e retrait 14%, règle ≤ 20 % ; touché 2 286 $ ; 3 dates de perte distinctes)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 55% à 57%, plancher 14% à 16%, inactivité 0% à 0%
+
+S50-k4 · le bot + la nuit entière  stop 0 50 %  en secours après 4 jours sans trade
+    48% des Masters atteignent le 3e retrait ; 17% perdus par le plancher  0% par l'inactivité (5 dates de perte distinctes) ; 34% en cours à la fin
+    1er retrait en 164 séances  3e en 480 (médianes) ; touché par Master : 2 044 $ ; funded : 59% perdus dans l'année  385 $ touchés
+    séries de 5 jours sans trade : 0 (la plus longue 4) ; 13.8 $ par séance  t 3.38  41% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 179 (7% des séances), dont 11 dans un trou (comptés à 0 $) ; gain total de ces nuits -4 060 $ ; sans la règle d'inactivité : 48% au 3e retrait, 17% perdus par le plancher
+    → ADOPTÉE (perdus par inactivité 0% ; perdus avant le 3e retrait 17%, règle ≤ 20 % ; touché 2 044 $ ; 5 dates de perte distinctes)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 48% à 50%, plancher 16% à 17%, inactivité 0% à 0%
+
+S75-k2 · le bot + la nuit entière  stop 0 75 %  en secours après 2 jours sans trade
+    63% des Masters atteignent le 3e retrait ; 18% perdus par le plancher  0% par l'inactivité (7 dates de perte distinctes) ; 19% en cours à la fin
+    1er retrait en 147 séances  3e en 385 (médianes) ; touché par Master : 2 466 $ ; funded : 40% perdus dans l'année  1 226 $ touchés
+    séries de 5 jours sans trade : 0 (la plus longue 2) ; 21.2 $ par séance  t 4.24  48% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 525 (22% des séances), dont 52 dans un trou (comptés à 0 $) ; gain total de ces nuits 14 092 $ ; sans la règle d'inactivité : 63% au 3e retrait, 18% perdus par le plancher
+    → ADOPTÉE (perdus par inactivité 0% ; perdus avant le 3e retrait 18%, règle ≤ 20 % ; touché 2 466 $ ; 7 dates de perte distinctes)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 63% à 66%, plancher 17% à 19%, inactivité 0% à 0%
+
+S75-k3 · le bot + la nuit entière  stop 0 75 %  en secours après 3 jours sans trade
+    55% des Masters atteignent le 3e retrait ; 11% perdus par le plancher  0% par l'inactivité (4 dates de perte distinctes) ; 34% en cours à la fin
+    1er retrait en 220 séances  3e en 773 (médianes) ; touché par Master : 2 333 $ ; funded : 25% perdus dans l'année  62 $ touchés
+    séries de 5 jours sans trade : 0 (la plus longue 3) ; 14.4 $ par séance  t 3.14  44% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 291 (12% des séances), dont 16 dans un trou (comptés à 0 $) ; gain total de ces nuits -2 489 $ ; sans la règle d'inactivité : 55% au 3e retrait, 11% perdus par le plancher
+    → ADOPTÉE (perdus par inactivité 0% ; perdus avant le 3e retrait 11%, règle ≤ 20 % ; touché 2 333 $ ; 4 dates de perte distinctes)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 53% à 56%, plancher 10% à 12%, inactivité 0% à 0%
+
+S75-k4 · le bot + la nuit entière  stop 0 75 %  en secours après 4 jours sans trade
+    41% des Masters atteignent le 3e retrait ; 34% perdus par le plancher  0% par l'inactivité (12 dates de perte distinctes) ; 25% en cours à la fin
+    1er retrait en 158 séances  3e en 462 (médianes) ; touché par Master : 1 889 $ ; funded : 20% perdus dans l'année  284 $ touchés
+    séries de 5 jours sans trade : 0 (la plus longue 4) ; 12.8 $ par séance  t 3.07  41% de séances tradées ; pire jour -1 008 $  2 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 179 (7% des séances), dont 11 dans un trou (comptés à 0 $) ; gain total de ces nuits -6 284 $ ; sans la règle d'inactivité : 41% au 3e retrait, 34% perdus par le plancher
+    → non adoptée (perdus par inactivité 0% ; perdus avant le 3e retrait 34%, règle ≤ 20 % ; touché 1 889 $ ; 12 dates de perte distinctes)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 41% à 43%, plancher 31% à 36%, inactivité 0% à 0%
+
+H1-k2 · le bot + A · Asie : 18 h (New York) → 8 h (Paris)  stop 0 50 %  en secours après 2 jours sans trade
+    57% des Masters atteignent le 3e retrait ; 8% perdus par le plancher  0% par l'inactivité (2 dates de perte distinctes) ; 34% en cours à la fin
+    1er retrait en 174 séances  3e en 529 (médianes) ; touché par Master : 2 260 $ ; funded : 0% perdus dans l'année  1 087 $ touchés
+    séries de 5 jours sans trade : 0 (la plus longue 2) ; 16.3 $ par séance  t 3.81  48% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 525 (22% des séances), dont 52 dans un trou (comptés à 0 $) ; gain total de ces nuits 2 222 $ ; sans la règle d'inactivité : 57% au 3e retrait, 8% perdus par le plancher
+    → ADOPTÉE (perdus par inactivité 0% ; perdus avant le 3e retrait 8%, règle ≤ 20 % ; touché 2 260 $ ; 2 dates de perte distinctes : chiffre fragile)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 57% à 60%, plancher 7% à 9%, inactivité 0% à 0%
+
+H1-k3 · le bot + A · Asie : 18 h (New York) → 8 h (Paris)  stop 0 50 %  en secours après 3 jours sans trade
+    61% des Masters atteignent le 3e retrait ; 7% perdus par le plancher  0% par l'inactivité (3 dates de perte distinctes) ; 33% en cours à la fin
+    1er retrait en 207 séances  3e en 648 (médianes) ; touché par Master : 2 395 $ ; funded : 9% perdus dans l'année  392 $ touchés
+    séries de 5 jours sans trade : 0 (la plus longue 3) ; 13.9 $ par séance  t 3.32  44% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 291 (12% des séances), dont 16 dans un trou (comptés à 0 $) ; gain total de ces nuits -3 816 $ ; sans la règle d'inactivité : 61% au 3e retrait, 7% perdus par le plancher
+    → ADOPTÉE (perdus par inactivité 0% ; perdus avant le 3e retrait 7%, règle ≤ 20 % ; touché 2 395 $ ; 3 dates de perte distinctes)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 60% à 63%, plancher 3% à 7%, inactivité 0% à 0%
+
+H1-k4 · le bot + A · Asie : 18 h (New York) → 8 h (Paris)  stop 0 50 %  en secours après 4 jours sans trade
+    51% des Masters atteignent le 3e retrait ; 19% perdus par le plancher  0% par l'inactivité (4 dates de perte distinctes) ; 30% en cours à la fin
+    1er retrait en 165 séances  3e en 452 (médianes) ; touché par Master : 2 083 $ ; funded : 6% perdus dans l'année  541 $ touchés
+    séries de 5 jours sans trade : 0 (la plus longue 4) ; 14.2 $ par séance  t 3.61  41% de séances tradées ; pire jour -1 008 $  1 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 179 (7% des séances), dont 11 dans un trou (comptés à 0 $) ; gain total de ces nuits -3 063 $ ; sans la règle d'inactivité : 51% au 3e retrait, 19% perdus par le plancher
+    → ADOPTÉE (perdus par inactivité 0% ; perdus avant le 3e retrait 19%, règle ≤ 20 % ; touché 2 083 $ ; 4 dates de perte distinctes)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 50% à 52%, plancher 19% à 22%, inactivité 0% à 0%
+
+H1-toutes · le bot + A · Asie : 18 h (New York) → 8 h (Paris)  stop 0 50 %  chaque nuit
+    41% des Masters atteignent le 3e retrait ; 31% perdus par le plancher  21% par l'inactivité (16 dates de perte distinctes) ; 7% en cours à la fin
+    1er retrait en 137 séances  3e en 396 (médianes) ; touché par Master : 1 813 $ ; funded : 80% perdus dans l'année  370 $ touchés
+    séries de 5 jours sans trade : 1 (la plus longue 5) ; 23.2 $ par séance  t 3.84  97% de séances tradées ; pire jour -1 008 $  2 jours à −1 000 $ ou pire
+    trades de nuit depuis 2017 : 2323 (96% des séances), dont 0 dans un trou (comptés à 0 $) ; gain total de ces nuits 18 787 $ ; sans la règle d'inactivité : 62% au 3e retrait, 31% perdus par le plancher
+    → non adoptée (perdus par inactivité 21% ; perdus avant le 3e retrait 52%, règle ≤ 20 % ; touché 1 813 $ ; 16 dates de perte distinctes)
+    pour information, Masters lancés 5, 10 ou 15 séances plus tard : 3e retrait 38% à 41%, plancher 31% à 34%, inactivité 19% à 21%
+
+Mieux classé : S50-k2 (adopté).

@@ -27,7 +27,7 @@ def construire():
     S = len(J)
     ordJ = pd.to_datetime(J).map(dt.date.toordinal).to_numpy()
     entree = np.full(S, np.nan); sortie = np.full(S, np.nan); nb = np.zeros(S, int)
-    chemins = [None] * S
+    chemins = [None] * S; ind = [None] * S
     debut = np.searchsorted(nid_tri := np.sort(nid[nid >= 0]), ordJ)  # noqa: F841 (seulement pour verifier le tri)
     pos = np.nonzero(nid >= 0)[0]; cle = nid[pos]
     ordre = np.argsort(cle, kind="stable"); pos = pos[ordre]; cle = cle[ordre]
@@ -46,7 +46,7 @@ def construire():
         if k1 is None:
             continue
         entree[s] = o[k0]; sortie[s] = o[k1]; nb[s] = len(idx)
-        chemins[s] = (o[idx], l[idx])
+        chemins[s] = (o[idx], l[idx]); ind[s] = idx
     # filtres connus a l'entree (cloture de la veille de la seance s)
     V = D.clotures()
     tous = pd.Index(J)
@@ -65,7 +65,7 @@ def construire():
     cher = np.zeros(S, bool); cher[comp] = ratio[comp] > med
     inverse = (veille["VIX"] >= veille["VIX3M"]).to_numpy()
     jour = np.full(S, np.nan); jour[ok] = C[ok, D.N - 1] / O[ok, 0] - 1
-    return dict(J=J, ok=ok, entree=entree, sortie=sortie, nb=nb, chemins=chemins, inverse=inverse, baisse=baisse, cher=cher,
+    return dict(J=J, ok=ok, entree=entree, sortie=sortie, nb=nb, chemins=chemins, idx=ind, inverse=inverse, baisse=baisse, cher=cher,
                 ratio=ratio, jour=jour, vix=veille["VIX"].to_numpy(), vxn=veille["VXN"].to_numpy(), rv=rv_veille)
 
 

@@ -1,0 +1,26 @@
+{
+ "1 MNQ, le bot seul": {
+  "plancher": 0.0,
+  "inactivité": 0.9935205183585313,
+  "retrait": 0.0064794816414686825,
+  "rien": 0.0
+ },
+ "1 MNQ, le bot + le secours de nuit": {
+  "plancher": 0.06263498920086392,
+  "inactivité": 0.0,
+  "retrait": 0.31317494600431967,
+  "rien": 0.6241900647948164
+ },
+ "2 MNQ, le bot seul": {
+  "plancher": 0.017278617710583154,
+  "inactivité": 0.9524838012958964,
+  "retrait": 0.03023758099352052,
+  "rien": 0.0
+ },
+ "2 MNQ, le bot + le secours de nuit": {
+  "plancher": 0.3390928725701944,
+  "inactivité": 0.0,
+  "retrait": 0.48812095032397407,
+  "rien": 0.17278617710583152
+ }
+}

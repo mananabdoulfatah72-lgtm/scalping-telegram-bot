@@ -1,0 +1,22 @@
+Partie G : copier les institutions et les banques (rapports hebdomadaires de la CFTC, E-mini Nasdaq-100).
+1063 rapports du 2006-06-13 au 2026-10-20 ; 3538 jours de trading du 2012-01-04 au 2026-10-02 ; 1 MNQ au prix d'aujourd'hui, frais 3 $.
+
+G1 suivre les gestionnaires d'actifs, nuit : t +0.20 (exploration +0.24, contrôle -0.02), +1.4 $ par jour, total 4 779 $ ; 1711 achats, 1827 ventes, 0 jours sans position ; 95e centile des placebos +1.04 (bat 77%) ; contre « acheter tous les jours » t -2.35 → éliminé
+G1 suivre les gestionnaires d'actifs, entier : t +0.26 (exploration -0.14, contrôle +0.77), +3.1 $ par jour, total 10 935 $ ; 1711 achats, 1827 ventes, 0 jours sans position ; 95e centile des placebos +1.18 (bat 71%) ; contre « acheter tous les jours » t -2.10 → éliminé
+
+G2 suivre les fonds à levier, nuit : t -1.60 (exploration -1.55, contrôle -0.51), -11.0 $ par jour, total -38 767 $ ; 1781 achats, 1757 ventes, 0 jours sans position ; 95e centile des placebos +1.02 (bat 9%) ; contre « acheter tous les jours » t -4.00 → éliminé
+G2 suivre les fonds à levier, entier : t +0.60 (exploration +1.14, contrôle -0.80), +7.2 $ par jour, total 25 504 $ ; 1781 achats, 1757 ventes, 0 jours sans position ; 95e centile des placebos +1.21 (bat 79%) ; contre « acheter tous les jours » t -1.96 → éliminé
+
+G3 contre les fonds à levier trop chargés, nuit : t +0.47 (exploration +0.30, contrôle +0.41), +1.6 $ par jour, total 5 506 $ ; 471 achats, 314 ventes, 2753 jours sans position ; 95e centile des placebos +1.54 (bat 63%) ; contre « acheter tous les jours » t -3.01 → éliminé
+G3 contre les fonds à levier trop chargés, entier : t -0.58 (exploration -0.63, contrôle -0.06), -3.5 $ par jour, total -12 285 $ ; 471 achats, 314 ventes, 2753 jours sans position ; 95e centile des placebos +1.63 (bat 18%) ; contre « acheter tous les jours » t -3.16 → éliminé
+
+G4 suivre les banques et teneurs de marché, nuit : t -0.39 (exploration +0.11, contrôle -0.98), -2.7 $ par jour, total -9 383 $ ; 1739 achats, 1799 ventes, 0 jours sans position ; 95e centile des placebos +0.92 (bat 52%) ; contre « acheter tous les jours » t -2.83 → éliminé
+G4 suivre les banques et teneurs de marché, entier : t -0.15 (exploration +0.30, contrôle -0.83), -1.8 $ par jour, total -6 275 $ ; 1739 achats, 1799 ventes, 0 jours sans position ; 95e centile des placebos +1.15 (bat 54%) ; contre « acheter tous les jours » t -2.42 → éliminé
+
+G5 gestionnaires et fonds à levier d'accord, nuit : t -0.71 (exploration -0.67, contrôle -0.25), -3.2 $ par jour, total -11 306 $ ; 798 achats, 844 ventes, 1896 jours sans position ; 95e centile des placebos +1.30 (bat 30%) ; contre « acheter tous les jours » t -3.52 → éliminé
+G5 gestionnaires et fonds à levier d'accord, entier : t +0.87 (exploration +0.97, contrôle +0.06), +6.8 $ par jour, total 23 908 $ ; 798 achats, 844 ventes, 1896 jours sans position ; 95e centile des placebos +1.31 (bat 87%) ; contre « acheter tous les jours » t -2.32 → éliminé
+
+Référence, acheter tous les jours (nuit) : t +3.62 (exploration +3.07, contrôle +1.92), +24.7 $ par jour.
+Référence, acheter tous les jours (entier) : t +3.26 (exploration +2.77, contrôle +1.72), +39.3 $ par jour.
+
+Retenus : aucun

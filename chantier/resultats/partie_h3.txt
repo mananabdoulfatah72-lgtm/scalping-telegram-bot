@@ -1,0 +1,9 @@
+Partie H3 (descriptif) : le compte dans son état actuel : solde 50 700 $, plus haut de fin de journée 51 800 $, plancher 49 300 $, marge 1 400 $.
+Rejoué depuis chaque séance de 2017 à octobre 2026, 120 séances au plus, règle d'inactivité comptée (5 jours de trading sans trade = compte perdu).
+Frein : demi-taille (MES au lieu de MNQ) tant que la marge est sous 1 750 $. Secours : S50-k2 (la nuit entière, stop 0,50 %).
+
+cas                                                  perdu : plancher  perdu : inactivité  solde ≥ 53 600 $  ni l un ni l autre
+1 MNQ, le bot seul                                                0%                 99%                1%                  0%
+1 MNQ, le bot + le secours de nuit                                6%                  0%               31%                 62%
+2 MNQ, le bot seul                                                2%                 95%                3%                  0%
+2 MNQ, le bot + le secours de nuit                               34%                  0%               49%                 17%

@@ -1,0 +1,33 @@
+Partie H1 : quelles heures de la nuit ? 1 MNQ au prix d'aujourd'hui, frais 3 $, données corrigées.
+Nuits jouables : 3538 du 2012-01-04 au 2026-10-02. Contrôle du code : la fenêtre entière redonne la partie N à 0.0000 $ près.
+
+variante                                                   nuits      t  t expl  t ctrl  t a 6$  $/nuit    $/an    pire annees+ stops  verdict
+A · Asie : 18 h (New York) → 8 h (Paris), sans stop         3537   3.02    2.84    1.10    2.32    13.0    3061   -3026   11/15     0  échoue : pire nuit
+A · Asie : 18 h (New York) → 8 h (Paris), stop 0,50 %       3537   2.37    2.23    0.88    1.51     8.3    1955    -294   11/15   540  RETENUE
+E · ouverture de l'Europe : 8 h → 9 h (Paris), sans stop    3537   2.43    2.44    0.55    0.63     4.1     956    -740    8/15     0  échoue : frais 6 $, années
+E · ouverture de l'Europe : 8 h → 9 h (Paris), stop 0,50 %  3537   1.90    1.82    0.61    0.03     3.0     719    -289    9/15    78  échoue : t/BH, frais 6 $, années
+M · matin : 9 h (Paris) → 9 h 30 (New York), sans stop      3538   0.33   -0.15    0.95   -0.28     1.6     383   -1932   11/15     0  échoue : t/BH, deux périodes, frais 6 $, pire nuit
+M · matin : 9 h (Paris) → 9 h 30 (New York), stop 0,50 %    3538   0.09   -0.20    0.52   -0.63     0.4      90    -353    7/15   831  échoue : t/BH, deux périodes, frais 6 $, années
+EM · 8 h (Paris) → 9 h 30 (New York), sans stop             3537   1.65    1.15    1.35    1.08     8.7    2040   -1981   13/15     0  échoue : t/BH, frais 6 $, pire nuit
+EM · 8 h (Paris) → 9 h 30 (New York), stop 0,50 %           3537   1.81    1.15    1.60    1.11     7.8    1848    -432   11/15   858  échoue : t/BH, frais 6 $
+
+Meilleure variante retenue : A · Asie : 18 h (New York) → 8 h (Paris), stop 0,50 %
+
+Pour information : variation moyenne heure par heure (heure de Paris, $ pour 1 MNQ, sans frais ni stop).
+heure (Paris)      nuits  $ moyen      t  expl. $      t   ctrl $      t
+0 h → 1 h           3509      3.1   1.85      2.0   1.07      6.5   1.86
+1 h → 2 h           3511      2.0   1.38      1.5   0.93      3.7   1.13
+2 h → 3 h           3536      1.4   0.72      1.1   0.47      2.4   0.69
+3 h → 4 h           3537      1.9   1.10      1.4   0.71      3.4   1.00
+4 h → 5 h           3537     -1.1  -0.78     -0.3  -0.17     -3.6  -1.56
+5 h → 6 h           3538      3.6   2.69      3.8   2.36      2.9   1.35
+6 h → 7 h           3538      2.3   1.91      3.8   2.73     -2.5  -1.08
+7 h → 8 h           3537      2.7   2.01      3.5   2.33      0.2   0.06
+8 h → 9 h           3537      7.1   4.23      7.8   3.97      4.7   1.52
+9 h → 10 h          3537      1.8   0.80     -0.4  -0.15      8.8   2.13
+10 h → 11 h         3533     -1.0  -0.54     -0.4  -0.16     -3.2  -0.83
+11 h → 12 h         3519      0.5   0.30      0.6   0.30      0.2   0.06
+12 h → 13 h         3511      1.2   0.70      0.7   0.39      2.7   0.70
+13 h → 14 h         3511      3.5   1.66      5.0   2.03     -1.4  -0.33
+14 h → 15 h         3279     -0.7  -0.25     -2.8  -0.84      6.3   1.01
+15 h → 15 h 30      3301     -0.4  -0.30     -0.3  -0.21     -0.7  -0.22

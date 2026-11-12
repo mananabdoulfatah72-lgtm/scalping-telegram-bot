@@ -1,4 +1,4 @@
 Partie F : EMA 50 / 200, RSI(14) et ATR(14) en barres d'une heure, 1 micro, à plat de 16 h 55 à 18 h.
 
-or (MGC) (2012-01-18 → 2026-10-02) : 3852 trades  45% de gagnants  -2.4 $ par trade  total -9 065 $  pire baisse 16 152 $  5 années positives sur 15 ; t -0.66 (exploration -0.44  contrôle -0.53) ; bat 65% des placebos → tuée
-Nasdaq (MNQ) (2012-01-19 → 2026-10-02) : 3584 trades  45% de gagnants  -8.7 $ par trade  total -31 155 $  pire baisse 34 474 $  5 années positives sur 15 ; t -1.31 (exploration -0.77  contrôle -1.35) ; bat 20% des placebos → tuée
+or (MGC) (2012-01-18 → 2026-10-02) : 3858 trades  45% de gagnants  -2.7 $ par trade  total -10 436 $  pire baisse 17 523 $  5 années positives sur 15 ; t -0.76 (exploration -0.47  contrôle -0.65) ; bat 63% des placebos → tuée
+Nasdaq (MNQ) (2012-01-19 → 2026-10-02) : 3594 trades  45% de gagnants  -9.2 $ par trade  total -33 163 $  pire baisse 35 393 $  4 années positives sur 15 ; t -1.38 (exploration -0.89  contrôle -1.29) ; bat 20% des placebos → tuée

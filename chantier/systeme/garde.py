@@ -34,6 +34,8 @@ class Garde:
     jours_fed: frozenset = frozenset()
     inactivite_max: int = 5              # jours de trading sans trade = compte perdu
     baisse_max: float = 0.15             # compte personnel : plus d'ordre si le solde a baisse de 15 % depuis son plus haut
+    secours_apres: int = 2               # jours de trading sans trade avant la nuit de secours (chantier, partie H2)
+    stop_nuit: float = 0.005             # stop de la nuit de secours : 0,50 % sous l'entree
     plus_haut: float = 50000.0           # plus haut des soldes de fin de journee
     sommet: float = 50000.0              # plus haut du solde (pour la limite de baisse en %)
     gain_jour: float = 0.0               # realise + latent de la journee de trading (18 h -> 17 h, nuit comprise)
@@ -92,6 +94,17 @@ class Garde:
                 r.append(f"attention : la limite du jour restante dépasse la marge ({n(self.marge)} $) : une seule perte peut coûter le compte")
         return Reponse(True, t, r)
 
+    def secours_nuit(self, prix=None):
+        """Faut-il prendre la nuit de secours ce soir (regle d'inactivite) ? None si non, sinon la consigne en clair."""
+        if self.jours_sans_trade < self.secours_apres:
+            return None
+        contrat = "1 MES (frein : marge sous " + n(self.frein) + " $)" if self.marge < self.frein else "1 MNQ"
+        pct = f"{self.stop_nuit * 100:.2f}".replace(".", ",")
+        s = f"nuit de secours ce soir ({self.jours_sans_trade} jours de trading sans trade) : achat de {contrat} à 18 h (New York), stop à {pct} % sous l'entrée"
+        if prix:
+            s += f" (entrée à {n(prix)} : stop à {n(prix * (1 - self.stop_nuit))})"
+        return s + ", vente à 9 h 30 (New York) si le stop n'a pas été touché"
+
     def fin_de_journee(self, gain, a_trade):
         """A la cloture de la journee de trading. Renvoie la liste des alertes pour le lendemain."""
         self.solde += gain; self.gain_jour = 0.0; self.arrete = False
@@ -126,6 +139,10 @@ def _tests():
     for _ in range(3):
         al = g.fin_de_journee(0, False)
     assert any("inactivité" in x for x in al)
+    assert "1 MES" in g.secours_nuit() and "stop à 0,50 %" in g.secours_nuit(28500)              # 3 jours sans trade, marge 400 $ : secours en MES
+    h = Garde(); assert h.secours_nuit() is None
+    h.fin_de_journee(0, False); assert h.secours_nuit() is None
+    h.fin_de_journee(0, False); assert "1 MNQ" in h.secours_nuit() and "28 358" in h.secours_nuit(28500)  # 2 jours sans trade : secours, stop a 28 357,50
     g = Garde(solde=52700, plus_haut=52700); assert g.plancher == 50000   # plancher arrete au solde de depart
     p = Garde(solde=8400, depart=10000, plus_haut=10000, sommet=10000, perte_max=1e9, limite_bot=1e9, frein=0)
     assert not p.verifier(1, 50, "10:30").autorise                         # compte personnel : -16 % depuis le plus haut

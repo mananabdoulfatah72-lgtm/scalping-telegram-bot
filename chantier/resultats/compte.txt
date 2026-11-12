@@ -12,22 +12,22 @@ T0 · le bot seul (Z12F  limite 1 000 $  frein)
     sans la règle d'inactivité (pour séparer les deux risques) : 65% au 3e retrait  0% perdus par le plancher  touché 2 532 $
 
 N1 · le bot + la nuit F0 avec stop 0.75 %
-    46% des Masters atteignent le 3e retrait ; 43% perdus par le plancher  7% par l'inactivité (23 dates de perte distinctes) ; 5% en cours à la fin
-    1er retrait en 80 séances  3e en 180 (médianes) ; touché par Master : 1 786 $ ; funded : 93% perdus dans l'année  1 035 $ touchés
-    séries de 5 jours sans trade : 1 (la plus longue 5) ; 31.6 $ par séance  t 3.75  97% de séances tradées ; pire jour -1 008 $  5 jours à −1 000 $ ou pire
-    sans la règle d'inactivité (pour séparer les deux risques) : 47% au 3e retrait  48% perdus par le plancher  touché 1 858 $
+    32% des Masters atteignent le 3e retrait ; 55% perdus par le plancher  7% par l'inactivité (30 dates de perte distinctes) ; 6% en cours à la fin
+    1er retrait en 64 séances  3e en 142 (médianes) ; touché par Master : 1 334 $ ; funded : 97% perdus dans l'année  827 $ touchés
+    séries de 5 jours sans trade : 1 (la plus longue 5) ; 29.0 $ par séance  t 3.50  97% de séances tradées ; pire jour -1 008 $  5 jours à −1 000 $ ou pire
+    sans la règle d'inactivité (pour séparer les deux risques) : 33% au 3e retrait  61% perdus par le plancher  touché 1 393 $
 
 N2 · le bot + la nuit F1 avec stop 0.75 %
-    21% des Masters atteignent le 3e retrait ; 30% perdus par le plancher  43% par l'inactivité (31 dates de perte distinctes) ; 6% en cours à la fin
-    1er retrait en 60 séances  3e en 147 (médianes) ; touché par Master : 984 $ ; funded : 100% perdus dans l'année  466 $ touchés
-    séries de 5 jours sans trade : 9 (la plus longue 43) ; 28.1 $ par séance  t 3.66  90% de séances tradées ; pire jour -1 008 $  5 jours à −1 000 $ ou pire
-    sans la règle d'inactivité (pour séparer les deux risques) : 57% au 3e retrait  38% perdus par le plancher  touché 2 125 $
+    21% des Masters atteignent le 3e retrait ; 29% perdus par le plancher  43% par l'inactivité (30 dates de perte distinctes) ; 7% en cours à la fin
+    1er retrait en 58 séances  3e en 142 (médianes) ; touché par Master : 1 001 $ ; funded : 100% perdus dans l'année  1 148 $ touchés
+    séries de 5 jours sans trade : 9 (la plus longue 43) ; 27.7 $ par séance  t 3.67  90% de séances tradées ; pire jour -1 008 $  5 jours à −1 000 $ ou pire
+    sans la règle d'inactivité (pour séparer les deux risques) : 56% au 3e retrait  38% perdus par le plancher  touché 2 102 $
 
 pour information · le bot + la nuit F0 sans stop
-    34% des Masters atteignent le 3e retrait ; 57% perdus par le plancher  5% par l'inactivité (31 dates de perte distinctes) ; 3% en cours à la fin
-    1er retrait en 73 séances  3e en 140 (médianes) ; touché par Master : 1 390 $ ; funded : 88% perdus dans l'année  515 $ touchés
-    séries de 5 jours sans trade : 1 (la plus longue 5) ; 38.7 $ par séance  t 4.00  97% de séances tradées ; pire jour -3 883 $  70 jours à −1 000 $ ou pire
-    sans la règle d'inactivité (pour séparer les deux risques) : 36% au 3e retrait  61% perdus par le plancher  touché 1 477 $
+    33% des Masters atteignent le 3e retrait ; 59% perdus par le plancher  5% par l'inactivité (31 dates de perte distinctes) ; 3% en cours à la fin
+    1er retrait en 70 séances  3e en 138 (médianes) ; touché par Master : 1 416 $ ; funded : 85% perdus dans l'année  664 $ touchés
+    séries de 5 jours sans trade : 1 (la plus longue 5) ; 39.9 $ par séance  t 4.14  97% de séances tradées ; pire jour -3 511 $  65 jours à −1 000 $ ou pire
+    sans la règle d'inactivité (pour séparer les deux risques) : 35% au 3e retrait  61% perdus par le plancher  touché 1 521 $
 
-N1 : non adoptée (aucun Master perdu par inactivité : non ; perdus avant le 3e retrait 49%  règle ≤ 20 % ; touché 1 786 $  règle > 0 ; 23 dates de perte distinctes)
-N2 : non adoptée (aucun Master perdu par inactivité : non ; perdus avant le 3e retrait 73%  règle ≤ 20 % ; touché 984 $  règle > 0 ; 31 dates de perte distinctes)
+N1 : non adoptée (aucun Master perdu par inactivité : non ; perdus avant le 3e retrait 62%  règle ≤ 20 % ; touché 1 334 $  règle > 0 ; 30 dates de perte distinctes)
+N2 : non adoptée (aucun Master perdu par inactivité : non ; perdus avant le 3e retrait 72%  règle ≤ 20 % ; touché 1 001 $  règle > 0 ; 30 dates de perte distinctes)

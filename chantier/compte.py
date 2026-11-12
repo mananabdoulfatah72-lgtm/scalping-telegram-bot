@@ -98,8 +98,10 @@ class Banc:
                          z if gn is None else gn.copy(), z if cn is None else cn.copy())
         return r[self.test], d[self.test]
 
-    def vie(self, R0, D0, R1, D1, T, i0, frein=750.0, inactivite=True):
-        """Un Master neuf au jour i0 puis, au 3e retrait, un funded (hypotheses de la vague 10)."""
+    def vie(self, R0, D0, R1, D1, T, i0, frein=750.0, inactivite=True, apres=None):
+        """Un Master neuf au jour i0 puis, au 3e retrait, un funded (hypotheses de la vague 10).
+        apres[i] >= 0 : un trade de secours a 0 $ a ete pris pendant les jours sans donnees qui precedent la seance i,
+        et il reste apres[i] jours sans trade depuis (partie H2)."""
         o = dict(issue="en cours", fin=None, j1=None, j3=None, touche_m=-148.0, funded=None)
         solde = haut = base = 50000.0; meil = 0.0; jrs = 0; nret = 0; vide = 0; perte = 2500.0; phase = "M"; i_f = None; touche_f = 0.0
 
@@ -111,7 +113,7 @@ class Banc:
             return o
         for i in range(i0, self.n):
             if i > i0:
-                vide += self.gap[i]
+                vide = apres[i] if (apres is not None and apres[i] >= 0) else vide + self.gap[i]
             if inactivite and vide >= 5:
                 return fin("inactivité", i)
             plancher = min(haut - perte, 50000.0)
@@ -147,10 +149,16 @@ class Banc:
             o["funded"] = dict(issue="données finies", touche=touche_f)
         return o
 
-    def series(self, T):
+    def series(self, T, apres=None):
         out, vide = [], 0
         for i in range(self.d17, self.n):
-            vide += self.gap[i] if i > self.d17 else 0
+            if i > self.d17 and apres is not None and apres[i] >= 0:
+                avant = vide + self.gap[i] - 1 - apres[i]
+                if avant:
+                    out.append(avant)
+                vide = apres[i]
+            else:
+                vide += self.gap[i] if i > self.d17 else 0
             if T[i]:
                 if vide:
                     out.append(vide)
@@ -161,17 +169,17 @@ class Banc:
             out.append(vide)
         return out
 
-    def mesurer(self, tr, limite=1000.0, frein=750.0, gn=None, cn=None, tn=None, inactivite=True):
+    def mesurer(self, tr, limite=1000.0, frein=750.0, gn=None, cn=None, tn=None, inactivite=True, apres=None, depart=0):
         R0, D0 = self.journees(tr, 1.0, limite, gn, cn); R1, D1 = self.journees(tr, 0.5, limite, gn, cn)
         js = {t[0] for t in tr}; T = np.array([s in js for s in self.test])
         if tn is not None:
             T = T | tn[self.test]
-        vs = [self.vie(R0, D0, R1, D1, T, i0, frein, inactivite) for i0 in range(self.d17, self.n, 20)]
+        vs = [self.vie(R0, D0, R1, D1, T, i0, frein, inactivite, apres) for i0 in range(self.d17 + depart, self.n, 20)]
         N = len(vs); cpt = lambda c: sum(v["issue"] == c for v in vs) / N
         j1 = [v["j1"] for v in vs if v["j1"] is not None]; j3 = [v["j3"] for v in vs if v["j3"] is not None]
         fd = [v["funded"] for v in vs if v["funded"] and v["funded"]["issue"] != "données finies"]
         pertes = sorted({v["fin"] for v in vs if v["issue"] in ("plancher", "inactivité")})
-        sv = self.series(T); jw = R0[self.d17:]
+        sv = self.series(T, apres); jw = R0[self.d17:]
         return dict(departs=N, trois=cpt("3 retraits"), plancher=cpt("plancher"), inactivite=cpt("inactivité"), en_cours=cpt("en cours"),
                     episodes=len(pertes), dates_pertes=[str(self.jours[i]) for i in pertes],
                     med_j1=float(np.median(j1)) if j1 else None, med_j3=float(np.median(j3)) if j3 else None,
