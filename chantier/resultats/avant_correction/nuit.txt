@@ -1,0 +1,24 @@
+Partie N : la nuit (achat 18 h, vente 9 h 30), 1 MNQ au prix d'aujourd'hui, frais 3 $.
+Nuits jouables : 3538 du 2012-01-04 au 2026-10-02 (exploration 2698, controle 840).
+
+variante         nuits      t  t expl  t ctrl  t a 6$  $/nuit    $/an    pire <-1100 annees+ stops  verdict
+F0 sans stop      3538   3.50    3.05    1.71    3.06    23.9    5631   -3883     35   13/15     0  echoue : pire nuit
+F1 sans stop      3298   2.62    2.04    1.68    2.14    16.3    3581   -2409     21   12/15     0  echoue : pire nuit
+F2 sans stop      1620   2.24    1.57    1.75    1.97    25.1    2713   -3883     24   13/15     0  echoue : pire nuit
+F3 sans stop      1774   2.89    2.33    1.73    2.55    24.9    2942   -2409      8   14/15     0  echoue : pire nuit
+F0 stop 0.50%     3538   3.04    2.19    2.24    2.47    16.0    3762    -334      0   12/15  1155  RETENUE
+F1 stop 0.50%     3298   2.59    1.57    2.33    2.00    13.1    2882    -334      0   12/15  1016  RETENUE
+F2 stop 0.50%     1620   1.38    0.63    1.59    1.01    11.4    1227    -294      0   10/15   613  echoue : t/BH, frais 6 $
+F3 stop 0.50%     1774   2.59    2.11    1.50    2.16    18.2    2153    -334      0   14/15   527  RETENUE
+F0 stop 0.75%     3538   3.24    2.75    1.70    2.72    18.8    4429    -574      0   11/15   697  RETENUE
+F1 stop 0.75%     3298   2.68    2.09    1.69    2.13    14.8    3249    -574      0   11/15   588  RETENUE
+F2 stop 0.75%     1620   1.64    0.89    1.68    1.32    15.2    1647    -431      0    9/15   382  echoue : t/BH, frais 6 $, annees
+F3 stop 0.75%     1774   2.18    1.85    1.14    1.78    16.6    1962    -574      0   12/15   315  RETENUE
+F0 stop 1.00%     3538   3.04    2.57    1.63    2.55    18.6    4379    -584      0   12/15   437  RETENUE
+F1 stop 1.00%     3298   2.48    1.97    1.52    1.96    14.4    3165    -584      0   12/15   357  RETENUE
+F2 stop 1.00%     1620   1.73    1.14    1.43    1.42    16.9    1828    -584      0   11/15   237  echoue : t/BH, frais 6 $
+F3 stop 1.00%     1774   2.02    1.65    1.16    1.64    16.1    1904    -584      0   12/15   186  RETENUE
+
+Pour information, memes dates : jour 9 h 30 -> 15 h 59 (achat) t 1.15, 11.3 $ par seance ; nuit sans stop t 3.50, 23.9 $ ; difference nuit - jour t 1.07 ; correlation nuit / jour suivant +0.03.
+
+Retenues pour le compte : F0 stop 0.75%, F1 stop 0.75%

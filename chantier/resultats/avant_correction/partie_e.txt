@@ -1,0 +1,4 @@
+Partie E : la rotation entre 7 marchés (NQ, ES, RTY, YM, or, pétrole, euro), 1 micro, 9 h 30 - 13 h 25.
+2158 séances communes du 2017-10-10 au 2026-09-25, 6029 trades (2.8 par séance).
+Avant frais : +9.1 $ par séance ; frais : 10.3 $ par séance ; net : -1.2 $ par séance.
+t -0.31 (exploration 0.60  contrôle -1.27) ; total -2 696 $ ; bat 99% des 1 000 placebos → tuée

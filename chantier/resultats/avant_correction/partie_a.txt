@@ -1,0 +1,16 @@
+Partie A : les régimes. État connu la veille. 1 MNQ au prix d'aujourd'hui, frais compris.
+
+Part des séances : CHUTE 14%, VOLATIL 23%, TENDANCE 30%, CALME 33% (3676 séances, depuis 2012-02-03).
+
+A1 (descriptif) : gain moyen par séance et t, par état. Exploration jusqu'en 2022 | contrôle depuis 2023.
+                                  CHUTE                        VOLATIL                       TENDANCE                       CALME             
+zone (C2 + Q1)         +16.0$ t+1.08 |   -1.3$ t-0.06   +26.9$ t+3.15 |  +14.0$ t+1.06    +8.9$ t+1.58 |  +21.8$ t+1.95   +18.0$ t+3.04 |  +14.4$ t+1.57  
+nuit sans stop         +68.5$ t+1.92 | +109.0$ t+1.75   +25.6$ t+1.54 |  +32.6$ t+1.01    +5.0$ t+0.56 |   +7.2$ t+0.35   +18.2$ t+1.77 |   +3.8$ t+0.18  
+Supertrend 10-3        +25.3$ t+0.66 |  -28.4$ t-0.42   +21.2$ t+0.94 |   +1.2$ t+0.04    -0.5$ t-0.03 |   -2.3$ t-0.09   +51.7$ t+3.55 |  +34.0$ t+1.36  
+retour à la moyenne     -4.5$ t-0.22 | -117.7$ t-1.90   -11.4$ t-1.25 |   +4.8$ t+0.31    -2.3$ t-0.35 |  -13.6$ t-1.25   -10.1$ t-1.44 |  -22.9$ t-2.07  
+
+A2 (marche avant, 2017 - 2026) : la stratégie est coupée dans les états où elle perdait les années d'avant.
+  zone (C2 + Q1)   : toujours active t 4.06  total +43 339 $ ; filtrée t 4.06  total +43 339 $ (0 séances coupées  écart +0 $) ; bat 24% des 500 placebos → non adopté
+  nuit sans stop   : toujours active t 2.69  total +58 360 $ ; filtrée t 2.48  total +53 071 $ (263 séances coupées  écart -5 289 $) ; bat 13% des 500 placebos → non adopté
+
+A3 : retour à la moyenne seulement en état CALME : t -2.34 (exploration -1.44  contrôle -2.07)  -16 677 $ au total → tué. Sur toutes les séances : t -2.80 (-1.54 / -2.66).

@@ -6,6 +6,7 @@ Variables d'environnement (dossiers ou les branches sont extraites, par exemple 
   OP = claude/optimistic-ptolemy-xs24ra  (radar : VIX et VXN de 2026, journal de rejeu de la zone)
   CACHE = dossier des caches .npz (par defaut : chantier/cache, non suivi par git)
 """
+import datetime as dt
 import glob
 import os
 from pathlib import Path
@@ -66,8 +67,37 @@ def nq_minutes():
     return out
 
 
-def cfd(nom="usatechidxusd"):
-    """Barres de 5 minutes 24 h (Dukascopy, UTC). Renvoie t (minutes depuis 1970, UTC), o, h, l, c."""
+def _dimanche(a, mois, n):
+    """n-ieme dimanche du mois (n = 0 : le dernier), en jours depuis 1970."""
+    if n:
+        d = dt.date(a, mois, 1); d += dt.timedelta(days=(6 - d.weekday()) % 7 + 7 * (n - 1))
+    else:
+        d = dt.date(a + (mois == 12), mois % 12 + 1, 1) - dt.timedelta(days=1); d -= dt.timedelta(days=(d.weekday() + 1) % 7)
+    return (d - dt.date(1970, 1, 1)).days
+
+
+def heures_corrigees(t):
+    """Les fichiers 24 h du depot (Dukascopy) sont en avance de 60 minutes, depuis 2019, pendant les semaines ou les
+    Etats-Unis et l'Europe n'ont pas la meme heure d'ete : du 2e au dernier dimanche de mars, et du dernier dimanche
+    d'octobre au 1er dimanche de novembre. Constat de la contre-revue (12 novembre 2026) : sur ces 139 seances, les
+    rendements de 5 minutes du fichier suivent le future NQ a +60 minutes (correlation 1,00) et pas a l'heure du
+    fichier ; aucun cas ailleurs ; meme decalage sur tous les marches 24 h. On ajoute donc 60 minutes a ces barres."""
+    t = np.asarray(t, dtype="int64").copy()
+    for a in range(2019, pd.Timestamp(int(t.max()) * 60, unit="s").year + 1):
+        for d, f in ((_dimanche(a, 3, 2), _dimanche(a, 3, 0)), (_dimanche(a, 10, 0), _dimanche(a, 11, 1))):
+            t[(t >= d * 1440) & (t < f * 1440)] += 60
+    assert (np.diff(t) > 0).all(), "heures corrigees : barres en double"
+    return t
+
+
+def cfd(nom="usatechidxusd", brut=False):
+    """Barres de 5 minutes 24 h (Dukascopy, UTC). Renvoie t (minutes depuis 1970, UTC), o, h, l, c.
+    Les heures sont corrigees (voir `heures_corrigees`) ; brut=True rend les heures du fichier."""
+    t, o, h, l, c = _cfd_brut(nom)
+    return (t if brut else heures_corrigees(t)), o, h, l, c
+
+
+def _cfd_brut(nom):
     f = CACHE / f"cfd_{nom}.npz"
     if f.exists():
         z = np.load(f)

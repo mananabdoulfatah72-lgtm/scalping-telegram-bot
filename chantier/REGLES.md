@@ -239,3 +239,105 @@ Marchés : or (MGC) et Nasdaq (MNQ), barres d'une heure faites des barres de 5 m
 
 Un relecteur indépendant recalcule avec son propre code les chiffres qui décident (partie N, partie C) et cherche
 les regards vers le futur. Ses défauts sont corrigés et listés dans `RESULTATS.md`.
+
+## Correction des données 24 h (12 novembre 2026, constat de la contre-revue)
+
+La contre-revue indépendante a été coupée par la limite d'utilisation avant d'écrire son rapport ; ses calculs sont
+repris ici. Elle a recalculé la partie N avec son propre code et retrouvé les mêmes chiffres au dollar près. Elle a
+trouvé un défaut des données : depuis 2019, les fichiers 24 h du dépôt (Dukascopy) sont **en avance de 60 minutes**
+pendant les semaines où les États-Unis et l'Europe n'ont pas la même heure d'été (du 2e au dernier dimanche de mars ;
+du dernier dimanche d'octobre au 1er dimanche de novembre). Preuve : sur ces 139 séances, les rendements de 5 minutes
+du fichier suivent le future NQ à +60 minutes (corrélation 1,00) et pas à l'heure du fichier ; aucun cas ailleurs.
+Tous les marchés 24 h du dépôt ont le même décalage (réouverture du soir à 21 h UTC au lieu de 22 h).
+
+Correction : +60 minutes sur ces barres, dans `donnees.cfd()`. Tous les résultats qui lisent ces fichiers sont
+relancés **sans changer leurs règles** (partie N et compte, parties A, E et F) ; les anciens chiffres sont gardés
+dans `resultats/avant_correction/`.
+
+## Partie G : copier les institutions et les banques (règles écrites le 12 novembre 2026, avant tout calcul de cette partie)
+
+Demande : « et si tu suivais certains gros portefeuilles, certaines institutions ou banques et si tu me faisais
+copier ? »
+
+Déjà fait dans le projet (`flux/README.md`, partie 7, 29 octobre 2026, branche `claude/optimistic-ptolemy-xs24ra`) :
+les positions déclarées chaque semaine à la CFTC sur le E-mini Nasdaq-100 par les gestionnaires d'actifs, les fonds à
+levier et les banques ; cinq règles G1 à G5 jouées **en séance** (9 h 35 → 15 h 55) : aucune ne passe (t de −0,78 à
++1,33 en exploration). Ce qui n'a pas été jugé : tenir la position **comme eux**, nuit comprise, alors que la hausse
+du Nasdaq se fait surtout la nuit (partie N).
+
+- **Données** : les mêmes 1 063 rapports hebdomadaires (`flux/donnees/cot/cot_nq.csv`, 13 juin 2006 → 20 octobre
+  2026). Positions du mardi, publiées le vendredi à 15 h 30 : un rapport sert à partir du premier jour de trading
+  qui suit sa publication (la nuit du dimanche soir, puis la séance du lundi).
+- **Signaux** : les cinq de la partie 7, sans rien changer : G1 sens de la variation sur 4 semaines de la position
+  nette des gestionnaires d'actifs (÷ positions ouvertes) ; G2 la même pour les fonds à levier ; G3 contre les fonds
+  à levier quand leur position est extrême (z sur 52 semaines au-delà de ± 1,5) ; G4 sens de la variation sur
+  4 semaines de la position nette des banques et teneurs de marché ; G5 G1 et G2 d'accord, sinon rien.
+- **Deux façons de copier**, 1 MNQ dans le sens du signal (achat ou vente), rien si le signal est nul :
+  - « nuit » : 18 h → 9 h 30 ;
+  - « entier » : 18 h → 15 h 59 du lendemain (une position par jour de trading, 3 $ de frais).
+  Sans stop : on mesure l'information du signal, pas un module.
+- 5 signaux × 2 = **10 tests**, sur les nuits jouables de la partie N (2012 → 2 octobre 2026).
+- **Retenu** si, à la fois : t ≥ 2 sur toute la période et retenu par Benjamini-Hochberg (10 tests) ; gain moyen
+  positif en exploration et au contrôle ; **mieux que 95 % de 1 000 placebos** (la série des signaux décalée d'un
+  nombre de semaines tiré au hasard, au moins 8 : mêmes nombres d'achats et de ventes, plus de lien avec le marché).
+- Pour information : la différence avec « acheter tous les jours » sur la même fenêtre.
+- Réserve écrite d'avance : pendant les fermetures de l'administration américaine (décembre 2018 - février 2019,
+  octobre 2025 - janvier 2026) les rapports sont sortis en retard ; la règle « vendredi » regarde alors un peu dans
+  le futur. Un signal qui passerait serait rejoué sans ces semaines avant d'être retenu.
+- Non testable ici, et pourquoi : les portefeuilles trimestriels des fonds (formulaires 13F : des actions, publiées
+  45 jours après), les portefeuilles crypto et les gros comptes de Polymarket (pas de futures ; pas de données dans
+  le dépôt ; réseau fermé).
+
+## Partie H : variantes de la nuit, pour en faire un atout utilisable (règles écrites le 12 novembre 2026, avant tout calcul de cette partie)
+
+Demande : « teste certaines variantes, trouve-moi un atout à mettre dans mes setups ou à automatiser ».
+
+Seule la nuit a passé ses conditions dans ce chantier ; jouée chaque soir de 18 h à 9 h 30, elle bouge trop pour le
+compte. Idée : ne garder que les heures où la hausse se fait. Source : Boyarchenko, Larsen et Whelan (2023) trouvent
+que la hausse de nuit des futures américains se concentre à l'ouverture de l'Europe (2 h - 3 h à New York, soit
+8 h - 9 h à Paris).
+
+Déjà vu avant d'écrire ces règles (sorties de la contre-revue, données non corrigées) : sur 2012 - 2019 la barre de
+2 h 00 (New York) était parmi les plus positives de la journée (+3,2 $, t 4,7) ; elle n'est plus dans les listes des
+années suivantes. Les chiffres de la partie N corrigée (t 3,62 sans stop ; 2,73 avec stop 0,50 %) sont connus aussi.
+
+### H1 : quelles heures de la nuit ?
+
+- **Fenêtres**, achat de 1 MNQ à l'ouverture de la première barre de 5 minutes, vente à l'ouverture de la barre de
+  fin. Les bornes du milieu sont à l'heure de **Paris** (c'est l'ouverture de l'Europe qui compte, et c'est l'heure
+  de l'utilisateur) :
+  - A « Asie » : 18 h (New York) → 8 h (Paris) ;
+  - E « ouverture de l'Europe » : 8 h → 9 h (Paris) ;
+  - M « matin » : 9 h (Paris) → 9 h 30 (New York) ;
+  - EM : 8 h (Paris) → 9 h 30 (New York), soit 15 h 30 à Paris.
+  Une borne est la première barre à cette heure ou dans les 30 minutes qui suivent ; sinon la fenêtre n'est pas jouée
+  cette nuit-là (0 $).
+- **Stops** : aucun ; 0,50 % sous l'entrée de la fenêtre. 4 fenêtres × 2 = **8 variantes**.
+- Mêmes nuits que la partie N (données corrigées) et mêmes cinq conditions : t ≥ 2 et Benjamini-Hochberg (8 tests) ;
+  gain moyen positif en exploration et au contrôle ; t ≥ 1,5 avec 6 $ de frais ; au moins 10 années positives sur
+  15 ; pire résultat au-dessus de −1 100 $.
+- Pour information : le gain moyen heure par heure (Paris), exploration et contrôle.
+
+### H2 : dans le compte Master
+
+Modules jugés : **S50**, la nuit entière avec stop 0,50 % (partie N) ; **S75**, la même avec stop 0,75 % ; et, si H1
+retient des variantes, **la meilleure** (plus grand t).
+
+- (a) **chaque nuit** : seulement pour le module de H1 (la nuit entière chaque soir est déjà jugée : non adoptée) ;
+- (b) **en secours contre l'inactivité** : le module n'est pris que si le compte vient de passer k jours de trading
+  de suite sans trade, **k = 2, 3 ou 4**, puis chaque nuit jusqu'au premier trade.
+- Trous du fichier de nuit : en vrai, le marché est ouvert ces nuits-là. Cette fois c'est écrit d'avance : un trade
+  de secours qui tombe dans un trou compte comme un trade à 0 $, et le nombre de cas est donné. (La vague 2 de la
+  partie N comptait ces nuits comme impossibles. Son chiffre « pour information » avec la convention d'ici, 69 % au
+  3e retrait et 8 % perdus par le plancher pour S50 et k = 3 sur les données non corrigées, a été vu avant d'écrire
+  ces règles : pour S50 et S75 à k = 3, ce calcul est une vérification sur données corrigées, pas un test neuf.)
+- **Même règle d'adoption** : aucun Master perdu par inactivité ; au plus 20 % de Masters perdus avant le 3e retrait ;
+  touché moyen positif ; nombre de dates de perte distinctes donné (moins de 3 = fragile).
+- Références : le bot seul, avec et sans la règle d'inactivité.
+
+### H3 : depuis l'état actuel du compte (descriptif)
+
+Solde 50 700 $, plus haut de fin de journée 51 800 $ (marge 1 400 $), 120 séances au plus, depuis chaque séance de
+2017 à 2026, **règle d'inactivité comptée** : le bot seul à 1 MNQ avec frein, puis le bot avec le module de secours
+le mieux classé de H2. On donne : perdus par le plancher, perdus par l'inactivité, solde ≥ 53 600 $ (premier retrait
+possible).
