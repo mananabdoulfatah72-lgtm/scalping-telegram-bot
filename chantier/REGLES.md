@@ -347,3 +347,61 @@ possible).
   repart donc de zéro après elle, et la nuit de secours suivante vient k jours de trading sans trade plus tard
   (c'est ce que fait le code, comme le secours de la vague 10).
 - Ajouté pour information après les résultats : les mêmes Masters lancés 5, 10 ou 15 séances plus tard.
+
+## Partie J : la nuit sur le MES (règles écrites le 12 novembre 2026, avant tout calcul de cette partie)
+
+Pourquoi : le Bot 3 en 1 réaligne toute position MNQ prise à la main sur le même compte (`bot3en1/README.md`). Une
+nuit de secours jouée à la main doit donc passer par un autre contrat ; et sous le frein, c'est déjà 1 MES.
+
+- Même règle que la partie N sur le S&P 500 24 h (`usa500idxusd`, heures corrigées) : achat à 18 h (New York), vente à
+  9 h 30, mêmes nuits jouables (au moins 150 barres, séance du lendemain complète).
+- 1 MES au prix d'aujourd'hui (5 $ par point × dernier prix du fichier), frais 4,50 $ par aller-retour.
+- 2 variantes : sans stop ; stop 0,50 %. Mêmes cinq conditions que la partie N (Benjamini-Hochberg sur 2 tests ;
+  « frais doublés » = 9 $).
+- Dans le compte : le secours après 2 jours sans trade, **toujours sur 1 MES**, avec la règle d'adoption de H2.
+
+## Partie K : gagner plus en acceptant un peu plus de risque (règles écrites le 12 novembre 2026, avant tout calcul de cette partie)
+
+Demande : « trouver des variantes et des atouts qui me font gagner plus, quitte à risquer un peu plus ».
+
+Aucun nouveau signal n'est cherché ici : le projet en a rejeté plus d'un million, la zone sur d'autres marchés
+(`zone_multi/` : rejetée après frais), la zone sans ses filtres (même gain par séance), et les six modèles de ce
+chantier. Les deux seuls avantages mesurés restent la zone du bot et la nuit. On cherche donc la meilleure façon de
+s'en servir dans le contrat Master : **trois leviers, 24 politiques**.
+
+1. **Taille du bot selon la marge** (marge = solde − plancher, connue avant la séance). Sous 1 750 $ de marge, le
+   frein s'applique toujours (demi-taille du premier échelon).
+
+   | | Règle |
+   |---|---|
+   | E0 | 1 MNQ (référence) |
+   | E1 | 2 MNQ dès 2 600 $ de marge |
+   | E2 | 2 MNQ dès 2 600 $, 3 MNQ dès 3 600 $ |
+   | E3 | 2 MNQ dès 2 000 $, 3 MNQ dès 3 000 $, 4 MNQ dès 4 000 $ |
+   | F2 | 2 MNQ tout le temps (1 MNQ sous le frein) |
+   | F4 | 4 MNQ tout le temps (2 MNQ sous le frein) |
+
+   Limite du jour du bot : 1 000 $ dans tous les cas.
+2. **La nuit** (stop 0,50 %, 1 MNQ ; 1 MES sous le frein, avec les vraies nuits du MES de la partie J) :
+   N0 = seulement en secours après 2 jours sans trade ; N1 = en plus, chaque soir dès que la marge atteint 2 600 $.
+3. **Le retrait** : R1 = dès que 1 000 $ sont disponibles (référence) ; R2 = attendre 1 500 $, le maximum de chacun
+   des 3 premiers retraits.
+
+- Simulateur : celui de la partie N, étendu à plusieurs tailles. **Contrôle** : avec E0, N0, R1, le calendrier de
+  secours de H2 et la demi-taille de MNQ sous le frein, il doit redonner exactement H2 (70 % au 3e retrait, 2 %
+  perdus par le plancher, 2 675 $ touchés). Ensuite le compteur d'inactivité est tenu compte par compte.
+- Un Master neuf toutes les 20 séances de 2017 à octobre 2026, et les mêmes lancés 5, 10 et 15 séances plus tard.
+- **Mesures** : part des Masters au 3e retrait, perdus par le plancher, par l'inactivité ; séances jusqu'au 1er et au
+  3e retrait (médianes) ; touché par Master ; **touché par mois de vie** (somme touchée ÷ somme des durées, 21 séances
+  par mois ; la vie s'arrête au 3e retrait, à la perte ou à la fin des données).
+- **Adoptée** si, à la fois :
+  1. aucun Master perdu par inactivité ;
+  2. au plus **30 %** de Masters perdus par le plancher avant le 3e retrait, pour les quatre séries de départs
+     (l'ancienne règle était 20 % : l'utilisateur accepte plus de risque) ;
+  3. touché par mois de vie au moins **25 % au-dessus** de la référence (E0, N0, R1), et au-dessus d'elle dans chaque
+     moitié (Masters lancés avant 2022 ; depuis 2022).
+- Recommandée : parmi les adoptées, celle qui touche le plus par mois de vie. Les 24 sont publiées.
+- Descriptif : chaque politique depuis l'état actuel du compte (solde 50 700 $, plus haut 51 800 $), sur 250 séances.
+- Réserves écrites d'avance : les seuils sont des chiffres ronds fixés ici, pas choisis sur les résultats ; mais les
+  24 politiques sont jugées sur les mêmes dix années, et un compte perdu coûte aussi une nouvelle qualification
+  (frais et temps), que le simulateur ne compte pas. Le compte « funded » d'après le 3e retrait reste une hypothèse.
