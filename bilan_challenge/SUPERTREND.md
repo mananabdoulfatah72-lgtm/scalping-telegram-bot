@@ -125,3 +125,42 @@ Départs depuis 2023 seulement : mêmes ordres de grandeur, à 1 ou 3 points pr�
 `st_detail.py` (données, faux prix, trades, contrôles), puis `st_part2.py` (période, 15 ans, chances). Les deux
 fichiers attendent, à côté d'eux, les copies de travail `op` (`claude/optimistic-ptolemy-xs24ra`) et `kb`
 (`claude/keen-babbage-r686cl`), ainsi que `pip install numba`.
+
+## Sur ton compte Master (solde 51 000 $, plancher 49 200 $), le 14 novembre 2026
+
+`st_master.py`. Le premier retrait devient possible à 53 600 $ (52 600 $ à garder plus 1 000 $ au moins, contrat du
+23 octobre 2026). La question posée au simulateur : le compte atteint-il 53 600 $ avant de toucher le plancher ?
+
+**Ce que fait la limite du jour, à 1 MNQ sur 15 ans** (gains au prix d'aujourd'hui) :
+
+| Limite du jour | Par séance | Pire séance | Pire série perdante | Plus forte baisse | Plus forte baisse depuis 2023 |
+|---|---|---|---|---|---|
+| aucune | +25,6 $ | −5 453 $ | −12 326 $ | −16 541 $ | −9 095 $ |
+| **400 $** | **+17,2 $** | **−428 $** | **−4 067 $** | **−13 038 $** | **−7 995 $** |
+| 800 $ | +24,1 $ | −827 $ | −5 201 $ | −11 132 $ | −9 106 $ |
+
+- La limite de 400 $ coupe chaque mauvaise journée vers −400 $, mais elle **coûte environ un tiers du gain** sur
+  15 ans. Sur le mois du challenge, elle a aidé : +6 256 $ au lieu de +5 550 $, avec 8 séances coupées à la limite.
+  C'est l'inverse de ce qu'elle fait en moyenne.
+- **Elle n'arrête pas une série de pertes.** Avec 1 800 $ de marge, cinq séances à la limite suffisent à perdre le
+  Master. Sur 15 ans, il y a eu jusqu'à 10 séances perdantes de suite.
+
+**Tes chances depuis 51 000 $ / 49 200 $** (départs à chaque séance depuis 2011) : 53 600 $ atteint / Master perdu /
+ni l'un ni l'autre, en %, et nombre médian de séances quand c'est atteint.
+
+| Taille, limite | 1 mois (22 séances) | 3 mois (66 séances) | 1 an (250 séances) |
+|---|---|---|---|
+| **1 MNQ, 400 $** | **21 / 30 / 49** | **41 / 50 / 9** | **44 / 56 / 0** (23 séances) |
+| 1 MNQ, sans limite | 27 / 33 / 40 | 45 / 50 / 5 | 47 / 53 / 0 (20 séances) |
+| 1 MNQ, 300 $ | 18 / 26 / 56 | 39 / 49 / 12 | 44 / 56 / 0 (26 séances) |
+| 2 MNQ, 800 $ | 37 / 60 / 4 | 38 / 62 / 0 | 39 / 61 / 0 (6 séances) |
+
+- Ces chiffres supposent un plancher suivi en temps réel (Option 1). Suivi en fin de journée : 1 à 4 points de
+  moins de chaque côté. Départs depuis 2023 seulement : 45 / 55 sur un an à 1 MNQ et 400 $.
+- **Règle des 40 %** (meilleure journée au plus 40 % du gain depuis le dernier retrait) : à 1 MNQ / 400 $, quand
+  53 600 $ est atteint, le retrait est permis tout de suite 73 fois sur 100, sinon environ 2 séances plus tard.
+- **Ce qui joue pour lui** : il trade chaque séance, donc il ne risque pas la règle d'inactivité.
+- **Ce qui joue contre lui** : depuis ta situation, il perd le Master plus souvent qu'il n'atteint le premier
+  retrait. Pour comparaison, dans `chantier/` de `claude/loving-mccarthy-u21aw6` (autre simulateur, plancher suivi
+  en fin de journée, 1 400 $ de marge) : ton Bot 3 en 1 avec le secours d'une heure fait 11 % de comptes perdus et
+  55 % avec au moins un retrait en un an.
