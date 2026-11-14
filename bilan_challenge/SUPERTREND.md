@@ -240,3 +240,26 @@ est perdu si sa valeur touche le plancher pendant la séance. Supertrend à 1 MN
   règle d'inactivité (5 jours sans trade) finit par perdre le Master.
 - **Le risque vient des séries de mauvaises journées, pas d'une seule journée.** Aucune limite du jour ne le règle.
 - Plancher en fin de journée ou en temps réel : à 1 à 3 points près, les chiffres sont les mêmes.
+
+## Un mois normal, et la limite à 800 $ (`st_mois.py`)
+
+Supertrend à 1 MNQ, toutes les périodes de 24 séances depuis 2011 (3 929 périodes), gains au prix d'aujourd'hui.
+Pour le Master : Option 2, 51 000 $, plancher 49 200 $, sur un an.
+
+| | Limite 400 $ | Limite 800 $ |
+|---|---|---|
+| Mois moyen | +385 $ | +552 $ |
+| Mois médian (la moitié fait moins) | +272 $ | +340 $ |
+| 1 mois sur 4 fait moins de | −821 $ | −757 $ |
+| 1 mois sur 4 fait plus de | +1 568 $ | +1 897 $ |
+| 1 mois sur 10 fait plus de | +2 786 $ | +3 119 $ |
+| Mois perdants | 43 % | 42 % |
+| Mois à +6 000 $ ou plus | 0,3 % | 0,5 % |
+| Pire mois | −4 897 $ | −5 978 $ |
+| Master : 1er retrait / perdu | 43 % / 55 % | 48 % / 52 % |
+| Master perdu dès le 1er mois | 26 % | 29 % |
+| Quand le Master est perdu, au bout de (médiane) | 24 séances | 19 séances |
+
+Le mois du challenge (+6 256 $ à 400 $) est l'un des 0,2 % meilleurs depuis 2011. La limite de 800 $ fait un peu
+mieux en moyenne et donne quelques points de plus pour le retrait. En contrepartie, une mauvaise journée coûte deux
+fois plus, et quand le compte est perdu, il l'est plus vite.
