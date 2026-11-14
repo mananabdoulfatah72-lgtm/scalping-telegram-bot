@@ -164,3 +164,17 @@ ni l'un ni l'autre, en %, et nombre médian de séances quand c'est atteint.
   retrait. Pour comparaison, dans `chantier/` de `claude/loving-mccarthy-u21aw6` (autre simulateur, plancher suivi
   en fin de journée, 1 400 $ de marge) : ton Bot 3 en 1 avec le secours d'une heure fait 11 % de comptes perdus et
   55 % avec au moins un retrait en un an.
+
+## Plafond de gain du jour : règle fixée avant le calcul (14 novembre 2026)
+
+**La demande.** Ajouter à Supertrend un plafond de gain du jour, pour que les trades gagnants ne soient pas rendus aux
+perdants, avec la limite de perte de 400 $.
+
+**La règle testée.** 1 MNQ, limite de perte du jour de 400 $. À la clôture de chaque minute, si le résultat du jour
+(réalisé + latent, frais compris) atteint le plafond, la position est fermée au prix de clôture et le bot ne trade
+plus ce jour-là. Plafonds testés : 300, 500, 800, 1 200 et 2 000 $, aucun autre.
+
+**Critère d'adoption, fixé avant le calcul.** Depuis ton Master (51 000 $, plancher 49 200 $, plancher suivi en temps
+réel), sur 250 séances, un plafond est adopté s'il fait à la fois plus de premiers retraits (53 600 $ atteint) et
+moins de Masters perdus que « sans plafond ». Il doit le faire pour les départs depuis 2011 et pour ceux depuis 2023.
+Le gain par séance sur 15 ans est publié pour information.
