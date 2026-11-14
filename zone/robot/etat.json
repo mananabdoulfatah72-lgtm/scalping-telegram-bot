@@ -1,6 +1,6 @@
 {
  "debut": "2026-09-25",
- "derniere_date": "2026-11-12",
+ "derniere_date": "2026-11-13",
  "tentatives": [
   {
    "numero": 1,
@@ -16,9 +16,9 @@
   }
  ],
  "recu_total": 0.0,
- "gain_1_mnq": 743.5,
+ "gain_1_mnq": 777.0,
  "phase": "challenge",
- "solde": 52285.0,
+ "solde": 52318.5,
  "haut": 52476.0,
  "meilleur": 0.0,
  "gain_periode": 0.0,
