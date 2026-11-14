@@ -1,5 +1,9 @@
 # Supertrend NQ 10-3 : rejeu détaillé et chances depuis 51 000 $ (14 novembre 2026)
 
+> **Correction du 14 novembre 2026 : ton compte est en Option 2**, plancher recalculé en fin de journée. C'est toi
+> qui l'as précisé. L'« Option 1 » venait d'une déduction de `audit/machine6/REGLES.md` (2 novembre). Les chiffres
+> en Option 2 sont dans la dernière section : ils changent de 1 à 3 points seulement.
+
 ## Ce que fait le bot (`bot3en1/SUPERTREND.md` de `claude/optimistic-ptolemy-xs24ra`)
 
 - Bougies de 5 minutes du NQ, de 15 h 30 à 22 h (heure de Paris). L'indicateur continue d'une séance à l'autre.
@@ -209,3 +213,30 @@ Contrôle des données : refait en pourcentage (plus de 1 % d'écart à la clôt
 trouve aucun autre faux prix en 15 ans. Les minutes extrêmes sont de vrais événements (mars 2020, 9 avril 2025). La
 meilleure séance d'un bot plafonné peut dépasser le plafond en une minute, comme le 16 mars 2020 : réouverture 4 % plus
 bas après un arrêt des échanges, +2 317 $ en une minute à 1 MNQ.
+
+## En Option 2, faut-il baisser la limite de perte du jour ? (`st_option2.py`)
+
+Ton Master : 51 000 $, plancher 49 200 $, plancher recalculé en fin de journée et fixe pendant la séance. Le compte
+est perdu si sa valeur touche le plancher pendant la séance. Supertrend à 1 MNQ.
+
+| Limite du jour | Par séance, 15 ans (t) | Séances coupées | Plus longue série perdante | Master sur 1 an, départs 2011+ : retrait / perdu | Départs 2023+ |
+|---|---|---|---|---|---|
+| 150 $ | +5,8 $ (1,14) | 69 % | 30 | 36 / 61 | 30 / 70 |
+| 200 $ | +4,4 $ (0,79) | 61 % | 20 | 35 / 64 | 34 / 66 |
+| 250 $ | +10,5 $ (1,72) | 52 % | 17 | 41 / 59 | 38 / 62 |
+| 300 $ | +11,3 $ (1,75) | 46 % | 17 | 42 / 57 | 42 / 58 |
+| **400 $** | **+17,2 $ (2,44)** | **34 %** | **10** | **43 / 55** | **44 / 56** |
+| 500 $ | +19,3 $ (2,60) | 25 % | 10 | 45 / 55 | 47 / 53 |
+| 800 $ | +24,1 $ (3,01) | 10 % | 10 | 48 / 52 | 46 / 54 |
+| aucune | +25,6 $ (2,86) | 0 % | 10 | 46 / 54 | 48 / 52 |
+| 400 $ + garde du plancher | — | — | — | 41 / 0, figés 59 % | 42 / 0, figés 58 % |
+
+- **Baisser la limite ne protège pas davantage, au contraire.** Un trade normal de Supertrend perd de 140 à 540 $
+  avant de se retourner (10 novembre : −463 $ puis −538 $). Sous 400 $, la limite coupe la journée avant la tendance
+  qui l'aurait payée. Le gain fond, les séries perdantes s'allongent, et le Master est perdu plus souvent : 64 % à
+  200 $ contre 55 % à 400 $.
+- **La garde du plancher** (limite du jour ramenée à la marge moins 150 $) n'est pas une solution. Elle empêche le
+  plancher d'être touché, mais elle **fige** le compte près du plancher : sans marge, le bot ne trade plus, et la
+  règle d'inactivité (5 jours sans trade) finit par perdre le Master.
+- **Le risque vient des séries de mauvaises journées, pas d'une seule journée.** Aucune limite du jour ne le règle.
+- Plancher en fin de journée ou en temps réel : à 1 à 3 points près, les chiffres sont les mêmes.
