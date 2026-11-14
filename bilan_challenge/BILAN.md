@@ -1,5 +1,11 @@
 # Chaque bot rejoué depuis l'achat du challenge Bulenox 50K (14 novembre 2026)
 
+> **Correctif du 14 novembre 2026.** Ce bilan contient deux erreurs, voir `SUPERTREND.md` :
+> - un faux prix du 30 octobre (ouverture à 29 562 à 15 h 03, New York) fausse cette séance. Les « perdu le
+>   30 oct. » à 1 MNQ et les −1 020 $ à 4 MNQ de ce jour-là sont faux. Supertrend à 1 MNQ valide le 4 novembre ;
+> - ce bilan suit le plancher en fin de journée, alors que ton compte Bulenox est en Option 1 : plancher suivi
+>   minute par minute sur le plus haut latent.
+
 Période : du 13 octobre 2026 (1re séance du challenge) au 13 novembre 2026, 24 séances. Le NQ passe de 30 618 à
 28 026 points. Chaque bot est rejoué par son propre code (moteurs C# de `bot3en1/` de la branche
 `claude/optimistic-ptolemy-xs24ra`, machine de veille `flux/veille.py`, journaux des robots de `main`), avec les minutes
