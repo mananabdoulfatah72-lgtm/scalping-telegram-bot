@@ -263,3 +263,20 @@ Pour le Master : Option 2, 51 000 $, plancher 49 200 $, sur un an.
 Le mois du challenge (+6 256 $ à 400 $) est l'un des 0,2 % meilleurs depuis 2011. La limite de 800 $ fait un peu
 mieux en moyenne et donne quelques points de plus pour le retrait. En contrepartie, une mauvaise journée coûte deux
 fois plus, et quand le compte est perdu, il l'est plus vite.
+
+### Les mois du calendrier depuis 2011 (1 MNQ, gains au prix d'aujourd'hui)
+
+191 mois, de janvier 2011 à novembre 2026 (novembre 2026 arrêté au 13).
+
+| | Limite 400 $ | Limite 800 $ |
+|---|---|---|
+| Mois à +5 000 $ ou plus | 1 (septembre 2022 : +5 760 $) | 3 |
+| Mois à +4 000 $ ou plus | 4 | 6 |
+| Mois à +3 000 $ ou plus | 14 | 21 |
+| Mois à +2 000 $ ou plus | 42 | 45 |
+| Mois perdants | 88 (46 %) | 86 |
+| Pires mois | juin 2022 −3 682 $, janvier 2013 −3 198 $, août 2024 −2 953 $ | |
+
+2026 mois par mois (limite 400 $) : janvier +223, février +2 222, mars +121, avril −205, mai +2 309, juin +1 304,
+**juillet −1 289, août −1 546, septembre −1 811**, octobre +1 033, novembre (jusqu'au 13) +4 887. Les trois mois
+perdants de l'été font −4 646 $ : avec 1 800 $ de marge, ils auraient coûté le Master.
