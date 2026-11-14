@@ -1,6 +1,6 @@
 # Robot version 7 : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-12**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
+Mis a jour le **2026-11-13**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
 
 Regle : chaque fin de mois, les 5 actions technologie au meilleur rendement de 6 mois a 1 mois, 10 % du compte chacune, 50 % non investis.
 
@@ -8,9 +8,9 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **45,578 $** |
-| Gain depuis le depart | -4,422 $ (-8.8%) |
-| Baisse depuis le plus haut | -10.6% |
+| Solde virtuel | **44,806 $** |
+| Gain depuis le depart | -5,194 $ (-10.4%) |
+| Baisse depuis le plus haut | -12.2% |
 | Dernier reequilibrage | 2026-10-30 |
 | Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | PERDU le 2026-11-02 |
 
@@ -18,12 +18,12 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Action | Montant | Part du compte |
 |---|---|---|
-| AMD | 5,299 $ | 11.6% |
-| LRCX | 4,468 $ | 9.8% |
-| AMAT | 4,463 $ | 9.8% |
-| NOW | 4,376 $ | 9.6% |
-| MU | 4,124 $ | 9.0% |
-| Non investi | 22,849 $ | 50.1% |
+| AMD | 4,835 $ | 10.8% |
+| NOW | 4,445 $ | 9.9% |
+| AMAT | 4,340 $ | 9.7% |
+| LRCX | 4,318 $ | 9.6% |
+| MU | 4,020 $ | 9.0% |
+| Non investi | 22,849 $ | 51.0% |
 
 ## Derniers ordres (2026-10-30, a la cloture, avant 6 $ de frais)
 
@@ -38,6 +38,7 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-13 | -771 $ | 44,806 $ |
 | 2026-11-12 | -70 $ | 45,578 $ |
 | 2026-11-11 | +1,445 $ | 45,648 $ |
 | 2026-11-10 | -75 $ | 44,203 $ |
@@ -47,6 +48,5 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 | 2026-11-04 | -604 $ | 44,670 $ |
 | 2026-11-03 | +549 $ | 45,275 $ |
 | 2026-11-02 | -972 $ | 44,725 $ |
-| 2026-10-30 | -1,334 $ | 45,698 $ |
 
 </details>
