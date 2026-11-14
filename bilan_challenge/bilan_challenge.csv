@@ -1,0 +1,39 @@
+bot,total,pire_jour,challenge,le,solde,notes
+Supertrend NQ 10-3 4 MNQ,17782,-1020,VALIDE,2026-10-16,55320,54 trades
+W1 (Supertrend + modele) 4 MNQ,15734,-1020,VALIDE,2026-10-16,53844,28 trades
+ORB 5 minutes 4 MNQ,13872,-1020,VALIDE,2026-10-16,55280,"23 seances, fin de journee seulement"
+Cassure de la veille 4 MNQ,12456,-832,PERDU,2026-11-04,49018,"20 seances, fin de journee seulement"
+XGBoost NQ 4 MNQ,8006,-1020,VALIDE,2026-10-16,55146,23 trades
+Bot 3 en 1 - reglages actuels (zone + C2 + Q1) 4 MNQ,7930,-1020,VALIDE,2026-10-16,55240,17 trades
+W1 (Supertrend + modele) 1 MNQ,6168,-567,VALIDE,2026-11-04,53076,28 trades
+Bot 3 en 1 - zone d'origine 4 MNQ,6118,-1020,VALIDE,2026-10-16,55240,30 trades
+Supertrend NQ 10-3 1 MNQ,5418,-786,PERDU,2026-10-30,48484,54 trades
+Pivots R1/S1 4 MNQ,4058,-954,VALIDE,2026-10-16,53174,"8 seances, fin de journee seulement"
+ORB 5 minutes 1 MNQ,3269,-394,VALIDE hors delai,2026-11-13,53269,"23 seances, fin de journee seulement"
+XGBoost NQ 1 MNQ,3212,-516,VALIDE,2026-11-09,53006,23 trades
+Cassure de la veille 1 MNQ,3114,-208,VALIDE,2026-11-09,53343,"20 seances, fin de journee seulement"
+Bot 3 en 1 - reglages actuels (zone + C2 + Q1) 1 MNQ,1724,-482,en cours,2026-11-13,51724,17 trades
+W1i lundi bitcoin 4 MNQ,1678,1678,en cours,2026-11-13,51678,"1 seances, fin de journee seulement"
+Bot 3 en 1 - regle du 26 oct 4 MNQ,1382,-1020,VALIDE,2026-10-16,53658,15 trades
+Robot zone (main) 1 MNQ,1024,-865,en cours,2026-11-13,51024,
+Bot 3 en 1 - zone d'origine 1 MNQ,1020,-866,PERDU,2026-10-30,48647,30 trades
+Pivots R1/S1 1 MNQ,1015,-238,en cours,2026-11-13,51015,"8 seances, fin de journee seulement"
+Robot zone : rebond 1 MNQ,735,-186,en cours,2026-11-13,50735,
+Bot 3 en 1 - regle du 27 oct (stop 70) 4 MNQ,690,-1020,VALIDE,2026-10-16,55992,15 trades
+Robot zone : son compte challenge,518,-1376,PERDU,2026-11-05,48199,zone + RSI(2) + rebond
+W1i lundi bitcoin 1 MNQ,420,420,en cours,2026-11-13,50420,"1 seances, fin de journee seulement"
+Bot 3 en 1 - regle du 26 oct 1 MNQ,294,-346,en cours,2026-11-13,50294,15 trades
+Bot 3 en 1 - regle du 27 oct (stop 70) 1 MNQ,293,-229,en cours,2026-11-13,50293,15 trades
+S2b cassure ratee 4 MNQ,220,-250,en cours,2026-11-13,50220,"12 seances, fin de journee seulement"
+S2b cassure ratee 1 MNQ,55,-63,en cours,2026-11-13,50055,"12 seances, fin de journee seulement"
+Radar achat 13 h 30 4 MNQ,46,-1020,en cours,2026-11-13,50046,"3 seances, fin de journee seulement"
+L2 contre-mouvement 15 h 30 1 MNQ,-19,-19,en cours,2026-11-13,49981,"1 seances, fin de journee seulement"
+Radar achat 13 h 1 MNQ,-20,-162,en cours,2026-11-13,49980,"3 seances, fin de journee seulement"
+Radar achat 13 h 30 1 MNQ,-64,-330,en cours,2026-11-13,49936,"3 seances, fin de journee seulement"
+L2 contre-mouvement 15 h 30 4 MNQ,-74,-74,en cours,2026-11-13,49926,"1 seances, fin de journee seulement"
+Radar achat 13 h 4 MNQ,-80,-646,en cours,2026-11-13,49920,"3 seances, fin de journee seulement"
+Tendance seule (19 marches),-660,-905,PERDU,2026-11-09,47416,garde la nuit : interdit chez Bulenox
+RSI(2) du bot (nuit) 1 MNQ,-1019,-776,en cours,2026-11-13,48981,"2 trades, tenu la nuit : interdit chez Bulenox"
+Robot zone : RSI(2) 1 MNQ,-1032,-3456,PERDU,2026-11-05,46530,tenu la nuit
+Melange tendance + achat,-1350,-526,en cours,2026-11-13,48650,garde la nuit : interdit chez Bulenox
+Version 7 (5 actions tech),-5007,-3041,PERDU,2026-10-29,47219,"actions, pas des futures"
