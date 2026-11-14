@@ -178,3 +178,34 @@ plus ce jour-là. Plafonds testés : 300, 500, 800, 1 200 et 2 000 $, aucun autr
 réel), sur 250 séances, un plafond est adopté s'il fait à la fois plus de premiers retraits (53 600 $ atteint) et
 moins de Masters perdus que « sans plafond ». Il doit le faire pour les départs depuis 2011 et pour ceux depuis 2023.
 Le gain par séance sur 15 ans est publié pour information.
+
+### Résultats (calculés après avoir fixé la règle) : `st_plafond.py`
+
+1 MNQ, limite de perte de 400 $ :
+
+| Plafond du jour | Par séance, 15 ans (t) | Depuis 2023 (t) | Plus forte baisse, 15 ans | Séances plafonnées | Mois du challenge (vrais $) | Master sur 250 séances, départs 2011+ | Départs 2023+ |
+|---|---|---|---|---|---|---|---|
+| aucun | +17,2 $ (2,44) | +12,5 $ (0,87) | −13 038 $ | 0 % | +6 256 $ | 44 / 56 | 45 / 55 |
+| 300 $ | +1,2 $ (0,23) | +2,5 $ (0,24) | −25 898 $ | 41 % | +894 $ | 36 / 64 | 47 / 53 |
+| 500 $ | +12,6 $ (2,12) | +10,6 $ (0,86) | −11 659 $ | 24 % | +2 333 $ | 41 / 59 | 44 / 56 |
+| 800 $ | +19,0 $ (2,88) | +8,9 $ (0,66) | −10 753 $ | 10,5 % | +4 552 $ | 45 / 54 | 44 / 56 |
+| 1 200 $ | +16,1 $ (2,35) | +12,1 $ (0,86) | −13 038 $ | 3 % | +5 422 $ | 45 / 55 | 46 / 54 |
+| 2 000 $ | +17,8 $ (2,52) | +13,2 $ (0,91) | −13 038 $ | 0,5 % | +6 148 $ | 44 / 56 | 45 / 55 |
+
+Les deux dernières colonnes donnent, en %, le premier retrait atteint / le Master perdu.
+
+**Verdict**
+- **300 $ et 500 $ sont rejetés.** Ils cassent l'avantage du bot : +1,2 $ par séance à 300 $. À 300 $, il y a plus
+  de Masters perdus depuis 2011 (64 % au lieu de 56 %).
+- **800 $ est rejeté** : mieux sur les départs depuis 2011, moins bien sur ceux depuis 2023.
+- **1 200 $ passe la règle écrite, mais d'un seul point de chaque côté** (45 / 55 et 46 / 54, contre 44 / 56 et
+  45 / 55). C'est dans le bruit : il ne plafonne que 3 % des séances. Mon critère n'exigeait pas d'écart minimum,
+  c'est une faiblesse de la règle. Il ne change rien de concret au risque du Master. Son seul avantage pratique : il
+  garde la meilleure journée sous 40 % du gain avant le premier retrait (1 200 $ ≤ 40 % de 3 600 $).
+- Pourquoi : les gains de Supertrend viennent de quelques grosses journées de tendance, et ses pertes tombent surtout
+  **d'autres jours**. Un plafond ne protège pas des jours perdants ; il coupe les journées qui les paient.
+
+Contrôle des données : refait en pourcentage (plus de 1 % d'écart à la clôture d'avant et à sa propre clôture), il ne
+trouve aucun autre faux prix en 15 ans. Les minutes extrêmes sont de vrais événements (mars 2020, 9 avril 2025). La
+meilleure séance d'un bot plafonné peut dépasser le plafond en une minute, comme le 16 mars 2020 : réouverture 4 % plus
+bas après un arrêt des échanges, +2 317 $ en une minute à 1 MNQ.
