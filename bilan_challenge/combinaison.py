@@ -145,6 +145,48 @@ for a0 in ("2011", "2023"):
             r2, _ = master(g, p, j, dep, inactivite=False)
             ligne += f"   | sans la regle d'inactivite : {r2[0]:.1f} / {r2[1]:.1f} / - / {r2[3]:.1f}"
         L.append(ligne)
+
+
+# 3. deuxieme vague : le Supertrend seulement en secours, la seance qui suit n seances de suite sans aucun trade
+def master_secours(zone, ensemble, n, departs, ns=250):
+    gA, pA, jA = zone; gC, pC, jC = ensemble
+    r = [0, 0, 0, 0]; duree = []; jours_st = 0; jours = 0
+    for i in departs:
+        solde, haut, sans, issue = 51000.0, 51700.0, 0, 3
+        for q in range(ns):
+            d = i + q; jours += 1
+            if sans >= n:
+                g, p, j = gC[d], pC[d], jC[d]; jours_st += 1
+            else:
+                g, p, j = gA[d], pA[d], jA[d]
+            if solde + p <= min(haut - 2500.0, 50100.0):
+                issue = 1
+                break
+            solde += g
+            sans = 0 if j else sans + 1
+            if sans >= 5:
+                issue = 2
+                break
+            if solde >= 53600.0:
+                issue = 0; duree.append(q + 1)
+                break
+            if solde > haut:
+                haut = solde
+        r[issue] += 1
+    m = len(departs)
+    return [x / m * 100 for x in r], (float(np.median(duree)) if duree else float("nan")), jours_st / jours * 100
+
+
+L += ["", "3. Deuxieme vague : zone 1 MNQ tous les jours, Supertrend 1 MNQ seulement en secours :",
+      "   53 600 $ atteint / perdu par le plancher / perdu par l'inactivite / ni l'un ni l'autre (%), seances jusqu'au retrait (mediane), part des seances avec le Supertrend"]
+zA = journees([Z1]); zC = journees([Z1, S1])
+for a0 in ("2011", "2023"):
+    dep = [i for i in range(nj) if J[i] >= a0 and X.complete[i] and i + 250 <= nj]
+    L.append(f"   departs depuis {a0} ({len(dep)}) :")
+    for n in (2, 3):
+        r, med, part = master_secours(zA, zC, n, dep)
+        L.append(f"     G{n}  secours apres {n} seances sans trade   {r[0]:5.1f} / {r[1]:5.1f} / {r[2]:5.1f} / {r[3]:5.1f}   ({med:.0f} seances, Supertrend {part:.0f} % des seances)")
+
 # seances sans trade
 for nom, parts in COMBOS.items():
     j = journees(parts)[2]; comp = [d for d in range(nj) if X.complete[d]]

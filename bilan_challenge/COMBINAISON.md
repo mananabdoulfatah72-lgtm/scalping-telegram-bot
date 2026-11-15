@@ -108,3 +108,33 @@ un vrai trade de stratégie, pas une « activité artificielle ».
 **Critère (le même)** : G2 ou G3 est retenue si, sur les départs depuis 2011 et sur ceux depuis 2023, elle n'a aucun
 Master perdu par inactivité, au moins 10 points de Masters perdus en moins que le Supertrend seul, et au moins
 autant de premiers retraits que lui.
+
+### Résultats de la deuxième vague (calculés après avoir fixé ses règles)
+
+53 600 $ atteint / perdu par le plancher / perdu par l'inactivité / ni l'un ni l'autre, en % :
+
+| Combinaison | Départs depuis 2011 | Départs depuis 2023 | Séances avec le Supertrend | Séances jusqu'au retrait (médiane) |
+|---|---|---|---|---|
+| B. Supertrend seul (repère) | 43,0 / 55,6 / 0 / 1,4 | 43,8 / 56,2 / 0 / 0 | toutes | 28 et 40 |
+| C. Zone + Supertrend tous les jours | 50,6 / 49,4 / 0 / 0 | 54,5 / 45,5 / 0 / 0 | toutes | 22 et 27 |
+| **G2. Zone + Supertrend en secours après 2 séances sans trade** | **60,2 / 35,2 / 0 / 4,7** | **66,9 / 30,2 / 0 / 2,9** | 19 à 21 % | 64 et 52 |
+| G3. La même après 3 séances | 65,6 / 32,5 / 0,1 / 1,9 | 54,6 / 42,2 / 0 / 3,2 | 10 % | 86 et 103 |
+| Zone si le compte était gardé actif sans rien coûter (repère) | 66,5 / 19,8 / — / 13,7 | 46,1 / 35,4 / — / 18,5 | — | — |
+
+**Verdict : G2 est retenue, G3 non.**
+- G2 passe les trois conditions sur les deux jeux de départs : aucun Master perdu par inactivité, 20 et 26 points
+  de Masters perdus en moins que le Supertrend seul, 17 et 23 points de premiers retraits en plus.
+- G3 échoue à la condition 1 (0,1 % de Masters perdus par inactivité, les demi-séances où le Supertrend ne trade
+  pas) et elle est nettement moins bonne sur les départs depuis 2023 (42 % de Masters perdus contre 30 %).
+
+**À savoir avant de s'en servir.**
+- C'est une deuxième vague : ses règles ont été écrites après avoir vu la première. Deux réglages ont été essayés
+  (2 et 3 séances) et ils ne donnent pas la même chose depuis 2023 : le résultat est sensible à ce réglage.
+- Les départs depuis 2023 reposent sur peu d'épisodes de perte (723 comptes qui se chevauchent) : ce sont des
+  ordres de grandeur.
+- La zone est rejouée sans le filtre delta, qui n'existe pas avant 2026. Avec lui, le bot trade moins, donc le
+  Supertrend de secours tournerait plus souvent que 19 à 21 % des séances.
+- Même avec G2, environ un Master sur trois est perdu avant le premier retrait.
+- Ce bot combiné n'existe pas encore. Aujourd'hui, le Bot 3 en 1 et le Supertrend NQ ne peuvent pas tourner sur le
+  même compte : chacun ramène la position du compte à la sienne. Il faut ajouter le Supertrend comme moteur de
+  secours dans le Bot 3 en 1, à côté de la zone, puis vérifier que le moteur C# redonne ces chiffres.

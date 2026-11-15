@@ -31,6 +31,15 @@ F  Zone + Nuit                     +9,724   4.75     2.59      -16,473       -4,
      B  Supertrend 1 MNQ seul      43.8 /  56.2 /   0.0 /   0.0   (40 seances)
      C  Zone 1 + Supertrend 1      54.5 /  45.5 /   0.0 /   0.0   (27 seances)
      D  Zone 2 + Supertrend 1      49.7 /  50.3 /   0.0 /   0.0   (19 seances)
+
+3. Deuxieme vague : zone 1 MNQ tous les jours, Supertrend 1 MNQ seulement en secours :
+   53 600 $ atteint / perdu par le plancher / perdu par l'inactivite / ni l'un ni l'autre (%), seances jusqu'au retrait (mediane), part des seances avec le Supertrend
+   departs depuis 2011 (3712) :
+     G2  secours apres 2 seances sans trade    60.2 /  35.2 /   0.0 /   4.7   (64 seances, Supertrend 19 % des seances)
+     G3  secours apres 3 seances sans trade    65.6 /  32.5 /   0.1 /   1.9   (86 seances, Supertrend 10 % des seances)
+   departs depuis 2023 (723) :
+     G2  secours apres 2 seances sans trade    66.9 /  30.2 /   0.0 /   2.9   (52 seances, Supertrend 21 % des seances)
+     G3  secours apres 3 seances sans trade    54.6 /  42.2 /   0.0 /   3.2   (103 seances, Supertrend 10 % des seances)
    seances sans trade, A : 59 %
    seances sans trade, B : 0 %
    seances sans trade, C : 0 %
