@@ -215,7 +215,7 @@
   // ------------------------------------------------------------------ backtest
   /* Position w[t] = sig[t-1], prise a l'OUVERTURE de la barre t. A plat avant a, tout est ferme a la cloture de b-1.
      Rend [mesures, rets, courbe] ; courbe[i] = capital apres la barre a+i (pour le dessin). */
-  function backtest(sig, o, c, a, b, frais) {
+  function backtest(sig, o, c, roll, a, b, frais) {
     var E = 1.0, pic = 1.0, baisse = 0.0, wp = 0, trades = 0, expo = 0, rets = [], courbe = [];
     for (var t = a; t < b; t++) {
       var w = sig[t - 1];
@@ -223,6 +223,7 @@
       var d = c[t] / o[t] - 1.0;
       var r = (1.0 + wp * g) * (1.0 + w * d) - 1.0;
       var cout = frais * Math.abs(w - wp);
+      if (roll[t] === 1 && w === wp && w !== 0) cout += 2.0 * frais * Math.abs(w);
       if (w !== wp && w !== 0) trades += 1;
       if (t === b - 1) cout += frais * Math.abs(w);
       r -= cout;
@@ -235,7 +236,19 @@
     return [{ ret: E - 1.0, trades: trades, dd: baisse, expo: expo / (b - a) }, rets, courbe];
   }
 
-  function stats(rets, dates) {
+  /* Regression y = alpha + beta * x (x = rendement brut du marche de la meme barre). */
+  function horsMarche(y, x) {
+    var n = y.length, sx = 0.0, sy = 0.0, i;
+    for (i = 0; i < n; i++) { sx += x[i]; sy += y[i]; }
+    var mx = sx / n, my = sy / n, sxx = 0.0, sxy = 0.0;
+    for (i = 0; i < n; i++) { var dx = x[i] - mx; sxx += dx * dx; sxy += dx * (y[i] - my); }
+    var beta = sxy / sxx, alpha = my - beta * mx, sse = 0.0;
+    for (i = 0; i < n; i++) { var e = y[i] - alpha - beta * x[i]; sse += e * e; }
+    var se = Math.sqrt(sse / (n - 2) * (1.0 / n + mx * mx / sxx));
+    return [alpha, beta, se === 0 ? 0.0 : alpha / se];
+  }
+
+  function stats(rets, dates, marche) {
     var n = rets.length, m = pysum(rets) / n, i;
     var carres = [];
     for (i = 0; i < n; i++) carres.push(Math.pow(rets[i] - m, 2));
@@ -252,7 +265,7 @@
       var ss = Math.sqrt(pysum(q) / (x.length - 1));
       return ss === 0 ? 0.0 : mm / ss * Math.sqrt(x.length);
     }
-    return {
+    var out = {
       cagr: Math.pow(E, 252.0 / n) - 1.0,
       sharpe: s === 0 ? 0.0 : m / s * Math.sqrt(252.0),
       t: s === 0 ? 0.0 : m / s * Math.sqrt(n),
@@ -260,6 +273,11 @@
       t_depuis_2019: tDe(function (d) { return d >= '2019-01-01'; }),
       t_depuis_2023: tDe(function (d) { return d >= '2023-01-01'; })
     };
+    if (marche) {
+      var hm = horsMarche(rets, marche);
+      out.alpha_an = hm[0] * 252.0; out.beta = hm[1]; out.t_alpha = hm[2];
+    }
+    return out;
   }
 
   function fusion(a, b) { var r = {}, k; for (k in a) r[k] = a[k]; for (k in b) r[k] = b[k]; return r; }
@@ -308,30 +326,35 @@
         out.signaux[s].push(ch.join(''));
       }
     });
-    var un = remplir(T, 1), datesLong = dates.slice(a0, T);
+    var un = remplir(T, 1), datesLong = dates.slice(a0, T), marche = [];
+    for (k = 0; k < K; k++) {
+      var mk = [];
+      for (var t2 = a0; t2 < T; t2++) mk.push(M[k].c[t2] / M[k].c[t2 - 1] - 1.0);
+      marche.push(mk);
+    }
     modes.forEach(function (mode) {
       var pb = FRAIS[mode], cel = [], bhP = [];
       ps.forEach(function (p) {
         var ligneBh = [];
-        for (k = 0; k < K; k++) ligneBh.push(backtest(un, M[k].o, M[k].c, p.a, p.b, pb[k] / 1e4)[0]);
+        for (k = 0; k < K; k++) ligneBh.push(backtest(un, M[k].o, M[k].c, M[k].r, p.a, p.b, pb[k] / 1e4)[0]);
         bhP.push(ligneBh);
         cel.push(STRATEGIES.map(function (s) {
           var l = [];
-          for (k = 0; k < K; k++) l.push(fusion(backtest(calc[s][k].sig, M[k].o, M[k].c, p.a, p.b, pb[k] / 1e4)[0], { bh: ligneBh[k].ret }));
+          for (k = 0; k < K; k++) l.push(fusion(backtest(calc[s][k].sig, M[k].o, M[k].c, M[k].r, p.a, p.b, pb[k] / 1e4)[0], { bh: ligneBh[k].ret }));
           return l;
         }));
       });
       out.cellules[mode] = cel;
       var bhL = [], lg = [];
       for (k = 0; k < K; k++) {
-        var r = backtest(un, M[k].o, M[k].c, a0, T, pb[k] / 1e4);
+        var r = backtest(un, M[k].o, M[k].c, M[k].r, a0, T, pb[k] / 1e4);
         bhL.push(fusion(r[0], stats(r[1], datesLong)));
       }
       for (i = 0; i < STRATEGIES.length; i++) {
         var ligne = [];
         for (k = 0; k < K; k++) {
-          var rr = backtest(calc[STRATEGIES[i]][k].sig, M[k].o, M[k].c, a0, T, pb[k] / 1e4);
-          ligne.push(fusion(rr[0], stats(rr[1], datesLong)));
+          var rr = backtest(calc[STRATEGIES[i]][k].sig, M[k].o, M[k].c, M[k].r, a0, T, pb[k] / 1e4);
+          ligne.push(fusion(rr[0], stats(rr[1], datesLong, marche[k])));
         }
         lg.push(ligne);
       }
@@ -345,7 +368,7 @@
     N_PASSE: N_PASSE, FRAIS: FRAIS, STRATEGIES: STRATEGIES, NOMS: NOMS,
     sma: sma, ecartType: ecartType, ema: ema, atr: atr, pysum: pysum,
     supertrend: supertrend, zscore: zscore, dualmom: dualmom, ema_stop: ema_stop, keltner: keltner, stoch: stoch, rsi2: rsi2,
-    backtest: backtest, stats: stats, passes: passes, calculer: calculer, tout: tout
+    backtest: backtest, horsMarche: horsMarche, stats: stats, passes: passes, calculer: calculer, tout: tout
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = BT;
   else racine.BT = BT;
