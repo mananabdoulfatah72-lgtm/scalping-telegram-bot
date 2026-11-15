@@ -53,3 +53,58 @@ C ou D est **retenue** si, sur les départs depuis 2011 **et** sur ceux depuis 2
 3. au moins autant de premiers retraits que le Supertrend seul (B).
 
 Sinon elle n'est pas retenue. E et F sont publiées pour information, sans décision.
+
+## Résultats de la première vague (calculés après avoir fixé les règles) : `combinaison.py`, `combinaison.txt`
+
+**Contrôle du simulateur : passé.** B seul donne 43,0 % de retraits et 55,6 % de Masters perdus (attendu 43 et 55) ;
+A sans la règle d'inactivité donne 66,5 % et 19,8 % (attendu 67 et 20).
+
+**Gain par séance** (1 MNQ, 21 févr. 2012 → 25 sept. 2026, 3 633 séances) :
+
+| Combinaison | Gain par an | t | t depuis 2023 | Pire baisse | Pire séance | Années perdantes |
+|---|---|---|---|---|---|---|
+| A. Zone 1 MNQ seule | +4 046 $ | 4,85 | 2,12 | −3 275 $ | −1 008 $ | 1 (2025) |
+| B. Supertrend 1 MNQ seul | +3 986 $ | 2,15 | 0,48 | −13 038 $ | −424 $ | 4 (2013, 2017, 2024, 2025) |
+| C. Zone 1 + Supertrend 1 | +8 032 $ | 3,49 | 1,13 | −10 178 $ | −1 415 $ | 3 (2013, 2017, 2025) |
+| D. Zone 2 + Supertrend 1 | +11 729 $ | 4,03 | 1,28 | −13 308 $ | −1 444 $ | 2 (2017, 2025) |
+| E. Zone + Supertrend + Nuit | +13 711 $ | 4,54 | 2,05 | −18 340 $ | −4 930 $ | 0 |
+| F. Zone + Nuit | +9 724 $ | 4,75 | 2,59 | −16 473 $ | −4 522 $ | 1 (2022) |
+| Nuit seule (information) | +5 679 $ | 3,06 | 1,90 | −21 376 $ | −3 918 $ | 2 (2016, 2022) |
+
+Corrélations entre les gains du jour : zone et Supertrend **0,37** (ils gagnent et perdent souvent les mêmes jours) ;
+zone et nuit 0,01 ; Supertrend et nuit 0,05 ; nuit et NQ 0,49.
+
+**Compte Master, option 2, depuis 51 000 $ / 49 200 $, 250 séances** (53 600 $ atteint / perdu par le plancher /
+perdu par l'inactivité, en %) :
+
+| Combinaison | Départs depuis 2011 | Départs depuis 2023 |
+|---|---|---|
+| A. Zone seule | 4,7 / 1,0 / **94,3** | 0,0 / 2,5 / **97,5** |
+| A sans la règle d'inactivité (repère) | 66,5 / 19,8 / — | 46,1 / 35,4 / — |
+| B. Supertrend seul | 43,0 / 55,6 / 0 | 43,8 / 56,2 / 0 |
+| C. Zone 1 + Supertrend 1 | 50,6 / 49,4 / 0 | 54,5 / 45,5 / 0 |
+| D. Zone 2 + Supertrend 1 | 47,0 / 53,0 / 0 | 49,7 / 50,3 / 0 |
+
+**Verdict : ni C ni D n'est retenue.** C règle l'inactivité et fait mieux que le Supertrend seul (6 à 11 points de
+Masters perdus en moins, 8 à 11 points de retraits en plus), mais il lui manque 4 points sur les départs depuis 2011
+pour passer la condition 2, et le Master reste perdu près d'une fois sur deux. D est moins bonne que C : doubler la
+zone accélère les pertes autant que les gains.
+
+## Deuxième vague : le Supertrend seulement en secours (règles écrites le 15 novembre 2026, après la première vague, avant tout calcul de celle-ci)
+
+**L'idée.** Dans C, le Supertrend trade tous les jours et apporte presque toute la baisse. Or il ne sert au compte
+que pour une chose : éviter l'inactivité quand la zone reste silencieuse. Ici il ne tourne que ces jours-là. C'est
+un vrai trade de stratégie, pas une « activité artificielle ».
+
+| | Combinaison |
+|---|---|
+| G2 | Zone 1 MNQ tous les jours ; Supertrend 1 MNQ (limite 400 $) seulement la séance qui suit 2 séances de suite sans aucun trade |
+| G3 | La même, après 3 séances de suite sans aucun trade |
+
+- Le compteur de séances sans trade repart de 0 au début de chaque compte simulé et dès qu'un des deux bots trade.
+- Le Supertrend de secours tourne toute la séance, comme d'habitude. Sa décision est connue la veille.
+- Même simulateur, mêmes départs, même compte que la première vague.
+
+**Critère (le même)** : G2 ou G3 est retenue si, sur les départs depuis 2011 et sur ceux depuis 2023, elle n'a aucun
+Master perdu par inactivité, au moins 10 points de Masters perdus en moins que le Supertrend seul, et au moins
+autant de premiers retraits que lui.
