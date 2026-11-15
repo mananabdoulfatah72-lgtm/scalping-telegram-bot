@@ -5,6 +5,21 @@ Une page web autonome (un seul fichier HTML, publié comme Artifact claude.ai) q
 Public : un trader particulier francophone, non développeur, qui regarde souvent sur téléphone. Toute la page est en
 français, en phrases simples.
 
+## Révision 2 (15 novembre 2026) : ce qui change par rapport à la première version
+
+Après la vérification indépendante du calcul de référence, cinq changements. `reference.py`, `data.json`,
+`expected.json` et `comparatif.json` ont été régénérés ; ce document est à jour partout.
+
+1. **Coût du changement de contrat.** `data.json` porte pour chaque marché un tableau `r[]` (1 sur la première barre
+   d'un nouveau contrat). `backtest(sig, o, c, roll, a, b, frais)` : une position gardée à travers cette barre
+   (`roll[t] == 1`, `w == wp`, `w != 0`) paie 2 ordres de plus.
+2. **Gain « hors marché ».** `stats(rets, dates, marche)` ajoute `alpha_an`, `beta`, `t_alpha` (fonction
+   `hors_marche` : régression du rendement de la stratégie sur le rendement brut du marché de la même barre,
+   `c[t]/c[t−1] − 1`). Absents pour « acheter et conserver ».
+3. **La pastille du verdict se lit sur `t_alpha`**, plus sur `t` (§ 2.7).
+4. **Cellule sans trade** : état neutre « aucun trade », qui ne compte ni comme gagnée ni comme perdue (§ 2.3, 2.5).
+5. **Tableau « tes bots »** : deux colonnes de plus, `hors_marche_par_an` et `t_hors_marche` (`null` pour le repère).
+
 ## 0. Fichiers
 
 Dossier de travail : `/home/user/scalping-telegram-bot/terminal_backtest/`.
@@ -13,7 +28,7 @@ Déjà présents, **à ne jamais modifier** :
 
 | Fichier | Rôle |
 |---|---|
-| `data.json` | `{source, dates[4221], marches[4]: {id, nom, contrat, o[], h[], l[], c[]}}` : barres quotidiennes réelles de NQ, ES, GC, CL (7 juin 2010 → 25 sept. 2026), prix ajustés des changements de contrat |
+| `data.json` | `{source, dates[4221], marches[4]: {id, nom, contrat, o[], h[], l[], c[], r[]}}` : barres quotidiennes réelles de NQ, ES, GC, CL (7 juin 2010 → 25 sept. 2026), prix ajustés des changements de contrat ; `r[t] = 1` sur la première barre d'un nouveau contrat |
 | `reference.py` | **La définition normative** des indicateurs, des 7 stratégies, du backtest et des passes |
 | `expected.json` | Sortie de `reference.py` : `meta`, `signaux`, `cellules`, `long`, `acheter_conserver` |
 | `comparatif.json` | Tableau « tes bots » déjà calculé (`lignes[]`) et la liste `conclusions[]` |
@@ -52,16 +67,20 @@ Déjà présents, **à ne jamais modifier** :
 - **Exécution** (`backtest` du Python) : la position de la barre `t` est `w[t] = sig[t−1]`, prise à l'**ouverture** de
   `t`. Rendement de la barre : `(1 + w[t−1]·(o[t]/c[t−1] − 1)) · (1 + w[t]·(c[t]/o[t] − 1)) − 1 − frais·|w[t] − w[t−1]|`.
   À plat avant la 1re barre de la fenêtre ; tout est fermé à la clôture de la dernière barre (frais de sortie comptés).
+  Une position gardée à travers un changement de contrat (`roll[t] == 1`, même position que la veille, non nulle)
+  paie en plus `2·frais·|w[t]|` : vente de l'ancien contrat, achat du nouveau.
 - **Frais** : 2 points de base par ordre (0,0002), sur chaque entrée et chaque sortie ; un retournement = 2 ordres.
   Le moteur accepte un taux par marché (`expected.json` contient aussi le jeu « micro », à vérifier dans
   `check_engine.mjs` mais **non affiché** dans la page).
-- **Acheter et conserver** : `sig ≡ +1` dans le même `backtest` (il paie donc ses 2 ordres).
+- **Acheter et conserver** : `sig ≡ +1` dans le même `backtest` (il paie donc ses 2 ordres et tous les changements
+  de contrat).
 - **Passes** : `n = 252` barres ; `K = (T − 252) // 252 = 15` passes ; passe `p` (0 = la plus récente) :
   `b = T − 252·p`, `a = b − 252`. Les indicateurs sont calculés sur tout l'historique, donc déjà « chauds ».
 - **Période longue** : de `a` de la passe la plus ancienne à `T` (20 févr. 2012 → 25 sept. 2026), d'un seul tenant.
 - **Mesures** par (stratégie, marché, fenêtre) : `ret`, `trades` (entrées), `dd` (pire baisse de la courbe), `expo`
   (part des barres en position) ; sur la période longue en plus : `cagr`, `sharpe`, `t`, `t_avant_2019`,
-  `t_depuis_2019`, `t_depuis_2023` (voir `stats`).
+  `t_depuis_2019`, `t_depuis_2023` (voir `stats`), et pour les 7 stratégies `alpha_an`, `beta`, `t_alpha` (voir
+  `hors_marche` : même ordre des sommes que le Python).
 - En plus des signaux, le moteur expose pour le dessin les séries de chaque stratégie (tableaux alignés sur `dates`,
   `NaN` avant qu'elles existent) :
   - `supertrend` : ligne (bande basse finale si achat, haute si vente) et son sens ;
@@ -91,31 +110,44 @@ Ordre de haut en bas. Sur grand écran (≥ 1100 px) les 4 graphiques sont **cô
 3. **Tableau de la passe** : lignes = « Acheter et conserver » puis les 7 stratégies ; colonnes = NQ, ES, Or, Pétrole,
    Moyenne. Il se remplit **cellule par cellule** à la fin de chaque stratégie. Une cellule = le rendement de la
    stratégie ; fond vert + « ▲ » si elle bat acheter et conserver sur ce marché, rouge + « ▼ » sinon (jamais la
-   couleur seule).
+   couleur seule). Une cellule où la stratégie n'a pris **aucun trade** (`trades == 0`) est neutre : fond gris,
+   texte « aucun trade », et elle ne compte ni comme gagnée ni comme perdue.
 4. **Carte des rendements en 3D** : barres en relief (7 stratégies × 4 marchés), hauteur = rendement de la passe,
    vers le bas si négatif, même couleur vert / rouge que le tableau. Elle tourne lentement ; on peut la faire tourner
    au doigt ou à la souris. Dessinée à la main sur `<canvas>` (projection simple, tri par profondeur), sans librairie.
 5. **Classement cumulé** : depuis le début du cycle, pour chaque stratégie et pour « Acheter et conserver » (ligne
-   repère, style à part) : rendement moyen par cellule, et « bat le marché n fois sur N ». Trié par rendement moyen.
+   repère, style à part) : rendement moyen par cellule, et « bat le marché n fois sur N », où N ne compte que les
+   cellules avec au moins un trade. Trié par rendement moyen.
    Quand deux lignes **échangent leur place**, elles glissent (animation FLIP).
 6. **Journal de l'agent** : une ligne par événement, la plus récente en haut, 60 lignes gardées. Exemples :
    « Passe 1 · Supertrend 10-3 sur le NQ : +4,2 % contre +18,8 % pour acheter et conserver. Perdu. » ;
    « Passe 1 terminée : 9 cellules sur 28 battent le marché. » ; « Cycle terminé. Je recommence à la passe 1. »
 7. **Verdict sur toutes les années** (fixe, calculé par le moteur au chargement, visible sans attendre l'animation) :
    - une phrase d'en-tête avec la période longue et le nombre de backtests (7 × 4 × 15 = 420) ;
-   - tableau : lignes = « Acheter et conserver » + 7 stratégies ; colonnes = NQ, ES, Or, Pétrole (rendement annuel,
-     et dessous en petit « t x,xx » et « baisse −xx % ») et « Bat le marché » (n sur 60) ;
-   - une pastille par ligne : « tient » si t ≥ 2 sur au moins 2 marchés, « à surveiller » si t ≥ 2 sur 1 marché,
-     « rien de mesurable » sinon ; une ligne de légende explique t (« au-dessus de 2, le gain a peu de chances
-     d'être dû au hasard »).
-8. **Tes bots, à côté** (fixe, depuis `comparatif.json`) : tableau trié par `t` décroissant : stratégie, gain par an
-   pour 1 MNQ, t, t depuis 2023, pire baisse, années perdantes (nombre), Bulenox (`bulenox`). Les lignes
+   - tableau : lignes = « Acheter et conserver » + 7 stratégies ; colonnes = NQ, ES, Or, Pétrole et « Bat le
+     marché » (n sur N, N = années-marchés avec au moins un trade). Dans chaque cellule de marché : le rendement
+     annuel (`cagr`) en grand ; dessous en petit « hors marché +x,x % · t x,xx » (`alpha_an`, `t_alpha`) et
+     « baisse −xx % » (`dd`). Pour « Acheter et conserver » : rendement annuel et baisse seulement ;
+   - une pastille par ligne, lue sur `t_alpha` : « tient » si `t_alpha` ≥ 2 sur au moins 2 marchés,
+     « à surveiller » si `t_alpha` ≥ 2 sur 1 seul marché, « rien de mesurable » sinon ; pas de pastille pour
+     « Acheter et conserver » (étiquette « repère ») ;
+   - légende, en clair : « Hors marché : ce que la stratégie gagne une fois retirée la part qui vient simplement
+     de la hausse (ou de la baisse) du marché. Le t dit si ce gain a des chances d'être dû au hasard : au-dessus
+     de 2, c'est peu probable. Avec 28 tests, un t ≥ 2 sur un seul marché arrive environ une fois par hasard. »
+8. **Tes bots, à côté** (fixe, depuis `comparatif.json`) : tableau trié par `t_hors_marche` décroissant (le repère
+   en dernier) : stratégie, gain par an pour 1 MNQ (`par_an`), hors marché par an (`hors_marche_par_an`), t hors
+   marché (`t_hors_marche`), t depuis 2023, pire baisse, années perdantes (nombre), Bulenox (`bulenox`). Une valeur
+   `null` s'affiche « — ». La note (`note`), quand elle existe, s'affiche en petit sous le nom. Les lignes
    `famille = "tes bots"` sont mises en avant, `"repere"` en style repère. Sous le tableau, la liste
    `conclusions[]` telle quelle (« Ce que ça dit »).
 9. **Méthode** (court, en liste) : source des données (`data.source`) et dates ; signal à la clôture, ordre à
    l'ouverture suivante, aucun regard vers le futur ; 2 points de base par ordre ; prix ajustés des changements de
-   contrat ; les passes remontent le temps d'un an à chaque fois ; ces stratégies gardent la position plusieurs
-   jours, ce qui est interdit sur un compte Bulenox ; un backtest ne garantit rien.
+   contrat, et une position gardée paie 2 ordres à chaque changement ; pas d'intérêts sur la trésorerie ; les
+   passes remontent le temps d'un an à chaque fois ; les réglages sont ceux des manuels, fixés avant le premier
+   calcul et jamais ajustés ensuite ; le stochastique est la version rapide (%K non lissé) ; le stop de la
+   stratégie EMA se lit sur les clôtures ; la pire baisse est mesurée en fin de séance (en séance elle a pu être
+   plus forte) ; ces stratégies gardent la position plusieurs jours, ce qui est interdit sur un compte Bulenox ;
+   un backtest ne garantit rien.
 
 ### Déroulé de l'animation
 
@@ -203,8 +235,9 @@ sombre puis clair (`colorScheme`), et vérifie :
 3. à 1440 px, les 4 graphiques sont sur une même ligne ;
 4. après avoir avancé toute la passe 1 à vitesse ×16 (ou via une fonction de test `window.__terminal.finirPasse()`),
    les 28 cellules du tableau affichent exactement les rendements de `expected.json` (`cellules.demande[0]`), au
-   format français à une décimale, et le classement cumulé contient 8 lignes ;
-5. le tableau du verdict affiche 8 lignes et des `cagr` égaux à `expected.json` (`long.demande`) ;
+   format français à une décimale (« aucun trade » quand `trades == 0`), et le classement cumulé contient 8 lignes ;
+5. le tableau du verdict affiche 8 lignes, des `cagr` et des `t_alpha` égaux à `expected.json` (`long.demande`), et
+   chaque pastille correspond à la règle du § 2.7 ;
 6. écrit 4 captures dans `captures/` (bureau et téléphone, sombre et clair), prises après l'étape 4.
 
 Le travail est fini quand `node check_engine.mjs` et `node check_page.mjs` passent tous les deux, et que tu as

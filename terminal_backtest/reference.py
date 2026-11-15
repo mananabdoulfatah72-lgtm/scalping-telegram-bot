@@ -211,8 +211,10 @@ def rsi2(o, h, l, c):
 
 
 # ------------------------------------------------------------------ backtest
-def backtest(sig, o, c, a, b, frais):
-    """Position w[t] = sig[t-1], prise a l'OUVERTURE de la barre t. A plat avant a, tout est ferme a la cloture de b-1."""
+def backtest(sig, o, c, roll, a, b, frais):
+    """Position w[t] = sig[t-1], prise a l'OUVERTURE de la barre t. A plat avant a, tout est ferme a la cloture de b-1.
+    Une position gardee a travers un changement de contrat (roll[t] = 1) paie 2 ordres de plus : vente de l'ancien
+    contrat, achat du nouveau."""
     E = 1.0; pic = 1.0; baisse = 0.0; wp = 0; trades = 0; expo = 0; rets = []
     for t in range(a, b):
         w = sig[t - 1]
@@ -220,6 +222,8 @@ def backtest(sig, o, c, a, b, frais):
         d = c[t] / o[t] - 1.0
         r = (1.0 + wp * g) * (1.0 + w * d) - 1.0
         cout = frais * abs(w - wp)
+        if roll[t] == 1 and w == wp and w != 0:
+            cout += 2.0 * frais * abs(w)
         if w != wp and w != 0:
             trades += 1
         if t == b - 1:
@@ -236,7 +240,25 @@ def backtest(sig, o, c, a, b, frais):
     return {"ret": E - 1.0, "trades": trades, "dd": baisse, "expo": expo / (b - a)}, rets
 
 
-def stats(rets, dates):
+def hors_marche(y, x):
+    """Regression y = alpha + beta * x (x = rendement du marche de la meme barre). Renvoie alpha, beta et le t d'alpha :
+    ce que la strategie gagne une fois retiree la part qui vient de sa simple exposition au marche."""
+    n = len(y); sx = sy = 0.0
+    for i in range(n):
+        sx += x[i]; sy += y[i]
+    mx = sx / n; my = sy / n; sxx = sxy = 0.0
+    for i in range(n):
+        dx = x[i] - mx
+        sxx += dx * dx; sxy += dx * (y[i] - my)
+    beta = sxy / sxx; alpha = my - beta * mx; sse = 0.0
+    for i in range(n):
+        e = y[i] - alpha - beta * x[i]
+        sse += e * e
+    se = math.sqrt(sse / (n - 2) * (1.0 / n + mx * mx / sxx))
+    return alpha, beta, (0.0 if se == 0 else alpha / se)
+
+
+def stats(rets, dates, marche=None):
     n = len(rets); m = sum(rets) / n
     v = sum((x - m) ** 2 for x in rets) / (n - 1); s = math.sqrt(v)
     E = 1.0
@@ -249,9 +271,13 @@ def stats(rets, dates):
             return None
         mm = sum(x) / len(x); ss = math.sqrt(sum((y - mm) ** 2 for y in x) / (len(x) - 1))
         return 0.0 if ss == 0 else mm / ss * math.sqrt(len(x))
-    return {"cagr": E ** (252.0 / n) - 1.0, "sharpe": 0.0 if s == 0 else m / s * math.sqrt(252.0),
-            "t": 0.0 if s == 0 else m / s * math.sqrt(n), "t_avant_2019": t_de([d < "2019-01-01" for d in dates]),
-            "t_depuis_2019": t_de([d >= "2019-01-01" for d in dates]), "t_depuis_2023": t_de([d >= "2023-01-01" for d in dates])}
+    out = {"cagr": E ** (252.0 / n) - 1.0, "sharpe": 0.0 if s == 0 else m / s * math.sqrt(252.0),
+           "t": 0.0 if s == 0 else m / s * math.sqrt(n), "t_avant_2019": t_de([d < "2019-01-01" for d in dates]),
+           "t_depuis_2019": t_de([d >= "2019-01-01" for d in dates]), "t_depuis_2023": t_de([d >= "2023-01-01" for d in dates])}
+    if marche is not None:
+        alpha, beta, ta = hors_marche(rets, marche)
+        out.update({"alpha_an": alpha * 252.0, "beta": beta, "t_alpha": ta})
+    return out
 
 
 def tout():
@@ -270,6 +296,7 @@ def tout():
     for k in range(K):
         sig["dualmom"][k] = dm[k]
     a0 = passes[-1]["a"]
+    marche = [[M[k]["c"][t] / M[k]["c"][t - 1] - 1.0 for t in range(a0, T)] for k in range(K)]   # rendement brut du marche
     out = {"meta": {"T": T, "n_passe": N_PASSE, "passes": passes, "frais_pb": FRAIS, "strategies": STRATEGIES,
                     "marches": [m["id"] for m in M], "long": {"a": a0, "b": T, "debut": dates[a0], "fin": dates[T - 1]}},
            "signaux": {s: ["".join("+" if v > 0 else "-" if v < 0 else "0" for v in sig[s][k]) for k in range(K)] for s in STRATEGIES},
@@ -278,20 +305,20 @@ def tout():
     for mode, pb in FRAIS.items():
         cel = []; bh_p = []
         for p in passes:
-            ligne_bh = [backtest(un, M[k]["o"], M[k]["c"], p["a"], p["b"], pb[k] / 1e4)[0] for k in range(K)]
+            ligne_bh = [backtest(un, M[k]["o"], M[k]["c"], M[k]["r"], p["a"], p["b"], pb[k] / 1e4)[0] for k in range(K)]
             bh_p.append(ligne_bh)
-            cel.append([[dict(backtest(sig[s][k], M[k]["o"], M[k]["c"], p["a"], p["b"], pb[k] / 1e4)[0], bh=ligne_bh[k]["ret"])
+            cel.append([[dict(backtest(sig[s][k], M[k]["o"], M[k]["c"], M[k]["r"], p["a"], p["b"], pb[k] / 1e4)[0], bh=ligne_bh[k]["ret"])
                          for k in range(K)] for s in STRATEGIES])
         out["cellules"][mode] = cel
         lg = []; bh_l = []
         for k in range(K):
-            r, rets = backtest(un, M[k]["o"], M[k]["c"], a0, T, pb[k] / 1e4)
+            r, rets = backtest(un, M[k]["o"], M[k]["c"], M[k]["r"], a0, T, pb[k] / 1e4)
             bh_l.append(dict(r, **stats(rets, dates[a0:T])))
         for s in STRATEGIES:
             ligne = []
             for k in range(K):
-                r, rets = backtest(sig[s][k], M[k]["o"], M[k]["c"], a0, T, pb[k] / 1e4)
-                ligne.append(dict(r, **stats(rets, dates[a0:T])))
+                r, rets = backtest(sig[s][k], M[k]["o"], M[k]["c"], M[k]["r"], a0, T, pb[k] / 1e4)
+                ligne.append(dict(r, **stats(rets, dates[a0:T], marche[k])))
             lg.append(ligne)
         out["long"][mode] = lg
         out["acheter_conserver"][mode] = {"passes": bh_p, "long": bh_l}
@@ -310,8 +337,10 @@ if __name__ == "__main__":
         for i, s in enumerate(STRATEGIES):
             lg = out["long"][mode][i]
             bat = sum(c["ret"] > c["bh"] for p in out["cellules"][mode] for c in p[i])
-            print(f"  {s:18s}  " + "  ".join(f"{mk}: {x['cagr'] * 100:+6.1f} % (t {x['t']:.2f}, baisse {x['dd'] * 100:.0f} %)" for mk, x in zip(m["marches"], lg))
-                  + f"  | {bat}/{len(m['passes']) * 4}")
+            joue = sum(c["trades"] > 0 for p in out["cellules"][mode] for c in p[i])
+            bat = sum(c["trades"] > 0 and c["ret"] > c["bh"] for p in out["cellules"][mode] for c in p[i])
+            print(f"  {s:11s} " + "  ".join(f"{mk}: {x['cagr'] * 100:+5.1f} % t {x['t']:+.2f} | hors marche {x['alpha_an'] * 100:+5.1f} % t {x['t_alpha']:+.2f} beta {x['beta']:+.2f}" for mk, x in zip(m["marches"], lg))
+                  + f"  | bat {bat}/{joue}")
         p0 = out["cellules"][mode][0]
         print("  passe 1 (la plus recente) : " + " ; ".join(f"{s} " + "/".join(f"{c['ret'] * 100:+.1f}" for c in p0[i]) for i, s in enumerate(STRATEGIES)))
         print("  acheter-conserver passe 1 : " + "/".join(f"{b['ret'] * 100:+.1f}" for b in out["acheter_conserver"][mode]["passes"][0]))

@@ -1,0 +1,110 @@
+<title>Terminal Backtest Futures</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/*STYLE*/
+</style>
+<div class="page" id="page">
+
+<header class="entete">
+  <div class="marque">
+    <h1 class="marque-nom">Terminal de backtest futures</h1>
+    <p class="marque-sous" id="marque-sous"></p>
+  </div>
+  <div class="etat" aria-live="polite">
+    <div class="etat-passe" id="etat-passe"></div>
+    <div class="etat-strat" id="etat-strat"></div>
+    <div class="etat-barre"><span class="etat-seance" id="etat-seance"></span><span class="progres" aria-hidden="true"><span class="progres-plein" id="progres"></span></span></div>
+  </div>
+  <div class="commandes" role="toolbar" aria-label="Commandes de lecture">
+    <button type="button" id="btn-lecture" class="btn btn-principal" aria-pressed="true">Pause</button>
+    <div class="vitesse" role="group" aria-label="Vitesse">
+      <button type="button" id="btn-x1" class="btn btn-vitesse" data-vitesse="1" aria-pressed="true">×1</button>
+      <button type="button" id="btn-x4" class="btn btn-vitesse" data-vitesse="4" aria-pressed="false">×4</button>
+      <button type="button" id="btn-x16" class="btn btn-vitesse" data-vitesse="16" aria-pressed="false">×16</button>
+    </div>
+    <button type="button" id="btn-strategie-suivante" class="btn">Stratégie suivante</button>
+    <button type="button" id="btn-passe-suivante" class="btn">Passe suivante</button>
+  </div>
+</header>
+
+<section class="bloc" aria-labelledby="t-graphes">
+  <div class="bloc-tete">
+    <h2 id="t-graphes" class="bloc-titre">Les marchés, barre après barre</h2>
+    <div class="legende" id="legende" aria-label="Légende des graphiques"></div>
+  </div>
+  <p class="regle" id="regle"></p>
+  <div class="graphes" id="graphes"></div>
+</section>
+
+<div class="milieu">
+  <section class="bloc bloc-passe" aria-labelledby="t-passe">
+    <div class="bloc-tete">
+      <h2 id="t-passe" class="bloc-titre">Tableau de la passe</h2>
+      <span class="bloc-note" id="note-passe"></span>
+    </div>
+    <div class="defile"><table class="tableau" id="table-passe"></table></div>
+    <p class="aide">Rendement de la stratégie sur l'année de la passe, frais compris. <span class="cle-bat">▲</span> fond vert : elle fait mieux qu'acheter et conserver le même marché. <span class="cle-perd">▼</span> fond rouge : elle fait moins bien.</p>
+  </section>
+
+  <section class="bloc bloc-carte" aria-labelledby="t-carte">
+    <div class="bloc-tete">
+      <h2 id="t-carte" class="bloc-titre">Carte des rendements en relief</h2>
+      <span class="bloc-note">Faites-la tourner au doigt ou à la souris</span>
+    </div>
+    <div class="carte-zone"><canvas id="carte" class="carte" role="img" aria-label="Carte en relief des rendements de la passe : une barre par stratégie et par marché, vers le haut si gain, vers le bas si perte. Les valeurs exactes sont dans le tableau de la passe."></canvas></div>
+    <p class="aide">Hauteur = rendement de la passe (vers le bas si perte). <span class="cle-bat">▲</span> vert : bat acheter et conserver ; <span class="cle-perd">▼</span> rouge : ne le bat pas. Les valeurs exactes sont dans le tableau.</p>
+  </section>
+
+  <section class="bloc bloc-classement" aria-labelledby="t-classement">
+    <div class="bloc-tete">
+      <h2 id="t-classement" class="bloc-titre">Classement cumulé</h2>
+      <span class="bloc-note" id="note-classement"></span>
+    </div>
+    <ol class="classement" id="classement"></ol>
+    <p class="aide">Rendement moyen par cellule (une stratégie, un marché, une année) depuis le début du cycle, et nombre de fois où elle bat acheter et conserver.</p>
+  </section>
+</div>
+
+<section class="bloc" aria-labelledby="t-journal">
+  <div class="bloc-tete">
+    <h2 id="t-journal" class="bloc-titre">Journal de l'agent</h2>
+    <span class="bloc-note">Le plus récent en haut</span>
+  </div>
+  <ol class="journal" id="journal" aria-live="off"></ol>
+</section>
+
+<section class="bloc" aria-labelledby="t-verdict">
+  <div class="bloc-tete">
+    <h2 id="t-verdict" class="bloc-titre">Verdict sur toutes les années</h2>
+  </div>
+  <p class="phrase" id="verdict-phrase"></p>
+  <div class="defile"><table class="tableau tableau-verdict" id="table-verdict"></table></div>
+  <p class="aide" id="verdict-legende"></p>
+</section>
+
+<section class="bloc" aria-labelledby="t-bots">
+  <div class="bloc-tete">
+    <h2 id="t-bots" class="bloc-titre">Tes bots, à côté</h2>
+    <span class="bloc-note" id="bots-unite"></span>
+  </div>
+  <div class="defile"><table class="tableau tableau-bots" id="table-bots"></table></div>
+  <h3 class="sous-titre">Ce que ça dit</h3>
+  <ul class="conclusions" id="conclusions"></ul>
+</section>
+
+<section class="bloc" aria-labelledby="t-methode">
+  <div class="bloc-tete">
+    <h2 id="t-methode" class="bloc-titre">Méthode</h2>
+  </div>
+  <ul class="methode" id="methode"></ul>
+</section>
+
+</div>
+<script type="application/json" id="donnees">/*DATA*/</script>
+<script type="application/json" id="comparatif">/*COMPARATIF*/</script>
+<script>
+/*ENGINE*/
+</script>
+<script>
+/*UI*/
+</script>
