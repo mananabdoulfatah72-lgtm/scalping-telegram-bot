@@ -1,0 +1,9 @@
+[
+ {"type": "TradingPlatform.BusinessLayer.Account", "membre": "Balance", "pour": "solde du compte (frein, plafond, limite du jour, mode a plat) - Bot3en1Strategy.cs"},
+ {"type": "TradingPlatform.BusinessLayer.Account", "membre": "AdditionalInfo", "pour": "diagnostic du solde : toutes les informations du compte Rithmic - Bot3en1Strategy.cs"},
+ {"type": null, "membre": "NameKey", "pour": "nom d'une information de compte (element de AdditionalInfo)"},
+ {"type": null, "membre": "Value", "pour": "valeur d'une information de compte, et Position.GrossPnL.Value"},
+ {"type": "TradingPlatform.BusinessLayer.Position", "membre": "GrossPnL", "pour": "gain latent des positions MNQ et MES (equite du compte)"},
+ {"type": null, "membre": "Accounts", "pour": "liste des comptes de la connexion (choix du compte)"},
+ {"type": null, "membre": "Id", "pour": "identifiant du compte ou d'une information"}
+]

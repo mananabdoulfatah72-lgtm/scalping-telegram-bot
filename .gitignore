@@ -1,2 +1,5 @@
 zone/tableau/tableau.html
 .telegram_chat
+# rapports locaux du kit REA (chemins du PC) : pas dans le depot
+compat_*.md
+changements.json
