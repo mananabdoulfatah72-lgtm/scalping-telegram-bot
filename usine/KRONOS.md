@@ -49,7 +49,37 @@ L'article demande 6 briques. Ton système les a toutes ; deux ont été ajoutée
 
 ### Le test (règles fixées et commitées avant le calcul : `usine/REGLES.md`, idée K)
 
-<!-- RESULTATS_KRONOS -->
+**Verdict : Kronos est rejeté** (`usine/resultats/2026-11-16/kronos.json`, ligne « kronos » de `usine/registre.csv`).
+
+344 séances du 1er juillet 2025 au 13 novembre 2026, 1 032 décisions, 100 trajectoires chacune.
+
+| Porte | Exigé | Kronos | |
+|---|---|---|---|
+| K1 : t des gains nets par séance | 2,0 au moins | −0,61 | échoue |
+| K2 : mélanges des sens qui font aussi bien | moins de 1 % | 70,8 % | échoue |
+| K3 : gain par an, 1 MNQ, frais compris | +1 000 $ au moins | −3 305 $ | échoue |
+
+- 974 trades : 395 achats, 579 ventes. Kronos a vendu plus souvent qu'il n'a acheté,
+  pendant une période où le NQ est passé d'environ 22 800 à 28 000 points.
+- Bon sens dans **46,5 %** des trades : moins qu'une pièce lancée.
+- Aucune variante ne gagne, et le seuil 70 % ou 80 % ne sauve rien :
+
+| Règle, aux mêmes heures | t | $ par an, 1 MNQ | Bonnes directions |
+|---|---|---|---|
+| Kronos, règle du test (seuil 60 %) | −0,61 | −3 305 $ | 46,5 % |
+| Kronos, trajectoire moyenne (ce que rend `predict`) | −0,68 | −3 953 $ | 46,8 % |
+| Kronos, seuil 50 % | −0,67 | −3 854 $ | 46,8 % |
+| Kronos, seuil 70 % | −0,37 | −1 881 $ | 46,7 % |
+| Kronos, seuil 80 % | −0,72 | −3 683 $ | 46,4 % |
+| Suivre le mouvement des 2 heures d'avant | −0,80 | −6 049 $ | 50,2 % |
+| Toujours acheter | −0,55 | −1 607 $ | 52,1 % |
+
+- **La lecture du régime de l'article ne tient pas.** Les trajectoires sont « d'accord » (au moins 80 % dans le même sens)
+  dans 861 blocs sur 1 032. Le NQ y bouge en moyenne de 0,33 % en 2 heures, contre
+  0,30 % quand elles sont dispersées : presque pareil. Kronos est presque toujours sûr de lui, et se trompe une
+  fois sur deux.
+- **Ce que ça change pour ton compte : rien.** Aucun bot ne trade sur Kronos. Il rejoint la liste des pistes fermées
+  (`rea/PISTES.md`).
 
 ## Étapes 5 et 6 : TradingAgents. Étudié, pas lancé.
 
@@ -84,7 +114,15 @@ ou autre), saisie dans un formulaire sécurisé et jamais dans la conversation.
 
 ## Le terminal
 
-<!-- TERMINAL -->
+Page publiée : https://claude.ai/artifact/4oWnCFoPxK95TF5maxWVS7 (privée ; partage-la depuis son menu si tu veux la
+montrer). Source : `usine/terminal/modele.html` et `usine/terminal.py`, page générée `usine/terminal/page.html`.
+
+- Pour chacune des 5 dernières séances (9 au 13 novembre 2026) et chaque décision (10 h, 12 h, 14 h) : les bougies du NQ,
+  les 100 trajectoires de Kronos, leur médiane, et ce que le NQ a vraiment fait.
+- La lecture de la décision (part des trajectoires en hausse, ce que la règle aurait fait, le résultat du trade).
+- Le verdict du test et la comparaison avec les deux règles simples.
+- Seul le NQ y figure : ton compte ne trade que lui, avec des bots testés. Les panneaux crypto, devises et matières
+  premières de l'article n'aident pas ton challenge.
 
 ## Ce qui reste incertain
 

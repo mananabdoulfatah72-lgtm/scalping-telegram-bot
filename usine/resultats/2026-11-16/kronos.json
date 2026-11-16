@@ -1,0 +1,98 @@
+{
+ "periode": [
+  "2025-07-01",
+  "2026-11-13"
+ ],
+ "decisions": 1032,
+ "regle": {
+  "t": -0.6137404943439935,
+  "gain_par_an": -3305.496086732276,
+  "seances": 344,
+  "trades": 974,
+  "achats": 395,
+  "ventes": 579,
+  "bonnes_directions": 0.4650924024640657,
+  "pf": 0.9951032718947465,
+  "pire_seance": -1003.5,
+  "K1": false,
+  "K2_p": 0.708,
+  "K2": false,
+  "K3": false,
+  "passe": false
+ },
+ "information": {
+  "seuil_0.5": {
+   "t": -0.6666890401942822,
+   "gain_par_an": -3853.7821414535533,
+   "seances": 344,
+   "trades": 1032,
+   "achats": 423,
+   "ventes": 609,
+   "bonnes_directions": 0.4680232558139535,
+   "pf": 0.994914028355619,
+   "pire_seance": -1003.5
+  },
+  "seuil_0.7": {
+   "t": -0.3663003903115299,
+   "gain_par_an": -1881.459459776133,
+   "seances": 344,
+   "trades": 930,
+   "achats": 379,
+   "ventes": 551,
+   "bonnes_directions": 0.4666666666666667,
+   "pf": 0.997001996144403,
+   "pire_seance": -1003.5
+  },
+  "seuil_0.8": {
+   "t": -0.7196690101583678,
+   "gain_par_an": -3683.4070163532724,
+   "seances": 344,
+   "trades": 854,
+   "achats": 352,
+   "ventes": 502,
+   "bonnes_directions": 0.4637002341920375,
+   "pf": 0.9938593445375078,
+   "pire_seance": -1003.5
+  },
+  "trajectoire_moyenne": {
+   "t": -0.6783963116358724,
+   "gain_par_an": -3953.1230617791734,
+   "seances": 344,
+   "trades": 1032,
+   "achats": 419,
+   "ventes": 613,
+   "bonnes_directions": 0.4680232558139535,
+   "pf": 0.9947805326908888,
+   "pire_seance": -1003.5
+  },
+  "suivre_les_2_heures_d_avant": {
+   "t": -0.8034686244749186,
+   "gain_par_an": -6049.2231978511745,
+   "seances": 344,
+   "trades": 1032,
+   "achats": 554,
+   "ventes": 478,
+   "bonnes_directions": 0.501937984496124,
+   "pf": 0.9935008415310352,
+   "pire_seance": -1003.5
+  },
+  "toujours_acheter": {
+   "t": -0.5485790379703415,
+   "gain_par_an": -1606.8862752616117,
+   "seances": 344,
+   "trades": 1032,
+   "achats": 1032,
+   "ventes": 0,
+   "bonnes_directions": 0.5213178294573644,
+   "pf": 0.9955148611279718,
+   "pire_seance": -1003.5
+  },
+  "regime": {
+   "blocs_accord": 861,
+   "blocs_disperses": 171,
+   "mouvement_moyen_accord_pct": 0.33074645074886017,
+   "mouvement_moyen_disperses_pct": 0.2992594432425771
+  }
+ },
+ "verdict": "rejete"
+}

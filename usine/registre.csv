@@ -7,3 +7,4 @@ date,idee,titre,pf_dev,reglage_dev,plateau,centre,p_porte2,pf_hors_echantillon,g
 2026-11-16,gap,Fade du gap d'ouverture,1.081,"{""seuil"": 0.008, ""duree_max"": 30}",False,"{""seuil"": 0.008, ""duree_max"": 30}",,,,,,rejetee a la porte 1
 2026-11-16,fin,Mouvement de fin de seance,1.076,"{""debut"": 360, ""seuil"": 0.01}",False,"{""debut"": 360, ""seuil"": 0.01}",,,,,,rejetee a la porte 1
 2026-11-16,zone_large,"Zone de bruit, bande large",1.022,"{""k"": 2.4, ""jours"": 30}",True,"{""k"": 2.2, ""jours"": 30}",0.132,,,,,rejetee a la porte 2
+2026-11-16,kronos,"Kronos-small, 100 trajectoires (periode jamais vue)",,"{""seuil"": 0.6, ""horizon"": 24, ""trajectoires"": 100}",,,,0.995,-3305,,,rejete (K1 t -0.61 ; K2 p 0.708 ; K3 -3305 $ par an)

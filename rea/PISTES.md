@@ -51,6 +51,7 @@ système.
 | Retour à la moyenne en marché calme | — | Perd (t −2,34) | `chantier/` partie A (branche `loving-mccarthy`) |
 | Trading de paires (S&P/Nasdaq, or/argent, taux, devises) | méthode des vidéos | Sharpe −0,45 sur 2006 - 2026 ; aucune paire « cointégrée » ne l'est encore 6 mois plus tard | `paires/` |
 | Suivi de tendance sur 40 futures | méthode des CTA | Sharpe −0,01, bat 59 % des placebos : rejeté. En plus, il garde la nuit et ses contrats sont trop gros pour 50K. | `fonds/`, `tendance/` |
+| Kronos-small, 100 trajectoires de 24 bougies de 5 min, 3 décisions par séance | Shi et al. (2025), article de l'utilisateur | Rejeté sur 344 séances jamais vues par le modèle : t −0,61, −3 305 $ par an, bon sens dans 46,5 % des trades (16 nov. au soir) | `usine/KRONOS.md` |
 | RSI(2) sur plusieurs jours | Connors | Passe son coffre (t +1,95), mais il garde la nuit et le week-end : interdit chez Bulenox | `tournoi8/` |
 
 ## Encore ouvert, par ordre d'intérêt
