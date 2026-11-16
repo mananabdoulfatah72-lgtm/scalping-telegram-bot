@@ -34,6 +34,7 @@ système.
 | Idée | Source | Verdict | Où |
 |---|---|---|---|
 | Zone de bruit (Bot 3 en 1) | Zarattini, Aziz, Barbon (2024) | **Passe les 5 portes** | `usine/` (branche actuelle) |
+| Zone avec une bande plus large (k de 1,4 à 2,4) | — | Rejetée à la porte 2 (p = 13,2 %, 1 % exigé), le 16 novembre au soir. Le réglage k = 1,4 sur 30 jours ne bat pas celui du bot (−848 $ par an, t −1,17) | `usine/` (`INSTITUTIONS.md`) |
 | Supertrend 5 min | classique | Rejeté à la porte 2 (p = 4 %, 1 % exigé). Sa marche en avant gagne (+5 000 $ par an), mais pas mieux que le hasard (p = 23,5 %). À garder comme secours contre l'inactivité, pas comme source de gain. | `usine/` |
 | ORB, cassure de la veille, fade du gap, fin de séance | classiques | Rejetés à la porte 1 | `usine/` |
 | Momentum de la première demi-heure | Gao, Han, Li, Zhou (2018) | Rejeté à la porte 2 (p = 2,8 %, 1 % exigé) | `usine/` |
@@ -56,12 +57,15 @@ système.
 
 | Piste | Pourquoi elle reste ouverte | Ce qu'il faut | REA ? |
 |---|---|---|---|
-| 1. **Une bande plus large pour la zone** | La marche en avant de l'usine a choisi la plus grande largeur de sa grille (1,4) à 140 de ses 145 pas. La recherche s'était arrêtée à 1,5 (`zone_optimisation/`). Le plateau continue peut-être au-delà. | Une grille de 1,4 à 2,4, règles fixées avant le calcul, puis les 5 portes. Données déjà là. | Non |
-| 2. **Un secours qui gagne vraiment** | Le Supertrend tient la règle d'inactivité, mais sans avantage prouvé. Un moteur qui trade chaque jour et passe les portes améliorerait G2 directement. | Une recherche dédiée dans l'usine. XGBoost NQ et W1 NQ peuvent y passer en premier. | Non |
-| 3. **La nuit en module** : achat à 18 h, stop 0,5 %, vente à 9 h 30, seulement à partir de 2 600 $ de marge | Elle améliore le compte, mais n'a pas atteint la barre fixée : +10 % d'argent touché par mois, pour 25 % exigés (`chantier/RESULTATS.md`, branche `loving-mccarthy`). | À coder dans le bot, puis à suivre en papier. | Non |
-| 4. **L'order flow sur tes propres enregistrements** | FluxNQ enregistre à chaque séance où il tourne les transactions, le carnet sur 10 niveaux et le footprint du NQ (`C:\Bot3en1\flux\`). Chaque mois enregistré, c'est un mois de données que la recherche n'a jamais vues : un vrai hors échantillon. | Laisser FluxNQ enregistrer, puis rejouer les idées d'order flow sur ces données. | Enquête n° 3 (même définition du delta) |
-| 5. **Un outil que tu utilises déjà** (indicateur, bot d'un ami) | Jamais passé aux portes. | Observation, puis spécification, puis l'usine. | Enquête n° 5 |
+| 1. **Un secours qui gagne vraiment** | Le Supertrend tient la règle d'inactivité, mais sans avantage prouvé. Un moteur qui trade chaque jour et passe les portes améliorerait G2 directement. | Une recherche dédiée dans l'usine. XGBoost NQ et W1 NQ peuvent y passer en premier. | Non |
+| 2. **La nuit en module** : achat à 18 h, stop 0,5 %, vente à 9 h 30, seulement à partir de 2 600 $ de marge | Elle améliore le compte, mais n'a pas atteint la barre fixée : +10 % d'argent touché par mois, pour 25 % exigés (`chantier/RESULTATS.md`, branche `loving-mccarthy`). | À coder dans le bot, puis à suivre en papier. | Non |
+| 3. **L'order flow sur tes propres enregistrements** | FluxNQ enregistre à chaque séance où il tourne les transactions, le carnet sur 10 niveaux et le footprint du NQ (`C:\Bot3en1\flux\`). Chaque mois enregistré, c'est un mois de données que la recherche n'a jamais vues : un vrai hors échantillon. | Laisser FluxNQ enregistrer, puis rejouer les idées d'order flow sur ces données. | Enquête n° 3 (même définition du delta) |
+| 4. **Un outil que tu utilises déjà** (indicateur, bot d'un ami) | Jamais passé aux portes. | Observation, puis spécification, puis l'usine. | Enquête n° 5 |
 
 Ce qui ne relève pas de la recherche, mais compte pour l'argent : plusieurs comptes Master (règles Bulenox à confirmer).
 Ce n'est pas un avantage, juste plus de plafonds de retrait, avec un risque lié : une mauvaise période touche tous les
 comptes en même temps.
+
+**Lancé le 16 novembre au soir** ([usine/INSTITUTIONS.md](../usine/INSTITUTIONS.md)) : la bande large (rejetée),
+le secours sur MES sous le frein (non recommandé par sa règle, meilleur pour un compte à 700 $ de marge), et la mesure
+du glissement réel des ordres (`usine/rapprochement.py`).

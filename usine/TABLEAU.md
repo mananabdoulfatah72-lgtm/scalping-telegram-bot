@@ -5,6 +5,7 @@ Regles fixees avant le calcul : [REGLES.md](REGLES.md). Chaque idee passe les po
 | Idee | Porte 1 : 2011 - 2014 | Porte 2 : permutations | Porte 3 : marche en avant 2015 -> | Porte 4 : permutations | Porte 5 : Master neuf, un an | Verdict |
 |---|---|---|---|---|---|---|
 | Zone de bruit (Bot 3 en 1 sans filtres) | PF 1,018, t 1,65 ✅ | p 0,9 % ✅ | PF 1,024, +4 073 $ par an ✅ | p 0,0 % ✅ | retrait 55,4 %, perdu 32,5 % ✅ | **passe les 5 portes** |
+| Zone de bruit, bande large | PF 1,022, t 1,12 ✅ | p 13,2 % ❌ | — | — | — | **rejetée à la porte 2** |
 | Supertrend NQ, bougies de 5 minutes | PF 1,008, t 1,77 ✅ | p 4,0 % ❌ | PF 1,006, +5 009 $ par an ✅ | p 23,5 % ❌ | retrait 41,1 %, perdu 58,3 % ❌ | **rejetée à la porte 2** |
 | Cassure du range d'ouverture (ORB) | PF 1,006, t 0,92 ❌ | — | — | — | — | **rejetée à la porte 1** |
 | Momentum de la première demi-heure | PF 1,040, t 2,01 ✅ | p 2,8 % ❌ | — | — | — | **rejetée à la porte 2** |
@@ -25,6 +26,13 @@ PF : profit factor des rendements nets par minute. p : part des permutations qui
 - Milieu du plateau, 1 MNQ, 2015 -> derniere seance : +3 686 $ par an, t 3,32 (depuis 2023 : 1,29), pire baisse -4 732 $, pire seance -1 004 $ ; trade 39,6 % des seances.
   - seule : Master neuf, un an : 1,2 % de premiers retraits, 2,1 % perdus par le plancher, 96,8 % par l'inactivite ; depuis une marge de 700 $, un mois : 76,5 % de comptes perdus, gain moyen +171 $.
   - avec le Supertrend en secours : Master neuf, un an : 55,4 % de premiers retraits, 32,5 % perdus par le plancher, 0,0 % par l'inactivite ; depuis une marge de 700 $, un mois : 38,2 % de comptes perdus, gain moyen +301 $.
+
+## Zone de bruit, bande large
+
+- **L'avantage :** Celui de la zone ; une cassure plus lointaine est moins souvent une fausse cassure.
+- **Qui perd en face :** Ceux qui vendent la cassure, et les teneurs de marché qui couvrent leur gamma en suivant le mouvement.
+- **Verdict : rejetée à la porte 2.** Fait aussi bien sur des minutes mélangées : p = 13,2 %, il faut moins de 1 %.
+- Meilleur reglage sur 2011 - 2014 : largeur 2,4, jours de moyenne 30 (PF 1,022) ; milieu du plateau : largeur 2,2, jours de moyenne 30 (PF 1,009).
 
 ## Supertrend NQ, bougies de 5 minutes
 

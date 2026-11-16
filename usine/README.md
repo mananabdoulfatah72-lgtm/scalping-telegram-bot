@@ -6,6 +6,8 @@ NQ et MNQ). Demande de l'utilisateur du 16 novembre 2026 : un système qui aide 
 - **Résultats :** [TABLEAU.md](TABLEAU.md). Page interactive (privée, à partager depuis son menu) : https://claude.ai/artifact/VU8EHCGWSy5NxGyTQDmh3A ; sa source est `tableau/page.html`, ses données `tableau/*.json`.
 - **Règles, fixées avant le premier calcul :** [REGLES.md](REGLES.md).
 - **Couche de risque :** [RISQUE.md](RISQUE.md).
+- **Ce que font les logiciels des institutions, et les tests du 16 novembre au soir :** [INSTITUTIONS.md](INSTITUTIONS.md)
+  (bande large, secours sur MES sous le frein, mesure du glissement réel).
 
 ## Ce que dit le premier calcul (16 novembre 2026)
 

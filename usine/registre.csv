@@ -6,3 +6,4 @@ date,idee,titre,pf_dev,reglage_dev,plateau,centre,p_porte2,pf_hors_echantillon,g
 2026-11-16,veille,Cassure du plus haut / plus bas de la veille,1.006,"{""marge"": 0.002, ""derniere_entree"": 150, ""sortie"": 0}",True,"{""marge"": 0.001, ""derniere_entree"": 150, ""sortie"": 1}",,,,,,rejetee a la porte 1
 2026-11-16,gap,Fade du gap d'ouverture,1.081,"{""seuil"": 0.008, ""duree_max"": 30}",False,"{""seuil"": 0.008, ""duree_max"": 30}",,,,,,rejetee a la porte 1
 2026-11-16,fin,Mouvement de fin de seance,1.076,"{""debut"": 360, ""seuil"": 0.01}",False,"{""debut"": 360, ""seuil"": 0.01}",,,,,,rejetee a la porte 1
+2026-11-16,zone_large,"Zone de bruit, bande large",1.022,"{""k"": 2.4, ""jours"": 30}",True,"{""k"": 2.2, ""jours"": 30}",0.132,,,,,rejetee a la porte 2
