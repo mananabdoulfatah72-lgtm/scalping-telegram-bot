@@ -1,0 +1,242 @@
+<title>Terminal Kronos NQ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Terminal : barre de commande (seance, decision), graphique large, colonne de lecture et de verdict, regles du compte en bas. */
+:root {
+  --bg: #eef0ec; --panel: #fbfbf9; --ink: #18212b; --muted: #59636e; --line: #d5d9d2;
+  --amber: #a85f00; --path: #2f5d9e; --up: #1d7446; --down: #ad3a31; --chip: #e6e9e3;
+  --f-titre: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-texte: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e1319; --panel: #141b23; --ink: #e4e8ed; --muted: #95a0ac; --line: #26313d;
+  --amber: #e89a2c; --path: #7aa5dc; --up: #4cbf86; --down: #ee6b5f; --chip: #1c2530; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e1319; --panel: #141b23; --ink: #e4e8ed; --muted: #95a0ac; --line: #26313d;
+  --amber: #e89a2c; --path: #7aa5dc; --up: #4cbf86; --down: #ee6b5f; --chip: #1c2530; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--f-texte); }
+.page { max-width: 1180px; margin: 0 auto; padding-block: 20px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 16px; }
+header { display: grid; gap: 4px; }
+.eyebrow { font: 500 12px/1 var(--f-data); letter-spacing: .08em; text-transform: uppercase; color: var(--amber); }
+h1 { font: 600 30px/1.1 var(--f-titre); margin: 0; text-wrap: balance; }
+.sous { color: var(--muted); max-width: 70ch; margin: 0; }
+.barre { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 10px 12px; }
+.groupe { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.groupe > span { font: 500 12px var(--f-data); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-right: 2px; }
+button.onglet { font: 500 13px var(--f-data); color: var(--ink); background: var(--chip); border: 1px solid var(--line);
+  border-radius: 4px; padding: 6px 10px; cursor: pointer; }
+button.onglet[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+button.onglet:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.grille { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .grille { grid-template-columns: minmax(0, 1fr); } }
+.panneau { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px; min-width: 0; display: grid; gap: 10px; align-content: start; }
+.panneau h2 { font: 600 16px/1.2 var(--f-titre); margin: 0; letter-spacing: .01em; }
+canvas { width: 100%; height: 380px; display: block; }
+@media (max-width: 600px) { canvas { height: 280px; } h1 { font-size: 25px; } }
+.legende { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+.legende i { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+.ligne { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-top: 8px; }
+.ligne:first-of-type { border-top: 0; padding-top: 0; }
+.ligne b { font: 500 14px var(--f-data); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ligne span { color: var(--muted); min-width: 0; }
+.puce { display: inline-block; font: 600 12px var(--f-data); letter-spacing: .05em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; }
+.ok { background: color-mix(in srgb, var(--up) 18%, transparent); color: var(--up); }
+.non { background: color-mix(in srgb, var(--down) 18%, transparent); color: var(--down); }
+.neutre { background: var(--chip); color: var(--muted); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 6px 8px; border-top: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 500; }
+td.n { font-family: var(--f-data); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.defile { overflow-x: auto; }
+.bas { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; align-items: start; }
+ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.note { font-size: 13px; color: var(--muted); max-width: 90ch; }
+.verdict { font: 600 18px/1.3 var(--f-titre); }
+</style>
+
+<div class="page">
+  <header>
+    <div class="eyebrow">NQ · bougies de 5 min · Kronos-small</div>
+    <h1>Terminal Kronos NQ</h1>
+    <p class="sous">Les 100 trajectoires que Kronos prévoyait à 10 h, 12 h et 14 h (New York), face à ce que le NQ a vraiment fait. Toutes ces séances sont postérieures aux poids du modèle (30 juin 2025) : il ne les a jamais vues.</p>
+  </header>
+
+  <div class="barre" role="toolbar" aria-label="Choix de la séance et de la décision">
+    <div class="groupe" id="seances"><span>Séance</span></div>
+    <div class="groupe" id="decisions"><span>Décision</span></div>
+  </div>
+
+  <div class="grille">
+    <section class="panneau" aria-labelledby="t-graph">
+      <h2 id="t-graph">Prévision contre réalité</h2>
+      <canvas id="graph" role="img" aria-label="Bougies du NQ, trajectoires prévues par Kronos et prix réel"></canvas>
+      <div class="legende">
+        <span><i style="background: var(--path); opacity: .5"></i>100 trajectoires de Kronos</span>
+        <span><i style="background: var(--path)"></i>médiane prévue</span>
+        <span><i style="background: var(--amber)"></i>ce que le NQ a fait</span>
+        <span><i style="background: var(--muted)"></i>moment de la décision</span>
+      </div>
+    </section>
+
+    <div style="display: grid; gap: 16px; min-width: 0">
+      <section class="panneau" aria-labelledby="t-lecture">
+        <h2 id="t-lecture">Lecture de cette décision</h2>
+        <div id="lecture"></div>
+      </section>
+      <section class="panneau" aria-labelledby="t-verdict">
+        <h2 id="t-verdict">Verdict du test</h2>
+        <div id="verdict"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="bas">
+    <section class="panneau" aria-labelledby="t-compare">
+      <h2 id="t-compare">Kronos contre deux règles simples, mêmes heures</h2>
+      <div class="defile"><table id="compare"></table></div>
+      <p class="note" id="regime"></p>
+    </section>
+    <section class="panneau" aria-labelledby="t-compte">
+      <h2 id="t-compte">Ton compte Bulenox</h2>
+      <ul id="compte"></ul>
+    </section>
+  </div>
+
+  <p class="note">Méthode : usine/REGLES.md (idée K), règles commitées avant le calcul. 344 séances du 1er juillet 2025 au 13 novembre 2026, 3 décisions par séance, 100 trajectoires de 24 bougies chacune (cache de calcul vérifié identique au code de Kronos). Frais : 3 $ l'aller-retour pour 1 MNQ. Seul le NQ figure ici : ton compte ne trade que lui, avec des bots testés.</p>
+</div>
+
+<script>
+const D = /*DONNEES*/null;
+const fr = (v, d = 0) => v == null || isNaN(v) ? "—" : v.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const signe = (v, d = 0) => (v > 0 ? "+" : v < 0 ? "−" : "") + fr(Math.abs(v), d);
+const HEURES = { 6: ["10 h", "12 h"], 30: ["12 h", "14 h"], 54: ["14 h", "16 h"] };
+let iS = D.seances.length - 1, iD = 0;
+
+function couleur(nom) { return getComputedStyle(document.documentElement).getPropertyValue(nom).trim(); }
+function jourTexte(j) { const d = new Date(j + "T12:00:00"); return d.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" }); }
+
+function onglets() {
+  const s = document.getElementById("seances"), d = document.getElementById("decisions");
+  D.seances.forEach((x, i) => {
+    const b = document.createElement("button"); b.className = "onglet"; b.id = "seance-" + i; b.textContent = jourTexte(x.jour);
+    b.onclick = () => { iS = i; maj(); }; s.appendChild(b);
+  });
+  [0, 1, 2].forEach(i => {
+    const b = document.createElement("button"); b.className = "onglet"; b.id = "decision-" + i;
+    const h = HEURES[D.seances[0].decisions[i].bloc]; b.textContent = h[0] + " → " + h[1];
+    b.onclick = () => { iD = i; maj(); }; d.appendChild(b);
+  });
+}
+
+function quantile(t, q) { const a = [...t].sort((x, y) => x - y); const p = (a.length - 1) * q, i = Math.floor(p); return a[i] + (a[Math.min(i + 1, a.length - 1)] - a[i]) * (p - i); }
+
+function dessiner() {
+  const cv = document.getElementById("graph"), r = window.devicePixelRatio || 1;
+  const W = cv.clientWidth, H = cv.clientHeight; cv.width = W * r; cv.height = H * r;
+  const g = cv.getContext("2d"); g.setTransform(r, 0, 0, r, 0, 0); g.clearRect(0, 0, W, H);
+  const S = D.seances[iS], d = S.decisions[iD], b = S.bougies, b0 = d.bloc, ch = d.chemins;
+  const pas = Array.from({ length: 24 }, (_, k) => ch.map(c => c[k]));
+  const q10 = pas.map(v => quantile(v, .1)), q50 = pas.map(v => quantile(v, .5)), q90 = pas.map(v => quantile(v, .9));
+  const q02 = pas.map(v => quantile(v, .02)), q98 = pas.map(v => quantile(v, .98));
+  let lo = Math.min(...b.map(x => x[2]), ...q02), hi = Math.max(...b.map(x => x[1]), ...q98);
+  const m = (hi - lo) * .06; lo -= m; hi += m;
+  const gx = 8, dx = 64, gy = 10, by = 26, larg = W - gx - dx, haut = H - gy - by;
+  const X = i => gx + (i + .5) * larg / 78, Y = p => gy + (hi - p) / (hi - lo) * haut;
+  const ink = couleur("--ink"), muted = couleur("--muted"), line = couleur("--line"), amber = couleur("--amber"), path = couleur("--path"), up = couleur("--up"), down = couleur("--down");
+  g.font = "11px " + couleur("--f-data"); g.fillStyle = muted; g.strokeStyle = line; g.lineWidth = 1;
+  for (let k = 0; k <= 5; k++) {
+    const p = lo + (hi - lo) * k / 5, y = Y(p);
+    g.beginPath(); g.moveTo(gx, y); g.lineTo(gx + larg, y); g.stroke();
+    g.fillText(fr(p, 0), gx + larg + 6, y + 4);
+  }
+  let finEtiquette = -Infinity;
+  [[0, "9 h 30"], [6, "10 h"], [30, "12 h"], [54, "14 h"], [77, "15 h 55"]].forEach(([i, t]) => {
+    const w = g.measureText(t).width, x = Math.min(Math.max(X(i) - w / 2, gx), gx + larg - w);
+    if (x < finEtiquette + 6) return;                      // pas de chevauchement sur un ecran etroit
+    g.fillText(t, x, H - 8); finEtiquette = x + w;
+  });
+  // bande 10 - 90 % et trajectoires
+  const xs = [X(b0 - 1), ...Array.from({ length: 24 }, (_, k) => X(b0 + k))], dep = d.derniere;
+  g.globalAlpha = .14; g.fillStyle = path; g.beginPath(); g.moveTo(xs[0], Y(dep));
+  q90.forEach((v, k) => g.lineTo(xs[k + 1], Y(v))); for (let k = 23; k >= 0; k--) g.lineTo(xs[k + 1], Y(q10[k])); g.closePath(); g.fill();
+  g.globalAlpha = .09; g.strokeStyle = path; g.lineWidth = 1;
+  ch.forEach(c => { g.beginPath(); g.moveTo(xs[0], Y(dep)); c.forEach((v, k) => g.lineTo(xs[k + 1], Y(v))); g.stroke(); });
+  g.globalAlpha = 1; g.lineWidth = 2; g.setLineDash([5, 4]); g.beginPath(); g.moveTo(xs[0], Y(dep)); q50.forEach((v, k) => g.lineTo(xs[k + 1], Y(v))); g.stroke(); g.setLineDash([]);
+  // bougies
+  const cw = Math.max(1.5, larg / 78 * .62);
+  b.forEach((x, i) => {
+    const c = x[3] >= x[0] ? up : down; g.strokeStyle = c; g.fillStyle = c; g.globalAlpha = (i >= b0 && i < b0 + 24) ? .55 : .9;
+    g.beginPath(); g.moveTo(X(i), Y(x[1])); g.lineTo(X(i), Y(x[2])); g.stroke();
+    const y1 = Y(Math.max(x[0], x[3])), y2 = Y(Math.min(x[0], x[3])); g.fillRect(X(i) - cw / 2, y1, cw, Math.max(1, y2 - y1));
+  });
+  g.globalAlpha = 1;
+  // ce qui s'est passe pendant la prevision
+  g.strokeStyle = amber; g.lineWidth = 2.5; g.beginPath(); g.moveTo(xs[0], Y(dep));
+  for (let k = 0; k < 24; k++) g.lineTo(xs[k + 1], Y(b[b0 + k][3])); g.stroke();
+  // moment de la decision
+  g.strokeStyle = muted; g.lineWidth = 1; g.setLineDash([2, 3]); g.beginPath(); g.moveTo((X(b0 - 1) + X(b0)) / 2, gy); g.lineTo((X(b0 - 1) + X(b0)) / 2, gy + haut); g.stroke(); g.setLineDash([]);
+}
+
+function lecture() {
+  const S = D.seances[iS], d = S.decisions[iD], b = S.bougies, h = HEURES[d.bloc];
+  const fin = b[d.bloc + 23][3], mouv = fin - d.derniere, sens = d.f >= .6 ? 1 : d.f <= .4 ? -1 : 0;
+  const regle = sens > 0 ? "achat" : sens < 0 ? "vente" : "rien";
+  const res = sens === 0 ? "pas de trade" : signe(sens * mouv * 2 - 3, 0) + " $";
+  const accord = d.f >= .8 || d.f <= .2 ? "d'accord" : "dispersées";
+  document.getElementById("lecture").innerHTML = `
+    <div class="ligne"><span>Trajectoires au-dessus du dernier prix</span><b>${fr(d.f * 100)} %</b></div>
+    <div class="ligne"><span>Règle du test (60 %), ${h[0]} → ${h[1]}</span><b>${regle}</b></div>
+    <div class="ligne"><span>Les trajectoires sont</span><b>${accord}</b></div>
+    <div class="ligne"><span>Le NQ a fait</span><b>${signe(mouv, 2)} pts</b></div>
+    <div class="ligne"><span>Trade à 1 MNQ, frais compris</span><b>${res}</b></div>
+    <p class="note">L'article lit une tendance quand au moins 80 % des trajectoires vont dans le même sens, un marché saccadé sinon.</p>`;
+}
+
+function verdict() {
+  const v = D.verdict, el = document.getElementById("verdict");
+  if (!v) { el.innerHTML = '<p class="note">Le calcul n\'est pas encore jugé.</p>'; return; }
+  const r = v.regle, puce = ok => `<span class="puce ${ok ? "ok" : "non"}">${ok ? "passe" : "échoue"}</span>`;
+  el.innerHTML = `
+    <div class="verdict">${r.passe ? "Kronos passe les 3 portes du test" : "Kronos est rejeté"}</div>
+    <div class="ligne"><span>K1 · t des gains par séance (2,0 exigé)</span><b>${fr(r.t, 2)} ${puce(r.K1)}</b></div>
+    <div class="ligne"><span>K2 · mélanges qui font aussi bien (1 % au plus)</span><b>${fr(r.K2_p * 100, 1)} % ${puce(r.K2)}</b></div>
+    <div class="ligne"><span>K3 · gain par an, 1 MNQ (1 000 $ exigés)</span><b>${signe(r.gain_par_an)} $ ${puce(r.K3)}</b></div>
+    <div class="ligne"><span>Trades (achats / ventes)</span><b>${fr(r.trades)} (${fr(r.achats)} / ${fr(r.ventes)})</b></div>
+    <div class="ligne"><span>Bonnes directions</span><b>${fr(r.bonnes_directions * 100, 1)} %</b></div>`;
+  const I = v.information, lignes = [["Kronos, règle du test (60 %)", r], ["Kronos, trajectoire moyenne (ce que rend predict)", I.trajectoire_moyenne],
+    ["Kronos, seuil 70 %", I["seuil_0.7"]], ["Kronos, seuil 80 %", I["seuil_0.8"]],
+    ["Suivre les 2 heures d'avant", I.suivre_les_2_heures_d_avant], ["Toujours acheter", I.toujours_acheter]];
+  document.getElementById("compare").innerHTML = "<tr><th>Règle</th><th>t</th><th>$ par an</th><th>Bonnes directions</th></tr>" +
+    lignes.map(([n, x]) => `<tr><td>${n}</td><td class="n">${fr(x.t, 2)}</td><td class="n">${signe(x.gain_par_an)}</td><td class="n">${fr(x.bonnes_directions * 100, 1)} %</td></tr>`).join("");
+  const g = I.regime;
+  document.getElementById("regime").textContent = `Lecture du régime de l'article : quand au moins 80 % des trajectoires vont dans le même sens (${fr(g.blocs_accord)} blocs), le NQ bouge en moyenne de ${fr(g.mouvement_moyen_accord_pct, 2)} % en 2 heures ; quand elles sont dispersées (${fr(g.blocs_disperses)} blocs), de ${fr(g.mouvement_moyen_disperses_pct, 2)} %.`;
+}
+
+function compte() {
+  const v = D.verdict, ok = v && v.regle.passe;
+  const L = [ok ? "Kronos passe le test : avant tout argent, le compte (porte 5), puis 2 semaines de papier." : "Aucun trade sur la foi de Kronos : il n'a pas passé le test sur les séances qu'il n'avait jamais vues.",
+    "Bot 3 en 1 chaque jour : zone k = 1,0 sur 14 jours, limite du jour 1 000 $.",
+    "Sous 1 750 $ de marge, la zone passe sur 1 MES (réglage « Frein » = 750).",
+    "Après 2 séances sans trade : Supertrend NQ seul, limite 400 $ ; sous le frein, réglage « Frein : ordres sur MES » coché.",
+    "Un seul bot à la fois, jamais de trade à la main sur le compte."];
+  document.getElementById("compte").innerHTML = L.map(x => `<li>${x}</li>`).join("");
+}
+
+function maj() {
+  document.querySelectorAll("#seances .onglet").forEach((b, i) => b.setAttribute("aria-pressed", i === iS));
+  document.querySelectorAll("#decisions .onglet").forEach((b, i) => b.setAttribute("aria-pressed", i === iD));
+  dessiner(); lecture();
+}
+
+onglets(); verdict(); compte(); maj();
+addEventListener("resize", dessiner);
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", dessiner);
+new MutationObserver(dessiner).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+if (document.fonts) document.fonts.ready.then(dessiner);
+</script>
