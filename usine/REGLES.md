@@ -157,6 +157,75 @@ La rotation NQ / ES a déjà été testée sans résultat (`paires/` de la reche
   voie où ils en sont. Le verdict reste celui de la première porte manquée.
 - Les autres idées s'arrêtent à leur première porte manquée.
 
+## Ajouts du 16 novembre 2026 au soir (écrits et commités avant leur premier calcul)
+
+Demande de l'utilisateur : lancer la bande plus large, et toutes les pistes qui peuvent aider le compte.
+
+### Idée 8 : la zone de bruit avec une bande plus large (`zone_large`)
+
+- **Pourquoi.** La marche en avant de l'idée 1 a choisi la plus grande largeur de sa grille (k = 1,4) à 140 de ses 145
+  pas. La recherche s'était arrêtée à 1,5 (`zone_optimisation/`, branche `claude/keen-babbage-r686cl`).
+- **L'avantage, et qui perd en face :** ceux de l'idée 1. L'hypothèse en plus : une cassure plus lointaine est moins
+  souvent une fausse cassure. Le prix à payer est connu d'avance : moins de trades, donc plus de jours de secours.
+- **Règle exacte :** celle de l'idée 1, sans rien changer au moteur.
+- **Grille :** k ∈ {1,4 ; 1,6 ; 1,8 ; 2,0 ; 2,2 ; 2,4} × jours de moyenne ∈ {7, 10, 14, 20, 30} : 30 réglages.
+- **Portes :** les 5, comme une idée nouvelle. Elle s'arrête à sa première porte manquée.
+
+### Règle d'adoption : changer ou non la largeur de bande du bot
+
+Le Bot 3 en 1 joue k = 1,0 sur 14 jours, et il n'a pas de réglage de largeur. Passer les portes ne suffit donc pas : il
+faut que la bande large fasse mieux que le réglage du bot, hors de l'échantillon qui a servi à la choisir.
+
+- **Référence :** idée 1, réglage du bot (k = 1,0 ; 14 jours).
+- **Candidats :**
+  - A = le milieu du plateau de l'idée 1 (k = 1,4 ; 30 jours), choisi sur 2011 - 2014 ;
+  - B = le milieu du plateau de l'idée 8, choisi sur 2011 - 2014, seulement si l'idée 8 passe ses 5 portes.
+- **Mesure :** de 2015 à la dernière séance, séances complètes, 1 MNQ, limite du jour de 1 000 $ (`k_dollars`).
+- **Un candidat est adopté si les trois conditions sont remplies :**
+  1. sa différence quotidienne de gain avec la référence est positive, avec t ≥ 1,65, et elle est positive aussi depuis
+     le 1er janvier 2023 ;
+  2. sur le compte (simulateur de la porte 5, Supertrend en secours), il ne perd pas plus de comptes que la référence
+     (plancher + inactivité), ni pour un Master neuf sur 250 séances, ni depuis une marge de 700 $ sur 22 séances ;
+  3. pour un Master neuf sur 250 séances, son premier retrait arrive au moins aussi souvent.
+- Si A et B sont adoptés : celui qui perd le moins de comptes depuis une marge de 700 $ sur 22 séances.
+- **Ce que l'adoption déclenche :** rien sur le compte réel. D'abord le rejoueur C# du bot avec ses vrais filtres (C2,
+  Q1, VIX, Fed), que l'usine n'a pas ; puis le papier (`RISQUE.md`). Sans adoption : le bot ne change pas.
+- **Déjà connu au moment d'écrire :** la porte 5 des deux réglages de l'idée 1 (calcul du 16 novembre). La différence
+  quotidienne et tout ce qui touche l'idée 8 ne sont pas calculés.
+
+### Test R : sous le frein, le secours aussi sur 1 MES (`pupitre.py`)
+
+- **Pourquoi.** Règle des pupitres de risque des fonds : toute la taille suit le coussin, pas une seule stratégie. Sur
+  le compte, le frein ne réduit que la zone. Le jour de secours, le Supertrend reste à 1 MNQ avec une limite de 400 $,
+  soit plus de la moitié d'une marge de 700 $. Or le Supertrend n'a pas d'avantage prouvé (idée 2, porte 2).
+- **Données :** minutes du NQ de l'usine, et minutes du S&P (`intraday/donnees/sp500_1min.csv.gz`, branche
+  `claude/keen-babbage-r686cl`), du 1er janvier 2015 au 25 septembre 2026 (dernière séance du fichier S&P). Une séance
+  compte si elle est complète dans les deux fichiers.
+- **Stratégies, réglages du bot :** zone k = 1,0 sur 14 jours (limite du jour 1 000 $) ; Supertrend 10 et 3 (limite 400 $).
+- **Version MES :** les mêmes positions, décidées sur le NQ, appliquées aux minutes du S&P.
+  - 1 MES = 5 $ par point. Le niveau du S&P d'aujourd'hui n'est pas dans le dépôt : il est estimé par 28 500 × (clôture
+    du S&P / clôture du NQ) du 25 septembre 2026.
+  - Frais : 4,50 $ l'aller-retour (1 $ par ordre et un tick de 1,25 $ par ordre).
+  - Limites du jour inchangées en dollars.
+- **Compte :** celui de la porte 5. Le frein est celui du bot : il s'applique à une séance quand le solde de la veille
+  est à 750 $ ou plus sous le plus haut de fin de journée.
+- **Politiques :**
+  - P0, sans frein : contrôle. Sur les données de l'usine, elle doit redonner la porte 5 du réglage du bot.
+  - P1, la règle actuelle : zone sur 1 MES sous le frein ; secours toujours à 1 MNQ.
+  - P2, la candidate : zone et secours sur 1 MES sous le frein.
+- **Mesures :** Master neuf et marge de 700 $ (solde 49 900 $, plus haut 51 700 $), sur 22 et 250 séances, un départ à
+  chaque séance : premier retrait, plancher, inactivité, gain moyen.
+- **P2 est recommandée si :** depuis une marge de 700 $, elle perd moins de comptes que P1 sur 22 séances et sur 250
+  séances ; et si, pour un Master neuf sur 250 séances, son premier retrait n'arrive pas moins souvent de plus de
+  2 points. Sinon, la règle actuelle reste.
+
+### Ce qui n'est pas relancé, et pourquoi
+
+- La nuit, les combinaisons de stratégies, la zone sur plusieurs marchés, les tailles plus grandes, les stops de 200 et
+  300 $, le filtre VIX, les jours de la Fed : déjà jugés avec des règles fixées d'avance (`rea/PISTES.md`). Les refaire
+  jusqu'à obtenir un autre résultat serait tricher.
+- L'order flow sur les enregistrements de FluxNQ et les outils de l'utilisateur : les données sont sur son PC.
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.
