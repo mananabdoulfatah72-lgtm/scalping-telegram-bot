@@ -1,0 +1,421 @@
+<meta name="dash-one-writer">
+<style>
+  .us { display: flex; flex-direction: column; gap: var(--cds-gap-lg); color: var(--color-fg); font-family: var(--font-anthropic-sans); }
+  .us-tete { display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+  .us-titre { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .us-lede { font-size: var(--cds-font-size-heading); margin: 0; max-width: 72ch; line-height: 1.4; }
+  .us-sous, .us-aide { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; max-width: 80ch; line-height: 1.45; }
+  .us-carte { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+  .us-carte h2, .us-carte h3 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); text-wrap: balance; }
+  .us-defile { overflow-x: auto; min-width: 0; }
+  .us-table { border-collapse: collapse; width: 100%; font-size: var(--cds-font-size-body); font-variant-numeric: tabular-nums; }
+  .us-table th { text-align: left; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: 6px 8px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .us-table td { padding: 8px; border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+  .us-table td.us-nb { white-space: nowrap; }
+  .us-clic { cursor: pointer; }
+  .us-clic:focus-visible { outline: 2px solid var(--color-fg); outline-offset: -2px; }
+  .us-actif td { background: var(--cds-chart-grid); }
+  .us-ok { color: var(--color-ok); font-weight: 600; }
+  .us-ko { color: var(--color-bad); font-weight: 600; }
+  .us-na { color: var(--color-fg-muted); }
+  .us-puce { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: var(--cds-font-size-caption); border: 1px solid currentColor; white-space: nowrap; }
+  .us-petit { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); display: block; }
+  .us-choix { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm); }
+  .us-choix label { font-weight: var(--cds-font-weight-medium); }
+  .us-fiche p { margin: 0; max-width: 80ch; line-height: 1.45; }
+  .us-grille2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--cds-gap-lg); }
+  .us-graph { position: relative; min-height: 200px; }
+  .us-graph svg { display: block; overflow: visible; }
+  .us-bulle { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 6px 8px; font-size: var(--cds-font-size-caption); color: var(--color-fg); white-space: nowrap; z-index: 2; }
+  .us-axe text { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); }
+  .us-axe line, .us-axe path { stroke: var(--cds-chart-axis); }
+  .us-legende { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); }
+  .us-case-texte { fill: var(--color-fg); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; pointer-events: none; }
+  details.us-carte summary { cursor: pointer; font-weight: var(--cds-font-weight-medium); }
+  details.us-carte ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: var(--cds-gap-xs); max-width: 80ch; line-height: 1.45; }
+</style>
+
+<div class="us">
+  <header class="us-tete" id="haut">
+    <h1 class="us-titre">Usine à stratégies</h1>
+    <p class="us-lede">
+      <span data-cas="aucune" hidden>Aucune des <b data-draw="ntot" data-source="testees">—</b> idées testées ne passe toutes les portes.</span>
+      <span data-cas="une">Sur <b data-draw="ntot" data-source="testees">—</b> idées testées, une seule passe toutes les portes : <span data-draw="noms-surv">—</span>.</span>
+      <span data-cas="plusieurs" hidden><b data-draw="nsurv" data-source="survivants">—</b> idées sur <b data-draw="ntot" data-source="testees">—</b> passent toutes les portes : <span data-draw="noms-surv">—</span>.</span>
+      <span data-draw="cas"></span>
+    </p>
+    <p class="us-sous">Compte Master Bulenox 50K, futures NQ et MNQ. Règles et seuils fixés avant le calcul. Calcul du <span data-draw="date" data-source="idees" data-field="date_calcul" data-row="0">—</span>, minutes du NQ de 2011 à la dernière séance.</p>
+  </header>
+
+  <section class="us-carte" id="portes">
+    <h2>Les idées et leurs portes</h2>
+    <p class="us-aide">Chaque idée passe les portes dans l'ordre et s'arrête à la première manquée. La zone et le Supertrend, déjà sur le compte, passent toutes les portes pour information. Clique sur une ligne pour voir son détail.</p>
+    <div class="us-defile">
+      <table class="us-table" data-source="idees" data-row-key="idee">
+        <thead>
+          <tr>
+            <th data-field="titre">Idée</th>
+            <th data-field="p1_texte">1 · Excellence 2011 - 2014</th>
+            <th data-field="p2_texte">2 · Permutations</th>
+            <th data-field="p3_texte">3 · Marche en avant</th>
+            <th data-field="p4_texte">4 · Permutations de la marche</th>
+            <th data-field="p5_texte">5 · Ton compte, Master neuf, un an</th>
+            <th data-field="verdict_texte">Verdict</th>
+          </tr>
+        </thead>
+        <tbody data-draw="table"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="detail" class="us">
+    <div class="us-choix">
+      <label for="us-idee">Détail de l'idée</label>
+      <select id="us-idee" class="dash-select" data-draw="choix" data-source="idees" aria-label="Idée à détailler"></select>
+    </div>
+
+    <div class="us-carte us-fiche" id="fiche">
+      <h3 data-draw="fiche-titre" data-source="idees" data-field="titre">—</h3>
+      <p><b>L'avantage :</b> <span data-draw="fiche-avantage" data-source="idees" data-field="avantage">—</span></p>
+      <p><b>Qui perd en face :</b> <span data-draw="fiche-contrepartie" data-source="idees" data-field="contrepartie">—</span></p>
+      <p><b>Verdict :</b> <span data-draw="fiche-verdict" data-source="idees" data-field="verdict_texte">—</span>. <span data-draw="fiche-raison" data-source="idees" data-field="raison">—</span>.</p>
+    </div>
+
+    <div class="us-grille2">
+      <div class="us-carte" id="balayage">
+        <h3>Porte 1 · Les réglages testés sur 2011 - 2014</h3>
+        <p class="us-aide">Profit factor de chaque réglage (gains par minute divisés par les pertes, frais compris). Vert au-dessus de 1, rouge en dessous. Un plateau de cases vertes vaut mieux qu'un pic isolé. ★ meilleur réglage, ◆ milieu du plateau.</p>
+        <div class="us-graph" data-draw="balayage" data-source="grille"></div>
+      </div>
+      <div class="us-carte" id="perm2">
+        <h3>Porte 2 · 1 000 marchés mélangés, 2011 - 2014</h3>
+        <p class="us-aide">Les minutes de chaque séance sont mélangées, puis la grille entière est ré-optimisée. Le trait marque le vrai résultat. Passe si moins de 1 % des marchés mélangés font aussi bien.</p>
+        <div class="us-graph" data-draw="perm2" data-source="permutations idees"></div>
+      </div>
+      <div class="us-carte" id="marche">
+        <h3>Porte 3 · Marche en avant, de 2015 à aujourd'hui</h3>
+        <p class="us-aide">Tous les 30 jours, le meilleur réglage des 4 années précédentes est tradé les 30 jours suivants. Gain cumulé pour 1 MNQ au prix d'aujourd'hui, frais compris. Passe si le profit factor dépasse 1 et le gain 1 000 $ par an.</p>
+        <div class="us-graph" data-draw="marche" data-source="marche idees"></div>
+      </div>
+      <div class="us-carte" id="perm4">
+        <h3>Porte 4 · 200 marches en avant sur des minutes mélangées</h3>
+        <p class="us-aide">Les minutes depuis 2015 sont mélangées, puis toute la marche en avant est refaite. Passe si au plus 1 des 200 fait aussi bien (p &lt; 1 %).</p>
+        <div class="us-graph" data-draw="perm4" data-source="permutations idees"></div>
+      </div>
+    </div>
+
+    <div class="us-carte" id="compte">
+      <h3>Porte 5 · Ce que ça donne sur ton compte Bulenox</h3>
+      <p class="us-aide">Comptes Master simulés depuis chaque séance de 2015 à aujourd'hui, avec le réglage du milieu du plateau et 1 MNQ. Le compte est perdu s'il touche le plancher pendant la séance, ou après 5 séances de suite sans trade. Une idée qui trade moins de 4 séances sur 5 est aussi jouée avec le Supertrend en secours. Le gain moyen compte un compte perdu à sa perte.</p>
+      <div class="us-defile">
+        <table class="us-table" data-source="compte" data-row-key="cle">
+          <thead>
+            <tr>
+              <th data-field="variante">Jouée</th>
+              <th data-field="depart">Départ</th>
+              <th data-field="duree">Durée</th>
+              <th data-field="retrait_texte">1er retrait (53 600 $)</th>
+              <th data-field="plancher_texte">Perdu par le plancher</th>
+              <th data-field="inactivite_texte">Perdu par l'inactivité</th>
+              <th data-field="gain_texte">Gain moyen</th>
+            </tr>
+          </thead>
+          <tbody data-draw="compte"></tbody>
+        </table>
+      </div>
+      <p class="us-aide" data-draw="compte-vide"></p>
+    </div>
+  </section>
+
+  <details class="us-carte" id="methode">
+    <summary>La méthode, et ce qu'elle ne corrige pas</summary>
+    <ul>
+      <li>Mesure : le rendement net de chaque minute (position × rendement de la minute − frais de 3 $ par aller-retour pour 1 MNQ). Le profit factor est la somme des minutes gagnantes divisée par celle des minutes perdantes.</li>
+      <li>Porte 1 : profit factor au-dessus de 1, t des gains par séance au-dessus de 1, un plateau (au moins deux tiers des voisins au-dessus de 1), et un profit factor sous 3, sinon on cherche une fuite du futur.</li>
+      <li>La permutation mélange, dans chaque séance, les écarts d'ouverture des minutes et, séparément, leurs formes. Chaque séance garde son ouverture et sa clôture. Un bot de tendance qui ne fait que suivre le mouvement du jour gagne donc aussi sur les minutes mélangées : c'est ce qui arrive au Supertrend.</li>
+      <li>Porte 5, ajoutée pour ton compte : plancher à 2 500 $ sous le plus haut de fin de journée, arrêté à 50 000 $ ; limite du jour de 400 $ pour le Supertrend et de 1 000 $ pour les autres.</li>
+      <li>Ce que les tests ne corrigent pas : la zone a été choisie après avoir vu 2011 - 2026. Les p-values contrôlent le choix du réglage, pas celui de l'idée. La seule donnée vraiment neuve, c'est l'avenir : le papier, puis le réel.</li>
+      <li>Les données de cette page sont une copie du calcul de l'usine (dossier usine/ du dépôt scalping-telegram-bot). L'usine refait les portes chaque dimanche ; cette page se met à jour quand ses fichiers sont remplacés.</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+  window.usineIdee = window.usineIdee || 'zone';
+  window.usineFr = d3.formatLocale({ decimal: ',', thousands: ' ', grouping: [3], currency: ['', ' $'] });
+  window.usineDate = d3.timeFormatLocale({
+    dateTime: '%A %e %B %Y à %X', date: '%d/%m/%Y', time: '%H:%M:%S', periods: ['AM', 'PM'],
+    days: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+    shortDays: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
+    months: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+    shortMonths: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.']
+  });
+  window.usineDetail = ['table', 'choix', 'fiche-titre', 'fiche-avantage', 'fiche-contrepartie', 'fiche-verdict', 'fiche-raison',
+    'balayage', 'perm2', 'marche', 'perm4', 'compte', 'compte-vide'];
+  window.usineChoisir = (id) => { window.usineIdee = id; window.usineDetail.forEach((n) => dash.draw(n)); };
+
+  // lignes d'une source, ou null tant qu'elle n'est pas chargee ; met le repli dans el
+  window.usineLignes = (el, id) => {
+    const d = dash.data(id);
+    if (d.status === 'ok') { el.classList.remove('dash-skeleton'); return d.data; }
+    if (d.status === 'loading') { el.replaceChildren(); el.classList.add('dash-skeleton'); return null; }
+    el.classList.remove('dash-skeleton');
+    const p = document.createElement('p'); p.className = 'us-aide';
+    p.textContent = d.status === 'error' || d.status === 'missing' ? 'Échec du chargement.' : '—';
+    el.replaceChildren(p);
+    return null;
+  };
+  window.usineIdeeLigne = (rows) => rows.find((r) => r.idee === window.usineIdee) || rows[0];
+  window.usineBulle = (el) => {
+    const b = document.createElement('div'); b.className = 'us-bulle'; b.hidden = true; el.appendChild(b);
+    return {
+      montrer(ev, lignes) {
+        b.replaceChildren(...lignes.map((t, i) => { const s = document.createElement(i ? 'div' : 'b'); s.textContent = t; return s; }));
+        b.hidden = false;
+        const [x, y] = d3.pointer(ev, el); const w = b.offsetWidth, W = el.clientWidth;
+        b.style.left = Math.max(0, Math.min(W - w, x + 12)) + 'px'; b.style.top = Math.max(0, y - b.offsetHeight - 8) + 'px';
+      },
+      cacher() { b.hidden = true; }
+    };
+  };
+</script>
+
+<script>
+  dash.calc('survivants', {
+    inputs: ['idees'], title: 'Idées qui passent les 5 portes', description: 'Nombre d\'idées dont le verdict est « passe les 5 portes ».',
+    fn: (idees) => idees.filter((r) => r.verdict === 'passe les 5 portes').length
+  });
+  dash.calc('testees', {
+    inputs: ['idees'], title: 'Idées testées', description: 'Nombre d\'idées passées par les portes.',
+    fn: (idees) => idees.length
+  });
+
+  dash.draw('cas', (el) => {
+    const d = dash.data('survivants');
+    if (d.status !== 'ok') return;
+    const cas = d.data === 0 ? 'aucune' : d.data === 1 ? 'une' : 'plusieurs';
+    el.parentElement.querySelectorAll('[data-cas]').forEach((s) => { s.hidden = s.dataset.cas !== cas; });
+  });
+  dash.draw('nsurv', (el) => { const d = dash.data('survivants'); el.textContent = d.status === 'ok' ? String(d.data) : '—'; });
+  dash.draw('ntot', (el) => { const d = dash.data('testees'); el.textContent = d.status === 'ok' ? String(d.data) : '—'; });
+  dash.draw('noms-surv', (el) => {
+    const d = dash.data('idees');
+    if (d.status !== 'ok') { el.textContent = '—'; return; }
+    const s = d.data.filter((r) => r.verdict === 'passe les 5 portes').map((r) => r.titre);
+    el.textContent = s.length ? s.join(', ') : 'aucune';
+  });
+  dash.draw('date', (el) => {
+    const d = dash.data('idees');
+    if (d.status !== 'ok' || !d.data.length) { el.textContent = '—'; return; }
+    const t = d3.utcParse('%Y-%m-%d')(d.data[0].date_calcul);
+    el.textContent = t ? window.usineDate.utcFormat('%e %B %Y')(t).trim() : d.data[0].date_calcul;
+  });
+
+  dash.draw('table', (tb) => {
+    const rows = window.usineLignes(tb, 'idees'); if (!rows) return;
+    tb.replaceChildren();
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = r.idee; tr.className = 'us-clic' + (r.idee === window.usineIdee ? ' us-actif' : '');
+      tr.tabIndex = 0; tr.setAttribute('aria-label', 'Voir le détail : ' + r.titre);
+      tr.onclick = () => window.usineChoisir(r.idee);
+      tr.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.usineChoisir(r.idee); } };
+      const td0 = document.createElement('td'); td0.textContent = r.titre;
+      if (r.en_service) { const s = document.createElement('span'); s.className = 'us-petit'; s.textContent = 'déjà sur le compte'; td0.appendChild(s); }
+      tr.appendChild(td0);
+      for (const g of ['1', '2', '3', '4', '5']) {
+        const td = document.createElement('td'); td.className = 'us-nb';
+        const passe = r['p' + g + '_passe'];
+        const sym = document.createElement('span');
+        sym.className = passe === true ? 'us-ok' : passe === false ? 'us-ko' : 'us-na';
+        sym.textContent = passe === true ? '✓ ' : passe === false ? '✗ ' : '—';
+        td.appendChild(sym);
+        if (passe !== null && passe !== undefined) td.appendChild(document.createTextNode(r['p' + g + '_texte']));
+        tr.appendChild(td);
+      }
+      const tv = document.createElement('td'); const pu = document.createElement('span');
+      pu.className = 'us-puce ' + (r.verdict === 'passe les 5 portes' ? 'us-ok' : 'us-ko'); pu.textContent = r.verdict_texte;
+      tv.appendChild(pu); tr.appendChild(tv);
+      tb.appendChild(tr);
+    }
+  });
+
+  dash.draw('choix', (sel) => {
+    const d = dash.data('idees');
+    const rows = d.status === 'ok' ? d.data : [];
+    sel.replaceChildren(...rows.map((r) => new Option(r.titre, r.idee)));
+    sel.value = window.usineIdee;
+    sel.onchange = () => window.usineChoisir(sel.value);
+  });
+
+  for (const [nom, champ] of [['fiche-titre', 'titre'], ['fiche-avantage', 'avantage'], ['fiche-contrepartie', 'contrepartie'], ['fiche-verdict', 'verdict_texte'], ['fiche-raison', 'raison']]) {
+    dash.draw(nom, (el) => {
+      const d = dash.data('idees');
+      if (d.status !== 'ok' || !d.data.length) { el.textContent = '—'; return; }
+      const r = window.usineIdeeLigne(d.data);
+      el.setAttribute('data-where', 'idee=' + encodeURIComponent(r.idee));
+      el.textContent = champ === 'raison' ? r.raison.charAt(0).toUpperCase() + r.raison.slice(1) : r[champ];
+      if (champ === 'verdict_texte') el.className = r.verdict === 'passe les 5 portes' ? 'us-ok' : 'us-ko';
+    });
+  }
+</script>
+
+<script>
+  // porte 1 : cartes des reglages (une par valeur du troisieme reglage s'il y en a un)
+  dash.draw('balayage', (el) => {
+    const rows = window.usineLignes(el, 'grille'); if (!rows) return;
+    const g = rows.filter((r) => r.idee === window.usineIdee);
+    el.replaceChildren();
+    if (!g.length) { const p = document.createElement('p'); p.className = 'us-aide'; p.textContent = 'Pas de grille pour cette idée.'; el.appendChild(p); return; }
+    const fr = window.usineFr, f3 = fr.format('.3f'), f2 = fr.format('.2f');
+    const facettes = [...new Set(g.map((r) => r.facette))];
+    const lignes = [...new Set(g.map((r) => r.ligne))], colonnes = [...new Set(g.map((r) => r.colonne))];
+    const nomL = g[0].ligne_nom, nomC = g[0].colonne_nom;
+    const val = (s, nom) => (nom && s.startsWith(nom + ' ') ? s.slice(nom.length + 1) : s);
+    const W = Math.max(260, el.clientWidth);
+    const parLigne = facettes.length > 1 && W >= 560 ? facettes.length : 1;
+    const fw = (W - (parLigne - 1) * 16) / parLigne;
+    const gauche = 92, haut = 34, ch = 30;
+    const cw = Math.max(36, (fw - gauche) / Math.max(1, colonnes.length));
+    const ph = haut + lignes.length * ch + 8;
+    const hautes = Math.max(...g.map((r) => r.pf)) - 1, basses = 1 - Math.min(...g.map((r) => r.pf));
+    const op = (pf) => pf >= 1 ? 0.15 + 0.75 * Math.min(1, (pf - 1) / Math.max(hautes, 1e-6)) : 0.15 + 0.75 * Math.min(1, (1 - pf) / Math.max(basses, 1e-6));
+    const bulle = window.usineBulle(el);
+    const svg = d3.select(el).insert('svg', ':first-child')
+      .attr('width', '100%').attr('viewBox', `0 0 ${W} ${Math.ceil(facettes.length / parLigne) * (ph + (facettes[0] ? 20 : 0))}`)
+      .attr('role', 'img').attr('aria-label', `Profit factor de chaque réglage sur 2011 - 2014, ${g.length} réglages`);
+    facettes.forEach((fa, i) => {
+      const ox = (i % parLigne) * (fw + 16), oy = Math.floor(i / parLigne) * (ph + (fa ? 20 : 0));
+      const gr = svg.append('g').attr('transform', `translate(${ox},${oy})`);
+      let y0 = 0;
+      if (fa) { gr.append('text').attr('class', 'us-legende').attr('x', 0).attr('y', 12).text(fa); y0 = 20; }
+      gr.append('text').attr('class', 'us-legende').attr('x', gauche).attr('y', y0 + 12).text(nomC);
+      colonnes.forEach((c, j) => gr.append('text').attr('class', 'us-legende').attr('x', gauche + j * cw + cw / 2).attr('y', y0 + 28)
+        .attr('text-anchor', 'middle').text(val(c, nomC)));
+      gr.append('text').attr('class', 'us-legende').attr('x', 0).attr('y', y0 + 28).text(nomL);
+      lignes.forEach((l, k) => {
+        gr.append('text').attr('class', 'us-legende').attr('x', gauche - 6).attr('y', y0 + haut + k * ch + ch / 2 + 4).attr('text-anchor', 'end').text(val(l, nomL));
+        colonnes.forEach((c, j) => {
+          const r = g.find((x) => x.facette === fa && x.ligne === l && x.colonne === c); if (!r) return;
+          const x = gauche + j * cw, y = y0 + haut + k * ch;
+          gr.append('rect').attr('x', x + 1).attr('y', y + 1).attr('width', cw - 2).attr('height', ch - 2).attr('rx', 3)
+            .style('fill', r.pf >= 1 ? 'var(--color-ok)' : 'var(--color-bad)').style('fill-opacity', op(r.pf))
+            .on('mousemove', (ev) => bulle.montrer(ev, [[r.ligne, r.colonne, r.facette].filter(Boolean).join(', '), `PF ${f3(r.pf)}, t ${f2(r.t)}`]))
+            .on('mouseleave', () => bulle.cacher());
+          gr.append('text').attr('class', 'us-case-texte').attr('x', x + cw / 2).attr('y', y + ch / 2 + 4).attr('text-anchor', 'middle')
+            .text((r.meilleur ? '★ ' : r.centre ? '◆ ' : '') + (cw >= 54 ? f3(r.pf) : ''));
+        });
+      });
+    });
+  });
+
+  // portes 2 et 4 : histogramme des permutations, trait du vrai resultat
+  for (const porte of ['2', '4']) {
+    dash.draw('perm' + porte, (el) => {
+      const ps = window.usineLignes(el, 'permutations'); if (!ps) return;
+      const ids = window.usineLignes(el, 'idees'); if (!ids) return;
+      const r = window.usineIdeeLigne(ids);
+      const b = ps.filter((x) => x.idee === r.idee && x.porte === porte);
+      el.replaceChildren();
+      if (!b.length) {
+        const p = document.createElement('p'); p.className = 'us-aide';
+        p.textContent = `Pas calculée : l'idée s'arrête à la porte ${r.portes_passees + 1}.`; el.appendChild(p); return;
+      }
+      const fr = window.usineFr, f3 = fr.format('.3f');
+      const reel = r['p' + porte + '_reel'], W = Math.max(260, el.clientWidth), H = 170, m = { g: 34, d: 12, h: 18, b: 30 };
+      const x = d3.scaleLinear().domain([d3.min(b, (d) => d.bas), d3.max(b, (d) => d.haut)]).range([m.g, W - m.d]);
+      const y = d3.scaleLinear().domain([0, d3.max(b, (d) => d.nombre) || 1]).nice().range([H - m.b, m.h]);
+      const bulle = window.usineBulle(el);
+      const svg = d3.select(el).insert('svg', ':first-child').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img')
+        .attr('aria-label', `Meilleur profit factor de ${r['p' + porte + '_n']} permutations, et le vrai résultat ${f3(reel)}`);
+      svg.append('g').attr('class', 'us-axe').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).ticks(Math.max(2, Math.floor(W / 110))).tickFormat(f3));
+      svg.append('g').attr('class', 'us-axe').attr('transform', `translate(${m.g},0)`).call(d3.axisLeft(y).ticks(4).tickFormat(fr.format('d')));
+      svg.append('g').selectAll('rect').data(b).join('rect')
+        .attr('x', (d) => x(d.bas) + 0.5).attr('width', (d) => Math.max(1, x(d.haut) - x(d.bas) - 1))
+        .attr('y', (d) => y(d.nombre)).attr('height', (d) => y(0) - y(d.nombre)).style('fill', dash.colors[0])
+        .on('mousemove', (ev, d) => bulle.montrer(ev, [`PF de ${f3(d.bas)} à ${f3(d.haut)}`, `${d.nombre} permutation${d.nombre > 1 ? 's' : ''}`]))
+        .on('mouseleave', () => bulle.cacher());
+      const xr = x(reel), ok = r['p' + porte + '_passe'];
+      svg.append('line').attr('x1', xr).attr('x2', xr).attr('y1', m.h - 6).attr('y2', H - m.b)
+        .style('stroke', ok ? 'var(--color-ok)' : 'var(--color-bad)').style('stroke-width', 2);
+      const lab = svg.append('text').attr('class', 'us-legende').attr('y', m.h - 9).text(`réel ${f3(reel)}`);
+      const lw = lab.node().getComputedTextLength();
+      lab.attr('x', Math.min(W - m.d - lw, Math.max(m.g, xr - lw / 2)));
+      const p = document.createElement('p'); p.className = 'us-aide';
+      const s1 = document.createElement('span');
+      s1.textContent = `Font aussi bien : ${r['p' + porte + '_battues']} sur ${r['p' + porte + '_n']}, soit `;
+      const s2 = document.createElement('b');
+      s2.dataset.source = 'idees'; s2.dataset.field = 'p' + porte + '_texte'; s2.dataset.where = 'idee=' + encodeURIComponent(r.idee);
+      s2.textContent = r['p' + porte + '_texte']; s2.className = ok ? 'us-ok' : 'us-ko';
+      const s3 = document.createElement('span'); s3.textContent = ok ? ' : porte passée.' : ' : porte manquée.';
+      p.append(s1, s2, s3); el.appendChild(p);
+    });
+  }
+
+  // porte 3 : gain cumule de la marche en avant
+  dash.draw('marche', (el) => {
+    const ms = window.usineLignes(el, 'marche'); if (!ms) return;
+    const ids = window.usineLignes(el, 'idees'); if (!ids) return;
+    const r = window.usineIdeeLigne(ids);
+    const pts = ms.filter((x) => x.idee === r.idee).map((x) => ({ t: d3.utcParse('%Y-%m')(x.mois), v: x.cumul })).filter((d) => d.t);
+    el.replaceChildren();
+    if (!pts.length) {
+      const p = document.createElement('p'); p.className = 'us-aide';
+      p.textContent = `Pas calculée : l'idée s'arrête à la porte ${r.portes_passees + 1}.`; el.appendChild(p); return;
+    }
+    const fr = window.usineFr, fd = (v) => fr.format('+,.0f')(v) + ' $';
+    const W = Math.max(260, el.clientWidth), H = 190, m = { g: 58, d: 64, h: 14, b: 26 };
+    const x = d3.scaleUtc().domain(d3.extent(pts, (d) => d.t)).range([m.g, W - m.d]);
+    const y = d3.scaleLinear().domain(d3.extent([0, ...pts.map((d) => d.v)])).nice().range([H - m.b, m.h]);
+    const bulle = window.usineBulle(el);
+    const svg = d3.select(el).insert('svg', ':first-child').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img')
+      .attr('aria-label', `Gain cumulé de la marche en avant depuis 2015 : ${fd(pts[pts.length - 1].v)}`);
+    svg.append('g').attr('class', 'us-axe').attr('transform', `translate(0,${H - m.b})`)
+      .call(d3.axisBottom(x).ticks(Math.max(2, Math.floor(W / 90))).tickFormat(window.usineDate.utcFormat('%Y')));
+    svg.append('g').attr('class', 'us-axe').attr('transform', `translate(${m.g},0)`).call(d3.axisLeft(y).ticks(4).tickFormat((v) => fr.format(',.0f')(v)));
+    svg.append('line').attr('x1', m.g).attr('x2', W - m.d).attr('y1', y(0)).attr('y2', y(0)).style('stroke', 'var(--cds-chart-reference)');
+    svg.append('path').datum(pts).attr('d', d3.line().x((d) => x(d.t)).y((d) => y(d.v)))
+      .style('fill', 'none').style('stroke', dash.colors[0]).style('stroke-width', 2);
+    const fin = pts[pts.length - 1];
+    svg.append('circle').attr('cx', x(fin.t)).attr('cy', y(fin.v)).attr('r', 3.5).style('fill', dash.colors[0]);
+    svg.append('text').attr('class', 'us-legende').attr('x', x(fin.t) + 6).attr('y', y(fin.v) + 4).text(fd(fin.v));
+    const point = svg.append('circle').attr('r', 4).style('fill', 'var(--color-fg)').attr('visibility', 'hidden');
+    svg.append('rect').attr('x', m.g).attr('y', m.h).attr('width', W - m.g - m.d).attr('height', H - m.h - m.b).style('fill', 'transparent')
+      .on('mousemove', (ev) => {
+        const t = x.invert(d3.pointer(ev)[0]); const i = Math.max(0, Math.min(pts.length - 1, d3.bisector((d) => d.t).center(pts, t)));
+        const d = pts[i]; point.attr('cx', x(d.t)).attr('cy', y(d.v)).attr('visibility', 'visible');
+        bulle.montrer(ev, [window.usineDate.utcFormat('%B %Y')(d.t), `cumul ${fd(d.v)}`]);
+      })
+      .on('mouseleave', () => { point.attr('visibility', 'hidden'); bulle.cacher(); });
+    const p = document.createElement('p'); p.className = 'us-aide';
+    const s1 = document.createElement('span'); s1.textContent = 'Hors échantillon : ';
+    const s2 = document.createElement('b');
+    s2.dataset.source = 'idees'; s2.dataset.field = 'p3_texte'; s2.dataset.where = 'idee=' + encodeURIComponent(r.idee);
+    s2.textContent = r.p3_texte; s2.className = r.p3_passe ? 'us-ok' : 'us-ko';
+    const s3 = document.createElement('span'); s3.textContent = r.p3_passe ? ' : porte passée.' : ' : porte manquée.';
+    p.append(s1, s2, s3); el.appendChild(p);
+  });
+
+  // porte 5 : le compte
+  dash.draw('compte', (tb) => {
+    const rows = window.usineLignes(tb, 'compte'); if (!rows) return;
+    const c = rows.filter((r) => r.idee === window.usineIdee);
+    tb.replaceChildren();
+    for (const r of c) {
+      const tr = document.createElement('tr'); tr.dataset.key = r.cle;
+      for (const k of ['variante', 'depart', 'duree', 'retrait_texte', 'plancher_texte', 'inactivite_texte', 'gain_texte']) {
+        const td = document.createElement('td'); td.textContent = r[k];
+        if (k.endsWith('_texte')) td.className = 'us-nb';
+        tr.appendChild(td);
+      }
+      tb.appendChild(tr);
+    }
+  });
+  dash.draw('compte-vide', (el) => {
+    const d = dash.data('compte'), i = dash.data('idees');
+    if (d.status !== 'ok' || i.status !== 'ok') { el.textContent = ''; return; }
+    const n = d.data.filter((r) => r.idee === window.usineIdee).length;
+    const r = window.usineIdeeLigne(i.data);
+    el.textContent = n > 0 ? '' : `Pas calculée : l'idée s'arrête à la porte ${r.portes_passees + 1}.`;
+  });
+</script>

@@ -1,0 +1,5 @@
+.cache/
+__pycache__/
+# etat du compte reel : jamais commite (le depot est public)
+compte.json
+journal_reel.csv

@@ -1,0 +1,6 @@
+Donnees : 4076 seances, 3952 completes, du 2011-01-03 au 2026-11-13.
+Faux prix corriges : 2026-10-30 15:03 o=29562.0 (cloture d'avant 28234.25, cloture 28295.25); 2026-10-30 15:03 h=29562.0 (cloture d'avant 28234.25, cloture 28295.25)
+
+1. Zone (k = 1, 14 jours) contre zone_brute : 3599 trades de reference sur 2310 seances ; positions identiques minute par minute dans 3952 seances completes sur 3952.
+2. Zone contre le moteur C# du bot (zone d'origine sans filtre) : 3603 trades C# ; positions identiques dans 3894 seances completes sur 3952. Ecarts attendus : le C# prend le contrat du calendrier et ne trade pas les jours courts ni les jours feries ; l'usine suit zone_brute.
+3. Supertrend (10, 3) contre st_detail : 9653 trades de reference ; positions identiques minute par minute dans 3952 seances completes sur 3952.
