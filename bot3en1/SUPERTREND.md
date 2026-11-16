@@ -21,6 +21,36 @@ le Strategies manager sous le nom **Supertrend NQ (10-3, 5 min)**.
   séances (août - octobre 2026, 0 différence), à 1 et 2 MNQ, et réagit comme prévu : limite du jour, objectif, fichier
   STOP, position fermée à la main (pas rouverte avant le prochain retournement), relance en pleine séance (position reprise).
 
+## Le frein : ordres sur MES (16 novembre 2026)
+
+Choisi par l'utilisateur pour sa situation (marge d'environ 700 $), après le test R de `usine/INSTITUTIONS.md` : depuis
+700 $ de marge, 16 % de comptes perdus dans le mois au lieu de 25 % quand le secours passe aussi sur MES.
+
+**Les réglages.**
+- « Frein : ordres sur MES au lieu de MNQ » : à cocher les jours de secours où le brief du matin dit que le frein est actif
+  (marge sous 1 750 $).
+- « MES (ordres quand le frein est coché) » : le contrat du moment, par exemple MESZ6.
+- Le reste ne change pas : le Supertrend lit toujours le NQ, les ordres partent sur MES, la limite du jour reste en
+  dollars (400 $).
+
+**Comment le résultat est compté sur MES.**
+- 5 $ par point du S&P et 4,50 $ de frais par aller-retour (1 $ par ordre et 1 tick).
+- Prix d'entrée et de sortie : le dernier prix du MES quand le Supertrend change de position.
+- Après une relance avec une position ouverte : le prix d'entrée du compte (propriété `OpenPrice` de Quantower, lue par
+  réflexion). S'il est illisible, le premier prix du MES reçu sert, et la perte latente d'avant la relance n'est pas
+  comptée dans la limite du jour.
+
+**Testé ici** (`Supertrend.TestQuantower`, imitation de l'API Quantower, minutes réelles du NQ et du S&P) :
+
+| Essai | Résultat |
+|---|---|
+| Ordres sur MNQ, 65 séances (août - octobre 2026) | 209 changements de position, 0 différence avec le moteur vérifié : rien n'a changé |
+| Ordres sur MES, 40 séances (août - 25 septembre 2026) | 130 changements de position, 0 différence ; 130 ordres sur MES, 0 sur MNQ ; le résultat annoncé chaque soir égale celui des remplissages du test, les 40 séances |
+| MES, limite du jour à 150 $ | la limite se déclenche entre −150 $ et −178 $ (le test n'envoie que 4 prix par minute) |
+| MES, relance à 12 h avec une position ouverte | position reprise sur MES, 0 différence |
+
+**Pas testé ici :** le vrai Quantower (seulement son imitation), la propriété `OpenPrice`, et les vrais remplissages du MES.
+
 ## Les chiffres (1 MNQ, au prix d'aujourd'hui, 3 $ de frais par aller-retour)
 
 | Période | Séances | Par séance | t |

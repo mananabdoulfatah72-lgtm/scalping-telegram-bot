@@ -5,7 +5,8 @@ Regles (usine/RISQUE.md) :
   suivante, le Supertrend NQ seul (G2 manuel) ;
 - 1 MNQ ; limite de perte du jour 1 000 $ (Bot 3 en 1) et 400 $ (Supertrend) : la porte 5 et le calcul du 16 novembre
   (`config1mois`) montrent que des limites plus basses ne protegent pas et coutent du gain ;
-- frein (reglage « Frein » = 750 du Bot 3 en 1) : la zone passe sur 1 MES tant que la marge est sous 1 750 $ ;
+- frein (reglage « Frein » = 750 du Bot 3 en 1) : la zone passe sur 1 MES tant que la marge est sous 1 750 $, et le secours
+  Supertrend aussi (reglage « Frein : ordres sur MES », choix de l'utilisateur du 16 novembre au soir, test R) ;
 - arret d'urgence si le reel s'ecarte de l'historique : gain cumule sous la ligne des 5 % de ce qu'attend l'historique
   (G2 manuel, 2015 -> derniere seance) ; ou 4 seances de suite sans trade (la 5e perd le compte) ; ou le solde sous le
   plancher.
@@ -75,8 +76,10 @@ def consigne(compte, journal, moyenne, ecart):
         L.append(f"URGENT : {sans} seances sans trade. Demain, un trade est obligatoire, sinon le compte est perdu (regle d'inactivite).")
     bot = "Supertrend NQ" if sans >= SECOURS_APRES else "Bot 3 en 1"
     if bot == "Supertrend NQ":
+        contrat = ("1 MES (frein actif : marge sous 1 750 $ ; coche « Frein : ordres sur MES » et choisis le symbole MES)"
+                   if marge < FREIN else "1 MNQ (« Frein : ordres sur MES » decoche)")
         L.append(f"Prochaine seance : SUPERTREND NQ seul (secours apres {sans} seances sans trade). Arrete le Bot 3 en 1 avant 15 h 30 "
-                 f"(Paris), lance le Supertrend NQ : 1 MNQ, limite du jour {n(LIM_ST)} $. Le lendemain, relance le Bot 3 en 1.")
+                 f"(Paris), lance le Supertrend NQ : {contrat}, limite du jour {n(LIM_ST)} $. Le lendemain, relance le Bot 3 en 1.")
     else:
         taille = "1 MES (frein actif : marge sous 1 750 $)" if marge < FREIN else "1 MNQ"
         L.append(f"Prochaine seance : BOT 3 EN 1, zone sur {taille}, limite du jour {n(LIM_ZONE)} $, reglage « Frein » a 750, "

@@ -13,7 +13,8 @@ namespace SupertrendNQ
 {
     /// <summary>Supertrend NQ pour Quantower (compte Rithmic, Bulenox par exemple). Les decisions viennent du moteur verifie
     /// (Supertrend.Core, rejeu identique au test sur 15 ans : 9 628 trades) ; cette classe lit le marche (transactions du NQ),
-    /// construit les minutes, appelle le moteur et aligne la position sur MNQ. Elle ajoute ce que le compte exige : limite de
+    /// construit les minutes, appelle le moteur et aligne la position sur MNQ, ou sur MES quand le reglage du frein est coche
+    /// (usine/INSTITUTIONS.md, test R : sous le frein, le secours aussi sur MES). Elle ajoute ce que le compte exige : limite de
     /// perte du jour, objectif du challenge, a plat avant la fin de la journee, fichier STOP, reprise apres une relance,
     /// position fermee a la main jamais rouverte, messages Telegram.</summary>
     public class SupertrendStrategy : Strategy
@@ -21,7 +22,10 @@ namespace SupertrendNQ
         [InputParameter("Compte", 10)] public Account Compte;
         [InputParameter("NQ (prix et barres), contrat du moment, ex. NQZ6", 20)] public Symbol SymboleNQ;
         [InputParameter("MNQ (ordres), meme echeance, ex. MNQZ6", 30)] public Symbol SymboleMNQ;
-        [InputParameter("MNQ par trade", 40, 1, 20, 1, 0)] public int Taille = 1;
+        [InputParameter("Frein : ordres sur MES au lieu de MNQ (coche-le les jours de secours ou le brief du matin dit que le frein est actif, coussin sous 1 750 $ ; signaux toujours lus sur le NQ ; usine/INSTITUTIONS.md)", 35)]
+        public bool OrdresMES = false;
+        [InputParameter("MES (ordres quand le frein est coche), meme echeance, ex. MESZ6", 36)] public Symbol SymboleMES;
+        [InputParameter("Contrats par trade (MNQ, ou MES si le frein est coche)", 40, 1, 20, 1, 0)] public int Taille = 1;
         [InputParameter("Limite de perte du jour en $ (tout ferme, plus de trade jusqu'au lendemain ; 0 = aucune)", 50, 0, 100000, 50, 0)]
         public double LimiteJour = 400;
         [InputParameter("Objectif : solde du compte a atteindre (tout ferme a l'objectif + 50 $, plus aucun trade ensuite ; 0 = aucun)", 55, 0, 10000000, 100, 0)]
@@ -34,7 +38,8 @@ namespace SupertrendNQ
         [InputParameter("Historique : adresse des barres du robot", 90)]
         public string AdresseHistorique = "https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/main/zone/robot/nq_1min.csv.gz";
 
-        const string Version = "2 novembre 2026 (Supertrend 10-3 sur barres de 5 min, regle du test sur 15 ans)";
+        const string Version = "16 novembre 2026 (Supertrend 10-3 sur barres de 5 min, regle du test sur 15 ans ; frein : ordres sur MES possibles)";
+        const double FraisMNQ = 3.0, FraisMES = 4.5;    // $ l'aller-retour pour 1 contrat : 1 $ par ordre et 1 tick par ordre
         const int N = MoteurST.N;
 
         readonly object verrou = new object();
@@ -48,23 +53,28 @@ namespace SupertrendNQ
         BarreMin[] barres = new BarreMin[N];
         int prochaineMinute, derniereMinute = N - 1, dernierMNQ, tradesDuJour;
         double dernierPrix, realiseHors;                 // realiseHors : sorties forcees (limite, main, objectif), en $
+        double dernierPrixES, entreeES = double.NaN, realiseMES;   // frein : prix du MES, entree du trade en cours, resultat du jour en $
         bool seanceFinie, arretJour, objectifAtteint, alerteSilence, premierPrix, erreurHeure, soldeIllisibleNote, resumeEnvoye;
         string objectifCle = "", derniereErreurTelegram = "";
 
         public SupertrendStrategy() : base()
         {
             Name = "Supertrend NQ (10-3, 5 min)";
-            Description = "Supertrend 10-3 sur les barres de 5 minutes du NQ, ordres sur MNQ, a plat a 15 h 55 (New York).";
+            Description = "Supertrend 10-3 sur les barres de 5 minutes du NQ, ordres sur MNQ (ou MES sous le frein), a plat a 15 h 55 (New York).";
         }
+
+        Symbol SymboleOrdres => OrdresMES ? SymboleMES : SymboleMNQ;
+        string Contrat => OrdresMES ? "MES" : "MNQ";
+        double RealiseDuJour() => OrdresMES ? realiseMES : bot.RealiseJour * Taille;
 
         // ------------------------------------------------------------------ demarrage et arret
         protected override void OnRun()
         {
             try
             {
-                if (Compte == null || SymboleNQ == null || SymboleMNQ == null)
-                    throw new Exception("choisis le compte, le symbole NQ et le symbole MNQ dans les reglages");
-                if (Taille < 1) throw new Exception("MNQ par trade : au moins 1");
+                if (Compte == null || SymboleNQ == null || SymboleOrdres == null)
+                    throw new Exception($"choisis le compte, le symbole NQ et le symbole {Contrat} dans les reglages");
+                if (Taille < 1) throw new Exception("contrats par trade : au moins 1");
                 ny = TrouverFuseau();
                 Directory.CreateDirectory(Dossier);
                 ReprendreObjetsVivants(false);
@@ -76,8 +86,10 @@ namespace SupertrendNQ
                 LireEtat();
                 DemarrerSeance(maintenant);
                 SymboleNQ.NewLast += SurTransaction;
+                if (OrdresMES) SymboleMES.NewLast += SurTransactionES;
                 horloge = new Timer(_ => Tic(), null, 500, 500);
-                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version} ; {Taille} MNQ par trade,"
+                Dire($"demarre le {jour:yyyy-MM-dd} a {maintenant:HH:mm} (New York), version du {Version} ; {Taille} {Contrat} par trade"
+                     + (OrdresMES ? " (FREIN : ordres sur MES, signaux lus sur le NQ)" : "") + ","
                      + $" limite du jour {(LimiteJour > 0 ? $"{LimiteJour:F0} $" : "AUCUNE")}, objectif {(Objectif > 0 ? $"{Objectif:F0} $" : "aucun")},"
                      + $" Supertrend {Periode}-{Multiple.ToString("0.#", CultureInfo.InvariantCulture)}"
                      + (Periode != 10 || Math.Abs(Multiple - 3) > 1e-9 ? " (ATTENTION : seul le 10-3 a ete teste)" : "")
@@ -94,13 +106,14 @@ namespace SupertrendNQ
         {
             horloge?.Dispose();
             if (SymboleNQ != null) SymboleNQ.NewLast -= SurTransaction;
-            if (Compte != null && SymboleMNQ != null && bot != null)
+            if (OrdresMES && SymboleMES != null) SymboleMES.NewLast -= SurTransactionES;
+            if (Compte != null && SymboleOrdres != null && bot != null)
             {
                 try { lock (verrou) { ordreEnAttenteDepuis = DateTime.MinValue; ToutFermer("arret de la strategie : position fermee"); } }
                 catch (Exception e) { Dire($"ERREUR en fermant la position a l'arret : {e.Message}", true); }
                 SauverEtat();
             }
-            Dire("arretee. Rien ne reste ouvert sur MNQ.");
+            Dire($"arretee. Rien ne reste ouvert sur {Contrat}.");
         }
 
         /// <summary>Heure de Paris d'une minute de la seance du jour (9 h 30 New York + m), ex. "15h35 (Paris)".</summary>
@@ -134,7 +147,7 @@ namespace SupertrendNQ
         void VerifierEcheance()
         {
             string attendu = Calendrier.Contrat(jour), court = $"{attendu[0]}{attendu[^1]}";
-            foreach (var s in new[] { SymboleNQ, SymboleMNQ })
+            foreach (var s in new[] { SymboleNQ, SymboleOrdres })
                 if (!(s.Name ?? "").ToUpperInvariant().Contains(court) && !(s.Name ?? "").ToUpperInvariant().Contains(attendu))
                     Dire($"ATTENTION : le symbole {s.Name} ne semble pas etre l'echeance du jour ({court}). Change-le dans les reglages.", true);
         }
@@ -168,6 +181,7 @@ namespace SupertrendNQ
             for (int i = 0; i < N; i++) barres[i] = new BarreMin();
             string js = jour.ToString("yyyy-MM-dd");
             if (etatLu == null || etatLu.Jour != js) { realiseHors = 0; arretJour = false; }
+            realiseMES = 0; entreeES = double.NaN;      // apres une relance, le resultat deja fait est dans realiseHors (LireEtat)
             bool court = Calendrier.JourCourt(jour), ferme = Calendrier.JourFerme(jour);
             derniereMinute = court ? (Calendrier.Ferie(jour) ? 209 : 224) : N - 1;
             if (ferme) { seanceFinie = true; return; }
@@ -179,9 +193,12 @@ namespace SupertrendNQ
             {
                 // lancement apres 9 h 30 : minutes deja passees rejouees sans ordre
                 Rattraper(Math.Min(m, derniereMinute + 1));
-                int voulue = bot.Position * Taille, compte = PositionReelle(SymboleMNQ);
+                int voulue = bot.Position * Taille, compte = PositionReelle(SymboleOrdres);
                 if (bot.Position != 0 && compte == voulue)
-                    Dire($"lancement en cours de seance : la position du Supertrend ({Sens(bot.Position)} {compte} MNQ, entree a {bot.Entree:F2}) est deja sur le compte : elle est reprise");
+                {
+                    if (OrdresMES) entreeES = PrixOuvertureReel(SymboleMES) ?? double.NaN;   // sinon : premier prix du MES recu
+                    Dire($"lancement en cours de seance : la position du Supertrend ({Sens(bot.Position)} {compte} {Contrat}, entree a {bot.Entree:F2} sur le NQ) est deja sur le compte : elle est reprise");
+                }
                 else if (bot.Position != 0 && compte == 0)
                 {
                     repriseAttendueJusqua = Maintenant().AddSeconds(60);
@@ -217,7 +234,7 @@ namespace SupertrendNQ
             }
             double avant = bot.RealiseJour;
             for (int m = 0; m < jusqua; m++) FermerMinute(m, false);
-            realiseHors -= (bot.RealiseJour - avant) * Taille;      // trades rejoues sans ordre : pas dans le resultat du jour
+            if (!OrdresMES) realiseHors -= (bot.RealiseJour - avant) * Taille;      // trades rejoues sans ordre : pas dans le resultat du jour
             prochaineMinute = jusqua;
         }
 
@@ -239,6 +256,25 @@ namespace SupertrendNQ
             }
         }
 
+        /// <summary>Frein : prix du MES, pour le resultat et la limite du jour (le Supertrend decide toujours sur le NQ).</summary>
+        void SurTransactionES(Symbol s, Last last)
+        {
+            lock (verrou)
+            {
+                dernierPrixES = last.Price;
+                if (bot != null && bot.Position != 0 && double.IsNaN(entreeES)) entreeES = last.Price;
+            }
+        }
+
+        /// <summary>Frein : un trade du moteur ferme ou ouvre une position ; son resultat est compte au prix du MES.</summary>
+        void SuivreMES(int avant, int apres)
+        {
+            if (avant == apres) return;
+            if (avant != 0 && !double.IsNaN(entreeES) && dernierPrixES > 0)
+                realiseMES += Taille * (5 * avant * (dernierPrixES - entreeES) - FraisMES);
+            entreeES = apres != 0 && dernierPrixES > 0 ? dernierPrixES : double.NaN;
+        }
+
         void Ajouter(DateTime t, double prix)
         {
             int m = Minute(t);
@@ -250,8 +286,10 @@ namespace SupertrendNQ
 
         void FermerMinute(int m, bool executer)
         {
+            int avant = bot.Position;
             var signaux = bot.MinuteFermee(m, barres[m]);
             if (!executer) return;
+            if (OrdresMES) SuivreMES(avant, bot.Position);
             foreach (var x in signaux)
             {
                 Dire(x.Texte);
@@ -296,7 +334,7 @@ namespace SupertrendNQ
                     // filet : rien d'ouvert apres 15 h 56 (New York), quoi que pense le moteur (la firme exige d'etre a plat)
                     if (maintenant.TimeOfDay >= TimeSpan.FromMinutes(15 * 60 + 56) && maintenant.TimeOfDay < TimeSpan.FromHours(18))
                     {
-                        if (PositionReelle(SymboleMNQ) != 0) ToutFermer("filet de fin de seance : position encore ouverte apres 15 h 56");
+                        if (PositionReelle(SymboleOrdres) != 0) ToutFermer("filet de fin de seance : position encore ouverte apres 15 h 56");
                         return;
                     }
                     Aligner();
@@ -312,8 +350,8 @@ namespace SupertrendNQ
             if (!resumeEnvoye)
             {
                 resumeEnvoye = true;
-                double total = bot.RealiseJour * Taille + realiseHors;
-                Dire($"fin de seance : {tradesDuJour} entree(s), resultat estime {total:+0;-0} $ ({Taille} MNQ, frais compris)");
+                double total = RealiseDuJour() + realiseHors;
+                Dire($"fin de seance : {tradesDuJour} entree(s), resultat estime {total:+0;-0} $ ({Taille} {Contrat}, frais compris)");
                 SauverEtat();
             }
         }
@@ -344,15 +382,18 @@ namespace SupertrendNQ
         // ------------------------------------------------------------------ risques du compte
         double Latent()
         {
-            if (bot == null || bot.Position == 0 || double.IsNaN(bot.Entree) || dernierPrix <= 0) return 0;
-            return Taille * (2 * bot.Position * (dernierPrix - bot.Entree) - 3.0);
+            if (bot == null || bot.Position == 0) return 0;
+            if (OrdresMES)
+                return double.IsNaN(entreeES) || dernierPrixES <= 0 ? 0 : Taille * (5 * bot.Position * (dernierPrixES - entreeES) - FraisMES);
+            if (double.IsNaN(bot.Entree) || dernierPrix <= 0) return 0;
+            return Taille * (2 * bot.Position * (dernierPrix - bot.Entree) - FraisMNQ);
         }
 
         void Risques(DateTime maintenant)
         {
             if (bot == null) return;
             // limite de perte du jour : resultat realise + latent, confirme 3 s (un prix aberrant ne declenche rien)
-            double valeur = bot.RealiseJour * Taille + realiseHors + Latent();
+            double valeur = RealiseDuJour() + realiseHors + Latent();
             if (LimiteJour > 0 && !arretJour && valeur <= -LimiteJour)
             {
                 if (limiteVueDepuis == DateTime.MinValue) limiteVueDepuis = Maintenant();
@@ -401,11 +442,16 @@ namespace SupertrendNQ
         void Aligner()
         {
             if (bot == null) return;
-            int voulu = bot.Position * Taille, reel = PositionReelle(SymboleMNQ);
+            int voulu = bot.Position * Taille, reel = PositionReelle(SymboleOrdres);
             if (voulu != 0 && reel == voulu) dernierMNQ = reel;
             if (repriseAttendueJusqua != DateTime.MinValue)
             {
-                if (voulu != 0 && reel == voulu) { repriseAttendueJusqua = DateTime.MinValue; Dire($"position lue sur le compte ({reel} MNQ) : elle est reprise"); }
+                if (voulu != 0 && reel == voulu)
+                {
+                    repriseAttendueJusqua = DateTime.MinValue;
+                    if (OrdresMES && double.IsNaN(entreeES)) entreeES = PrixOuvertureReel(SymboleMES) ?? (dernierPrixES > 0 ? dernierPrixES : double.NaN);
+                    Dire($"position lue sur le compte ({reel} {Contrat}) : elle est reprise");
+                }
                 else if (voulu != 0 && reel == 0 && Maintenant() < repriseAttendueJusqua) return;
                 else
                 {
@@ -430,7 +476,7 @@ namespace SupertrendNQ
                 dernierMNQ = 0;
                 zeroVuDepuis = DateTime.MinValue;
                 SauverEtat();
-                Dire($"position MNQ fermee hors de la strategie (vers {dernierPrix:F2}) : elle n'est pas rouverte ; prochaine position au prochain retournement du Supertrend", true);
+                Dire($"position {Contrat} fermee hors de la strategie (vers {(OrdresMES ? dernierPrixES : dernierPrix):F2}) : elle n'est pas rouverte ; prochaine position au prochain retournement du Supertrend", true);
                 return;
             }
             zeroVuDepuis = DateTime.MinValue;
@@ -444,20 +490,20 @@ namespace SupertrendNQ
         {
             var r = Core.Instance.PlaceOrder(new PlaceOrderRequestParameters
             {
-                Account = Compte, Symbol = SymboleMNQ, Side = cote, Quantity = quantite, OrderTypeId = OrderType.Market
+                Account = Compte, Symbol = SymboleOrdres, Side = cote, Quantity = quantite, OrderTypeId = OrderType.Market
             });
             ordreEnAttenteDepuis = Maintenant();
             if (r.Status == TradingOperationResultStatus.Failure)
-                Dire($"ERREUR d'ordre ({(cote == Side.Buy ? "achat" : "vente")} {quantite} MNQ) : {r.Message}", true);
+                Dire($"ERREUR d'ordre ({(cote == Side.Buy ? "achat" : "vente")} {quantite} {Contrat}) : {r.Message}", true);
             else
-                Dire($"ordre envoye : {(cote == Side.Buy ? "achat" : "vente")} {quantite} MNQ (position {avant} -> {apres})");
+                Dire($"ordre envoye : {(cote == Side.Buy ? "achat" : "vente")} {quantite} {Contrat} (position {avant} -> {apres})");
         }
 
-        /// <summary>Ferme la position MNQ (si aucun ordre n'est parti dans les 15 s). `annoncer` : la raison est ecrite meme sans
+        /// <summary>Ferme la position MNQ ou MES (si aucun ordre n'est parti dans les 15 s). `annoncer` : la raison est ecrite meme sans
         /// position (evenement unique : limite du jour, objectif) ; sinon seulement quand un ordre part.</summary>
         void ToutFermer(string raison, bool annoncer = false)
         {
-            int reel = PositionReelle(SymboleMNQ);
+            int reel = PositionReelle(SymboleOrdres);
             bool ordre = reel != 0 && (Maintenant() - ordreEnAttenteDepuis).TotalSeconds >= 15;
             if (ordre) Passer(reel > 0 ? Side.Sell : Side.Buy, Math.Abs(reel), reel, 0);
             if (ordre || annoncer) Dire(raison, true);
@@ -475,6 +521,19 @@ namespace SupertrendNQ
             catch { return null; }
         }
 
+        /// <summary>Prix d'entree de la position du compte sur ce symbole (propriete OpenPrice de Quantower, lue par reflexion ;
+        /// null si illisible).</summary>
+        double? PrixOuvertureReel(Symbol symbole)
+        {
+            foreach (var p in Core.Instance.Positions)
+                if (p.Account == Compte && p.Symbol == symbole)
+                {
+                    var v = LireDouble(p, "OpenPrice");
+                    if (v.HasValue && v.Value > 0) return v;
+                }
+            return null;
+        }
+
         double? SoldeReel()
         {
             var b = LireDouble(Compte, "Balance");
@@ -486,10 +545,13 @@ namespace SupertrendNQ
             try
             {
                 if (reabonner) SymboleNQ.NewLast -= SurTransaction;
+                if (reabonner && OrdresMES && SymboleMES != null) SymboleMES.NewLast -= SurTransactionES;
                 SymboleNQ = Vivant(SymboleNQ);
                 SymboleMNQ = Vivant(SymboleMNQ);
+                SymboleMES = Vivant(SymboleMES);
                 Compte = CompteVivant(Compte);
                 if (reabonner) SymboleNQ.NewLast += SurTransaction;
+                if (reabonner && OrdresMES && SymboleMES != null) SymboleMES.NewLast += SurTransactionES;
             }
             catch (Exception e) { Dire($"ERREUR en reprenant les symboles ({e.Message})", true); }
         }
@@ -565,7 +627,7 @@ namespace SupertrendNQ
             if (bot == null) return;
             try
             {
-                var e = new Etat { Jour = jour.ToString("yyyy-MM-dd"), RealiseJour = bot.RealiseJour * Taille, RealiseHors = realiseHors,
+                var e = new Etat { Jour = jour.ToString("yyyy-MM-dd"), RealiseJour = RealiseDuJour(), RealiseHors = realiseHors,
                                    ArretJour = arretJour, ObjectifCle = objectifCle, ObjectifAtteint = objectifAtteint };
                 File.WriteAllText(FichierEtat(), JsonSerializer.Serialize(e));
                 etatLu = e;
@@ -575,7 +637,7 @@ namespace SupertrendNQ
 
         string EtatTexte() => bot == null ? "" :
             $"Supertrend {(bot.Sens > 0 ? "haussier" : bot.Sens < 0 ? "baissier" : "pas encore pret")}, ligne a {bot.Ligne:F2} ;"
-            + $" position voulue {bot.Position * Taille} MNQ"
+            + $" position voulue {bot.Position * Taille} {Contrat}"
             + (arretJour ? " ; limite du jour atteinte, pas de trade aujourd'hui" : "")
             + (objectifAtteint ? " ; objectif atteint, plus aucun trade" : "");
 

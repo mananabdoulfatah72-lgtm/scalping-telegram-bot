@@ -16,7 +16,7 @@ Rithmic ──► Quantower ──► stratégie « Relais NQ » ──► http:
 La ligne PowerShell habituelle (elle met aussi à jour les bots) :
 
 ```
-irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/optimistic-ptolemy-xs24ra/bot3en1/telecharger.ps1 | iex
+irm https://raw.githubusercontent.com/mananabdoulfatah72-lgtm/scalping-telegram-bot/refs/heads/claude/hopeful-shannon-xkvqo1/bot3en1/telecharger.ps1 | iex
 ```
 
 Elle compile le relais dans `Settings\Scripts\Strategies\RelaisNQ` et copie la page dans `C:\StationNQ`.

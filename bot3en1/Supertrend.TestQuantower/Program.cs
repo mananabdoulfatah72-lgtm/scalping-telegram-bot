@@ -16,6 +16,9 @@ using TradingPlatform.BusinessLayer;
 // Scenarios (premier jour seulement) : LIMITE=300 (limite du jour), MAIN=12:00 (position fermee a la main a la fin de cette
 // minute), REPRISE=12:00 (strategie relancee a cette minute, position gardee, historique des transactions fourni),
 // STOP_DE=12:00 STOP_A=12:30 (fichier STOP), OBJECTIF=50500 avec SOLDE=50000 (le solde suit les gains de la strategie).
+// MES=1 : reglage du frein coche, ordres sur MES ; ES_MINUTES=<minutes du S&P> donne les prix du MES (sinon NQ / 4). Le
+// resultat de chaque seance annonce par la strategie est compare a celui des remplissages du test (5 $ le point, 4,50 $ de
+// frais par aller-retour).
 class Program
 {
     static int Main(string[] a)
@@ -52,10 +55,13 @@ class Program
         var horloge = Core.Instance.TimeUtils;
         string Nom(DateTime j, string r) { var c = Calendrier.Contrat(j); return $"{r}{c[0]}{c[^1]}"; }
         string Env(string k) => Environment.GetEnvironmentVariable(k);
+        bool mes = Env("MES") == "1";
+        var tousES = Env("ES_MINUTES") is string fe ? Rejeu.LireJours(Rejeu.Lignes(fe), fin) : null;
         var compte = new Account { Balance = double.Parse(Env("SOLDE") ?? "0", inv) };
         SupertrendStrategy Nouvelle() => new SupertrendStrategy
         {
             Compte = compte, SymboleNQ = new Symbol { Name = Nom(jours[0], "NQ") }, SymboleMNQ = new Symbol { Name = Nom(jours[0], "MNQ") },
+            OrdresMES = mes, SymboleMES = new Symbol { Name = Nom(jours[0], "MES") },
             Dossier = dossier, AdresseHistorique = "http://127.0.0.1:9/absent", Taille = int.Parse(Env("TAILLE") ?? "1", inv),
             LimiteJour = double.Parse(Env("LIMITE") ?? "0", inv), Objectif = double.Parse(Env("OBJECTIF") ?? "0", inv)
         };
@@ -64,6 +70,8 @@ class Program
         TimeSpan? Heure(string k) => Env(k) is string s ? TimeSpan.Parse(s, inv) : null;
         var main = Heure("MAIN"); var reprise = Heure("REPRISE"); var stopDe = Heure("STOP_DE"); var stopA = Heure("STOP_A");
         int Pos(Symbol s) { var p = Core.Instance.Liste.FirstOrDefault(x => x.Symbol == s); return p == null ? 0 : (p.Side == Side.Buy ? 1 : -1) * (int)p.Quantity; }
+        Symbol Ordres(SupertrendStrategy s) => mes ? s.SymboleMES : s.SymboleMNQ;
+        var resultats = new Dictionary<DateTime, double>();          // MES : resultat de chaque seance d'apres les remplissages
 
         horloge.DateTimeUtcNow = Utc(jours[0].AddHours(9).AddMinutes(20));
         strat.Lancer();
@@ -71,27 +79,34 @@ class Program
         var vus = new List<string>();
         var ticksDuJour = new List<HistoryItemLast>();
         int posAvant = 0;
-        double soldeDepart = compte.Balance, prixMNQ = 0, entreePrix = 0;
+        double soldeDepart = compte.Balance, prixMNQ = 0, entreePrix = 0, prixES = 0, resultatJour = 0;
         foreach (var j in jours)
         {
             var b = tous[j];
+            double[][] e = tousES != null && tousES.TryGetValue(j, out var ee) ? ee : null;
             ticksDuJour.Clear();
+            resultatJour = 0;
             horloge.DateTimeUtcNow = Utc(j.AddHours(9).AddMinutes(29).AddSeconds(30));
             tic.Invoke(strat, null);
             for (int m = 0; m < MoteurST.N; m++)
             {
                 var t0 = j.AddMinutes(570 + m);
                 if (!double.IsNaN(b[3][m]))
-                    foreach (var (dt, p) in new[] { (0, b[0][m]), (15, b[1][m]), (30, b[2][m]), (45, b[3][m]) })
+                    foreach (var (dt, p, k) in new[] { (0, b[0][m], 0), (15, b[1][m], 1), (30, b[2][m], 2), (45, b[3][m], 3) })
                     {
                         horloge.DateTimeUtcNow = Utc(t0.AddSeconds(dt));
+                        if (mes)
+                        {
+                            double pe = e != null && !double.IsNaN(e[k][m]) ? e[k][m] : (e == null ? p / 4.0 : prixES);
+                            if (pe > 0) { prixES = pe; strat.SymboleMES.Emettre(new Last { Time = Utc(t0.AddSeconds(dt)), Price = pe, Size = 1 }); }
+                        }
                         var last = new Last { Time = Utc(t0.AddSeconds(dt)), Price = p, Size = 1 };
                         ticksDuJour.Add(new HistoryItemLast { TimeLeft = last.Time, Price = p, Volume = 1 });
                         strat.SymboleNQ.Emettre(last);
                         prixMNQ = p;
                     }
                 // scenarios du premier jour
-                if (j == jours[0] && main.HasValue && t0.TimeOfDay == main.Value && Pos(strat.SymboleMNQ) != 0)
+                if (j == jours[0] && main.HasValue && t0.TimeOfDay == main.Value && Pos(Ordres(strat)) != 0)
                 {
                     Core.Instance.Liste.Clear();
                     vus.Add($"{j:yyyy-MM-dd} {m + 1} -> 0 (a la main)");
@@ -106,25 +121,31 @@ class Program
                     strat = Nouvelle();
                     strat.SymboleNQ.Histoire = p => { var h = new HistoricalData(); h.Items.AddRange(copie.Where(x => x.TimeLeft >= p.FromTime && x.TimeLeft < p.ToTime)); return h; };
                     var ancienne = Core.Instance.Liste.FirstOrDefault();
-                    if (ancienne != null) ancienne.Symbol = strat.SymboleMNQ;
+                    if (ancienne != null) ancienne.Symbol = Ordres(strat);
                     strat.Lancer();
                     vus.Add($"{j:yyyy-MM-dd} {m + 1} relance");
                 }
                 horloge.DateTimeUtcNow = Utc(t0.AddMinutes(1).AddSeconds(3));
                 tic.Invoke(strat, null);
-                int pos = Pos(strat.SymboleMNQ);
+                int pos = Pos(Ordres(strat));
                 if (pos != posAvant)
                 {
                     // solde du compte : suit les gains (pour l'objectif), au prix de la cloture de la minute
-                    if (posAvant != 0) compte.Balance += posAvant * (prixMNQ - entreePrix) * 2;
-                    entreePrix = prixMNQ;
+                    double prix = mes ? prixES : prixMNQ;
+                    if (posAvant != 0)
+                    {
+                        compte.Balance += posAvant * (prix - entreePrix) * (mes ? 5 : 2);
+                        resultatJour += posAvant * (prix - entreePrix) * 5 - 4.5 * Math.Abs(posAvant);
+                    }
+                    entreePrix = prix;
                     vus.Add($"{j:yyyy-MM-dd} {m + 1} -> {pos / strat.Taille}");
                     posAvant = pos;
                 }
             }
             horloge.DateTimeUtcNow = Utc(j.AddHours(16).AddSeconds(30));
             tic.Invoke(strat, null);
-            if (Pos(strat.SymboleMNQ) != 0) { Console.WriteLine($"ECHEC : position ouverte apres 16 h le {j:yyyy-MM-dd}"); return 1; }
+            if (Pos(Ordres(strat)) != 0) { Console.WriteLine($"ECHEC : position ouverte apres 16 h le {j:yyyy-MM-dd}"); return 1; }
+            if (mes) resultats[j] = resultatJour;
         }
         File.WriteAllLines(Path.Combine(dossier, "test_ordres.txt"), vus);
         File.WriteAllLines(Path.Combine(dossier, "test_reference.txt"), reference);
@@ -149,6 +170,23 @@ class Program
             foreach (var l in strat.Logs.Where(l => l.Contains("limite") || l.Contains("main") || l.Contains("STOP") || l.Contains("OBJECTIF") || l.Contains("reprise") || l.Contains("lancement")).Take(12))
                 Console.WriteLine("  " + l);
         }
-        return diff == 0 ? 0 : 2;
+        int ecartsMES = 0;
+        if (mes)
+        {
+            // resultat annonce par la strategie en fin de seance contre celui des remplissages du test
+            var annonces = strat.Logs.Select(l => System.Text.RegularExpressions.Regex.Match(l, @"fin de seance : \d+ entree\(s\), resultat estime ([+-]\d+) \$ \(\d+ MES"))
+                                     .Where(x => x.Success).Select(x => double.Parse(x.Groups[1].Value, inv)).ToList();
+            var attendusMES = jours.Where(j => !(scenario && j == jours[0]) && !Calendrier.JourFerme(j)).Select(j => resultats[j]).ToList();
+            var comparables = jours.Select((j, i) => (j, i)).Where(x => !(scenario && x.j == jours[0]) && !Calendrier.JourFerme(x.j)).ToList();
+            int n = Math.Min(annonces.Count - (scenario ? 1 : 0), comparables.Count);
+            for (int i = 0; i < n; i++)
+            {
+                double annonce = annonces[i + (scenario ? 1 : 0)], r2 = resultats[comparables[i].j];
+                if (Math.Abs(annonce - Math.Round(r2)) > 1) { ecartsMES++; if (ecartsMES <= 5) Console.WriteLine($"  MES {comparables[i].j:yyyy-MM-dd} : annonce {annonce:+0;-0} $, remplissages {r2:+0.00;-0.00} $"); }
+            }
+            Console.WriteLine($"MES : {n} seances comparees, resultat du jour annonce contre remplissages : {ecartsMES} ecart(s) ; total des remplissages {resultats.Values.Sum():+0;-0} $ ; "
+                              + $"ordres sur MES : {strat.Logs.Count(l => l.Contains("MES (position"))}, sur MNQ : {strat.Logs.Count(l => l.Contains("MNQ (position"))}");
+        }
+        return diff == 0 && ecartsMES == 0 ? 0 : 2;
     }
 }

@@ -7,7 +7,7 @@ Règles appliquées chaque jour par `consigne.py` et envoyées dans le brief du 
 
 | Règle | Valeur | Pourquoi |
 |---|---|---|
-| Taille | **1 MNQ** ; la zone passe sur **1 MES** tant que la marge est sous 1 750 $ (réglage « Frein » = 750) | À 2 ou 4 MNQ, les Masters sont perdus beaucoup plus souvent (porte 5, `detail_g2`). |
+| Taille | **1 MNQ** ; sous 1 750 $ de marge, la zone passe sur **1 MES** (réglage « Frein » = 750 du Bot 3 en 1), et le secours Supertrend aussi (réglage « Frein : ordres sur MES » coché) | À 2 ou 4 MNQ, les Masters sont perdus beaucoup plus souvent (porte 5, `detail_g2`). Secours sur MES : depuis 700 $ de marge, 16 % de comptes perdus en un mois au lieu de 25 % (test R, `INSTITUTIONS.md`). Ce n'était pas la recommandation de la règle fixée d'avance (elle coûte des retraits à un Master neuf) : c'est le choix de l'utilisateur, le 16 novembre au soir, pour sa situation. |
 | Un seul bot à la fois | Bot 3 en 1 chaque jour. Après 2 séances de suite sans trade, la séance suivante : **Supertrend NQ seul** (G2 manuel) | La zone seule perd 97 % des Masters par la règle d'inactivité. Deux bots ensemble sur le compte se ferment mutuellement leurs positions. |
 | Perte maximale par trade | Pas de stop séparé | Les stops de 200 et 300 $ ne protègent presque pas le compte et coûtent 15 à 30 % du gain (calcul du 16 novembre). |
 | Perte maximale du jour | **1 000 $** pour le Bot 3 en 1, **400 $** pour le Supertrend (Bulenox : 1 100 $) | Plus bas, la limite coupe les journées qui paient les autres. |
