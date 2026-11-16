@@ -12,6 +12,8 @@
   .us-table th { text-align: left; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: 6px 8px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
   .us-table td { padding: 8px; border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
   .us-table td.us-nb { white-space: nowrap; }
+  .us-portes th:first-child, .us-portes td:first-child { min-width: 11em; }
+  .us-portes td { min-width: 7em; }
   .us-clic { cursor: pointer; }
   .us-clic:focus-visible { outline: 2px solid var(--color-fg); outline-offset: -2px; }
   .us-actif td { background: var(--cds-chart-grid); }
@@ -22,6 +24,7 @@
   .us-petit { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); display: block; }
   .us-choix { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm); }
   .us-choix label { font-weight: var(--cds-font-weight-medium); }
+  #us-idee { max-width: 100%; min-width: 0; }
   .us-fiche p { margin: 0; max-width: 80ch; line-height: 1.45; }
   .us-grille2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--cds-gap-lg); }
   .us-graph { position: relative; min-height: 200px; }
@@ -30,7 +33,7 @@
   .us-axe text { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); }
   .us-axe line, .us-axe path { stroke: var(--cds-chart-axis); }
   .us-legende { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); }
-  .us-case-texte { fill: var(--color-fg); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; pointer-events: none; }
+  .us-case-texte { fill: var(--color-fg); font-size: 11px; font-variant-numeric: tabular-nums; pointer-events: none; }
   details.us-carte summary { cursor: pointer; font-weight: var(--cds-font-weight-medium); }
   details.us-carte ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: var(--cds-gap-xs); max-width: 80ch; line-height: 1.45; }
 </style>
@@ -51,7 +54,7 @@
     <h2>Les idées et leurs portes</h2>
     <p class="us-aide">Chaque idée passe les portes dans l'ordre et s'arrête à la première manquée. La zone et le Supertrend, déjà sur le compte, passent toutes les portes pour information. Clique sur une ligne pour voir son détail.</p>
     <div class="us-defile">
-      <table class="us-table" data-source="idees" data-row-key="idee">
+      <table class="us-table us-portes" data-source="idees" data-row-key="idee">
         <thead>
           <tr>
             <th data-field="titre">Idée</th>
@@ -224,7 +227,7 @@
       if (r.en_service) { const s = document.createElement('span'); s.className = 'us-petit'; s.textContent = 'déjà sur le compte'; td0.appendChild(s); }
       tr.appendChild(td0);
       for (const g of ['1', '2', '3', '4', '5']) {
-        const td = document.createElement('td'); td.className = 'us-nb';
+        const td = document.createElement('td');
         const passe = r['p' + g + '_passe'];
         const sym = document.createElement('span');
         sym.className = passe === true ? 'us-ok' : passe === false ? 'us-ko' : 'us-na';
@@ -303,7 +306,7 @@
             .on('mousemove', (ev) => bulle.montrer(ev, [[r.ligne, r.colonne, r.facette].filter(Boolean).join(', '), `PF ${f3(r.pf)}, t ${f2(r.t)}`]))
             .on('mouseleave', () => bulle.cacher());
           gr.append('text').attr('class', 'us-case-texte').attr('x', x + cw / 2).attr('y', y + ch / 2 + 4).attr('text-anchor', 'middle')
-            .text((r.meilleur ? '★ ' : r.centre ? '◆ ' : '') + (cw >= 54 ? f3(r.pf) : ''));
+            .text((r.meilleur ? '★ ' : r.centre ? '◆ ' : '') + (cw >= (r.meilleur || r.centre ? 50 : 40) ? f3(r.pf) : ''));
         });
       });
     });
