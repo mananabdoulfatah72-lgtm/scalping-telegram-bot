@@ -68,7 +68,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add usine/resultats usine/registre.csv usine/TABLEAU.md usine/tableau/donnees.json
+          git add usine/resultats usine/registre.csv usine/TABLEAU.md usine/tableau
           git diff --cached --quiet && exit 0
           git commit -m "Usine : portes et tableau de bord"
           for essai in 1 2 3; do
