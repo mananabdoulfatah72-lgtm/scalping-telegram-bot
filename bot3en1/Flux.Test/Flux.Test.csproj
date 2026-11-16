@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Test hors Quantower : FluxNQ compile contre une imitation de l'API Quantower (Stubs.cs, avec un carnet imite) et joue
+       des seances reelles transaction par transaction. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Flux.Core\*.cs" />
+    <Compile Include="..\Bot3en1.Core\Calendrier.cs" />
+    <Compile Include="..\Flux.Quantower\*.cs" />
+  </ItemGroup>
+</Project>

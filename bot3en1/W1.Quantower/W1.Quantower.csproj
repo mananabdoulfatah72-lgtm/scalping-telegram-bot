@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Strategie Quantower W1 NQ (Supertrend NQ trie par le modele de l'arene, vague 5). Compilee sur le PC de l'utilisateur
+       par installer.ps1, contre la bibliotheque de Quantower (QuantowerBin). Le modele (10 x 200 arbres) est embarque dans la
+       DLL. Separee des autres bots : si elle ne compile pas, le reste s'installe quand meme. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>W1NQ</AssemblyName>
+    <RootNamespace>W1NQ</RootNamespace>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <QuantowerBin Condition="'$(QuantowerBin)' == ''">C:\Quantower\TradingPlatform\bin</QuantowerBin>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\W1.Core\*.cs" />
+    <Compile Include="..\Bot3en1.Core\Calendrier.cs" />
+    <EmbeddedResource Include="..\W1.Core\modele_w1.json" LogicalName="modele_w1.json" />
+    <Reference Include="TradingPlatform.BusinessLayer">
+      <HintPath>$(QuantowerBin)\TradingPlatform.BusinessLayer.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

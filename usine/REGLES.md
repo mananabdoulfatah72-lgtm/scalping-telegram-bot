@@ -226,6 +226,49 @@ faut que la bande large fasse mieux que le réglage du bot, hors de l'échantill
   jusqu'à obtenir un autre résultat serait tricher.
 - L'order flow sur les enregistrements de FluxNQ et les outils de l'utilisateur : les données sont sur son PC.
 
+## Idée K : Kronos, le modèle qui prévoit les prochaines bougies (écrite le 16 novembre 2026 au soir, avant tout calcul)
+
+Demande de l'utilisateur : appliquer l'article « REA + Kronos + TradingAgents » (100 trajectoires, lecture du régime,
+test avec frais avant tout argent).
+
+- **L'avantage, d'après l'article et ses auteurs :** Kronos (Shi et al., arXiv 2508.02739, AAAI 2026) est pré-entraîné
+  sur les bougies de plus de 45 bourses et prévoit les suivantes. Si la plupart des trajectoires vont dans un sens, le
+  marché devrait y aller. **Qui perd en face :** ceux qui tradent contre un mouvement que le modèle verrait venir.
+- **Modèle :** Kronos-small (24,7 M de paramètres) et Kronos-Tokenizer-base, poids de Hugging Face (NeoQuasar) déposés le
+  30 juin 2025 (commit « add model » ; les commits suivants ne touchent que la fiche). Code : dépôt shiyu-coder/Kronos,
+  commit 67b630e.
+- **Période : seulement ce que le modèle n'a pas pu voir.** Séances complètes du 1er juillet 2025 au 13 novembre 2026
+  (minutes du NQ de l'usine). Rien n'est mesuré avant : Kronos a pu apprendre sur ces années.
+- **Bougies :** 5 minutes de la séance de New York (78 par séance), faites des minutes de l'usine (ouverture, plus haut,
+  plus bas, clôture, volume). « amount » = volume × moyenne des 4 prix, comme `KronosPredictor.predict`. Heure d'une
+  bougie : son début, heure de New York. L'historique n'est fait que des séances complètes.
+- **3 décisions par séance, à 10 h, 12 h et 14 h (New York) :**
+  - contexte : les 488 dernières bougies (environ 6 séances), normalisées comme `predict` (moyenne et écart-type du
+    contexte, bornées à ±5). 488 et non 512 : avec 24 bougies prévues, contexte + horizon tiennent dans les 512 du
+    modèle, et le cache (`kronos_cache.py`) redonne exactement le code d'origine (écart 0 sur 3 graines) ;
+  - prévision : 100 trajectoires de 24 bougies (2 heures), température 1, top_p 0,9 (valeurs par défaut de `predict`),
+    graine fixée par décision ;
+  - signal : f = part des 100 trajectoires dont la clôture de la 24e bougie dépasse la dernière clôture. Achat si
+    f ≥ 0,6 ; vente si f ≤ 0,4 ; sinon rien ;
+  - position prise à la clôture de la minute de décision (9 h 59, 11 h 59, 13 h 59), fermée 2 heures plus tard (11 h 59,
+    13 h 59, 15 h 59). Deux blocs de suite dans le même sens gardent la position, sans frais entre eux.
+- **Mesure :** celle de l'usine (rendement net par minute, 3 $ l'aller-retour pour 1 MNQ ; dollars à 1 MNQ au prix
+  d'aujourd'hui, limite du jour 1 000 $).
+- **Portes, adaptées** (on ne peut pas relancer Kronos sur 1 000 marchés mélangés) :
+  - **K1** : t des gains nets par séance ≥ 2,0, sur toutes les séances complètes de la période ;
+  - **K2, pas un hasard** : les sens des trades sont mélangés 10 000 fois entre eux (même nombre d'achats et de ventes,
+    mêmes heures ; chaque trade compté seul, frais compris). Passe si moins de 1 % des mélanges gagnent autant ;
+  - **K3** : au moins +1 000 $ par an à 1 MNQ ;
+  - si K1, K2 et K3 passent : le compte (simulateur de la porte 5, départs dans la période), puis le papier. Sinon,
+    Kronos est rejeté et noté au registre.
+- **Pour information seulement (aucune décision) :**
+  - les seuils 0,5, 0,7 et 0,8, et la trajectoire moyenne (ce que rend `predict`) ;
+  - aux mêmes heures, deux règles simples : suivre le mouvement des 2 heures précédentes (depuis l'ouverture pour
+    10 h), et toujours acheter ;
+  - la lecture du régime de l'article : quand les trajectoires sont d'accord (f ≥ 0,8 ou ≤ 0,2), le marché bouge-t-il
+    plus, en valeur absolue, que quand elles sont dispersées ?
+  - la part de bonnes directions.
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.

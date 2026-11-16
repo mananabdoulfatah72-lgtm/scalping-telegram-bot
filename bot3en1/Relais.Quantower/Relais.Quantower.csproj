@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Relais du direct de la station NQ (aucun ordre). Compile sur le PC de l'utilisateur par installer.ps1, contre la
+       bibliotheque de Quantower (QuantowerBin). Separe du bot 3 en 1 : s'il ne compile pas, le reste s'installe quand meme. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>RelaisNQ</AssemblyName>
+    <RootNamespace>RelaisNQ</RootNamespace>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <QuantowerBin Condition="'$(QuantowerBin)' == ''">C:\Quantower\TradingPlatform\bin</QuantowerBin>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="TradingPlatform.BusinessLayer">
+      <HintPath>$(QuantowerBin)\TradingPlatform.BusinessLayer.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

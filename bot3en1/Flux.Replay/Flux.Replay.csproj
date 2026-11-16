@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Rejeu du moteur FluxNQ sur l'historique (fichiers de flux/confluence.py) : trades identiques au Python. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Flux.Core\Flux.Core.csproj" />
+  </ItemGroup>
+</Project>

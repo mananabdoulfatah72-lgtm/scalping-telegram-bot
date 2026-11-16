@@ -8,6 +8,12 @@ using Bot3en1;
 // (CSV : jour,minute,achats,ventes). Verifie que le moteur C# prend exactement les decisions du robot Python.
 // Usage : rejeu <minutes.csv[.gz]> <agresseurs.csv[.gz]|-> <debut AAAA-MM-JJ> <fin AAAA-MM-JJ> [historique_sortie.csv]
 // SANS_FILTRE=1 : zone sans le filtre delta. CONTRAT_CALENDRIER=1 : contrats de la regle du calendrier (comme en direct).
+// RELANCE=1, FORCE=1 : variantes de relance/README.md (trade ecarte repris si le delta tourne ; cassure forte prise).
+// CASSURE=1 : entree a la cassure entre deux controles (scalping/README.md partie J, J0). COURIR=1 : laisser courir
+// (partie L, L1a : une entree par seance, sortie au niveau casse). VOLUME=1 : cassure confirmee par le volume (partie M, M1V).
+// VOLMULT=1 : multiple du volume (2 par defaut). SANS_TARDIVE=1 : entree seulement a la minute qui franchit le niveau. FENETRE=5 : confirmation possible dans les 5 minutes. Q1=1, Q2=1 : filtres de la partie Q. SANS_SORTIE=1 : pas de sortie aux controles. STOP=70 : stop a 70 points au-dela du niveau casse.
+// Audit du 31 octobre 2026 : DEPASSEMENT_MAX=1 (C1), SANS_RETOUR=1 (C2), DELTA_MIN=300 (C3), PROTEGER=1 (C4, gain rendu), STOP_NIVEAU=1 (C5), VWAP_MAX=2 (C7), Q1_ECART=0.5 (Q1b), Q1_FIN=150 (Q1c, Q1 jusqu'a 12 h),
+// NIVEAU=1 (niveau de sortie ecrit a chaque entree, pour C6).
 class Program
 {
     static int Main(string[] a)
@@ -30,7 +36,28 @@ class Program
         var suivant = new Dictionary<DateTime, string>();
         for (int i = 0; i < ok.Count; i++) suivant[ok[i]] = seances[i + 1 < ok.Count ? ok[i + 1] : ok[i]].contrat;
         var bot = new Moteur(new List<Resume>()) { ContratSuivant = (j, c) => suivant.TryGetValue(j, out var s) ? s : c,
-                                                    FiltreDelta = Environment.GetEnvironmentVariable("SANS_FILTRE") != "1" };
+                                                    FiltreDelta = Environment.GetEnvironmentVariable("SANS_FILTRE") != "1",
+                                                    Relance = Environment.GetEnvironmentVariable("RELANCE") == "1",
+                                                    EntreeCassure = Environment.GetEnvironmentVariable("CASSURE") == "1",
+                                                    LaisserCourir = Environment.GetEnvironmentVariable("COURIR") == "1",
+                                                    ConfirmationVolume = Environment.GetEnvironmentVariable("VOLUME") == "1",
+                                                    VolumeMultiple = double.Parse(Environment.GetEnvironmentVariable("VOLMULT") ?? "2", inv),
+                                                    SansEntreeTardive = Environment.GetEnvironmentVariable("SANS_TARDIVE") == "1",
+                                                    FenetreConfirmation = int.Parse(Environment.GetEnvironmentVariable("FENETRE") ?? "0", inv),
+                                                    FiltreOuverture = Environment.GetEnvironmentVariable("Q1") == "1",
+                                                    FiltreTendance = Environment.GetEnvironmentVariable("Q2") == "1",
+                                                    SortieFinDeJour = Environment.GetEnvironmentVariable("SANS_SORTIE") == "1",
+                                                    StopPoints = double.Parse(Environment.GetEnvironmentVariable("STOP") ?? "0", inv),
+                                                    SeuilForce = double.Parse(Environment.GetEnvironmentVariable("FORCE") ?? "0", inv),
+                                                    DepassementMax = double.Parse(Environment.GetEnvironmentVariable("DEPASSEMENT_MAX") ?? "0", inv),
+                                                    PasDeRetourApresPerte = Environment.GetEnvironmentVariable("SANS_RETOUR") == "1",
+                                                    DeltaMin = double.Parse(Environment.GetEnvironmentVariable("DELTA_MIN") ?? "0", inv),
+                                                    ProtegerGain = double.Parse(Environment.GetEnvironmentVariable("PROTEGER") ?? "0", inv),
+                                                    StopNiveauSortie = Environment.GetEnvironmentVariable("STOP_NIVEAU") == "1",
+                                                    VwapMax = double.Parse(Environment.GetEnvironmentVariable("VWAP_MAX") ?? "0", inv),
+                                                    Q1EcartMin = double.Parse(Environment.GetEnvironmentVariable("Q1_ECART") ?? "0", inv),
+                                                    Q1MinuteFin = int.Parse(Environment.GetEnvironmentVariable("Q1_FIN") ?? "-1", inv) };
+        bool niveau = Environment.GetEnvironmentVariable("NIVEAU") == "1";   // niveau de sortie ecrit a chaque entree (C6)
         var trades = new List<string>();
         double zone = 0, rsi = 0, entreeZ = 0, entreeR = 0; int sensZ = 0, nZone = 0, nEcartes = 0, nRsi = 0;
         bool demarre = false;
@@ -49,10 +76,11 @@ class Program
                 else if (s.Source == "zone-ecarte") nEcartes++;
                 else if (s.Source == "zone")
                 {
-                    if (s.Texte.StartsWith("sortie")) zone += (sensZ * (s.PrixReference - entreeZ) - 1.5) * 2;
+                    if (s.Texte.StartsWith("sortie") || s.Texte.StartsWith("stop")) zone += (sensZ * (s.PrixReference - entreeZ) - 1.5) * 2;
                     else { sensZ = s.Texte.StartsWith("achat") ? 1 : -1; entreeZ = s.PrixReference; nZone++; }
                 }
-                trades.Add($"{j:yyyy-MM-dd} {s.Texte}");
+                bool entree = s.Source == "zone" && (s.Texte.StartsWith("achat") || s.Texte.StartsWith("vente"));
+                trades.Add($"{j:yyyy-MM-dd} {s.Texte}" + (niveau && entree ? $" [niveau de sortie {bot.NiveauSortieEntree.ToString("F2", inv)}]" : ""));
             });
             if (j == fin) break;
         }

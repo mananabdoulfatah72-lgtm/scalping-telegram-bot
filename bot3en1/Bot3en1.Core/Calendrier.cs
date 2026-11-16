@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Bot3en1
 {
@@ -89,6 +90,16 @@ namespace Bot3en1
             while (x.DayOfWeek == DayOfWeek.Saturday || x.DayOfWeek == DayOfWeek.Sunday || JourFerme(x)) x = x.AddDays(1);
             return x;
         }
+
+        /// <summary>Jours d'annonce de la Fed (decision du FOMC), comme fonds/fomc.py annonces() : la regle « pas de zone les
+        /// jours de la Fed » de la vague 9 (mode a plat). Calendrier officiel de la Fed (federalreserve.gov) ; a completer
+        /// dans les reglages pour les annees suivantes.</summary>
+        public static readonly HashSet<DateTime> JoursFed = new HashSet<DateTime>(new[]
+        {
+            "2025-01-29", "2025-03-19", "2025-05-07", "2025-06-18", "2025-07-30", "2025-09-17", "2025-10-29", "2025-12-10",
+            "2026-01-28", "2026-03-18", "2026-04-29", "2026-06-17", "2026-07-29", "2026-09-16", "2026-10-28", "2026-12-09",
+            "2027-01-27", "2027-03-17", "2027-04-28", "2027-06-09", "2027-07-28", "2027-09-15", "2027-10-27", "2027-12-08",
+        }.Select(x => DateTime.ParseExact(x, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)));
 
         /// <summary>Jours sans seance CME (robot.py jour_ferme).</summary>
         public static bool JourFerme(DateTime d)

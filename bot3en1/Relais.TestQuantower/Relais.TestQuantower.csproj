@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Test hors Quantower : le relais compile contre l'imitation de l'API (Stubs.cs du bot 3 en 1), recoit une vraie seance
+       transaction par transaction et sert la station sur localhost, comme sur le PC. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Relais.Quantower\*.cs" />
+    <Compile Include="..\Bot3en1.TestQuantower\Stubs.cs" />
+  </ItemGroup>
+</Project>

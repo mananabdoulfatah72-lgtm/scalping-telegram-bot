@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Test hors Quantower : la strategie Supertrend compile contre l'imitation de l'API Quantower (Stubs.cs du bot 3 en 1)
+       et joue des journees reelles, transaction par transaction, pour comparer ses ordres au rejeu verifie. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Supertrend.Core\*.cs" />
+    <Compile Include="..\Bot3en1.Core\Calendrier.cs" />
+    <Compile Include="..\Supertrend.Quantower\*.cs" />
+    <Compile Include="..\Bot3en1.TestQuantower\Stubs.cs" />
+  </ItemGroup>
+</Project>
