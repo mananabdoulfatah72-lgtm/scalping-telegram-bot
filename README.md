@@ -4,16 +4,17 @@ Chaque robot suit un compte **virtuel** de 50 000 $ : aucun ordre reel, aucun ar
 
 | Robot | Ce qu'il fait | Demarre le | Solde virtuel | Dernier jour | Depuis le depart | Detail |
 |---|---|---|---|---|---|---|
-| Melange tendance + achat | futures, 19 marches, garde la nuit | 2026-09-25 | 48,224 $ | -135 $ (2026-11-16) | -1,776 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
-| Tendance seule | futures, 19 marches, garde la nuit | 2026-09-25 | 49,874 $ | +377 $ (2026-11-16) | -126 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
+| Melange tendance + achat | futures, 19 marches, garde la nuit | 2026-09-25 | 48,216 $ | -8 $ (2026-11-17) | -1,784 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
+| Tendance seule | futures, 19 marches, garde la nuit | 2026-09-25 | 49,780 $ | -94 $ (2026-11-17) | -220 $ | [detail](tendance/robot/TABLEAU_DE_BORD.md) |
 | Version 7 | 5 actions technologie par mois, 50 % investi | 2026-09-29 | 43,580 $ | -1,227 $ (2026-11-16) | -6,420 $ | [detail](version7/robot/TABLEAU_DE_BORD.md) |
-| Zone de bruit + challenge Phidias 50K | Nasdaq MNQ, intraday | 2026-09-28 | 52,318 $ (challenge n°2) | +34 $ (2026-11-13) | +270 $ | [detail](zone/robot/TABLEAU_DE_BORD.md) |
+| Zone de bruit + challenge Phidias 50K | Nasdaq MNQ, intraday | 2026-09-28 | 51,598 $ (challenge n°2) | -454 $ (2026-11-17) | -450 $ | [detail](zone/robot/TABLEAU_DE_BORD.md) |
 
 ## Resultat de chaque jour ($)
 
 | Date | Melange tendance + achat | Tendance seule | Version 7 | Zone de bruit + challenge Phidias 50K |
 |---|---|---|---|---|
-| 2026-11-16 | -135 | +377 | -1,227 |  |
+| 2026-11-17 | -8 | -94 |  | -454 |
+| 2026-11-16 | -135 | +377 | -1,227 | -266 |
 | 2026-11-13 | +18 | +363 | -771 | +34 |
 | 2026-11-12 | +103 | +475 | -70 | +0 |
 | 2026-11-11 | -30 | +413 | +1,445 | -191 |
@@ -27,7 +28,6 @@ Chaque robot suit un compte **virtuel** de 50 000 $ : aucun ordre reel, aucun ar
 | 2026-10-30 | -83 | -355 | -1,334 | -31 |
 | 2026-10-29 | -136 | -234 | -1,908 | +0 |
 | 2026-10-28 | +118 | +58 | +377 | +0 |
-| 2026-10-27 | +34 | +96 | +332 | +74 |
 
 Pour juger un robot, il faut plusieurs mois : des jours et des semaines negatifs sont normaux. Le detail de chaque robot compare son resultat a ce que donnait son historique.
 
