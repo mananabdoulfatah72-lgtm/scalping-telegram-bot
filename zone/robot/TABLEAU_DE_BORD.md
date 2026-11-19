@@ -18,20 +18,20 @@ Voyant VERT (fourchette normale) : +56 $ pour 1 MNQ apres 38 seance(s) ; le back
 
 ## Pour la seance du 2026-11-19 (a utiliser en direct)
 
-Cloture de la veille (16 h New York) : **27,191.50**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
+Cloture de la veille (16 h New York) : **27,191.00**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
 
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
 | 10h00 | 16h00 | 0.771% | 1.00771 | 0.99229 |
-| 10h30 | 16h30 | 0.951% | 1.00951 | 0.99049 |
-| 11h00 | 17h00 | 1.075% | 1.01075 | 0.98925 |
+| 10h30 | 16h30 | 0.952% | 1.00952 | 0.99048 |
+| 11h00 | 17h00 | 1.076% | 1.01076 | 0.98924 |
 | 11h30 | 17h30 | 0.997% | 1.00997 | 0.99003 |
 | 12h00 | 18h00 | 1.153% | 1.01153 | 0.98847 |
-| 12h30 | 18h30 | 1.125% | 1.01125 | 0.98875 |
+| 12h30 | 18h30 | 1.124% | 1.01124 | 0.98876 |
 | 13h00 | 19h00 | 1.285% | 1.01285 | 0.98715 |
 | 13h30 | 19h30 | 1.234% | 1.01234 | 0.98766 |
-| 14h00 | 20h00 | 1.212% | 1.01212 | 0.98788 |
-| 14h30 | 20h30 | 1.213% | 1.01213 | 0.98787 |
+| 14h00 | 20h00 | 1.213% | 1.01213 | 0.98787 |
+| 14h30 | 20h30 | 1.214% | 1.01214 | 0.98786 |
 | 15h00 | 21h00 | 1.220% | 1.01220 | 0.98780 |
 | 15h30 | 21h30 | 1.306% | 1.01306 | 0.98694 |
 
@@ -41,7 +41,7 @@ Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la 
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : pas de position. Pas d'achat possible le 2026-11-19 (il faudrait un prix au-dessus de 28,217.88, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 26,352.70).
+RSI(2) : pas de position. Pas d'achat possible le 2026-11-19 (il faudrait un prix au-dessus de 28,217.87, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 26,358.82).
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
@@ -63,7 +63,7 @@ Pas encore de trade de zone mesure depuis le 2026-10-01.
 
 ## Second moteur : rebond apres forte baisse (suivi a part, hors compte)
 
-Pas d'achat le 2026-11-19. Derniere seance complete : -0.22% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.23%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
+Pas d'achat le 2026-11-19. Derniere seance complete : -0.23% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.23%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
 
 ## Derniers jours
 
