@@ -1,0 +1,9 @@
+Machine 8, exploration 2012 - 2022 : la zone de bruit de 18 h a 3 h (New York)
+
+strategie | t | brut moyen par nuit (pb) | net moyen (pb) | p placebo | BH | sous-periodes (pb) | nuits avec trade | trades | $ pour 1 contrat | survivante
+zone de nuit usatechidxusd largeur 1.0 | -7.67 | -0.88 | -6.59 | 0.859 | non | -5852.1 / -3704.4 / -1276.8 | 1645 | 3310 | -12,308 | 
+zone de nuit usatechidxusd largeur 1.4 | -6.87 | -1.62 | -6.62 | 0.951 | non | -3916.5 / -2294.1 / -2030.9 | 1244 | 2219 | -10,813 | 
+zone de nuit usa500idxusd largeur 1.0 | -6.04 | -1.26 | -7.29 | 0.887 | non | -577.6 / -2685.9 / -3381.3 | 912 | 1781 | -10,541 | 
+zone de nuit usa500idxusd largeur 1.4 | -5.58 | -2.35 | -7.85 | 0.970 | non | -626.1 / -1845.3 / -3019.2 | 699 | 1246 | -8,884 | 
+zone de nuit xauusd largeur 1.0 | -7.78 | -1.38 | -5.43 | 0.978 | non | -4195.9 / -2706.2 / -3431.6 | 1904 | 3851 | -15,355 | 
+zone de nuit xauusd largeur 1.4 | -6.17 | -1.26 | -4.78 | 0.940 | non | -3088.7 / -2146.5 / -1885.1 | 1489 | 2624 | -10,279 | 

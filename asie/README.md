@@ -261,3 +261,19 @@ l'usine)} = **6**. Frais d'un aller-retour : ceux de la machine 7.
 **Tri** : celui de la machine 7. Exploration 2012 - 2022 (t ≥ 2, placebo de 1 000 sens au hasard battu à 95 %, 2
 sous-périodes sur 3, Benjamini-Hochberg 10 % sur 6), puis coffre 2023 → 2 octobre 2026 une seule fois (Bonferroni, 3 années
 sur 4), puis les vrais futures avant tout compte.
+
+## Résultat de la machine 8 (20 novembre 2026) : `zone_nuit_exploration.txt`
+
+**Aucune survivante. La zone de bruit perd la nuit sur les 3 marchés, et même avant frais** :
+
+| Marché, largeur | Avant frais, par nuit | Après frais | t |
+|---|---|---|---|
+| Nasdaq, 1,0 | −0,88 pb | −6,59 pb | −7,67 |
+| Nasdaq, 1,4 | −1,62 pb | −6,62 pb | −6,87 |
+| S&P 500, 1,0 | −1,26 pb | −7,29 pb | −6,04 |
+| Or, 1,0 | −1,38 pb | −5,43 pb | −7,78 |
+
+La nuit, un prix qui sort de sa bande habituelle revient plus souvent qu'il ne continue : l'inverse de la séance
+américaine. Le mécanisme de la zone (couverture des teneurs de marché, rééquilibrage des ETF à levier) vit pendant les
+heures de New York. Jouer l'inverse (revenir vers la bande) gagnerait 1 à 2 points de base avant frais, moins que les
+frais de ses 2 trades par nuit : ce n'était pas une règle fixée d'avance, ce n'est donc qu'une indication.

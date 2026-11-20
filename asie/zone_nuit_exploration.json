@@ -1,0 +1,116 @@
+[
+ {
+  "nom": "zone de nuit usatechidxusd largeur 1.0",
+  "marche": "usatechidxusd",
+  "largeur": 1.0,
+  "t": -7.67,
+  "p": 0.859,
+  "trades": 3310,
+  "nuits": 1645,
+  "brut_moyen_pb": -0.88,
+  "net_moyen_pb": -6.59,
+  "sous_periodes": [
+   -5852.1,
+   -3704.4,
+   -1276.8
+  ],
+  "dollars_1_contrat": -12308,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "nom": "zone de nuit usatechidxusd largeur 1.4",
+  "marche": "usatechidxusd",
+  "largeur": 1.4,
+  "t": -6.87,
+  "p": 0.951,
+  "trades": 2219,
+  "nuits": 1244,
+  "brut_moyen_pb": -1.62,
+  "net_moyen_pb": -6.62,
+  "sous_periodes": [
+   -3916.5,
+   -2294.1,
+   -2030.9
+  ],
+  "dollars_1_contrat": -10813,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "nom": "zone de nuit usa500idxusd largeur 1.0",
+  "marche": "usa500idxusd",
+  "largeur": 1.0,
+  "t": -6.04,
+  "p": 0.887,
+  "trades": 1781,
+  "nuits": 912,
+  "brut_moyen_pb": -1.26,
+  "net_moyen_pb": -7.29,
+  "sous_periodes": [
+   -577.6,
+   -2685.9,
+   -3381.3
+  ],
+  "dollars_1_contrat": -10541,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "nom": "zone de nuit usa500idxusd largeur 1.4",
+  "marche": "usa500idxusd",
+  "largeur": 1.4,
+  "t": -5.58,
+  "p": 0.97,
+  "trades": 1246,
+  "nuits": 699,
+  "brut_moyen_pb": -2.35,
+  "net_moyen_pb": -7.85,
+  "sous_periodes": [
+   -626.1,
+   -1845.3,
+   -3019.2
+  ],
+  "dollars_1_contrat": -8884,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "nom": "zone de nuit xauusd largeur 1.0",
+  "marche": "xauusd",
+  "largeur": 1.0,
+  "t": -7.78,
+  "p": 0.978,
+  "trades": 3851,
+  "nuits": 1904,
+  "brut_moyen_pb": -1.38,
+  "net_moyen_pb": -5.43,
+  "sous_periodes": [
+   -4195.9,
+   -2706.2,
+   -3431.6
+  ],
+  "dollars_1_contrat": -15355,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "nom": "zone de nuit xauusd largeur 1.4",
+  "marche": "xauusd",
+  "largeur": 1.4,
+  "t": -6.17,
+  "p": 0.94,
+  "trades": 2624,
+  "nuits": 1489,
+  "brut_moyen_pb": -1.26,
+  "net_moyen_pb": -4.78,
+  "sous_periodes": [
+   -3088.7,
+   -2146.5,
+   -1885.1
+  ],
+  "dollars_1_contrat": -10279,
+  "bh": false,
+  "survivante": false
+ }
+]
