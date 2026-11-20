@@ -404,6 +404,24 @@ avec les seules données d'avant, plus un portefeuille :
 petite que celle de la base, elle garde au moins 80 % du gain annuel de la base, et, depuis le compte de l'utilisateur
 (22 séances, départs depuis 2023), elle perd moins de comptes que la base. Code : `usine/filtres_st.py`.
 
+**Résultat (20 novembre 2026, `filtres_st.py`, `resultats/2026-11-20/filtres_st.json`) : aucune variante retenue.**
+
+| Variante | $ par an 2015-22 (pire baisse) | $ par an 2023-26 (pire baisse) | Pire mois | Mois positifs | Juil.-sept. 2026 | 13 oct.-19 nov. 2026 |
+|---|---|---|---|---|---|---|
+| Base (renfort + bougie folle, limite 300 $) | +7 593 (−11 354) | +4 527 (−10 131) | −4 618 | 54 % | −5 565 | +9 214 |
+| F1 tendance du jour | +5 031 (−5 438) | +4 149 (−6 588) | −3 810 | 46 % | −4 411 | +6 533 |
+| F2 accord avec le Supertrend 15 min | +7 894 (−7 591) | +3 569 (−7 454) | −4 355 | 55 % | −4 513 | +7 011 |
+| F3 courbe de gains | +2 663 (−7 131) | +1 141 (−11 873) | −3 642 | 32 % | −1 818 | +9 214 |
+| F4 marché directionnel | +2 927 (−8 169) | −616 (−11 022) | −3 089 | 48 % | −4 432 | +2 106 |
+| F5 marché agité | +2 556 (−8 775) | −423 (−20 235) | −4 854 | 50 % | +1 243 | +8 068 |
+| P base + zone | +12 264 (−13 063) | +7 692 (−11 606) | −6 756 | 60 % | −5 427 | +9 631 |
+| Zone seule (pour information) | +4 671 (−4 722) | +3 165 (−6 363) | −2 233 | 61 % | +138 | +418 |
+
+F2 est la plus proche : pire baisse réduite de 26 à 33 %, gain gardé (104 % puis 79 %, il fallait 80 %), comptes perdus
+29 % contre 31 %. Mais elle perd encore 4 513 $ de juillet à septembre 2026. Les filtres qui sautent des journées (F1, F3,
+F4, F5) font aussi tomber le compte par la règle d'inactivité. Aucune variante ne garde les gains des mois de tendance sans
+garder aussi les pertes des mois sans tendance : c'est la même mécanique.
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.

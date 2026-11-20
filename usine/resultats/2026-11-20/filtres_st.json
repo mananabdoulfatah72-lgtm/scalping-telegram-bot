@@ -1,0 +1,136 @@
+{
+ "Base : Supertrend + renfort + bougie folle, limite 300 $": {
+  "2015-2022": {
+   "par_an": 7593,
+   "pire_baisse": -11354
+  },
+  "2023-2026": {
+   "par_an": 4527,
+   "pire_baisse": -10131
+  },
+  "retrait_22_2023": 0.457,
+  "perdu_22_2023": 0.308,
+  "pire_mois": -4618,
+  "mois_positifs": 0.535,
+  "juillet_septembre_2026": -5565,
+  "mois_en_cours": 9214
+ },
+ "F1 tendance du jour (moyenne 20 jours)": {
+  "2015-2022": {
+   "par_an": 5031,
+   "pire_baisse": -5438
+  },
+  "2023-2026": {
+   "par_an": 4149,
+   "pire_baisse": -6588
+  },
+  "retrait_22_2023": 0.194,
+  "perdu_22_2023": 0.708,
+  "pire_mois": -3810,
+  "mois_positifs": 0.458,
+  "juillet_septembre_2026": -4411,
+  "mois_en_cours": 6533,
+  "retenue": false
+ },
+ "F2 accord avec le Supertrend 15 minutes": {
+  "2015-2022": {
+   "par_an": 7894,
+   "pire_baisse": -7591
+  },
+  "2023-2026": {
+   "par_an": 3569,
+   "pire_baisse": -7454
+  },
+  "retrait_22_2023": 0.386,
+  "perdu_22_2023": 0.286,
+  "pire_mois": -4355,
+  "mois_positifs": 0.549,
+  "juillet_septembre_2026": -4513,
+  "mois_en_cours": 7011,
+  "retenue": false
+ },
+ "F3 courbe de gains (20 seances)": {
+  "2015-2022": {
+   "par_an": 2663,
+   "pire_baisse": -7131
+  },
+  "2023-2026": {
+   "par_an": 1141,
+   "pire_baisse": -11873
+  },
+  "retrait_22_2023": 0.114,
+  "perdu_22_2023": 0.874,
+  "pire_mois": -3642,
+  "mois_positifs": 0.324,
+  "juillet_septembre_2026": -1818,
+  "mois_en_cours": 9214,
+  "retenue": false
+ },
+ "F4 marche directionnel": {
+  "2015-2022": {
+   "par_an": 2927,
+   "pire_baisse": -8169
+  },
+  "2023-2026": {
+   "par_an": -616,
+   "pire_baisse": -11022
+  },
+  "retrait_22_2023": 0.174,
+  "perdu_22_2023": 0.734,
+  "pire_mois": -3089,
+  "mois_positifs": 0.479,
+  "juillet_septembre_2026": -4432,
+  "mois_en_cours": 2106,
+  "retenue": false
+ },
+ "F5 marche agite": {
+  "2015-2022": {
+   "par_an": 2556,
+   "pire_baisse": -8775
+  },
+  "2023-2026": {
+   "par_an": -423,
+   "pire_baisse": -20235
+  },
+  "retrait_22_2023": 0.161,
+  "perdu_22_2023": 0.657,
+  "pire_mois": -4854,
+  "mois_positifs": 0.5,
+  "juillet_septembre_2026": 1243,
+  "mois_en_cours": 8068,
+  "retenue": false
+ },
+ "P base + zone de bruit": {
+  "2015-2022": {
+   "par_an": 12264,
+   "pire_baisse": -13063
+  },
+  "2023-2026": {
+   "par_an": 7692,
+   "pire_baisse": -11606
+  },
+  "retrait_22_2023": 0.528,
+  "perdu_22_2023": 0.395,
+  "pire_mois": -6756,
+  "mois_positifs": 0.599,
+  "juillet_septembre_2026": -5427,
+  "mois_en_cours": 9631,
+  "retenue": false
+ },
+ "(pour info) zone de bruit seule": {
+  "2015-2022": {
+   "par_an": 4671,
+   "pire_baisse": -4722
+  },
+  "2023-2026": {
+   "par_an": 3165,
+   "pire_baisse": -6363
+  },
+  "retrait_22_2023": 0.114,
+  "perdu_22_2023": 0.269,
+  "pire_mois": -2233,
+  "mois_positifs": 0.613,
+  "juillet_septembre_2026": 138,
+  "mois_en_cours": 418
+ }
+}
