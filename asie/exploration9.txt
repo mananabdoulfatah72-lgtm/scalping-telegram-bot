@@ -1,0 +1,8 @@
+Machine 9, exploration 2012 - 2022 : 5 regles, 5 testables ; survivantes : 0
+
+regle | t | brut moyen (pb) | net moyen (pb) | p placebo | BH 10 % | sous-periodes (pb) | jours | $ pour 1 contrat | survivante
+N2 ouverture de Tokyo (9 h 00 -> 9 h 30) contre la seance du S&P 500 | +1.25 | +3.63 | +0.83 | 0.000 | oui | +1723.9 / -1308.2 / +1665.5 | 2503 | +2,037 | 
+Z zone de bruit pendant la seance de Tokyo (largeur 1,0) | +0.50 | +5.23 | +0.87 | 0.000 | oui | -413.4 / +552.1 / +966.0 | 1270 | +1,326 | 
+N1 fin de seance d'Osaka dans le sens de la journee | -1.30 | +2.08 | -0.72 | 0.000 | oui | -1211.7 / -133.3 / -503.4 | 2560 | -1,573 | 
+N1v meme fenetre, signal de Gao et al. (veille C+15 -> 9 h 30) | -2.89 | +1.20 | -1.60 | 0.015 | oui | -2337.4 / -143.1 / -1609.3 | 2561 | -3,733 | 
+N2v fin de seance d'Osaka dans le sens de la seance du S&P 500 | -3.35 | +0.97 | -1.83 | 0.049 | oui | -2376.1 / -1418.0 / -747.9 | 2477 | -4,414 | 

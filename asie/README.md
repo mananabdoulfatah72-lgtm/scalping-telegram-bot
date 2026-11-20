@@ -311,3 +311,25 @@ frais décisifs 2,8 points de base par aller-retour (un MNK à 50 000 points) ; 
 10 % sur les 5 ; puis coffre 2023 → 2 octobre 2026, ouvert une seule fois : seuil de Bonferroni, 3 années positives sur 4.
 Une survivante devra ensuite passer de vrais prix du Nikkei (que le projet n'a pas) et la vérification chez Bulenox.
 Code : `asie/machine9.py`.
+
+## Résultat de la machine 9 (20 novembre 2026) : `exploration9.txt`, `exploration9.json`
+
+**Aucune survivante. Le coffre 2023 - 2026 du Nikkei n'est pas ouvert : il reste vierge.**
+
+| Règle | Avant frais, par jour (t) | Après 2,8 pb de frais (t) | Placebo | Sous-périodes | $ pour 1 MNK, 2012 - 2022 |
+|---|---|---|---|---|---|
+| N2 ouverture de Tokyo contre le S&P 500 | +3,63 pb (t 5,45) | +0,83 pb (t 1,25) | p < 0,001 | + / − / + | +2 037 $ |
+| Z zone de bruit à Tokyo | +5,23 pb (t 3,00) | +0,87 pb (t 0,50) | p < 0,001 | − / + / + | +1 326 $ |
+| N1 fin de séance d'Osaka, sens de la journée | +2,08 pb (t 3,75) | −0,72 pb (t −1,30) | p < 0,001 | − / − / − | −1 573 $ |
+| N1v signal de Gao et al. | +1,20 pb (t 2,18) | −1,60 pb (t −2,89) | p = 0,015 | − / − / − | −3 733 $ |
+| N2v fin de séance dans le sens du S&P 500 | +0,97 pb (t 1,76) | −1,83 pb (t −3,35) | p = 0,049 | − / − / − | −4 414 $ |
+
+- **Les trois phénomènes des études existent sur le Nikkei avant frais** : le momentum de fin de séance (t 3,75), le
+  retournement de l'ouverture de Tokyo après la séance américaine (t 5,45), et la zone de bruit, qui gagne pendant la séance
+  de Tokyo (t 3,00) alors qu'elle perdait la nuit sur le NQ, le ES et l'or (machine 8). Le mécanisme des fonds à levier et
+  des couvertures vit bien dans la séance « maison » de chaque marché.
+- **Mais ils sont plus petits que les frais d'un MNK** : environ 2,8 pb par aller-retour, contre 2 à 5 pb de gain brut
+  par jour. Avec les frais doublés, tout perd ; avec le vrai coût d'un MNK aux prix de 2012 - 2022 (14 points d'indice),
+  tout perd nettement. La meilleure, N2, rapporterait environ 185 $ par an pour un MNK.
+- Code corrigé avant ce calcul (erreur de programmation, pas de règle) : les règles N2 et N2v prenaient le placebo des
+  heures décalées au lieu des 1 000 tirages du sens fixés ci-dessus ; le premier lancement a été arrêté avant tout résultat.

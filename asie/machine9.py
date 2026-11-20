@@ -50,6 +50,9 @@ def heure_tokyo(jours, spec):
     return loc.tz_localize(TOKYO).tz_convert("UTC")
 
 
+_SP = {}
+
+
 def prix(M, i):
     return np.where(i >= 0, M.O[np.clip(i, 0, M.n - 1)], np.nan)
 
@@ -62,7 +65,7 @@ def jouer(s, M, debut, fin, decalage=0):
     i_e = M.indice(heure_tokyo(j, s["entree"])) + decalage
     i_s = M.indice(heure_tokyo(j, s["sortie"])) + decalage
     if s.get("signal_sp"):
-        sp = M7.Marche("usa500idxusd")
+        sp = _SP.setdefault("sp", M7.Marche("usa500idxusd"))
         ny = pd.date_range("2011-12-01", fin, freq="D"); fer = holidays.NYSE(years=range(2011, ny[-1].year + 1))
         ny = ny[(ny.dayofweek < 5) & ~np.array([d.date() in fer for d in ny])]
         k = np.searchsorted(ny.values, (j - pd.Timedelta(days=1)).values, side="right") - 1     # derniere seance <= veille
@@ -150,7 +153,7 @@ def par_jour(d):
 
 def placebo(s, M, d):
     t_reel = M7.t_stat(par_jour(d)["r"].to_numpy())
-    if s["famille"] != "Z" and s.get("signal") is None:  # la meme fenetre a toutes les autres heures (a plus de 2 h)
+    if s["famille"] != "Z" and s.get("signal") is None and not s.get("signal_sp"):  # la meme fenetre aux autres heures
         ts = [M7.t_stat(par_jour(jouer(s, M, DEBUT, FIN_EXPLO, decalage=k))["r"].to_numpy()) for k in range(-144, 145) if abs(k) * 5 > 120]
     else:                                                 # le sens de chaque trade tire au hasard, somme par jour
         rng = np.random.default_rng(GRAINE); brut = d["brut"].to_numpy(); cout = brut - d["r"].to_numpy()
