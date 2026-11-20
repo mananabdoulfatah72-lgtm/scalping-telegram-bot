@@ -1,0 +1,9 @@
+1. placebo 2023-2026 : t reel 3.49 ; part des fenetres decalees qui font aussi bien : 0.054 sur 240
+   meilleures fenetres decalees (t, brut pb, decalage en min) : [(4.25, 8.82, -150), (4.23, 8.92, -155), (4.13, 8.9, -160), (4.07, 8.91, -165)]
+   gain moyen brut d'une fenetre de 5 h 30 au hasard dans la journee : +1.90 pb contre +8.66 pb a 18 h
+2. entree 18:05 : net moyen +3.32 pb, t 1.76 ; frais doubles (4 pb) depuis 18 h 00 : t 2.44
+2. entree 18:15 : net moyen +3.31 pb, t 1.78 ; frais doubles (4 pb) depuis 18 h 00 : t 2.44
+2. entree 18:30 : net moyen +2.30 pb, t 1.25 ; frais doubles (4 pb) depuis 18 h 00 : t 2.44
+3. part de la hausse totale de l'or 2023 - 2026 faite a chaque heure (New York) :
+   0h +2% | 1h -12% | 2h +19% | 3h -3% | 4h +3% | 5h -2% | 6h +11% | 7h +11% | 8h -1% | 9h -16% | 10h -8% | 11h +8% | 12h -8% | 13h +8% | 14h -6% | 15h +9% | 16h -8% | 17h +4% | 18h +58% | 19h +8% | 20h +24% | 21h -2% | 22h -4% | 23h +5%
+4. 1 MGC a 4173 $ : +30 $ par soir, ecart-type 215 $, soirs gagnants 57%, pire soir -1358 $, pire moment d'un soir -2117 $, pire baisse -5536 $, total +21911 $ sur 730 soirs

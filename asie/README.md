@@ -93,8 +93,31 @@ Pour le Nasdaq, le S&P 500 et l'or, sur 2012 - 2022 et sur 2023 - 2026 :
 
 ## Résultat de l'exploration 2012 - 2022 (20 novembre 2026) : `exploration7.txt`, `info7.txt`
 
-**Aucune survivante sur 173. Le coffre 2023 - 2026 n'est pas ouvert pour elles.** Détail et chiffres : plus bas, une fois
-le test suivant fait.
+**Aucune survivante sur 173. Le coffre 2023 - 2026 n'est pas ouvert pour elles.**
+
+- **Nasdaq et S&P 500 : tout perd après frais.** Acheter le NQ à 18 h 00 et revendre à 19 h 00 rapporte +0,25 point de
+  base avant frais, pour environ 2,6 de frais. Les cassures de la fourchette de réouverture perdent même avant frais
+  (−1,1 à −1,8 point de base par soir sur le NQ) : elles se retournent plus souvent qu'elles ne continuent.
+- **L'idée de Boyarchenko et al. se voit, mais en petit** : après une dernière heure de séance en baisse, le NQ remonte
+  un peu de 18 h à 19 h (+0,77 point de base avant frais, placebo battu, p = 0,009), trois fois moins que les frais.
+- **Une seule règle se détache : l'or acheté à 18 h 00 et revendu à 23 h 30.** +3,16 points de base par soir avant frais,
+  bat toutes les autres heures (p < 0,001), positive dans les 3 sous-périodes ; t 1,75 après frais (2 exigé).
+
+**Le pic de minuit, mesuré (`info7.txt`).** Amplitude moyenne d'une barre de 5 minutes, 2023 - 2026 :
+
+| | Barre de 18 h 00 (minuit à Paris) | 18 h 05 | 18 h 30 | Barre de 9 h 30 (15 h 30 à Paris) |
+|---|---|---|---|---|
+| Nasdaq 100 | 9,5 pb (environ 25 points) | 6,6 | 5,6 | 29,1 pb (environ 78 points) |
+| S&P 500 | 7,9 pb | 5,1 | 4,0 | 17,1 pb |
+| Or | 11,7 pb | 7,6 | 6,1 | 18,0 pb |
+
+- Le pic existe : la barre de minuit est la 2e plus agitée de la nuit sur le Nasdaq et le S&P 500, derrière l'ouverture
+  européenne (3 h à New York, 9 h à Paris). Il retombe dès la barre suivante.
+- Il est 3 fois plus petit que l'ouverture de New York.
+- **Minuit n'est pas « plus propre »** : l'efficacité du mouvement de la première heure est la même à 18 h 00 et à
+  9 h 30 (0,30 sur le Nasdaq, 0,29 sur le S&P 500 et sur l'or) ; l'amplitude de cette heure est 3 fois plus petite.
+- **D'où vient le pic** : de 17 h 45 à 18 h (New York), la CME accepte les ordres sans les exécuter ; à 18 h, tout s'exécute
+  d'un coup (avis SER 8921 de la CME, 2022), dans un marché 50 à 100 fois moins actif que la séance américaine.
 
 ## Après l'exploration : un test unique de l'or sur le coffre (fixé le 20 novembre 2026, avant d'ouvrir 2023 - 2026)
 
@@ -114,3 +137,31 @@ le test suivant fait.
   l'effet est réel.
 - **S'il passe** : vérifier que Bulenox ouvre le MGC, mesurer les vrais frais à cette heure en papier (`usine/rapprochement.py`),
   puis seulement 1 MGC sur le compte. **S'il échoue** : la piste est fermée.
+
+### Résultat du test de l'or sur le coffre (20 novembre 2026) : `or_coffre.json`
+
+**Il passe la règle fixée** : 730 soirs, +8,66 points de base par soir avant frais, +6,66 après, **t 3,49**, positif les 4
+années (2023 +935, 2024 +843, 2025 +1 458, 2026 +1 625 points de base). Avec les frais d'un MGC : t 3,77, environ +18 500 $
+pour 1 MGC sur la période.
+
+### Avant d'y croire : robustesse, pour information (`or_robustesse.txt`)
+
+- **Le gain se fait surtout dans les 5 premières minutes.** Entrée à 18 h 05 au lieu de 18 h 00 : +3,3 points de base nets
+  par soir, t 1,76 ; entrée à 18 h 30 : t 1,25. Sur 2023 - 2026, l'heure de 18 h fait à elle seule 58 % de toute la hausse de
+  l'or.
+- **C'est exactement là que les données sont les moins fiables.** Ce sont des cotations du comptant (prix acheteur) : à la
+  réouverture, l'écart entre acheteurs et vendeurs est très large, puis se resserre en quelques minutes. Le prix acheteur
+  remonte alors sans que personne ait pu acheter à ce prix. La machine 6 a trouvé le même piège sur l'écart du week-end
+  du dollar australien (`sessions24/README.md`).
+- Frais doublés (4 points de base), entrée à 18 h 00 : t 2,44. Ça ne règle pas le problème : à 18 h, l'écart réel peut
+  dépasser 10 points de base.
+- Fenêtres de 5 h 30 placées ailleurs dans la journée : 5,4 % font aussi bien (celles qui contiennent aussi 18 h). Une
+  fenêtre au hasard rapporte +1,9 point de base avant frais, contre +8,7 à 18 h.
+- **En dollars, 1 MGC à 4 173 $** : +30 $ par soir en moyenne, écart-type 215 $, 57 % de soirs gagnants, pire soir −1 358 $,
+  pire moment d'un soir −2 117 $, pire baisse −5 536 $.
+
+**Verdict.** Statistiquement, l'or passe. Mais l'essentiel du gain tient dans les 5 premières minutes, là où ces cotations
+ne sont pas un prix auquel on peut acheter. **Ce n'est pas validé comme tradable.** La seule façon de trancher : 3 à 4
+semaines en papier sur le MGC, en notant chaque soir le vrai prix d'achat à 18 h 00 (minuit à Paris) et le prix de
+23 h 30, puis `usine/rapprochement.py`. Avec 1 900 $ de marge sur le compte, 1 MGC est déjà trop gros sans limite : son
+pire soir (−1 358 $) en mangerait les trois quarts.

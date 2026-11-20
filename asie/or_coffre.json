@@ -1,0 +1,33 @@
+{
+ "soirs": 730,
+ "prix_or": [
+  1826.8,
+  4172.9
+ ],
+ "brut_moyen_pb": 8.66,
+ "frais_2pb": {
+  "t": 3.49,
+  "net_moyen_pb": 6.66,
+  "par_an_pb": {
+   "2023": 934.9,
+   "2024": 842.7,
+   "2025": 1458.3,
+   "2026": 1625.4
+  },
+  "dollars_1_MGC": 17018,
+  "annees_positives": 4
+ },
+ "frais_MGC": {
+  "t": 3.77,
+  "net_moyen_pb": 7.19,
+  "par_an_pb": {
+   "2023": 924.0,
+   "2024": 906.0,
+   "2025": 1624.1,
+   "2026": 1796.8
+  },
+  "dollars_1_MGC": 18523,
+  "annees_positives": 4
+ },
+ "passe": true
+}
