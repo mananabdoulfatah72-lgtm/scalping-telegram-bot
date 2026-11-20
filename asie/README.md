@@ -90,3 +90,27 @@ Pour le Nasdaq, le S&P 500 et l'or, sur 2012 - 2022 et sur 2023 - 2026 :
 - l'amplitude de la première heure (plus haut − plus bas), en points, après 18 h 00 et après 9 h 30 ;
 - l'efficacité du mouvement de la première heure : |clôture − ouverture| ÷ somme des |variations de 5 minutes|
   (1 = une ligne droite, proche de 0 = des allers-retours), après 18 h 00 et après 9 h 30.
+
+## Résultat de l'exploration 2012 - 2022 (20 novembre 2026) : `exploration7.txt`, `info7.txt`
+
+**Aucune survivante sur 173. Le coffre 2023 - 2026 n'est pas ouvert pour elles.** Détail et chiffres : plus bas, une fois
+le test suivant fait.
+
+## Après l'exploration : un test unique de l'or sur le coffre (fixé le 20 novembre 2026, avant d'ouvrir 2023 - 2026)
+
+- **Pourquoi celui-là.** C'est la seule des 173 qui bat tous ses placebos (p < 0,001), qui gagne dans les 3
+  sous-périodes et qui n'échoue que sur le t après frais (1,75 pour 2 exigé). Les frais de la machine (2 points de base)
+  valent environ 4 $ l'aller-retour sur un micro-or (MGC) quand l'or est à 2 000 $ ; ils pèsent moitié moins à 4 000 $.
+- **Règle, inchangée** : achat de l'or à l'ouverture de la barre de 18 h 00 (New York), du lundi au jeudi soir, vente à
+  l'ouverture de la barre de 23 h 30 (minuit → 5 h 30 à Paris).
+- **Période** : 2023-01-01 → 2026-10-02, jamais regardée pour cette règle.
+- **Frais, deux lectures fixées maintenant** :
+  - décisive : 2 points de base par aller-retour, ceux de l'exploration ;
+  - pour information : le MGC avec la convention du projet (1 $ par ordre et 1 tick de 1 $ par ordre), soit 4 $ pour
+    10 onces, en rendement 4 ÷ (10 × prix).
+- **Passe si** : t ≥ 1,64 (un seul test, 5 % unilatéral) avec les frais décisifs, et gain positif au moins 3 années sur 4
+  (2026 incomplète compte).
+- **Attention à ce qu'on teste** : c'est la meilleure de 173 ; un résultat plus faible sur le coffre est attendu, même si
+  l'effet est réel.
+- **S'il passe** : vérifier que Bulenox ouvre le MGC, mesurer les vrais frais à cette heure en papier (`usine/rapprochement.py`),
+  puis seulement 1 MGC sur le compte. **S'il échoue** : la piste est fermée.

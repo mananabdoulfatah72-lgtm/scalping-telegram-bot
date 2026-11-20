@@ -1,0 +1,30 @@
+Machine 7, information : minuit (18 h a New York) contre l'ouverture de New York (9 h 30)
+
+Nasdaq 100 2012-2022 : barre de 18 h 00 8.8 pb d'amplitude (17 h 55 : 14.4 ; 18 h 05 : 5.3 ; 18 h 30 : 4.2 ; 21 h 30 : 6.2 ; 3 h 00 : 10.7) ; barre de 9 h 30 : 27.4 pb
+   5 barres les plus agitees de 17 h a 3 h : 17:55 (14.4 pb), 17:35 (14.0 pb), 17:45 (13.5 pb), 17:50 (13.1 pb), 17:40 (12.5 pb)
+   premiere heure apres 18 h 00 : amplitude 18.2 pb, efficacite 0.30 (2245 soirs) ; apres 9 h 30 : amplitude 73.5 pb, efficacite 0.31 (2269 jours)
+Nasdaq 100 2023-2026 : barre de 18 h 00 9.5 pb d'amplitude (17 h 55 : 4.7 ; 18 h 05 : 6.6 ; 18 h 30 : 5.6 ; 21 h 30 : 5.9 ; 3 h 00 : 9.9) ; barre de 9 h 30 : 29.1 pb
+   5 barres les plus agitees de 17 h a 3 h : 03:00 (9.9 pb), 18:00 (9.5 pb), 03:05 (8.7 pb), 03:10 (8.5 pb), 03:30 (8.2 pb)
+   premiere heure apres 18 h 00 : amplitude 21.8 pb, efficacite 0.30 (561 soirs) ; apres 9 h 30 : amplitude 77.3 pb, efficacite 0.30 (695 jours)
+
+S&P 500 2012-2022 : barre de 18 h 00 7.7 pb d'amplitude (17 h 55 : 14.6 ; 18 h 05 : 4.6 ; 18 h 30 : 3.8 ; 21 h 30 : 5.2 ; 3 h 00 : 9.2) ; barre de 9 h 30 : 18.0 pb
+   5 barres les plus agitees de 17 h a 3 h : 17:55 (14.6 pb), 17:35 (13.1 pb), 17:50 (12.8 pb), 17:45 (12.5 pb), 17:30 (12.2 pb)
+   premiere heure apres 18 h 00 : amplitude 17.8 pb, efficacite 0.29 (1857 soirs) ; apres 9 h 30 : amplitude 51.8 pb, efficacite 0.30 (2266 jours)
+S&P 500 2023-2026 : barre de 18 h 00 7.9 pb d'amplitude (17 h 55 : 3.4 ; 18 h 05 : 5.1 ; 18 h 30 : 4.0 ; 21 h 30 : 4.1 ; 3 h 00 : 7.5) ; barre de 9 h 30 : 17.1 pb
+   5 barres les plus agitees de 17 h a 3 h : 17:00 (8.8 pb), 18:00 (7.9 pb), 03:00 (7.5 pb), 17:05 (6.8 pb), 03:05 (6.4 pb)
+   premiere heure apres 18 h 00 : amplitude 15.7 pb, efficacite 0.29 (716 soirs) ; apres 9 h 30 : amplitude 49.0 pb, efficacite 0.29 (699 jours)
+
+Or 2012-2022 : barre de 18 h 00 7.1 pb d'amplitude (17 h 55 : 4.4 ; 18 h 05 : 4.5 ; 18 h 30 : 3.7 ; 21 h 30 : 6.5 ; 3 h 00 : 9.2) ; barre de 9 h 30 : 13.7 pb
+   5 barres les plus agitees de 17 h a 3 h : 03:00 (9.2 pb), 21:00 (9.0 pb), 20:00 (8.2 pb), 03:05 (8.2 pb), 03:10 (7.8 pb)
+   premiere heure apres 18 h 00 : amplitude 15.5 pb, efficacite 0.28 (2255 soirs) ; apres 9 h 30 : amplitude 46.7 pb, efficacite 0.28 (2277 jours)
+Or 2023-2026 : barre de 18 h 00 11.7 pb d'amplitude (17 h 55 : 8.0 ; 18 h 05 : 7.6 ; 18 h 30 : 6.1 ; 21 h 30 : 10.3 ; 3 h 00 : 10.2) ; barre de 9 h 30 : 18.0 pb
+   5 barres les plus agitees de 17 h a 3 h : 17:00 (14.4 pb), 17:05 (13.0 pb), 21:00 (12.9 pb), 18:00 (11.7 pb), 20:00 (11.6 pb)
+   premiere heure apres 18 h 00 : amplitude 23.9 pb, efficacite 0.29 (731 soirs) ; apres 9 h 30 : amplitude 58.0 pb, efficacite 0.27 (693 jours)
+
+Yen 2012-2022 : barre de 18 h 00 3.6 pb d'amplitude (17 h 55 : 2.6 ; 18 h 05 : 2.6 ; 18 h 30 : 2.8 ; 21 h 30 : 4.4 ; 3 h 00 : 5.8) ; barre de 9 h 30 : 6.2 pb
+   5 barres les plus agitees de 17 h a 3 h : 20:00 (6.1 pb), 03:00 (5.8 pb), 20:50 (5.4 pb), 20:05 (5.0 pb), 03:05 (4.9 pb)
+   premiere heure apres 18 h 00 : amplitude 10.5 pb, efficacite 0.27 (2281 soirs) ; apres 9 h 30 : amplitude 21.8 pb, efficacite 0.29 (2279 jours)
+Yen 2023-2026 : barre de 18 h 00 5.1 pb d'amplitude (17 h 55 : 2.3 ; 18 h 05 : 3.1 ; 18 h 30 : 3.3 ; 21 h 30 : 5.0 ; 3 h 00 : 6.9) ; barre de 9 h 30 : 6.7 pb
+   5 barres les plus agitees de 17 h a 3 h : 03:00 (6.9 pb), 20:00 (6.9 pb), 20:50 (6.4 pb), 02:00 (5.9 pb), 19:50 (5.8 pb)
+   premiere heure apres 18 h 00 : amplitude 11.9 pb, efficacite 0.29 (737 soirs) ; apres 9 h 30 : amplitude 24.2 pb, efficacite 0.29 (698 jours)
+
