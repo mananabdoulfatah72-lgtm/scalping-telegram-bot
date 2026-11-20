@@ -210,3 +210,26 @@ Nasdaq ou un autre marché. Mesure de la bougie de 18 h 00 → 18 h 05 (New York
   des mêmes fenêtres de 5 heures, commencées à toutes les autres heures pleines (à plus de 2 heures de 18 h), font aussi
   bien. Sinon, la piste de l'or est fermée.
 - Pour information : Nasdaq et S&P 500, 18 h → 19 h sur les barres d'une heure.
+
+### Résultat de la vérification sur de vrais futures (20 novembre 2026) : `vrais_futures.txt`
+
+**Test 1, les 5 premières minutes (39 soirs, 12 août → 21 octobre 2026)** : sur les mêmes soirs, les cotations HistData
+montent beaucoup plus que les vrais futures.
+
+| Marché | Vrais futures, soirs communs | HistData, mêmes soirs | % de soirs en hausse sur HistData |
+|---|---|---|---|
+| Or (MGC) | +1,85 pb | +6,34 pb | 79 % |
+| Livre (6B) | +0,16 pb | +2,25 pb | 90 % |
+| Dollar australien (6A) | −0,40 pb | +2,10 pb | 75 % |
+| Euro (6E) | −0,08 pb | +1,35 pb | 76 % |
+
+L'effet des 5 premières minutes sur l'or et les devises est donc surtout un artefact des cotations (prix acheteur qui
+remonte quand l'écart se resserre). Sur les vrais futures du Nasdaq et du S&P 500, la bougie de minuit fait +1,48 et
++0,88 pb en moyenne (t 1,20 et 1,29) : rien de significatif sur 39 soirs, et rien sur 14 ans de HistData.
+
+**Test 2, l'or du soir (MGC, 18 h → 23 h, 474 soirs, mai 2024 → octobre 2026)** : +2,67 pb nets par soir, **t 0,95**,
+49 % de soirs gagnants, première moitié négative (−108 pb), 16,7 % des fenêtres de 5 heures commencées ailleurs font aussi
+bien. **Non confirmé sur de vrais prix : la piste de l'or est fermée**, comme la règle le prévoyait.
+
+**Conclusion de la machine 7** : la réouverture de minuit a bien un pic de volatilité, mais aucune règle n'en tire un
+gain sur de vrais prix après frais, sur aucun des 7 marchés.

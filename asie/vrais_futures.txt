@@ -1,0 +1,22 @@
+Verification sur de vrais prix de futures (Yahoo, CME), heure de New York
+
+Test 1 : achat a 18 h 00, vente a 18 h 05, lundi - jeudi soir, 12 aout -> 21 octobre 2026 (avant frais)
+marche | soirs | moyenne futures (pb) | % en hausse | t | soirs communs avec HistData | futures sur ces soirs (pb) | HistData sur ces soirs (pb) | % en hausse HistData
+Or (MGC) | 39 | +1.06 | 54% | +0.99 | 29 | +1.85 | +6.34 | 79%
+Or (GC) | 39 | +1.45 | 62% | +1.46 | 29 | +2.59 | +6.34 | 79%
+Nasdaq (MNQ) | 39 | +1.48 | 56% | +1.20 | 29 | +0.47 | -0.92 | 38%
+S&P 500 (MES) | 39 | +0.88 | 59% | +1.29 | 29 | +0.59 | +0.18 | 48%
+Euro (6E) | 39 | -0.26 | 41% | -1.01 | 29 | -0.08 | +1.35 | 76%
+Yen (6J) | 39 | -0.91 | 33% | -2.14 | 29 | -0.73 | -1.31 | 24%
+Dollar australien (6A) | 38 | -0.24 | 37% | -0.63 | 28 | -0.40 | +2.10 | 75%
+Livre (6B) | 39 | +0.25 | 51% | +0.91 | 29 | +0.16 | +2.25 | 90%
+
+Test 2 : or (MGC) achete a 18 h, vendu a 23 h, 2024-05-30 -> 2026-10-20, frais 4 $ par aller-retour
+474 soirs ; brut +3.84 pb, net +2.67 pb par soir ; t +0.95 ; 49% de soirs gagnants ; moities -108.5 / +1373.5 pb ; +6,683 $ pour 1 MGC
+placebo : 16.7% des fenetres de 5 h commencees a d'autres heures font aussi bien ; t de ces fenetres : 0h +0.17, 1h -0.34, 2h +0.86, 3h +0.84, 4h +0.41, 5h +0.39, 6h +0.35, 7h -0.09, 8h -0.82, 9h -0.52, 10h -0.68, 11h +0.41, 13h +1.50, 14h +1.24, 15h +2.80, 21h -1.81, 22h +0.48, 23h +0.66
+=> NON CONFIRME sur de vrais prix
+
+Pour information : 18 h -> 19 h (barres d'une heure, avant frais)
+Nasdaq (MNQ) : 474 soirs, +1.27 pb, t +1.19
+S&P 500 (MES) : 475 soirs, +0.78 pb, t +0.95
+Or (MGC) : 474 soirs, +0.56 pb, t +0.40

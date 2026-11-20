@@ -51,7 +51,7 @@ système.
 | Retour à la moyenne en marché calme | — | Perd (t −2,34) | `chantier/` partie A (branche `loving-mccarthy`) |
 | Trading de paires (S&P/Nasdaq, or/argent, taux, devises) | méthode des vidéos | Sharpe −0,45 sur 2006 - 2026 ; aucune paire « cointégrée » ne l'est encore 6 mois plus tard | `paires/` |
 | Suivi de tendance sur 40 futures | méthode des CTA | Sharpe −0,01, bat 59 % des placebos : rejeté. En plus, il garde la nuit et ses contrats sont trop gros pour 50K. | `fonds/`, `tendance/` |
-| Réouverture du CME à minuit (Paris) sur NQ, ES et devises : dérive, retour de la fin de séance, cassure de la fourchette, ouverture de Hong Kong (173 règles) | Boyarchenko et al. (2023) ; Bondarenko, Muravyev (2023) | Aucune ne passe après frais ; sur le NQ, les cassures de minuit perdent même avant frais (20 nov.) | `asie/` |
+| Réouverture du CME à minuit (Paris) sur NQ, ES et devises : dérive, retour de la fin de séance, cassure de la fourchette, ouverture de Hong Kong (173 règles) | Boyarchenko et al. (2023) ; Bondarenko, Muravyev (2023) | Aucune ne passe après frais ; sur le NQ, les cassures de minuit perdent même avant frais. L'or acheté à minuit passait sur les cotations (t 3,49), pas sur les vrais futures MGC (t 0,95) : artefact de cotation (20 nov.) | `asie/` |
 | Kronos-small, 100 trajectoires de 24 bougies de 5 min, 3 décisions par séance | Shi et al. (2025), article de l'utilisateur | Rejeté sur 344 séances jamais vues par le modèle : t −0,61, −3 305 $ par an, bon sens dans 46,5 % des trades (16 nov. au soir) | `usine/KRONOS.md` |
 | RSI(2) sur plusieurs jours | Connors | Passe son coffre (t +1,95), mais il garde la nuit et le week-end : interdit chez Bulenox | `tournoi8/` |
 
@@ -60,10 +60,9 @@ système.
 | Piste | Pourquoi elle reste ouverte | Ce qu'il faut | REA ? |
 |---|---|---|---|
 | 1. **Un secours qui gagne vraiment** | Le Supertrend tient la règle d'inactivité, mais sans avantage prouvé. Un moteur qui trade chaque jour et passe les portes améliorerait G2 directement. | Une recherche dédiée dans l'usine. XGBoost NQ et W1 NQ peuvent y passer en premier. | Non |
-| 2. **L'or à la réouverture du CME** (achat à minuit à Paris, vente à 5 h 30) | Passe son test sur 2023 - 2026 (t 3,49, 4 années positives), mais le gain tient surtout dans les 5 premières minutes, où les cotations ne sont pas un prix tradable (`asie/README.md`). | 3 à 4 semaines en papier sur le MGC, en notant le vrai prix d'achat à minuit. | Non |
-| 3. **La nuit en module** : achat à 18 h, stop 0,5 %, vente à 9 h 30, seulement à partir de 2 600 $ de marge | Elle améliore le compte, mais n'a pas atteint la barre fixée : +10 % d'argent touché par mois, pour 25 % exigés (`chantier/RESULTATS.md`, branche `loving-mccarthy`). | À coder dans le bot, puis à suivre en papier. | Non |
-| 4. **L'order flow sur tes propres enregistrements** | FluxNQ enregistre à chaque séance où il tourne les transactions, le carnet sur 10 niveaux et le footprint du NQ (`C:\Bot3en1\flux\`). Chaque mois enregistré, c'est un mois de données que la recherche n'a jamais vues : un vrai hors échantillon. | Laisser FluxNQ enregistrer, puis rejouer les idées d'order flow sur ces données. | Enquête n° 3 (même définition du delta) |
-| 5. **Un outil que tu utilises déjà** (indicateur, bot d'un ami) | Jamais passé aux portes. | Observation, puis spécification, puis l'usine. | Enquête n° 5 |
+| 2. **La nuit en module** : achat à 18 h, stop 0,5 %, vente à 9 h 30, seulement à partir de 2 600 $ de marge | Elle améliore le compte, mais n'a pas atteint la barre fixée : +10 % d'argent touché par mois, pour 25 % exigés (`chantier/RESULTATS.md`, branche `loving-mccarthy`). | À coder dans le bot, puis à suivre en papier. | Non |
+| 3. **L'order flow sur tes propres enregistrements** | FluxNQ enregistre à chaque séance où il tourne les transactions, le carnet sur 10 niveaux et le footprint du NQ (`C:\Bot3en1\flux\`). Chaque mois enregistré, c'est un mois de données que la recherche n'a jamais vues : un vrai hors échantillon. | Laisser FluxNQ enregistrer, puis rejouer les idées d'order flow sur ces données. | Enquête n° 3 (même définition du delta) |
+| 4. **Un outil que tu utilises déjà** (indicateur, bot d'un ami) | Jamais passé aux portes. | Observation, puis spécification, puis l'usine. | Enquête n° 5 |
 
 Ce qui ne relève pas de la recherche, mais compte pour l'argent : plusieurs comptes Master (règles Bulenox à confirmer).
 Ce n'est pas un avantage, juste plus de plafonds de retrait, avec un risque lié : une mauvaise période touche tous les
