@@ -269,6 +269,36 @@ test avec frais avant tout argent).
     plus, en valeur absolue, que quand elles sont dispersées ?
   - la part de bonnes directions.
 
+## Tournoi des indicateurs populaires de TradingView (idées 9 à 15, fixées le 20 novembre 2026, avant tout calcul)
+
+Demande de l'utilisateur : trouver en ligne des indicateurs utiles et rentables. Les indicateurs à code ouvert les plus
+suivis sur TradingView, jamais passés tels quels dans l'usine.
+
+**Sources.** Les pages TradingView ne sont pas accessibles depuis cette session. Les règles ci-dessous recopient la logique
+des scripts publics (auteur et page cités), telle qu'elle est reprise par les portages ouverts quand il y en a (pandas-ta,
+`technical` de freqtrade), qui servent de contrôle du calcul. QQE MOD, HalfTrend et Smart Money Concepts (LuxAlgo) sont
+écartés : leur code est trop long pour être recopié sans risque d'erreur.
+
+**Cadre commun, celui du Supertrend de l'idée 2.** Bougies de 5 minutes du NQ (séance de New York), indicateur continu
+d'une séance à l'autre ; à la clôture de chaque bougie, l'indicateur donne un état : achat (+1), vente (−1) ou à plat (0) ;
+la position suit cet état à l'ouverture de la minute suivante ; pas de nouvelle position après 15 h 30 ; tout est fermé à
+15 h 55. Mesure, frais et portes : ceux de l'usine (les 5 portes). Limite du jour à la porte 5 : 400 $ (celle du
+Supertrend). Prix « source » : la clôture. Moyennes de Pine : `sma` simple, `ema` exponentielle (α = 2 / (n + 1)), `rma` de
+Wilder, `stdev` sur la population, `atr` = `rma` du vrai range.
+
+| # | Indicateur (auteur) | État | Grille (réglage par défaut du script) |
+|---|---|---|---|
+| 9 | **Squeeze Momentum** (LazyBear) | Bollinger : moyenne sma(n) ± mult_kc × stdev(n) (le script d'origine utilise le multiple de Keltner pour les deux) ; Keltner : sma(n) ± mult_kc × sma(vrai range, n). Compression = Bollinger dans Keltner ; relâchement = Bollinger hors de Keltner. Élan = régression linéaire sur n bougies de clôture − moyenne(moyenne(plus haut n, plus bas n), sma(n)). **Entrée** à la première bougie relâchée après une bougie comprimée, dans le sens de l'élan (méthode de John Carter citée par LazyBear) ; **sortie** (à plat) quand le signe de l'élan s'inverse. | n ∈ {10, 15, 20, 30, 40} × mult_kc ∈ {1,0 ; 1,25 ; 1,5 ; 2,0 ; 2,5} : 25 (20 ; 1,5) |
+| 10 | **UT Bot Alerts** (QuantNomad, d'après Yo_adriiiiaan) | Stop suiveur à a × atr(c) de la clôture, qui ne recule jamais ; achat quand la clôture passe au-dessus du stop, vente quand elle passe dessous ; état gardé sinon. | a ∈ {0,5 ; 1 ; 1,5 ; 2 ; 3} × c ∈ {5, 10, 14, 20, 30} : 25 (1 ; 10) |
+| 11 | **SSL Channel** (ErwinBeckers) | sma(plus haut, n) et sma(plus bas, n) ; +1 si la clôture dépasse la première, −1 si elle passe sous la seconde, état gardé sinon. | n ∈ {5, 7, 10, 14, 20, 30} : 6 (10) |
+| 12 | **Range Filter Buy and Sell** (DonovanWall, adapté par guikroth) | Écart lissé = ema(ema(|clôture − clôture d'avant|, p), 2p − 1) × m ; filtre qui ne bouge que si le prix s'en écarte de plus de cet écart ; compteurs de montée et de descente du filtre ; +1 si la clôture est au-dessus du filtre et le filtre monte, −1 dans le cas inverse, état gardé sinon. | p ∈ {20, 50, 100, 150, 200} × m ∈ {1,5 ; 2 ; 3 ; 4 ; 5} : 25 (100 ; 3) |
+| 13 | **WaveTrend** (LazyBear) | ap = (haut + bas + clôture) / 3 ; esa = ema(ap, n1) ; d = ema(|ap − esa|, n1) ; ci = (ap − esa) / (0,015 d) ; wt1 = ema(ci, n2) ; wt2 = sma(wt1, 4). +1 quand wt1 croise wt2 vers le haut sous −53, −1 quand il le croise vers le bas au-dessus de 53, état gardé sinon. | n1 ∈ {6, 8, 10, 14, 20} × n2 ∈ {11, 15, 21, 28, 35} : 25 (10 ; 21) |
+| 14 | **Hull Suite** (InSilico) | Moyenne de Hull : wma(2 wma(n/2) − wma(n), √n) ; +1 si elle est plus haute que 2 bougies avant, −1 sinon. | n ∈ {20, 34, 55, 89, 144} : 5 (55) |
+| 15 | **Chandelier Exit** (everget) | Stop long = plus haute clôture sur n − mult × atr(n), stop court = plus basse clôture sur n + mult × atr(n), chacun ne reculant pas tant que le prix reste du bon côté ; +1 quand la clôture passe au-dessus du stop court d'avant, −1 quand elle passe sous le stop long d'avant, état gardé sinon. | n ∈ {10, 14, 22, 30, 44} × mult ∈ {1,5 ; 2 ; 3 ; 4 ; 5} : 25 (22 ; 3) |
+
+Chaque indicateur passe les 5 portes ; il s'arrête à la première manquée (comme les idées 3 à 8). Pour information, la porte 5
+est aussi donnée pour le réglage par défaut du script.
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.
