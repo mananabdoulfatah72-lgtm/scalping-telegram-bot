@@ -76,6 +76,18 @@ levier : **avec 1 900 $ de coussin, le risque de perdre le compte en un mois pas
 une chance de retrait qui passe de 32 - 35 % à 46 - 47 %. Ces règles n'ont pas été fixées d'avance dans l'usine : c'est une
 mesure à la demande, pas une validation.
 
+**À quoi s'attendre chaque mois** (mois civils de janvier 2015 à octobre 2026, 142 mois, 1 MNQ de base) :
+
+| Version | Mois moyen | Mois médian | Mois positifs | Mois à +9 000 $ ou plus | Pire mois | 5 séances à −1 900 $ ou pire |
+|---|---|---|---|---|---|---|
+| Supertrend seul, limite 400 $ | +341 $ | +181 $ | 56 % | 0 sur 142 | −3 822 $ (juin 2022) | 1,4 % des semaines |
+| Renfort + bougie folle, limite 400 $ | +661 $ | +291 $ | 55 % | 2 sur 142 | −6 718 $ (mars 2020) | 4,7 % des semaines |
+| Renfort + bougie folle, limite 300 $ | +501 $ | +293 $ | 54 % | 1 sur 142 | −4 618 $ (mars 2020) | 0 % des semaines |
+
+Les 27 séances du 13 octobre au 19 novembre 2026 (+10 392 $ avec renfort, limite 400 $) font mieux que 99 % de toutes les
+périodes de même longueur depuis 2015. Juste avant, juillet à septembre 2026 : −2 945 $, −2 343 $, −1 042 $ avec renfort
+(limite 400 $).
+
 **Vérifications** : le moteur C# refait exactement les trades du calcul Python, jambe par jambe, sur les mêmes minutes
 (13 octobre - 18 novembre, 4 versions : 61, 92, 55 et 83 jambes identiques) ; la stratégie Quantower (imitation de
 l'API) donne 0 différence sur 27 séances avec chaque option, avec 2 contrats de base, et avec le frein MES ; la limite du
