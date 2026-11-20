@@ -15,3 +15,7 @@ date,idee,titre,pf_dev,reglage_dev,plateau,centre,p_porte2,pf_hors_echantillon,g
 2026-11-20,tv_wavetrend,WaveTrend (LazyBear),1.009,"{""n1"": 8, ""n2"": 28}",False,"{""n1"": 8, ""n2"": 35}",,,,,,rejetee a la porte 1
 2026-11-20,tv_hull,Hull Suite (InSilico),1.006,"{""n"": 144}",True,"{""n"": 144}",0.015,,,,,rejetee a la porte 2
 2026-11-20,tv_chandelier,Chandelier Exit (everget),1.009,"{""n"": 14, ""mult"": 3.0}",True,"{""n"": 22, ""mult"": 3.0}",0.024,,,,,rejetee a la porte 2
+2026-11-20,agents_A1,"Supertrend + A1 risque (stop ramene a l'entree apres 1 ATR de gain)",,,,,,,,,"{""difference_an"": 267, ""t"": 0.31, ""retrait_22"": 0.349, ""perdu_22"": 0.167}",rejetee (regle d'adoption)
+2026-11-20,agents_A2,"Supertrend + A2 actualites (arret du jour apres une bougie de plus de 3 ATR)",,,,,,,,,"{""difference_an"": -71, ""t"": -0.11, ""retrait_22"": 0.345, ""perdu_22"": 0.17}",rejetee (regle d'adoption)
+2026-11-20,agents_A3,"Supertrend + A3 sortie (recul de 1 ATR depuis la meilleure cloture)",,,,,,,,,"{""difference_an"": -2520, ""t"": -1.56, ""retrait_22"": 0.17, ""perdu_22"": 0.09}",rejetee (regle d'adoption)
+2026-11-20,agents_A123,"Supertrend + A1, A2 et A3",,,,,,,,,"{""difference_an"": -2511, ""t"": -1.53, ""retrait_22"": 0.16, ""perdu_22"": 0.08}",rejetee (regle d'adoption)

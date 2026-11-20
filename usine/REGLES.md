@@ -356,6 +356,21 @@ séances complètes du 1er janvier 2015 au 19 novembre 2026.
    comptes que le Supertrend seul ;
 3. elle atteint le premier retrait (53 600 $) au moins aussi souvent.
 
+**Résultat (20 novembre 2026, `usine/agents_st.py`, `resultats/2026-11-20/agents_st.json`) : aucune variante n'est retenue.**
+Contrôle : sans règle ajoutée, le code redonne exactement les positions du Supertrend du moteur.
+
+| Variante | $ par séance (depuis 2023) | Différence avec le Supertrend seul, $ par an (t) | Différence depuis 2023, $ par an | 22 séances : retrait / compte perdu | Pire baisse | Verdict |
+|---|---|---|---|---|---|---|
+| Supertrend seul | +17,7 (+6,6) | — | — | 36 % / 18 % | −10 411 $ | référence |
+| A1 risque | +18,8 (+13,8) | +267 (t 0,31) | +1 804 | 35 % / 17 % | −9 017 $ | rejetée : écart non significatif, retrait un peu moins souvent |
+| A2 actualités | +17,5 (+12,0) | −71 (t −0,11) | +1 339 | 34 % / 17 % | −9 475 $ | rejetée |
+| A3 sortie | +7,7 (+5,4) | −2 520 (t −1,56) | −323 | 17 % / 9 % | −13 221 $ | rejetée : coûte 2 520 $ par an |
+| A123 | +7,8 (+8,4) | −2 511 (t −1,53) | +430 | 16 % / 8 % | −10 741 $ | rejetée |
+
+Lecture : sortir dès que l'élan faiblit (A3) divise par deux les comptes perdus, mais aussi les retraits, et retire plus de la
+moitié du gain. Le Supertrend gagne avec quelques longues tendances, et une sortie à 1 ATR du meilleur cours les coupe. A1 et
+A2 font mieux depuis 2023, mais sur 2015 - 2026 l'écart ne se distingue pas du bruit (t 0,31 et −0,11).
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.

@@ -1,0 +1,69 @@
+{
+ "controle_identique_au_supertrend": true,
+ "variantes": {
+  "Supertrend seul": {
+   "par_seance": 17.7,
+   "par_seance_2023": 6.6,
+   "t": 2.2,
+   "difference_par_an": 0,
+   "t_difference": 0.0,
+   "difference_2023_par_an": 0,
+   "retrait_22": 0.364,
+   "perdu_22": 0.185,
+   "pire_baisse": -10411,
+   "seances_tradees": 1.0
+  },
+  "A1 risque": {
+   "par_seance": 18.8,
+   "par_seance_2023": 13.8,
+   "t": 2.46,
+   "difference_par_an": 267,
+   "t_difference": 0.31,
+   "difference_2023_par_an": 1804,
+   "retrait_22": 0.349,
+   "perdu_22": 0.167,
+   "pire_baisse": -9017,
+   "seances_tradees": 1.0,
+   "retenue": false
+  },
+  "A2 actualites": {
+   "par_seance": 17.5,
+   "par_seance_2023": 12.0,
+   "t": 2.28,
+   "difference_par_an": -71,
+   "t_difference": -0.11,
+   "difference_2023_par_an": 1339,
+   "retrait_22": 0.345,
+   "perdu_22": 0.17,
+   "pire_baisse": -9475,
+   "seances_tradees": 1.0,
+   "retenue": false
+  },
+  "A3 sortie": {
+   "par_seance": 7.7,
+   "par_seance_2023": 5.4,
+   "t": 1.48,
+   "difference_par_an": -2520,
+   "t_difference": -1.56,
+   "difference_2023_par_an": -323,
+   "retrait_22": 0.171,
+   "perdu_22": 0.087,
+   "pire_baisse": -13221,
+   "seances_tradees": 1.0,
+   "retenue": false
+  },
+  "A123": {
+   "par_seance": 7.8,
+   "par_seance_2023": 8.4,
+   "t": 1.58,
+   "difference_par_an": -2511,
+   "t_difference": -1.53,
+   "difference_2023_par_an": 430,
+   "retrait_22": 0.157,
+   "perdu_22": 0.082,
+   "pire_baisse": -10741,
+   "seances_tradees": 1.0,
+   "retenue": false
+  }
+ }
+}
