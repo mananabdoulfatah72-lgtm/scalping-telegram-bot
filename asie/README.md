@@ -233,3 +233,31 @@ bien. **Non confirmé sur de vrais prix : la piste de l'or est fermée**, comme 
 
 **Conclusion de la machine 7** : la réouverture de minuit a bien un pic de volatilité, mais aucune règle n'en tire un
 gain sur de vrais prix après frais, sur aucun des 7 marchés.
+
+# Machine 8 : la zone de bruit pendant la session asiatique (règles fixées le 20 novembre 2026, avant tout calcul)
+
+**Pourquoi.** La zone de bruit est la seule source de gain validée du projet (5 portes de l'usine). Elle n'a jamais été
+jouée la nuit. L'utilisateur dit faire l'essentiel de ses gains pendant la session asiatique.
+
+**Ce qui la distingue de ce qui a échoué** : les cassures du début de session (machine 5, F3) et de la réouverture
+(machine 7, R3) utilisent une fourchette fixe. La zone utilise une bande qui s'adapte au mouvement habituel de chaque
+heure, et sort quand le prix revient sous la bande ou sous son prix moyen.
+
+**Règle (celle du bot, transposée à la nuit)**, du lundi au jeudi soir, heures de New York :
+- ouverture de référence O = ouverture de la barre de 18 h 00 ; clôture américaine C = clôture de la dernière barre entre
+  16 h 00 et 17 h 00 (à défaut, O seule) ;
+- contrôles toutes les 30 minutes, de 18 h 30 à 2 h 30, au prix de clôture de la barre qui finit à l'heure du contrôle ;
+- bruit au contrôle k = moyenne, sur les 14 nuits complètes d'avant, de |prix au contrôle k ÷ O − 1| ;
+- haut = max(O, C) × (1 + largeur × bruit) ; bas = min(O, C) × (1 − largeur × bruit) ;
+- en achat, sortie si le prix ≤ max(haut, prix moyen) ; en vente, sortie si le prix ≥ min(bas, prix moyen) ; à plat, achat
+  au-dessus du haut, vente sous le bas. Le prix moyen est la moyenne des clôtures de 5 minutes depuis 18 h 00 (pas de
+  volume dans ces données, donc pas de VWAP) ;
+- tout est fermé à l'ouverture de la barre de 3 h 00 (ouverture européenne) ;
+- nuit complète : barre de 18 h 00 et les 17 contrôles présents ; on ne trade que les nuits complètes.
+
+**Stratégies** : Nasdaq (MNQ), S&P 500 (MES), or (MGC) × largeur {1,0 (celle du bot) ; 1,4 (milieu du plateau de
+l'usine)} = **6**. Frais d'un aller-retour : ceux de la machine 7.
+
+**Tri** : celui de la machine 7. Exploration 2012 - 2022 (t ≥ 2, placebo de 1 000 sens au hasard battu à 95 %, 2
+sous-périodes sur 3, Benjamini-Hochberg 10 % sur 6), puis coffre 2023 → 2 octobre 2026 une seule fois (Bonferroni, 3 années
+sur 4), puis les vrais futures avant tout compte.
