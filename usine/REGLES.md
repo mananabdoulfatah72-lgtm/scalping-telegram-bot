@@ -316,6 +316,18 @@ trop long. La question qui compte est plus simple : **le tri fait-il mieux qu'un
 - **Pour information** : le même tirage sur 2023 - 2026 seul.
 - **W1 est retenu si W-A et W-B passent.** Sinon, il reste un Supertrend sans avantage prouvé de plus.
 
+**Résultat (20 novembre 2026, `resultats/2026-11-20/w1.json`, `w1_usine.py`) : W1 est retenu.**
+- Contrôle : t de 3,07 par séance sur 2017 - 2026 (3,13 publié), 52 % des signaux gardés.
+- **W-A passe** : sur 2017 - 2026, W1 gagne +81 725 $ (1 MNQ, sans limite du jour) avec 3 083 trades sur 5 897 ; des tirages
+  au hasard du même nombre de trades gagnent +37 528 $ en médiane ; **0,17 % des tirages font aussi bien**. Le Supertrend
+  complet gagne +66 291 $ : les trades écartés perdaient.
+- **W-B passe** : +8 311 $ par an ; +17 509 $ depuis 2023.
+- **Réserve, pour information** : sur 2023 - 2026 seul, le tri ne bat pas le hasard (16,6 % des tirages font aussi bien) et
+  W1 gagne autant que le Supertrend complet (+17 509 $ contre +17 226 $), avec moitié moins de trades. W1 a aussi été choisi
+  parmi plusieurs variantes de l'arène : ce test ne corrige pas ce choix.
+- **Sur le compte de l'utilisateur** (52 000 $, plancher 50 100 $, 1 MNQ, limite 400 $, départs depuis 2023, 22 séances) :
+  W1 atteint le premier retrait dans 18 % des cas et perd le compte dans 8 % ; le Supertrend, 34 % et 20 %. G2 : 19 % et 2 %.
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.
