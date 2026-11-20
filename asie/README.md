@@ -333,3 +333,28 @@ Code : `asie/machine9.py`.
   tout perd nettement. La meilleure, N2, rapporterait environ 185 $ par an pour un MNK.
 - Code corrigé avant ce calcul (erreur de programmation, pas de règle) : les règles N2 et N2v prenaient le placebo des
   heures décalées au lieu des 1 000 tirages du sens fixés ci-dessus ; le premier lancement a été arrêté avant tout résultat.
+
+# Machine 10 : deux familles jamais testées, aux frais d'aujourd'hui (règles fixées le 20 novembre 2026, avant tout calcul)
+
+**Pourquoi ces deux-là.** Elles sont nouvelles dans le projet, alors que les variantes proches ont déjà été vues avant frais :
+- **B, l'élan de fin de séance à l'heure de règlement propre à chaque marché** (Baltussen, Da, Lammers, Martens, JFE 2021 :
+  « partout », dans plus de 60 futures, la journée prédit sa dernière demi-heure). L'étude large l'a testé à 15 h 30 - 16 h
+  pour tous les marchés, sur des ETF, et l'a vu avant frais sur l'or (t +2,3 puis +3,0) et les obligations longues. Mais
+  l'or se règle à 13 h 30, le pétrole à 14 h 30, les devises de la CME à 15 h (New York) : à ces heures, jamais testé.
+- **T, le retournement de l'ouverture de Tokyo après la séance américaine**, net sur le Nikkei avant frais (machine 9,
+  t 5,45), mais trop cher en Micro Nikkei. Ici, le même signal sur des contrats bien moins chers à l'heure de Tokyo.
+
+**Frais décisifs : ceux d'aujourd'hui**, comme dans `etude_large/pistes/` (or à Londres) : 2 ticks de glissement plus les
+commissions, sur le plus petit contrat raisonnable, divisés par la valeur du contrat au dernier prix avant le 2 octobre
+2026 (calculé par le code). MNQ 3 $ ; MES 4 $ ; MGC 4 $ ; SIL 12 $ ; CL 25 $ (le Brent HistData sert d'approximation du
+WTI, qui s'arrête en 2023) ; 6E, 6B, 6J, 6S 17,50 $ ; 6A, 6C, 6N 15 $.
+
+| Famille | Règle | Marchés |
+|---|---|---|
+| T | S = variation du S&P 500 de 16 h à 16 h (New York) sur la dernière séance américaine finie avant 9 h à Tokyo ; position contre S de 9 h 00 à 9 h 30 (heure de Tokyo, jours de Bourse de Tokyo) | MNQ, MES, MGC (3) |
+| B | R = variation du règlement de la veille à 30 minutes avant le règlement ; position dans le sens de R pendant les 30 dernières minutes (jours de Bourse de New York). Règlements : or 13 h 30, argent 13 h 25, pétrole 14 h 30, devises 15 h 00 | or, argent, pétrole, euro, livre, yen, dollar australien, dollar canadien, franc suisse, dollar néo-zélandais (10) |
+
+**Tri** : celui des machines 7 à 9. Exploration 2012 - 2022 : t ≥ 2 après frais, placebo de 1 000 tirages du sens battu à
+95 %, 2 sous-périodes positives sur 3, Benjamini-Hochberg à 10 % sur les 13. Coffre 2023 → 2 octobre 2026, ouvert une
+seule fois : seuil de Bonferroni, 3 années positives sur 4. (Le coffre de l'or a déjà été ouvert une fois, pour une autre
+règle, celle de 18 h : cette deuxième lecture est signalée.) Code : `asie/machine10.py`.
