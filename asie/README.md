@@ -390,3 +390,25 @@ par trade) et l'or à son règlement les grands jours (t 1,92).
 **À retenir** : le Nikkei à l'ouverture de Tokyo reste positif sur des années jamais vues (+6,2 pb nets par trade, environ
 +690 $ par an pour un MNK), mais pas assez régulier pour être prouvé. C'est un candidat à suivre en papier, si Bulenox
 ouvre le MNK, pas une stratégie.
+
+# Machine 12 : l'élan à l'heure de règlement de 7 marchés jamais testés à ces heures (règles fixées le 20 novembre 2026, avant tout calcul)
+
+**Pourquoi.** Les machines 10 et 11 ont vu l'élan de fin de séance à l'heure de règlement sur l'argent, le pétrole, l'or et
+l'euro (avant frais), plus fort les grands jours. Sept autres marchés de la CME n'ont jamais été testés à leur heure de
+règlement : cuivre (HG, 13 h 00), platine (PL, 13 h 05), essence (RB, 14 h 30), gaz naturel (NG, 14 h 30), obligations à
+30, 10 et 5 ans (ZB, ZN, ZF, 15 h 00), heures de New York.
+
+**Données** : ETF de ces marchés (CPER, PPLT, UGA, UNG, TLT, IEF, IEI ; Alpaca, 5 minutes, 9 h 30 - 16 h, 2016 - 2026,
+branche `claude/affectionate-turing-tnz0mn`). Prix à une heure = clôture de la dernière barre finie à cette heure (dernier
+prix connu de la séance, les ETF de matières premières étant peu échangés).
+
+**Règle** : R = variation du règlement de la veille à 30 minutes avant le règlement ; position dans le sens de R pendant
+les 30 dernières minutes. Deux versions : tous les jours, et seulement les grands jours (|R| ≥ 1,5 fois sa moyenne des
+60 jours précédents, comme la machine 11). 7 × 2 = **14 règles**.
+
+**Frais d'aujourd'hui** (2 ticks plus commissions, sur la valeur du future le 21 octobre 2026) : HG 30 $, PL 15 $, RB
+13,40 $, NG 25 $, ZB 67,50 $, ZN 36,25 $, ZF 20,60 $.
+
+**Tri** : exploration 2016 - 2022 (sous-périodes 2016 - 2018, 2019 - 2020, 2021 - 2022 ; t ≥ 2 après frais, placebo de
+1 000 tirages du sens battu à 95 %, 2 sous-périodes sur 3, Benjamini-Hochberg à 10 % sur les 14), puis coffre 2023 →
+2 octobre 2026 ouvert une seule fois pour les survivantes (Bonferroni, 3 années positives sur 4). Code : `asie/machine12.py`.
