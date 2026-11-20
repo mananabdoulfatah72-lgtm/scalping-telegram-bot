@@ -81,7 +81,7 @@ def jouer(s, M, debut, fin):
     e, x = M9.prix(M, np.where(ok, i_e, -1)), M9.prix(M, np.where(ok, i_s, -1))
     ok &= np.isfinite(e) & np.isfinite(x)
     brut = sens[ok] * (x[ok] / e[ok] - 1)
-    return pd.DataFrame({"jour": j[ok], "brut": brut, "r": brut - np.array([M.cout(v) for v in e[ok]]), "e": e[ok]})
+    return pd.DataFrame({"jour": j[ok], "brut": brut, "r": brut - np.array([M.cout(v) for v in e[ok]]), "e": e[ok], "signal": mv[ok]})
 
 
 def strategies():

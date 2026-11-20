@@ -1,0 +1,16 @@
+Machine 10, exploration 2012 - 2022 : 13 regles ; survivantes : 0
+
+regle | frais (pb) | brut moyen (pb, t) | net moyen (pb) | t net | p placebo | BH 10 % | sous-periodes (pb) | jours | $ pour 1 contrat | survivante
+T Nasdaq 100 (MNQ) : ouverture de Tokyo (9 h 00 -> 9 h 30) contre la seance du S&P 500 | 0.49 | +0.76 (+3.20) | +0.27 | +1.12 | 0.001 | oui | +257.7 / +69.8 / +337.8 | 2505 | +864 | 
+B Argent (SIL) : elan de fin de seance, 12:55 -> 13:25 (New York) | 1.96 | +2.55 (+4.83) | +0.58 | +1.11 | 0.000 | oui | +1202.7 / -642.8 / +1049.1 | 2751 | +6,729 | 
+B Petrole (CL ; Brent HistData en approximation) : elan de fin de seance, 14:00 -> 14:30 (New York) | 2.45 | +2.76 (+2.66) | +0.31 | +0.30 | 0.005 | oui | +2482.0 / -415.0 / -1262.5 | 2569 | -3,248 | 
+T S&P 500 (MES) : ouverture de Tokyo (9 h 00 -> 9 h 30) contre la seance du S&P 500 | 1.04 | +0.85 (+3.81) | -0.19 | -0.87 | 0.000 | oui | -92.3 / -255.2 / -114.8 | 2375 | -824 | 
+B Or (MGC) : elan de fin de seance, 13:00 -> 13:30 (New York) | 0.96 | +0.66 (+2.50) | -0.29 | -1.10 | 0.003 | oui | +853.3 / -973.5 / -685.0 | 2761 | -1,209 | 
+T Or (MGC) : ouverture de Tokyo (9 h 00 -> 9 h 30) contre la seance du S&P 500 | 0.96 | -0.24 (-1.10) | -1.20 | -5.45 | 0.840 | non | -1275.5 / -1515.9 / -213.2 | 2509 | -4,000 | 
+B Euro (6E) : elan de fin de seance, 14:30 -> 15:00 (New York) | 1.24 | +0.36 (+2.62) | -0.89 | -6.45 | 0.004 | oui | -896.3 / -960.4 / -584.5 | 2757 | -36,376 | 
+B Franc suisse (6S) : elan de fin de seance, 14:30 -> 15:00 (New York) | 1.16 | +0.13 (+0.89) | -1.03 | -6.76 | 0.191 | non | -587.7 / -1452.3 / -789.9 | 2753 | -36,392 | 
+B Dollar australien (6A) : elan de fin de seance, 14:30 -> 15:00 (New York) | 2.17 | +0.23 (+1.22) | -1.93 | -10.05 | 0.129 | non | -2261.0 / -1849.8 / -1208.1 | 2754 | -42,756 | 
+B Livre (6B) : elan de fin de seance, 14:30 -> 15:00 (New York) | 2.12 | +0.21 (+1.40) | -1.91 | -12.62 | 0.058 | non | -2178.2 / -2298.9 / -792.5 | 2760 | -47,073 | 
+B Dollar neo-zelandais (6N) : elan de fin de seance, 14:30 -> 15:00 (New York) | 2.68 | +0.01 (+0.04) | -2.67 | -13.25 | 0.461 | non | -2820.2 / -2636.6 / -1897.2 | 2755 | -53,224 | 
+B Dollar canadien (6C) : elan de fin de seance, 14:30 -> 15:00 (New York) | 2.13 | +0.06 (+0.39) | -2.08 | -14.30 | 0.363 | non | -2109.1 / -2076.3 / -1531.7 | 2753 | -46,469 | 
+B Yen (6J) : elan de fin de seance, 14:30 -> 15:00 (New York) | 2.21 | -0.00 (-0.02) | -2.21 | -15.51 | 0.510 | non | -2439.2 / -2347.9 / -1311.1 | 2755 | -72,788 | 

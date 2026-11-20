@@ -89,7 +89,8 @@ def jouer(s, M, debut, fin, decalage=0):
     ok &= np.isfinite(e) & np.isfinite(x)
     brut = sens[ok] * (x[ok] / e[ok] - 1)
     cout = np.array([M.cout(v) for v in e[ok]]) if ok.any() else np.array([])
-    return pd.DataFrame({"jour": j[ok], "brut": brut, "r": brut - cout, "e": e[ok]})
+    sig = mv[ok] if (s.get("signal") is not None or s.get("signal_sp")) else np.full(int(ok.sum()), np.nan)
+    return pd.DataFrame({"jour": j[ok], "brut": brut, "r": brut - cout, "e": e[ok], "signal": sig})
 
 
 # ------------------------------------------------------------------ famille Z : la zone de bruit pendant la seance de Tokyo

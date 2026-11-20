@@ -358,3 +358,19 @@ WTI, qui s'arrête en 2023) ; 6E, 6B, 6J, 6S 17,50 $ ; 6A, 6C, 6N 15 $.
 95 %, 2 sous-périodes positives sur 3, Benjamini-Hochberg à 10 % sur les 13. Coffre 2023 → 2 octobre 2026, ouvert une
 seule fois : seuil de Bonferroni, 3 années positives sur 4. (Le coffre de l'or a déjà été ouvert une fois, pour une autre
 règle, celle de 18 h : cette deuxième lecture est signalée.) Code : `asie/machine10.py`.
+
+# Machine 11 : les mêmes effets, seulement les jours de grand mouvement (règle fixée le 20 novembre 2026, avant ce calcul)
+
+**Née de l'exploration des machines 9 et 10, et dite comme telle.** Elles ont trouvé des effets réels avant frais (Nikkei
+à l'ouverture de Tokyo t 5,45 et en fin de séance t 3,75 ; MNQ et MES à l'ouverture de Tokyo t 3,2 et 3,8 ; argent t 4,8,
+pétrole t 2,7, or t 2,5, euro t 2,6 à l'heure de règlement), tous plus petits que les frais par trade. Si ces effets
+viennent de flux de couverture ou de rééquilibrage, ils sont proportionnels à la taille du mouvement : ne jouer que les
+grands mouvements doit augmenter le gain par trade, à frais égaux.
+
+**Règle** : les 8 règles ci-dessus, inchangées, mais seulement quand |signal| ≥ 1,5 fois la moyenne de |signal| sur les 60
+jours de signal précédents (calculée sans le jour même). Frais d'aujourd'hui (machine 10) ; Micro Nikkei : 7 $ par
+aller-retour (2 ticks de 2,50 $ et 2 $ de commission supposés), au dernier prix.
+
+**Tri** : exploration 2012 - 2022 (les versions sans condition y ont déjà été vues : c'est la limite de cette machine),
+Benjamini-Hochberg à 10 % sur les 8, puis **le coffre 2023 → 2 octobre 2026, jamais ouvert pour ces marchés à ces heures,
+décide** : seuil de Bonferroni, 3 années positives sur 4. Code : `asie/machine11.py`.
