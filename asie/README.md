@@ -189,3 +189,24 @@ Nasdaq ou un autre marché. Mesure de la bougie de 18 h 00 → 18 h 05 (New York
   des 5 premières minutes ne peut pas être jugé.
 - **Pour le juger** : il faut les vrais prix d'achat et de vente à 18 h 00 (Rithmic dans Quantower, en papier), sur le MGC,
   le MNQ et une micro-devise.
+
+## Vérification sur de vrais prix de futures (fixée le 20 novembre 2026, avant le calcul)
+
+- **Données** : Yahoo Finance, contrats continus de la CME (prix des transactions), heure de New York, fichiers
+  `donnees_libres/yahoo/` de la branche `claude/affectionate-turing-tnz0mn` :
+  - barres de 5 minutes du 12 août au 21 octobre 2026 ;
+  - barres d'une heure du 30 mai 2024 au 21 octobre 2026.
+  Le contrat continu n'est pas ajusté aux changements d'échéance : un trade du soir n'est touché que si Yahoo change
+  d'échéance pendant ce trade.
+- **Marchés** : or (MGC, et GC pour contrôle), Nasdaq (MNQ), S&P 500 (MES), euro (6E), yen (6J : yen contre dollar),
+  dollar australien (6A), livre (6B).
+- **Test 1, les 5 premières minutes** (description) : achat à l'ouverture de la barre de 18 h 00, vente à l'ouverture de
+  celle de 18 h 05, du lundi au jeudi soir. Moyenne, part des soirs en hausse, t. Sur les soirs communs (12 août →
+  2 octobre 2026), la même mesure sur les cotations HistData. Si HistData monte et pas les futures, l'effet des 5 premières
+  minutes est un artefact de cotation.
+- **Test 2, l'or du soir sur de vrais prix (décisif pour l'or)** : achat de l'or (MGC) à l'ouverture de la barre de 18 h,
+  vente à l'ouverture de celle de 23 h (la plus proche de 23 h 30 en barres d'une heure), du lundi au jeudi soir, 30 mai
+  2024 → 21 octobre 2026, frais d'un MGC (4 $ l'aller-retour pour 10 onces). **Confirmé** si : t ≥ 1,64, et moins de 5 %
+  des mêmes fenêtres de 5 heures, commencées à toutes les autres heures pleines (à plus de 2 heures de 18 h), font aussi
+  bien. Sinon, la piste de l'or est fermée.
+- Pour information : Nasdaq et S&P 500, 18 h → 19 h sur les barres d'une heure.
