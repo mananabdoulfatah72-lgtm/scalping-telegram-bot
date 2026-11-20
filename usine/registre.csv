@@ -8,3 +8,10 @@ date,idee,titre,pf_dev,reglage_dev,plateau,centre,p_porte2,pf_hors_echantillon,g
 2026-11-16,fin,Mouvement de fin de seance,1.076,"{""debut"": 360, ""seuil"": 0.01}",False,"{""debut"": 360, ""seuil"": 0.01}",,,,,,rejetee a la porte 1
 2026-11-16,zone_large,"Zone de bruit, bande large",1.022,"{""k"": 2.4, ""jours"": 30}",True,"{""k"": 2.2, ""jours"": 30}",0.132,,,,,rejetee a la porte 2
 2026-11-16,kronos,"Kronos-small, 100 trajectoires (periode jamais vue)",,"{""seuil"": 0.6, ""horizon"": 24, ""trajectoires"": 100}",,,,0.995,-3305,,,rejete (K1 t -0.61 ; K2 p 0.708 ; K3 -3305 $ par an)
+2026-11-20,tv_squeeze,Squeeze Momentum (LazyBear),1.008,"{""n"": 15, ""mkc"": 1.0}",True,"{""n"": 15, ""mkc"": 1.25}",0.115,,,,,rejetee a la porte 2
+2026-11-20,tv_utbot,UT Bot Alerts (QuantNomad),1.012,"{""a"": 3.0, ""c"": 30}",True,"{""a"": 3.0, ""c"": 30}",0.001,1.005,4384,0.210,,rejetee a la porte 4
+2026-11-20,tv_ssl,SSL Channel (ErwinBeckers),1.003,"{""n"": 30}",True,"{""n"": 30}",,,,,,rejetee a la porte 1
+2026-11-20,tv_rangefilter,"Range Filter Buy and Sell (DonovanWall, guikroth)",1.012,"{""p"": 150, ""m"": 3.0}",True,"{""p"": 150, ""m"": 3.0}",0.001,1.004,3889,0.560,,rejetee a la porte 4
+2026-11-20,tv_wavetrend,WaveTrend (LazyBear),1.009,"{""n1"": 8, ""n2"": 28}",False,"{""n1"": 8, ""n2"": 35}",,,,,,rejetee a la porte 1
+2026-11-20,tv_hull,Hull Suite (InSilico),1.006,"{""n"": 144}",True,"{""n"": 144}",0.015,,,,,rejetee a la porte 2
+2026-11-20,tv_chandelier,Chandelier Exit (everget),1.009,"{""n"": 14, ""mult"": 3.0}",True,"{""n"": 22, ""mult"": 3.0}",0.024,,,,,rejetee a la porte 2
