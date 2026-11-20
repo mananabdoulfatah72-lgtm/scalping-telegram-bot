@@ -385,6 +385,25 @@ règle d'adoption fixée avant, donc des indications, pas des validations :
   écart quotidien t +2,43 sur 2015 - 2026 ; mais 36 % de comptes perdus en 22 séances depuis le compte actuel, contre 22 %.
   Ajouté au bot en option décochée (`bot3en1/SUPERTREND.md`).
 
+## Moins de baisses pour le Supertrend avec renfort (fixé le 20 novembre 2026, avant tout calcul)
+
+L'utilisateur refuse les baisses de juillet - septembre 2026 (−2 945, −2 343, −1 042 $). Base : Supertrend 10-3 + renfort
++ arrêt après bougie folle, 1 MNQ de base, limite du jour 300 $. Cinq filtres de régime, réglages de manuel, chacun calculé
+avec les seules données d'avant, plus un portefeuille :
+
+| Variante | Règle |
+|---|---|
+| F1 tendance du jour | Trades seulement dans le sens de la tendance de fond : clôture de la veille au-dessus (achats seulement) ou au-dessous (ventes seulement) de la moyenne de ses 20 clôtures. |
+| F2 accord des unités de temps | Position seulement quand le Supertrend 10-3 en bougies de 15 minutes est dans le même sens ; à plat sinon. |
+| F3 courbe de gains | La journée n'est tradée que si la base a gagné sur les 20 séances précédentes. |
+| F4 marché directionnel | La journée n'est tradée que si l'efficacité moyenne des 10 séances précédentes (\|clôture − ouverture\| ÷ (haut − bas)) dépasse sa médiane des 250 séances d'avant. |
+| F5 marché agité | La journée n'est tradée que si l'amplitude de la veille (en %) dépasse sa médiane des 100 séances d'avant. |
+| P portefeuille | La base plus la zone de bruit du bot (1 MNQ, limite 1 000 $), gains additionnés chaque jour. |
+
+**Une variante est retenue** si, sur 2015 - 2022 **et** sur 2023 - 19 novembre 2026 : sa pire baisse est au moins 20 % plus
+petite que celle de la base, elle garde au moins 80 % du gain annuel de la base, et, depuis le compte de l'utilisateur
+(22 séances, départs depuis 2023), elle perd moins de comptes que la base. Code : `usine/filtres_st.py`.
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.
