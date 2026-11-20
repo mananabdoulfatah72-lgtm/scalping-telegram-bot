@@ -165,3 +165,27 @@ ne sont pas un prix auquel on peut acheter. **Ce n'est pas validé comme tradabl
 semaines en papier sur le MGC, en notant chaque soir le vrai prix d'achat à 18 h 00 (minuit à Paris) et le prix de
 23 h 30, puis `usine/rapprochement.py`. Avec 1 900 $ de marge sur le compte, 1 MGC est déjà trop gros sans limite : son
 pire soir (−1 358 $) en mangerait les trois quarts.
+
+## Les 5 premières minutes (20 novembre 2026, pour information) : `cinq_minutes.txt`
+
+Question de l'utilisateur : un bot qui ne trade que les 5 minutes qui suivent minuit (heure de Paris), sur l'or, le
+Nasdaq ou un autre marché. Mesure de la bougie de 18 h 00 → 18 h 05 (New York), achat :
+
+| Marché | 2012 - 2022 : brut moyen, % positifs | 2023 - 2026 : brut moyen, % positifs | Frais |
+|---|---|---|---|
+| Nasdaq 100 | −0,13 pb, 46 % | +0,33 pb, 52 % | 0,8 à 2,9 pb |
+| S&P 500 | −0,26 pb, 43 % | −0,06 pb, 49 % | 1,6 à 3,8 pb |
+| Or | +1,40 pb, 63 % | +3,34 pb, 73 % | 2 pb |
+| Dollar australien | +1,08 pb, 63 % | +1,65 pb, 69 % | 1,5 pb |
+| Euro | +0,40 pb, 58 % | +0,93 pb, 68 % | 1,5 pb |
+| Livre | +0,60 pb, 60 % | +1,25 pb, 68 % | 1,5 pb |
+| Yen (dollar contre yen) | +0,13 pb, 50 % | +0,51 pb, 58 % | 1,5 pb |
+
+- **Nasdaq et S&P 500 : rien**, avant comme après frais. Le sens de la dernière heure de New York n'y change rien.
+- **Sur l'or et les devises, le prix acheteur monte presque toujours dans ces 5 minutes, sur tous les marchés en même
+  temps**, y compris le dollar contre le yen, alors qu'un vrai mouvement du dollar ferait baisser l'un quand les autres
+  montent. C'est la signature de l'écart entre acheteurs et vendeurs qui se resserre : le prix acheteur remonte vers le
+  milieu de la fourchette, sans que personne ait pu acheter à ce prix. Avec ces données (prix acheteur seulement), un bot
+  des 5 premières minutes ne peut pas être jugé.
+- **Pour le juger** : il faut les vrais prix d'achat et de vente à 18 h 00 (Rithmic dans Quantower, en papier), sur le MGC,
+  le MNQ et une micro-devise.
