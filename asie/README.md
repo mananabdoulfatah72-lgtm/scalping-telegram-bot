@@ -277,3 +277,37 @@ La nuit, un prix qui sort de sa bande habituelle revient plus souvent qu'il ne c
 américaine. Le mécanisme de la zone (couverture des teneurs de marché, rééquilibrage des ETF à levier) vit pendant les
 heures de New York. Jouer l'inverse (revenir vers la bande) gagnerait 1 à 2 points de base avant frais, moins que les
 frais de ses 2 trades par nuit : ce n'était pas une règle fixée d'avance, ce n'est donc qu'une indication.
+
+# Machine 9 : le Nikkei pendant la séance de Tokyo (règles fixées le 20 novembre 2026, avant tout calcul)
+
+**Pourquoi.** La recherche du 20 novembre (`reports/Anomalies de la session asiatique.md`) ferme presque toutes les pistes
+de la nuit (dérive de Boyarchenko nulle depuis 2021, fixing de Tokyo plus petit que les frais, BOJ arrêtée, or seulement sur
+cotations). Il reste le Nikkei pendant sa propre séance, jamais testé dans le projet : momentum de fin de séance (Baltussen,
+Da, Lammers, Martens, JFE 2021 ; BOJ 2016 : les fonds à levier suivent la journée à la clôture), ouverture de Tokyo qui
+sur-réagit à la séance américaine (Finance Research Open 2026), et la zone de bruit (seule source validée du projet) jouée
+dans la séance « maison » du Nikkei. Contrat visé : Micro Nikkei en dollars (MNK, 0,50 $ par point, CME), **à condition que
+Bulenox l'ouvre** (sa FAQ ne le cite pas).
+
+**Données** : HistData JPXJPY (Nikkei 225, cotations, 5 minutes, UTC, 2012 → 16 octobre 2026, branche
+`claude/affectionate-turing-tnz0mn`) ; S&P 500 HistData (`usa500idxusd`) pour le signal de N2. Horloge vérifiée avant le
+calcul : la barre la plus agitée est celle de 0 h 00 UTC (9 h 00 à Tokyo) en hiver comme en été.
+
+**Conventions** : jours de Bourse de Tokyo (lundi - vendredi, hors fériés japonais et 31 décembre - 3 janvier) ;
+C = clôture de la Bourse de Tokyo (15 h 00 avant le 5 novembre 2024, 15 h 30 depuis) ; C + 15 min = fin de la séance de
+jour des futures d'Osaka ; prix = ouverture de la barre de 5 minutes qui commence à l'heure dite ; ni stop ni seuil ;
+frais décisifs 2,8 points de base par aller-retour (un MNK à 50 000 points) ; pour information, les mêmes calculs avec
+14 points d'indice (le vrai coût d'un MNK à chaque date) et avec des frais doublés.
+
+| Règle | Signal | Trade |
+|---|---|---|
+| N1 | R = variation de C + 15 min la veille à C − 15 min | dans le sens de R, de C − 15 min à C + 15 min |
+| N1v | variation de C + 15 min la veille à 9 h 30 (Gao et al.) | même fenêtre que N1 |
+| N2 | S = variation du S&P 500 de 16 h à 16 h (New York) sur la dernière séance américaine finie avant 9 h à Tokyo | contre S, de 9 h 00 à 9 h 30 (Tokyo) |
+| N2v | même S | dans le sens de S, de C − 15 min à C + 15 min |
+| Z | zone de bruit de la machine 8 à l'horloge de Tokyo : O = 9 h 00, C' = clôture de Tokyo de la veille, bruit moyen sur 14 séances, largeur 1,0, prix moyen = moyenne des clôtures depuis 9 h | contrôles toutes les 30 min de 9 h 30 à C − 30 min (pas d'entrée au dernier), tout fermé à C |
+
+**Tri** (celui des machines 7 et 8) : exploration 2012 - 2022, t ≥ 2 après frais (gains sommés par jour), placebo de
+1 000 tirages au hasard du sens de chaque trade battu à 95 %, positive dans 2 sous-périodes sur 3, Benjamini-Hochberg à
+10 % sur les 5 ; puis coffre 2023 → 2 octobre 2026, ouvert une seule fois : seuil de Bonferroni, 3 années positives sur 4.
+Une survivante devra ensuite passer de vrais prix du Nikkei (que le projet n'a pas) et la vérification chez Bulenox.
+Code : `asie/machine9.py`.
