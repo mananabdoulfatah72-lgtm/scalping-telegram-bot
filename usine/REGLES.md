@@ -371,6 +371,20 @@ Lecture : sortir dès que l'élan faiblit (A3) divise par deux les comptes perdu
 moitié du gain. Le Supertrend gagne avec quelques longues tendances, et une sortie à 1 ATR du meilleur cours les coupe. A1 et
 A2 font mieux depuis 2023, mais sur 2015 - 2026 l'écart ne se distingue pas du bruit (t 0,31 et −0,11).
 
+## Mesures à la demande du 20 novembre 2026 (pas des tests fixés d'avance)
+
+L'utilisateur demande ce qui aurait fait mieux que le Supertrend sur le mois du 13 octobre au 19 novembre 2026. Mesures sans
+règle d'adoption fixée avant, donc des indications, pas des validations :
+- `comparaison_mois.py` : tous les bots de l'usine (Supertrend et ses 3 variantes, zone, 7 indicateurs TradingView avec
+  leur réglage par défaut et celui de l'usine, ORB, veille, gap, fin de séance, momentum) ;
+- `familles_tendance.py` : 9 familles classiques de suivi de tendance jamais codées (EMA 9/21, MACD, Donchian 20,
+  Parabolic SAR, Keltner, ADX, VWAP, Heikin-Ashi, Supertrend en 15 minutes), réglages de manuel. **Aucune ne fait mieux
+  que le Supertrend 10-3, ni sur le mois ni sur 2015 - 2026** ;
+- `renfort_st.py` : le « scalpeur qui s'empile » (1 MNQ de plus à +1 ATR, une fois par trade). **Seule amélioration nette
+  trouvée** : +9 989 $ sur le mois avec l'arrêt après bougie folle, contre +4 849 $ ; +8 455 $ par an contre +4 435 $ ;
+  écart quotidien t +2,43 sur 2015 - 2026 ; mais 36 % de comptes perdus en 22 séances depuis le compte actuel, contre 22 %.
+  Ajouté au bot en option décochée (`bot3en1/SUPERTREND.md`).
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.

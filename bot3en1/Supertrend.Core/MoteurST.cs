@@ -22,6 +22,12 @@ namespace SupertrendNQ
         public const int N = 390, DERNIERE_ENTREE = 360, A_PLAT = 384, DERNIERE_DECISION = 75;
         public int Periode = 10;
         public double Multiple = 3;
+        /// <summary>Renfort (usine/renfort_st.py) : 1 unite de plus quand une cloture de 5 minutes est a 1 ATR ou plus en gain depuis
+        /// l'entree, une seule fois par trade, pas apres 15 h 30 ; gardee jusqu'a la sortie du Supertrend.</summary>
+        public bool Renfort = false;
+        /// <summary>Arret apres une bougie folle (usine/agents_st.py, A2) : une bougie de 5 minutes plus grande que 3 fois l'ATR de la
+        /// bougie d'avant ferme la position et arrete les trades jusqu'au lendemain.</summary>
+        public bool ArretBougieFolle = false;
 
         // indicateur, continu d'une seance a l'autre
         long nb;
@@ -36,19 +42,27 @@ namespace SupertrendNQ
         public int Position { get; private set; }                    // position voulue
         public double Entree { get; private set; } = double.NaN;     // prix d'entree de la position en cours
         public int MinuteEntree { get; private set; } = -1;
+        public int Unites { get; private set; }                      // 1, ou 2 apres le renfort
+        public double EntreeRenfort { get; private set; } = double.NaN;
+        /// <summary>Position voulue en unites (sens x 1 ou 2) : a multiplier par la taille du compte.</summary>
+        public int PositionVoulue => Position * Math.Max(Unites, 1);
         public double RealiseJour { get; private set; }              // $ pour 1 MNQ, frais de 3 $ par aller-retour compris
         public readonly List<Trade> Trades = new List<Trade>();
         double h5, l5, dernierC = double.NaN;
         int executer = -1, sensAttendu, sortieAttendue, bloque;     // bloque : sens abandonne, pas repris avant un retournement              // decision en attente de l'ouverture de la minute `executer`
         double entreeSortie;
         int minuteEntreeSortie;
+        int minuteRenfort = -1, minuteRenfortSortie = -1;
+        double entreeRenfortSortie = double.NaN;
+        bool renfortAttendu;
+        string raisonSortie = "retournement du Supertrend";
         public bool ActionEnAttente => executer >= 0;
 
         /// <summary>Nouvelle seance : aucune position (le bot est a plat a 15 h 55).</summary>
         public void DebutSeance(DateTime jour, bool trader)
         {
             Jour = jour.Date; Trader = trader; Position = 0; Entree = double.NaN; MinuteEntree = -1; RealiseJour = 0;
-            executer = -1; bloque = 0;
+            executer = -1; bloque = 0; Unites = 0; EntreeRenfort = double.NaN; minuteRenfort = -1; renfortAttendu = false;
         }
 
         /// <summary>Fin de la minute m. Une minute absente est recopiee a plat sur la derniere cloture connue.</summary>
@@ -66,11 +80,20 @@ namespace SupertrendNQ
             // decision de la barre precedente : executee a l'ouverture de cette minute
             if (executer == m)
             {
-                if (sortieAttendue != 0) Fermer(sortieAttendue, entreeSortie, minuteEntreeSortie, m, o, s, "retournement du Supertrend");
+                if (sortieAttendue != 0)
+                {
+                    Fermer(sortieAttendue, entreeSortie, minuteEntreeSortie, m, o, s, raisonSortie);
+                    if (!double.IsNaN(entreeRenfortSortie)) Fermer(sortieAttendue, entreeRenfortSortie, minuteRenfortSortie, m, o, s, raisonSortie + ", renfort");
+                }
                 if (sensAttendu != 0)
                 {
                     Entree = o; MinuteEntree = m;
                     s.Add(new Signal { Minute = m, Texte = $"{(sensAttendu > 0 ? "achat" : "vente")} {Heure(m)} a {o:F2} (Supertrend {(sensAttendu > 0 ? "haussier" : "baissier")}, ligne {Ligne:F2})" });
+                }
+                if (renfortAttendu)
+                {
+                    EntreeRenfort = o; minuteRenfort = m; renfortAttendu = false;
+                    s.Add(new Signal { Minute = m, Texte = $"renfort : 1 contrat de plus {Heure(m)} a {o:F2} (le trade gagne deja 1 ATR, {atr:F2} points)" });
                 }
                 executer = -1;
             }
@@ -78,14 +101,24 @@ namespace SupertrendNQ
             else { h5 = Math.Max(h5, h); l5 = Math.Min(l5, l); }
             if (m % 5 == 4)
             {
-                MettreAJour(h5, l5, c);
                 int barre = m / 5;
-                if (Trader && barre <= DERNIERE_DECISION && Sens != 0) Decider(m + 1);
+                bool folle = ArretBougieFolle && Trader && barre > 0 && barre <= DERNIERE_DECISION && nb > Periode && h5 - l5 > 3 * atr;
+                MettreAJour(h5, l5, c);
+                if (folle) StopperJour(m + 1, s);
+                else if (Trader && barre <= DERNIERE_DECISION && Sens != 0)
+                {
+                    Decider(m + 1);
+                    if (Renfort && executer < 0 && Position != 0 && Unites == 1 && m + 1 <= DERNIERE_ENTREE && Position * (c - Entree) >= atr)
+                    {
+                        Unites = 2; renfortAttendu = true; sortieAttendue = 0; sensAttendu = 0; executer = m + 1;
+                    }
+                }
             }
             if (m == A_PLAT && Position != 0 && executer < 0)
             {
                 Fermer(Position, Entree, MinuteEntree, A_PLAT + 1, c, s, "a plat de fin de seance");
-                Position = 0;
+                if (!double.IsNaN(EntreeRenfort)) Fermer(Position, EntreeRenfort, minuteRenfort, A_PLAT + 1, c, s, "a plat de fin de seance, renfort");
+                Position = 0; Unites = 0; EntreeRenfort = double.NaN; minuteRenfort = -1;
             }
             return s;
         }
@@ -120,13 +153,27 @@ namespace SupertrendNQ
                 bloque = 0;
             }
             if (cible == Position) return;
-            sortieAttendue = 0; sensAttendu = 0;
+            sortieAttendue = 0; sensAttendu = 0; entreeRenfortSortie = double.NaN; renfortAttendu = false;
             if (Position != 0)
             {
                 sortieAttendue = Position; entreeSortie = Entree; minuteEntreeSortie = MinuteEntree;
-                Position = 0; Entree = double.NaN; MinuteEntree = -1;
+                entreeRenfortSortie = EntreeRenfort; minuteRenfortSortie = minuteRenfort; raisonSortie = "retournement du Supertrend";
+                Position = 0; Unites = 0; Entree = double.NaN; MinuteEntree = -1; EntreeRenfort = double.NaN; minuteRenfort = -1;
             }
-            if (m <= DERNIERE_ENTREE) { Position = cible; sensAttendu = cible; }
+            if (m <= DERNIERE_ENTREE) { Position = cible; Unites = 1; sensAttendu = cible; }
+            executer = m;
+        }
+
+        /// <summary>Bougie folle : position fermee a l'ouverture de la minute m, plus aucun trade jusqu'au lendemain.</summary>
+        void StopperJour(int m, List<Signal> s)
+        {
+            Trader = false;
+            s.Add(new Signal { Minute = m - 1, Texte = $"bougie folle (plus de 3 fois l'ATR) jusqu'a {Heure(m - 1)} : plus de trade aujourd'hui" });
+            if (Position == 0) return;
+            sortieAttendue = Position; entreeSortie = Entree; minuteEntreeSortie = MinuteEntree;
+            entreeRenfortSortie = EntreeRenfort; minuteRenfortSortie = minuteRenfort; raisonSortie = "bougie folle";
+            sensAttendu = 0; renfortAttendu = false;
+            Position = 0; Unites = 0; Entree = double.NaN; MinuteEntree = -1; EntreeRenfort = double.NaN; minuteRenfort = -1;
             executer = m;
         }
 
@@ -144,12 +191,13 @@ namespace SupertrendNQ
         {
             bloque = Position != 0 ? Position : Sens;
             Position = 0; Entree = double.NaN; MinuteEntree = -1; executer = -1;
+            Unites = 0; EntreeRenfort = double.NaN; minuteRenfort = -1; renfortAttendu = false;
         }
 
         /// <summary>Reprise d'une position deja sur le compte (relance du bot en cours de seance).</summary>
         public void Reprendre(int sens, double entree, int minute)
         {
-            Position = sens; Entree = entree; MinuteEntree = minute; executer = -1;
+            Position = sens; Entree = entree; MinuteEntree = minute; executer = -1; Unites = sens != 0 ? 1 : 0; EntreeRenfort = double.NaN;
         }
 
         /// <summary>Plus de nouvelle position aujourd'hui (limite du jour, objectif) ; la position eventuelle est oubliee.</summary>

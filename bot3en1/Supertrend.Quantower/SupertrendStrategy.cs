@@ -32,6 +32,10 @@ namespace SupertrendNQ
         public double Objectif = 0;
         [InputParameter("Supertrend : ATR sur combien de barres de 5 min (teste : 10)", 60, 2, 100, 1, 0)] public int Periode = 10;
         [InputParameter("Supertrend : multiple de l'ATR (teste : 3)", 61, 0.5, 10, 0.1, 1)] public double Multiple = 3;
+        [InputParameter("Renfort : 1 contrat de plus quand le trade gagne deja 1 ATR (une fois par trade, pas apres 15 h 30, jamais avec le frein MES ; usine/renfort_st.py)", 62)]
+        public bool Renfort = false;
+        [InputParameter("Arret apres une bougie folle : bougie de 5 min de plus de 3 ATR, sortie et plus de trade jusqu'au lendemain (usine/agents_st.py, A2)", 63)]
+        public bool ArretBougieFolle = false;
         [InputParameter("Dossier des donnees de la strategie", 70)] public string Dossier = @"C:\SupertrendNQ";
         [InputParameter("Telegram : jeton du bot (facultatif)", 75)] public string JetonTelegram = "";
         [InputParameter("Telegram : numero de conversation (facultatif)", 80)] public string ChatTelegram = "";
@@ -165,7 +169,8 @@ namespace SupertrendNQ
             }
             var jours = Rejeu.LireJours(Rejeu.Lignes(local), jour.AddDays(-1));
             if (jours.Count < 5) throw new Exception($"historique trop court ({jours.Count} seances)");
-            bot = new MoteurST { Periode = Math.Max(2, Periode), Multiple = Multiple };
+            bot = new MoteurST { Periode = Math.Max(2, Periode), Multiple = Multiple, Renfort = Renfort && !OrdresMES, ArretBougieFolle = ArretBougieFolle };
+            if (Renfort && OrdresMES) Dire("renfort desactive : le frein (ordres sur MES) est coche");
             bot.HeureLocale = m => HeureDeParis(m);
             Rejeu.Jouer(bot, jours);
             bot.Trades.Clear();
@@ -193,7 +198,7 @@ namespace SupertrendNQ
             {
                 // lancement apres 9 h 30 : minutes deja passees rejouees sans ordre
                 Rattraper(Math.Min(m, derniereMinute + 1));
-                int voulue = bot.Position * Taille, compte = PositionReelle(SymboleOrdres);
+                int voulue = bot.PositionVoulue * Taille, compte = PositionReelle(SymboleOrdres);
                 if (bot.Position != 0 && compte == voulue)
                 {
                     if (OrdresMES) entreeES = PrixOuvertureReel(SymboleMES) ?? double.NaN;   // sinon : premier prix du MES recu
@@ -386,7 +391,8 @@ namespace SupertrendNQ
             if (OrdresMES)
                 return double.IsNaN(entreeES) || dernierPrixES <= 0 ? 0 : Taille * (5 * bot.Position * (dernierPrixES - entreeES) - FraisMES);
             if (double.IsNaN(bot.Entree) || dernierPrix <= 0) return 0;
-            return Taille * (2 * bot.Position * (dernierPrix - bot.Entree) - FraisMNQ);
+            double renfort = double.IsNaN(bot.EntreeRenfort) ? 0 : Taille * (2 * bot.Position * (dernierPrix - bot.EntreeRenfort) - FraisMNQ);
+            return Taille * (2 * bot.Position * (dernierPrix - bot.Entree) - FraisMNQ) + renfort;
         }
 
         void Risques(DateTime maintenant)
@@ -442,7 +448,7 @@ namespace SupertrendNQ
         void Aligner()
         {
             if (bot == null) return;
-            int voulu = bot.Position * Taille, reel = PositionReelle(SymboleOrdres);
+            int voulu = bot.PositionVoulue * Taille, reel = PositionReelle(SymboleOrdres);
             if (voulu != 0 && reel == voulu) dernierMNQ = reel;
             if (repriseAttendueJusqua != DateTime.MinValue)
             {
@@ -637,7 +643,7 @@ namespace SupertrendNQ
 
         string EtatTexte() => bot == null ? "" :
             $"Supertrend {(bot.Sens > 0 ? "haussier" : bot.Sens < 0 ? "baissier" : "pas encore pret")}, ligne a {bot.Ligne:F2} ;"
-            + $" position voulue {bot.Position * Taille} {Contrat}"
+            + $" position voulue {bot.PositionVoulue * Taille} {Contrat}"
             + (arretJour ? " ; limite du jour atteinte, pas de trade aujourd'hui" : "")
             + (objectifAtteint ? " ; objectif atteint, plus aucun trade" : "");
 

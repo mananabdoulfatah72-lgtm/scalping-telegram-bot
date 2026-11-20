@@ -16,6 +16,7 @@ using TradingPlatform.BusinessLayer;
 // Scenarios (premier jour seulement) : LIMITE=300 (limite du jour), MAIN=12:00 (position fermee a la main a la fin de cette
 // minute), REPRISE=12:00 (strategie relancee a cette minute, position gardee, historique des transactions fourni),
 // STOP_DE=12:00 STOP_A=12:30 (fichier STOP), OBJECTIF=50500 avec SOLDE=50000 (le solde suit les gains de la strategie).
+// RENFORT=1, FOLLE=1 : options renfort et arret apres une bougie folle (reference : le moteur avec les memes options).
 // MES=1 : reglage du frein coche, ordres sur MES ; ES_MINUTES=<minutes du S&P> donne les prix du MES (sinon NQ / 4). Le
 // resultat de chaque seance annonce par la strategie est compare a celui des remplissages du test (5 $ le point, 4,50 $ de
 // frais par aller-retour).
@@ -38,17 +39,26 @@ class Program
             foreach (var l in lignes.Skip(1)) if (string.CompareOrdinal(l, 0, debut.ToString("yyyy-MM-dd"), 0, 10) < 0) w.WriteLine(l);
         }
         // reference : le moteur rejoue sur tout, trades des jours testes
-        var refb = new MoteurST();
+        bool renfort = Environment.GetEnvironmentVariable("RENFORT") == "1", folle = Environment.GetEnvironmentVariable("FOLLE") == "1";
+        var refb = new MoteurST { Renfort = renfort, ArretBougieFolle = folle };
         Rejeu.Jouer(refb, tous);
         var jours = tous.Keys.Where(j => j >= debut && j <= fin).ToList();
-        var attendus = new List<string>();
+        // position de reference apres chaque minute ou elle change : somme des jambes ouvertes (une sortie et une entree a la
+        // meme minute = un retournement ; le renfort ajoute une jambe)
+        var ev = new SortedDictionary<(DateTime, int), int>();
         foreach (var t in refb.Trades.Where(t => t.Jour >= debut))
         {
-            attendus.Add($"{t.Jour:yyyy-MM-dd} {t.MinuteEntree} -> {t.Sens}");
-            attendus.Add($"{t.Jour:yyyy-MM-dd} {t.MinuteSortie} -> 0");
+            ev[(t.Jour, t.MinuteEntree)] = ev.GetValueOrDefault((t.Jour, t.MinuteEntree)) + t.Sens;
+            ev[(t.Jour, t.MinuteSortie)] = ev.GetValueOrDefault((t.Jour, t.MinuteSortie)) - t.Sens;
         }
-        // une sortie et une entree a la meme minute = un retournement
-        var reference = attendus.GroupBy(x => x.Substring(0, x.IndexOf(" ->"))).Select(g => g.Last()).ToList();
+        var reference = new List<string>(); int posRef = 0; DateTime jourRef = DateTime.MinValue;
+        foreach (var kv in ev)
+        {
+            if (kv.Key.Item1 != jourRef) { jourRef = kv.Key.Item1; posRef = 0; }
+            if (kv.Value == 0) continue;
+            posRef += kv.Value;
+            reference.Add($"{kv.Key.Item1:yyyy-MM-dd} {kv.Key.Item2} -> {posRef}");
+        }
 
         var ny = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
         DateTime Utc(DateTime t) => TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(t, DateTimeKind.Unspecified), ny);
@@ -63,7 +73,8 @@ class Program
             Compte = compte, SymboleNQ = new Symbol { Name = Nom(jours[0], "NQ") }, SymboleMNQ = new Symbol { Name = Nom(jours[0], "MNQ") },
             OrdresMES = mes, SymboleMES = new Symbol { Name = Nom(jours[0], "MES") },
             Dossier = dossier, AdresseHistorique = "http://127.0.0.1:9/absent", Taille = int.Parse(Env("TAILLE") ?? "1", inv),
-            LimiteJour = double.Parse(Env("LIMITE") ?? "0", inv), Objectif = double.Parse(Env("OBJECTIF") ?? "0", inv)
+            LimiteJour = double.Parse(Env("LIMITE") ?? "0", inv), Objectif = double.Parse(Env("OBJECTIF") ?? "0", inv),
+            Renfort = renfort, ArretBougieFolle = folle
         };
         var strat = Nouvelle();
         var tic = typeof(SupertrendStrategy).GetMethod("Tic", BindingFlags.NonPublic | BindingFlags.Instance);

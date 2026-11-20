@@ -51,6 +51,36 @@ Choisi par l'utilisateur pour sa situation (marge d'environ 700 $), après le te
 
 **Pas testé ici :** le vrai Quantower (seulement son imitation), la propriété `OpenPrice`, et les vrais remplissages du MES.
 
+## Deux options : le renfort et l'arrêt après une bougie folle (20 novembre 2026)
+
+Deux cases dans les réglages, **décochées par défaut** (le bot reste alors exactement le même) :
+- « **Renfort** » : quand une clôture de 5 minutes est à 1 ATR ou plus en gain depuis l'entrée, le bot ajoute 1 contrat
+  (Taille contrats de plus), une seule fois par trade, jamais après 15 h 30, et le garde jusqu'à la sortie du Supertrend.
+  C'est le « scalpeur qui s'empile » du bureau de 6 agents. Il ne joue pas quand le frein (MES) est coché.
+- « **Arrêt après une bougie folle** » : si une bougie de 5 minutes est plus grande que 3 fois l'ATR de la bougie d'avant,
+  le bot ferme la position et ne trade plus jusqu'au lendemain (l'agent « actualités »).
+
+**Ce que ça aurait donné** (1 MNQ de base, limite du jour, frais compris ; `usine/renfort_st.py`, `usine/comparaison_mois.py`) :
+
+| Version | 13 oct. - 19 nov. 2026 | Par an, 2015 - 2026 | Par an depuis 2023 | 22 séances depuis 52 000 $ (plancher 50 100 $), départs depuis 2023 : retrait / compte perdu |
+|---|---|---|---|---|
+| Supertrend seul, limite 400 $ | +4 849 $ | +4 435 $ | +1 567 $ | 35 % / 22 % |
+| Supertrend seul, limite 300 $ | +4 175 $ | +4 516 $ | +2 895 $ | 32 % / 14 % |
+| Renfort + bougie folle, limite 400 $ | +9 989 $ | +8 455 $ | +5 025 $ | 47 % / 36 % |
+| Renfort + bougie folle, limite 300 $ | +9 214 $ | +6 593 $ | +4 527 $ | 46 % / 31 % |
+| Pour comparer : 2 MNQ tout le temps, limite 400 $ | +9 697 $ | +8 870 $ | +3 135 $ | 46 % / 50 % |
+
+Le renfort gagne plus que le Supertrend 8 années sur 12 (écart quotidien t +2,43 sur 2015 - 2026) : il n'ajoute un
+contrat qu'aux trades qui marchent, ce qui gagne autant que doubler la taille avec moins de risque. Mais il reste du
+levier : **avec 1 900 $ de coussin, le risque de perdre le compte en un mois passe de 14 - 22 % à 31 - 36 %**, contre
+une chance de retrait qui passe de 32 - 35 % à 46 - 47 %. Ces règles n'ont pas été fixées d'avance dans l'usine : c'est une
+mesure à la demande, pas une validation.
+
+**Vérifications** : le moteur C# refait exactement les trades du calcul Python, jambe par jambe, sur les mêmes minutes
+(13 octobre - 18 novembre, 4 versions : 61, 92, 55 et 83 jambes identiques) ; la stratégie Quantower (imitation de
+l'API) donne 0 différence sur 27 séances avec chaque option, avec 2 contrats de base, et avec le frein MES ; la limite du
+jour se déclenche avec le renfort (vers −326 à −360 $ pour 300 $ dans le test, qui n'envoie que 4 prix par minute).
+
 ## Les chiffres (1 MNQ, au prix d'aujourd'hui, 3 $ de frais par aller-retour)
 
 | Période | Séances | Par séance | t |

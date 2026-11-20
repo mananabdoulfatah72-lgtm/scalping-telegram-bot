@@ -1,0 +1,63 @@
+{
+ "controle_identique_au_supertrend": true,
+ "Supertrend 10-3 (ton bot)": {
+  "mois": 4849,
+  "par_an": 4435,
+  "par_an_2023": 1567,
+  "t": 2.18,
+  "t_difference": 0.0,
+  "pire_baisse": -10411,
+  "retrait_22": 0.364,
+  "perdu_22": 0.185,
+  "retrait_22_2023": 0.348,
+  "perdu_22_2023": 0.219
+ },
+ "Supertrend + renfort (1 MNQ de plus a +1 ATR)": {
+  "mois": 8941,
+  "par_an": 9133,
+  "par_an_2023": 3412,
+  "t": 2.99,
+  "t_difference": 2.89,
+  "pire_baisse": -17775,
+  "retrait_22": 0.503,
+  "perdu_22": 0.326,
+  "retrait_22_2023": 0.44,
+  "perdu_22_2023": 0.403
+ },
+ "Supertrend + arret apres bougie folle (A2)": {
+  "mois": 5485,
+  "par_an": 4364,
+  "par_an_2023": 2905,
+  "t": 2.26,
+  "t_difference": -0.11,
+  "pire_baisse": -9475,
+  "retrait_22": 0.345,
+  "perdu_22": 0.169,
+  "retrait_22_2023": 0.326,
+  "perdu_22_2023": 0.189
+ },
+ "Supertrend + renfort + A2": {
+  "mois": 9989,
+  "par_an": 8455,
+  "par_an_2023": 5025,
+  "t": 2.93,
+  "t_difference": 2.43,
+  "pire_baisse": -12812,
+  "retrait_22": 0.495,
+  "perdu_22": 0.316,
+  "retrait_22_2023": 0.469,
+  "perdu_22_2023": 0.361
+ },
+ "Supertrend a 2 MNQ tout le temps": {
+  "mois": 9697,
+  "par_an": 8870,
+  "par_an_2023": 3135,
+  "t": 2.18,
+  "t_difference": 2.18,
+  "pire_baisse": -20822,
+  "retrait_22": 0.48,
+  "perdu_22": 0.45,
+  "retrait_22_2023": 0.457,
+  "perdu_22_2023": 0.496
+ }
+}

@@ -9,15 +9,15 @@ using SupertrendNQ;
 // Rejoue le moteur Supertrend sur un fichier de minutes (t,o,h,l,c,...) : toutes les seances du fichier alimentent
 // l'indicateur ; seules les seances completes (premiere et derniere minute presentes, au moins 370 minutes) sont tradees,
 // comme le test sur 15 ans. Minutes absentes : cloture recopiee (vers l'avant, puis vers l'arriere en debut de seance).
-// Usage : Supertrend.Replay <minutes.csv[.gz]> [sortie.csv]
+// Usage : Supertrend.Replay <minutes.csv[.gz]> [sortie.csv] [--renfort] [--bougie-folle]
 class Program
 {
     static int Main(string[] a)
     {
         var inv = CultureInfo.InvariantCulture;
-        var bot = new MoteurST();
+        var bot = new MoteurST { Renfort = a.Contains("--renfort"), ArretBougieFolle = a.Contains("--bougie-folle") };
         Rejeu.Jouer(bot, Rejeu.LireJours(Rejeu.Lignes(a[0]), DateTime.MaxValue));
-        var sortie = a.Length > 1 ? a[1] : null;
+        var sortie = a.Length > 1 && !a[1].StartsWith("--") ? a[1] : null;
         var lignes = new List<string> { "jour,sens,m_in,m_out,entree,sortie" };
         lignes.AddRange(bot.Trades.Select(t => $"{t.Jour:yyyy-MM-dd},{t.Sens},{t.MinuteEntree},{t.MinuteSortie},{t.Entree.ToString("R", inv)},{t.Sortie.ToString("R", inv)}"));
         if (sortie != null) File.WriteAllLines(sortie, lignes);
