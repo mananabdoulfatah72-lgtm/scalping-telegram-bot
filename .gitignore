@@ -3,3 +3,4 @@ zone/tableau/tableau.html
 # rapports locaux du kit REA (chemins du PC) : pas dans le depot
 compat_*.md
 changements.json
+__pycache__/
