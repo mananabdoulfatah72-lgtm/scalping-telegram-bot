@@ -299,6 +299,23 @@ Wilder, `stdev` sur la population, `atr` = `rma` du vrai range.
 Chaque indicateur passe les 5 portes ; il s'arrête à la première manquée (comme les idées 3 à 8). Pour information, la porte 5
 est aussi donnée pour le réglage par défaut du script.
 
+## W1 dans l'usine : le tri du Supertrend par un modèle bat-il le hasard ? (fixé le 20 novembre 2026, avant tout calcul)
+
+**Pourquoi un test adapté.** W1 (`bot3en1/W1.md`) garde ou écarte chaque signal du Supertrend selon la probabilité donnée
+par 10 modèles XGBoost. Les portes 2 et 4 de l'usine demanderaient de réentraîner ces modèles sur 1 000 marchés mélangés :
+trop long. La question qui compte est plus simple : **le tri fait-il mieux qu'un tri au hasard des mêmes signaux ?**
+
+- **Prédictions** : la marche en avant de l'arène (`ml/arene/w1.py`, `w1_prod.py`, branche
+  `claude/optimistic-ptolemy-xs24ra`), refaite à l'identique : chaque année de 2017 à 2026, les modèles apprennent sur les
+  trades des années d'avant seulement ; un signal est gardé si sa probabilité dépasse la part de trades gagnants des
+  années d'avant. Contrôle : on doit retrouver l'ordre de grandeur publié (t 3,13, environ 50 % des signaux gardés).
+- **Mesure** : gain net de chaque trade pour 1 MNQ (frais de l'arène), sans limite du jour.
+- **W-A, le tri bat le hasard** : chaque année, on tire au hasard autant de signaux que W1 en a gardé, 10 000 fois. Passe si
+  moins de 1 % des tirages gagnent au moins autant que W1 sur 2017 - 2026.
+- **W-B, assez d'argent** : W1 gagne au moins +1 000 $ par an sur 2017 - 2026, et gagne aussi depuis le 1er janvier 2023.
+- **Pour information** : le même tirage sur 2023 - 2026 seul.
+- **W1 est retenu si W-A et W-B passent.** Sinon, il reste un Supertrend sans avantage prouvé de plus.
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.
