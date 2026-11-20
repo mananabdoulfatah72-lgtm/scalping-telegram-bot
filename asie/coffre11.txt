@@ -1,0 +1,4 @@
+Machine 11, coffre 2023 -> 2026-10-02 : 2 survivantes, seuil de Bonferroni t >= 1.96, 3 annees positives sur 4
+
+N2 grand : Nikkei, ouverture de Tokyo contre un grand mouvement du S&P 500 | t +1.45 | brut +8.21 pb, net +6.17 pb | 2023 -19.8 / 2024 +540.5 / 2025 -54.2 / 2026 +532.3 | +2,590 $ | echoue
+B grand : argent (SIL), fin de seance dans le sens d'une grande journee | t +0.06 | brut +2.33 pb, net +0.37 pb | 2023 -231.5 / 2024 -119.2 / 2025 +475.5 / 2026 -54.9 | +1,680 $ | echoue

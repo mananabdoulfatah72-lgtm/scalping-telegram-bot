@@ -1,0 +1,32 @@
+[
+ {
+  "nom": "N2 grand : Nikkei, ouverture de Tokyo contre un grand mouvement du S&P 500",
+  "t": 1.45,
+  "par_an": {
+   "2023": -19.8,
+   "2024": 540.5,
+   "2025": -54.2,
+   "2026": 532.3
+  },
+  "jours": 162,
+  "brut_moyen_pb": 8.21,
+  "net_moyen_pb": 6.17,
+  "dollars_1_contrat": 2590.0,
+  "passe": false
+ },
+ {
+  "nom": "B grand : argent (SIL), fin de seance dans le sens d'une grande journee",
+  "t": 0.06,
+  "par_an": {
+   "2023": -231.5,
+   "2024": -119.2,
+   "2025": 475.5,
+   "2026": -54.9
+  },
+  "jours": 189,
+  "brut_moyen_pb": 2.33,
+  "net_moyen_pb": 0.37,
+  "dollars_1_contrat": 1680.0,
+  "passe": false
+ }
+]

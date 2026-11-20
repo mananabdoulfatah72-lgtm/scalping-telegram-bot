@@ -374,3 +374,19 @@ aller-retour (2 ticks de 2,50 $ et 2 $ de commission supposés), au dernier prix
 **Tri** : exploration 2012 - 2022 (les versions sans condition y ont déjà été vues : c'est la limite de cette machine),
 Benjamini-Hochberg à 10 % sur les 8, puis **le coffre 2023 → 2 octobre 2026, jamais ouvert pour ces marchés à ces heures,
 décide** : seuil de Bonferroni, 3 années positives sur 4. Code : `asie/machine11.py`.
+
+## Résultat de la machine 11 (20 novembre 2026) : `exploration11.txt`, `coffre11.txt`
+
+**Deux survivantes à l'exploration, aucune au coffre.**
+
+| Règle | Exploration 2012 - 2022 : brut, net par trade (t net) | Coffre 2023 - 2026 : net par trade (t) | Années 2023 / 2024 / 2025 / 2026 (pb) | Verdict |
+|---|---|---|---|---|
+| Nikkei, ouverture de Tokyo contre un grand mouvement du S&P 500 | +5,42 pb, +3,38 pb (t 2,28) | +6,17 pb (t 1,45) | −20 / +541 / −54 / +532 | échoue (t 1,96 exigé, 3 années sur 4) |
+| Argent, fin de séance dans le sens d'une grande journée | +6,36 pb, +4,39 pb (t 3,01) | +0,37 pb (t 0,06) | −232 / −119 / +476 / −55 | échoue : l'effet a disparu |
+
+Proches du seuil à l'exploration, sans coffre ouvert : MNQ à l'ouverture de Tokyo les grands jours (t 1,99, +1,24 pb net
+par trade) et l'or à son règlement les grands jours (t 1,92).
+
+**À retenir** : le Nikkei à l'ouverture de Tokyo reste positif sur des années jamais vues (+6,2 pb nets par trade, environ
++690 $ par an pour un MNK), mais pas assez régulier pour être prouvé. C'est un candidat à suivre en papier, si Bulenox
+ouvre le MNK, pas une stratégie.
