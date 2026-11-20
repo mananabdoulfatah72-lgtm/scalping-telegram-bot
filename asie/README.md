@@ -412,3 +412,17 @@ les 30 dernières minutes. Deux versions : tous les jours, et seulement les gran
 **Tri** : exploration 2016 - 2022 (sous-périodes 2016 - 2018, 2019 - 2020, 2021 - 2022 ; t ≥ 2 après frais, placebo de
 1 000 tirages du sens battu à 95 %, 2 sous-périodes sur 3, Benjamini-Hochberg à 10 % sur les 14), puis coffre 2023 →
 2 octobre 2026 ouvert une seule fois pour les survivantes (Bonferroni, 3 années positives sur 4). Code : `asie/machine12.py`.
+
+## Résultat de la machine 12 (20 novembre 2026) : `machine12.json`
+
+**Aucune survivante (0 sur 14) ; le coffre n'est pas ouvert.** Avant frais, l'élan existe sur les obligations (ZB t 2,62 ;
+ZN t 2,44, et t 2,94 les grands jours ; ZF t 2,07) et sur le gaz naturel (+5,9 pb, t 3,32), comme dans Baltussen et al. ;
+mais il fait 0,2 à 2 pb par trade quand un aller-retour coûte 2 à 9 pb. Rien sur le cuivre, le platine et l'essence.
+
+## Bilan des machines 9 à 12 (20 novembre 2026)
+
+40 règles nouvelles, toutes fixées avant leur calcul. **Les flux de couverture et de rééquilibrage autour des ouvertures et
+des règlements existent sur presque tous les marchés, mais ils sont plus petits que les frais d'un aller-retour**, sauf
+peut-être un : le Nikkei contre un grand mouvement du S&P 500, à l'ouverture de Tokyo (+3,4 pb nets par trade sur
+2012 - 2022, +6,2 pb sur 2023 - 2026 jamais vu, mais t 1,45 et 2 années positives sur 4 : non prouvé). À suivre en papier
+si Bulenox ouvre le Micro Nikkei (MNK).

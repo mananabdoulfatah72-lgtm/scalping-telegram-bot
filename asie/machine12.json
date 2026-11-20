@@ -1,0 +1,282 @@
+[
+ {
+  "t": -4.68,
+  "t_brut": -1.41,
+  "jours": 1597,
+  "brut_moyen_pb": -0.79,
+  "net_moyen_pb": -2.62,
+  "sous_periodes": [
+   -2361.0,
+   -1166.5,
+   -651.6
+  ],
+  "dollars_1_contrat": -68642,
+  "nom": "Cuivre (HG) via CPER, tous les jours, reglement 13:00",
+  "etf": "CPER",
+  "grand": false,
+  "frais_pb": 1.83,
+  "p": 0.921,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -2.58,
+  "t_brut": -1.24,
+  "jours": 349,
+  "brut_moyen_pb": -1.7,
+  "net_moyen_pb": -3.53,
+  "sous_periodes": [
+   -751.1,
+   -480.8,
+   0.2
+  ],
+  "dollars_1_contrat": -20232,
+  "nom": "Cuivre (HG) via CPER, grands jours, reglement 13:00",
+  "etf": "CPER",
+  "grand": true,
+  "frais_pb": 1.83,
+  "p": 0.884,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -3.32,
+  "t_brut": -0.71,
+  "jours": 1755,
+  "brut_moyen_pb": -0.5,
+  "net_moyen_pb": -2.34,
+  "sous_periodes": [
+   -1296.4,
+   -1723.3,
+   -1081.6
+  ],
+  "dollars_1_contrat": -33505,
+  "nom": "Platine (PL) via PPLT, tous les jours, reglement 13:05",
+  "etf": "PPLT",
+  "grand": false,
+  "frais_pb": 1.84,
+  "p": 0.791,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.15,
+  "t_brut": -0.13,
+  "jours": 373,
+  "brut_moyen_pb": -0.24,
+  "net_moyen_pb": -2.07,
+  "sous_periodes": [
+   -169.0,
+   -608.7,
+   3.9
+  ],
+  "dollars_1_contrat": -6321,
+  "nom": "Platine (PL) via PPLT, grands jours, reglement 13:05",
+  "etf": "PPLT",
+  "grand": true,
+  "frais_pb": 1.84,
+  "p": 0.542,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.32,
+  "t_brut": 0.33,
+  "jours": 1753,
+  "brut_moyen_pb": 0.54,
+  "net_moyen_pb": -0.51,
+  "sous_periodes": [
+   1876.2,
+   -1807.0,
+   -961.1
+  ],
+  "dollars_1_contrat": -11430,
+  "nom": "Essence (RB) via UGA, tous les jours, reglement 14:30",
+  "etf": "UGA",
+  "grand": false,
+  "frais_pb": 1.05,
+  "p": 0.389,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -0.44,
+  "t_brut": -0.19,
+  "jours": 377,
+  "brut_moyen_pb": -0.82,
+  "net_moyen_pb": -1.87,
+  "sous_periodes": [
+   882.9,
+   -1185.0,
+   -401.0
+  ],
+  "dollars_1_contrat": -9011,
+  "nom": "Essence (RB) via UGA, grands jours, reglement 14:30",
+  "etf": "UGA",
+  "grand": true,
+  "frais_pb": 1.05,
+  "p": 0.572,
+  "bh": false,
+  "survivante": false
+ },
+ {
+  "t": -1.74,
+  "t_brut": 3.32,
+  "jours": 1746,
+  "brut_moyen_pb": 5.91,
+  "net_moyen_pb": -3.1,
+  "sous_periodes": [
+   -4373.1,
+   -1922.5,
+   889.9
+  ],
+  "dollars_1_contrat": -15006,
+  "nom": "Gaz naturel (NG) via UNG, tous les jours, reglement 14:30",
+  "etf": "UNG",
+  "grand": false,
+  "frais_pb": 9.01,
+  "p": 0.0,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -0.27,
+  "t_brut": 1.69,
+  "jours": 387,
+  "brut_moyen_pb": 7.75,
+  "net_moyen_pb": -1.25,
+  "sous_periodes": [
+   70.5,
+   -1958.3,
+   1403.1
+  ],
+  "dollars_1_contrat": -1346,
+  "nom": "Gaz naturel (NG) via UNG, grands jours, reglement 14:30",
+  "etf": "UNG",
+  "grand": true,
+  "frais_pb": 9.01,
+  "p": 0.047,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -14.05,
+  "t_brut": 2.62,
+  "jours": 1757,
+  "brut_moyen_pb": 1.0,
+  "net_moyen_pb": -5.38,
+  "sous_periodes": [
+   -4674.7,
+   -2676.5,
+   -2097.1
+  ],
+  "dollars_1_contrat": -99975,
+  "nom": "Obligation 30 ans (ZB) via TLT, tous les jours, reglement 15:00",
+  "etf": "TLT",
+  "grand": false,
+  "frais_pb": 6.38,
+  "p": 0.005,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -4.29,
+  "t_brut": 1.98,
+  "jours": 393,
+  "brut_moyen_pb": 2.01,
+  "net_moyen_pb": -4.37,
+  "sous_periodes": [
+   -898.6,
+   -247.8,
+   -569.1
+  ],
+  "dollars_1_contrat": -18152,
+  "nom": "Obligation 30 ans (ZB) via TLT, grands jours, reglement 15:00",
+  "etf": "TLT",
+  "grand": true,
+  "frais_pb": 6.38,
+  "p": 0.02,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -18.35,
+  "t_brut": 2.44,
+  "jours": 1745,
+  "brut_moyen_pb": 0.4,
+  "net_moyen_pb": -3.04,
+  "sous_periodes": [
+   -2428.5,
+   -1566.9,
+   -1307.3
+  ],
+  "dollars_1_contrat": -55820,
+  "nom": "Obligation 10 ans (ZN) via IEF, tous les jours, reglement 15:00",
+  "etf": "IEF",
+  "grand": false,
+  "frais_pb": 3.44,
+  "p": 0.005,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -5.43,
+  "t_brut": 2.94,
+  "jours": 379,
+  "brut_moyen_pb": 1.21,
+  "net_moyen_pb": -2.23,
+  "sous_periodes": [
+   -483.2,
+   -123.3,
+   -240.5
+  ],
+  "dollars_1_contrat": -8916,
+  "nom": "Obligation 10 ans (ZN) via IEF, grands jours, reglement 15:00",
+  "etf": "IEF",
+  "grand": true,
+  "frais_pb": 3.44,
+  "p": 0.0,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -17.07,
+  "t_brut": 2.07,
+  "jours": 1753,
+  "brut_moyen_pb": 0.21,
+  "net_moyen_pb": -1.77,
+  "sous_periodes": [
+   -1486.2,
+   -927.0,
+   -685.5
+  ],
+  "dollars_1_contrat": -32199,
+  "nom": "Obligation 5 ans (ZF) via IEI, tous les jours, reglement 15:00",
+  "etf": "IEI",
+  "grand": false,
+  "frais_pb": 1.98,
+  "p": 0.01,
+  "bh": true,
+  "survivante": false
+ },
+ {
+  "t": -5.63,
+  "t_brut": 2.44,
+  "jours": 385,
+  "brut_moyen_pb": 0.6,
+  "net_moyen_pb": -1.38,
+  "sous_periodes": [
+   -271.0,
+   -134.3,
+   -127.6
+  ],
+  "dollars_1_contrat": -5537,
+  "nom": "Obligation 5 ans (ZF) via IEI, grands jours, reglement 15:00",
+  "etf": "IEI",
+  "grand": true,
+  "frais_pb": 1.98,
+  "p": 0.007,
+  "bh": true,
+  "survivante": false
+ }
+]
