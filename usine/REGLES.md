@@ -328,6 +328,34 @@ trop long. La question qui compte est plus simple : **le tri fait-il mieux qu'un
 - **Sur le compte de l'utilisateur** (52 000 $, plancher 50 100 $, 1 MNQ, limite 400 $, départs depuis 2023, 22 séances) :
   W1 atteint le premier retrait dans 18 % des cas et perd le compte dans 8 % ; le Supertrend, 34 % et 20 %. G2 : 19 % et 2 %.
 
+## Le bureau de 6 agents, traduit en règles sur le Supertrend (fixé le 20 novembre 2026, avant tout calcul)
+
+Une vidéo montrée par l'utilisateur : 6 agents (entrée, scalpeur qui empile, couverture, risque à 0,4 % avec stop ramené à
+l'entrée, actualités qui arrêtent le bureau quand une bougie s'emballe, sortie dès que l'élan s'arrête). Les trois rôles qui
+ont un sens sur un compte d'un seul contrat deviennent des règles ajoutées au Supertrend 10-3 (1 MNQ, limite du jour 400 $,
+cadre de l'idée 2). Le scalpeur (empiler les contrats) et la couverture sont écartés : avec 1 900 $ de marge, empiler double
+le risque, et un seul marché n'a rien à couvrir.
+
+Mesures à la clôture de chaque bougie de 5 minutes ; ATR = l'ATR de Wilder sur 10 bougies du Supertrend ; une sortie se fait à
+l'ouverture de la minute suivante ; après une sortie par ces règles, pas de nouvelle entrée avant le prochain retournement du
+Supertrend.
+
+| Variante | Règle ajoutée |
+|---|---|
+| A1, **risque** : stop ramené à l'entrée | Dès qu'une clôture a été à 1 ATR ou plus en gain depuis l'entrée, sortie à la première clôture revenue au prix d'entrée ou au-delà. |
+| A2, **actualités** : arrêt quand une bougie s'emballe | Si l'amplitude d'une bougie dépasse 3 ATR (celui de la bougie d'avant), sortie et plus aucun trade jusqu'au lendemain. |
+| A3, **sortie** : dès que l'élan s'arrête | Sortie dès qu'une clôture recule de 1 ATR ou plus depuis la meilleure clôture du trade. |
+| A123 | Les trois ensemble. |
+
+**Mesure** : dollars par séance à 1 MNQ au prix du 19 novembre 2026 (26 675 points), frais de l'usine, limite du jour 400 $,
+séances complètes du 1er janvier 2015 au 19 novembre 2026.
+
+**Une variante est retenue si les trois conditions sont remplies** (la règle d'adoption de l'usine) :
+1. sa différence quotidienne avec le Supertrend seul est positive, avec t ≥ 1,65, et positive aussi depuis 2023 ;
+2. depuis le compte de l'utilisateur (52 000 $, plancher 50 100 $), sur 22 séances, départs depuis 2015, elle perd moins de
+   comptes que le Supertrend seul ;
+3. elle atteint le premier retrait (53 600 $) au moins aussi souvent.
+
 ## Journal
 
 - Chaque idée, chaque réglage, chaque résultat et chaque rejet, avec sa raison : `registre.csv`.
