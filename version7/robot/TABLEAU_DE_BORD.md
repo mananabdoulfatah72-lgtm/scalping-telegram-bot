@@ -1,6 +1,6 @@
 # Robot version 7 : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-18**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
+Mis a jour le **2026-11-20**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
 
 Regle : chaque fin de mois, les 5 actions technologie au meilleur rendement de 6 mois a 1 mois, 10 % du compte chacune, 50 % non investis.
 
@@ -8,9 +8,9 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **43,401 $** |
-| Gain depuis le depart | -6,599 $ (-13.2%) |
-| Baisse depuis le plus haut | -14.9% |
+| Solde virtuel | **40,623 $** |
+| Gain depuis le depart | -9,377 $ (-18.8%) |
+| Baisse depuis le plus haut | -20.4% |
 | Dernier reequilibrage | 2026-10-30 |
 | Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | PERDU le 2026-11-02 |
 
@@ -18,12 +18,12 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Action | Montant | Part du compte |
 |---|---|---|
-| AMD | 4,799 $ | 11.1% |
-| AMAT | 4,127 $ | 9.5% |
-| LRCX | 4,045 $ | 9.3% |
-| NOW | 3,938 $ | 9.1% |
-| MU | 3,643 $ | 8.4% |
-| Non investi | 22,849 $ | 52.6% |
+| AMD | 3,842 $ | 9.5% |
+| NOW | 3,809 $ | 9.4% |
+| AMAT | 3,551 $ | 8.7% |
+| LRCX | 3,503 $ | 8.6% |
+| MU | 3,071 $ | 7.6% |
+| Non investi | 22,849 $ | 56.2% |
 
 ## Derniers ordres (2026-10-30, a la cloture, avant 6 $ de frais)
 
@@ -38,6 +38,8 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-20 | -1,953 $ | 40,623 $ |
+| 2026-11-19 | -825 $ | 42,576 $ |
 | 2026-11-18 | +159 $ | 43,401 $ |
 | 2026-11-17 | -338 $ | 43,242 $ |
 | 2026-11-16 | -1,227 $ | 43,580 $ |
@@ -46,7 +48,5 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 | 2026-11-11 | +1,445 $ | 45,648 $ |
 | 2026-11-10 | -75 $ | 44,203 $ |
 | 2026-11-09 | +1,638 $ | 44,277 $ |
-| 2026-11-06 | +1,010 $ | 42,639 $ |
-| 2026-11-05 | -3,041 $ | 41,629 $ |
 
 </details>
