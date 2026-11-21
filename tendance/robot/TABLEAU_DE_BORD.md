@@ -1,11 +1,11 @@
 # Robot multi-marches : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-19**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
+Mis a jour le **2026-11-20**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
 
 | Compte | Solde | Gain | Etat |
 |---|---|---|---|
-| Melange 50/50 (tendance + achat permanent) | 48,152 $ | -1,848 $ | 🟡 Dans la zone normale |
-| Tendance seule | 50,618 $ | +618 $ | 🟡 Dans la zone normale |
+| Melange 50/50 (tendance + achat permanent) | 48,068 $ | -1,932 $ | 🟡 Dans la zone normale |
+| Tendance seule | 50,432 $ | +432 $ | 🟡 Dans la zone normale |
 
 La zone bleue de chaque graphique montre ou tombaient 8 resultats sur 10 dans l'historique 2007-2026, au meme risque. Tant que la ligne reste dedans, le compte se comporte comme prevu. Des semaines negatives sont normales : il faut plusieurs mois pour juger.
 
@@ -17,25 +17,24 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **48,152 $** (depart 50 000 $) |
-| Gain depuis le depart | -1,848 $ (-3.7%) |
-| Baisse depuis le plus haut | -4.2% |
-| Zone normale a ce stade (8 cas sur 10) | de -2,282 $ a +3,696 $ (moyenne +707 $) |
-| Challenge Phidias 50K virtuel | en cours : -1,848 $ sur +4 000 $, marge restante 376 $ |
+| Solde virtuel | **48,068 $** (depart 50 000 $) |
+| Gain depuis le depart | -1,932 $ (-3.9%) |
+| Baisse depuis le plus haut | -4.4% |
+| Zone normale a ce stade (8 cas sur 10) | de -2,296 $ a +3,736 $ (moyenne +720 $) |
+| Challenge Phidias 50K virtuel | en cours : -1,932 $ sur +4 000 $, marge restante 292 $ |
 
 ![Gain du compte et zone normale](courbe_melange.svg)
 
 | Contrat | Marche | Sens | Nombre |
 |---|---|---|---|
-| MET | Ether | Achat | 10 |
+| MET | Ether | Vente | 2 |
 | M6E | Euro | Vente | 1 |
-| M6A | Dollar australien | Achat | 1 |
-| MCD | Dollar canadien | Achat | 1 |
 
 <details><summary>10 derniers jours</summary>
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-20 | -39 $ | 48,068 $ |
 | 2026-11-19 | -66 $ | 48,152 $ |
 | 2026-11-18 | +3 $ | 48,219 $ |
 | 2026-11-17 | -8 $ | 48,216 $ |
@@ -45,7 +44,6 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 | 2026-11-11 | -30 $ | 48,308 $ |
 | 2026-11-10 | +91 $ | 48,338 $ |
 | 2026-11-09 | +39 $ | 48,247 $ |
-| 2026-11-06 | -67 $ | 48,208 $ |
 
 Journal complet : [journal_melange.csv](journal_melange.csv)
 
@@ -59,28 +57,32 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **50,618 $** (depart 50 000 $) |
-| Gain depuis le depart | +618 $ (+1.2%) |
-| Baisse depuis le plus haut | -0.0% |
-| Zone normale a ce stade (8 cas sur 10) | de -2,481 $ a +3,497 $ (moyenne +508 $) |
+| Solde virtuel | **50,432 $** (depart 50 000 $) |
+| Gain depuis le depart | +432 $ (+0.9%) |
+| Baisse depuis le plus haut | -0.4% |
+| Zone normale a ce stade (8 cas sur 10) | de -2,499 $ a +3,533 $ (moyenne +517 $) |
 | Challenge Phidias 50K virtuel | perdu le 2026-10-22 |
 
 ![Gain du compte et zone normale](courbe.svg)
 
 | Contrat | Marche | Sens | Nombre |
 |---|---|---|---|
-| MET | Ether | Vente | 8 |
+| MET | Ether | Vente | 4 |
 | MSF | Franc suisse | Vente | 2 |
+| 2YY | Taux 2 ans | Achat | 1 |
 | 10Y | Taux 10 ans | Achat | 1 |
-| 30Y | Taux 30 ans | Achat | 1 |
-| M6A | Dollar australien | Achat | 1 |
+| M6E | Euro | Vente | 1 |
+| M6A | Dollar australien | Vente | 1 |
+| M6B | Livre sterling | Achat | 1 |
+| MCD | Dollar canadien | Vente | 1 |
 | MHG | Cuivre | Vente | 1 |
-| MNG | Gaz naturel | Vente | 1 |
+| MBT | Bitcoin | Vente | 1 |
 
 <details><summary>10 derniers jours</summary>
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-20 | -144 $ | 50,432 $ |
 | 2026-11-19 | +204 $ | 50,618 $ |
 | 2026-11-18 | +634 $ | 50,415 $ |
 | 2026-11-17 | -94 $ | 49,780 $ |
@@ -90,7 +92,6 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 | 2026-11-11 | +413 $ | 48,711 $ |
 | 2026-11-10 | +673 $ | 48,298 $ |
 | 2026-11-09 | -468 $ | 47,625 $ |
-| 2026-11-06 | +296 $ | 48,093 $ |
 
 Journal complet : [journal.csv](journal.csv)
 
