@@ -19,7 +19,7 @@ Voyant VERT (fourchette normale) : +2,040 $ pour 1 MNQ apres 40 seance(s) ; le b
 ## Trades du 2026-11-20
 
 - vente 10h30 a 25,996.25 -> sortie 16h00 a 25,142.00
-- rebond (suivi a part, hors compte) : achat 9h30 a 26,321.00 -> sortie 16h00 a 25,142.00, -2,361 $ pour 1 MNQ
+- rebond (suivi a part, hors compte) : achat 9h30 a 26,322.00 -> sortie 16h00 a 25,142.00, -2,363 $ pour 1 MNQ
 
 ## Pour la seance du 2026-11-23 (a utiliser en direct)
 
@@ -28,17 +28,17 @@ Cloture de la veille (16 h New York) : **25,142.00**. Apres l'ouverture de 9 h 3
 | Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
 |---|---|---|---|---|
 | 10h00 | 16h00 | 0.803% | 1.00803 | 0.99197 |
-| 10h30 | 16h30 | 1.072% | 1.01072 | 0.98928 |
-| 11h00 | 17h00 | 1.298% | 1.01298 | 0.98702 |
+| 10h30 | 16h30 | 1.073% | 1.01073 | 0.98927 |
+| 11h00 | 17h00 | 1.299% | 1.01299 | 0.98701 |
 | 11h30 | 17h30 | 1.204% | 1.01204 | 0.98796 |
-| 12h00 | 18h00 | 1.456% | 1.01456 | 0.98544 |
-| 12h30 | 18h30 | 1.390% | 1.01390 | 0.98610 |
-| 13h00 | 19h00 | 1.589% | 1.01589 | 0.98411 |
-| 13h30 | 19h30 | 1.533% | 1.01533 | 0.98467 |
+| 12h00 | 18h00 | 1.457% | 1.01457 | 0.98543 |
+| 12h30 | 18h30 | 1.391% | 1.01391 | 0.98609 |
+| 13h00 | 19h00 | 1.590% | 1.01590 | 0.98410 |
+| 13h30 | 19h30 | 1.534% | 1.01534 | 0.98466 |
 | 14h00 | 20h00 | 1.458% | 1.01458 | 0.98542 |
 | 14h30 | 20h30 | 1.481% | 1.01481 | 0.98519 |
 | 15h00 | 21h00 | 1.521% | 1.01521 | 0.98479 |
-| 15h30 | 21h30 | 1.672% | 1.01672 | 0.98328 |
+| 15h30 | 21h30 | 1.673% | 1.01673 | 0.98327 |
 
 Taille : un jour normal = 394 $ de risque pour 1 MNQ. Sur un compte neuf : f = 0.15 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.25 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.35 -> Phidias (coussin 2 500 $) 2 MNQ, Topstep (coussin 2 000 $) 1 MNQ. **En cours de challenge : MNQ = f x (solde - limite de perte) / 394, arrondi en dessous, au moins 1 MNQ** (exemple : f = 0,25, coussin 1 500 $ -> 1 MNQ).
 
