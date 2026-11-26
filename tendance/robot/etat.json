@@ -2,8 +2,8 @@
   "comptes": {
     "melange": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-11-24",
-      "solde": 48048.536266944844,
+      "derniere_date": "2026-11-25",
+      "solde": 48034.63418053853,
       "plus_haut": 50276.00947498293,
       "positions": {
         "Euro": -1.0,
@@ -17,8 +17,8 @@
     },
     "tendance": {
       "debut": "2026-09-25",
-      "derniere_date": "2026-11-24",
-      "solde": 50195.95459385942,
+      "derniere_date": "2026-11-25",
+      "solde": 49902.73886959102,
       "plus_haut": 50643.19587302805,
       "positions": {
         "Taux 2 ans": -1.0,
