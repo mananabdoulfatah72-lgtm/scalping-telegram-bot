@@ -22,7 +22,7 @@ Le backtest ne trade pas ces jours-la. Les niveaux de la seance suivante seront 
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : pas de position. Pas d'achat possible le 2026-11-26 (il faudrait un prix au-dessus de 28,245.05, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 24,589.28).
+RSI(2) : pas de position. Pas d'achat possible le 2026-11-26 (il faudrait un prix au-dessus de 28,245.06, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 24,589.53).
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
