@@ -1,6 +1,6 @@
 # Robot version 7 : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-24**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
+Mis a jour le **2026-11-25**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
 
 Regle : chaque fin de mois, les 5 actions technologie au meilleur rendement de 6 mois a 1 mois, 10 % du compte chacune, 50 % non investis.
 
@@ -8,9 +8,9 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **41,378 $** |
-| Gain depuis le depart | -8,622 $ (-17.2%) |
-| Baisse depuis le plus haut | -18.9% |
+| Solde virtuel | **40,823 $** |
+| Gain depuis le depart | -9,177 $ (-18.4%) |
+| Baisse depuis le plus haut | -20.0% |
 | Dernier reequilibrage | 2026-10-30 |
 | Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | PERDU le 2026-11-02 |
 
@@ -18,12 +18,12 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Action | Montant | Part du compte |
 |---|---|---|
-| NOW | 3,988 $ | 9.6% |
-| AMAT | 3,798 $ | 9.2% |
-| LRCX | 3,749 $ | 9.1% |
-| AMD | 3,741 $ | 9.0% |
-| MU | 3,253 $ | 7.9% |
-| Non investi | 22,849 $ | 55.2% |
+| NOW | 4,006 $ | 9.8% |
+| AMD | 3,676 $ | 9.0% |
+| AMAT | 3,651 $ | 8.9% |
+| LRCX | 3,536 $ | 8.7% |
+| MU | 3,106 $ | 7.6% |
+| Non investi | 22,849 $ | 56.0% |
 
 ## Derniers ordres (2026-10-30, a la cloture, avant 6 $ de frais)
 
@@ -38,6 +38,7 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-25 | -555 $ | 40,823 $ |
 | 2026-11-24 | -1,296 $ | 41,378 $ |
 | 2026-11-23 | +2,052 $ | 42,675 $ |
 | 2026-11-20 | -1,953 $ | 40,623 $ |
@@ -47,6 +48,5 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 | 2026-11-16 | -1,227 $ | 43,580 $ |
 | 2026-11-13 | -771 $ | 44,806 $ |
 | 2026-11-12 | -70 $ | 45,578 $ |
-| 2026-11-11 | +1,445 $ | 45,648 $ |
 
 </details>
