@@ -6,10 +6,10 @@
  "rsi2": {
   "tenu": false,
   "seance": "2026-11-27",
-  "cloture": 26609.0,
-  "achat_au_dessus": 28254.252512562813,
-  "achat_au_dessous": 23327.141747855996,
-  "vente_au_dessus": 26448.125
+  "cloture": 26595.5,
+  "achat_au_dessus": 28254.184673366835,
+  "achat_au_dessous": 23374.391747855996,
+  "vente_au_dessus": 26444.75
  },
  "rebond": {
   "achat": false,
