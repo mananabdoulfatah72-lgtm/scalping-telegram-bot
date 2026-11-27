@@ -16,13 +16,32 @@ Voyant VERT (fourchette normale) : +2,040 $ pour 1 MNQ apres 43 seance(s) ; le b
 | RSI(2) (second moteur, dans le compte depuis le 1er octobre 2026) pour 1 MNQ | -1,032 $ |
 | Rebond (suivi a part, hors compte) pour 1 MNQ depuis le 1er octobre 2026 | -3,014 $ |
 
-## Seance du 2026-11-26 : fete ou demi-seance, PAS DE TRADE
+## Pour la seance du 2026-11-30 (a utiliser en direct)
 
-Le backtest ne trade pas ces jours-la. Les niveaux de la seance suivante seront publies apres.
+Cloture de la veille (16 h New York) : **26,105.75**. Apres l'ouverture de 9 h 30 : haut = max(ouverture, veille) x (1 + mouvement) ; bas = min(ouverture, veille) x (1 - mouvement). A chaque heure ci-dessous : cloture de la minute au-dessus du haut -> achat ; sous le bas -> vente ; en position, sortie si le prix repasse la limite ou le VWAP. Tout fermer a 15 h 59 (New York).
+
+| Controle (New York) | Heure de Paris | Mouvement moyen | Haut = x | Bas = x |
+|---|---|---|---|---|
+| 10h00 | 16h00 | 0.565% | 1.00565 | 0.99435 |
+| 10h30 | 16h30 | 0.877% | 1.00877 | 0.99123 |
+| 11h00 | 17h00 | 1.031% | 1.01031 | 0.98969 |
+| 11h30 | 17h30 | 1.073% | 1.01073 | 0.98927 |
+| 12h00 | 18h00 | 1.187% | 1.01187 | 0.98813 |
+| 12h30 | 18h30 | 1.039% | 1.01039 | 0.98961 |
+| 13h00 | 19h00 | 1.239% | 1.01239 | 0.98761 |
+| 13h30 | 19h30 | 1.244% | 1.01244 | 0.98756 |
+| 14h00 | 20h00 | 1.293% | 1.01293 | 0.98707 |
+| 14h30 | 20h30 | 1.305% | 1.01305 | 0.98695 |
+| 15h00 | 21h00 | 1.428% | 1.01428 | 0.98572 |
+| 15h30 | 21h30 | 1.457% | 1.01457 | 0.98543 |
+
+Taille : un jour normal = 394 $ de risque pour 1 MNQ. Sur un compte neuf : f = 0.15 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.25 -> Phidias (coussin 2 500 $) 1 MNQ, Topstep (coussin 2 000 $) 1 MNQ ; f = 0.35 -> Phidias (coussin 2 500 $) 2 MNQ, Topstep (coussin 2 000 $) 1 MNQ. **En cours de challenge : MNQ = f x (solde - limite de perte) / 394, arrondi en dessous, au moins 1 MNQ** (exemple : f = 0,25, coussin 1 500 $ -> 1 MNQ).
+
+Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la reouverture de 18 h). On ne regarde le prix qu'aux heures de controle : pas de stop place dans le marche.
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : pas de position. Pas d'achat possible le 2026-11-26 (il faudrait un prix au-dessus de 28,245.06, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 24,589.53).
+RSI(2) : pas de position. Pas d'achat possible le 2026-11-30 (il faudrait un prix au-dessus de 28,245.05, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 24,589.28).
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
@@ -44,7 +63,7 @@ Pas encore de trade de zone mesure depuis le 2026-10-01.
 
 ## Second moteur : rebond apres forte baisse (suivi a part, hors compte)
 
-Pas d'achat le 2026-11-26. Derniere seance complete : +2.74% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.25%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
+Pas d'achat le 2026-11-30. Derniere seance complete : +2.74% (ouverture -> cloture) ; seuil des 10 % les plus bas : -1.25%. Ajoute le 1er octobre 2026 a la demande de l'utilisateur. Non valide statistiquement : ses gains passes viennent surtout de deux krachs (2020 et 2025) ; voir zone/README.md.
 
 ## Derniers jours
 
