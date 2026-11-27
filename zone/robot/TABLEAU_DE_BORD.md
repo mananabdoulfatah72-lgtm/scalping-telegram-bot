@@ -1,12 +1,12 @@
 # Robot zone de bruit (MNQ) : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-25**. Demarre le 2026-09-25. Aucun argent reel n'est engage.
+Mis a jour le **2026-11-27**. Demarre le 2026-09-25. Aucun argent reel n'est engage.
 
 Historique : rejeu de cette gestion avec les regles Phidias publiques d'octobre 2026, departs 2023-2024 suivis 24 mois (tournoi8/ et zone_deux/ sur la branche de recherche) : zone + RSI(2) environ +254 $ nets par an, rien recu dans 27 % des departs ; zone seule -22 $ par an, rien recu dans 79 %. Sur 12 mois, environ -115 $ par an dans les deux cas : le premier retrait arrive en general apres 12 mois. Une taille plus grande ne fait pas mieux (zone_deux/).
 
 **Challenge n°2 en cours : +3,582 $ sur +4 000 $ ; marge avant la limite 2,500 $**
 
-Voyant VERT (fourchette normale) : +2,040 $ pour 1 MNQ apres 43 seance(s) ; le backtest attendait +494 $, alerte sous -1,690 $ (ligne des 5 %). Prochain bilan a 60 seances.
+Voyant VERT (fourchette normale) : +2,040 $ pour 1 MNQ apres 44 seance(s) ; le backtest attendait +506 $, alerte sous -1,704 $ (ligne des 5 %). Prochain bilan a 60 seances.
 
 | Mesure | Valeur |
 |---|---|
@@ -41,13 +41,13 @@ Le VWAP est celui de la seance americaine, calcule depuis 9 h 30 (pas depuis la 
 
 ## Second moteur dans le compte : RSI(2) sur le NQ (depuis le 1er octobre 2026)
 
-RSI(2) : pas de position. Pas d'achat possible le 2026-11-30 (il faudrait un prix au-dessus de 28,245.05, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 24,589.28).
+RSI(2) : pas de position. Pas d'achat possible le 2026-11-30 (il faudrait un prix au-dessus de 28,254.25, moyenne des 200, et un RSI(2) sous 10, soit un prix sous 23,327.14).
 
 Regle (tournoi8/ sur la branche de recherche) : achat a 15 h 50 si la cloture de 15 h 49 est au-dessus de la moyenne des 200 clotures et si le RSI de Wilder sur 2 clotures est sous 10 ; vente a 15 h 50 quand la cloture depasse la moyenne des 5. Position gardee la nuit et le week-end. Taille : comme la zone, f x coussin / racine(2), au moins 1 MNQ. Seul survivant du tournoi des strategies de plusieurs jours ; independant de la zone.
 
 ## Bot 3 en 1 : zone filtree par le delta + RSI(2), 1 MNQ chacun (challenge 50K virtuel a part)
 
-**Bot 3 en 1 (zone filtree par le delta + RSI(2), 1 MNQ chacun, depuis le 2026-10-02) : challenge n°1, +0 $ sur +4 000 $, marge avant la limite 2,500 $ ; EN PAUSE : 38 seance(s) en attente du vrai delta (transactions Databento indisponibles ; le bot rattrapera tout seul quand elles reviendront).**
+**Bot 3 en 1 (zone filtree par le delta + RSI(2), 1 MNQ chacun, depuis le 2026-10-02) : challenge n°1, +0 $ sur +4 000 $, marge avant la limite 2,500 $ ; EN PAUSE : 39 seance(s) en attente du vrai delta (transactions Databento indisponibles ; le bot rattrapera tout seul quand elles reviendront).**
 
 Demande de l'utilisateur du 2 octobre 2026 : la zone de bruit ne garde que les trades dont le delta des 30 minutes va dans leur sens, plus le RSI(2), 1 MNQ chacun, taille fixe. Rejeu d'avril a septembre 2026 (mois ou le filtre a ete trouve, donc flatteur) : challenge reussi en 3 a 4 mois selon le mois de depart, marge la plus basse 50 $ le 29 juillet 2026 a 15 h 59 (rejeu minute par minute du 3 octobre 2026 ; le premier rejeu, a la journee, disait 414 $). Le bot n'utilise que le vrai delta (transactions Databento) : sans lui, il se met en pause et rattrape quand les donnees reviennent. Une approximation par le prix aurait fait perdre le challenge le 29 juillet.
 
@@ -69,6 +69,7 @@ Pas d'achat le 2026-11-30. Derniere seance complete : +2.74% (ouverture -> clotu
 
 | Date | Phase | MNQ zone | RSI(2) MNQ | Resultat du jour | Solde | Zone pour 1 MNQ | RSI(2) pour 1 MNQ | Rebond (a part, 1 MNQ) | Evenement |
 |---|---|---|---|---|---|---|---|---|---|
+| 2026-11-27 | challenge n°2 | 1 | 0 | +0 $ | 53,582 $ | +0 $ | +0 $ | +0 $ |  |
 | 2026-11-25 | challenge n°2 | 1 | 0 | +0 $ | 53,582 $ | +0 $ | +0 $ | +0 $ |  |
 | 2026-11-24 | challenge n°2 | 1 | 0 | +0 $ | 53,582 $ | +0 $ | +0 $ | +0 $ |  |
 | 2026-11-23 | challenge n°2 | 1 | 0 | +0 $ | 53,582 $ | +0 $ | +0 $ | -124 $ |  |
@@ -83,4 +84,3 @@ Pas d'achat le 2026-11-30. Derniere seance complete : +2.74% (ouverture -> clotu
 | 2026-11-10 | challenge n°2 | 1 | 0 | +0 $ | 52,476 $ | +0 $ | +0 $ | +0 $ |  |
 | 2026-11-09 | challenge n°2 | 1 | 1 | +2,436 $ | 52,476 $ | +521 $ | +1,916 $ | +0 $ |  |
 | 2026-11-06 | challenge n°2 | 1 | 1 | +40 $ | 50,040 $ | -482 $ | +522 $ | -186 $ |  |
-| 2026-11-05 | challenge n°1 | 1 | 1 | -1,376 $ | 47,952 $ | +1,554 $ | -3,456 $ | +0 $ | COMPTE PERDU (limite touchee) |

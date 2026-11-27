@@ -5,11 +5,11 @@
  "raison": "",
  "rsi2": {
   "tenu": false,
-  "seance": "2026-11-25",
-  "cloture": 26041.0,
-  "achat_au_dessus": 28245.054020100502,
-  "achat_au_dessous": 24589.283495712,
-  "vente_au_dessus": 26119.625
+  "seance": "2026-11-27",
+  "cloture": 26609.0,
+  "achat_au_dessus": 28254.252512562813,
+  "achat_au_dessous": 23327.141747855996,
+  "vente_au_dessus": 26448.125
  },
  "rebond": {
   "achat": false,
