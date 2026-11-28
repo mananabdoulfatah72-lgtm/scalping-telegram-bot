@@ -1,6 +1,6 @@
 # Robot version 7 : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-25**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
+Mis a jour le **2026-11-27**. Compte virtuel de 50 000 $ demarre le 2026-09-28. Aucun argent reel n'est engage.
 
 Regle : chaque fin de mois, les 5 actions technologie au meilleur rendement de 6 mois a 1 mois, 10 % du compte chacune, 50 % non investis.
 
@@ -8,9 +8,9 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **40,823 $** |
-| Gain depuis le depart | -9,177 $ (-18.4%) |
-| Baisse depuis le plus haut | -20.0% |
+| Solde virtuel | **41,529 $** |
+| Gain depuis le depart | -8,471 $ (-16.9%) |
+| Baisse depuis le plus haut | -18.6% |
 | Dernier reequilibrage | 2026-10-30 |
 | Challenge virtuel (CFD actions, phase 1 : +10 % / -10 %, sans frais de financement) | PERDU le 2026-11-02 |
 
@@ -18,12 +18,24 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Action | Montant | Part du compte |
 |---|---|---|
-| NOW | 4,006 $ | 9.8% |
-| AMD | 3,676 $ | 9.0% |
-| AMAT | 3,651 $ | 8.9% |
-| LRCX | 3,536 $ | 8.7% |
-| MU | 3,106 $ | 7.6% |
-| Non investi | 22,849 $ | 56.0% |
+| NOW | 4,034 $ | 9.7% |
+| AMD | 3,843 $ | 9.3% |
+| AMAT | 3,778 $ | 9.1% |
+| LRCX | 3,683 $ | 8.9% |
+| MU | 3,342 $ | 8.0% |
+| Non investi | 22,849 $ | 55.0% |
+
+## Ordres a passer demain a la cloture (dernier jour du mois)
+
+- Achat AAPL : 4,153 $ (environ 11.6 actions)
+- Achat ACN : 4,153 $ (environ 17.2 actions)
+- Vente AMAT : 3,778 $ (environ 11.7 actions)
+- Achat AMD : 310 $ (environ 0.7 actions)
+- Achat CRM : 4,153 $ (environ 20.9 actions)
+- Vente LRCX : 3,683 $ (environ 19.1 actions)
+- Achat MSFT : 4,153 $ (environ 8.4 actions)
+- Vente MU : 3,342 $ (environ 5.2 actions)
+- Vente NOW : 4,034 $ (environ 43.5 actions)
 
 ## Derniers ordres (2026-10-30, a la cloture, avant 6 $ de frais)
 
@@ -38,6 +50,7 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-27 | +706 $ | 41,529 $ |
 | 2026-11-25 | -555 $ | 40,823 $ |
 | 2026-11-24 | -1,296 $ | 41,378 $ |
 | 2026-11-23 | +2,052 $ | 42,675 $ |
@@ -47,6 +60,5 @@ Historique : backtest sans interets sur les liquidites (comme ce compte) : 2021-
 | 2026-11-17 | -338 $ | 43,242 $ |
 | 2026-11-16 | -1,227 $ | 43,580 $ |
 | 2026-11-13 | -771 $ | 44,806 $ |
-| 2026-11-12 | -70 $ | 45,578 $ |
 
 </details>
