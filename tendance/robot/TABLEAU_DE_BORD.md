@@ -1,11 +1,11 @@
 # Robot multi-marches : tableau de bord (argent virtuel)
 
-Mis a jour le **2026-11-25**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
+Mis a jour le **2026-11-27**. Deux comptes virtuels de 50 000 $, risque vise 12 %/an (environ 6 000 $). Aucun argent reel n'est engage.
 
 | Compte | Solde | Gain | Etat |
 |---|---|---|---|
-| Melange 50/50 (tendance + achat permanent) | 48,035 $ | -1,965 $ | 🟡 Dans la zone normale |
-| Tendance seule | 49,903 $ | -97 $ | 🟡 Dans la zone normale |
+| Melange 50/50 (tendance + achat permanent) | 48,079 $ | -1,921 $ | 🟡 Dans la zone normale |
+| Tendance seule | 49,917 $ | -83 $ | 🟡 Dans la zone normale |
 
 La zone bleue de chaque graphique montre ou tombaient 8 resultats sur 10 dans l'historique 2007-2026, au meme risque. Tant que la ligne reste dedans, le compte se comporte comme prevu. Des semaines negatives sont normales : il faut plusieurs mois pour juger.
 
@@ -17,23 +17,24 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **48,035 $** (depart 50 000 $) |
-| Gain depuis le depart | -1,965 $ (-3.9%) |
-| Baisse depuis le plus haut | -4.5% |
-| Zone normale a ce stade (8 cas sur 10) | de -2,364 $ a +3,932 $ (moyenne +784 $) |
-| Challenge Phidias 50K virtuel | en cours : -1,965 $ sur +4 000 $, marge restante 259 $ |
+| Solde virtuel | **48,079 $** (depart 50 000 $) |
+| Gain depuis le depart | -1,921 $ (-3.8%) |
+| Baisse depuis le plus haut | -4.4% |
+| Zone normale a ce stade (8 cas sur 10) | de -2,389 $ a +4,009 $ (moyenne +810 $) |
+| Challenge Phidias 50K virtuel | en cours : -1,921 $ sur +4 000 $, marge restante 303 $ |
 
 ![Gain du compte et zone normale](courbe_melange.svg)
 
 | Contrat | Marche | Sens | Nombre |
 |---|---|---|---|
-| MET | Ether | Vente | 2 |
+| MET | Ether | Vente | 6 |
 | M6E | Euro | Vente | 1 |
 
 <details><summary>10 derniers jours</summary>
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-27 | +57 $ | 48,079 $ |
 | 2026-11-25 | -14 $ | 48,035 $ |
 | 2026-11-24 | -82 $ | 48,049 $ |
 | 2026-11-23 | +62 $ | 48,130 $ |
@@ -43,7 +44,6 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,78, enviro
 | 2026-11-17 | -8 $ | 48,216 $ |
 | 2026-11-16 | -135 $ | 48,224 $ |
 | 2026-11-13 | +18 $ | 48,358 $ |
-| 2026-11-12 | +103 $ | 48,411 $ |
 
 Journal complet : [journal_melange.csv](journal_melange.csv)
 
@@ -57,24 +57,20 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 
 | Mesure | Valeur |
 |---|---|
-| Solde virtuel | **49,903 $** (depart 50 000 $) |
-| Gain depuis le depart | -97 $ (-0.2%) |
-| Baisse depuis le plus haut | -1.5% |
-| Zone normale a ce stade (8 cas sur 10) | de -2,585 $ a +3,711 $ (moyenne +563 $) |
+| Solde virtuel | **49,917 $** (depart 50 000 $) |
+| Gain depuis le depart | -83 $ (-0.2%) |
+| Baisse depuis le plus haut | -1.4% |
+| Zone normale a ce stade (8 cas sur 10) | de -2,618 $ a +3,781 $ (moyenne +582 $) |
 | Challenge Phidias 50K virtuel | perdu le 2026-10-22 |
 
 ![Gain du compte et zone normale](courbe.svg)
 
 | Contrat | Marche | Sens | Nombre |
 |---|---|---|---|
-| MET | Ether | Vente | 4 |
+| MET | Ether | Vente | 6 |
 | MSF | Franc suisse | Vente | 2 |
 | 2YY | Taux 2 ans | Achat | 1 |
-| 10Y | Taux 10 ans | Achat | 1 |
 | M6E | Euro | Vente | 1 |
-| M6A | Dollar australien | Vente | 1 |
-| M6B | Livre sterling | Achat | 1 |
-| MCD | Dollar canadien | Vente | 1 |
 | MHG | Cuivre | Vente | 1 |
 | MBT | Bitcoin | Vente | 1 |
 
@@ -82,6 +78,7 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 
 | Date | Resultat du jour | Solde |
 |---|---|---|
+| 2026-11-27 | +34 $ | 49,917 $ |
 | 2026-11-25 | -293 $ | 49,903 $ |
 | 2026-11-24 | +246 $ | 50,196 $ |
 | 2026-11-23 | -483 $ | 49,949 $ |
@@ -91,7 +88,6 @@ Demarre le 2026-09-25. Historique 2007-2026 au meme risque : Sharpe 0,56, enviro
 | 2026-11-17 | -94 $ | 49,780 $ |
 | 2026-11-16 | +377 $ | 49,874 $ |
 | 2026-11-13 | +363 $ | 49,497 $ |
-| 2026-11-12 | +475 $ | 49,186 $ |
 
 Journal complet : [journal.csv](journal.csv)
 
